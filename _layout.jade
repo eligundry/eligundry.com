@@ -1,6 +1,7 @@
 !!!
-html
-  head
-    link(rel="stylesheet", href="/main.css")
-  body
-    != yield
+html(lang="en-us")
+	head
+		meta(charset="utf-8")
+		link(rel="stylesheet", href="/main.css")
+	body
+		!= yield
