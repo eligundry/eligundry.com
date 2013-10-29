@@ -4,4 +4,7 @@ html(lang="en-us")
 		meta(charset="utf-8")
 		link(rel="stylesheet", href="/main.css")
 	body
+		!= partial("_shared/header")
+		!= partial("_shared/nav")
 		!= yield
+		!= partial("_shared/footer")
