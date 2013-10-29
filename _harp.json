@@ -1,0 +1,12 @@
+{
+	"globals": {
+		"title": "Eli Gundry",
+		"author": "Eli Gundry",
+		"email": "eligundry@gmail.com",
+		"root_url": "https://eligundry.github.io",
+		"url": {
+			"github": "eligundry",
+			"twitter": "EliGundry"
+		}
+	}
+}
