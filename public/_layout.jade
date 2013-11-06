@@ -6,10 +6,12 @@ html(lang="en-us")
 			title #{ page_title } &mdash; #{ title }
 		else
 			title #{ title }
-		link(rel="stylesheet", href="/css/main.css")
+		meta(name="generator", content="http://harpjs.com")
+		link(rel="stylesheet", href="/assets/css/main.css")
 		link(rel="canonical", href="#{ root_url }/#{ current.source }")
-	body
+	body(id="#{ current.source }")
 		!= partial("_shared/header")
 		!= partial("_shared/nav")
-		!= yield
+		main(role="main")
+			!= yield
 		!= partial("_shared/footer")
