@@ -1,12 +1,12 @@
-footer(role="contentinfo")
+footer(role="contentinfo", class="footer")
 	address
-		dl
-			dt Email
-			dd
-				a(href="mailto:#{ email }") #{ email }
-			dt Phone
-			dd 330.828.6147
-			dt URL
-			dd
-				a(href="https://twitter.com/#{ url.twitter }") Twitter
-				a(href="https://github.com/#{ url.github }") GitHub
+		div
+			strong Email
+			a(href="mailto:#{ email }") #{ email }
+		div
+			strong Phone
+			span 330.828.6147
+		div
+			strong Web
+			a(href="https://twitter.com/#{ url.twitter }") Twitter
+			a(href="https://github.com/#{ url.github }") GitHub

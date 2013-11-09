@@ -1,31 +1,44 @@
+@import "_normalize";
+@import "_variables";
+
+// General Element Styling
+//==============================================================================
+
 body {
 	color: #444;
-	font-family: "Helvetica", sans-serif;
+	font-family: @sansFontFamily;
 	font-size: 16px;
 	margin: 0 auto;
 	width: 60%;
 }
 
 a {
-	color: #f00;
+	color: @linkColor;
 	font-weight: bold;
 	text-decoration: none;
-}
 
-a:hover,
-a:focus {
-	border-bottom: 1px solid #f00;
-	outline: none;
+	&:hover, &:focus, &:visited {
+		color: @linkColor;
+	}
+
+	&:hover, &focus {
+		border-bottom: 1px solid #f00;
+		outline: none;
+	}
 }
 
 ul {
 	list-style: square;
 }
 
-// @=Navigation Styles
+// Styling for blocks
+//==============================================================================
 
-.top-nav {
-	a {
-		margin-right: 10px;
-	}
-}
+@import "_header";
+@import "_footer";
+
+// Styling for specific pages
+//==============================================================================
+
+@import "about";
+@import "resume";

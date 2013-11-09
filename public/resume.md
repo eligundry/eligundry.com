@@ -15,6 +15,7 @@
 ### [Kent State University](http://www.kent.edu) <sup>(May 2013 &mdash; Present)</sup>
 #### Student IT Worker
 
+* Assisted [Professor Eric Shook](http://www.kent.edu/cas/geography/people/~eshook/) in his research in the field of [CyberGIS](http://en.wikipedia.org/wiki/Geoweb)
 * Helped provide help desk support for [Kent State's College of Arts and Sciences](http://www.kent.edu/CAS/)
 
 ### [Mindbox Studios](http://mindboxstudios.com) <sup>(Aug. 2012 &mdash; Jan. 2013)</sup>

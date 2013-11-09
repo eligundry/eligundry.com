@@ -1,0 +1,11 @@
+/* TEAM */
+
+Author: Eli Gundry
+Site: https://eligundry.github.io/
+Twitter: @EliGundry
+Location: Kent, Ohio, USA
+
+/* SITE */
+
+Standards: HTML5, CSS3
+Components: Harp, LESS, jQuery, Jade, Markdown
