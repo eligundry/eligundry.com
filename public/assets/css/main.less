@@ -1,15 +1,18 @@
 @import "_normalize";
+@import "_grid";
 @import "_variables";
 
 // General Element Styling
 //==============================================================================
+
+
 
 body {
 	color: #444;
 	font-family: @sansFontFamily;
 	font-size: 16px;
 	margin: 0 auto;
-	width: 60%;
+	width: @total-width;
 }
 
 a {
@@ -25,6 +28,10 @@ a {
 		border-bottom: 1px solid #f00;
 		outline: none;
 	}
+}
+
+main {
+	.clearfix();
 }
 
 ul {
