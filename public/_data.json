@@ -11,5 +11,8 @@
 	},
 	"portfolio": {
 		"page_title": "Portfolio"
+	},
+	"sitemap": {
+		"layout": "false"
 	}
 }
