@@ -1,0 +1,23 @@
+!!!
+html(lang="en-us")
+	head
+		meta(charset="utf-8")
+		if page_title
+			title #{ page_title } &mdash; #{ title }
+		else
+			title #{ title }
+		if description
+			meta(name="description", content="#{ description }")
+		meta(name="generator", content="http://harpjs.com")
+		link(rel="author", href="#{ root_url }/humans.txt")
+		link(rel="stylesheet", href="/assets/css/main.css")
+		link(rel="canonical", href="#{ root_url }/#{ current.source }")
+	body(id="#{ current.source }")
+		!= partial("../_shared/header")
+		!= partial("../_shared/nav")
+
+		main(role="main", itemscope, itemtype="http://schema.org/Blog")
+			!= yield
+
+		!= partial("../_shared/footer")
+		!= partial("../_shared/google-analytics")

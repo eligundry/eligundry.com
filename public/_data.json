@@ -9,9 +9,6 @@
 	"resume": {
 		"page_title": "Resume"
 	},
-	"portfolio": {
-		"page_title": "Portfolio"
-	},
 	"sitemap": {
 		"layout": "false"
 	}

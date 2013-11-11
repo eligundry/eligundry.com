@@ -1,0 +1,33 @@
+!!!
+html(lang="en-us")
+	head
+		meta(charset="utf-8")
+		if post_title
+			title #{ post_title } &mdash; #{ title }
+		else
+			title #{ title }
+		if excerpt
+			meta(name="description", content="#{ excerpt }")
+		meta(name="generator", content="http://harpjs.com")
+		link(rel="author", href="#{ root_url }/humans.txt")
+		link(rel="stylesheet", href="/assets/css/main.css")
+		link(rel="canonical", href="#{ root_url }/#{ current.source }")
+	body(id="#{ current.source }", class="blog-post")
+		!= partial("../_shared/header")
+		!= partial("../_shared/nav")
+
+		main(role="main")
+			article(itemscope, itemtype="http://schema.org/BlogPosting")
+				meta(itemprop="description", content="#{ excerpt }")
+				header
+					h1(itemprop="name")
+						a(href="#{ root_url }/#{ current.source }", itemprop="url") #{ post_title }
+					span(itemprop="author") #{ author }
+					time(itemprop="datePublished", datetime="#{ dateTime }") #{ date }
+				section(itemprop="articleBody")
+					!= yield
+				footer
+					!= partial("../_shared/disqus")
+
+		!= partial("../_shared/footer")
+		!= partial("../_shared/google-analytics")

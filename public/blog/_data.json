@@ -1,1 +1,14 @@
-{}
+{
+	"sample-content-post": {
+		"post_title": "Sample Content Post",
+		"excerpt": "Quinoa 8-bit velit mollit banh mi leggings. Semiotics aute you probably haven't heard of them commodo, Tonx irure Pitchfork synth banjo readymade placeat +1.",
+		"date": "Nov. 9 2013",
+		"dateTime": "2013-11-09",
+		"is_published": true
+	},
+	"index": {
+		"post_title": "Blog",
+		"layout": "_blog-layout-loop",
+		"is_published": false
+	}
+}

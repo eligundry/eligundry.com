@@ -1,0 +1,7 @@
+for post, slug in public.blog.data
+	if post.is_published
+		article(itemprop="blogPosts", itemscope, itemtype="http://schema.org/BlogPosting")
+			h2(itemprop="title")
+				a(href="/blog/#{ slug }", itemprop="url") #{ post.post_title }
+			time(itemprop="datePublished", datetime="#{ post.dateTime }") #{ post.date }
+			p(itemprop="description") #{ post.excerpt }

@@ -1,12 +1,12 @@
 footer(role="contentinfo", class="footer")
 	address
-		div
+		div(class="email")
 			strong Email
 			a(href="mailto:#{ email }") #{ email }
-		div
+		div(class="phone")
 			strong Phone
 			span 330.828.6147
-		div
+		div(class="web")
 			strong Web
-			a(href="https://twitter.com/#{ url.twitter }") Twitter
-			a(href="https://github.com/#{ url.github }") GitHub
+			a(href="https://twitter.com/#{ url.twitter }", class="icon-twitter")
+			a(href="https://github.com/#{ url.github }", class="icon-github")
