@@ -6,6 +6,8 @@
 		"domain": "eligundry.me",
 		"root_url": "http://eligundry.me",
 		"github": "eligundry",
-		"twitter": "EliGundry"
+		"twitter": "EliGundry",
+		"google_analytics": "UA-46815888-1",
+		"disqus": "eligundry"
 	}
 }
