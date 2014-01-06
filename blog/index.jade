@@ -1,4 +1,4 @@
-for post, slug in public.blog.data
+each post, slug in public.blog._data
 	if post.is_published
 		article(itemprop="blogPosts", itemscope, itemtype="http://schema.org/BlogPosting")
 			h2(itemprop="title")
