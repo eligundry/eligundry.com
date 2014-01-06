@@ -1,0 +1,22 @@
+mixin tree(head, tail)
+  for val, key in head
+    if key !== '_data'
+      if key == '_contents'
+        each file in val
+          if /(\.html$)/.test(file)
+            prio = .4
+            if /about/.test(tail + file)
+              prio = .9
+            if /blog/.test(tail + file)
+              prio = .7
+            if /index/.test(tail + file)
+              prio = .6
+            url
+              loc= root_url + tail + file
+              priority= prio
+      else
+        mixin tree(val, tail + key + "/")
+
+doctype xml
+urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
+  mixin tree(public, "/")

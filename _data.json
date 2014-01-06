@@ -9,7 +9,10 @@
 	"resume": {
 		"page_title": "Resume"
 	},
+	"feed": {
+		"layout": false
+	},
 	"sitemap": {
-		"layout": "false"
+		"layout": false
 	}
 }
