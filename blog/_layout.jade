@@ -10,8 +10,10 @@ html(lang="en-us")
 			meta(name="description", content="#{ excerpt }")
 		meta(name="generator", content="http://harpjs.com")
 		link(rel="author", href="#{ root_url }/humans.txt")
+		link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Raleway:400,700|Goudy+Bookletter+1911")
 		link(rel="stylesheet", href="/assets/css/main.css")
-		link(rel="canonical", href="#{ root_url }/#{ current.source }")
+		link(rel="canonical", href="#{ root_url }/blog/#{ current.source }")
+		link(rel="alternate", type="application/rss+xml", title="RSS", href="#{ root_url }/feed.xml")
 	body(id="#{ current.source }", class="blog-post")
 		!= partial("../_shared/header")
 		!= partial("../_shared/nav")
@@ -21,7 +23,7 @@ html(lang="en-us")
 				meta(itemprop="description", content="#{ excerpt }")
 				header
 					h1(itemprop="name")
-						a(href="#{ root_url }/#{ current.source }", itemprop="url") #{ post_title }
+						a(href="#{ root_url }/blog/#{ current.source }", itemprop="url") #{ post_title }
 					span(itemprop="author") #{ author }
 					time(itemprop="datePublished", datetime="#{ dateTime }") #{ date }
 				section(itemprop="articleBody")
@@ -30,4 +32,4 @@ html(lang="en-us")
 					!= partial("../_shared/disqus")
 
 		!= partial("../_shared/footer")
-		!= partial("../_shared/google-analytics")
+		!= partial("../_shared/scripts")

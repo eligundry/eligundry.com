@@ -1,7 +1,7 @@
 /* TEAM */
 
 Author: Eli Gundry
-Site: https://eligundry.github.io/
+Site: https://eligundry.me
 Twitter: @EliGundry
 Location: Kent, Ohio, USA
 

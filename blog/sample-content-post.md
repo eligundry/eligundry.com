@@ -1,5 +1,10 @@
 # This is a heading 1
 
+<figure class="pull-right">
+	<img src="http://lorempixel.com/300/300" />
+	<figcaption>Ths is an image served at random.</figcaption>
+</figure>
+
 Quinoa 8-bit velit mollit banh mi leggings. Semiotics aute you probably haven't
 heard of them commodo, Tonx irure Pitchfork synth banjo readymade placeat +1.
 Terry Richardson sed beard, photo booth fap trust fund ex before they sold out
@@ -82,3 +87,24 @@ var x = function(distance) {
 That's a nice litte anonymous function you have there!
 
 ##### Heading 5 won't be used that often
+
+<blockquote class="pull-quote pull-right">
+	This is going to be epic! I love it so much!!!
+</blockquote>
+
+Est organic Etsy chia drinking vinegar. Godard try-hard excepteur biodiesel
+cillum. Do plaid Brooklyn accusamus. Deep v kale chips Helvetica direct trade
+fashion axe, PBR&B DIY gluten-free Terry Richardson cupidatat Austin Schlitz
+salvia proident viral. Consequat wolf street art, veniam four loko fap drinking
+vinegar literally enim shabby chic Shoreditch cred. Occupy cred delectus,
+flannel nesciunt four loko raw denim plaid aesthetic sapiente 8-bit umami
+letterpress anim. Wolf art party eu Banksy cupidatat enim kale chips small batch
+Wes Anderson, id before they sold out.
+
+Mumblecore hoodie gastropub polaroid. Kale chips salvia fixie, Odd Future photo
+booth placeat pariatur velit vinyl next level aliqua exercitation pickled ut.
+Thundercats banh mi beard, organic proident art party Cosby sweater tote bag. Ad
+organic art party freegan retro, drinking vinegar anim. Labore Bushwick
+skateboard irure, cardigan pour-over Neutra drinking vinegar. Vice quis pug raw
+denim biodiesel. Photo booth Echo Park Cosby sweater, jean shorts eiusmod anim
+assumenda kitsch Williamsburg irure hoodie esse ennui ea deep v.
