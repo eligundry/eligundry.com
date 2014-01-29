@@ -8,9 +8,9 @@
 //==============================================================================
 
 body {
-	color: #444;
+	color: @textColor;
 	font-family: @serifFontFamily;
-	font-size: 16px;
+	font-size: @defaultFontSize;
 	margin: 0 auto;
 	width: @total-width;
 }
@@ -38,8 +38,75 @@ main {
 	.clearfix();
 }
 
+hr {
+	border-top: 2px solid @textColor;
+	margin: 1em auto;
+	width: 80%;
+}
+
 ul {
 	list-style: square;
+
+	ul {
+		list-style: none;
+
+		li:before {
+			font-size: .7em;
+			color: @linkColor;
+			content: '\25A0';
+			left: -10px;
+			position: relative;
+			top: -2px;
+		}
+	}
+}
+
+ul, ol {
+	padding-left: 0;
+
+	ul, ol {
+		padding-left: 40px;
+	}
+}
+
+ol ol {
+	list-style-type: lower-alpha;
+}
+
+figcaption {
+	font-style: italic;
+	text-align: center;
+}
+
+blockquote {
+	background-color: rgba(0, 0, 0, .1);
+	border-left: @linkColor solid 30px;
+	border-radius: 0 .5em .5em 0;
+	margin: 1em 0;
+	padding: .5em 1em;
+}
+
+.pull-quote {
+	background-color: transparent;
+	border: 5px solid red;
+	border-width: 5px 0;
+	border-radius: 0;
+	font-size: 1.5em;
+	font-family: @sansFontFamily;
+	font-style: italic;
+	font-weight: bold;
+	margin-top: 0;
+	width: 20%;
+}
+
+.pull-right {
+	float: right;
+	margin-left: 20px;
+}
+
+.pull-left {
+	float: left;
+	margin-right: 20px;
 }
 
 // Styling for blocks
@@ -54,3 +121,8 @@ ul {
 @import "about";
 @import "resume";
 @import "blog";
+
+// Responsive styling
+//==============================================================================
+
+@import "responsive";
