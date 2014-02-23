@@ -1,8 +1,15 @@
 {
+	"hackathons-all-the-time": {
+		"post_title": "Hackathons All The Time",
+		"excerpt": "My memories of hackathons I've been to thus far.",
+		"date": "Feb. 22, 2014",
+		"dateTime": "2014-02-22",
+		"is_published": true
+	},
 	"sample-content-post": {
 		"post_title": "Sample Content Post",
 		"excerpt": "Quinoa 8-bit velit mollit banh mi leggings. Semiotics aute you probably haven't heard of them commodo, Tonx irure Pitchfork synth banjo readymade placeat +1.",
-		"date": "Nov. 9 2013",
+		"date": "Nov. 9, 2013",
 		"dateTime": "2013-11-09",
 		"is_published": true
 	},

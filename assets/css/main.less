@@ -73,9 +73,18 @@ ol ol {
 	list-style-type: lower-alpha;
 }
 
-figcaption {
-	font-style: italic;
-	text-align: center;
+figure {
+	display: inline-block;
+
+	img {
+		display: block;
+		margin: 0 auto;
+	}
+
+	figcaption {
+		font-style: italic;
+		text-align: center;
+	}
 }
 
 blockquote {
@@ -107,6 +116,12 @@ blockquote {
 .pull-left {
 	float: left;
 	margin-right: 20px;
+}
+
+.center {
+	display: block;
+	float: none;
+	margin: 0 auto;
 }
 
 // Styling for blocks

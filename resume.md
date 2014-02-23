@@ -1,7 +1,7 @@
 ## Education
 
 ### [Kent State University](http://www.kent.edu) <sup>(Aug. 2010 &mdash; May 2015)</sup>
-#### Bachelor's of Science in Computer Science
+#### Bachelor's of Science in Digital Sciences & Minor in Computer Science
 
 * Relevant coursework: Computer Science I-II, Discrete Structures, Computer Architecture, Speed Programming, Software Engineering
 
@@ -12,10 +12,9 @@
 
 * Repaired computers in a retail environment
 
-### [Kent State University](http://www.kent.edu) <sup>(May 2013 &mdash; Present)</sup>
+### [Kent State University](http://www.kent.edu) <sup>(May 2013 &mdash; August 2013)</sup>
 #### Student IT Worker
 
-* Assisted [Professor Eric Shook](http://www.kent.edu/cas/geography/people/~eshook/) in his research in the field of [CyberGIS](http://en.wikipedia.org/wiki/Geoweb)
 * Helped provide help desk support for [Kent State's College of Arts and Sciences](http://www.kent.edu/CAS/)
 
 ### [Mindbox Studios](http://mindboxstudios.com) <sup>(Aug. 2012 &mdash; Jan. 2013)</sup>

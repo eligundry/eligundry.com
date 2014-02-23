@@ -1,4 +1,4 @@
-@media all and (max-width: 640px) {
+@media all and (max-device-width: 640px) and (max-width: 640px) {
 	body {
 		width: 90%;
 	}
@@ -9,7 +9,9 @@
 	}
 
 	.pull-left, .pull-right {
+		display: block;
 		float: none;
+		margin: 0 auto;
 	}
 
 	.pull-left {
@@ -22,5 +24,11 @@
 
 	.pull-quote {
 		width: 100%;
+	}
+
+	.footer {
+		address div {
+			.column(12);
+		}
 	}
 }

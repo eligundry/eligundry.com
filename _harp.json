@@ -3,11 +3,12 @@
 		"title": "Eli Gundry",
 		"author": "Eli Gundry",
 		"email": "eligundry@gmail.com",
-		"description": "blah!",
-		"domain": "eligundry.me",
+		"site_description": "Eli Gundry is a web developer living in Kent, Ohio and is always looking for new opportunities.",
+		"domain": "eligundry.com",
 		"root_url": "http://eligundry.com",
 		"github": "eligundry",
 		"twitter": "EliGundry",
+		"facebook": "eligundry",
 		"google_analytics": "UA-46815888-1",
 		"disqus": "eligundry"
 	}
