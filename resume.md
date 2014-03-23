@@ -7,6 +7,11 @@
 
 ## Work
 
+### [Wunderkind](http://wunderkind.us) <sup>(Mar. 2014 &mdash; Present)</sup>
+#### Chief Technology Officer
+
+* Responsible for server administration using [Arch Linux](https://www.archlinux.org/) & [Digital Ocean](https://digitalocean.com/)
+
 ### [PC Surgeon's](http://pcsurgeons.net) <sup>(Nov. 2013 &mdash; Present)</sup>
 #### Computer Technican
 
@@ -38,7 +43,7 @@
 ## Skills
 
 * Develops using [Ruby](http://www.ruby-lang.org/en/), [Python](http://www.python.org), [JavaScript](http://en.wikipedia.org/wiki/JavaScript), [PHP](http://php.net), [WordPress](http://wordpress.org), [HTML5](http://en.wikipedia.org/wiki/HTML5), [CSS3](https://en.wikipedia.org/wiki/Cascading_Style_Sheets), & [C++](https://en.wikipedia.org/wiki/C%2B%2B)
-* Built web applications using [Ruby on Rails](http://rubyonrails.org), [Django](http://djangoproject.com), [Zend](http://framework.zend.com/), [Symfony](http://symfony.com/), & [Yii](http://www.yiiframework.com/)
+* Built web applications using [Ruby on Rails](http://rubyonrails.org), [Flask](http://flask.pocoo.org/), [Zend](http://framework.zend.com/), [Symfony](http://symfony.com/), & [Yii](http://www.yiiframework.com/)
 * Most comfortable using [jQuery](http://jquery.com), [Twitter Bootstrap](http://twitter.github.io/), [LESS](http://lesscss.org), [Vim](http://www.vim.org), & [Git](http://git-scm.com)
 
 ## Activities
