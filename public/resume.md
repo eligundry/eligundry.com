@@ -1,18 +1,13 @@
 ## Education
 
-### [Kent State University](http://www.kent.edu) <sup>(Aug. 2010 &mdash; May 2015)</sup>
-#### Bachelor's of Science in Digital Sciences & Minor in Computer Science
+### [Kent State University](http://www.kent.edu) <sup>(Aug. 2012 &mdash; May 2016)</sup>
+#### Bachelor's of Science in Computer Science
 
-* Relevant coursework: Computer Science I-II, Discrete Structures, Computer Architecture, Speed Programming, Software Engineering
+* Relevant coursework: Computer Science I-II, Discrete Structures, Computer Architecture, Speed Programming, Software Engineering, Operating Systems
 
 ## Work
 
-### [Wunderkind](http://wunderkind.us) <sup>(Mar. 2014 &mdash; Present)</sup>
-#### Chief Technology Officer
-
-* Responsible for server administration using [Arch Linux](https://www.archlinux.org/) & [Digital Ocean](https://digitalocean.com/)
-
-### [PC Surgeon's](http://pcsurgeons.net) <sup>(Nov. 2013 &mdash; Present)</sup>
+### [PC Surgeon's](http://pcsurgeons.net) <sup>(Oct. 2013 &mdash; Present)</sup>
 #### Computer Technican
 
 * Repaired computers in a retail environment
