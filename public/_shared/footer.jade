@@ -1,21 +1,24 @@
 footer(role="contentinfo", class="footer")
-	address
+	address(itemscope, itemtype="http://schema.org/Person")
+		meta(itemprop="name", content="Eli Gundry")
 		div(class="email")
 			i(class="fa fa-envelope-o", title="Email")
 				span(class="hidden") Email
-			a(href="mailto:#{ email }") #{ email }
+			a(href="mailto:#{ email }")
+				span(itemprop="#{ email }") #{ email }
 		div(class="phone")
 			i(class="fa fa-phone", title="Phone")
 				span(class="hidden") Phone
-			a(href="tel:3308286147") 330.828.6147
+			a(href="tel:3308286147")
+				span(itemprop="telephone") 330.828.6147
 		div(class="web")
 			i(class="fa fa-globe", title="Web")
 				span(class="hidden") Web
-			a(href="https://github.com/#{ github }", title="Github")
+			a(href="https://github.com/#{ github }", title="Github", itemprop="url")
 				i(class="fa fa-github-square")
-			a(href="https://twitter.com/#{ twitter }", title="Twitter")
+			a(href="https://twitter.com/#{ twitter }", title="Twitter", itemprop="url")
 				i(class="fa fa-twitter-square")
-			a(href="https://facebook.com/#{ facebook }", title="Facebook")
+			a(href="https://facebook.com/#{ facebook }", title="Facebook", itemprop="url")
 				i(class="fa fa-facebook-square")
 			a(href="/feed.xml", title="RSS")
 				i(class="fa fa-rss-square")

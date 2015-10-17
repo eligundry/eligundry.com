@@ -10,17 +10,18 @@
 
 .blog-post main,
 .blog-loop article {
-	.fa {
-		margin-right: 4px;
-	}
-
-	.fa,
 	time {
 		font-size: .8em;
-	}
-
-	time {
 		font-weight: bold;
+
+		&:before {
+			content: "\f073";
+			font: normal normal normal 14px/1 FontAwesome;
+			margin-right: 4px;
+			text-rendering: auto;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
 	}
 }
 

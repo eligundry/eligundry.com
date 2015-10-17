@@ -16,11 +16,10 @@ html(lang="en-us")
 		main(role="main")
 			article(itemscope, itemtype="http://schema.org/BlogPosting")
 				meta(itemprop="description", content="#{ excerpt }")
+				meta(itemprop="author", content="#{ author }")
 				header
 					h1(itemprop="name")
 						a(href="#{ root_url }/blog/#{ current.source }", itemprop="url") #{ post_title }
-					meta(itemprop="author", content="#{ author }")
-					i(class="fa fa-calendar")
 					time(itemprop="datePublished", datetime="#{ dateTime }") #{ date }
 				section(itemprop="articleBody")
 					!= yield

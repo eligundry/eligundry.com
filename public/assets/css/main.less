@@ -61,16 +61,67 @@ ul {
 	}
 }
 
-ul, ol {
+ul,
+ol {
 	padding-left: 0;
 
-	ul, ol {
+	ul,
+	ol {
 		padding-left: 40px;
+	}
+
+	li:not(:last-child) {
+		ul,
+		ol {
+			margin-bottom: 0;
+		}
 	}
 }
 
 ol ol {
 	list-style-type: lower-alpha;
+}
+
+ol.checklist,
+ul.checklist {
+	list-style: none;
+
+	li {
+		&:before {
+			content: '\f096';
+			font-size: .7em;
+			font: normal normal normal 14px/1 FontAwesome;
+			left: -10px;
+			margin-right: 4px;
+			position: relative;
+			text-rendering: auto;
+			top: -2px;
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		&.checked:before {
+			content: '\f046';
+			font-size: .7em;
+			font: normal normal normal 14px/1 FontAwesome;
+			left: -10px;
+			margin-right: 4px;
+			position: relative;
+			text-rendering: auto;
+			top: -2px;
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+		}
+	}
+
+	ul,
+	ol {
+		list-style: none;
+
+		li:before {
+			color: @textColor;
+		}
+	}
 }
 
 figure {

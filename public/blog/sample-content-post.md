@@ -47,17 +47,46 @@ placeat nesciunt Pitchfork +1 irony brunch qui selfies next level.
 haven't heard of them fanny pack, Banksy messenger bag DIY wayfarers sartorial
 actually pork belly organic next level.
 * This is item 2
+	* This is a nested item
+	* This is a nested item
 * This is item 3
+	* This is a nested item
 	* This is a nested item
 
 ## That went great! Now let's try an ordered list
 
 1. This is item 1
 2. This is item 2
+	1. Subitem 1
+	2. Subitem 2
+	3. Subitem 3
 3. This is item 3
 	1. Subitem 1
 	2. Subitem 2
 	3. Subitem 3
+
+## Cool! Let's try something new: A checklist
+
+<ul class="checklist">
+	<li class="checked">This is task 1</li>
+	<li class="checked">This is task 1</li>
+	<li>This is task 1
+		<ul>
+			<li>This is task 1</li>
+			<li class="checked">This is task 1</li>
+			<li>This is task 1</li>
+			<li class="checked">This is task 1</li>
+		</ul>
+	</li>
+	<li class="checked">This is task 1
+		<ul>
+			<li>This is task 1</li>
+			<li class="checked">This is task 1</li>
+			<li>This is task 1</li>
+			<li class="checked">This is task 1</li>
+		</ul>
+	</li>
+</ul>
 
 ### This is a heading 3
 

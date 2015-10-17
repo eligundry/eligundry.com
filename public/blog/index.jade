@@ -4,6 +4,5 @@ each post, slug in public.blog._data
 			h2(itemprop="title")
 				a(href="/blog/#{ slug }", itemprop="url") #{ post.post_title }
 			meta(itemprop="author", content="#{ author }")
-			i(class="fa fa-calendar")
 			time(itemprop="datePublished", datetime="#{ post.dateTime }") #{ post.date }
 			p(itemprop="description") #{ post.excerpt }
