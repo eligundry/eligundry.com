@@ -26,13 +26,13 @@ a {
 	font-weight: bold;
 	text-decoration: none;
 
-	&:hover, &:focus, &:visited {
-		color: @linkColor;
+	&:hover, &:focus {
+		border-bottom: @focusBorder;
+		outline: @focusOutline;
 	}
 
-	&:hover, &focus {
-		border-bottom: 2px solid #f00;
-		outline: none;
+	&:hover, &:focus, &:visited {
+		color: @linkColor;
 	}
 }
 
