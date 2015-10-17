@@ -1,7 +1,6 @@
 @import "_normalize";
 @import "_grid";
 @import "_variables";
-@import (less) "icomoon.css";
 @import (less) "solarized-dark.css";
 
 // General Element Styling
@@ -18,7 +17,6 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: @sansFontFamily;
-	font-weight: @sansFontWeight;
 }
 
 a {
@@ -84,6 +82,7 @@ figure {
 	}
 
 	figcaption {
+		font-family: @serifFontFamily;
 		font-style: italic;
 		text-align: center;
 	}
@@ -108,7 +107,12 @@ blockquote {
 	font-style: italic;
 	font-weight: bold;
 	margin-top: 0;
-	width: 20%;
+	width: 30%;
+}
+
+.pull-left,
+.pull-right {
+	margin-bottom: 10px;
 }
 
 .pull-right {

@@ -19,7 +19,7 @@ html(lang="en-us")
 				header
 					h1(itemprop="name")
 						a(href="#{ root_url }/blog/#{ current.source }", itemprop="url") #{ post_title }
-					span(itemprop="author") #{ author }
+					meta(itemprop="author", content="#{ author }")
 					time(itemprop="datePublished", datetime="#{ dateTime }") #{ date }
 				section(itemprop="articleBody")
 					!= yield

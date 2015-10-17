@@ -11,14 +11,26 @@
 		font-weight: @sansFontWeight;
 
 		div {
-			.column(4);
+			float: left;
+			margin-right: 25px;
 		}
 
-		strong {
-			display: block;
+		.email,
+		.phone {
+			a {
+				display: block;
+				padding-top: 6px;
+			}
+		}
+
+		i {
+			&:first-child {
+				display: block;
+			}
 		}
 
 		.web a {
+			display: inline-block;
 			font-size: 2em;
 			margin-right: 5px;
 
