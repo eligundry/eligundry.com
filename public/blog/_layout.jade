@@ -1,4 +1,4 @@
-!!!
+doctype html
 html(lang="en-us")
 	head
 		meta(charset="utf-8")
@@ -8,18 +8,7 @@ html(lang="en-us")
 			title #{ title }
 		if excerpt
 			meta(name="description", content="#{ excerpt }")
-		meta(name="viewport", content="width=device-width, initial-scale=1.0")
-		meta(name="generator", content="http://harpjs.com")
-		meta(name="msapplication-navbutton-color", content="#f00")
-		link(rel="dns-prefetch", href="//fonts.googleapis.com")
-		link(rel="dns-prefetch", href="//www.google-analytics.com")
-		link(rel="dns-prefetch", href="//eligundry.disqus.com")
-		link(rel="author", href="https://plus.google.com/u/0/107552919918829140808/?rel=author")
-		link(rel="humans", href="#{ root_url }/humans.txt")
-		link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Raleway:400,700|Goudy+Bookletter+1911")
-		link(rel="stylesheet", href="/assets/css/main.css")
-		link(rel="canonical", href="#{ root_url }/blog/#{ current.source }")
-		link(rel="alternate", type="application/rss+xml", title="RSS", href="#{ root_url }/feed.xml")
+		!= partial("../_shared/meta")
 	body(id="#{ current.source }", class="blog-post")
 		!= partial("../_shared/header")
 		!= partial("../_shared/nav")
