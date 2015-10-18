@@ -9,7 +9,7 @@ html(lang="en-us")
 		if excerpt
 			meta(name="description", content="#{ excerpt }")
 		!= partial("../_shared/meta")
-	body(id="#{ current.source }", class="blog-post")
+	body(id=current.source, class="blog-post", itemscope, itemtype="https://schema.org/Person")
 		!= partial("../_shared/header")
 		!= partial("../_shared/nav")
 

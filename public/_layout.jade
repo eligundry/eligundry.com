@@ -11,7 +11,7 @@ html(lang="en-us")
 		else
 			meta(name="description", content="#{ site_description }")
 		!= partial("_shared/meta")
-	body(id="#{ current.source }")
+	body(id=current.source, itemscope, itemtype="https://schema.org/Person")
 		!= partial("_shared/header")
 		!= partial("_shared/nav")
 		main(role="main")
