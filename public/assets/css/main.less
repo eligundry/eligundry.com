@@ -1,7 +1,7 @@
 @import "_normalize";
 @import "_grid";
 @import "_variables";
-@import (less) "solarized-dark.css";
+@import (less) "solarized-light.css";
 
 // General Element Styling
 //==============================================================================
@@ -39,7 +39,7 @@ main {
 }
 
 hr {
-	border-top: 2px solid @textColor;
+	border-top: @dividerHeight solid  @dividerColor;
 	margin: 1em auto;
 	width: 80%;
 }
@@ -143,6 +143,8 @@ blockquote {
 	background-color: rgba(0, 0, 0, .1);
 	border-left: @linkColor solid 30px;
 	border-radius: 0 .5em .5em 0;
+	font-family: @serifFontFamily;
+	font-style: italic;
 	margin: 1em 0;
 	padding: .5em 1em;
 }

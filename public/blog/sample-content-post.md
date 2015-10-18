@@ -36,8 +36,9 @@ placeat nesciunt Pitchfork +1 irony brunch qui selfies next level.
 
 > When you sing with a group of people, you learn how to subsume yourself into
 > a group consciousness because a capella singing is all about the immersion of
-> the self into the community. That's one of the great feelings - to stop being me
-> for a little while and to become us. That way lies empathy, the great social virtue.
+> the self into the community. That's one of the great feelings - to stop being
+> me for a little while and to become us. That way lies empathy, the great
+> social virtue.
 >
 > &mdash; <cite>Brian Eno</cite>
 
