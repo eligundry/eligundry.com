@@ -23,7 +23,7 @@ html(lang="en-us")
 					time(itemprop="datePublished", datetime="#{ dateTime }") #{ date }
 				section(itemprop="articleBody")
 					!= yield
-				footer
+				footer(class="print-hide")
 					!= partial("../_shared/disqus")
 
 		!= partial("../_shared/footer")
