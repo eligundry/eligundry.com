@@ -7,7 +7,7 @@ html(lang="en-us")
 		else
 			title #{ title }
 		if excerpt
-			meta(name="description", content="#{ excerpt }")
+			meta(name="description", content=excerpt)
 		!= partial("../_shared/meta")
 	body(id=current.source, class="blog-post", itemscope, itemtype="https://schema.org/Person")
 		!= partial("../_shared/header")
@@ -15,12 +15,12 @@ html(lang="en-us")
 
 		main(role="main")
 			article(itemscope, itemtype="http://schema.org/BlogPosting")
-				meta(itemprop="description", content="#{ excerpt }")
-				meta(itemprop="author", content="#{ author }")
+				meta(itemprop="description", content=excerpt)
+				meta(itemprop="author", content=author)
 				header
 					h1(itemprop="name")
 						a(href="#{ root_url }/blog/#{ current.source }", itemprop="url") #{ post_title }
-					time(itemprop="datePublished", datetime="#{ dateTime }") #{ date }
+					time(itemprop="datePublished", datetime=dateTime) #{ date }
 				section(itemprop="articleBody")
 					!= yield
 				footer(class="print-hide")

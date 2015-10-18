@@ -1,16 +1,24 @@
 footer(role="contentinfo", class="footer")
 	address
-		meta(itemprop="name", content="Eli Gundry")
 		div(class="email")
 			i(class="fa fa-envelope-o", title="Email")
 				span(class="hidden") Email
 			a(href="mailto:#{ email }")
-				span(itemprop="#{ email }") #{ email }
+				span(itemprop=email) #{ email }
 		div(class="phone")
 			i(class="fa fa-phone", title="Phone")
 				span(class="hidden") Phone
 			a(href="tel:3308286147")
 				span(itemprop="telephone") 330.828.6147
+		div(class="location" itemscope, itemtype="https://schema.org/PostalAddress")
+			i(class="fa fa-map-marker", title="Location")
+				span(class="hidden") Location
+			a(href="https://goo.gl/vl1irv", itemprop="url")
+				span(itemprop="addressLocality") Brooklyn
+				| ,&nbsp;
+				span(itemprop="addressRegion") NY
+				| ,&nbsp;
+				span(itemprop="addressCountry") USA
 		div(class="web")
 			i(class="fa fa-globe", title="Web")
 				span(class="hidden") Web
