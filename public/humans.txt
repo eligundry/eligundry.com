@@ -4,7 +4,7 @@ Author: Eli Gundry
 Site: https://eligundry.com
 Twitter: @EliGundry
 GitHub: https://github.com/eligundry
-Location: Kent, Ohio, USA
+Location: Brooklyn, NY, USA
 
 /* SITE */
 
