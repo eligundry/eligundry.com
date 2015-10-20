@@ -1,0 +1,20 @@
+{
+	"go-band": {
+		"project_title": "Go Band",
+		"excerpt": "",
+		"date": "Feb. 1, 2015",
+		"dateTime": "2015-02-01",
+		"is_published": true
+	},
+	"goldberg": {
+		"project_title": "Goldberg",
+		"excerpt": "",
+		"date": "Oct. 26, 2014",
+		"dateTime": "2014-10-26",
+		"is_published": true
+	},
+	"index": {
+		"project_title": "Projects",
+		"is_published": false
+	}
+}
