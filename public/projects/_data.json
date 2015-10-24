@@ -1,20 +1,43 @@
 {
 	"go-band": {
 		"project_title": "Go Band",
-		"excerpt": "",
+		"excerpt": "Pitchfork ethical lo-fi selfies, ennui four loko Odd Future single-origin coffee gentrify.",
 		"date": "Feb. 1, 2015",
 		"dateTime": "2015-02-01",
+		"preview_image": "http://lorempixel.com/400/200",
+		"url": {
+			"github": {
+				"name": "Github",
+				"url": "https://github.com/eligundry/go-band-server"
+			},
+			"devpost": {
+				"name": "Devpost",
+				"url": "http://devpost.com/software/go-band"
+			}
+		},
 		"is_published": true
 	},
 	"goldberg": {
 		"project_title": "Goldberg",
-		"excerpt": "",
+		"excerpt": "Cred typewriter Banksy before they sold out Intelligentsia Godard.",
 		"date": "Oct. 26, 2014",
 		"dateTime": "2014-10-26",
+		"preview_image": "http://lorempixel.com/400/200",
+		"url": {
+			"github": {
+				"name": "Github",
+				"url": "https://github.com/eligundry/goldberg"
+			},
+			"devpost": {
+				"name": "Devpost",
+				"url": "http://devpost.com/software/goldberg"
+			}
+		},
 		"is_published": true
 	},
 	"index": {
 		"project_title": "Projects",
+		"layout": "_loop_layout",
 		"is_published": false
 	}
 }

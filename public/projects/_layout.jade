@@ -2,19 +2,28 @@ doctype html
 html(lang="en-us")
 	head
 		meta(charset="utf-8")
-		if project_title
+		if post_title
 			title #{ project_title } &mdash; #{ title }
 		else
 			title #{ title }
-		if description
-			meta(name="description", content=description)
-		else
-			meta(name="description", content=site_description)
+		if excerpt
+			meta(name="description", content=excerpt)
 		!= partial("../_shared/meta")
-	body(id=current.source, class="project", itemscope, itemtype="https://schema.org/Person")
+		link(rel="canonical", href="#{ root_url }/blog/#{ current.source }")
+	body(id=current.source, class="blog-post", itemscope, itemtype="https://schema.org/Person")
 		!= partial("../_shared/header")
 		!= partial("../_shared/nav")
+
 		main(role="main")
-			!= yield
+			article(itemscope, itemtype="http://schema.org/SoftwareApplication")
+				meta(itemprop="description", content=excerpt)
+				meta(itemprop="author", content=author)
+				header
+					h1(itemprop="name")
+						a(href="#{ root_url }/projects/#{ current.source }", itemprop="url") #{ project_title }
+					time(itemprop="datePublished", datetime=dateTime) #{ date }
+				section(itemprop="articleBody")
+					!= yield
+
 		!= partial("../_shared/footer")
 		!= partial("../_shared/scripts")

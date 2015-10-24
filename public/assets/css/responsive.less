@@ -1,7 +1,9 @@
-@media screen and (max-device-width: 640px) and (max-width: 640px) {
+@import "_grid";
+
+@media screen and (min-device-width: 320px) and (max-device-width: 1024px) {
 	body {
 		font-size: 16px;
-		width: 87%;
+		width: 90%;
 	}
 
 	.top-header h2 {
@@ -46,9 +48,7 @@
 		float: none;
 		margin-left: 0 !important;
 	}
-}
 
-@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
 	body {
 		width: 90%;
 	}
@@ -61,6 +61,12 @@
 		address div {
 			display: block;
 			float: none;
+		}
+	}
+
+	.project-loop {
+		article {
+			.column(12);
 		}
 	}
 }
