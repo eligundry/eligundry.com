@@ -5,7 +5,7 @@
 		"date": "Feb. 1, 2015",
 		"dateTime": "2015-02-01",
 		"preview_image": "http://lorempixel.com/400/200",
-		"url": {
+		"urls": {
 			"github": {
 				"name": "Github",
 				"url": "https://github.com/eligundry/go-band-server"
@@ -23,7 +23,7 @@
 		"date": "Oct. 26, 2014",
 		"dateTime": "2014-10-26",
 		"preview_image": "http://lorempixel.com/400/200",
-		"url": {
+		"urls": {
 			"github": {
 				"name": "Github",
 				"url": "https://github.com/eligundry/goldberg"

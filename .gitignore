@@ -1,3 +1,4 @@
 public/www/
 www/
 *.pyc
+node_modules/
