@@ -2,14 +2,18 @@ doctype html
 html(lang="en-us")
 	head
 		meta(charset="utf-8")
+
 		if page_title
 			title #{ post_title } &mdash; #{ title }
 		else
 			title #{ title }
+
 		if description
 			meta(name="description", content=description)
+
 		!= partial("../_shared/meta")
 		link(rel="canonical", href="#{ root_url }/blog/#{ current.source }")
+
 	body(id=current.source, class="blog-loop", itemscope, itemtype="https://schema.org/Person")
 		!= partial("../_shared/header")
 		!= partial("../_shared/nav")
