@@ -6,6 +6,7 @@ var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var rsync = require('gulp-rsync');
+var shell = require('gulp-shell');
 
 /**
  * Serve the Harp Site from the src directory
@@ -39,27 +40,22 @@ gulp.task('serve', function () {
 	});
 });
 
+gulp.task('build_highlight_js', shell.task([
+	'npm install',
+	'node tools/build.js -n python javascript bash go http json php less scss vim xml'
+], {
+	cwd: 'lib/highlight.js/'
+}));
+
 // Compress all js files into one
 gulp.task('compress', function() {
-	var watch_list = [];
-
-	// Load up all needed Prism highlighting language
-	var prism_languages = [
-		'core', 'markup', 'parser', 'bash', 'c', 'cpp', 'css', 'diff', 'git', 'go',
-		'javascript', 'http', 'markdown', 'php', 'php-extras', 'python', 'sql', 'vim',
-		'yaml'
+	var watch_list = [
+		'node_modules/reveal.js/js/reveal.js',
+		'lib/highlight.js/build/highlight.pack.js',
+		'public/assets/js/src/*.js'
 	];
 
-	for (var i = 0; i < prism_languages.length; i++) {
-		watch_list.push('node_modules/prismjs/components/prism-' + prism_languages[i] + '.js');
-	}
-	watch_list.push('node_modules/prismjs/plugins/file-highlight/prism-file-highlight.js');
-
-	// Load reveal.js
-	watch_list.push('node_modules/reveal.js/js/reveal.js');
-
-	// Load project specific files
-	watch_list.push('public/assets/js/src/*.js');
+	gutil.log(watch_list);
 
 	return gulp.src(watch_list)
 		.pipe(concat('all.js'))
