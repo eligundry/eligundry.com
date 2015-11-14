@@ -20,7 +20,7 @@ gulp.task('serve', function () {
 			open: false,
 			/* Hide the notification. It gets annoying */
 			notify: {
-			styles: ['opacity: 0', 'position: absolute']
+				styles: ['opacity: 0', 'position: absolute']
 			}
 		});
 
@@ -37,6 +37,11 @@ gulp.task('serve', function () {
 		gulp.watch(['*.ejs', '*.html', '*.jade', '*.json', '*.md', '*.js'], function () {
 			reload();
 		});
+
+		/**
+		 * Compile the JavaScript
+		 */
+		gulp.watch(['*.js'], ['compress']);
 	});
 });
 
@@ -55,7 +60,7 @@ gulp.task('compress', function() {
 		'public/assets/js/src/*.js'
 	];
 
-	gutil.log(watch_list);
+	gutil.log("Compressing", gutil.colors.yellow('JS'));
 
 	return gulp.src(watch_list)
 		.pipe(concat('all.js'))
