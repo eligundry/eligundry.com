@@ -20,7 +20,10 @@ gulp.task('serve', function () {
 			open: false,
 			/* Hide the notification. It gets annoying */
 			notify: {
-				styles: ['opacity: 0', 'position: absolute']
+				styles: [
+					'opacity: 0',
+					'position: absolute'
+				]
 			}
 		});
 
@@ -28,7 +31,7 @@ gulp.task('serve', function () {
 		 * Watch for scss changes, tell BrowserSync to refresh main.css
 		 */
 		gulp.watch(['*.sass', '*.less', '*.scss', '*.css'], function () {
-			reload("main.css", {stream: true});
+			reload("main.css", { stream: true });
 		});
 
 		/**
@@ -55,12 +58,13 @@ gulp.task('build_highlight_js', shell.task([
 // Compress all js files into one
 gulp.task('compress', function() {
 	var watch_list = [
+		// 'node_modules/reveal.js/lib/js/head.min.js',
 		'node_modules/reveal.js/js/reveal.js',
 		'lib/highlight.js/build/highlight.pack.js',
 		'public/assets/js/src/*.js'
 	];
 
-	gutil.log("Compressing", gutil.colors.yellow('JS'));
+	gutil.log("Compressed", gutil.colors.yellow('JS'));
 
 	return gulp.src(watch_list)
 		.pipe(concat('all.js'))

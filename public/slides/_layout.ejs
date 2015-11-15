@@ -1,0 +1,25 @@
+<!doctype HTML>
+<html lang="en-us" itemscope itemtype="https://schema.org/Person" class="reveal-page">
+	<head>
+		<meta charset="utf-8">
+		<title>
+		<% if (slides_title) { %>
+			<%= slides_title %> —
+		<% } %>
+			<%= title %>
+		</title>
+		<meta name="description" content="<%= excerpt %>">
+		<%- partial("../_shared/meta") %>
+		<link rel="href" href="<%= `${root_url}/blog/${current.source}` %>">
+	</head>
+
+	<body id="<%= current.source %>" itemscope itemtype="https://schema.org/Series">
+		<div class="reveal">
+			<div class="slides">
+				<%- yield %>
+			</div>
+		</div>
+
+		<%- partial("../_shared/scripts") %>
+	</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype HTML>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<title>
+		<% if (slides_title) { %>
+			<%= slides_title %> —
+		<% } %>
+			<%= title %>
+		</title>
+		<meta name="description" content="<%= excerpt %>">
+		<%- partial("../_shared/meta") %>
+		<link rel="href" href="<%= `${root_url}/blog/${current.source}` %>">
+	</head>
+	<body>
+		<%- partial("../_shared/header") %>
+		<%- partial("../_shared/nav") %>
+
+		<%- partial("../_shared/footer") %>
+		<%- partial("../_shared/scripts") %>
+	</body>
+</html>
+
