@@ -1,0 +1,94 @@
+<section>
+	<h2>Eli Gundry</h2>
+	<h3>Croscon</h3>
+</section>
+
+<section>
+	<h1>Microdata</h1>
+	<img src="http://i.imgur.com/UzRvo2c.png" alt="Zoolander - Data for Ants" width="900">
+</section>
+
+<section>
+	<h2>What Is It?</h2>
+	<ul>
+		<li>
+			<a href="https://html.spec.whatwg.org/multipage/microdata.html">Microdata</a>
+			applies semantic meaning to your existing HTML
+		</li>
+		<li>
+			This makes it easier for web crawlers to understand the data in the HTML
+		</li>
+	</ul>
+</section>
+
+<section>
+	<h2>What Does It Look Like?</h2>
+
+  <img src="/assets/images/mr_robot_imdb_episode_list.png">
+
+	<aside class="notes">
+		<p>The following code is an adapted/improved example from IMDB from every hackers favorite show, Mr. Robot</p>
+	</aside>
+</section>
+
+<section>
+  <h2>Without Microdata</h2>
+
+  <pre>
+    <code class="lang-html">
+&lt;div id="episodes_content"&gt;
+  &lt;h3 id="episode_top"&gt;Season 1&lt;/h3&gt;
+  &lt;div class="list detail eplist"&gt;
+    &lt;div class="list_item odd"&gt;
+      &lt;div class="image"&gt;
+        &lt;img alt="eps1.0_hellofriend.mov" src="http://ia.media-imdb.com/images/eps1.0_hellofriend.mov.jpg"&gt;
+        &lt;div&gt;S1, Ep1&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;div class="airdate"&gt;24 Jun. 2015&lt;/div&gt;
+        &lt;a href="/title/tt4652838/?ref_=ttep_ep1"&gt;eps1.0_hellofriend.mov&lt;/&gt;
+        &lt;div class="item_description"&gt;
+            A notorious hacker takes an interest in cyber-security engineer and vigilante-styled computer hacker Elliot; and an evil corporation is hacked.
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+    </code>
+  </pre>
+</section>
+
+<section>
+  <h2>With Microdata</h2>
+  <pre>
+    <code class="lang-html">
+&lt;div id="episodes_content" itemscope itemtype="http://schema.org/TVSeries"&gt;
+  &lt;meta itemprop="name" content="Mr. Robot (TV Series 2015– )"&gt;
+  &lt;h3 id="episode_top" itemprop="name"&gt;Season 1&lt;/h3&gt;
+  &lt;div class="list detail eplist"&gt;
+    &lt;div class="list_item odd"&gt;
+      &lt;div class="image"&gt;
+        &lt;img alt="eps1.0_hellofriend.mov" src="http://ia.media-imdb.com/images/eps1.0_hellofriend.mov.jpg"&gt;
+        &lt;div&gt;S1, Ep1&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div itemprop="episodes" itemscope itemtype="http://schema.org/TVEpisode"&gt;
+        &lt;meta itemprop="episodeNumber" content="1"&gt;
+        &lt;time class="airdate" itemprop="datePublished" content="2015-06-24"&gt;24 Jun. 2015&lt;/time&gt;
+        &lt;a href="/title/tt4652838/?ref_=ttep_ep1" title="eps1.0_hellofriend.mov" itemprop="name"&gt;eps1.0_hellofriend.mov&lt;/&gt;
+        &lt;div class="item_description" itemprop="description"&gt;
+            A notorious hacker takes an interest in cyber-security engineer and vigilante-styled computer hacker Elliot; and an evil corporation is hacked.
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+    </code>
+  </pre>
+
+  <aside class="notes">
+    * Note the use of the meta tag for information you don't want to display
+    * You can stack attributes to make it more descriptive (i.e. `name`)
+  </aside>
+</section>

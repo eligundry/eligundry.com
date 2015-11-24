@@ -5,7 +5,18 @@
 .reveal {
 	font-family: @sansFontFamily;
 
-	.slides {
+	h1, h2, h3, h4, h5, h6 {
+		text-transform: none;
+	}
 
+	pre {
+		box-shadow: none;
+		margin: 0 auto;
+		width: 100%;
+
+		code {
+			max-height: 500px;
+			padding: 0;
+		}
 	}
 }
