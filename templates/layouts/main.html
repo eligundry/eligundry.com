@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}| Eli Gundry{% endblock %}</title>
+    <meta name="description" content="{% block description %}{{ config.DEFAULT_DESCRIPTION }}{% endblock %}">
+    {% block meta %}{% endblock %}
+    {% block stylesheets %}{% endblock %}
+  </head>
+  <body>
+  {% block header %}
+    {% include 'includes/header.html' %}
+  {% endblock %}
+
+    <main role="main">
+      {% block body %}{% endblock %}
+    </main>
+
+  {% block footer %}
+    {% include 'includes/footer.html' %}
+  {% endblock %}
+
+  {% block javascripts %}
+    {% include 'includes/scripts.html' %}
+  {% endblock %}
+  </body>
+</html>
