@@ -24,6 +24,19 @@ code as they do working with server side code. I feel extremely confident
 developing web apps, regardless if I'm fighting JavaScript in Internet Explorer,
 adding features to a PHP web application, or even writing database queries.
 
+## About this site
+
+I built this website using [Lektor](https://www.getlektor.com/). It's a static
+site generator written Python and it's pretty nice. A little confusing to use at
+times, but still very good.
+
+This site leverages patterns from [Schema.org](https://schema.org/) in order to
+give markup metadata used by search engines to better understand the data
+contained within. Everything from my [blog](https://goo.gl/ebfSCD), my [resume](https://goo.gl/15PNOG),
+to even this [page](https://goo.gl/hjl0hU) make use of microdata. They are easy
+to integrate and Google has said that the presence of them is very beneficial for
+SEO.
+
 ## Quick Facts About Eli
 
 * Tabs over spaces.
