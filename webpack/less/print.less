@@ -1,77 +1,77 @@
 @media print {
-	body {
-		width: 95%;
-		font-size: 12px;
-	}
+    body {
+        width: 95%;
+        font-size: 12px;
+    }
 
-	header {
-		h1 {
-			margin-top: 0;
-		}
+    header {
+        h1 {
+            margin-top: 0;
+        }
 
-		h2 {
-			margin-bottom: 0;
-		}
-	}
+        h2 {
+            margin-bottom: 0;
+        }
+    }
 
-	nav {
-		display: none;
-	}
+    nav {
+        display: none;
+    }
 
-	.print-show {
-		visibility: show;
-	}
+    .print-show {
+        visibility: show;
+    }
 
-	.print-hide {
-		visibility: hidden;
-		display: none;
-	}
+    .print-hide {
+        visibility: hidden;
+        display: none;
+    }
 
-	[id*='/resume'] {
-		main {
-			h2 {
-				margin-bottom: 5px;
+    [id*='/resume'] {
+        main {
+            h2 {
+                margin-bottom: 5px;
 
-				&:first-child {
-					margin-top: 0;
-				}
+                &:first-child {
+                    margin-top: 0;
+                }
 
-				&:after {
-					border-bottom-width: 2px;
-					margin-top: 0;
-					width: 100%;
-				}
-			}
-		}
+                &:after {
+                    border-bottom-width: 2px;
+                    margin-top: 0;
+                    width: 100%;
+                }
+            }
+        }
 
-		.resume-hide {
-			visibility: hidden;
-			display: none;
-		}
-	}
+        .resume-hide {
+            visibility: hidden;
+            display: none;
+        }
+    }
 
-	.blog-post main {
-		section {
-			border-bottom: none;
-		}
-	}
+    .blog-post main {
+        section {
+            border-bottom: none;
+        }
+    }
 
-	footer {
-		border-top-width: 2px !important;
-		margin-bottom: 0 !important;
+    footer {
+        border-top-width: 2px !important;
+        margin-bottom: 0 !important;
 
-		.web {
-			a {
-				display: block !important;
-				height: 12px;
+        .web {
+            a {
+                display: block !important;
+                height: 12px;
 
-				&:after {
-					content: attr(href);
-					display: block;
-					font-size: 11px;
-					margin-top: -16px;
-				}
-			}
-		}
-	}
+                &:after {
+                    content: attr(href);
+                    display: block;
+                    font-size: 11px;
+                    margin-top: -16px;
+                }
+            }
+        }
+    }
 }

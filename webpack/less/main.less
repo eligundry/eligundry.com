@@ -7,185 +7,184 @@
 //==============================================================================
 
 body {
-	color: @textColor;
-	font-family: @sansFontFamily;
-	font-size: 20px;
-	font-weight: @sansFontWeight;
-	margin: 0 auto;
-	width: @total-width;
+    color: @textColor;
+    font-family: @sansFontFamily;
+    font-size: 20px;
+    font-weight: @sansFontWeight;
+    margin: 0 auto;
+    width: @total-width;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: @sansFontFamily;
+    font-family: @sansFontFamily;
 }
 
 img {
-	max-width: 100%;
+    max-width: 100%;
 }
 
 a {
-	color: @linkColor;
-	font-weight: bold;
-	text-decoration: none;
+    color: @linkColor;
+    font-weight: bold;
+    text-decoration: none;
 
-	&:hover, &:focus {
-		border-bottom: @focusBorder;
-		outline: @focusOutline;
-	}
+    &:hover, &:focus {
+        border-bottom: @focusBorder;
+        outline: @focusOutline;
+    }
 
-	&:hover, &:focus, &:visited {
-		color: @linkColor;
-	}
+    &:hover, &:focus, &:visited {
+        color: @linkColor;
+    }
 }
 
 main {
-	.clearfix();
+    .clearfix();
 }
 
 hr {
-	border-top: @divider;
-	margin: 1em auto;
-	width: 80%;
+    border-top: @divider;
+    margin: 1em auto;
+    width: 80%;
 }
 
 ul {
-	list-style: square;
+    list-style: square;
 
-	ul {
-		list-style: none;
+    ul {
+        list-style: none;
 
-		li:before {
-			font-size: .7em;
-			color: @linkColor;
-			content: '■';
-			left: -10px;
-			position: relative;
-			top: -2px;
-		}
-	}
+        li:before {
+            font-size: .7em;
+            color: @linkColor;
+            content: '■';
+            left: -10px;
+            position: relative;
+            top: -2px;
+        }
+    }
 }
 
 ul,
 ol {
-	padding-left: 0;
+    padding-left: 0;
 
-	ul,
-	ol {
-		padding-left: 40px;
-	}
+    ul,
+    ol {
+        padding-left: 40px;
+    }
 
-	li:not(:last-child) {
-		ul,
-		ol {
-			margin-bottom: 0;
-		}
-	}
+    li:not(:last-child) {
+        ul,
+        ol {
+            margin-bottom: 0;
+        }
+    }
 }
 
 ol ol {
-	list-style-type: lower-alpha;
+    list-style-type: lower-alpha;
 }
 
 ol.checklist,
 ul.checklist {
-	list-style: none;
+    list-style: none;
 
-	li {
-		&:before {
-			content: '\f096';
-			font-size: .7em;
-			font: normal normal normal 14px/1 FontAwesome;
-			left: -10px;
-			margin-right: 4px;
-			position: relative;
-			text-rendering: auto;
-			top: -2px;
-			-moz-osx-font-smoothing: grayscale;
-			-webkit-font-smoothing: antialiased;
-		}
+    li {
+        &:before {
+            content: '\f096';
+            font-size: .7em;
+            font: normal normal normal 14px/1 FontAwesome;
+            left: -10px;
+            margin-right: 4px;
+            position: relative;
+            text-rendering: auto;
+            top: -2px;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+        }
 
-		&.checked:before {
-			content: '\f046';
-			font-size: .7em;
-			font: normal normal normal 14px/1 FontAwesome;
-			left: -10px;
-			margin-right: 4px;
-			position: relative;
-			text-rendering: auto;
-			top: -2px;
-			-moz-osx-font-smoothing: grayscale;
-			-webkit-font-smoothing: antialiased;
-		}
-	}
+        &.checked:before {
+            content: '\f046';
+            font-size: .7em;
+            font: normal normal normal 14px/1 FontAwesome;
+            left: -10px;
+            margin-right: 4px;
+            position: relative;
+            text-rendering: auto;
+            top: -2px;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+        }
+    }
 
-	ul,
-	ol {
-		list-style: none;
+    ul,
+    ol {
+        list-style: none;
 
-		li:before {
-			color: @textColor;
-		}
-	}
+        li:before {
+            color: @textColor;
+        }
+    }
 }
 
 figure {
-	display: inline-block;
+    display: inline-block;
 
-	img {
-		display: block;
-		margin: 0 auto;
-	}
+    img {
+        display: block;
+        margin: 0 auto;
+    }
 
-	figcaption {
-		font-family: @serifFontFamily;
-		font-style: italic;
-		text-align: center;
-	}
+    figcaption {
+        font-family: @serifFontFamily;
+        font-style: italic;
+        text-align: center;
+    }
 }
 
 blockquote {
-	background-color: rgba(0, 0, 0, .1);
-	border-left: @linkColor solid 30px;
-	border-radius: 0 .5em .5em 0;
-	font-family: @serifFontFamily;
-	font-style: italic;
-	margin: 1em 0;
-	padding: .5em 1em;
+    background-color: rgba(0, 0, 0, .1);
+    border-left: @linkColor solid 30px;
+    border-radius: 0 .5em .5em 0;
+    font-family: @serifFontFamily;
+    font-style: italic;
+    margin: 1em 0;
+    padding: .5em 1em;
 }
 
 .pull-quote {
-	background-color: transparent;
-	border: 5px solid red;
-	border-width: 5px 0;
-	border-radius: 0;
-	font-size: 1.5em;
-	font-family: @sansFontFamily;
-	font-weight: @sansFontWeight;
-	font-style: italic;
-	font-weight: bold;
-	margin-top: 0;
-	width: 30%;
+    background-color: transparent;
+    border: 5px solid red;
+    border-width: 5px 0;
+    border-radius: 0;
+    font-size: 1.5em;
+    font-family: @serifFontFamily;
+    font-style: italic;
+    font-weight: bold;
+    margin-top: 0;
+    width: 30%;
 }
 
 .pull-left,
 .pull-right {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .pull-right {
-	float: right;
-	margin-left: 20px;
+    float: right;
+    margin-left: 20px;
 }
 
 .pull-left {
-	float: left;
-	margin-right: 20px;
+    float: left;
+    margin-right: 20px;
 }
 
 .center {
-	display: block;
-	float: none;
-	margin: 0 auto;
+    display: block;
+    float: none;
+    margin: 0 auto;
 }
 
 // Styling for blocks
