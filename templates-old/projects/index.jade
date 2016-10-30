@@ -1,7 +1,0 @@
-each project, slug in public.projects._data
-	if project.is_published
-		article(itemprop="ItemList", itemscope, itemtype="http://schema.org/ItemList")
-			h2(itemprop="name")
-				a(href="/projects/#{ slug }", itemprop="url") #{ project.project_title }
-			img(src="#{ project.preview_image }")
-			p(itemprop="description") #{ project.excerpt }
