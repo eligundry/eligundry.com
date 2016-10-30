@@ -10,6 +10,7 @@ lektor-htmlmin = 0.3
 lektor-markdown-excerpt = 0.1
 lektor-markdown-highlighter = 0.1
 lektor-webpack-support = 0.1
+lektor-atom = 0.2
 
 [constants]
 author_name = Eli Gundry

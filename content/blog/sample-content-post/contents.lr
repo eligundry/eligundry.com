@@ -4,6 +4,8 @@ pub_date: 2013-11-09
 ---
 author: Eli Gundry
 ---
+draft: true
+---
 body:
 
 # This is a heading 1
@@ -146,7 +148,3 @@ organic art party freegan retro, drinking vinegar anim. Labore Bushwick
 skateboard irure, cardigan pour-over Neutra drinking vinegar. Vice quis pug raw
 denim biodiesel. Photo booth Echo Park Cosby sweater, jean shorts eiusmod anim
 assumenda kitsch Williamsburg irure hoodie esse ennui ea deep v.
----
-_discoverable: yes
----
-_hidden: no

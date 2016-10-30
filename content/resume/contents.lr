@@ -16,7 +16,8 @@ body:
   <h4 itemprop="jobTitle">Junior Engineer</h4>
   <ul itemprop="description">
     <li>
-      Built web applications using <a href="http://php.net">PHP</a> &amp;
+      Built web applications using <a href="http://php.net">PHP</a>
+      &nbsp;&amp;&nbsp;
       <a href="http://www.python.org">Python</a> using various web
       frameworks, including <a href="http://flask.pocoo.org">Flask</a>.
     </li>
