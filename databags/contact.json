@@ -1,0 +1,86 @@
+{
+  "email": {
+    "href": "mailto:eligundry@gmail.com",
+    "fa": "envelope-o",
+    "title": "Email",
+    "itemprop": "email",
+    "text": "eligundry@gmail.com"
+  },
+  "phone": {
+    "href": "tel:13308286147",
+    "fa": "phone",
+    "title": "Phone",
+    "itemprop": "telephone",
+    "text": "330.828.6147"
+  },
+  "location": {
+    "href": "https://goo.gl/vl1irv",
+    "fa": "map-marker",
+    "title": "Location",
+    "itemtype": "https://schema.org/PostalAddress",
+    "element_delimiter": ",",
+    "elements": [
+      {
+        "tag": "span",
+        "itemprop": "addressLocality",
+        "text": "Brooklyn"
+      },
+      {
+        "tag": "abbr",
+        "itemprop": "addressRegion",
+        "title": "New York",
+        "text": "NY"
+      },
+      {
+        "tag": "abbr",
+        "itemprop": "addressCountry",
+        "title": "United States of America",
+        "text": "USA"
+      }
+    ]
+  },
+  "web": {
+    "fa": "globe",
+    "title": "Web",
+    "element_delimiter": null,
+    "elements": [
+      {
+        "tag": "a",
+        "href": "https://github.com/eligundry",
+        "title": "Github",
+        "itemprop": "url",
+        "fa": "github-square print-hide"
+      },
+      {
+        "tag": "a",
+        "href": "https://twitter.com/EliGundry",
+        "title": "Twitter",
+        "itemprop": "url",
+        "fa": "twitter-square print-hide"
+      },
+      {
+        "tag": "a",
+        "href": "https://facebook.com/eligundry",
+        "title": "Facebook",
+        "itemprop": "url",
+        "class": "resume-hide",
+        "fa": "facebook-square print-hide"
+      },
+      {
+        "tag": "a",
+        "href": "https://last.fm/user/eli_pwnd",
+        "title": "Last.fm",
+        "itemprop": "url",
+        "class": "resume-hide",
+        "fa": "lastfm-square print-hide"
+      },
+      {
+        "tag": "a",
+        "href": "/feed.xml",
+        "title": "RSS",
+        "class": "print-hide",
+        "fa": "rss-square print-hide"
+      }
+    ]
+  }
+}

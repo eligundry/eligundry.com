@@ -1,6 +1,7 @@
 <nav class="top-nav" role="navigation">
-  <a href="/" rel="root">Home</a>
-  <a href="/about">About</a>
-  <a href="/blog/">Blog</a>
-  <a href="/resume">Resume</a>
+  {% for path, data in bag('top-nav').iteritems() %}
+    <a href="{{ path }}"
+       {% if data.rel %}rel={{ data.rel }}{% endif %}
+       {% if this.is_child_of(path) %}class="active"{% endif %}>{{ data.name }}</a>
+  {% endfor %}
 </nav>

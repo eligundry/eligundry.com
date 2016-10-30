@@ -1,42 +1,38 @@
 <footer class="footer" role="contentinfo">
   <address>
-    <div class="email">
-      <i class="fa fa-envelope-o" title="Email">
-        <span class="hidden">Email</span>
-      </i>
-      <a href="mailto:{{ config.EMAIL }}">
-        <span itemprop="email">{{ config.EMAIL }}</span>
-      </a>
-    </div>
-    <div class="phone">
-      <i class="fa fa-phone" title="Phone">
-        <span class="hidden">Phone</span>
-      </i>
-      <a href="tel:{{ config.INTL_PHONE }}">
-        <span itemprop="telephone">{{ config.PHONE }}</span>
-      </a>
-    </div>
-    <div class="location" itemscope itemtype="https://schema.org/PostalAddress">
-      <i class="fa fa-map-marker" title="Location">
-        <span class="hidden">Location</span>
-      </i>
-      <a href="{{ config.GOOGLE_MAP_LINK }}" itemprop="url">
-        <span itemprop="addressLocality">{{ config.ADDRESS_LOCALITY }}</span>,
-        <abbr itemprop="addressRegion" title="{{ config.ADDRESS_REGION }}">{{ config.ADDRESS_REGION_ABBR }}</abbr>,
-        <abbr itemprop="addressCountry" title="{{ config.ADDRESS_COUNTRY }}">{{ config.ADDRESS_COUNTRY_ABBR }}</abbr>
-      </a>
-    </div>
-    <div class="web">
-      <i class="fa fa-globe">
-        <span class="hidden">Web</span>
-      </i>
-      {# {% for href, data in config.SOCIAL_MAPPING.items() %}
-      <a href="{{ href }}" title="{{ data.title }}" itemprop="url">
-        <i class="fa fa-{{ data.fa }} print-hide">
-          <span class="hide">{{ data.title }}</span>
-        </i>
-      </a>
-      {% endfor %} #}
-    </div>
+    {% for class_, data in bag('contact').iteritems() %}
+      <div class="{{ class_ }}" {% if data.itemtype %}itemscope itemtype="{{ data.itemtype }}{% endif %}">
+        <i class="fa fa-{{ data.fa }}" title="{{ data.title }}"></i>
+          {% if data.elements -%}
+            {% set link_wrap = data.href %}
+            {% if link_wrap %}
+              <a href="{{ data.href}}" itemprop="url">
+            {% endif %}
+
+            {% for item in data.elements -%}
+                {% if item.href %}
+                  <{{ item.tag }} href="{{ item.href }}" itemprop="url" title="{{ item.title }}" {% if item.class %}class="{{ item.class }}"{% endif %}>
+                    <i class="fa fa-{{ item.fa }}"></i>
+                  </{{ item.tag }}>
+                {% else %}
+                  <{{ item.tag }} itemprop="{{ item.itemprop }}">
+                    {{ item.text -}}
+                  </{{ item.tag }}>
+                {% endif %}
+            {% endfor %}
+
+            {% if link_wrap %}
+              </a>
+            {% endif %}
+
+          {% else %}
+            <a href="{{ data.href }}">
+              <span itemprop="{{ data.itemprop }}">
+                {{ data.text }}
+              </span>
+            </a>
+          {% endif %}
+      </div>
+    {% endfor %}
   </address>
 </footer>

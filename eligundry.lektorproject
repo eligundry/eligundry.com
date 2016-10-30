@@ -7,3 +7,4 @@ lektor-disqus-comments = 0.1
 lektor-markdown-excerpt = 0.1
 lektor-markdown-highlighter = 0.1
 lektor-webpack-support = 0.1
+lektor-htmlmin = 0.3
