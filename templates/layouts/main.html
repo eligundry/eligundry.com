@@ -4,8 +4,11 @@
     <meta charset="utf-8">
     <title>{% block title %}| Eli Gundry{% endblock %}</title>
     <meta name="description" content="{% block description %}{{ config.DEFAULT_DESCRIPTION }}{% endblock %}">
+    {% include 'includes/meta.html' %}
     {% block meta %}{% endblock %}
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}
+      {% include 'includes/stylesheets.html' %}
+    {% endblock %}
   </head>
   <body>
   {% block header %}

@@ -1,3 +1,4 @@
+{% block body %}
 Over the past two years, I've been to quite a few hackathons
 ([MHacks](http://www.mhacks.org/), [Penn Apps](http://2014s.pennapps.com/),
 [Kent Hack Enough](http://hacksu.cs.kent.edu/khe2013/) to name a few) and
@@ -92,3 +93,4 @@ in a few weeks. Hopefully, I'll see you there.
     <img src="/assets/images/hacksu_at_penn_apps.jpg" alt="HacKSU at Penn Apps 2014" />
     <figcaption>HacKSU at Penn Apps 2014</figcaption>
 </figure>
+{% endblock %}

@@ -9,6 +9,7 @@ EMAIL = 'eligundry@gmail.com'
 DESCRIPTION = 'Full stack web developer with a love of web standards'
 GOOGLE_ANALYTICS_CODE = "UA-41741300-1"
 GOOGLE_MAP_LINK = 'https://goo.gl/vl1irv'
+GOOGLE_PLUS_LINK = "https://plus.google.com/u/0/107552919918829140808/?rel=author"
 INTL_PHONE = '+13308286147'
 PHONE = '330.828.6147'
 SOCIAL_MAPPING = {
