@@ -76,10 +76,26 @@
       },
       {
         "tag": "a",
+        "href": "https://www.linkedin.com/in/eligundry",
+        "title": "LinkedIn",
+        "itemprop": "url",
+        "class": "resume-hide",
+        "fa": "linkedin-square print-hide"
+      },
+      {
+        "tag": "a",
         "href": "/feed.xml",
         "title": "RSS",
         "class": "print-hide",
         "fa": "rss-square print-hide"
+      },
+      {
+        "tag":"a",
+        "href": "https://keybase.io/eligundry",
+        "title": "Keybase (why doesn't Font Awesome have this yet!?)",
+        "itemprop": "url",
+        "class": "resume-hide",
+        "fa": "lock print-hide"
       }
     ]
   }
