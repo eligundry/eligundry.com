@@ -1,2 +1,6 @@
 [project]
 name = eligundry.com
+
+[packages]
+lektor-disqus-comments = 0.1
+lektor-markdown-excerpt = 0.1

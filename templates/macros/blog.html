@@ -1,20 +1,31 @@
-{% macro render_blog_post(post, from_index=false) %}
-  <div class="blog-post">
-  {% if from_index %}
-    <h2><a href="{{ post|url }}">{{ post.title }}</a></h2>
-  {% else %}
-    <h2>{{ post.title }}</h2>
-  {% endif %}
-  <p class="meta">
-    written by
-    {% if post.twitter_handle %}
-      <a href="https://twitter.com/{{ post.twitter_handle
-        }}">{{ post.author or post.twitter_handle }}</a>
-    {% else %}
-      {{ post.author }}
-    {% endif %}
-    on {{ post.pub_date }}
+{% macro render_blog_post(post) %}
+<article itemscope itemtype="http://schema.org/BlogPosting">
+  <meta itemprop="description" content="{{ post.description or post.body|excerpt }}">
+  <meta itemprop="author" content="{{ post.author }}">
+  <header>
+    <h1 itemprop="name">
+      <a itemprop="url" href="{{ post|url }}">{{ post.title }}</a>
+    </h1>
+    <time itemprop="datePublished" datetime="{{ post.pub_date }}">
+      {{ post.pub_date }}
+    </time>
+  </header>
+  <section itemprop="articleBody">{{ post.body }}</section>
+  <footer class="print-hide">{{ render_disqus_comments() }}</footer>
+</article>
+{% endmacro %}
+
+{% macro render_blog_post_preview(post) %}
+<article itemscope itemprop="blogPosts" itemtype="http://schema.org/BlogPosting">
+  <h2 itemprop="title">
+    <a itemprop="url" href="{{ post|url }}">{{ post.title }}</a>
+  </h2>
+  <meta itemprop="author" content="{{ post.author }}">
+  <time itemprop="datePublished" datetime="{{ post.pub_date }}">
+    {{ post.pub_date }}
+  </time>
+  <p itemprop="description">
+    {{ post.description or post.body|excerpt }}
   </p>
-  {{ post.body }}
-  </div>
+</article>
 {% endmacro %}
