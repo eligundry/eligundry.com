@@ -1,6 +1,3 @@
-public/www/
-www/
 *.pyc
 node_modules/
-public/assets/js/all.js
-build/
+assets/static/gen

@@ -7,7 +7,7 @@
     {% include 'includes/meta.html' %}
     {% block stylesheets %}{% include 'includes/stylesheets.html' %}{% endblock %}
   </head>
-  <body itemscope itemtype="https://schema.org/Person">
+  <body id="{{ this.path }}" class="{{ this._model }}" itemscope itemtype="https://schema.org/Person">
     {% block header %}{% include 'includes/header.html' %}{% endblock %}
 
     <main role="main">
