@@ -30,13 +30,13 @@
       <i class="fa fa-globe">
         <span class="hidden">Web</span>
       </i>
-      {# {% for href, data in config.SOCIAL_MAPPING.items() %}
+      {% for href, data in config.SOCIAL_MAPPING.items() %}
       <a href="{{ href }}" title="{{ data.title }}" itemprop="url">
         <i class="fa fa-{{ data.fa }} print-hide">
           <span class="hide">{{ data.title }}</span>
         </i>
       </a>
-      {% endfor %} #}
+      {% endfor %}
     </div>
   </address>
 </footer>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Welcome{% endblock %} — Eli Gundry</title>
+    <meta name="description" content="{% block description %}{% endblock %}">
+    {% include 'includes/meta.html' %}
+    {% block stylesheets %}{% include 'includes/stylesheets.html' %}{% endblock %}
+  </head>
+  <body>
+    {% block header %}{% include 'includes/header.html' %}{% endblock %}
+
+    <main role="main">
+      {% block body %}{% endblock %}
+    </main>
+
+    {% block footer %}{% include 'includes/footer.html' %}{% endblock %}
+    {% block javascripts %}{% include 'includes/scripts.html' %}{% endblock %}
+  </body>
+</html>
