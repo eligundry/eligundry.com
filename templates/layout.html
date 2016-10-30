@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>{% block title %}Welcome{% endblock %} — Eli Gundry</title>
-    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="description" content="{% block description %}{{ bag('author').site_description }}{% endblock %}">
     {% include 'includes/meta.html' %}
     {% block stylesheets %}{% include 'includes/stylesheets.html' %}{% endblock %}
   </head>

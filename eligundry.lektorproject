@@ -1,5 +1,6 @@
 [project]
 name = eligundry.com
+url = https://eligundry.com
 url_style = 'absolute'
 
 [packages]
@@ -9,3 +10,6 @@ lektor-htmlmin = 0.3
 lektor-markdown-excerpt = 0.1
 lektor-markdown-highlighter = 0.1
 lektor-webpack-support = 0.1
+
+[constants]
+author_name = Eli Gundry

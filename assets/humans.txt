@@ -9,4 +9,4 @@ Location: Brooklyn, NY, USA
 /* SITE */
 
 Standards: HTML5, CSS3
-Components: Harp, LESS, jQuery, Jade, Markdown
+Components: Lektor, LESS, Jinja2, Markdown, Webpack

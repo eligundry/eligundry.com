@@ -2,11 +2,10 @@ title: About
 ---
 body:
 
-<section>
 # I'm a simple man in a complex world&hellip;
 
 <figure class="pull-right">
-  <img src="/assets/images/hopeful-eli-gundry.jpg" />
+  <img src="hopeful-eli-gundry.jpg">
   <figcaption>This is me looking pretty dang happy!</figcaption>
 </figure>
 
@@ -30,4 +29,3 @@ adding features to a PHP web application, or even writing database queries.
 * Linux, OS X, Windows. In that order.
 * I do all my programming in a terminal.
 * The Browns will win a Super Bowl in my life time.
-</section>

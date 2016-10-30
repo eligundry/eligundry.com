@@ -1,8 +1,8 @@
-<header role="header">
+<header role="header" class="top-header">
   <h1 itemprop="name">
-    <a href="/" rel="root">{{ config.AUTHOR_NAME }}</a>
+    <a href="{{ '/'|url }}" rel="root">{{ bag('author').full_name }}</a>
   </h1>
-  <h2 itemprop="description">{{ config.DESCRIPTION }}</h2>
+  <h2 itemprop="description">{{ bag('author').description }}</h2>
 </header>
 
 {% include 'includes/nav.html' %}
