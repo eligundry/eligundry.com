@@ -165,14 +165,16 @@ body:
     <a href="http://en.wikipedia.org/wiki/JavaScript" itemprop="itemListElement">JavaScript</a>,
     <a href="http://wordpress.org" itemprop="itemListElement">WordPress</a>,
     <a href="http://en.wikipedia.org/wiki/HTML5" itemprop="itemListElement">HTML5</a>,
-    &amp; <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" itemprop="itemListElement">CSS</a>.
+    &amp;&nbsp;
+    <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" itemprop="itemListElement">CSS</a>.
   </li>
   <li>
     Built web applications using
     <a href="https://www.djangoproject.com/" itemprop="itemListElement">Django</a>,
     <a href="http://flask.pocoo.org/" itemprop="itemListElement">Flask</a>,
     <a href="http://symfony.com/" itemprop="itemListElement">Symfony</a>,
-    &amp; <a href="http://www.yiiframework.com/" itemprop="itemListElement">Yii</a>.
+    &amp;&nbsp;
+    <a href="http://www.yiiframework.com/" itemprop="itemListElement">Yii</a>.
   </li>
   <li>
     Most comfortable using
@@ -180,7 +182,8 @@ body:
     <a href="http://getbootstrap.com/" itemprop="itemListElement">Bootstrap</a>,
     <a href="http://lesscss.org" itemprop="itemListElement">LESS</a>,
     <a href="http://www.vim.org" itemprop="itemListElement">Vim</a>,
-    &amp; <a href="http://git-scm.com" itemprop="itemListElement">Git</a>.
+    &amp;&nbsp;
+    <a href="http://git-scm.com" itemprop="itemListElement">Git</a>.
   </li>
 </ul>
 </div>

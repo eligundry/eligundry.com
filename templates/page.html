@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 {% block title %}{{ this.title }}{% endblock %}
 {% block body %}
+{% if this.section_wrap %}
+  <section>
+    {{ this.body }}
+  </section>
+{% else %}
   {{ this.body }}
+{% endif %}
 {% endblock %}
