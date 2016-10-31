@@ -1,6 +1,8 @@
-# eligundry.com
+# [eligundry.com](https://eligundry.com)
+
+My personal website.
 
 ## Built With
 
-* [harp.js](http://harpjs.com)
-* [Harp, Gulp And BrowserSync Boilerplate](https://github.com/superhighfives/harp-gulp-browsersync-boilerplate)
+* [Lektor](https://www.getlektor.com/)
+* [Webpack](https://webpack.github.io/)

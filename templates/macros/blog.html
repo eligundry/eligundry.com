@@ -1,0 +1,31 @@
+{% macro render_blog_post(post) %}
+<article itemscope itemtype="http://schema.org/BlogPosting">
+  <meta itemprop="description" content="{{ post.description or post.body|excerpt }}">
+  <meta itemprop="author" content="{{ post.author }}">
+  <header>
+    <h1 itemprop="name">
+      <a itemprop="url" href="{{ post|url }}">{{ post.title }}</a>
+    </h1>
+    <time itemprop="datePublished" datetime="{{ post.pub_date }}">
+      {{ post.pub_date }}
+    </time>
+  </header>
+  <section itemprop="articleBody">{{ post.body }}</section>
+  <footer class="print-hide">{{ render_disqus_comments() }}</footer>
+</article>
+{% endmacro %}
+
+{% macro render_blog_post_preview(post) %}
+<article itemscope itemprop="blogPosts" itemtype="http://schema.org/BlogPosting">
+  <h2 itemprop="title">
+    <a itemprop="url" href="{{ post|url }}">{{ post.title }}</a>
+  </h2>
+  <meta itemprop="author" content="{{ post.author }}">
+  <time itemprop="datePublished" datetime="{{ post.pub_date }}">
+    {{ post.pub_date }}
+  </time>
+  <p itemprop="description">
+    {{ post.description or post.body|excerpt }}
+  </p>
+</article>
+{% endmacro %}
