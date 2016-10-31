@@ -1,0 +1,15 @@
+{
+  "/": {
+    "name": "Home",
+    "rel": "root"
+  },
+  "/about": {
+    "name": "About"
+  },
+  "/blog": {
+    "name": "Blog"
+  },
+  "/resume": {
+    "name": "Resume"
+  }
+}
