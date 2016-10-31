@@ -1,0 +1,32 @@
+title: Goldberg
+---
+body:
+
+Fun fact: Two of the three members of this team have never done a hardware hack before. That all changed when we met Blake and he told us of his wild ideas for home automation with a Raspberry Pi, a few Arduino shields, lots of bread boards and a love of Rube Goldberg and found art.
+
+The ideas started innocently enough:
+
+* Making two strands of LEDs pulse independently of each other
+* Watering a plant when the soil becomes dry
+
+Should one machine be doing all these things? Is it practical? Probably not, but hacking is never about 'Should you?' but all about the 'Could you?'. With this in mindset, what comes next only seems natural.
+
+## One hacker's garbage is another's ChallengePost
+
+When Blake found a spare servo in his parts, we suddenly got the desire to create some sort of treat dispenser. Rather than try to build a case with fancy parts, we decided to get artistic and use discarded hackathon food boxes and duck tape to create this fun hack!
+
+Rather than write some impractical web interface, we decided to integrate our system with a custom Pebble Smartwatch application to control our various interfaces through a JSON REST interface. For this purpose, Eli wrote a Python library that joined the various Raspberry Pi connected interfaces together in a handy REST framework that Haumed used to make an elegant Pebble application.
+
+## Major Features Implemented
+
+* Two strands of LED lights that somewhat sync up to the current song playing
+* A plant that can be automatically/manually watered and moisture can be checked up on
+* A wireless triggered candy trough dispensing Jolly Ranchers
+* A Pebble Smartwatch application coordinating the whole application
+* Created a Python library to deal with REST requests from the Pebble and convert them to code the GPIO pins on a Raspberry Pi
+---
+description: A mixture of home automation and found art with a Rube Goldberg sensibility
+---
+devpost_url: https://devpost.com/software/goldberg
+---
+github_url: https://github.com/eligundry/goldberg

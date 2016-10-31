@@ -9,6 +9,7 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "node-sass": "^3.10.1",
+    "reveal.js": "^3.3.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",

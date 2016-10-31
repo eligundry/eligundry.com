@@ -6,6 +6,9 @@
   "/about": {
     "name": "About"
   },
+  "/projects": {
+    "name": "Projects"
+  },
   "/blog": {
     "name": "Blog"
   },

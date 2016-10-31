@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}{{ this.title }}{% endblock %}
+{% block body %}
+{% for child in this.pagination.items.filter(F.draft == false) %}
+  <div class="project">
+    <h3>{{ child.title }}</h3>
+  </div>
+{% endfor %}
+{% endblock %}
