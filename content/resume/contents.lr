@@ -16,10 +16,17 @@ body:
   <h4 itemprop="jobTitle">Junior Engineer</h4>
   <ul itemprop="description">
     <li>
-      Built web applications using <a href="http://php.net">PHP</a>
-      &nbsp;&amp;&nbsp;
-      <a href="http://www.python.org">Python</a> using various web
-      frameworks, including <a href="http://flask.pocoo.org">Flask</a>.
+      Instilled a culture of <a
+      href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
+      into a company that previously had none, reducing the amount of time spent
+      testing regressions manually across the company.
+    </li>
+    <li>
+      Developed large portions of <a href="http://www.webershandwick.com/">Weber
+      Shandwick's</a> MobileCommand, a public relations crisis management web
+      application, and <a href="https://www.gemsafe.com">GemSafe</a>, an
+      insurance platform, using <a href="https://www.python.org/">Python</a> and
+      <a href="http://flask.pocoo.org/">Flask</a>.
     </li>
   </ul>
 </div>
@@ -109,7 +116,7 @@ body:
     <sup>
       <time itemprop="foundingDate" datetime="2011-05-01">May 2011</time>
       &mdash;
-      <time itemprop="dissolutionDate" datetime="2012-06-01">Jun 2012</time>
+      <time itemprop="dissolutionDate" datetime="2012-06-01">Jun. 2012</time>
     </sup>
   </h3>
   <h4 itemprop="jobTitle">Web Developer</h4>
@@ -160,32 +167,44 @@ body:
 
 <ul itemscope itemtype="http://schema.org/ItemList">
   <li>
-    Develops using
-    <a href="http://www.python.org" itemprop="itemListElement">Python</a>,
-    <a href="http://php.net" itemprop="itemListElement">PHP</a>,
-    <a href="http://en.wikipedia.org/wiki/JavaScript" itemprop="itemListElement">JavaScript</a>,
-    <a href="http://wordpress.org" itemprop="itemListElement">WordPress</a>,
-    <a href="http://en.wikipedia.org/wiki/HTML5" itemprop="itemListElement">HTML5</a>,
-    &amp;&nbsp;
-    <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" itemprop="itemListElement">CSS</a>.
+    Fluent in Python, PHP, SQL, JavaScript, HTML5, & CSS.
   </li>
   <li>
-    Built web applications using
-    <a href="https://www.djangoproject.com/" itemprop="itemListElement">Django</a>,
-    <a href="http://flask.pocoo.org/" itemprop="itemListElement">Flask</a>,
-    <a href="http://symfony.com/" itemprop="itemListElement">Symfony</a>,
-    &amp;&nbsp;
-    <a href="http://www.yiiframework.com/" itemprop="itemListElement">Yii</a>.
+    Built web applications using Flask, Django, WordPress, Symfony, & Yii.
   </li>
   <li>
-    Most comfortable using
-    <a href="http://jquery.com" itemprop="itemListElement">jQuery</a>,
-    <a href="http://getbootstrap.com/" itemprop="itemListElement">Bootstrap</a>,
-    <a href="http://lesscss.org" itemprop="itemListElement">LESS</a>,
-    <a href="http://www.vim.org" itemprop="itemListElement">Vim</a>,
-    &amp;&nbsp;
-    <a href="http://git-scm.com" itemprop="itemListElement">Git</a>.
+    Loves using Vim, Peewee, Linux, pytest, Microdata, LESS, & Git.
   </li>
+  <li>
+    Has a love-hate relationship (that I will happily defend) with SQLAlchemy, jQuery, Bootstrap, Docker, & Zend.
+  </li>
+  <!-- <li> -->
+  <!--   Develops using -->
+  <!--   <a href="http://www.python.org" itemprop="itemListElement">Python</a>, -->
+  <!--   <a href="http://php.net" itemprop="itemListElement">PHP</a>, -->
+  <!--   <a href="http://en.wikipedia.org/wiki/JavaScript" itemprop="itemListElement">JavaScript</a>, -->
+  <!--   <a href="http://wordpress.org" itemprop="itemListElement">WordPress</a>, -->
+  <!--   <a href="http://en.wikipedia.org/wiki/HTML5" itemprop="itemListElement">HTML5</a>, -->
+  <!--   &amp;&nbsp; -->
+  <!--   <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" itemprop="itemListElement">CSS</a>. -->
+  <!-- </li> -->
+  <!-- <li> -->
+  <!--   Built web applications using -->
+  <!--   <a href="https://www.djangoproject.com/" itemprop="itemListElement">Django</a>, -->
+  <!--   <a href="http://flask.pocoo.org/" itemprop="itemListElement">Flask</a>, -->
+  <!--   <a href="http://symfony.com/" itemprop="itemListElement">Symfony</a>, -->
+  <!--   &amp;&nbsp; -->
+  <!--   <a href="http://www.yiiframework.com/" itemprop="itemListElement">Yii</a>. -->
+  <!-- </li> -->
+  <!-- <li> -->
+  <!--   Most comfortable using -->
+  <!--   <a href="http://jquery.com" itemprop="itemListElement">jQuery</a>, -->
+  <!--   <a href="http://getbootstrap.com/" itemprop="itemListElement">Bootstrap</a>, -->
+  <!--   <a href="http://lesscss.org" itemprop="itemListElement">LESS</a>, -->
+  <!--   <a href="http://www.vim.org" itemprop="itemListElement">Vim</a>, -->
+  <!--   &amp;&nbsp; -->
+  <!--   <a href="http://git-scm.com" itemprop="itemListElement">Git</a>. -->
+  <!-- </li> -->
 </ul>
 </div>
 
