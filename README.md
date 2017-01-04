@@ -6,3 +6,12 @@ My personal website.
 
 * [Lektor](https://www.getlektor.com/)
 * [Webpack](https://webpack.github.io/)
+
+## CLI
+
+In order to get the dev server running, run:
+
+```sh
+$ pip install -r requirements.txt
+$ lektor server -f webpack -f htmlmin
+```
