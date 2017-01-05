@@ -17,7 +17,7 @@ RUN apt-get update && \
         python-dev && \
     curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
     apt-get install -y nodejs && \
-    pip install -U pip && \
+    pip install -U pip cffi && \
     pip install -r /opt/requirements.txt
 
 # Copy the files
