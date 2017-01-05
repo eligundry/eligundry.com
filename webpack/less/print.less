@@ -2,6 +2,7 @@
     body {
         width: 95%;
         font-size: 12px;
+        min-height: auto;
     }
 
     header {
@@ -19,7 +20,7 @@
     }
 
     .print-show {
-        visibility: show;
+        visibility: visible;
     }
 
     .print-hide {
@@ -41,12 +42,16 @@
                     margin-top: 0;
                     width: 100%;
                 }
+
+                .resume-action {
+                    display: inline;
+                }
             }
         }
 
         .resume-hide {
-            visibility: hidden;
             display: none;
+            visibility: hidden;
         }
     }
 
@@ -74,4 +79,8 @@
             }
         }
     }
+
+     #lektor-edit-link {
+         display: none;
+     }
 }

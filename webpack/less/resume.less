@@ -1,4 +1,5 @@
 @import "_variables";
+@import "_grid";
 
 [id*='/resume'] main {
     h2 {
@@ -9,7 +10,7 @@
             content: ' ';
             display: block;
             margin-top: -6px;
-            width: 80%;
+            width: 100%;
         }
     }
 
@@ -22,7 +23,6 @@
         margin-top: .5em;
 
         sup {
-            margin-left: .6em;
             font-size: .6em;
             top: -.75em;
         }
@@ -31,5 +31,30 @@
     h4 {
         font-size: .9em;
         margin: 0;
+    }
+
+    .resume-action {
+        float: right;
+        font-size: 0.6em;
+        font-weight: bold;
+        margin-top: 0.6em;
+    }
+
+    .resume-action,
+    .resume-action > a {
+        &:hover,
+        &:focus,
+        &:active {
+            border: none;
+        }
+    }
+
+    .hackathons {
+        padding-left: 0;
+        .clearfix();
+
+        li {
+            .column(6);
+        }
     }
 }
