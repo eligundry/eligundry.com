@@ -19,5 +19,6 @@ $ lektor server -f webpack
 In order to deploy the site to production, run:
 
 ```sh
-$ lektor deploy -f webpack
+$ lektor build -f webpack
+$ lektor deploy
 ```

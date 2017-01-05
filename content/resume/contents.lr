@@ -10,13 +10,13 @@ body:
         <i class="fa fa-external-link-square"></i>
       </a>
     </span>
-    <a href="#" title="Download One Page Resume" class="print-hide print-resume resume-action">
+    <a href="#" title="Download One Page Resume" class="print-hide trigger-print resume-action">
       <i class="fa fa-download"></i>
       <i class="fa fa-file-pdf-o"></i>
     </a>
   </h2>
 
-  <div itemtype="http://schema.org/Organization" itemscope>
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
       <a href="http://croscon.com" itemprop="url">Croscon</a>
       <sup>
@@ -43,7 +43,7 @@ body:
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope>
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
       <a href="http://www.davey.com" itemprop="url">Davey Tree</a>
       <sup>
@@ -56,14 +56,15 @@ body:
     <ul itemprop="description">
       <li>
         Architected <a href="https://landscape.itreetools.org">iTree Landscape</a>
-        using <a href="https://www.djangoproject.com">Django</a>, which uses
-        satellite images and various data sources to determine where trees
+        using <a href="https://www.djangoproject.com">Django</a> and
+        <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a>, which
+        uses satellite images and various data sources to determine where trees
         should be planted.
       </li>
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope>
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
       <a href="http://pcsurgeons.net" itemprop="url">PC Surgeons</a>
       <sup>
@@ -74,11 +75,15 @@ body:
     </h3>
     <h4 itemprop="jobTitle">Computer Technician</h4>
     <ul itemprop="description">
-      <li>Repaired computers in a retail environment.</li>
+      <li>
+        Repaired computers in a retail environment and provided support for
+        customers' networks using <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>
+        and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
+      </li>
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope class="resume-hide">
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf" class="resume-hide">
     <h3 itemprop="name">
       <a href="http://www.kent.edu" itemprop="url">
         Kent State University
@@ -98,7 +103,7 @@ body:
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope class="resume-hide">
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf" class="resume-hide">
     <h3 itemprop="name">
       <a href="http://mindboxstudios.com" itemprop="url">Mindbox Studios</a>
       <sup>
@@ -122,13 +127,13 @@ body:
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope>
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
       <a href="http://gomedia.us" itemprop="url">Go Media</a>
       <sup>
         <time itemprop="foundingDate" datetime="2011-05-01">May 2011</time>
         &mdash;
-        <time itemprop="dissolutionDate" datetime="2012-06-01">Jun. 2012</time>
+        <time itemprop="dissolutionDate" datetime="2012-06-01">June 2012</time>
       </sup>
     </h3>
     <h4 itemprop="jobTitle">Web Developer</h4>
@@ -148,13 +153,13 @@ body:
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope>
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
       <a href="http://www.glpublishing.com" itemprop="url">
         Great Lakes Publishing
       </a>
       <sup>
-        <time itemprop="foundingDate" datetime="2010-09-01">Sep. 2010</time>
+        <time itemprop="foundingDate" datetime="2010-09-01">September 2010</time>
         &mdash;
         <time itemprop="dissolutionDate" datetime="2011-05-01">May 2011</time>
       </sup>
@@ -171,6 +176,41 @@ body:
         Implemented websites for <a href="http://www.guesthouseclevelandclinic.com/CCGH/ClevelandClinicGuesthouse.aspx">Cleveland Clinic Guesthouse</a>
         and <a href="http://www.intercontinentalsuitescleveland.com/ISC/InterContinentalSuitesCleveland.aspx">InterContinental Suites Cleveland</a>.
       </li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemprop="alumniOf" itemscope class="resume-hide">
+    <h3 itemprop="name">
+      <a href="https://www.linkedin.com/company/etek-united" itemprop="url">
+        eTek United
+      </a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2010-03-01">March 2010</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2010-09-01">September 2010</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Traveling IT Support</h4>
+    <ul itemprop="description">
+      <li>Provided IT support for customers in their homes.</li>
+      <li>Setup and supported various internet cafés around Ohio.</li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemprop="alumniOf" itemscope class="resume-hide">
+    <h3 itemprop="name">
+      <a href="https://www.radioshack.com/" itemprop="url">
+        RadioShack
+      </a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2009-06-01">June 2009</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2010-03-01">March 2010</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Sales Associate</h4>
+    <ul itemprop="description">
+      <li>Sold consumer electronics and cell phones in a retail environment.</li>
     </ul>
   </div>
 </div>
@@ -192,22 +232,22 @@ body:
     <ul itemprop="description">
       <li>
         High school vocational program in which I learned the basics of
-        <a href="#">HTML</a>,
-        <a href="#">CSS</a>,
-        <a href="#">JavaScript</a>,
-        <a href="#">PHP</a>,
-        <a href="#">WordPress</a>,
-        <a href="#">Photoshop</a>,
-        <a href="#">Illustrator</a>,
-        <a href="#">Premiere Pro</a>,
+        <a href="https://en.wikipedia.org/wiki/HTML5">HTML</a>,
+        <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>,
+        <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a>,
+        <a href="https://php.net/">PHP</a>,
+        <a href="http://wordpress.org/">WordPress</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Photoshop">Photoshop</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Illustrator">Illustrator</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Premiere_Pro">Premiere Pro</a>,
         &amp;
-        <a href="#">Flash</a>.
+        <a href="https://en.wikipedia.org/wiki/Adobe_Flash">Flash</a>.
         Using these skills, I created websites used by classes and external clients.
       </li>
       <li>
         Attended various colleges from 2010 &mdash; 2015 in an attempt to get
         a <a href="https://en.wikipedia.org/wiki/Bachelor_of_Computer_Science">Bachelor of Science in Computer Science</a>,
-        but didn't finish my degree.
+        but did not finish my degree, though I learned a lot.
       </li>
     </ul>
   </div>
