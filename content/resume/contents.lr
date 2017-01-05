@@ -2,237 +2,288 @@ title: Resume
 ---
 body:
 
-<h2>Work</h2>
-
-<div itemtype="http://schema.org/Organization" itemscope>
-  <h3 itemprop="name">
-    <a href="http://croscon.com" itemprop="url">Croscon</a>
-    <sup>
-      <time itemprop="foundingDate" datetime="2015-04-01">Apr. 2015</time>
-      &mdash;
-      <time>Present</time>
-    </sup>
-  </h3>
-  <h4 itemprop="jobTitle">Junior Engineer</h4>
-  <ul itemprop="description">
-    <li>
-      Instilled a culture of <a
-      href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
-      into a company that previously had none, reducing the amount of time spent
-      testing regressions manually across the company.
-    </li>
-    <li>
-      Developed large portions of <a href="http://www.webershandwick.com/">Weber
-      Shandwick's</a> MobileCommand, a public relations crisis management web
-      application, and <a href="https://www.gemsafe.com">GemSafe</a>, an
-      insurance platform, using <a href="https://www.python.org/">Python</a> and
-      <a href="http://flask.pocoo.org/">Flask</a>.
-    </li>
-  </ul>
-</div>
-
-<div itemtype="http://schema.org/Organization" itemscope>
-  <h3 itemprop="name">
-    <a href="http://www.davey.com" itemprop="url">Davey Tree</a>
-    <sup>
-      <time itemprop="foundingDate" datetime="2014-11-01">Nov. 2014</time>
-      &mdash;
-      <time itemprop="dissolutionDate" datetime="2015-04-01">Apr. 2015</time>
-    </sup>
-  </h3>
-  <h4 itemprop="jobTitle">Web Development Consultant</h4>
-  <ul itemprop="description">
-    <li>
-      Architected <a href="https://landscape.itreetools.org">iTree Landscape</a>
-      using <a href="https://www.djangoproject.com">Django</a>, which uses
-      satellite images and various data sources to determine where trees
-      should be planted.
-    </li>
-  </ul>
-</div>
-
-<div itemtype="http://schema.org/Organization" itemscope>
-  <h3 itemprop="name">
-    <a href="http://pcsurgeons.net" itemprop="url">PC Surgeons</a>
-    <sup>
-      <time itemprop="foundingDate" datetime="2013-10-01">Oct. 2013</time>
-      &mdash;
-      <time itemprop="dissolutionDate" datetime="2014-12-01">Dec. 2014</time>
-    </sup>
-  </h3>
-  <h4 itemprop="jobTitle">Computer Technician</h4>
-  <ul itemprop="description">
-    <li>Repaired computers in a retail environment.</li>
-  </ul>
-</div>
-
-<div itemtype="http://schema.org/Organization" itemscope>
-  <h3 itemprop="name">
-    <a href="http://www.kent.edu" itemprop="url">
-      Kent State University
+<div id="resume-work">
+  <h2>Work
+    <span class="print-show resume-link resume-action">
+      Full resume at <a href="https://goo.gl/x485CW">
+        eligundry.com/resume
+        <i class="fa fa-external-link-square"></i>
+      </a>
+    </span>
+    <a href="#" title="Download One Page Resume" class="print-hide print-resume resume-action">
+      <i class="fa fa-download"></i>
+      <i class="fa fa-file-pdf-o"></i>
     </a>
-    <sup>
-      <time itemprop="foundingDate" datetime="2013-05-01">May 2013</time>
-      &mdash;
-      <time itemprop="dissolutionDate" datetime="2013-08-01">Aug. 2013</time>
-    </sup>
-  </h3>
-  <h4 itemprop="jobTitle">Student IT Worker</h4>
-  <ul itemprop="description">
-    <li>
-      Helped provide help desk support for
-      <a href="http://www.kent.edu/CAS/">Kent State's College of Arts and Sciences</a>.
-    </li>
-  </ul>
+  </h2>
+
+  <div itemtype="http://schema.org/Organization" itemscope>
+    <h3 itemprop="name">
+      <a href="http://croscon.com" itemprop="url">Croscon</a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2015-04-01">April 2015</time>
+        &mdash;
+        <time>Present</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Junior Engineer</h4>
+    <ul itemprop="description">
+      <li>
+        Instilled a culture of <a
+        href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
+        into a company that previously had none, reducing the amount of time spent
+        testing regressions manually across the company.
+      </li>
+      <li>
+        Developed large portions of <a href="http://www.webershandwick.com/">Weber
+        Shandwick's</a> MobileCommand, a public relations crisis management web
+        application, and <a href="https://www.gemsafe.com">GemSafe</a>, an
+        insurance platform, using <a href="https://www.python.org/">Python</a> and
+        <a href="http://flask.pocoo.org/">Flask</a>.
+      </li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope>
+    <h3 itemprop="name">
+      <a href="http://www.davey.com" itemprop="url">Davey Tree</a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2014-11-01">November 2014</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2015-04-01">April 2015</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Web Development Consultant</h4>
+    <ul itemprop="description">
+      <li>
+        Architected <a href="https://landscape.itreetools.org">iTree Landscape</a>
+        using <a href="https://www.djangoproject.com">Django</a>, which uses
+        satellite images and various data sources to determine where trees
+        should be planted.
+      </li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope>
+    <h3 itemprop="name">
+      <a href="http://pcsurgeons.net" itemprop="url">PC Surgeons</a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2013-10-01">October 2013</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2014-12-01">December 2014</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Computer Technician</h4>
+    <ul itemprop="description">
+      <li>Repaired computers in a retail environment.</li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope class="resume-hide">
+    <h3 itemprop="name">
+      <a href="http://www.kent.edu" itemprop="url">
+        Kent State University
+      </a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2013-05-01">May 2013</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2013-08-01">August 2013</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Student IT Worker</h4>
+    <ul itemprop="description">
+      <li>
+        Helped provide help desk support for
+        <a href="http://www.kent.edu/CAS/">Kent State's College of Arts and Sciences</a>.
+      </li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope class="resume-hide">
+    <h3 itemprop="name">
+      <a href="http://mindboxstudios.com" itemprop="url">Mindbox Studios</a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2012-08-01">August 2012</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2013-01-01">January 2013</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Web Developer</h4>
+    <ul itemprop="description">
+      <li>
+        Used <a href="http://php.net">PHP</a> with the
+        <a href="http://www.yiiframework.com">Yii Framework</a>
+        to develop web applications and
+        <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful APIs</a>.
+      </li>
+      <li>
+        Worked in a remote environment using agile development practices
+        using <a href="http://www.redmine.org">RedMine</a>.
+      </li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope>
+    <h3 itemprop="name">
+      <a href="http://gomedia.us" itemprop="url">Go Media</a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2011-05-01">May 2011</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2012-06-01">Jun. 2012</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Web Developer</h4>
+    <ul itemprop="description">
+      <li>
+        Used <a href="http://php.net">PHP</a> with the
+        <a href="http://framework.zend.com">Zend Framework</a>
+        to contribute to <a href="https://prooflab.us">Prooflab</a>,
+        <a href="http://gomedia.us">Go Media's</a> project management web
+        application.
+      </li>
+      <li>
+        Developed the <a href="http://2012.wmcfest.com">Weapons of Mass
+        Creation Festival 2012</a>
+        website using <a href="http://wordpress.org">WordPress</a>.
+      </li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope>
+    <h3 itemprop="name">
+      <a href="http://www.glpublishing.com" itemprop="url">
+        Great Lakes Publishing
+      </a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2010-09-01">Sep. 2010</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2011-05-01">May 2011</time>
+      </sup>
+    </h3>
+    <h4 itemprop="jobTitle">Web Development Intern</h4>
+    <ul itemprop="description">
+      <li>
+        Updated content for <a href="http://www.clevelandmagazine.com">
+        Cleveland Magazine</a>, <a href="http://www.ohiomagazine.com">Ohio
+        Magazine</a>, and other <a href="http://glpublishing.com">Great
+        Lakes Publishing</a> entities.
+      </li>
+      <li>
+        Implemented websites for <a href="http://www.guesthouseclevelandclinic.com/CCGH/ClevelandClinicGuesthouse.aspx">Cleveland Clinic Guesthouse</a>
+        and <a href="http://www.intercontinentalsuitescleveland.com/ISC/InterContinentalSuitesCleveland.aspx">InterContinental Suites Cleveland</a>.
+      </li>
+    </ul>
+  </div>
 </div>
 
-<div itemtype="http://schema.org/Organization" itemscope>
-  <h3 itemprop="name">
-    <a href="http://mindboxstudios.com" itemprop="url">Mindbox Studios</a>
-    <sup>
-      <time itemprop="foundingDate" datetime="2012-08-01">Aug. 2012</time>
-      &mdash;
-      <time itemprop="dissolutionDate" datetime="2013-01-01">Jan. 2013</time>
-    </sup>
-  </h3>
-  <h4 itemprop="jobTitle">Web Developer</h4>
-  <ul itemprop="description">
-    <li>
-      Used <a href="http://php.net">PHP</a> with the
-      <a href="http://www.yiiframework.com">Yii Framework</a>
-      to develop web applications and
-      <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful APIs</a>.
-    </li>
-    <li>
-      Worked in a remote environment using agile development practices
-      using <a href="http://www.redmine.org">RedMine</a>.
-    </li>
-  </ul>
-</div>
-
-<div itemtype="http://schema.org/Organization" itemscope>
-  <h3 itemprop="name">
-    <a href="http://gomedia.us" itemprop="url">Go Media</a>
-    <sup>
-      <time itemprop="foundingDate" datetime="2011-05-01">May 2011</time>
-      &mdash;
-      <time itemprop="dissolutionDate" datetime="2012-06-01">Jun. 2012</time>
-    </sup>
-  </h3>
-  <h4 itemprop="jobTitle">Web Developer</h4>
-  <ul itemprop="description">
-    <li>
-      Used <a href="http://php.net">PHP</a> with the
-      <a href="http://framework.zend.com">Zend Framework</a>
-      to contribute to <a href="https://prooflab.us">Prooflab</a>,
-      <a href="http://gomedia.us">Go Media's</a> project management web
-      application.
-    </li>
-    <li>
-      Developed the <a href="http://2012.wmcfest.com">Weapons of Mass
-      Creation Festival 2012</a>
-      website using <a href="http://wordpress.org">WordPress</a>.
-    </li>
-  </ul>
-</div>
-
-<div itemtype="http://schema.org/Organization" itemscope>
-  <h3 itemprop="name">
-    <a href="http://www.glpublishing.com" itemprop="url">
-      Great Lakes Publishing
-    </a>
-    <sup>
-      <time itemprop="foundingDate" datetime="2010-09-01">Sep. 2010</time>
-      &mdash;
-      <time itemprop="dissolutionDate" datetime="2011-05-01">May 2011</time>
-    </sup>
-  </h3>
-  <h4 itemprop="jobTitle">Web Development Intern</h4>
-  <ul itemprop="description">
-    <li>
-      Updated content for <a href="http://www.clevelandmagazine.com">
-      Cleveland Magazine</a>, <a href="http://www.ohiomagazine.com">Ohio
-      Magazine</a>, and other <a href="http://glpublishing.com">Great
-      Lakes Publishing</a> entities.
-    </li>
-    <li>
-      Implemented websites for <a href="http://www.guesthouseclevelandclinic.com/CCGH/ClevelandClinicGuesthouse.aspx">Cleveland Clinic Guesthouse</a>
-      and <a href="http://www.intercontinentalsuitescleveland.com/ISC/InterContinentalSuitesCleveland.aspx">InterContinental Suites Cleveland</a>.
-    </li>
-  </ul>
+<div id="resume-education">
+  <h2 itemprop="name">Education</h2>
+  <div itemtype="https://schema.org/EducationalOrganization" itemscope itemprop="alumniOf">
+    <h3 itemprop="name">
+      <a href="http://www.wayne-jvs.k12.oh.us/" itemprop="url">
+        Wayne County Schools Career Center
+      </a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2007-08-01">August 2007</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2009-05-01">May 2009</time>
+      </sup>
+    </h3>
+    <h4 itemprop="award">Interactive Media Cohort</h4>
+    <ul itemprop="description">
+      <li>
+        High school vocational program in which I learned the basics of
+        <a href="#">HTML</a>,
+        <a href="#">CSS</a>,
+        <a href="#">JavaScript</a>,
+        <a href="#">PHP</a>,
+        <a href="#">WordPress</a>,
+        <a href="#">Photoshop</a>,
+        <a href="#">Illustrator</a>,
+        <a href="#">Premiere Pro</a>,
+        &amp;
+        <a href="#">Flash</a>.
+        Using these skills, I created websites used by classes and external clients.
+      </li>
+      <li>
+        Attended various colleges from 2010 &mdash; 2015 in an attempt to get
+        a <a href="https://en.wikipedia.org/wiki/Bachelor_of_Computer_Science">Bachelor of Science in Computer Science</a>,
+        but didn't finish my degree.
+      </li>
+    </ul>
+  </div>
 </div>
 
 <div id="resume-skills">
-<h2 itemprop="name">Skills</h2>
-
-<ul itemscope itemtype="http://schema.org/ItemList">
-  <li>
-    Fluent in Python, PHP, SQL, JavaScript, HTML5, & CSS.
-  </li>
-  <li>
-    Built web applications using Flask, Django, WordPress, Symfony, & Yii.
-  </li>
-  <li>
-    Loves using Vim, Peewee, Linux, pytest, Microdata, LESS, & Git.
-  </li>
-  <li>
-    Has a love-hate relationship (that I will happily defend) with SQLAlchemy, jQuery, Bootstrap, Docker, & Zend.
-  </li>
-  <!-- <li> -->
-  <!--   Develops using -->
-  <!--   <a href="http://www.python.org" itemprop="itemListElement">Python</a>, -->
-  <!--   <a href="http://php.net" itemprop="itemListElement">PHP</a>, -->
-  <!--   <a href="http://en.wikipedia.org/wiki/JavaScript" itemprop="itemListElement">JavaScript</a>, -->
-  <!--   <a href="http://wordpress.org" itemprop="itemListElement">WordPress</a>, -->
-  <!--   <a href="http://en.wikipedia.org/wiki/HTML5" itemprop="itemListElement">HTML5</a>, -->
-  <!--   &amp;&nbsp; -->
-  <!--   <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" itemprop="itemListElement">CSS</a>. -->
-  <!-- </li> -->
-  <!-- <li> -->
-  <!--   Built web applications using -->
-  <!--   <a href="https://www.djangoproject.com/" itemprop="itemListElement">Django</a>, -->
-  <!--   <a href="http://flask.pocoo.org/" itemprop="itemListElement">Flask</a>, -->
-  <!--   <a href="http://symfony.com/" itemprop="itemListElement">Symfony</a>, -->
-  <!--   &amp;&nbsp; -->
-  <!--   <a href="http://www.yiiframework.com/" itemprop="itemListElement">Yii</a>. -->
-  <!-- </li> -->
-  <!-- <li> -->
-  <!--   Most comfortable using -->
-  <!--   <a href="http://jquery.com" itemprop="itemListElement">jQuery</a>, -->
-  <!--   <a href="http://getbootstrap.com/" itemprop="itemListElement">Bootstrap</a>, -->
-  <!--   <a href="http://lesscss.org" itemprop="itemListElement">LESS</a>, -->
-  <!--   <a href="http://www.vim.org" itemprop="itemListElement">Vim</a>, -->
-  <!--   &amp;&nbsp; -->
-  <!--   <a href="http://git-scm.com" itemprop="itemListElement">Git</a>. -->
-  <!-- </li> -->
-</ul>
+  <h2 itemprop="name">Skills</h2>
+  <ul itemscope itemtype="http://schema.org/ItemList">
+    <li>
+      Fluent in
+      <a href="https://www.python.org/" itemprop="itemListElement">Python</a>,
+      <a href="https://php.net/" itemprop="itemListElement">PHP</a>,
+      <a href="https://en.wikipedia.org/wiki/SQL" itemprop="itemListElement">SQL</a>,
+      <a href="https://en.wikipedia.org/wiki/JavaScript" itemprop="itemListElement">JavaScript</a>,
+      <a href="https://en.wikipedia.org/wiki/HTML5" itemprop="itemListElement">HTML5</a>,
+      &amp;
+      <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" itemprop="itemListElement">CSS</a>.
+    </li>
+    <li>
+      Built web applications using
+      <a href="http://flask.pocoo.org/" itemprop="itemListElement">Flask</a>,
+      <a href="https://www.djangoproject.com/" itemprop="itemListElement">Django</a>,
+      <a href="http://wordpress.org/" itemprop="itemListElement">WordPress</a>,
+      <a href="https://symfony.com/" itemprop="itemListElement">Symfony</a>,
+      &amp;
+      <a href="http://www.yiiframework.com/" itemprop="itemListElement">Yii</a>.
+    </li>
+    <li>
+      Loves using
+      <a href="http://www.vim.org/" itemprop="itemListElement">Vim</a>,
+      <a href="http://docs.peewee-orm.com/en/latest/" itemprop="itemListElement">Peewee</a>,
+      <a href="https://en.wikipedia.org/wiki/Linux" itemprop="itemListElement">Linux</a>,
+      <a href="http://doc.pytest.org/en/latest/" itemprop="itemListElement">pytest</a>,
+      <a href="https://schema.org/" itemprop="itemListElement">Microdata</a>,
+      <a href="http://lesscss.org/" itemprop="itemListElement">LESS</a>,
+      &amp;
+      <a href="https://git-scm.com/" itemprop="itemListElement">Git</a>.
+    </li>
+    <li>
+      Has a love-hate relationship (that I will happily defend) with
+      <a href="http://www.sqlalchemy.org/" itemprop="itemListElement">SQLAlchemy</a>,
+      <a href="https://jquery.com/" itemprop="itemListElement">jQuery</a>,
+      <a href="https://getbootstrap.com/" itemprop="itemListElement">Bootstrap</a>,
+      <a href="https://www.docker.com/" itemprop="itemListElement">Docker</a>,
+      &amp;
+      <a href="https://framework.zend.com/" itemprop="itemListElement">Zend</a>.
+    </li>
+  </ul>
 </div>
 
-<h2>Activities</h2>
-
-<ul>
-  <li>
-    Former member of <a href="http://hacksu.cs.kent.edu">HacKSU</a>,
-    Kent State's web development community
-  </li>
-  <li>
-    Developed website for the <a href="http://cantonfilm.com">Canton Film Festival</a>
-    using <a href="http://wordpress.org">WordPress</a>.
-  </li>
-  <li>
-    Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout">Eagle Scout</a>
-    in 2006 and loves to camp.
-  </li>
-</ul>
-
-<h2>Interests</h2>
-
-<ul>
-  <li>
-    I spend much of my day tweaking my development workflow and reading
-    about the latest coding practices.
-  </li>
-  <li>
-    Loves playing tennis and skateboarding.
-  </li>
-</ul>
+<div id="resume-activities">
+  <h2>Activities &amp; Interests</h2>
+  <ul>
+    <li>
+      Former member of <a href="http://hacksu.cs.kent.edu">HacKSU</a>,
+      Kent State's web development community and
+      <a href="https://devpost.com/eligundry">competed in numerous hackathons</a>
+      including:
+      <ul class="hackathons">
+        <li><a href="https://khe.io/">KHE</a> 2013 (2<sup>nd</sup> place), 2014, &amp; 2015</li>
+        <li><a href="https://mhacks.org/">MHacks</a> 2013, 2014, &amp; 2015</li>
+        <li><a href="http://pennapps.com/">PennApps</a> 2014 (1<sup>st</sup> place Intel XDK App)</li>
+        <li><a href="http://hackillinois.org/">HackIllinois</a> 2014</li>
+        <li><a href="http://www.fashiontechhackathon.com/">Fashion/Tech</a> 2015</li>
+      </ul>
+    </li>
+    <li>
+      Developed website for the <a href="http://cantonfilm.com">Canton Film Festival</a>
+      using <a href="http://wordpress.org">WordPress</a>.
+    </li>
+    <li>
+      Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout">Eagle Scout</a>
+      in 2006 and loves to camp.
+    </li>
+    <li>
+      Loves playing tennis, reading, and attending concerts and comedy shows.
+    </li>
+  </ul>
+</div>

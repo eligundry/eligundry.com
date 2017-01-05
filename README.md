@@ -13,5 +13,11 @@ In order to get the dev server running, run:
 
 ```sh
 $ pip install -r requirements.txt
-$ lektor server -f webpack -f htmlmin
+$ lektor server -f webpack
+```
+
+In order to deploy the site to production, run:
+
+```sh
+$ lektor deploy -f webpack
 ```
