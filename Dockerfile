@@ -22,6 +22,8 @@ RUN apt-get update && \
     pip install -U pip cffi && \
     pip install -r /opt/requirements.txt
 
+EXPOSE 8080
+
 # Copy the files
 COPY . /code
 WORKDIR /code
@@ -30,5 +32,5 @@ WORKDIR /code
 RUN lektor plugins reinstall
 
 # Build the site
-RUN lektor clean --yes -O /usr/share/nginx/html
-RUN lektor build -f webpack -O /usr/share/nginx/html
+RUN lektor clean --yes -O /var/www
+RUN lektor build -f webpack -O /var/www

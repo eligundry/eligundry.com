@@ -32,10 +32,12 @@ GitHub.
 Below are some commands so you can test the image locally.
 
 ```sh
+# Add the virtual host to hosts file so it redirects
+$ echo '127.0.0.1 eligundry.dev' | sudo tee --append /etc/hosts
 # Build the image
 $ docker build -t eligundry/eligundry.com:local .
-# Run the local build server on port 8080.
-$ docker run -p 8080:80 eligundry/eligundry.com:local
+# Run the local build server on eligundry.dev:8080.
+$ docker run eligundry/eligundry.com:local
 ```
 
 [1]: https://hub.docker.com/r/eligundry/eligundry.com/
