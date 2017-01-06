@@ -22,8 +22,6 @@ RUN apt-get update && \
     pip install -U pip cffi && \
     pip install -r /opt/requirements.txt
 
-EXPOSE 8080
-
 # Copy the files
 COPY . /code
 WORKDIR /code
