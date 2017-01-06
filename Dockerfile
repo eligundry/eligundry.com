@@ -30,5 +30,5 @@ WORKDIR /code
 RUN lektor plugins reinstall
 
 # Build the site
-RUN lektor clean --yes -O /var/www
-RUN lektor build -f webpack -O /var/www
+RUN lektor clean --yes -O /usr/share/nginx/html
+RUN lektor build -f webpack -O /usr/share/nginx/html
