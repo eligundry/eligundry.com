@@ -1,5 +1,7 @@
 FROM nginx:1.11.5
 
+MAINTAINER Eli Gundry <eligundry@gmail.com>
+
 # Copy config files
 COPY Dockerfiles/site.conf /etc/nginx/sites-enabled/eligundry.com
 COPY requirements.txt /opt/requirements.txt
@@ -28,5 +30,5 @@ WORKDIR /code
 RUN lektor plugins reinstall
 
 # Build the site
-RUN lektor clean --yes -O /var/www
-RUN lektor build -f webpack -O /var/www
+RUN lektor clean --yes -O /usr/share/nginx/html
+RUN lektor build -f webpack -O /usr/share/nginx/html
