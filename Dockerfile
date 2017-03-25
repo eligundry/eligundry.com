@@ -9,15 +9,13 @@ COPY requirements.txt /opt/requirements.txt
 # Install the node dependencies and upgrade the installed packages
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y curl apt-transport-https apt-utils
-
-# Setup Node repos
-RUN echo 'deb https://deb.nodesource.com/node_7.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
+    apt-get install -y curl apt-transport-https apt-utils && \
+    # Setup node repos
+    echo 'deb https://deb.nodesource.com/node_7.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
     echo 'deb-src https://deb.nodesource.com/node_7.x jessie main' >> /etc/apt/sources.list.d/nodesource.list && \
-    curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-
-# Install lektor dependencies
-RUN apt-get update && \
+    curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+    # Install lektor dependencies
+    apt-get update && \
     apt-get install -y \
         nodejs \
         libffi6 \
@@ -27,7 +25,8 @@ RUN apt-get update && \
         python-pip \
         python-dev && \
     pip install -U pip cffi && \
-    pip install -r /opt/requirements.txt
+    pip install -r /opt/requirements.txt && \
+    rm -r /var/lib/apt/lists/*
 
 # Copy the files
 COPY . /code
