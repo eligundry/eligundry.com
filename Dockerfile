@@ -38,4 +38,6 @@ RUN lektor plugins reinstall \
     && lektor clean --yes -O /usr/share/nginx/html \
     && lektor build -f webpack -O /usr/share/nginx/html \
     # Clean the cache
-    && rm -rf /root/.cache/lektor
+    && rm -rf /root/.cache /root/.npm /code
+
+WORKDIR /usr/share/nginx/html
