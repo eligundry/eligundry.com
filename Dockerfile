@@ -33,8 +33,9 @@ COPY . /code
 WORKDIR /code
 
 # Install Lektor's plugins here because they are special
-RUN lektor plugins reinstall
-
-# Build the site
-RUN lektor clean --yes -O /usr/share/nginx/html
-RUN lektor build -f webpack -O /usr/share/nginx/html
+RUN lektor plugins reinstall \
+    # Build the site
+    && lektor clean --yes -O /usr/share/nginx/html \
+    && lektor build -f webpack -O /usr/share/nginx/html \
+    # Clean the cache
+    && rm -rf /root/.cache/lektor
