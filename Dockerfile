@@ -5,6 +5,7 @@ MAINTAINER Eli Gundry <eligundry@gmail.com>
 # Copy config files
 COPY Dockerfiles/site.conf /etc/nginx/sites-enabled/eligundry.com
 COPY requirements.txt /opt/requirements.txt
+COPY eligundry.lektorproject /
 
 # Install the node dependencies and upgrade the installed packages
 RUN apt-get update \
@@ -26,18 +27,17 @@ RUN apt-get update \
         python-dev \
     && pip install -U pip cffi \
     && pip install -r /opt/requirements.txt \
+    && lektor plugins reinstall \
     && rm -r /var/lib/apt/lists/*
 
 # Copy the files
-COPY . /code
+ADD . /code
 WORKDIR /code
 
-# Install Lektor's plugins here because they are special
-RUN lektor plugins reinstall \
-    # Build the site
-    && lektor clean --yes -O /usr/share/nginx/html \
+# Build the site
+RUN lektor clean --yes -O /usr/share/nginx/html \
     && lektor build -f webpack -O /usr/share/nginx/html \
     # Clean the cache
-    && rm -rf /root/.cache /root/.npm /code
+    && rm -rf /root/.cache /root/.npm /code /code/webpack/node_modules
 
 WORKDIR /usr/share/nginx/html
