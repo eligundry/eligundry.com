@@ -18,23 +18,23 @@ var options = {
     },
     module: {
         loaders: [
-        {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader'
-        },
-        {
-            test: /\.less/,
-            loader: ExtractTextPlugin.extract('style-loader', 'css?sourceMap!less?sourceMap')
-        },
-        {
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
-        },
-        {
-            test: /\.woff2?$|\.ttf$|\.eot$|\.svg$|\.png|\.jpe?g\|\.gif$/,
-            loader: 'file'
-        }
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            },
+            {
+                test: /\.less/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css?sourceMap!less?sourceMap')
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+            },
+            {
+                test: /\.woff2?$|\.ttf$|\.eot$|\.svg$|\.png|\.jpe?g\|\.gif$/,
+                loader: 'file'
+            }
         ]
     },
     plugins: [

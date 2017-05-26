@@ -1,5 +1,4 @@
 FROM nginx:1.11.5
-
 MAINTAINER Eli Gundry <eligundry@gmail.com>
 
 # Copy config files
@@ -25,19 +24,19 @@ RUN apt-get update \
         python \
         python-pip \
         python-dev \
-    && pip install -U pip cffi \
-    && pip install -r /opt/requirements.txt \
-    && lektor plugins reinstall \
     && rm -r /var/lib/apt/lists/*
 
+RUN pip install -U pip cffi \
+    && pip install -r /opt/requirements.txt
+
 # Copy the files
-ADD . /code
-WORKDIR /code
+ADD . /opt/eligundry.com
+WORKDIR /opt/eligundry.com
 
 # Build the site
 RUN lektor clean --yes -O /usr/share/nginx/html \
     && lektor build -f webpack -O /usr/share/nginx/html \
     # Clean the cache
-    && rm -rf /root/.cache /root/.npm /code /code/webpack/node_modules
+    && rm -rf /root/.cache /root/.npm /opt/eligundry
 
 WORKDIR /usr/share/nginx/html
