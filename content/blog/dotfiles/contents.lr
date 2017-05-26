@@ -1,0 +1,82 @@
+title: Dotfiles
+---
+pub_date: 2017-06-12
+---
+author: Eli Gundry
+---
+description: Effective dotfile management
+---
+body:
+
+## About Me
+
+* Discovered VI Mode in a TextMate clone in 2011 in an internship.
+* Got fired from an internship cause I spent too much time customizing Vim.
+  * #NoShame
+* Switched to NeoVim a year ago cause Vim was choking with all the plugins in it
+  and I'm not the biggest fan of their development model.
+
+## Motivation
+
+* Debate: Customize Vim to my liking vs keep it vanilla so it's the same
+  everywhere.
+  * Both sides make valid points.
+  * I like it customized and I can maintain this consistency with an install
+    script.
+
+## Requirements for my dotfile nirvana
+
+1. Must run on all platforms I use
+  * I use MacOS, Linux, and sometimes Windows
+2. Must be able to be setup in under a minute
+
+## Approaches Taken
+
+### 1. No Management
+
+* This was back when I was just starting and didn't have anything to manage.
+
+### 2. `dots.sh`
+
+* I wrote this when I was doing help desk in college.
+* I was working with my personal laptop and work machines.
+* Learned a lot about bash.
+* Still use this cause it runs anywhere without any setup.
+* I also wrote nasty bash scripts to provision new Linux machines cause I really
+  liked reinstalling a lot back then to pass the time.
+  * Probably missed my calling in devops
+* The cool thing about this is that files are added implicitly and must be
+  manually excluded for custom linking.
+  * EX: If I add file `foo.conf` to the root of dots, `dot.sh -r` will
+    automatically link it to `~/.foo.conf`.
+* This setup relied on git submodules for a very long time. They are terrible
+  and I wouldn't wish them on my worst enemy.
+
+### 3. `dotty.py`
+
+* Found this while browsing `/r/unixporn`.
+* Completely refactored it to make code cleaner and the UI more friendly
+* I was just getting into Python heavy and wanted to refactor a codebase that
+  I knew like the back of my hand.
+* Added a bunch of new features, like installing packages in more Linux distros.
+* Introduced a lot of breaking changes.
+* Haven't used this a whole lot cause of muscle memory and that I found
+  something better.
+
+### 4. SaltStack
+
+* Provides a lot more functionality than I need to manage my dotfiles.
+* Setup can be a pain.
+* It can do a lot.
+* Output is much more reliable than hand rolling it, as it abstracts away some
+  of the tricky things about bash and shell commands.
+  * EX: I always mess up the ordering of symlinks. Easy enough to Google, but
+    whatever, I catch that pretty quick. But symlinking directories is something
+    that I still mess up and just don't catch.
+* Not only is it managing my dotfiles, it is also reponsible for provisioning my
+  computer.
+* Also allows me to share secret files across machines
+
+## Resources
+
+* https://dotfiles.github.io/
