@@ -1,10 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
-    var print_btn = document.querySelector('.trigger-print');
+import attachPrintPageEvent from './print.js';
+import attachSlideShow from './slides.js';
 
-    if (print_btn) {
-        print_btn.addEventListener('click', function(event) {
-            event.preventDefault();
-            window.print();
-        });
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    attachPrintPageEvent();
+    attachSlideShow();
 });

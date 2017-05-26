@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Welcome{% endblock %} — Eli Gundry</title>
+    <meta name="description" content="{{ this.description or bag('author').site_description }}">
+    {% include 'includes/meta.html' %}
+    {% block stylesheets %}{% include 'includes/stylesheets.html' %}{% endblock %}
+  </head>
+  <body id="{{ this.path }}" class="{{ this._model }}" itemscope itemtype="https://schema.org/Person">
+    <main role="main" class="reveal">
+      <div class="slides">
+        {% block body %}{% endblock %}
+      </div>
+    </main>
+
+    {% block javascripts %}
+      {% include 'includes/scripts.html' %}
+    {% endblock %}
+  </body>
+</html>

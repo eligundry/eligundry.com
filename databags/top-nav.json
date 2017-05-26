@@ -9,6 +9,9 @@
   "/blog": {
     "name": "Blog"
   },
+  "/talks": {
+    "name": "Talks"
+  },
   "/resume": {
     "name": "Resume"
   }

@@ -1,0 +1,19 @@
+_template: presentation.html
+---
+title: Dotfiles
+---
+pub_date: 2017-06-13
+---
+description: Effective dotfile management
+---
+body:
+
+# hello?
+
+<section>
+  # Dotfiles
+</section>
+
+<section>
+  # Slide 2
+</section>

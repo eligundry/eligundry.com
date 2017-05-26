@@ -39,7 +39,7 @@ var options = {
     },
     plugins: [
         new ExtractTextPlugin('styles.css', {
-        allChunks: true
+            allChunks: true
         }),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.DedupePlugin()
