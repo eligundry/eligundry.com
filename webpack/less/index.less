@@ -1,5 +1,25 @@
-#twitter-widget-0 {
-    display: block !important;
-    margin: 10px auto !important;
-    position: initial !important;
+
+.home-widgets {
+    section {
+        .column(6);
+
+        @media @mobile {
+            .column(12);
+        }
+
+        #twitter-widget-0 {
+            width: 100% !important;
+
+            a,
+            a:visited {
+                color: @linkColor !important;
+            }
+        }
+    }
+
+    .last-fm {
+        a:hover {
+            border-bottom: none;
+        }
+    }
 }
