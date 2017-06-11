@@ -15,9 +15,11 @@
       {% include 'includes/header.html' %}
     {% endblock %}
 
-    <main role="main">
-      {% block body %}{% endblock %}
-    </main>
+    {% block outer_body %}
+      <main role="main">
+        {% block body %}{% endblock %}
+      </main>
+    {% endblock %}
 
     {% block footer %}
       {% include 'includes/footer.html' %}

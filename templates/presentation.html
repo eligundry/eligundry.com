@@ -9,12 +9,14 @@
 {# Disable the header #}
 {% block header %}{% endblock %}
 
-{% block body %}
-  <div class="reveal">
+{% block outer_body %}
+  <main class="reveal" role="main">
     <div class="slides">
-      {{ this.body }}
+      {% block body %}
+        {{ this.body }}
+      {% endblock %}
     </div>
-  </div>
+  </main>
 {% endblock %}
 
 {# Disable the footer #}

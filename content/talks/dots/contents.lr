@@ -1,5 +1,7 @@
 _template: presentation.html
 ---
+_model: presentation
+---
 title: Dotfiles
 ---
 pub_date: 2017-06-13
@@ -10,6 +12,7 @@ body:
 
 <section>
   <h1>Dots</h1>
+  <h2>Eli Gundry</h2>
 </section>
 
 <section>
