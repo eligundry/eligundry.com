@@ -4,7 +4,10 @@ const attachSlideShow = () => {
     const slideShowContainer = document.querySelector('.reveal');
 
     if (slideShowContainer) {
-        Reveal.initialize();
+        Reveal.initialize({
+            width: '100%',
+            height: '100%'
+        });
     }
 };
 

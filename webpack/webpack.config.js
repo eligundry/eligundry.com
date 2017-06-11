@@ -1,11 +1,12 @@
-var webpack = require('webpack');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var options = {
     entry: {
         'app': './js/main.js',
-        'styles': './less/main.less'
+        'styles': './less/main.less',
+        'presentation': './less/presentation.less'
     },
     output: {
         path: path.dirname(__dirname) + '/assets/static/gen',
@@ -24,21 +25,33 @@ var options = {
                 loader: 'babel-loader'
             },
             {
-                test: /\.less/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css?sourceMap!less?sourceMap')
-            },
-            {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
-            },
-            {
                 test: /\.woff2?$|\.ttf$|\.eot$|\.svg$|\.png|\.jpe?g\|\.gif$/,
                 loader: 'file'
+            },
+            {
+                test: /\.(css|less)$/,
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+            }
+        ],
+        rules: [
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: "style-loader" // creates style nodes from JS strings
+                    },
+                    {
+                        loader: "css-loader" // translates CSS into CommonJS
+                    },
+                    {
+                        loader: "less-loader" // compiles Less to CSS
+                    }
+                ]
             }
         ]
     },
     plugins: [
-        new ExtractTextPlugin('styles.css', {
+        new ExtractTextPlugin('[name].css', {
             allChunks: true
         }),
         new webpack.optimize.UglifyJsPlugin(),
