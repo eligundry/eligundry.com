@@ -4,14 +4,14 @@ body:
 
 <div class="home-widgets">
   <section class="twitter">
-    <h3>Thoughts</h3>
+    <h3>Thinking</h3>
     <a class="twitter-timeline" href="https://twitter.com/EliGundry" data-widget-id="565180848564355073">Tweets by @EliGundry</a>
   </section>
 
   <section class="last-fm">
     <h3>Humming</h3>
     <a href="https://www.last.fm/user/eli_pwnd">
-      <img src="http://tapmusic.net/collage.php?user=eli_pwnd&type=1month&size=3x3&caption=true" alt="eli_pwnd on last.fm" title="eli_pwnd on last.fm">
+      <img src="http://tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3&caption=true" alt="eli_pwnd on last.fm" title="eli_pwnd on last.fm">
     </a>
   </section>
 </div>

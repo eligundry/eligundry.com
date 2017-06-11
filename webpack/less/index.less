@@ -1,14 +1,26 @@
-
 .home-widgets {
     section {
         .column(6);
+
+        &:first-child {
+            margin-left: 0;
+        }
 
         @media @mobile {
             .column(12);
         }
 
+        h3 {
+            margin-bottom: 0;
+        }
+
         #twitter-widget-0 {
+            height: 600px !important;
             width: 100% !important;
+
+            .timeline-Header {
+                padding-left: 0 !important;
+            }
 
             a,
             a:visited {
@@ -18,8 +30,14 @@
     }
 
     .last-fm {
-        a:hover {
-            border-bottom: none;
+        a {
+            &:hover {
+                border-bottom: none;
+            }
+
+            img {
+                max-height: 600px;
+            }
         }
     }
 }
