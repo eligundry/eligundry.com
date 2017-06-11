@@ -48,6 +48,9 @@ body:
 * In regards to Vim, if I am on a vanilla Vim install and use an alias that
   isn't a default, I am able to undo and do it again with the vanilla command.
   * This doesn't bother me that much.
+* We aren't going to touch the merit of Vim as an IDE vs just let it be a text
+  editor.
+  * https://twitter.com/looselyrigorous/status/872944602973687809
 
 ## Too Many Computers
 
@@ -117,6 +120,7 @@ body:
 
 * My way is but one way to do it.
   * https://twitter.com/lindseybieda/status/871784974466371584
+  * https://twitter.com/captainsafia/status/873533736360583168
 * Be about what you make, not your tooling
 
 ## Resources

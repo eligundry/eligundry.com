@@ -2,7 +2,7 @@ _template: presentation.html
 ---
 _model: presentation
 ---
-title: Dotfiles
+title: Dotfile Management For Fun & Profit
 ---
 pub_date: 2017-06-13
 ---
@@ -11,10 +11,64 @@ description: Effective dotfile management
 body:
 
 <section>
-  <h1>Dots</h1>
-  <h2>Eli Gundry</h2>
+  <h1>Dotfile Management For Fun & Profit</h1>
+  <h2>
+    <a href="https://twitter.com/EliGundry"><i class="fa fa-twitter"></i>@EliGundry</a>
+  </h2>
 </section>
 
 <section>
-  <h1>Slide 2</h1>
+  <h1>A Bit About Me</h1>
+
+  <aside class="notes">
+    * I use Vim + any Unix terminal as my IDE
+    * Discovered Vi mode in the now defunct E-TextEditor, a Windows TextMate
+      clone and eased my way into Vim slowly.
+    * I got fired from an intership in 2012 cause I spent too much time
+      customizing Vim. I have a really well documented `.vimrc` now and I'm
+      talking to you about it, so it's sorta worth it?
+    * Switched to Neovim last year and converted my `.vimrc` to degrade
+      gracefully so I can share the config across machines.
+  </aside>
+</section>
+
+<section data-markdown>
+  <textarea data-template>
+  # What Are Dotfiles?
+
+  > Dotfiles are plain text configuration files on Unix-y systems for things like
+  > our shell, `~/.zshrc`, our editor in `~/.vimrc`, and many others. They are
+  > called "dotfiles" as they typically are named with a leading `.` making them
+  > hidden files on your system, although this is not a strict requirement.
+  >
+  > \- Thoughtbot Intro to Dotfiles
+  </textarea>
+</section>
+
+<section>
+  <h1>Dotfiles Are A Window Into A Developer's Mind</h1>
+
+  <aside class="notes">
+    I love looking at other people's `.vimrc` to not just learn, but to get
+    a glimpse into them as a person.
+  </aside>
+</section>
+
+<section data-markdown>
+  <textarea name="data-template">
+  ## Who Here Remaps Escape?
+  * `imap jj <Esc>` <!-- .element: class="fragment" -->
+  * `imap jk <Esc>` <!-- .element: class="fragment" -->
+  * `imap <C-x><C-e> <Esc>` <!-- .element: class="fragment" -->
+  </textarea>
+</section>
+
+<section>
+  <h1>Be About What You Make</h1>
+
+  <aside class="notes">
+    The purpose of this talk is not for me to brag about Vim or convert anyone
+    to it. A text editor is a tool for you to do your job. Be about what you
+    make, don't force your world view on someone else.
+  </aside>
 </section>
