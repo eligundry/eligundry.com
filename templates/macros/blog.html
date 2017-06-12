@@ -16,7 +16,7 @@
 {% endmacro %}
 
 {% macro render_blog_post_preview(post) %}
-<article itemscope itemprop="blogPosts" itemtype="http://schema.org/BlogPosting">
+<article itemscope itemprop="blogPosts" itemtype="http://schema.org/BlogPosting" class="blog-preview">
   <h2 itemprop="title">
     <a itemprop="url" href="{{ post|url }}">{{ post.title }}</a>
   </h2>

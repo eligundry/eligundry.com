@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {% from "macros/blog.html" import render_blog_post_preview %}
-{# {% from "macros/pagination.html" import render_pagination %} #}
-{% block title %}{{ this.title }}{% endblock %}
-{% block body %}
-{# @TODO Do this to the main element instead #}
-<div itemscope itemtype="http://schema.org/Blog">
-  {% for child in this.pagination.items.filter(F.draft == false) %}
-    {{ render_blog_post_preview(child) }}
-  {% endfor %}
-</div>
 
-{# {{ render_pagination(this.pagination) }} #}
+{% block title %}{{ this.title }}{% endblock %}
+
+{% block outer_body %}
+<main itemscope itemtype="http://schema.org/Blog">
+  {% block body %}
+    {% for child in this.pagination.items.filter(F.draft == false) %}
+      {{ render_blog_post_preview(child) }}
+    {% endfor %}
+  {% endblock %}
+</main>
 {% endblock %}

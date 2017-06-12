@@ -1,0 +1,130 @@
+title: Dotfiles
+---
+pub_date: 2017-06-12
+---
+author: Eli Gundry
+---
+description: Effective dotfile management
+---
+body:
+
+## About Me
+
+* I use Vim + Terminal as my IDE
+* Discovered VI Mode in a TextMate clone in 2011 in an internship.
+* Got fired from an internship cause I spent too much time customizing Vim.
+  * #NoShame
+* Switched to NeoVim a year ago cause Vim was choking with all the plugins in it
+  and I'm not the biggest fan of their development model.
+  * This is partly my fault *shurgs*
+
+## What Are Dotfiles?
+
+> Dotfiles are plain text configuration files on Unix-y systems for things like
+> our shell, `~/.zshrc`, our editor in `~/.vimrc`, and many others. They are
+> called "dotfiles" as they typically are named with a leading `.` making them
+> hidden files on your system, although this is not a strict requirement.
+>
+> [Source][1]
+
+* To me, dotfiles are a window into a developer's mind.
+* I love looking at other people's `.vimrc`, not just to learn, but to
+  understand them as a person.
+  * Raise your hands if you have remapped `<Esc>`
+  * EX: Do the remap `<Esc>`?
+    * `imap jj <Esc>`: We are going to be friends
+    * `imap jk <Esc>`: Person must be very serious, as they never type `jk` in
+      a comment.
+    * `imap <Ctrl-x><Ctrl-e> <Esc>`: Go back to emacs, you monster
+
+### Teach the Controversy
+
+* Debate: Customize Vim to my liking vs keep it vanilla so it's the same
+  everywhere.
+  * Both sides make valid points.
+  * I like it customized and I can maintain this consistency with an install
+    script.
+* This debate can be extended to all Unix commands with runtime files.
+* In regards to Vim, if I am on a vanilla Vim install and use an alias that
+  isn't a default, I am able to undo and do it again with the vanilla command.
+  * This doesn't bother me that much.
+* We aren't going to touch the merit of Vim as an IDE vs just let it be a text
+  editor.
+  * https://twitter.com/looselyrigorous/status/872944602973687809
+
+## Too Many Computers
+
+* I have way too many computers.
+  * Thinkpad
+  * Macbook
+  * Windows Desktop
+  * Media Center
+  * Raspberry Pi
+  * Pocket Chip
+* I have had to recently instate a one computer in, one computer out rule.
+
+## Requirements for my dotfile nirvana
+
+1. Must run on all platforms I use
+  * I use MacOS, Linux, and sometimes Windows
+2. Must be able to be setup in under a minute
+
+## Approaches Taken
+
+### 1. No Management
+
+* This was back when I was just starting and didn't have anything to manage.
+
+### 2. `dots.sh`
+
+* I wrote this when I was doing help desk in college.
+* I was working with my personal laptop and work machines.
+* Learned a lot about bash.
+* Still use this cause it runs anywhere without any setup.
+* I also wrote nasty bash scripts to provision new Linux machines cause I really
+  liked reinstalling a lot back then to pass the time.
+  * Probably missed my calling in devops
+* The cool thing about this is that files are added implicitly and must be
+  manually excluded for custom linking.
+  * EX: If I add file `foo.conf` to the root of dots, `dot.sh -r` will
+    automatically link it to `~/.foo.conf`.
+* This setup relied on git submodules for a very long time. They are terrible
+  and I wouldn't wish them on my worst enemy.
+
+### 3. `dotty.py`
+
+* Found this while browsing `/r/unixporn`.
+* Completely refactored it to make code cleaner and the UI more friendly
+* I was just getting into Python heavy and wanted to refactor a codebase that
+  I knew like the back of my hand.
+* Added a bunch of new features, like installing packages in more Linux distros.
+* Introduced a lot of breaking changes.
+* Haven't used this a whole lot cause of muscle memory and that I found
+  something better.
+
+### 4. SaltStack
+
+* Provides a lot more functionality than I need to manage my dotfiles.
+* Setup can be a pain.
+* It can do a lot.
+* Output is much more reliable than hand rolling it, as it abstracts away some
+  of the tricky things about bash and shell commands.
+  * EX: I always mess up the ordering of symlinks. Easy enough to Google, but
+    whatever, I catch that pretty quick. But symlinking directories is something
+    that I still mess up and just don't catch.
+* Not only is it managing my dotfiles, it is also reponsible for provisioning my
+  computer.
+* Also allows me to share secret files across machines
+
+## There Is No Right Way
+
+* My way is but one way to do it.
+  * https://twitter.com/lindseybieda/status/871784974466371584
+  * https://twitter.com/captainsafia/status/873533736360583168
+* Be about what you make, not your tooling
+
+## Resources
+
+* https://dotfiles.github.io/
+
+[1]: https://thoughtbot.com/upcase/videos/intro-to-dotfiles
