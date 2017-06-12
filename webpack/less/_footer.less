@@ -1,6 +1,6 @@
 .footer {
     border-top: @divider;
-    font-size: .9em;
+    font-size: 1em;
     padding-top: .5em;
     margin-bottom: 2em;
     .clearfix();
@@ -12,36 +12,30 @@
 
         div {
             float: left;
-            // Hardcoding this so elements don't shift on hover
-            height: 55px;
-            margin-right: 25px;
+            margin-right: 1em;
+
+            @media @mobile {
+                display: block;
+                float: none;
+                margin-right: 0;
+            }
+
+            .fa {
+                vertical-align: middle;
+
+                @media @mobile {
+                    width: 20px;
+                }
+            }
         }
 
         abbr {
             border-bottom: none;
         }
 
-        .email,
-        .location,
-        .phone {
-            a {
-                display: block;
-                padding-top: 6px;
-            }
-        }
-
-        i {
-            &:first-child {
-                display: block;
-            }
-        }
-
         .web a {
-            display: inline-block;
-            font-size: 2em;
-            margin-right: 5px;
-
-            &:hover, &:focus {
+            &:hover,
+            &:focus {
                 border-bottom: 0;
             }
         }
