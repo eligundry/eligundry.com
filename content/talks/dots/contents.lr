@@ -13,7 +13,9 @@ body:
 <section>
   <h1>Dotfile Management For Fun & Profit</h1>
   <h2>
-    <a href="https://twitter.com/EliGundry"><i class="fa fa-twitter"></i>@EliGundry</a>
+    <a href="https://twitter.com/EliGundry">
+      <i class="fa fa-twitter"></i>@EliGundry
+      </a>
   </h2>
 </section>
 
@@ -29,12 +31,34 @@ body:
       talking to you about it, so it's sorta worth it?
     * Switched to Neovim last year and converted my `.vimrc` to degrade
       gracefully so I can share the config across machines.
+
+    The most important thing to know about me is... *slide change*
+  </aside>
+</section>
+
+<section>
+  <h1>I Have Way Too Many Computers</h1>
+
+  <figure>
+    <img src="too-many-computers.jpg" alt="Not actually my apartment.">
+    <figcaption>Actual image of my apartment</figcaption>
+  </figure>
+
+  <aside class="notes">
+    It's seriously a problem now.
+    Computers:
+      * Macbook
+      * Thinkpad
+      * Windows 10 Desktop
+      * Media Center
+      * Handheld PocketCHIP
+      * A bunch of Digital Ocean droplets
   </aside>
 </section>
 
 <section data-markdown>
   <textarea data-template>
-  # What Are Dotfiles?
+  # Enter Dotfiles
 
   > Dotfiles are plain text configuration files on Unix-y systems for things like
   > our shell, `~/.zshrc`, our editor in `~/.vimrc`, and many others. They are
@@ -47,28 +71,199 @@ body:
 
 <section>
   <h1>Dotfiles Are A Window Into A Developer's Mind</h1>
+  <figure>
+    <img src="bratpack.jpg" alt="The Bratpack?">
+    <figcaption>Can You Spot The Emacs User?</figcaption>
+  </figure>
 
   <aside class="notes">
     I love looking at other people's `.vimrc` to not just learn, but to get
     a glimpse into them as a person.
+
+    I like to dream about what the author is like based upon their
+    customizations.
+
+    *Change slide*
+
+    `jj`: We are going to be friends.
+    `jk`: Very serious person, doesn't joke around.
+    `C-x C-e`: Emacs user that is living a lie.
   </aside>
 </section>
 
 <section data-markdown>
   <textarea name="data-template">
   ## Who Here Remaps Escape?
-  * `imap jj <Esc>` <!-- .element: class="fragment" -->
-  * `imap jk <Esc>` <!-- .element: class="fragment" -->
-  * `imap <C-x><C-e> <Esc>` <!-- .element: class="fragment" -->
+  * `imap jj <Esc> " Cool Person` <!-- .element: class="fragment" -->
+  * `imap jk <Esc> " Serious Person` <!-- .element: class="fragment" -->
+  * `imap <C-x><C-e> <Esc> " Emacs User` <!-- .element: class="fragment" -->
   </textarea>
 </section>
 
 <section>
-  <h1>Be About What You Make</h1>
+  <blockquote>
+    "But Eli, I like to keep Vim plain so it works across machines exactly the same!"
+    <br>
+    - Someone In This Very Audience
+  </blockquote>
+</section>
+
+<section>
+  <h1>Vanilla Vim</h1>
+  <img src="vanilla-vim.jpg" alt="Vanilla Ice Cream Cone">
 
   <aside class="notes">
+    I respect this viewpoint and I think it extends to all Unix commands that
+    are configurable.
+
+    I keep the core of my Vim config pretty basic. I'm not remapping basic
+    movements or depending on features that aren't stock. If I make a mistake in
+    Vanilla Vim, I'll just undo it, no biggie.
+
+    If I can install my dotfiles on any machine with one command, this isn't an
+    issue.
+
+    # @TOOD Flesh this out.
+  </aside>
+</section>
+
+<section>
+  <blockquote>
+    "But Eli, Vim is a text editor, don't use it like an IDE!"
+    <br>
+    - Same Person In The Audience
+  </blockquote>
+
+  <aside class="notes">
+    I also respect this viewpoint, but that doesn't work for me. Tooling is very
+    much a different strokes for different folks.
+
+    *slide change*
+  </aside>
+</section>
+
+<section>
+  <h1>I ❤️ This Warts & All</h1>
+  <blockquote class="twitter-tweet" data-lang="en">
+    <p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/vim?src=hash">#vim</a> and code completion. Yep, that’s about right. <a href="https://t.co/2AzC9wowao">pic.twitter.com/2AzC9wowao</a></p>&mdash; looselyrigorous (@looselyrigorous) <a href="https://twitter.com/looselyrigorous/status/872944602973687809">June 8, 2017</a></blockquote>
+  <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</section>
+
+<section>
+  <h1>Be About What You Make</h1>
+  <h2>Not How You Make It</h2>
+
+  <aside class="notes">
+    As much as I love Vim, I try to never ever force it on someone. If anyone
+    asks me if they should pick up Vim, @TODO flesh this out.
+
     The purpose of this talk is not for me to brag about Vim or convert anyone
     to it. A text editor is a tool for you to do your job. Be about what you
     make, don't force your world view on someone else.
   </aside>
+</section>
+
+<section>
+  <h1>Challenge</h1>
+  <p>How do I maintain a consistent environment across machines?</p>
+</section>
+
+<section>
+  <h1>The Answer Is Always GitHub</h1>
+  <figure>
+    <a href="https://octodex.github.com/front-end-conftocat">
+      <img src="octocat.png" alt="Sadly Accurate" style="max-height: 500px;">
+    </a>
+    <figcaption>Front End Conference Octocat</figcaption>
+  </figure>
+
+  <aside class="notes">
+    * First off, this Octocat resonates with me.
+    * But, for real, if you store your dotfiles in a public GitHub, your
+      preferred environment is but a git clone and some symlinking away.
+    * The real challenge then becomes how do you manage those symlinks?
+  </aside>
+</section>
+
+<section>
+  <h1 class="respect-case"><code>dots.sh</code></h1>
+  <h3 class="respect-case">
+    <a href="https://github.com/eligundry/dots">
+      <i class="fa fa-github"></i>/eligundry/dots
+    </a>
+  </h3>
+
+  <aside class="notes">
+    * I started writing this in 2013 while I was bored doing help desk.
+    * The script is relatively simple: it just symlinks files.
+    * It's implicit.
+    * It can handle management of "sub-repos", like oh-my-zsh.
+      * This used to be done with git modules, which I wouldn't wish on my worst
+        enemy.
+  </aside>
+</section>
+
+<section>
+  <figure>
+    <img src="dots-install.gif" alt="dots.sh in action">
+    <figcaption><code>dots.sh</code> in action</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h1>Shell Is Awesome!</h1>
+  <img src="https://media.giphy.com/media/Jylb9PZHvJZSg/giphy.gif" alt="Yeezus" style="height: 500px;">
+
+  <aside class="notes">
+    * Happy Kanye is the best Kanye
+    * It runs everywhere
+    * No setup needed
+    * It's fast as hell
+  </aside>
+</section>
+
+<section>
+  <h1>Shell Is The Worst</h1>
+  <img src="https://media.giphy.com/media/LLsI04bH2NKOQ/giphy.gif" alt="The Woooooorst" style="height: 500px;">
+
+  <aside class="notes">
+    * It's confusing in the way that I need to Google how to do things everytime
+      I need to make a change.
+    * Try maintaining a shell script for a long period of time. It's not fun.
+    * It's brittle and unforgiving.
+    * This script doesn't address keeping my shells in sync.
+      * Update a config on my Thinkpad on Saturday, have to recreate it on
+        Monday on my Macbook.
+  </aside>
+</section>
+
+<section>
+  <h1 class="respect-case"><code>dotty.py</code></h1>
+  <h3 class="respect-case">
+    <a href="https://github.com/eligundry/dotty/tree/modularize-dotty">
+      <i class="fa fa-github"></i>/eligundry/dotty
+    </a>
+  </h3>
+</section>
+
+<section>
+  <h1>My Shell Is A Production Environment</h1>
+</section>
+
+<section>
+  <h1 class="respect-case">SaltStack</h1>
+  <h3 class="respect-case">
+    <a href="https://github.com/eligundry/salt.eligundry.com">
+      <i class="fa fa-github"></i>/eligundry/salt.eligundry.com
+    </a>
+  </h3>
+</section>
+
+<section>
+  <h1>There Is No Right Way</h1>
+</section>
+
+<section>
+  <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">This is a response to one of my command line tip tweets.<br><br>Imagine if you received these almost every day for 2 weeks. How would you feel? <a href="https://t.co/CECTL5ixgM">pic.twitter.com/CECTL5ixgM</a></p>&mdash; Safia Abdalla (@captainsafia) <a href="https://twitter.com/captainsafia/status/873533736360583168">June 10, 2017</a></blockquote>
+  <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 </section>
