@@ -1,5 +1,6 @@
 // @TODO Ugh this is nasty, but this is the only way that I can tell to get the
 // plugins working.
+// @TODO Get code highlighting working.
 window.Reveal = require('reveal.js/js/reveal.js');
 require('reveal.js/lib/js/head.min.js');
 require('reveal.js/lib/js/classList.js');
