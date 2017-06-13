@@ -5,6 +5,7 @@ require('reveal.js/lib/js/head.min.js');
 require('reveal.js/lib/js/classList.js');
 require('reveal.js/plugin/markdown/marked.js');
 require('reveal.js/plugin/markdown/markdown.js');
+require('reveal.js/plugin/notes/notes.js');
 
 const attachSlideShow = () => {
     const slideShowContainer = document.querySelector('.reveal');
@@ -19,6 +20,15 @@ const createSlideShow = () => {
         history: true,
         width: '100%',
         height: '100%',
+    });
+
+    // Use the developer console as my note display.
+    window.Reveal.addEventListener('slidechanged', () => {
+        const notes = window.Reveal.getSlideNotes();
+
+        if (notes) {
+            console.log(notes);
+        }
     });
 };
 
