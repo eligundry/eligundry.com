@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ this.title }}{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ '/static/gen/presentation.css'|asseturl }}">
+{% endblock %}
+
+{# Disable the header #}
+{% block header %}{% endblock %}
+
+{% block outer_body %}
+  <main class="reveal" role="main">
+    <div class="slides">
+      {% block body %}
+        {{ this.body }}
+      {% endblock %}
+    </div>
+  </main>
+{% endblock %}
+
+{# Disable the footer #}
+{% block footer %}{% endblock %}
