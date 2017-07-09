@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}ICYMI{% endblock %}
+
+{% block body %}
+{{ this.children.filter(F.tag == 'icymi') }}
+{% for child in this.children.filter(F.tag == 'icymi') %}
+  {{ child.title }}
+{% endfor %}
+{% endblock %}
