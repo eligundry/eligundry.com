@@ -34,8 +34,8 @@ $ docker-compose up
 
 With the Docker containers up, the Lektor debug server will be available at
 [eligundry.dev:5000][2] and the nginx server will be available at
-[eligundry.dev:8080][3]
+[eligundry.dev:8080][3].
 
 [1]: https://hub.docker.com/r/eligundry/eligundry.com/
 [2]: http://eligundry.dev:5000
-[2]: http://eligundry.dev:8080
+[3]: http://eligundry.dev:8080

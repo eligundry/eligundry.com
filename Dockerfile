@@ -4,6 +4,7 @@ LABEL maintainer="Eli Gundry <eligundry@gmail.com>"
 # Install system dependencies.
 RUN apt-get update \
     && apt-get install -y \
+        cron \
         curl \
         libffi-dev \
         libffi6 \
@@ -28,6 +29,8 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 
 # Enable the nginx site.
 COPY docker/site.conf /etc/nginx/sites-enabled/eligundry.com
+COPY docker/last-fm-cover-cron.sh /etc/cron.daily/last-fm-cover-cron.sh
+COPY docker/crontab /etc/crontab
 
 # Copy the files
 ADD . /opt/eligundry.com

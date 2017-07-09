@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+/etc/cron.daily/last-fm-cover-cron.sh
+
 if ${RUN_LEKTOR:=false}; then
     cd /opt/eligundry.com
     nginx

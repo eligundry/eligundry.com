@@ -3,4 +3,5 @@
 .gitignore
 README.md
 assets/static
+content/last-fm.jpeg
 webpack/node_modules

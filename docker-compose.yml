@@ -2,7 +2,8 @@ version: '3'
 services:
   website:
     build: .
-    image: 'eligundry/eligundry.com:local'
+    image: 'eligundry/eligundry.com'
+    container_name: 'eligundry.com'
     environment:
       - RUN_LEKTOR=true
     ports:
