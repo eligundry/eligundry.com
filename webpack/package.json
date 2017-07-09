@@ -11,9 +11,7 @@
     "font-awesome": "^4.7.0",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
-    "node-sass": "^3.13.1",
     "reveal.js": "^3.5.0",
-    "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.15.0"
