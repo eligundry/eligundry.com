@@ -13,10 +13,3 @@ lektor-atom = 0.2
 
 [constants]
 author_name = Eli Gundry
-
-[servers.production]
-name = Production
-enabled = yes
-default = yes
-; @TODO Make the lektor user only able to login via the VPN
-target = rsync://lektor@ssh.eligundry.com/opt/eligundry.com

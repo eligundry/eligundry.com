@@ -1,6 +1,6 @@
-README.md
-.gitignore
 .editorconfig
-webpack/node_modules
 .git
+.gitignore
+README.md
 assets/static
+webpack/node_modules
