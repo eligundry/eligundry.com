@@ -1,3 +1,4 @@
 *.pyc
 node_modules/
 assets/static/gen
+content/last-fm.jpeg

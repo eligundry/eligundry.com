@@ -1,0 +1,13 @@
+version: '3'
+services:
+  website:
+    build: .
+    image: 'eligundry/eligundry.com'
+    container_name: 'eligundry.com'
+    environment:
+      - RUN_LEKTOR=true
+    ports:
+      - "5000:5000"
+      - "8080:80"
+    volumes:
+      - .:/opt/eligundry.com

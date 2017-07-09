@@ -1,33 +1,36 @@
-FROM nginx:1.11.5
-MAINTAINER Eli Gundry <eligundry@gmail.com>
+FROM python:2-slim
+LABEL maintainer="Eli Gundry <eligundry@gmail.com>"
 
-# Copy config files
-COPY Dockerfiles/site.conf /etc/nginx/sites-enabled/eligundry.com
-COPY requirements.txt /opt/requirements.txt
-COPY eligundry.lektorproject /
-
-# Install the node dependencies and upgrade the installed packages
+# Install system dependencies.
 RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y curl apt-transport-https apt-utils \
-    # Setup node repos
-    && echo 'deb https://deb.nodesource.com/node_7.x jessie main' > /etc/apt/sources.list.d/nodesource.list \
-    && echo 'deb-src https://deb.nodesource.com/node_7.x jessie main' >> /etc/apt/sources.list.d/nodesource.list \
-    && curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
-    # Install lektor dependencies
-    && apt-get update \
     && apt-get install -y \
-        nodejs \
-        libffi6 \
+        cron \
+        curl \
         libffi-dev \
+        libffi6 \
         libssl-dev \
+        nginx \
+        nodejs \
         python \
-        python-pip \
         python-dev \
+        python-pip \
     && rm -r /var/lib/apt/lists/*
 
+# Install Python dependencies.
+COPY requirements.txt /requirements.txt
 RUN pip install -U pip cffi \
-    && pip install -r /opt/requirements.txt
+    && pip install -r /requirements.txt \
+    && rm -r /root/.cache
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g node-gyp \
+    && rm -r /var/lib/apt/lists/*
+
+# Enable the nginx site.
+COPY docker/site.conf /etc/nginx/sites-enabled/eligundry.com
+COPY docker/last-fm-cover-cron.sh /etc/cron.daily/last-fm-cover-cron.sh
+COPY docker/crontab /etc/crontab
 
 # Copy the files
 ADD . /opt/eligundry.com
@@ -36,7 +39,9 @@ WORKDIR /opt/eligundry.com
 # Build the site
 RUN lektor clean --yes -O /usr/share/nginx/html \
     && lektor build -f webpack -O /usr/share/nginx/html \
-    # Clean the cache
-    && rm -rf /root/.cache /root/.npm /opt/eligundry
+    && rm -r /opt/eligundry.com/webpack/node_modules /root/.cache
 
-WORKDIR /usr/share/nginx/html
+EXPOSE 80
+EXPOSE 5000
+
+ENTRYPOINT '/opt/eligundry.com/docker/entrypoint.sh'

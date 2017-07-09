@@ -9,6 +9,6 @@ indent_size = 4
 insert_final_newline = false
 charset = utf-8
 
-[*.{ejs,html,json,jinja,lr,xml,md}]
+[*.{ejs,html,json,jinja,lr,xml,md,yml}]
 indent_style = space
 indent_size = 2
