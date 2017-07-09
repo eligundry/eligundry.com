@@ -10,7 +10,7 @@
         font-style: normal;
         font-weight: @sansFontWeight;
 
-        div {
+        & > div {
             float: left;
             margin-right: 1em;
 
@@ -21,11 +21,13 @@
             }
 
             .fa {
-                vertical-align: middle;
-
                 @media @mobile {
                     width: 20px;
                 }
+            }
+
+            .items {
+                display: inline-block;
             }
         }
 

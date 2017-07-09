@@ -47,6 +47,18 @@
                     display: inline;
                 }
             }
+
+            ul, ol {
+                padding: 0;
+            }
+
+            .hackathons {
+                margin-left: 2px;
+
+                li {
+                    .column(6);
+                }
+            }
         }
 
         .resume-hide {
@@ -67,14 +79,12 @@
 
         .web {
             a {
-                display: block !important;
                 height: 12px;
 
                 &:after {
                     content: attr(href);
-                    display: block;
                     font-size: 11px;
-                    margin-top: -16px;
+                    .clearfix();
                 }
             }
         }

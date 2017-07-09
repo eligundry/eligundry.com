@@ -50,11 +50,21 @@
     }
 
     .hackathons {
+        margin-left: -5px;
         padding-left: 0;
         .clearfix();
 
+        @media @mobile {
+            margin-left: 0;
+            padding-left: 3px;
+        }
+
         li {
-            .column(6);
+            .column(4);
+
+            @media @mobile {
+                .column(12);
+            }
         }
     }
 }
