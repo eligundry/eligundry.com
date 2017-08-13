@@ -1,1 +1,1 @@
-Lektor==2.3
+Lektor
