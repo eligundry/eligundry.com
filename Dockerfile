@@ -10,16 +10,12 @@ RUN apt-get update \
         libffi6 \
         libssl-dev \
         nginx \
-        nodejs \
         python \
         python-dev \
-        python-pip \
     && rm -r /var/lib/apt/lists/*
 
 # Install Python dependencies.
-COPY requirements.txt /requirements.txt
-RUN pip install -U pip cffi \
-    && pip install -r /requirements.txt \
+RUN pip install cffi lektor \
     && rm -r /root/.cache
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \

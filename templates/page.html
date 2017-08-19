@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
 {% block title %}{{ this.title }}{% endblock %}
 {% block body %}
+
+{% set body = this.body %}
+
+{% if not body %}
+  {% set body = this.html %}
+{% endif %}
+
 {% if this.section_wrap %}
   <section>
-    {{ this.body }}
+    {{ body }}
   </section>
 {% else %}
-  {{ this.body }}
+  {{ body }}
 {% endif %}
+
 {% endblock %}

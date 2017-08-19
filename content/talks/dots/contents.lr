@@ -344,8 +344,8 @@ body:
   <aside class="notes">
     * I forked the repo and started overhauling it as a part of Hacktoberfest 2016.
     * I noticed that it didn't have tests and wasn't installable using `pip`
-    * I wanted to learn more about testing and wanted to learn about Python packaging.
-    * I also wanted to give dotty some concepts that `dots.sh`
+    * I wanted to learn more about testing and Python packaging.
+    * I also wanted to give dotty some concepts that `dots.sh` has
     * I wanted to have it be able to install packages in the OSs I used
     * The original code was somewhat ugly
     * I also wanted to be able to use it in a more modular system
@@ -374,6 +374,10 @@ body:
     * I had a lot of fun doing this project and a few weeks in, I had a realization.
     *slide-change*
   </aside>
+</section>
+
+<section>
+  h1
 </section>
 
 <section>
@@ -488,20 +492,50 @@ dots-repo:
   </aside>
 </section>
 
-<section>
-  <img src="https://media.giphy.com/media/CoDxgqDOGHUys/giphy.gif" alt="I don't want to feel this way anymore." style="width: 700px;">
-  <h1>It's Not Perfect Yet</h1>
+<!-- <section> -->
+<!--   <img src="https://media.giphy.com/media/CoDxgqDOGHUys/giphy.gif" alt="I don't want to feel this way anymore." style="width: 700px;"> -->
+<!--   <h1>It's Not Perfect Yet</h1> -->
+<!--  -->
+<!--   <aside class="notes"> -->
+<!--     * While this is a step in the right direction, I'm not finished yet. -->
+<!--     * I need to re-provision all my machines with Salt. -->
+<!--     * I'm thinking about wiring up my Salt runs to crons or something in order -->
+<!--       to auto update. -->
+<!--     * I'm also thinking about wiring up my dots repo to have seperate branches -->
+<!--       for each machine that auto commit/push on highstate. In this way, my -->
+<!--       changes are always up in the cloud. I will be able to pull in changes as -->
+<!--       needed. -->
+<!--   </aside> -->
+<!-- </section> -->
 
+<section>
+  <h1>In Practice</h1>
   <aside class="notes">
-    * While this is a step in the right direction, I'm not finished yet.
-    * I need to re-provision all my machines with Salt.
-    * I'm thinking about wiring up my Salt runs to crons or something in order
-      to auto update.
-    * I'm also thinking about wiring up my dots repo to have seperate branches
-      for each machine that auto commit/push on highstate. In this way, my
-      changes are always up in the cloud. I will be able to pull in changes as
-      needed.
+    * I used Salt to setup my work machine, Thinkpad, Windows PC, and a media
+      center.
+    * I had to deploy Salt to my media center over a very weak Wifi connection.
+      * 70 kbps
+      * This is suuuuuppppper slow.
+      * Wifi is a magical technology that gets shit on a lot. We have unreasonable
+        expectations out of our wizardry.
+    * ISP NAT kills running Salt from the cloud. I setup a VPN connection to my
+      router so the Salt Master can find my machines.
   </aside>
+</section>
+
+<section>
+  <h1>MacOS</h1>
+  <aside class="notes">
+    * MacOS likes to think different.
+    * Brew
+      * Brew / Cask works with the package installation state in Salt.
+      * Casks will install, but will always fail when checked to see if they are installed.
+    * You can't really do a lot of OS customization with this.
+  </aside>
+</section>
+
+<section>
+  <h1>Windows</h1>
 </section>
 
 <section>
@@ -535,12 +569,22 @@ dots-repo:
 </section>
 
 <section>
-  <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">This is a response to one of my command line tip tweets.<br><br>Imagine if you received these almost every day for 2 weeks. How would you feel? <a href="https://t.co/CECTL5ixgM">pic.twitter.com/CECTL5ixgM</a></p>&mdash; Safia Abdalla (@captainsafia) <a href="https://twitter.com/captainsafia/status/873533736360583168">June 10, 2017</a></blockquote>
+  <blockquote class="twitter-tweet" data-lang="en">
+    <p lang="en" dir="ltr">
+      This is a response to one of my command line tip tweets.
+      <br>
+      <br>
+      Imagine if you received these almost every day for 2 weeks. How would you feel?
+      <a href="https://t.co/CECTL5ixgM">pic.twitter.com/CECTL5ixgM</a>
+    </p>
+    &mdash; Safia Abdalla (@captainsafia)
+    <a href="https://twitter.com/captainsafia/status/873533736360583168">June 10, 2017</a>
+  </blockquote>
   <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 </section>
 
 <section>
-  <img src="https://media.giphy.com/media/R2m2NzVxQ3pbG/giphy.gif" alt="Almost there">
+  <img src="https://media.giphy.com/media/TR6QBKnGBvik8/giphy.gif" alt="We're all equal">
   <h1>Takeaways</h1>
   <ul>
     <li class="fragment">Shell Scripts Are Awesome Until You Need To Update Them</li>

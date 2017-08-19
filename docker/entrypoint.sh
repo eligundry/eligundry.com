@@ -2,6 +2,7 @@
 set -e
 
 /etc/cron.daily/last-fm-cover-cron.sh
+cron
 
 if ${RUN_LEKTOR:=false}; then
     cd /opt/eligundry.com

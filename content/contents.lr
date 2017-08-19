@@ -1,11 +1,13 @@
 title: Home
 ---
-body:
+html:
 
 <div class="home-widgets">
   <section class="twitter">
     <h3>Thinking</h3>
-    <a class="twitter-timeline" href="https://twitter.com/EliGundry" data-widget-id="565180848564355073">Tweets by @EliGundry</a>
+    <a class="twitter-timeline" href="https://twitter.com/EliGundry" data-widget-id="565180848564355073">
+      Tweets by @EliGundry
+    </a>
   </section>
 
   <section class="last-fm">
