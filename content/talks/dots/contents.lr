@@ -377,10 +377,6 @@ body:
 </section>
 
 <section>
-  h1
-</section>
-
-<section>
   <h1>Development Environments Are Production Environments</h1>
 
   <aside class="notes">
@@ -510,6 +506,7 @@ dots-repo:
 
 <section>
   <h1>In Practice</h1>
+
   <aside class="notes">
     * I used Salt to setup my work machine, Thinkpad, Windows PC, and a media
       center.
@@ -525,6 +522,7 @@ dots-repo:
 
 <section>
   <h1>MacOS</h1>
+
   <aside class="notes">
     * MacOS likes to think different.
     * Brew
@@ -536,6 +534,11 @@ dots-repo:
 
 <section>
   <h1>Windows</h1>
+
+  <aside class="notes">
+    * Salt has support for the Chocolatey package manager on Windows.
+      * You can install **anything** you want on Windows with this!
+  </aside>
 </section>
 
 <section>
