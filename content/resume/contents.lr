@@ -278,6 +278,7 @@ body:
     <li>
       Loves using
       <a href="http://www.vim.org/" itemprop="itemListElement">Vim</a>,
+      <a href="https://www.docker.com/" itemprop="itemListElement">Docker</a>,
       <a href="http://docs.peewee-orm.com/en/latest/" itemprop="itemListElement">Peewee</a>,
       <a href="https://en.wikipedia.org/wiki/Linux" itemprop="itemListElement">Linux</a>,
       <a href="http://doc.pytest.org/en/latest/" itemprop="itemListElement">pytest</a>,
@@ -291,7 +292,6 @@ body:
       <a href="http://www.sqlalchemy.org/" itemprop="itemListElement">SQLAlchemy</a>,
       <a href="https://jquery.com/" itemprop="itemListElement">jQuery</a>,
       <a href="https://getbootstrap.com/" itemprop="itemListElement">Bootstrap</a>,
-      <a href="https://www.docker.com/" itemprop="itemListElement">Docker</a>,
       &amp;
       <a href="https://framework.zend.com/" itemprop="itemListElement">Zend</a>.
     </li>
