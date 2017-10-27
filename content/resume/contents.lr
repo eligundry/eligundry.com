@@ -217,6 +217,25 @@ body:
 
 <div id="resume-education">
   <h2 itemprop="name">Education</h2>
+  <div itemtype="https://schema.org/EducationalOrganization" itemprop="alumniOf" itemscope>
+    <h3 itemprop="name">
+      <a href="https://www.kent.edu/" itemprop="url">
+        Kent State University
+      </a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2009-08-01">August 2009</time>
+        &mdash;
+        <time itemprop="dissolutionDate" datetime="2015-05-01">May 2015</time>
+      </sup>
+    </h3>
+    <h4 itemprop="award">Bachelor of Science - Computer Science</h4>
+    <ul itemprop="description">
+      <li>
+        Learned the basics of computer science while doing several internships
+        and attending numerous hackathons.
+      </li>
+    </ul>
+  </div>
   <div itemtype="https://schema.org/EducationalOrganization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
       <a href="http://www.wayne-jvs.k12.oh.us/" itemprop="url">
@@ -243,11 +262,6 @@ body:
         &amp;
         <a href="https://en.wikipedia.org/wiki/Adobe_Flash">Flash</a>.
         Using these skills, I created websites used by classes and external clients.
-      </li>
-      <li>
-        Attended various colleges from 2010 &mdash; 2015 in an attempt to get
-        a <a href="https://en.wikipedia.org/wiki/Bachelor_of_Computer_Science">Bachelor of Science in Computer Science</a>,
-        but did not finish my degree, though I learned a lot.
       </li>
     </ul>
   </div>
@@ -290,6 +304,7 @@ body:
     <li>
       Has a love-hate relationship (that I will happily defend) with
       <a href="http://www.sqlalchemy.org/" itemprop="itemListElement">SQLAlchemy</a>,
+      <a href="https://saltstack.com/" itemprop="itemListElement">SaltStack</a>,
       <a href="https://jquery.com/" itemprop="itemListElement">jQuery</a>,
       <a href="https://getbootstrap.com/" itemprop="itemListElement">Bootstrap</a>,
       &amp;
