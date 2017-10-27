@@ -4,7 +4,7 @@
 {% block title %}{{ this.title }}{% endblock %}
 
 {% block body %}
-  {% for child in this.children %}
+  {%- for child in this.children %}
     {{ render_blog_post_preview(child) }}
-  {% endfor %}
+  {%- endfor %}
 {% endblock %}

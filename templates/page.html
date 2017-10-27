@@ -3,9 +3,9 @@
 {% block body %}
 {% if this.section_wrap %}
   <section>
-    {{ this.body }}
+    {{ this.body|safe }}
   </section>
 {% else %}
-  {{ this.body }}
+  {{ this.body|safe }}
 {% endif %}
 {% endblock %}

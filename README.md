@@ -26,15 +26,13 @@ This is the preferred way to run the site locally as the Docker container will
 do automatic rebuilds while it is up.
 
 ```sh
-# Add the virtual host to hosts file so it redirects
-$ echo '127.0.0.1 eligundry.dev' | sudo tee --append /etc/hosts
 # Run the docker containers in docker-compose
 $ docker-compose up
 ```
 
 With the Docker containers up, the Lektor debug server will be available at
-[eligundry.dev:5000][2] and the nginx server will be available at
-[eligundry.dev:8080][3].
+[eligundry.localhost:5000][2] and the nginx server will be available at
+[eligundry.localhost:8080][3].
 
 [1]: https://hub.docker.com/r/eligundry/eligundry.com/
 [2]: http://eligundry.dev:5000

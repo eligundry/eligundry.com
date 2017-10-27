@@ -10,10 +10,7 @@ RUN apt-get update \
         libffi6 \
         libssl-dev \
         nginx \
-        nodejs \
-        python \
         python-dev \
-        python-pip \
     && rm -r /var/lib/apt/lists/*
 
 # Install Python dependencies.

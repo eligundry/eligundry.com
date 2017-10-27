@@ -1,9 +1,7 @@
 <nav class="top-nav" role="navigation">
-  {% for path, data in bag('top-nav').iteritems() %}
-    <a href="{{ path|url }}"
-          {% if data.rel %}rel={{ data.rel }}{% endif %}
-          {% if this.is_child_of(path) %}class="active"{% endif %}>
+  {%- for path, data in bag('top-nav').iteritems() %}
+    <a href="{{ path|url }}"{% if data.rel %} rel={{ data.rel }}{% endif %}{% if this.is_child_of(path) %} class="active"{% endif %}>
        {{ data.name }}
      </a>
-  {% endfor %}
+  {%- endfor %}
 </nav>

@@ -5,27 +5,27 @@
     <title>{% block title %}Welcome{% endblock %} — Eli Gundry</title>
     <meta name="description" content="{{ this.description or bag('author').site_description }}">
     {% include 'includes/meta.html' %}
-    {% block stylesheets %}
-      <link rel="stylesheet" href="{{ '/static/gen/styles.css'|asseturl }}">
-    {% endblock %}
+    {%- block stylesheets %}
+    <link rel="stylesheet" href="{{ '/static/gen/styles.css'|asseturl }}">
+    {%- endblock %}
   </head>
-  <body id="{{ this.path }}" class="{{ this._model }}" itemscope itemtype="https://schema.org/Person">
-    {% block header %}
+  <body id="{{ this.path }}" class="{{ this._model }}" itemscope="itemscope" itemtype="https://schema.org/Person">
+    {%- block header %}
       {% include 'includes/header.html' %}
-    {% endblock %}
+    {%- endblock %}
 
-    {% block outer_body %}
+    {%- block outer_body %}
       <main role="main">
         {% block body %}{% endblock %}
       </main>
-    {% endblock %}
+    {%- endblock %}
 
-    {% block footer %}
+    {%- block footer %}
       {% include 'includes/footer.html' %}
-    {% endblock %}
+    {%- endblock %}
 
-    {% block javascripts %}
+    {%- block javascripts %}
       {% include 'includes/scripts.html' %}
-    {% endblock %}
+    {%- endblock %}
   </body>
 </html>

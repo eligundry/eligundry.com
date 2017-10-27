@@ -1,8 +1,8 @@
 version: '2'
 services:
   website:
-    build: .
     image: 'eligundry/eligundry.com'
+    build: .
     container_name: 'eligundry.com'
     environment:
       - RUN_LEKTOR=true

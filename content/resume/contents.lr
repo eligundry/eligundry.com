@@ -22,23 +22,23 @@ body:
       <sup>
         <time itemprop="foundingDate" datetime="2015-04-01">April 2015</time>
         &mdash;
-        <time>Present</time>
+        <time itemprop="dissolutionDate" datetime="2017-10-26">October 2017</time>
       </sup>
     </h3>
     <h4 itemprop="jobTitle">Lead Engineer</h4>
     <ul itemprop="description">
       <li>
-        Instilled a culture of <a
-        href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
+        Instilled a culture of <a href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
         into a company that previously had none, reducing the amount of time spent
         testing regressions manually across the company.
       </li>
       <li>
-        Developed large portions of <a href="http://www.webershandwick.com/">Weber
-        Shandwick's</a> MobileCommand, a public relations crisis management web
+        Developed large portions and was the principal engineer of
+        <a href="http://www.webershandwick.com/">Weber Shandwick's</a>
+        MobileCommand, a public relations crisis management web
         application, and <a href="https://www.gemsafe.com">GemSafe</a>, an
-        insurance platform, using <a href="https://www.python.org/">Python</a> and
-        <a href="http://flask.pocoo.org/">Flask</a>.
+        insurance platform, using <a href="https://www.python.org/">Python</a>
+        and <a href="http://flask.pocoo.org/">Flask</a>.
       </li>
     </ul>
   </div>
