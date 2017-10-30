@@ -25,7 +25,7 @@ body:
         <time itemprop="dissolutionDate" datetime="2017-10-26">October 2017</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Lead Engineer</h4>
+    <h4 itemprop="jobTitle">Principal Engineer</h4>
     <ul itemprop="description">
       <li>
         Instilled a culture of <a href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
@@ -33,13 +33,14 @@ body:
         testing regressions manually across the company.
       </li>
       <li>
-        Developed large portions and was the principal engineer of
+        Developed large portions and was the lead engineer of
         <a href="http://www.webershandwick.com/">Weber Shandwick's</a>
         MobileCommand, a public relations crisis management web
         application, and <a href="https://www.gemsafe.com">GemSafe</a>, an
         insurance platform, using <a href="https://www.python.org/">Python</a>
         and <a href="http://flask.pocoo.org/">Flask</a>.
       </li>
+      <!-- @TODO Make bullet about all the libraries your wrote. -->
     </ul>
   </div>
 
@@ -231,7 +232,7 @@ body:
     <h4 itemprop="award">Bachelor of Science - Computer Science</h4>
     <ul itemprop="description">
       <li>
-        Learned the basics of computer science while doing several internships
+        Studied the basics of computer science while doing several internships
         and attending numerous hackathons.
       </li>
     </ul>
@@ -284,6 +285,7 @@ body:
       Built web applications using
       <a href="http://flask.pocoo.org/" itemprop="itemListElement">Flask</a>,
       <a href="https://www.djangoproject.com/" itemprop="itemListElement">Django</a>,
+      <a href="https://reactjs.org/" itemprop="itemListElement">React</a>,
       <a href="http://wordpress.org/" itemprop="itemListElement">WordPress</a>,
       <a href="https://symfony.com/" itemprop="itemListElement">Symfony</a>,
       &amp;
@@ -330,15 +332,20 @@ body:
       </ul>
     </li>
     <li>
+      Gave a <a href="https://eligundry.com/talks/dots">talk</a> at
+      <a href="https://www.meetup.com/The-New-York-Vim-Meetup/">The New York City Vim Meetup</a>
+      about dotfile management through <a href="https://saltstack.com/">SaltStack</a>.
+    </li>
+    <li>
       Developed website for the <a href="http://cantonfilm.com">Canton Film Festival</a>
       using <a href="http://wordpress.org">WordPress</a>.
     </li>
     <li>
       Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout">Eagle Scout</a>
-      in 2006 and loves to camp.
+      in 2006.
     </li>
     <li>
-      Loves playing tennis, reading, and attending concerts and comedy shows.
+      Enjoys playing tennis, reading, and attending concerts and comedy shows.
     </li>
   </ul>
 </div>
