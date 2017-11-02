@@ -295,6 +295,7 @@ body:
       Loves using
       <a href="http://www.vim.org/" itemprop="itemListElement">Vim</a>,
       <a href="https://www.docker.com/" itemprop="itemListElement">Docker</a>,
+      <a href="http://www.celeryproject.org/" itemprop="itemListElement">Celery</a>,
       <a href="http://docs.peewee-orm.com/en/latest/" itemprop="itemListElement">Peewee</a>,
       <a href="https://en.wikipedia.org/wiki/Linux" itemprop="itemListElement">Linux</a>,
       <a href="http://doc.pytest.org/en/latest/" itemprop="itemListElement">pytest</a>,
