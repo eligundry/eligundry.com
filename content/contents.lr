@@ -2,20 +2,14 @@ title: Home
 ---
 body:
 
-<section class="introduction">
-  <h3></h3>
-  <p>
-  </p>
-</section>
-
 <div class="home-widgets">
   <section class="twitter">
-    <h4>Thinking</h4>
+    <h3>Thinking</h3>
     <a class="twitter-timeline" href="https://twitter.com/EliGundry" data-widget-id="565180848564355073">Tweets by @EliGundry</a>
   </section>
 
   <section class="last-fm">
-    <h4>Humming</h4>
+    <h3>Humming</h3>
     <a href="https://www.last.fm/user/eli_pwnd">
       <img src="last-fm.jpeg" alt="eli_pwnd on last.fm" title="eli_pwnd on last.fm">
     </a>

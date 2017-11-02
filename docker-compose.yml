@@ -10,7 +10,7 @@ services:
       - VIRTUAL_PORT=8080
     ports:
       - "5000:5000"
-      - "8080:80"
+      - "8080:8080"
     volumes:
       - .:/opt/eligundry.com
 
