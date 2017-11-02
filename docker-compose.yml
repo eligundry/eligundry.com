@@ -8,6 +8,9 @@ services:
       - RUN_LEKTOR=${RUN_LEKTOR}
       - VIRTUAL_HOST=eligundry.localhost,eligundry.com
       - VIRTUAL_PORT=8080
+      - LETSENCRYPT_HOST=eligundry.com,www.eligundry.com
+      - LETSENCRYPT_EMAIL=eligundry@gmail.com
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
     ports:
       - "5000:5000"
       - "8080:8080"
@@ -17,6 +20,8 @@ services:
   nginx:
     image: jwilder/nginx-proxy:alpine
     container_name: nginx
+    environment:
+      - ENABLE_IPV6=true
     ports:
       - "80:80"
       - "443:443"
@@ -24,17 +29,14 @@ services:
       - /etc/nginx/conf.d
       - /etc/nginx/vhost.d
       - /usr/share/nginx/html
-      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: letsencrypt
-    environment:
-      - LETSENCRYPT_HOST=eligundry.com,www.eligundry.com
-      - LETSENCRYPT_EMAIL=eligundry@gmail.com
-      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
     volumes:
+      - ./nginx/certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
     volumes_from:
       - nginx

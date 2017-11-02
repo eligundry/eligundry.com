@@ -39,6 +39,7 @@ RUN lektor clean --yes -O /usr/share/nginx/html \
     && rm -r /opt/eligundry.com/webpack/node_modules /root/.cache
 
 EXPOSE 80
+EXPOSE 8080
 EXPOSE 5000
 
 ENTRYPOINT '/opt/eligundry.com/docker/entrypoint.sh'
