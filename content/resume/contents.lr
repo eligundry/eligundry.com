@@ -3,17 +3,22 @@ title: Resume
 body:
 
 <div id="resume-work">
-  <h2>Work
-    <span class="print-show resume-link resume-action">
+  <h2 class="print-hide">
+    Work
+    <a href="#" title="Download One Page Resume" class="trigger-print resume-action">
+      <i class="fa fa-download"></i>
+      <i class="fa fa-file-pdf-o"></i>
+    </a>
+  </h2>
+
+  <h2 class="print-show">
+    Selected Work History
+    <span class="resume-link resume-action">
       Full resume at <a href="https://goo.gl/x485CW">
         eligundry.com/resume
         <i class="fa fa-external-link-square"></i>
       </a>
     </span>
-    <a href="#" title="Download One Page Resume" class="print-hide trigger-print resume-action">
-      <i class="fa fa-download"></i>
-      <i class="fa fa-file-pdf-o"></i>
-    </a>
   </h2>
 
   <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
@@ -40,7 +45,14 @@ body:
         insurance platform, using <a href="https://www.python.org/">Python</a>
         and <a href="http://flask.pocoo.org/">Flask</a>.
       </li>
-      <!-- @TODO Make bullet about all the libraries your wrote. -->
+      <li>
+        Co-authored <a href="https://github.com/croscon/fleaker">Fleaker</a>,
+        which is a collection of sensible defaults and extensions for the
+        <a href="http://flask.pocoo.org/">Flask</a> web framework,
+        and was the sole author of
+        <a href="https://github.com/eligundry/Flask-PDF">Flask-PDF</a> and
+        <a href="https://github.com/eligundry/Flask-Filemanager">Flask-Filemanager</a>.
+      </li>
     </ul>
   </div>
 
@@ -333,11 +345,11 @@ body:
       </ul>
     </li>
     <li>
-      Gave a <a href="https://eligundry.com/talks/dots">talk</a> at
+      Presented a <a href="https://eligundry.com/talks/dots">talk</a> at
       <a href="https://www.meetup.com/The-New-York-Vim-Meetup/">The New York City Vim Meetup</a>
       about dotfile management through <a href="https://saltstack.com/">SaltStack</a>.
     </li>
-    <li>
+    <li class="resume-hide">
       Developed website for the <a href="http://cantonfilm.com">Canton Film Festival</a>
       using <a href="http://wordpress.org">WordPress</a>.
     </li>
@@ -346,7 +358,8 @@ body:
       in 2006.
     </li>
     <li>
-      Enjoys playing tennis, reading, and attending concerts and comedy shows.
+      Enjoys playing tennis, reading, attending concerts, and performing improv
+      comedy.
     </li>
   </ul>
 </div>

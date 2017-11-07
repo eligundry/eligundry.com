@@ -31,7 +31,12 @@
     [id*='/resume'] {
         main {
             h2 {
+                display: block;
                 margin-bottom: 5px;
+
+                &.print-hide {
+                    display: none;
+                }
 
                 &:first-child {
                     margin-top: 0;
@@ -45,6 +50,12 @@
 
                 .resume-action {
                     display: inline;
+                }
+            }
+
+            #resume-work {
+                h2 {
+                    margin-top: 0;
                 }
             }
 
