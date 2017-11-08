@@ -48,10 +48,7 @@ body:
       <li>
         Co-authored <a href="https://github.com/croscon/fleaker">Fleaker</a>,
         which is a collection of sensible defaults and extensions for the
-        <a href="http://flask.pocoo.org/">Flask</a> web framework,
-        and was the sole author of
-        <a href="https://github.com/eligundry/Flask-PDF">Flask-PDF</a> and
-        <a href="https://github.com/eligundry/Flask-Filemanager">Flask-Filemanager</a>.
+        <a href="http://flask.pocoo.org/">Flask</a> web framework.
       </li>
     </ul>
   </div>
