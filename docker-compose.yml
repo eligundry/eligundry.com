@@ -16,6 +16,7 @@ services:
       - "80:80"
     volumes:
       - .:/opt/eligundry.com
+      - ./docker/site.conf:/etc/nginx/sites-enabled/eligundry.com
 
   # @TODO Fix this piece of shit you garbage human
   # nginx:
