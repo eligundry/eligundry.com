@@ -1,7 +1,7 @@
 version: '2'
 services:
   website:
-    image: 'eligundry/eligundry.com'
+    image: eligundry/eligundry.com
     build: .
     container_name: website
     environment:
@@ -13,32 +13,31 @@ services:
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
     ports:
       - "5000:5000"
-      - "80:80"
+      - "8080:8080"
     volumes:
       - .:/opt/eligundry.com
       - ./docker/site.conf:/etc/nginx/sites-enabled/eligundry.com
 
-  # @TODO Fix this piece of shit you garbage human
-  # nginx:
-  #   image: jwilder/nginx-proxy:alpine
-  #   container_name: nginx
-  #   environment:
-  #     - ENABLE_IPV6=true
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - /etc/nginx/conf.d
-  #     - /etc/nginx/vhost.d
-  #     - /usr/share/nginx/html
-  #     - ./nginx/certs:/etc/nginx/certs:ro
-  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  nginx:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx
+    environment:
+      - ENABLE_IPV6=true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/nginx/conf.d
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
 
-  # letsencrypt:
-  #   image: jrcs/letsencrypt-nginx-proxy-companion
-  #   container_name: letsencrypt
-  #   volumes:
-  #     - ./nginx/certs:/etc/nginx/certs:rw
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   volumes_from:
-  #     - nginx
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    volumes:
+      - ./nginx/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    volumes_from:
+      - nginx
