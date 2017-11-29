@@ -6,9 +6,9 @@ body:
 
 # I'm a simple man in a complex world&hellip;
 
-<figure class="pull-right">
-  <img src="hopeful-eli-gundry.jpg">
-  <figcaption>This is me looking pretty dang happy!</figcaption>
+<figure class="pull-right headshot">
+  <img src="eli-gundry-headshot.jpg" alt="Eli Gundry Headshot">
+  <figcaption>I splurged on headshots!</figcaption>
 </figure>
 
 Hi there, I'm Eli Gundry and I think the title says everything you need to know
