@@ -35,10 +35,8 @@ WORKDIR /opt/eligundry.com
 
 # Build the site
 RUN lektor clean --yes -O /usr/share/nginx/html \
-    && lektor build -f webpack -O /usr/share/nginx/html \
-    && rm -r /opt/eligundry.com/webpack/node_modules /root/.cache
+    && lektor build -f webpack -O /usr/share/nginx/html
 
-EXPOSE 80
 EXPOSE 8080
 EXPOSE 5000
 
