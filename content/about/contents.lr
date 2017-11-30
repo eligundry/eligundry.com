@@ -4,19 +4,20 @@ section_wrap: true
 ---
 body:
 
-# I'm a simple man in a complex world&hellip;
+# Code is like Legos, and I like to build!
 
 <figure class="pull-right headshot">
   <img src="eli-gundry-headshot.jpg" alt="Eli Gundry Headshot">
   <figcaption>I splurged on headshots!</figcaption>
 </figure>
 
-Hi there, I'm Eli Gundry and I think the title says everything you need to know
-about me. I love everything to be as simple as possible. Simple life leads to
-less stress. A simple design is easy to understand, even though it may not be
-apprciated. Simple, reusable code is easy to work with and parse.
+Hi there, I'm Eli Gundry and I love building performant web applications and
+APIs. I love everything, from my code to my life, to be as simple as possible.
+A simple life leads to less stress. A simple design is easy to understand, even
+though it may not be appreciated. Simple reusable code is easy to work with and
+parse.
 
-## What exactly is a full stack web developer, anyways?
+## How do you define full stack developer?
 
 I get this question a lot and I should probably elaborate on this. A full stack
 web developer is one that feels just as comfortable working with front end web

@@ -14,7 +14,7 @@ body:
   <h2 class="print-show">
     Selected Work History
     <span class="resume-link resume-action">
-      Full resume at <a href="https://goo.gl/x485CW">
+      Full resume at <a href="https://eligundry.com/résumé">
         eligundry.com/resume
         <i class="fa fa-external-link-square"></i>
       </a>
@@ -38,7 +38,7 @@ body:
         testing regressions manually across the company.
       </li>
       <li>
-        Developed large portions and was the lead engineer of
+        Developed large portions and was the principal engineer of
         <a href="http://www.webershandwick.com/">Weber Shandwick's</a>
         MobileCommand, a public relations crisis management web
         application, and <a href="https://www.gemsafe.com">GemSafe</a>, an
