@@ -12,7 +12,7 @@ body:
   </h2>
 
   <h2 class="print-show">
-    Selected Work History
+    Selected Work
     <span class="resume-link resume-action">
       Full resume at <a href="https://goo.gl/U4NxVQ">
         eligundry.com/resume
@@ -30,7 +30,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2017-10-26">October 2017</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Principal Engineer</h4>
+    <h4>
+      <span itemprop="jobTitle">Principal Engineer</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">New York</span>,
+        <span itemprop="addressRegion">NY</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         Instilled a culture of <a href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
@@ -62,7 +69,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2015-04-01">April 2015</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Web Development Consultant</h4>
+    <h4>
+      <span itemprop="jobTitle">Web Development Consultant</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Kent</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         Architected <a href="https://landscape.itreetools.org">iTree Landscape</a>
@@ -83,7 +97,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2014-12-01">December 2014</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Computer Technician</h4>
+    <h4>
+      <span itemprop="jobTitle">Computer Technician</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Kent</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         Repaired computers in a retail environment and provided support for
@@ -104,7 +125,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2013-08-01">August 2013</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Student IT Worker</h4>
+    <h4>
+      <span itemprop="jobTitle">Student IT Worker</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Kent</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         Helped provide help desk support for
@@ -122,7 +150,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2013-01-01">January 2013</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Web Developer</h4>
+    <h4>
+      <span itemprop="jobTitle">Web Developer</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Cincinnati</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         Used <a href="http://php.net">PHP</a> with the
@@ -146,7 +181,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2012-06-01">June 2012</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Web Developer</h4>
+    <h4>
+      <span itemprop="jobTitle">Web Developer</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Cleveland</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         Used <a href="http://php.net">PHP</a> with the
@@ -174,7 +216,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2011-05-01">May 2011</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Web Development Intern</h4>
+    <h4>
+      <span itemprop="jobTitle">Web Development Intern</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Cleveland</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         Updated content for <a href="http://www.clevelandmagazine.com">
@@ -200,7 +249,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2010-09-01">September 2010</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Traveling IT Support</h4>
+    <h4>
+      <span itemprop="jobTitle">Traveling IT Support</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Canton</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>Provided IT support for customers in their homes.</li>
       <li>Setup and supported various internet cafés around Ohio.</li>
@@ -218,7 +274,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2010-03-01">March 2010</time>
       </sup>
     </h3>
-    <h4 itemprop="jobTitle">Sales Associate</h4>
+    <h4>
+      <span itemprop="jobTitle">Sales Associate</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Wooster</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>Sold consumer electronics and cell phones in a retail environment.</li>
     </ul>
@@ -238,11 +301,19 @@ body:
         <time itemprop="dissolutionDate" datetime="2015-05-01">May 2015</time>
       </sup>
     </h3>
-    <h4 itemprop="award">Bachelor of Science - Computer Science (Incomplete)</h4>
+    <h4>
+      <span itemprop="award">Bachelor of Science - Computer Science (Incomplete)</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Kent</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
-        Studied the basics of computer science while doing several internships
-        and attending numerous hackathons.
+        Studied computer science, completed several internships &amp; attended
+        numerous hackathons. Accepted full time offer from Croscon before
+        completion.
       </li>
     </ul>
   </div>
@@ -257,7 +328,14 @@ body:
         <time itemprop="dissolutionDate" datetime="2009-05-01">May 2009</time>
       </sup>
     </h3>
-    <h4 itemprop="award">Interactive Media Cohort</h4>
+    <h4>
+      <span itemprop="award">Interactive Media Cohort</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">Smithville</span>,
+        <span itemprop="addressRegion">OH</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
     <ul itemprop="description">
       <li>
         High school vocational program in which I learned the basics of
@@ -355,7 +433,7 @@ body:
       in 2006.
     </li>
     <li>
-      Enjoys playing tennis, reading, attending concerts, and performing improv
+      Enjoys playing tennis, reading, attending concerts &amp; performing improv
       comedy.
     </li>
   </ul>
