@@ -23,6 +23,25 @@ body:
 
   <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
+      <a href="https://www.talentinc.com/" itemprop="url">Talent Inc.</a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2018-01-02">January 2018</time>
+        &mdash;
+        <time itemprop="dissolutionDate">Present</time>
+      </sup>
+    </h3>
+    <h4>
+      <span itemprop="jobTitle">Senior Software Engineer</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">New York</span>,
+        <span itemprop="addressRegion">NY</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
+    <h3 itemprop="name">
       <a href="http://croscon.com" itemprop="url">Croscon</a>
       <sup>
         <time itemprop="foundingDate" datetime="2015-04-01">April 2015</time>
@@ -88,7 +107,7 @@ body:
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf" class="resume-hide">
     <h3 itemprop="name">
       <a href="http://pcsurgeons.net" itemprop="url">PC Surgeons</a>
       <sup>
