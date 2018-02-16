@@ -23,9 +23,9 @@
             {% if link_wrap %}</a>{% endif %}
 
           {% else %}
-            <a href="{{ data.href }}">
+            <a href="{{ data.href|safe }}">
               <span itemprop="{{ data.itemprop }}">
-                {{ data.text }}
+                {{ data.text|safe }}
               </span>
             </a>
           {% endif %}

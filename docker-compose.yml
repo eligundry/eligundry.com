@@ -20,7 +20,7 @@ services:
 
   nginx:
     image: jwilder/nginx-proxy:alpine
-    container_name: nginx
+    container_name: eg-nginx-proxy
     environment:
       - ENABLE_IPV6=true
     ports:
@@ -33,13 +33,14 @@ services:
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt
-    environment:
-      - ACME_TOS_HASH=cc88d8d9517f490191401e7b54e9ffd12a2b9082ec7a1d4cec6101f9f1647e7b
-    volumes:
-      - ./nginx/certs:/etc/nginx/certs:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    volumes_from:
-      - nginx
+  # The is managed by Salt Now
+  # letsencrypt:
+  #   image: jrcs/letsencrypt-nginx-proxy-companion
+  #   container_name: letsencrypt
+  #   environment:
+  #     - ACME_TOS_HASH=cc88d8d9517f490191401e7b54e9ffd12a2b9082ec7a1d4cec6101f9f1647e7b
+  #   volumes:
+  #     - ./nginx/certs:/etc/nginx/certs:rw
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #   volumes_from:
+  #     - nginx
