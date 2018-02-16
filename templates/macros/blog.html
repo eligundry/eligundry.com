@@ -18,7 +18,9 @@
 {% macro render_blog_post_preview(post) %}
 <article itemscope itemprop="blogPosts" itemtype="http://schema.org/BlogPosting" class="blog-preview">
   <h2 itemprop="title">
-    <a itemprop="url" href="{{ post|url }}">{{ post.title }}</a>
+    <a itemprop="url" href="{{ post|url }}"{%- if not post.author %} data-turbolinks="false"{% endif %}>
+      {{ post.title }}
+    </a>
   </h2>
   <meta itemprop="author" content="{{ post.author }}">
   <time itemprop="datePublished" datetime="{{ post.pub_date }}">

@@ -8,6 +8,9 @@
     {%- block stylesheets %}
     <link rel="stylesheet" href="{{ '/static/gen/styles.css'|asseturl }}">
     {%- endblock %}
+    {%- block head_javascripts %}
+    <script src="{{ '/static/gen/turbolinks.js'|asseturl }}"></script>
+    {%- endblock %}
   </head>
   <body id="{{ this.path }}" class="{{ this._model }}" itemscope="itemscope" itemtype="https://schema.org/Person">
     {%- block header %}

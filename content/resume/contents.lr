@@ -5,7 +5,7 @@ body:
 <div id="resume-work">
   <h2 class="print-hide">
     Work
-    <a href="#" title="Download One Page Resume" class="trigger-print resume-action">
+    <a href="#" title="Download One Page Resume" class="trigger-print resume-action" data-turbolinks="false">
       <i class="fa fa-download"></i>
       <i class="fa fa-file-pdf-o"></i>
     </a>
