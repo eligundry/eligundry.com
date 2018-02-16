@@ -1,7 +1,7 @@
 import delegate from 'delegate';
 
 const attachPrintPageEvent = () => {
-    delegate(document.body, '.trigger-print', 'click', (event) => {
+    delegate('html', '.trigger-print', 'click', (event) => {
         event.preventDefault();
         window.print();
     });

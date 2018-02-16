@@ -1,6 +1,6 @@
 <footer class="footer" role="contentinfo">
   <address>
-    {%- for class_, data in bag('contact').iteritems() %}
+    {%- for class_, data in bag('contact').items() %}
       <div class="{{ class_ }}" {% if data.itemtype %}itemscope itemtype="{{ data.itemtype }}{% endif %}">
         <i class="fa fa-{{ data.fa }}" title="{{ data.title }}"></i>
         <div class="items">
