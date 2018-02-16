@@ -1,12 +1,10 @@
-const attachPrintPageEvent = () => {
-    const printBtn = document.querySelector('.trigger-print');
+import delegate from 'delegate';
 
-    if (printBtn) {
-        printBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            window.print();
-        });
-    }
+const attachPrintPageEvent = () => {
+    delegate(document.body, '.trigger-print', 'click', (event) => {
+        event.preventDefault();
+        window.print();
+    });
 };
 
 export default attachPrintPageEvent;
