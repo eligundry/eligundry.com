@@ -6,7 +6,8 @@ var options = {
     entry: {
         'app': './js/main.js',
         'styles': './less/main.less',
-        'presentation': './less/presentation.less'
+        'presentation': './less/presentation.less',
+        'turbolinks': './js/turbolinks.js'
     },
     output: {
         path: path.dirname(__dirname) + '/assets/static/gen',
