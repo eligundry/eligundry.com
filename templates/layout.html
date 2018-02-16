@@ -12,7 +12,7 @@
     <script src="{{ '/static/gen/turbolinks.js'|asseturl }}"></script>
     {%- endblock %}
   </head>
-  <body id="{{ this.path }}" class="{{ this._model }}" itemscope="itemscope" itemtype="https://schema.org/Person">
+  <body id="{{ this.path.replace('/', '-')[1:] }}" class="{{ this._model }}" itemscope="itemscope" itemtype="https://schema.org/Person">
     {%- block header %}
       {% include 'includes/header.html' %}
     {%- endblock %}
