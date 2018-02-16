@@ -1,4 +1,4 @@
-@import "_normalize";
+@import (less) "~normalize.css/normalize.css";
 @import "_grid";
 @import "_variables";
 @import (less) "pygments-default.css";
@@ -26,13 +26,12 @@ img {
 
 a {
     color: @linkColor;
-    font-weight: bold;
     text-decoration: none;
 
     &:hover,
     &:focus {
-        border-bottom: @focusBorder;
         outline: @focusOutline;
+        text-decoration: underline;
     }
 
     &:hover,

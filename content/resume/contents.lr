@@ -23,6 +23,30 @@ body:
 
   <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
+      <a href="https://www.talentinc.com/" itemprop="url">Talent Inc.</a>
+      <sup>
+        <time itemprop="foundingDate" datetime="2018-10-01">January 2018</time>
+        &mdash;
+        <time itemprop="dissolutionDate">Present</time>
+      </sup>
+    </h3>
+    <h4>
+      <span itemprop="jobTitle">Senior Software Engineer</span>
+      <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="addressLocality">New York</span>,
+        <span itemprop="addressRegion">NY</span>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </address>
+    </h4>
+    <ul itemprop="description">
+      <li>
+        When I do something of note, I'll put it here.
+      </li>
+    </ul>
+  </div>
+
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
+    <h3 itemprop="name">
       <a href="http://croscon.com" itemprop="url">Croscon</a>
       <sup>
         <time itemprop="foundingDate" datetime="2015-04-01">April 2015</time>
@@ -141,7 +165,7 @@ body:
     </ul>
   </div>
 
-  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf" class="resume-hide">
+  <div itemtype="http://schema.org/Organization" itemscope itemprop="alumniOf">
     <h3 itemprop="name">
       <a href="http://mindboxstudios.com" itemprop="url">Mindbox Studios</a>
       <sup>

@@ -1,4 +1,4 @@
-FROM python:2-slim
+FROM python:3-slim
 LABEL maintainer="Eli Gundry <eligundry@gmail.com>"
 
 # Install system dependencies.

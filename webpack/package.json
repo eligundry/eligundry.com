@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "delegate": "^3.2.0",
+    "normalize.css": "^8.0.0",
     "turbolinks": "^5.1.1"
   }
 }
