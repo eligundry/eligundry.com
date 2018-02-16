@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="{{ '/static/gen/presentation.css'|asseturl }}">
 {% endblock %}
 
+{# Disable Turbolinks #}
+{% block head_javascripts %}{%- endblock %}
+
 {# Disable the header #}
 {% block header %}{% endblock %}
 
