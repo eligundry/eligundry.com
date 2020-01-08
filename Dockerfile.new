@@ -1,0 +1,21 @@
+FROM node:12 AS node_builder
+FROM python:3 AS python_builder
+
+# Copy node & npm
+COPY --from=node_builder /usr/local/bin/node /usr/local/bin/node
+COPY --from=node_builder /usr/local/bin/npm /usr/local/bin/npm
+
+# Install python dependencies
+ADD requirements.txt /requirements.txt
+RUN pip install -r requirements.txt
+
+# Build site
+ADD . /opt/eligundry.com
+WORKDIR /opt/eligundry.com
+RUN mkdir /opt/build \
+    && lektor clean --yes -O /opt/build \
+    && lektor build -f webpack -O /opt/build
+
+# Copy the output to an nginx container
+FROM nginx:alpine AS final
+COPY --from=python_builder /opt/build /usr/share/nginx/html

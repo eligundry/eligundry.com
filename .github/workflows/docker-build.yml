@@ -1,0 +1,20 @@
+name: Docker Build & Push
+on:
+  push:
+    branches:
+      - master
+      - github-actions-and-such
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: whoan/docker-build-with-cache-action@v2
+      with:
+        username: eligundry
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: eligundry/eligundry.com
+        image_tag: action-test
+        dockerfile: Dockerfile.new
