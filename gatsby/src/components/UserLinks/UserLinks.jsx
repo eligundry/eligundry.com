@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import "./UserLinks.css";
+import React, { Component } from 'react'
+import './UserLinks.css'
 
 class UserLinks extends Component {
   getLinkElements() {
-    const { userLinks } = this.props.config;
-    const { labeled } = this.props;
+    const { userLinks } = this.props.config
+    const { labeled } = this.props
     return userLinks.map(link => (
       <a href={link.url}>
         <button type="button" key={link.label}>
-          {labeled ? link.label : ""}
+          {labeled ? link.label : ''}
         </button>
       </a>
-    ));
+    ))
   }
 
   render() {
-    const { userLinks } = this.props.config;
+    const { userLinks } = this.props.config
     if (!userLinks) {
-      return null;
+      return null
     }
-    return <div className="user-links">{this.getLinkElements()}</div>;
+    return <div className="user-links">{this.getLinkElements()}</div>
   }
 }
 
-export default UserLinks;
+export default UserLinks

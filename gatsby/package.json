@@ -18,6 +18,7 @@
     "gatsby-plugin-sharp": "^2.2.27",
     "gatsby-plugin-sitemap": "^2.2.16",
     "gatsby-plugin-twitter": "^2.1.9",
+    "gatsby-plugin-typescript": "^2.1.23",
     "gatsby-remark-autolink-headers": "^2.1.13",
     "gatsby-remark-copy-linked-files": "^2.1.23",
     "gatsby-remark-images": "^3.1.25",
@@ -36,6 +37,7 @@
     "react-helmet": "^5.2.1",
     "react-share": "^3.0.1",
     "react-twitter-widgets": "^1.7.1",
+    "typescript-eslint-parser": "^22.0.0",
     "url-join": "^4.0.0"
   },
   "devDependencies": {
@@ -78,5 +80,12 @@
     "plugins": [
       "remark-preset-lint-recommended"
     ]
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": true
   }
 }

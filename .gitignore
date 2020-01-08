@@ -1,5 +1,7 @@
 *.pyc
 **/node_modules/
+lektor/webpack/node_modules/
+gatsby/node_modules/
 lektor/assets/static/gen
 lektor/content/last-fm.jpeg
 lektor/nginx/*

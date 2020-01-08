@@ -9,6 +9,10 @@ indent_size = 4
 insert_final_newline = false
 charset = utf-8
 
+[*.{js,jsx,ts,tsx}]
+indent_style = space
+indent_size = 2
+
 [*.{ejs,html,json,jinja,lr,xml,md,yml}]
 indent_style = space
 indent_size = 2
