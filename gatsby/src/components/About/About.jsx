@@ -1,16 +1,33 @@
-import React, { Component } from 'react'
+import React from 'react'
+import GitHubCalendar from 'react-github-calendar'
+import { GoodreadsBookshelf } from 'react-goodreads-shelf'
+import { TwitterTimelineEmbed } from 'react-twitter-embed'
+
 import './About.css'
 
-class About extends Component {
-  render() {
-    return (
-      <div className="about">
-        <h1>
-          Edit About component or pages/about.jsx to include your information.
-        </h1>
-      </div>
-    )
-  }
-}
+const About = () => (
+  <main className="about">
+    <section className="coding">
+      <h2>Coding</h2>
+      <GitHubCalendar username="eligundry" dateFormat="YYYY-MM-DD" />
+    </section>
+    <section className="reading">
+      <h2>Reading</h2>
+      <GoodreadsBookshelf
+        userId="29665939"
+        apiKey="TSX2BO7dC8AMZstT2H6MBg"
+        shelf="currently-reading"
+      />
+    </section>
+    <section className="tweets">
+      <h2>Tweeting</h2>
+      <TwitterTimelineEmbed
+        sourceType="profile"
+        screenName="eligundry"
+        options={{ height: 400 }}
+      />
+    </section>
+  </main>
+)
 
 export default About
