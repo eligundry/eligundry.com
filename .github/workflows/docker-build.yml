@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - github-actions-and-such
 
 jobs:
   build:
@@ -16,5 +15,5 @@ jobs:
         username: eligundry
         password: "${{ secrets.DOCKER_PASSWORD }}"
         image_name: eligundry/eligundry.com
-        image_tag: action-test
+        image_tag: latest
         dockerfile: Dockerfile.new
