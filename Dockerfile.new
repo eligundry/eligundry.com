@@ -1,17 +1,21 @@
+# Install node dependencies for frontend
 FROM node:12 AS node_builder
-FROM python:3 AS python_builder
-
-# Copy node & npm
-COPY --from=node_builder /usr/local/bin/node /usr/local/bin/node
-COPY --from=node_builder /usr/local/bin/npm /usr/local/bin/npm
+WORKDIR /opt/modules
+ADD webpack/package.json webpack/package-lock.json /opt/modules/
+RUN npm ci
 
 # Install python dependencies
+FROM python:3 AS python_builder
+COPY --from=node_builder /usr/local/bin/nodejs /usr/local/bin/nodejs
+COPY --from=node_builder /usr/local/bin/node /usr/local/bin/node
+COPY --from=node_builder /usr/local/bin/npm /usr/local/bin/npm
 ADD requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
 
 # Build site
 ADD . /opt/eligundry.com
 WORKDIR /opt/eligundry.com
+COPY --from=node_builder /opt/modules/node_modules webpack/node_modules
 RUN mkdir /opt/build \
     && lektor clean --yes -O /opt/build \
     && lektor build -f webpack -O /opt/build
