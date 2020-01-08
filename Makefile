@@ -1,7 +1,7 @@
 TAG=eligundry/eligundry.com:latest
 
 build:
-	docker build -t $(TAG) .
+	docker build -f Dockerfile.new -t $(TAG) .
 
 push:
 	docker push $(TAG)
