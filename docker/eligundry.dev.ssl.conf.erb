@@ -33,5 +33,6 @@ server {
     location = /img/last.fm.jpg {
         proxy_pass "http://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3";
         proxy_set_header Host "www.tapmusic.net";
+        expires 24h;
     }
 }
