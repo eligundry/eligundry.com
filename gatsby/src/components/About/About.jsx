@@ -27,6 +27,12 @@ const About = () => (
         options={{ height: 400 }}
       />
     </section>
+    <section className="listening">
+      <h2>Listening</h2>
+      <a href="https://www.last.fm/user/eli_pwnd">
+        <img src="/img/last.fm.jpg" alt="My top 9 albums for the past 7 days" />
+      </a>
+    </section>
   </main>
 )
 
