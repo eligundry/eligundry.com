@@ -35,4 +35,8 @@ server {
         proxy_set_header Host "www.tapmusic.net";
         expires 24h;
     }
+
+    location /api {
+        proxy_pass http://api:8080;
+    }
 }

@@ -2,6 +2,9 @@
 .git
 .gitignore
 README.md
-assets/static
-content/last-fm.jpeg
-webpack/node_modules
+lektor/assets/static
+lektor/content/last-fm.jpeg
+lektor/webpack/node_modules
+gatsby/node_modules
+gatsby/public
+api/vendor

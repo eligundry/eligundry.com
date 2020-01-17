@@ -1,0 +1,22 @@
+FROM golang:1.13-alpine
+
+# Install deps to install packages
+RUN apk add --no-cache ca-certificates git make curl
+
+# Install go-watcher for auto rebuilds during development
+RUN go get github.com/canthefason/go-watcher \
+    && go install github.com/canthefason/go-watcher/cmd/watcher
+
+# Install go dependencies
+WORKDIR /src
+ADD ./api/go.* ./
+RUN go mod download
+
+# Build the app
+ADD ./Makefile /src
+ADD ./api /src
+RUN make static-build
+
+EXPOSE 8080
+WORKDIR /src
+ENTRYPOINT ["/go/bin/watcher"]

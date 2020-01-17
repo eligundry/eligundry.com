@@ -13,6 +13,15 @@ services:
       - data_https_portal:/var/lib/https-portal
       - ./docker/eligundry.dev.ssl.conf.erb:/var/lib/nginx-conf/eligundry.dev.ssl.conf.erb
 
+  api:
+    container_name: eg-api
+    image: eligundry/api
+    build:
+      context: ./
+      dockerfile: Dockerfile.api
+    volumes:
+      - ./api:/src
+
   docker-host:
     container_name: eg-dh
     container_name: oms-docker-host
