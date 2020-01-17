@@ -18,6 +18,7 @@
     "gatsby-plugin-react-helmet": "^3.1.18",
     "gatsby-plugin-sharp": "^2.3.10",
     "gatsby-plugin-sitemap": "^2.2.24",
+    "gatsby-plugin-styled-components": "^3.1.17",
     "gatsby-plugin-twitter": "^2.1.17",
     "gatsby-plugin-typescript": "^2.1.23",
     "gatsby-remark-autolink-headers": "^2.1.22",
@@ -41,10 +42,12 @@
     "react-share": "^3.0.1",
     "react-twitter-embed": "^3.0.3",
     "react-twitter-widgets": "^1.7.1",
+    "styled-components": "^5.0.0",
     "typescript-eslint-parser": "^22.0.0",
     "url-join": "^4.0.0"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.6",
     "cli-glob": "^0.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -67,6 +70,7 @@
   "license": "MIT",
   "main": "n/a",
   "scripts": {
+    "start": "gatsby develop",
     "develop": "gatsby develop",
     "dev": "npm run develop",
     "serve": "gatsby serve",
