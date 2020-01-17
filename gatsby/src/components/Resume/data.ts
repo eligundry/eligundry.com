@@ -1,4 +1,4 @@
-interface Location {
+export interface Location {
   address: string
   postalCode: string
   city: string
@@ -6,31 +6,31 @@ interface Location {
   region: string
 }
 
-interface Experience {
+export interface Experience {
   position: string
   website: string
-  startDate: string
-  endDate: string | null
+  startDate: Date
+  endDate: Date | null
   summary: string
   highlights: string[]
   location: Partial<Location>
 }
 
-interface Work extends Experience {
+export interface Work extends Experience {
   company: string
 }
 
-interface Volunteer extends Experience {
+export interface Volunteer extends Experience {
   organization: string
 }
 
-interface Profile {
+export interface Profile {
   network: string
   username: string
   url: string
 }
 
-interface Basics {
+export interface Basics {
   name: string
   label: string
   picture?: string
@@ -42,9 +42,29 @@ interface Basics {
   profiles?: Profile[]
 }
 
-interface Resume {
+export interface Education {
+  institution: string
+  area: string
+  studyType?: string
+  startDate: Date
+  endDate: Date
+  completed: boolean
+  gpa?: number
+  location: Partial<Location>
+  summary: string
+}
+
+export interface Skills {
+  name: string
+  level: string
+  keywords: string[]
+}
+
+export interface Resume {
   basics: Basics
   work: Work[]
+  education: Education[]
+  skills: Skills[]
   volunteer?: Volunteer[]
 }
 
@@ -71,7 +91,7 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'NY',
       },
-      startDate: '2018-01-03',
+      startDate: new Date('2018-01-03'),
       endDate: null,
       summary: '',
       highlights: [],
@@ -85,8 +105,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'NY',
       },
-      startDate: '2015-04-01',
-      endDate: '2017-10-26',
+      startDate: new Date('2015-04-01'),
+      endDate: new Date('2017-10-26'),
       summary: '',
       highlights: [
         `
@@ -118,18 +138,16 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2014-11-01',
-      endDate: '2015-04-01',
-      summary: '',
-      highlights: [
-        `
+      startDate: new Date('2014-11-01'),
+      endDate: new Date('2015-04-01'),
+      summary: `
         Architected [iTree Landscape](https://landscape.itreetools.org)
         using [Django](https://www.djangoproject.com) and
         [JavaScript](https://en.wikipedia.org/wiki/JavaScript), which
         uses satellite images and various data sources to determine where trees
         should be planted.
-        `,
-      ],
+      `,
+      highlights: [],
     },
     {
       company: 'PC Surgeons',
@@ -140,8 +158,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2013-10-01',
-      endDate: '2014-12-01',
+      startDate: new Date('2013-10-01'),
+      endDate: new Date('2014-12-01'),
       summary: `
         Repaired computers in a retail environment and provided support for
         customers' networks using [Linux](https://en.wikipedia.org/wiki/Linux)
@@ -158,8 +176,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2013-05-01',
-      endDate: '2013-08-01',
+      startDate: new Date('2013-05-01'),
+      endDate: new Date('2013-08-01'),
       summary: `
         Helped provide help desk support for
         [Kent State's College of Arts and Sciences](http://www.kent.edu/CAS/).
@@ -175,8 +193,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2012-08-01',
-      endDate: '2013-01-01',
+      startDate: new Date('2012-08-01'),
+      endDate: new Date('2013-01-01'),
       summary: '',
       highlights: [
         `
@@ -200,8 +218,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2011-05-01',
-      endDate: '2012-06-01',
+      startDate: new Date('2011-05-01'),
+      endDate: new Date('2012-06-01'),
       summary: '',
       highlights: [
         `
@@ -227,8 +245,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2010-09-01',
-      endDate: '2011-05-01',
+      startDate: new Date('2010-09-01'),
+      endDate: new Date('2011-05-01'),
       summary: '',
       highlights: [
         `
@@ -252,8 +270,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2010-03-01',
-      endDate: '2010-09-01',
+      startDate: new Date('2010-03-01'),
+      endDate: new Date('2010-09-01'),
       summary: `
       Provided IT support for customers in their homes and setup various internet cafés around Ohio.
       `,
@@ -268,11 +286,95 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: '2009-06-01',
-      endDate: '2010-03-01',
+      startDate: new Date('2009-06-01'),
+      endDate: new Date('2010-03-01'),
       summary:
         'Sold consumer electronics and cell phones in a retail environment.',
       highlights: [],
+    },
+  ],
+  education: [
+    {
+      institution: 'Kent State University',
+      area: 'Computer Science',
+      studyType: 'Bachelor of Science',
+      startDate: new Date('2009-08-01'),
+      endDate: new Date('2015-05-01'),
+      completed: false,
+      location: {
+        city: 'Kent',
+        countryCode: 'US',
+        region: 'OH',
+      },
+      summary: `
+        Studied computer science, completed several internships &amp; attended
+        numerous hackathons. Accepted full time offer from Croscon before
+        completion.
+      `,
+    },
+    {
+      institution: 'Wayne County Schools Career Center',
+      area: 'Interactive Media Cohort',
+      startDate: new Date('2007-08-01'),
+      endDate: new Date('2009-05-01'),
+      completed: true,
+      gpa: 3.3,
+      location: {
+        city: 'Smithville',
+        countryCode: 'US',
+        region: 'OH',
+      },
+      summary: `
+        High school vocational program in which I learned the basics of
+        <a href="https://en.wikipedia.org/wiki/HTML5">HTML</a>,
+        <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>,
+        <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a>,
+        <a href="https://php.net/">PHP</a>,
+        <a href="http://wordpress.org/">WordPress</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Photoshop">Photoshop</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Illustrator">Illustrator</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Premiere_Pro">Premiere Pro</a>,
+        &amp;
+        <a href="https://en.wikipedia.org/wiki/Adobe_Flash">Flash</a>.
+        Using these skills, I created websites used by classes and external clients.
+      `,
+    },
+  ],
+  skills: [
+    {
+      name: 'Languages',
+      level: 'Master',
+      keywords: [
+        'Python',
+        'Typescript',
+        'JavaScript',
+        'PHP',
+        'Go',
+        'SQL',
+        'HTML5',
+      ],
+    },
+    {
+      name: 'Frameworks',
+      level: 'Master',
+      keywords: ['React', 'Flask', 'Django', 'Gin', 'Gatsby', 'WordPress'],
+    },
+    {
+      name: 'Tools',
+      level: 'Master',
+      keywords: [
+        'Vim',
+        'Docker',
+        'Git',
+        'SaltStack',
+        'GitHub Actions',
+        'AWS Lambda',
+      ],
+    },
+    {
+      name: 'Love Hate',
+      level: 'Master',
+      keywords: ['Ansible', 'SQLAlchemy', 'jQuery', 'C#'],
     },
   ],
 }
