@@ -6,7 +6,7 @@ import './index.css'
 const MainLayout: React.FC = ({ children }) => {
   return (
     <div className="layout-container">
-      <Helmet>
+      <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
         <meta name="description" content={config.siteDescription} />
         <html lang="en" />
       </Helmet>

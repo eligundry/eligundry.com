@@ -374,7 +374,7 @@ const resume: Resume = {
     {
       name: 'Love Hate',
       level: 'Master',
-      keywords: ['Ansible', 'SQLAlchemy', 'jQuery', 'C#'],
+      keywords: ['Ansible', 'SQLAlchemy', 'jQuery'],
     },
   ],
 }
