@@ -53,14 +53,6 @@ func GetDB() *sqlx.DB {
 	return _db
 }
 
-var activitySplitFn = func(c rune) bool {
-	return c == '|'
-}
-
-var noteSplitFn = func(c rune) bool {
-	return c == '-'
-}
-
 func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
 	db := GetDB()
 	var entries []DaylioEntry

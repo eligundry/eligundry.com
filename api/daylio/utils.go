@@ -19,3 +19,11 @@ func parseTimestringToTime(ts string) (time.Time, error) {
 
 	return parsed, nil
 }
+
+var activitySplitFn = func(c rune) bool {
+	return c == '|'
+}
+
+var noteSplitFn = func(c rune) bool {
+	return c == '-'
+}

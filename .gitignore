@@ -6,3 +6,5 @@ lektor/assets/static/gen
 lektor/content/last-fm.jpeg
 lektor/nginx/*
 lektor/.env
+data/*
+!data/.gitkeep

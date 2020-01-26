@@ -17,18 +17,18 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
       Object.prototype.hasOwnProperty.call(node.frontmatter, 'title')
     ) {
-      slug = `/${kebabCase(node.frontmatter.title)}`
+      slug = `${kebabCase(node.frontmatter.title)}`
     } else if (parsedFilePath.name !== 'index' && parsedFilePath.dir !== '') {
-      slug = `/${parsedFilePath.dir}/${parsedFilePath.name}/`
+      slug = `${parsedFilePath.dir}/${parsedFilePath.name}`
     } else if (parsedFilePath.dir === '') {
-      slug = `/${parsedFilePath.name}/`
+      slug = `${parsedFilePath.name}`
     } else {
-      slug = `/${parsedFilePath.dir}/`
+      slug = `/{parsedFilePath.dir}`
     }
 
     if (Object.prototype.hasOwnProperty.call(node, 'frontmatter')) {
       if (Object.prototype.hasOwnProperty.call(node.frontmatter, 'slug'))
-        slug = `/${kebabCase(node.frontmatter.slug)}`
+        slug = `${kebabCase(node.frontmatter.slug)}`
       if (Object.prototype.hasOwnProperty.call(node.frontmatter, 'date')) {
         const date = parseISO(node.frontmatter.date)
 
@@ -100,7 +100,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   ;[...Array(pageCount)].forEach((_val, pageNum) => {
     createPage({
-      path: pageNum === 0 ? `/` : `/${pageNum + 1}/`,
+      path: pageNum === 0 ? `/blog/` : `/blog/page/${pageNum + 1}/`,
       component: listingPage,
       context: {
         limit: postsPerPage,
@@ -132,7 +132,7 @@ exports.createPages = async ({ graphql, actions }) => {
     const prevEdge = postsEdges[prevID]
 
     createPage({
-      path: edge.node.fields.slug,
+      path: `/blog/${edge.node.fields.slug}`,
       component: postPage,
       context: {
         slug: edge.node.fields.slug,
@@ -147,7 +147,7 @@ exports.createPages = async ({ graphql, actions }) => {
   //  Create tag pages
   tagSet.forEach(tag => {
     createPage({
-      path: `/tags/${kebabCase(tag)}/`,
+      path: `/blog/tags/${kebabCase(tag)}/`,
       component: tagPage,
       context: { tag },
     })
@@ -156,7 +156,7 @@ exports.createPages = async ({ graphql, actions }) => {
   // Create category pages
   categorySet.forEach(category => {
     createPage({
-      path: `/categories/${kebabCase(category)}/`,
+      path: `/blog/categories/${kebabCase(category)}/`,
       component: categoryPage,
       context: { category },
     })
