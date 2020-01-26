@@ -16,6 +16,7 @@ services:
   api:
     container_name: eg-api
     image: eligundry/api
+    entrypoint: /go/bin/watcher
     build:
       context: ./
       dockerfile: Dockerfile.api

@@ -1,5 +1,0 @@
-FROM scratch
-COPY --from=builder /usr/local/go/lib/time /usr/local/go/lib/time
-COPY --from=eligundry/api.eligundry:dev /bin/api /bin/api
-EXPOSE 8080
-ENTRYPOINT ["/bin/api"]

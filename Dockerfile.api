@@ -21,4 +21,4 @@ RUN make static-build
 
 EXPOSE 8080
 WORKDIR /src
-ENTRYPOINT ["/go/bin/watcher"]
+ENTRYPOINT ["/bin/api"]
