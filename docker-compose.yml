@@ -15,7 +15,7 @@ services:
 
   api:
     container_name: eg-api
-    image: eligundry/api
+    image: eligundry/api.eligundry.com
     entrypoint: /go/bin/watcher
     build:
       context: ./

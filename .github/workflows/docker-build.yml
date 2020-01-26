@@ -16,5 +16,5 @@ jobs:
         username: eligundry
         password: "${{ secrets.DOCKER_PASSWORD }}"
         image_name: eligundry/api.eligundry.com
-        image_tag: dev
+        image_tag: latest
         dockerfile: Dockerfile.api
