@@ -25,7 +25,7 @@ const Section = styled.section<SectionProps>`
     `}
 `
 
-const About: React.FC = () => (
+const Home: React.FC = () => (
   <Wrapper className="about">
     <Section className="feeling">
       <Daylio />
@@ -59,4 +59,4 @@ const About: React.FC = () => (
   </Wrapper>
 )
 
-export default About
+export default Home
