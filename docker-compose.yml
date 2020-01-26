@@ -7,11 +7,11 @@ services:
       - '80:80'
       - '443:443'
     environment:
-      DOMAINS: 'eligundry.dev -> http://docker-host:8000'
+      DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
       STAGE: 'local'
     volumes:
       - data_https_portal:/var/lib/https-portal
-      - ./docker/eligundry.dev.ssl.conf.erb:/var/lib/nginx-conf/eligundry.dev.ssl.conf.erb
+      - ./docker/eligundry.localhost.ssl.conf.erb:/var/lib/nginx-conf/eligundry.localhost.ssl.conf.erb
 
   api:
     container_name: eg-api
@@ -21,10 +21,10 @@ services:
       dockerfile: Dockerfile.api
     volumes:
       - ./api:/src
+      - ./data:/opt/data
 
   docker-host:
     container_name: eg-dh
-    container_name: oms-docker-host
     image: qoomon/docker-host
     cap_add:
       - NET_ADMIN

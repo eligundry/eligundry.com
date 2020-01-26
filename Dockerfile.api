@@ -1,7 +1,9 @@
-FROM golang:1.13-alpine
+FROM golang:1.13
 
 # Install deps to install packages
-RUN apk add --no-cache ca-certificates git make curl
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y sqlite3 \
+    && echo "PRAGMA compile_options;" | sqlite3 | grep JSON1
 
 # Install go-watcher for auto rebuilds during development
 RUN go get github.com/canthefason/go-watcher \

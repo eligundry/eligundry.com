@@ -10,6 +10,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
   let slug
   if (node.internal.type === 'MarkdownRemark') {
+    node.collection = getNode(node.parent).sourceInstanceName
     const fileNode = getNode(node.parent)
     const parsedFilePath = path.parse(fileNode.relativePath)
     if (
@@ -48,11 +49,12 @@ exports.createPages = async ({ graphql, actions }) => {
   const tagPage = path.resolve('src/templates/tag.jsx')
   const categoryPage = path.resolve('src/templates/category.jsx')
   const listingPage = path.resolve('./src/templates/listing.jsx')
+  const talkPage = path.resolve('./src/templates/talk.tsx')
 
   // Get a full list of markdown posts
   const markdownQueryResult = await graphql(`
     {
-      allMarkdownRemark {
+      allMarkdownRemark(filter: { collection: { eq: "posts" } }) {
         edges {
           node {
             fields {
@@ -64,6 +66,7 @@ exports.createPages = async ({ graphql, actions }) => {
               category
               date
             }
+            htmlAst
           }
         }
       }
@@ -158,4 +161,38 @@ exports.createPages = async ({ graphql, actions }) => {
       context: { category },
     })
   })
+
+  // const talkQuery = await graphql(`
+  //   {
+  //     allMarkdownRemark(filter: { collection: { eq: "talks" } }) {
+  //       edges {
+  //         node {
+  //           fields {
+  //             slug
+  //           }
+  //           frontmatter {
+  //             title
+  //             date
+  //           }
+  //           rawMarkdownBody
+  //         }
+  //       }
+  //     }
+  //   }
+  // `)
+
+  // const talkEdges = talkQuery.data.allMarkdownRemark.edges
+
+  // talkEdges.forEach(talk => {
+  //   console.log(talk.node.frontmatter)
+  //   createPage({
+  //     path: `/talks${talk.node.fields.slug}`,
+  //     component: talkPage,
+  //     context: {
+  //       ...talk.node.fields,
+  //       ...talk.node.frontmatter,
+  //       rawMarkdownBody: talk.node.rawMarkdownBody,
+  //     },
+  //   })
+  // })
 }

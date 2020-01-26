@@ -42,11 +42,14 @@
     "react-share": "^3.0.1",
     "react-twitter-embed": "^3.0.3",
     "react-twitter-widgets": "^1.7.1",
+    "react-use": "^13.21.0",
+    "rehype-react": "^4.0.1",
     "styled-components": "^5.0.0",
     "typescript-eslint-parser": "^22.0.0",
     "url-join": "^4.0.0"
   },
   "devDependencies": {
+    "@types/reveal": "^3.3.33",
     "babel-plugin-styled-components": "^1.10.6",
     "cli-glob": "^0.1.0",
     "eslint": "^6.8.0",
