@@ -16,5 +16,13 @@ jobs:
         username: eligundry
         password: "${{ secrets.DOCKER_PASSWORD }}"
         image_name: eligundry/api.eligundry.com
-        image_tag: latest
+        image_tag: dev
         dockerfile: Dockerfile.api
+
+    - uses: whoan/docker-build-with-cache-action@v2
+      with:
+        username: eligundry
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: eligundry/api.eligundry.com
+        image_tag: latest
+        dockerfile: docker/Dockerfile.api
