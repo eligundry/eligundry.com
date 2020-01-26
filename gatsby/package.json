@@ -49,7 +49,6 @@
     "url-join": "^4.0.0"
   },
   "devDependencies": {
-    "@types/reveal": "^3.3.33",
     "babel-plugin-styled-components": "^1.10.6",
     "cli-glob": "^0.1.0",
     "eslint": "^6.8.0",

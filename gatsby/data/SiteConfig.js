@@ -13,7 +13,7 @@ const config = {
   postDefaultCategoryID: 'Tech', // Default category for posts.
   dateFromFormat: 'YYYY-MM-DD', // Date format used in the frontmatter.
   dateFormat: 'YYYY-MM-DD', // Date format for display.
-  postsPerPage: 4, // Amount of posts displayed per listing page.
+  postsPerPage: 10, // Amount of posts displayed per listing page.
   userName: 'Eli Gundry', // Username to display in the author segment.
   userEmail: 'eligundry@gmail.com', // Email used for RSS feed's author segment
   userTwitter: 'EliGundry', // Optionally renders "Follow Me" in the UserInfo segment.

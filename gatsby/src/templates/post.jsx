@@ -26,23 +26,24 @@ export default class PostTemplate extends React.Component {
     }
     return (
       <Layout>
-        <div>
-          <Helmet>
-            <title>{`${post.title} | ${config.siteTitle}`}</title>
-          </Helmet>
-          <SEO postPath={slug} postNode={postNode} postSEO />
-          <div>
+        <Helmet>
+          <title>{`${post.title} | ${config.siteTitle}`}</title>
+        </Helmet>
+        <SEO postPath={slug} postNode={postNode} postSEO />
+        <article>
+          <header>
             <h1>{post.title}</h1>
-            <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
-            <div className="post-meta">
-              <PostTags tags={post.tags} />
-              <SocialLinks postPath={slug} postNode={postNode} />
-            </div>
-            <UserInfo config={config} />
-            <Disqus postNode={postNode} />
-            <Footer config={config} />
-          </div>
-        </div>
+            <time dateTime={post.date}>{post.date}</time>
+          </header>
+          <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
+          <aside className="post-meta">
+            <PostTags tags={post.tags} />
+            <SocialLinks postPath={slug} postNode={postNode} />
+          </aside>
+          <UserInfo config={config} />
+          <Disqus postNode={postNode} />
+          <Footer config={config} />
+        </article>
       </Layout>
     )
   }

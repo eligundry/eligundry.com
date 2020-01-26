@@ -9,6 +9,7 @@ services:
     environment:
       DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
       STAGE: 'local'
+      WEBSOCKET: 'true'
     volumes:
       - data_https_portal:/var/lib/https-portal
       - ./docker/eligundry.localhost.ssl.conf.erb:/var/lib/nginx-conf/eligundry.localhost.ssl.conf.erb
