@@ -148,8 +148,8 @@ module.exports = {
                 date: edge.node.fields.date,
                 title: edge.node.frontmatter.title,
                 description: edge.node.excerpt,
-                url: rssMetadata.site_url + edge.node.fields.slug,
-                guid: rssMetadata.site_url + edge.node.fields.slug,
+                url: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
+                guid: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
                 custom_elements: [
                   { 'content:encoded': edge.node.html },
                   { author: config.userEmail },
@@ -190,9 +190,6 @@ module.exports = {
     },
     {
       resolve: `gatsby-plugin-styled-components`,
-      options: {
-        // Add any options here
-      },
     },
   ],
 }

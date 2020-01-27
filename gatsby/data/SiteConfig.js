@@ -3,7 +3,7 @@ const config = {
   siteTitleShort: 'GA Starter', // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation.
   siteTitleAlt: 'GatsbyJS Advanced Starter', // Alternative site title for SEO.
   siteLogo: '/logos/logo-1024.png', // Logo used for SEO and manifest.
-  siteUrl: 'https://gatsby-advanced-starter-demo.netlify.com', // Domain of your website without pathPrefix.
+  siteUrl: 'https://eligundry.com', // Domain of your website without pathPrefix.
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-advanced-starter/.
   siteDescription: 'A GatsbyJS stater with Advanced design in mind.', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
@@ -13,7 +13,7 @@ const config = {
   postDefaultCategoryID: 'Tech', // Default category for posts.
   dateFromFormat: 'YYYY-MM-DD', // Date format used in the frontmatter.
   dateFormat: 'YYYY-MM-DD', // Date format for display.
-  postsPerPage: 10, // Amount of posts displayed per listing page.
+  postsPerPage: 1000, // Amount of posts displayed per listing page.
   userName: 'Eli Gundry', // Username to display in the author segment.
   userEmail: 'eligundry@gmail.com', // Email used for RSS feed's author segment
   userTwitter: 'EliGundry', // Optionally renders "Follow Me" in the UserInfo segment.
@@ -25,17 +25,17 @@ const config = {
   userLinks: [
     {
       label: 'GitHub',
-      url: 'https://github.com/Vagr9K/gatsby-advanced-starter',
+      url: 'https://github.com/eligundry',
       iconClassName: 'fa fa-github',
     },
     {
       label: 'Twitter',
-      url: 'https://twitter.com/Vagr9K',
+      url: 'https://twitter.com/EliGundry',
       iconClassName: 'fa fa-twitter',
     },
     {
       label: 'Email',
-      url: 'mailto:vagr9k@gmail.com',
+      url: 'mailto:eligundry@gmail.com',
       iconClassName: 'fa fa-envelope',
     },
   ],
