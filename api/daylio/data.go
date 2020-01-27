@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gocarina/gocsv"
+	"github.com/golang-collections/collections/set"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"gopkg.in/guregu/null.v3"
@@ -42,7 +43,8 @@ type DaylioEntry struct {
 	Mood          string          `json:"mood"`
 	Activities    json.RawMessage `json:"activities"`
 	RawActivities null.String     `json:"-" db:"raw_activities"`
-	Notes         json.RawMessage `json:"notes"`
+	RawNotes      json.RawMessage `json:"-" db:"raw_notes"`
+	Notes         []string        `json:"notes"`
 }
 
 func GetDB() *sqlx.DB {
@@ -62,16 +64,23 @@ func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
             daylio_entries.time,
             daylio_entries.mood,
             json_group_array(daylio_entry_activities.activity) AS activities,
-            daylio_entries.notes
+            daylio_entries.notes AS raw_notes
         FROM daylio_entries 
         LEFT JOIN daylio_entry_activities ON (
             daylio_entry_activities.time = daylio_entries.time
         )
-        WHERE DATE(daylio_entries.time) = (
-            SELECT DATE(de.time)
-            FROM daylio_entries de
-            WHERE DATE(de.time) <= DATE(?) 
-            ORDER BY de.time DESC
+        LEFT JOIN daylio_activities ON (
+            daylio_activities.activity = daylio_entry_activities.activity
+        )
+        WHERE (
+            DATE(daylio_entries.time) = (
+                SELECT DATE(de.time)
+                FROM daylio_entries de
+                WHERE DATE(de.time) <= DATE(?) 
+                ORDER BY de.time DESC
+                LIMIT 1
+            )
+            AND (daylio_activities.activity IS NULL OR daylio_activities.private = 0)
         )
         GROUP BY daylio_entries.time
         ORDER BY daylio_entries.time DESC
@@ -86,16 +95,23 @@ func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
                     daylio_entries.time,
                     daylio_entries.mood,
                     GROUP_CONCAT(daylio_entry_activities.activity) AS raw_activities,
-                    daylio_entries.notes
+                    daylio_entries.notes AS raw_notes
                 FROM daylio_entries 
                 LEFT JOIN daylio_entry_activities ON (
                     daylio_entry_activities.time = daylio_entries.time
                 )
-                WHERE DATE(daylio_entries.time) = (
-                    SELECT DATE(de.time)
-                    FROM daylio_entries de
-                    WHERE DATE(de.time) <= DATE(?) 
-                    ORDER BY de.time DESC
+                LEFT JOIN daylio_activities ON (
+                    daylio_activities.activity = daylio_entry_activities.activity
+                )
+                WHERE (
+                    DATE(daylio_entries.time) = (
+                        SELECT DATE(de.time)
+                        FROM daylio_entries de
+                        WHERE DATE(de.time) <= DATE(?) 
+                        ORDER BY de.time DESC
+                        LIMIT 1
+                    )
+                    AND (daylio_activities.activity IS NULL OR daylio_activities.private = 0)
                 )
                 GROUP BY daylio_entries.time
                 ORDER BY daylio_entries.time DESC
@@ -113,11 +129,24 @@ func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
 					return entries, err
 				}
 			}
+		} else {
+			return entries, err
+		}
+	}
 
-			return entries, nil
+	// Filter out #private notes from the API response
+	for ei := range entries {
+		var allNotes []string
+
+		if err := json.Unmarshal(entries[ei].RawNotes, &allNotes); err != nil {
+			return entries, err
 		}
 
-		return entries, err
+		for _, note := range allNotes {
+			if !strings.Contains(note, "#private") {
+				entries[ei].Notes = append(entries[ei].Notes, note)
+			}
+		}
 	}
 
 	return entries, nil
@@ -135,6 +164,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 	entriesVs := make([]interface{}, len(entries))
 	var activitiesQs []string
 	var activitesVs []interface{}
+	activitiesSet := set.New()
 
 	for i := range entries {
 		// time is the primary key
@@ -161,6 +191,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 				&entries[i].DateTime,
 				&entries[i].Activities[ai],
 			})
+			activitiesSet.Insert(entries[i].Activities[ai])
 		}
 
 		entries[i].Notes = strings.FieldsFunc(entries[i].Note, noteSplitFn)
@@ -198,6 +229,29 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
         ON CONFLICT DO NOTHING
 	`, strings.Join(activitiesQs, ", "))
 	query, args, err = sqlx.In(query, activitesVs...)
+
+	if err != nil {
+		return entries, err
+	}
+
+	if _, err = db.Exec(query, args...); err != nil {
+		return entries, err
+	}
+
+	// Insert all the activities so that I can tweak visibility
+	var actQs []string
+	var actVs []interface{}
+	activitiesSet.Do(func(activity interface{}) {
+		actQs = append(actQs, "(?)")
+		actVs = append(actVs, fmt.Sprintf("%v", activity))
+	})
+
+	query = fmt.Sprintf(`
+        INSERT INTO daylio_activities (activity)
+        VALUES %s
+        ON CONFLICT DO NOTHING
+	`, strings.Join(actQs, ", "))
+	query, args, err = sqlx.In(query, actVs...)
 
 	if err != nil {
 		return entries, err
