@@ -11,9 +11,21 @@ import (
 func RegisterRoutes(router *gin.RouterGroup) {
 	daylio := router.Group("/daylio")
 	{
-		daylio.GET("/:time", GetClosestEntry)
 		daylio.POST("", SubmitDaylioExport)
+		daylio.GET("", GetAllEntries)
+		daylio.GET("/:time", GetClosestEntry)
 	}
+}
+
+func GetAllEntries(c *gin.Context) {
+	entries, err := GetDaylioEntries()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, entries)
 }
 
 func GetClosestEntry(c *gin.Context) {

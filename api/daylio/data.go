@@ -1,7 +1,6 @@
 package daylio
 
 import (
-	"database/sql/driver"
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
@@ -12,141 +11,122 @@ import (
 	"github.com/golang-collections/collections/set"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-	"gopkg.in/guregu/null.v3"
 )
 
-var _db *sqlx.DB
+const jsonQuery = `
+SELECT
+    daylio_entries.time,
+    daylio_entries.mood,
+    json_group_array(daylio_entry_activities.activity) AS activities,
+    daylio_entries.notes AS raw_notes
+FROM daylio_entries 
+LEFT JOIN daylio_entry_activities ON (
+    daylio_entry_activities.time = daylio_entries.time
+)
+LEFT JOIN daylio_activities ON (
+    daylio_activities.activity = daylio_entry_activities.activity
+)
+WHERE (
+    (daylio_activities.activity IS NULL OR daylio_activities.private = 0)
+    %s
+)
+GROUP BY daylio_entries.time
+ORDER BY daylio_entries.time DESC
+`
 
-type DaylioExport struct {
-	Date          string    `csv:"full_date" json:"-"`
-	Time          string    `csv:"time" json:"-"`
-	DateTime      time.Time `json:"time"`
-	Mood          string    `csv:"mood" json:"mood"`
-	RawActivities string    `csv:"activities" json:"-"`
-	Activities    []string  `json:"activities"`
-	Note          string    `csv:"note" json:"-"`
-	Notes         []string  `json:"notes"`
-}
+const jsonlessQuery = `
+SELECT
+    daylio_entries.time,
+    daylio_entries.mood,
+    GROUP_CONCAT(daylio_entry_activities.activity) AS raw_activities,
+    daylio_entries.notes AS raw_notes
+FROM daylio_entries 
+LEFT JOIN daylio_entry_activities ON (
+    daylio_entry_activities.time = daylio_entries.time
+)
+LEFT JOIN daylio_activities ON (
+    daylio_activities.activity = daylio_entry_activities.activity
+)
+WHERE (
+    (daylio_activities.activity IS NULL OR daylio_activities.private = 0)
+    %s
+)
+GROUP BY daylio_entries.time
+ORDER BY daylio_entries.time DESC
+`
 
-func (d DaylioExport) Value() (driver.Value, error) {
-	notes, err := json.Marshal(d.Notes)
+func GetDaylioEntries() ([]DaylioEntry, error) {
+	var entries []DaylioEntry
+	db := GetDB()
+	whereClause := "AND 1 = 1"
 
-	if err != nil {
-		return nil, err
+	err := db.Select(&entries, fmt.Sprintf(jsonQuery, whereClause))
+
+	if err != nil && isJSONRelatedError(err) {
+		err := db.Select(&entries, fmt.Sprintf(jsonlessQuery, whereClause))
+
+		if err != nil {
+			return entries, err
+		}
+
+		for i := range entries {
+			splitActivities := strings.Split(entries[i].RawActivities.ValueOrZero(), ",")
+			entries[i].Activities, err = json.Marshal(splitActivities)
+
+			if err != nil {
+				return entries, err
+			}
+		}
+	} else if err != nil {
+		return entries, err
 	}
 
-	return []interface{}{d.DateTime, d.Mood, notes}, nil
-}
-
-type DaylioEntry struct {
-	Time          time.Time       `json:"time"`
-	Mood          string          `json:"mood"`
-	Activities    json.RawMessage `json:"activities"`
-	RawActivities null.String     `json:"-" db:"raw_activities"`
-	RawNotes      json.RawMessage `json:"-" db:"raw_notes"`
-	Notes         []string        `json:"notes"`
-}
-
-func GetDB() *sqlx.DB {
-	if _db == nil {
-		_db = sqlx.MustConnect("sqlite3", "/opt/data/api.db")
+	if err := filterNotesForEntries(entries); err != nil {
+		return entries, err
 	}
 
-	return _db
+	return entries, nil
 }
 
 func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
 	db := GetDB()
 	var entries []DaylioEntry
 
-	err := db.Select(&entries, `
-        SELECT
-            daylio_entries.time,
-            daylio_entries.mood,
-            json_group_array(daylio_entry_activities.activity) AS activities,
-            daylio_entries.notes AS raw_notes
-        FROM daylio_entries 
-        LEFT JOIN daylio_entry_activities ON (
-            daylio_entry_activities.time = daylio_entries.time
+	whereClause := `
+        AND DATE(daylio_entries.time) = (
+            SELECT DATE(de.time)
+            FROM daylio_entries de
+            WHERE DATE(de.time) <= DATE(?) 
+            ORDER BY de.time DESC
+            LIMIT 1
         )
-        LEFT JOIN daylio_activities ON (
-            daylio_activities.activity = daylio_entry_activities.activity
-        )
-        WHERE (
-            DATE(daylio_entries.time) = (
-                SELECT DATE(de.time)
-                FROM daylio_entries de
-                WHERE DATE(de.time) <= DATE(?) 
-                ORDER BY de.time DESC
-                LIMIT 1
-            )
-            AND (daylio_activities.activity IS NULL OR daylio_activities.private = 0)
-        )
-        GROUP BY daylio_entries.time
-        ORDER BY daylio_entries.time DESC
-    `, t)
+    `
 
-	if err != nil {
-		// In dev mode, this will fail because go-watcher cannot take build
-		// tags/flags
-		if strings.Contains(err.Error(), "no such function: json_") {
-			err := db.Select(&entries, `
-                SELECT
-                    daylio_entries.time,
-                    daylio_entries.mood,
-                    GROUP_CONCAT(daylio_entry_activities.activity) AS raw_activities,
-                    daylio_entries.notes AS raw_notes
-                FROM daylio_entries 
-                LEFT JOIN daylio_entry_activities ON (
-                    daylio_entry_activities.time = daylio_entries.time
-                )
-                LEFT JOIN daylio_activities ON (
-                    daylio_activities.activity = daylio_entry_activities.activity
-                )
-                WHERE (
-                    DATE(daylio_entries.time) = (
-                        SELECT DATE(de.time)
-                        FROM daylio_entries de
-                        WHERE DATE(de.time) <= DATE(?) 
-                        ORDER BY de.time DESC
-                        LIMIT 1
-                    )
-                    AND (daylio_activities.activity IS NULL OR daylio_activities.private = 0)
-                )
-                GROUP BY daylio_entries.time
-                ORDER BY daylio_entries.time DESC
-            `, t)
+	err := db.Select(&entries, fmt.Sprintf(jsonQuery, whereClause), t)
+
+	// In dev mode, this will fail because go-watcher cannot take build
+	// tags/flags
+	if err != nil && isJSONRelatedError(err) {
+		err := db.Select(&entries, fmt.Sprintf(jsonlessQuery, whereClause), t)
+
+		if err != nil {
+			return entries, err
+		}
+
+		for i := range entries {
+			splitActivities := strings.Split(entries[i].RawActivities.ValueOrZero(), ",")
+			entries[i].Activities, err = json.Marshal(splitActivities)
 
 			if err != nil {
 				return entries, err
 			}
-
-			for i := range entries {
-				splitActivities := strings.Split(entries[i].RawActivities.ValueOrZero(), ",")
-				entries[i].Activities, err = json.Marshal(splitActivities)
-
-				if err != nil {
-					return entries, err
-				}
-			}
-		} else {
-			return entries, err
 		}
+	} else if err != nil {
+		return entries, err
 	}
 
-	// Filter out #private notes from the API response
-	for ei := range entries {
-		var allNotes []string
-
-		if err := json.Unmarshal(entries[ei].RawNotes, &allNotes); err != nil {
-			return entries, err
-		}
-
-		for _, note := range allNotes {
-			if !strings.Contains(note, "#private") {
-				entries[ei].Notes = append(entries[ei].Notes, note)
-			}
-		}
+	if err := filterNotesForEntries(entries); err != nil {
+		return entries, err
 	}
 
 	return entries, nil
@@ -170,7 +150,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 		// time is the primary key
 		entries[i].DateTime, err = time.Parse(
 			"2006-01-02 15:04-0700",
-			entries[i].Date+" "+entries[i].Time+"-0500",
+			fmt.Sprintf("%s %s-0500", entries[i].Date, entries[i].Time),
 		)
 
 		if err != nil {
