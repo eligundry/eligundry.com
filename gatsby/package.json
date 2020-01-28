@@ -36,6 +36,7 @@
     "react": "^16.10.1",
     "react-disqus-comments": "^1.4.0",
     "react-dom": "^16.10.1",
+    "react-fetch-hook": "^1.7.1",
     "react-github-calendar": "^0.14.1",
     "react-goodreads": "^1.0.7",
     "react-goodreads-shelf": "^1.0.3",
