@@ -10,6 +10,8 @@ services:
       DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
       STAGE: 'local'
       WEBSOCKET: 'true'
+    networks:
+      backend: {}
     volumes:
       - data_https_portal:/var/lib/https-portal
       - ./docker/eligundry.localhost.ssl.conf.erb:/var/lib/nginx-conf/eligundry.localhost.ssl.conf.erb
@@ -21,6 +23,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.api
+    networks:
+      backend: {}
     volumes:
       - ./api:/src
       - ./data:/opt/data
@@ -28,9 +32,15 @@ services:
   docker-host:
     container_name: eg-dh
     image: qoomon/docker-host
+    networks:
+      backend: {}
     cap_add:
       - NET_ADMIN
       - NET_RAW
 
 volumes:
   data_https_portal: {}
+
+networks:
+  backend:
+    driver: bridge
