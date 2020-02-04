@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 
 import Layout from '../layout'
-import Daylio from '../components/Daylio/functional'
+import Daylio from '../components/Daylio'
 
 const FeelingsPage: React.FC = () => {
   return (

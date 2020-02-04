@@ -1,54 +1,39 @@
 import React from 'react'
-import styled from 'styled-components'
+import useFetch from 'react-fetch-hook'
 
-interface DaylioResponse {
-  time: string
-  mood: 'awful' | 'bad' | 'meh' | 'good' | 'rad'
-  activities: string[]
-  notes: string[]
+import Entry from './Entry'
+import { DaylioEntry } from './types'
+
+interface Props {
+  variant?: 'home' | 'list'
 }
 
-interface DaylioState {
-  data?: DaylioResponse
-}
+const Daylio: React.FC<Props> = ({ variant = 'home' }) => {
+  const { loading, error, data } = useFetch<DaylioEntry>(
+    variant === 'home' ? '/api/daylio/today' : '/api/daylio',
+    {},
+    []
+  )
 
-const DaylioMoodMapping = {
-  awful: '😖',
-  bad: '☹️/',
-  meh: '😕',
-  good: '😀',
-  rad: '🥳',
-}
-
-const Emoji = styled.span`
-  font-size: 9rem;
-`
-
-class Daylio extends React.Component<{}, DaylioState> {
-  constructor(props) {
-    super(props)
-    this.state = {}
+  if (loading || !data) {
+    return <h1>Loading Eli's Feelings...</h1>
   }
 
-  componentDidMount() {
-    window
-      .fetch('/api/daylio/today')
-      .then(resp => resp.json())
-      .then(data => this.setState({ data: data[0] }))
+  if (error) {
+    return <h1>Error!</h1>
   }
 
-  render() {
-    if (!this.state.data) {
-      return null
-    }
-
-    return (
-      <div>
-        <Emoji>{DaylioMoodMapping[this.state.data.mood]}</Emoji>
-        <h3>I'm feeling {this.state.data.mood}</h3>
-      </div>
-    )
+  if (variant === 'home') {
+    return <Entry {...data[0]} />
   }
+
+  return (
+    <>
+      {data.map((entry: DaylioEntry) => (
+        <Entry key={entry.time} {...entry} />
+      ))}
+    </>
+  )
 }
 
 export default Daylio

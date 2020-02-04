@@ -1,9 +1,10 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
+import formatISO from 'date-fns/formatISO'
+
 import Layout from '../layout'
 import UserInfo from '../components/UserInfo/UserInfo'
-import Disqus from '../components/Disqus/Disqus'
 import PostTags from '../components/PostTags/PostTags'
 import SocialLinks from '../components/SocialLinks/SocialLinks'
 import SEO from '../components/SEO/SEO'
@@ -33,7 +34,9 @@ export default class PostTemplate extends React.Component {
         <article>
           <header>
             <h1>{post.title}</h1>
-            <time dateTime={post.date}>{post.date}</time>
+            <time dateTime={post.date}>
+              {formatISO(new Date(post.date), { representation: 'date' })}
+            </time>
           </header>
           <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
           <aside className="post-meta">
@@ -41,7 +44,6 @@ export default class PostTemplate extends React.Component {
             <SocialLinks postPath={slug} postNode={postNode} />
           </aside>
           <UserInfo config={config} />
-          <Disqus postNode={postNode} />
           <Footer config={config} />
         </article>
       </Layout>

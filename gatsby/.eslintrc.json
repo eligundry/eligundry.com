@@ -17,6 +17,18 @@
         "specialLink": ["hrefLeft", "hrefRight", "to"],
         "aspects": ["noHref", "invalidHref", "preferButton"]
       }
+    ],
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "mjs": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
     ]
   },
   "settings": {
