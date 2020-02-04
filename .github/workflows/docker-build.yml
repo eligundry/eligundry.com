@@ -21,7 +21,7 @@ jobs:
 
   frontend:
     runs-on: ubuntu-latest
-    steps::
+    steps:
     - uses: actions/checkout@v2
 
     - uses: whoan/docker-build-with-cache-action@v2
