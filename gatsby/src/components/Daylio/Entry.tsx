@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import format from 'date-fns/format'
 
 import { DaylioEntry } from './types'
 
@@ -11,35 +12,58 @@ const MoodMapping = {
   rad: '🥳',
 }
 
+const ActivityMapping = {
+  cook: '🧑‍🍳',
+  movies: '🍿',
+  relax: '💆‍♂️',
+  'side-project': '👨‍💻',
+}
+
+const EntryWrapper = styled.div`
+  display: block;
+
+  & > * {
+    display: block;
+    width: 100%;
+  }
+`
+
 const Emoji = styled.span`
   font-size: 9rem;
 `
 
 const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
-  const filteredActivities = activities.filter(a => !!a && a.length > 0)
+  const filteredActivities = activities.filter(a => !!a && a.length > -1)
 
   return (
-    <div>
-      <Emoji>{MoodMapping[mood]}</Emoji>
-      <time dateTime={time}>{time}</time>
+    <EntryWrapper id={time}>
+      <time dateTime={time}>
+        <a href={`#${time}`}>
+          {format(new Date(time), 'MMMM do, yyyy @ HH:mm')}
+        </a>
+      </time>
+      <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
+      <h3>I felt {mood}</h3>
       {filteredActivities && (
-        <ul>
-          {filteredActivities.map(a => (
-            <li>{a}</li>
+        <ul className="activities">
+          {filteredActivities.map((a, i) => (
+            <li key={i} title={a}>
+              {ActivityMapping[a] || a}
+            </li>
           ))}
         </ul>
       )}
       {notes &&
         (notes.length > 1 ? (
-          <ul>
+          <ul className="notes">
             {notes.map((note, i) => (
               <li key={i}>{note}</li>
             ))}
           </ul>
         ) : (
-          <p>{notes[0]}</p>
+          <p className="note">{notes[0]}</p>
         ))}
-    </div>
+    </EntryWrapper>
   )
 }
 

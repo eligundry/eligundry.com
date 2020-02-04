@@ -2,6 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import styled from 'styled-components'
 
+import Header from './Header'
 import config from '../../data/SiteConfig'
 import './index.css'
 
@@ -17,6 +18,7 @@ const MainLayout: React.FC = ({ children }) => {
         <meta name="description" content={config.siteDescription} />
         <html lang="en" />
       </Helmet>
+      <Header />
       {children}
     </LayoutWrapper>
   )
