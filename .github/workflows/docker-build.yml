@@ -18,3 +18,16 @@ jobs:
         image_name: eligundry/api.eligundry.com
         image_tag: latest
         dockerfile: Dockerfile.api
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps::
+    - uses: actions/checkout@v2
+
+    - uses: whoan/docker-build-with-cache-action@v2
+      with:
+        username: eligundry
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+        image_name: eligundry/website.eligundry.com
+        image_tag: latest
+        dockerfile: Dockerfile.frontend
