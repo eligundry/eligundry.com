@@ -10,6 +10,8 @@
     "react/prefer-stateless-function": "off",
     "react/prop-types": "off",
     "react/no-danger": "off",
+    "react/destructuring-assignment": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
     "jsx-a11y/anchor-is-valid": [
       "error",
       {
@@ -32,7 +34,12 @@
     ]
   },
   "settings": {
-    "import/core-modules": []
+    "import/core-modules": [],
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   },
   "env": {
     "browser": true

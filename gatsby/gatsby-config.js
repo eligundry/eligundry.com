@@ -181,5 +181,6 @@ module.exports = {
     {
       resolve: `gatsby-plugin-styled-components`,
     },
+    'gatsby-plugin-graphql-codegen',
   ],
 }
