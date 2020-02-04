@@ -2,7 +2,7 @@ FROM node:12 AS builder
 
 # Install the node modules
 WORKDIR /opt/modules
-ADD ./gatsby/package.* /opt/modules/
+ADD ./gatsby/package* /opt/modules/
 RUN npm ci
 
 # Build the application
