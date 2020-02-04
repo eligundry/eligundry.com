@@ -1,5 +1,9 @@
 FROM node:12 AS builder
 
+# Install dependencies for node_modules
+RUN apt-get update \
+    && apt-get install -y libglu1
+
 # Install the node modules
 WORKDIR /opt/modules
 ADD ./gatsby/package* /opt/modules/
@@ -9,7 +13,7 @@ RUN npm ci
 WORKDIR /opt/gatsby
 ADD ./gatsby /opt/gatsby
 RUN ln -s /opt/modules/node_modules /opt/gatsby/node_modules
-RUN gatsby build
+RUN npm run build
 
 # Copy the compiled application into a lightweight nginx container
 FROM nginx:alpine AS final
