@@ -28,7 +28,7 @@ export default class PostTemplate extends React.Component {
     return (
       <Layout>
         <Helmet>
-          <title>{`${post.title} | ${config.siteTitle}`}</title>
+          <title>{post.title}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
         <article>
@@ -64,6 +64,7 @@ export const pageQuery = graphql`
         date
         category
         tags
+        description
       }
       fields {
         slug

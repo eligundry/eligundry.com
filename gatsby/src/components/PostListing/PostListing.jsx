@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import formatISO from 'date-fns/formatISO'
 
 class PostListing extends React.Component {
   getPostList() {
@@ -12,6 +13,7 @@ class PostListing extends React.Component {
         date: postEdge.node.fields.date,
         excerpt: postEdge.node.excerpt,
         timeToRead: postEdge.node.timeToRead,
+        description: postEdge.node.frontmatter.description,
       }
     })
   }
@@ -22,9 +24,15 @@ class PostListing extends React.Component {
       <div>
         {/* Your post list here. */
         postList.map(post => (
-          <Link to={`/blog/${post.path}`} key={post.title}>
-            <h1>{post.title}</h1>
-          </Link>
+          <article>
+            <Link to={`/blog/${post.path}`} key={post.path}>
+              <h1>{post.title}</h1>
+            </Link>
+            <time dateTime={post.date}>
+              {formatISO(new Date(post.date), { representation: 'date' })}
+            </time>
+            <p>{post.description}</p>
+          </article>
         ))}
       </div>
     )

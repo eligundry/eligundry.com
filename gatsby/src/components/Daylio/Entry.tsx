@@ -26,6 +26,16 @@ const EntryWrapper = styled.div`
     display: block;
     width: 100%;
   }
+
+  & .activities {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      display: inline;
+      font-size: 3rem;
+    }
+  }
 `
 
 const Emoji = styled.span`

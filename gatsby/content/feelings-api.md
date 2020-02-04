@@ -1,5 +1,6 @@
 ---
 title: I made an API for my feelings
+description: "What happens when I open myself up as a programming interface?"
 date: 2020-01-26
 slug: feelings-api
 cover: 5.jpg

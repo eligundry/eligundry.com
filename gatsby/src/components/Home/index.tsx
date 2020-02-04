@@ -62,7 +62,6 @@ const Home: React.FC = () => (
       />
     </Section>
     <Section className="tweets" fullWidth>
-      <h2>Tweeting</h2>
       <TwitterTimelineEmbed
         sourceType="profile"
         screenName="eligundry"
