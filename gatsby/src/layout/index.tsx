@@ -15,6 +15,7 @@ const MainLayout: React.FC = ({ children }) => {
   return (
     <LayoutWrapper className="layout-container">
       <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
+        <title>{config.siteTitle}</title>
         <meta name="description" content={config.siteDescription} />
         <html lang="en" />
       </Helmet>
