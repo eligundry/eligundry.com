@@ -22,9 +22,25 @@ const ActivityMapping = {
 const EntryWrapper = styled.div`
   display: block;
 
-  & > * {
-    display: block;
-    width: 100%;
+  & .emoji-column {
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+
+    & > * {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  & .text-column {
+    display: inline-block;
+    width: 80%;
+    vertical-align: top;
+
+    & h3 {
+      margin-top: 0;
+    }
   }
 
   & .activities {
@@ -35,6 +51,16 @@ const EntryWrapper = styled.div`
       display: inline;
       font-size: 3rem;
     }
+  }
+
+  & .emoji-column::after {
+    content: ' ';
+    border: 10px solid black;
+    height: 30px;
+    display: block;
+    width: 5px;
+    background-color: black;
+    margin: -14px auto 7px 45%;
   }
 `
 
@@ -47,32 +73,36 @@ const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
 
   return (
     <EntryWrapper id={time}>
-      <time dateTime={time}>
-        <a href={`#${time}`}>
-          {format(new Date(time), 'MMMM do, yyyy @ HH:mm')}
-        </a>
-      </time>
-      <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
-      <h3>I felt {mood}</h3>
-      {filteredActivities && (
-        <ul className="activities">
-          {filteredActivities.map((a, i) => (
-            <li key={i} title={a}>
-              {ActivityMapping[a] || a}
-            </li>
-          ))}
-        </ul>
-      )}
-      {notes &&
-        (notes.length > 1 ? (
-          <ul className="notes">
-            {notes.map((note, i) => (
-              <li key={i}>{note}</li>
+      <div className="emoji-column">
+        <time dateTime={time}>
+          <a href={`#${time}`}>
+            {format(new Date(time), 'MMMM do, yyyy @ HH:mm')}
+          </a>
+        </time>
+        <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
+      </div>
+      <div className="text-column">
+        <h3>I felt {mood}</h3>
+        {filteredActivities && (
+          <ul className="activities">
+            {filteredActivities.map((a, i) => (
+              <li key={i} title={a}>
+                {ActivityMapping[a] || a}
+              </li>
             ))}
           </ul>
-        ) : (
-          <p className="note">{notes[0]}</p>
-        ))}
+        )}
+        {notes &&
+          (notes.length > 1 ? (
+            <ul className="notes">
+              {notes.map((note, i) => (
+                <li key={i}>{note}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="note">{notes[0]}</p>
+          ))}
+      </div>
     </EntryWrapper>
   )
 }
