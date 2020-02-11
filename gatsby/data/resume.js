@@ -1,74 +1,4 @@
-export interface Location {
-  address: string
-  postalCode: string
-  city: string
-  countryCode: string
-  region: string
-}
-
-export interface Experience {
-  position: string
-  website: string
-  startDate: Date
-  endDate: Date | null
-  summary: string
-  highlights: string[]
-  location: Partial<Location>
-}
-
-export interface Work extends Experience {
-  company: string
-}
-
-export interface Volunteer extends Experience {
-  organization: string
-}
-
-export interface Profile {
-  network: string
-  username: string
-  url: string
-}
-
-export interface Basics {
-  name: string
-  label: string
-  picture?: string
-  email: string
-  phone: string
-  website: string
-  summary?: string
-  location: Partial<Location>
-  profiles?: Profile[]
-}
-
-export interface Education {
-  institution: string
-  area: string
-  studyType?: string
-  startDate: Date
-  endDate: Date
-  completed: boolean
-  gpa?: number
-  location: Partial<Location>
-  summary: string
-}
-
-export interface Skills {
-  name: string
-  level: string
-  keywords: string[]
-}
-
-export interface Resume {
-  basics: Basics
-  work: Work[]
-  education: Education[]
-  skills: Skills[]
-  volunteer?: Volunteer[]
-}
-
-const resume: Resume = {
+const resume = {
   basics: {
     name: 'Eli Gundry',
     label: 'Software Engineer',
@@ -379,4 +309,4 @@ const resume: Resume = {
   ],
 }
 
-export default resume
+module.exports = resume

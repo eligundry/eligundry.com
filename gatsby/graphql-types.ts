@@ -689,12 +689,13 @@ export type FileFieldsEnum =
   'internal___type' |
   'childMarkdownRemark___id' |
   'childMarkdownRemark___frontmatter___title' |
-  'childMarkdownRemark___frontmatter___cover' |
-  'childMarkdownRemark___frontmatter___category' |
   'childMarkdownRemark___frontmatter___date' |
   'childMarkdownRemark___frontmatter___slug' |
-  'childMarkdownRemark___frontmatter___tags' |
   'childMarkdownRemark___frontmatter___description' |
+  'childMarkdownRemark___frontmatter___cover' |
+  'childMarkdownRemark___frontmatter___tags' |
+  'childMarkdownRemark___frontmatter___category' |
+  'childMarkdownRemark___frontmatter___location' |
   'childMarkdownRemark___excerpt' |
   'childMarkdownRemark___rawMarkdownBody' |
   'childMarkdownRemark___fileAbsolutePath' |
@@ -1470,12 +1471,13 @@ export type MarkdownRemarkFieldsDateArgs = {
 export type MarkdownRemarkFieldsEnum = 
   'id' |
   'frontmatter___title' |
-  'frontmatter___cover' |
-  'frontmatter___category' |
   'frontmatter___date' |
   'frontmatter___slug' |
-  'frontmatter___tags' |
   'frontmatter___description' |
+  'frontmatter___cover' |
+  'frontmatter___tags' |
+  'frontmatter___category' |
+  'frontmatter___location' |
   'excerpt' |
   'rawMarkdownBody' |
   'fileAbsolutePath' |
@@ -1606,12 +1608,13 @@ export type MarkdownRemarkFilterInput = {
 
 export type MarkdownRemarkFrontmatter = {
   title?: Maybe<Scalars['String']>,
-  cover?: Maybe<Scalars['String']>,
-  category?: Maybe<Scalars['String']>,
   date?: Maybe<Scalars['Date']>,
   slug?: Maybe<Scalars['String']>,
-  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
   description?: Maybe<Scalars['String']>,
+  cover?: Maybe<Scalars['String']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
+  category?: Maybe<Scalars['String']>,
+  location?: Maybe<Scalars['String']>,
 };
 
 
@@ -1624,12 +1627,13 @@ export type MarkdownRemarkFrontmatterDateArgs = {
 
 export type MarkdownRemarkFrontmatterFilterInput = {
   title?: Maybe<StringQueryOperatorInput>,
-  cover?: Maybe<StringQueryOperatorInput>,
-  category?: Maybe<StringQueryOperatorInput>,
   date?: Maybe<DateQueryOperatorInput>,
   slug?: Maybe<StringQueryOperatorInput>,
-  tags?: Maybe<StringQueryOperatorInput>,
   description?: Maybe<StringQueryOperatorInput>,
+  cover?: Maybe<StringQueryOperatorInput>,
+  tags?: Maybe<StringQueryOperatorInput>,
+  category?: Maybe<StringQueryOperatorInput>,
+  location?: Maybe<StringQueryOperatorInput>,
 };
 
 export type MarkdownRemarkGroupConnection = {
@@ -1885,7 +1889,6 @@ export type QuerySiteArgs = {
   port?: Maybe<IntQueryOperatorInput>,
   host?: Maybe<StringQueryOperatorInput>,
   pathPrefix?: Maybe<StringQueryOperatorInput>,
-  polyfill?: Maybe<BooleanQueryOperatorInput>,
   buildTime?: Maybe<DateQueryOperatorInput>
 };
 
@@ -1928,8 +1931,8 @@ export type QuerySitePageArgs = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  path?: Maybe<StringQueryOperatorInput>,
   internalComponentName?: Maybe<StringQueryOperatorInput>,
+  path?: Maybe<StringQueryOperatorInput>,
   component?: Maybe<StringQueryOperatorInput>,
   componentChunkName?: Maybe<StringQueryOperatorInput>,
   isCreatedByStatefulCreatePages?: Maybe<BooleanQueryOperatorInput>,
@@ -1956,7 +1959,6 @@ export type Site = Node & {
   port?: Maybe<Scalars['Int']>,
   host?: Maybe<Scalars['String']>,
   pathPrefix?: Maybe<Scalars['String']>,
-  polyfill?: Maybe<Scalars['Boolean']>,
   buildTime?: Maybe<Scalars['Date']>,
 };
 
@@ -2089,10 +2091,35 @@ export type SiteFieldsEnum =
   'siteMetadata___rssMetadata___description' |
   'siteMetadata___rssMetadata___image_url' |
   'siteMetadata___rssMetadata___copyright' |
+  'siteMetadata___resume___basics___name' |
+  'siteMetadata___resume___basics___label' |
+  'siteMetadata___resume___basics___email' |
+  'siteMetadata___resume___basics___phone' |
+  'siteMetadata___resume___basics___website' |
+  'siteMetadata___resume___work' |
+  'siteMetadata___resume___work___company' |
+  'siteMetadata___resume___work___position' |
+  'siteMetadata___resume___work___website' |
+  'siteMetadata___resume___work___startDate' |
+  'siteMetadata___resume___work___endDate' |
+  'siteMetadata___resume___work___summary' |
+  'siteMetadata___resume___work___highlights' |
+  'siteMetadata___resume___education' |
+  'siteMetadata___resume___education___institution' |
+  'siteMetadata___resume___education___area' |
+  'siteMetadata___resume___education___studyType' |
+  'siteMetadata___resume___education___startDate' |
+  'siteMetadata___resume___education___endDate' |
+  'siteMetadata___resume___education___completed' |
+  'siteMetadata___resume___education___summary' |
+  'siteMetadata___resume___education___gpa' |
+  'siteMetadata___resume___skills' |
+  'siteMetadata___resume___skills___name' |
+  'siteMetadata___resume___skills___level' |
+  'siteMetadata___resume___skills___keywords' |
   'port' |
   'host' |
   'pathPrefix' |
-  'polyfill' |
   'buildTime';
 
 export type SiteFilterInput = {
@@ -2104,7 +2131,6 @@ export type SiteFilterInput = {
   port?: Maybe<IntQueryOperatorInput>,
   host?: Maybe<StringQueryOperatorInput>,
   pathPrefix?: Maybe<StringQueryOperatorInput>,
-  polyfill?: Maybe<BooleanQueryOperatorInput>,
   buildTime?: Maybe<DateQueryOperatorInput>,
 };
 
@@ -2122,8 +2148,8 @@ export type SitePage = Node & {
   parent?: Maybe<Node>,
   children: Array<Node>,
   internal: Internal,
-  path?: Maybe<Scalars['String']>,
   internalComponentName?: Maybe<Scalars['String']>,
+  path?: Maybe<Scalars['String']>,
   component?: Maybe<Scalars['String']>,
   componentChunkName?: Maybe<Scalars['String']>,
   isCreatedByStatefulCreatePages?: Maybe<Scalars['Boolean']>,
@@ -2275,8 +2301,8 @@ export type SitePageFieldsEnum =
   'internal___mediaType' |
   'internal___owner' |
   'internal___type' |
-  'path' |
   'internalComponentName' |
+  'path' |
   'component' |
   'componentChunkName' |
   'isCreatedByStatefulCreatePages' |
@@ -2368,6 +2394,7 @@ export type SitePageFieldsEnum =
   'pluginCreator___packageJson___description' |
   'pluginCreator___packageJson___version' |
   'pluginCreator___packageJson___main' |
+  'pluginCreator___packageJson___author' |
   'pluginCreator___packageJson___license' |
   'pluginCreator___packageJson___dependencies' |
   'pluginCreator___packageJson___dependencies___name' |
@@ -2387,8 +2414,8 @@ export type SitePageFilterInput = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  path?: Maybe<StringQueryOperatorInput>,
   internalComponentName?: Maybe<StringQueryOperatorInput>,
+  path?: Maybe<StringQueryOperatorInput>,
   component?: Maybe<StringQueryOperatorInput>,
   componentChunkName?: Maybe<StringQueryOperatorInput>,
   isCreatedByStatefulCreatePages?: Maybe<BooleanQueryOperatorInput>,
@@ -2582,6 +2609,7 @@ export type SitePluginFieldsEnum =
   'packageJson___description' |
   'packageJson___version' |
   'packageJson___main' |
+  'packageJson___author' |
   'packageJson___license' |
   'packageJson___dependencies' |
   'packageJson___dependencies___name' |
@@ -2624,6 +2652,7 @@ export type SitePluginPackageJson = {
   description?: Maybe<Scalars['String']>,
   version?: Maybe<Scalars['String']>,
   main?: Maybe<Scalars['String']>,
+  author?: Maybe<Scalars['String']>,
   license?: Maybe<Scalars['String']>,
   dependencies?: Maybe<Array<Maybe<SitePluginPackageJsonDependencies>>>,
   devDependencies?: Maybe<Array<Maybe<SitePluginPackageJsonDevDependencies>>>,
@@ -2664,6 +2693,7 @@ export type SitePluginPackageJsonFilterInput = {
   description?: Maybe<StringQueryOperatorInput>,
   version?: Maybe<StringQueryOperatorInput>,
   main?: Maybe<StringQueryOperatorInput>,
+  author?: Maybe<StringQueryOperatorInput>,
   license?: Maybe<StringQueryOperatorInput>,
   dependencies?: Maybe<SitePluginPackageJsonDependenciesFilterListInput>,
   devDependencies?: Maybe<SitePluginPackageJsonDevDependenciesFilterListInput>,
@@ -2795,11 +2825,183 @@ export type SitePluginSortInput = {
 export type SiteSiteMetadata = {
   siteUrl?: Maybe<Scalars['String']>,
   rssMetadata?: Maybe<SiteSiteMetadataRssMetadata>,
+  resume?: Maybe<SiteSiteMetadataResume>,
 };
 
 export type SiteSiteMetadataFilterInput = {
   siteUrl?: Maybe<StringQueryOperatorInput>,
   rssMetadata?: Maybe<SiteSiteMetadataRssMetadataFilterInput>,
+  resume?: Maybe<SiteSiteMetadataResumeFilterInput>,
+};
+
+export type SiteSiteMetadataResume = {
+  basics?: Maybe<SiteSiteMetadataResumeBasics>,
+  work?: Maybe<Array<Maybe<SiteSiteMetadataResumeWork>>>,
+  education?: Maybe<Array<Maybe<SiteSiteMetadataResumeEducation>>>,
+  skills?: Maybe<Array<Maybe<SiteSiteMetadataResumeSkills>>>,
+};
+
+export type SiteSiteMetadataResumeBasics = {
+  name?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  email?: Maybe<Scalars['String']>,
+  phone?: Maybe<Scalars['String']>,
+  website?: Maybe<Scalars['String']>,
+  location?: Maybe<SiteSiteMetadataResumeBasicsLocation>,
+};
+
+export type SiteSiteMetadataResumeBasicsFilterInput = {
+  name?: Maybe<StringQueryOperatorInput>,
+  label?: Maybe<StringQueryOperatorInput>,
+  email?: Maybe<StringQueryOperatorInput>,
+  phone?: Maybe<StringQueryOperatorInput>,
+  website?: Maybe<StringQueryOperatorInput>,
+  location?: Maybe<SiteSiteMetadataResumeBasicsLocationFilterInput>,
+};
+
+export type SiteSiteMetadataResumeBasicsLocation = {
+  city?: Maybe<Scalars['String']>,
+  countryCode?: Maybe<Scalars['String']>,
+  region?: Maybe<Scalars['String']>,
+};
+
+export type SiteSiteMetadataResumeBasicsLocationFilterInput = {
+  city?: Maybe<StringQueryOperatorInput>,
+  countryCode?: Maybe<StringQueryOperatorInput>,
+  region?: Maybe<StringQueryOperatorInput>,
+};
+
+export type SiteSiteMetadataResumeEducation = {
+  institution?: Maybe<Scalars['String']>,
+  area?: Maybe<Scalars['String']>,
+  studyType?: Maybe<Scalars['String']>,
+  startDate?: Maybe<Scalars['Date']>,
+  endDate?: Maybe<Scalars['Date']>,
+  completed?: Maybe<Scalars['Boolean']>,
+  location?: Maybe<SiteSiteMetadataResumeEducationLocation>,
+  summary?: Maybe<Scalars['String']>,
+  gpa?: Maybe<Scalars['Float']>,
+};
+
+
+export type SiteSiteMetadataResumeEducationStartDateArgs = {
+  formatString?: Maybe<Scalars['String']>,
+  fromNow?: Maybe<Scalars['Boolean']>,
+  difference?: Maybe<Scalars['String']>,
+  locale?: Maybe<Scalars['String']>
+};
+
+
+export type SiteSiteMetadataResumeEducationEndDateArgs = {
+  formatString?: Maybe<Scalars['String']>,
+  fromNow?: Maybe<Scalars['Boolean']>,
+  difference?: Maybe<Scalars['String']>,
+  locale?: Maybe<Scalars['String']>
+};
+
+export type SiteSiteMetadataResumeEducationFilterInput = {
+  institution?: Maybe<StringQueryOperatorInput>,
+  area?: Maybe<StringQueryOperatorInput>,
+  studyType?: Maybe<StringQueryOperatorInput>,
+  startDate?: Maybe<DateQueryOperatorInput>,
+  endDate?: Maybe<DateQueryOperatorInput>,
+  completed?: Maybe<BooleanQueryOperatorInput>,
+  location?: Maybe<SiteSiteMetadataResumeEducationLocationFilterInput>,
+  summary?: Maybe<StringQueryOperatorInput>,
+  gpa?: Maybe<FloatQueryOperatorInput>,
+};
+
+export type SiteSiteMetadataResumeEducationFilterListInput = {
+  elemMatch?: Maybe<SiteSiteMetadataResumeEducationFilterInput>,
+};
+
+export type SiteSiteMetadataResumeEducationLocation = {
+  city?: Maybe<Scalars['String']>,
+  countryCode?: Maybe<Scalars['String']>,
+  region?: Maybe<Scalars['String']>,
+};
+
+export type SiteSiteMetadataResumeEducationLocationFilterInput = {
+  city?: Maybe<StringQueryOperatorInput>,
+  countryCode?: Maybe<StringQueryOperatorInput>,
+  region?: Maybe<StringQueryOperatorInput>,
+};
+
+export type SiteSiteMetadataResumeFilterInput = {
+  basics?: Maybe<SiteSiteMetadataResumeBasicsFilterInput>,
+  work?: Maybe<SiteSiteMetadataResumeWorkFilterListInput>,
+  education?: Maybe<SiteSiteMetadataResumeEducationFilterListInput>,
+  skills?: Maybe<SiteSiteMetadataResumeSkillsFilterListInput>,
+};
+
+export type SiteSiteMetadataResumeSkills = {
+  name?: Maybe<Scalars['String']>,
+  level?: Maybe<Scalars['String']>,
+  keywords?: Maybe<Array<Maybe<Scalars['String']>>>,
+};
+
+export type SiteSiteMetadataResumeSkillsFilterInput = {
+  name?: Maybe<StringQueryOperatorInput>,
+  level?: Maybe<StringQueryOperatorInput>,
+  keywords?: Maybe<StringQueryOperatorInput>,
+};
+
+export type SiteSiteMetadataResumeSkillsFilterListInput = {
+  elemMatch?: Maybe<SiteSiteMetadataResumeSkillsFilterInput>,
+};
+
+export type SiteSiteMetadataResumeWork = {
+  company?: Maybe<Scalars['String']>,
+  position?: Maybe<Scalars['String']>,
+  website?: Maybe<Scalars['String']>,
+  location?: Maybe<SiteSiteMetadataResumeWorkLocation>,
+  startDate?: Maybe<Scalars['Date']>,
+  endDate?: Maybe<Scalars['Date']>,
+  summary?: Maybe<Scalars['String']>,
+  highlights?: Maybe<Array<Maybe<Scalars['String']>>>,
+};
+
+
+export type SiteSiteMetadataResumeWorkStartDateArgs = {
+  formatString?: Maybe<Scalars['String']>,
+  fromNow?: Maybe<Scalars['Boolean']>,
+  difference?: Maybe<Scalars['String']>,
+  locale?: Maybe<Scalars['String']>
+};
+
+
+export type SiteSiteMetadataResumeWorkEndDateArgs = {
+  formatString?: Maybe<Scalars['String']>,
+  fromNow?: Maybe<Scalars['Boolean']>,
+  difference?: Maybe<Scalars['String']>,
+  locale?: Maybe<Scalars['String']>
+};
+
+export type SiteSiteMetadataResumeWorkFilterInput = {
+  company?: Maybe<StringQueryOperatorInput>,
+  position?: Maybe<StringQueryOperatorInput>,
+  website?: Maybe<StringQueryOperatorInput>,
+  location?: Maybe<SiteSiteMetadataResumeWorkLocationFilterInput>,
+  startDate?: Maybe<DateQueryOperatorInput>,
+  endDate?: Maybe<DateQueryOperatorInput>,
+  summary?: Maybe<StringQueryOperatorInput>,
+  highlights?: Maybe<StringQueryOperatorInput>,
+};
+
+export type SiteSiteMetadataResumeWorkFilterListInput = {
+  elemMatch?: Maybe<SiteSiteMetadataResumeWorkFilterInput>,
+};
+
+export type SiteSiteMetadataResumeWorkLocation = {
+  city?: Maybe<Scalars['String']>,
+  countryCode?: Maybe<Scalars['String']>,
+  region?: Maybe<Scalars['String']>,
+};
+
+export type SiteSiteMetadataResumeWorkLocationFilterInput = {
+  city?: Maybe<StringQueryOperatorInput>,
+  countryCode?: Maybe<StringQueryOperatorInput>,
+  region?: Maybe<StringQueryOperatorInput>,
 };
 
 export type SiteSiteMetadataRssMetadata = {
@@ -2884,6 +3086,24 @@ export type TagPageQuery = { allMarkdownRemark: (
         & { fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'cover' | 'date'>> }
       ) }> }
   ) };
+
+export type TalkBySlugQueryVariables = {
+  slug: Scalars['String']
+};
+
+
+export type TalkBySlugQuery = { markdownRemark: Maybe<(
+    Pick<MarkdownRemark, 'html' | 'timeToRead' | 'excerpt'>
+    & { frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'cover' | 'date' | 'category' | 'tags' | 'description'>>, fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>> }
+  )> };
+
+export type TalkListingQueryQueryVariables = {};
+
+
+export type TalkListingQueryQuery = { allMarkdownRemark: { edges: Array<{ node: (
+        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
+        & { fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'cover' | 'date' | 'description'>> }
+      ) }> } };
 
 export type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 

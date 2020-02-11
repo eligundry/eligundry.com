@@ -49,6 +49,8 @@ exports.createPages = async ({ graphql, actions }) => {
   const tagPage = path.resolve('src/templates/tag.tsx')
   const categoryPage = path.resolve('src/templates/category.tsx')
   const listingPage = path.resolve('./src/templates/listing.tsx')
+  const talkPage = path.resolve('./src/templates/talk.tsx')
+  const talkListingPage = path.resolve('./src/templates/talkListing.tsx')
 
   // Get a full list of markdown posts
   const markdownQueryResult = await graphql(`
@@ -158,6 +160,50 @@ exports.createPages = async ({ graphql, actions }) => {
       path: `/blog/categories/${kebabCase(category)}/`,
       component: categoryPage,
       context: { category },
+    })
+  })
+
+  // Create talk pages
+  const talkQueryResult = await graphql(`
+    {
+      allMarkdownRemark(filter: { collection: { eq: "talks" } }) {
+        edges {
+          node {
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+              tags
+              category
+              date
+            }
+            htmlAst
+          }
+        }
+      }
+    }
+  `)
+
+  if (talkQueryResult.errors) {
+    console.error(talkQueryResult.errors)
+    throw talkQueryResult.errors
+  }
+
+  const talkEdges = talkQueryResult.data.allMarkdownRemark.edges
+
+  createPage({
+    path: '/talks',
+    component: talkListingPage,
+  })
+
+  talkEdges.forEach(edge => {
+    createPage({
+      path: `/talks/${edge.node.fields.slug}`,
+      component: talkPage,
+      context: {
+        slug: edge.node.fields.slug,
+      },
     })
   })
 }

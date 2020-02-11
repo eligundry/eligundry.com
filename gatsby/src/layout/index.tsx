@@ -3,6 +3,7 @@ import Helmet from 'react-helmet'
 import styled from 'styled-components'
 
 import Header from './Header'
+import Footer from './Footer'
 import config from '../../data/SiteConfig'
 import './index.css'
 
@@ -11,7 +12,17 @@ const LayoutWrapper = styled.div`
   width: 80%;
 `
 
-const MainLayout: React.FC = ({ children }) => {
+interface Props {
+  showHeader?: boolean
+  showFooter?: boolean
+  children: React.ReactNode[] | React.ReactNode
+}
+
+const MainLayout: React.FC<Props> = ({
+  children,
+  showHeader = true,
+  showFooter = true,
+}) => {
   return (
     <LayoutWrapper className="layout-container">
       <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
@@ -19,8 +30,9 @@ const MainLayout: React.FC = ({ children }) => {
         <meta name="description" content={config.siteDescription} />
         <html lang="en" />
       </Helmet>
-      <Header />
+      {showHeader && <Header />}
       {children}
+      {showFooter && <Footer />}
     </LayoutWrapper>
   )
 }

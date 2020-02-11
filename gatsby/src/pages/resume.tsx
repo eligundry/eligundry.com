@@ -6,7 +6,7 @@ import Resume from '../components/Resume'
 
 const ResumePage: React.FC = () => {
   return (
-    <Layout>
+    <Layout showFooter={false}>
       <Helmet>
         <title>Resume</title>
       </Helmet>

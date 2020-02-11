@@ -11,14 +11,14 @@ interface Props {
   data: ListingQueryQuery
 }
 
-const Listing: React.FC<Props> = props => {
+const TalkListing: React.FC<Props> = props => {
   const postEdges = props.data.allMarkdownRemark.edges
 
   return (
     <Layout>
       <div className="listing-container">
         <div className="posts-container">
-          <Helmet title="Blog" />
+          <Helmet title="Talks" />
           <SEO />
           <PostListing postEdges={postEdges} />
         </div>
@@ -27,16 +27,14 @@ const Listing: React.FC<Props> = props => {
   )
 }
 
-export default Listing
+export default TalkListing
 
 /* eslint no-undef: "off" */
-export const listingQuery = graphql`
-  query ListingQuery($skip: Int!, $limit: Int!) {
+export const talkListingQuery = graphql`
+  query TalkListingQuery {
     allMarkdownRemark(
       sort: { fields: [fields___date], order: DESC }
-      limit: $limit
-      skip: $skip
-      filter: { collection: { eq: "posts" } }
+      filter: { collection: { eq: "talks" } }
     ) {
       edges {
         node {

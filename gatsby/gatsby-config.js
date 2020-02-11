@@ -1,6 +1,7 @@
 const urljoin = require('url-join')
 const path = require('path')
 const config = require('./data/SiteConfig')
+const resume = require('./data/resume')
 
 module.exports = {
   pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
@@ -17,6 +18,7 @@ module.exports = {
       )}/logos/logo-512.png`,
       copyright: config.copyright,
     },
+    resume: resume,
   },
   plugins: [
     'gatsby-plugin-typescript',

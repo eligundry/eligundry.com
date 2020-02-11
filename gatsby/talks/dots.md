@@ -3,6 +3,7 @@ title: "Dotfiles For Fun & Profit"
 date: "2017-06-13"
 description: Effective dotfile management
 slug: dots
+location: NYC Vim
 ---
 
 <section>
