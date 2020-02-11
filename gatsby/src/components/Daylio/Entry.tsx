@@ -91,17 +91,17 @@ const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
       </div>
       <div className="text-column">
         <h3>I felt {mood}</h3>
-        {filteredActivities && (
+        {filteredActivities.length > 0 && (
           <ul className="activities">
-            {filteredActivities.map((a, i) => (
-              <li key={i} title={a}>
+            {filteredActivities.map(a => (
+              <li key={`${time}-${a}`} title={a}>
                 {ActivityMapping[a] || a}
               </li>
             ))}
           </ul>
         )}
         {notes &&
-          (notes.length > 1 ? (
+          (notes.length > 0 ? (
             <ul className="notes">
               {notes.map((note, i) => (
                 <li key={i}>{note}</li>

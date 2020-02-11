@@ -40,7 +40,6 @@ const PostTemplate: React.FC<Props> = props => {
         <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
         <aside className="post-meta">
           <PostTags tags={post.tags} />
-          <SocialLinks postPath={slug} postNode={postNode} />
         </aside>
         <UserInfo config={config} />
       </article>

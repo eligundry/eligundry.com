@@ -5,10 +5,7 @@ import formatISO from 'date-fns/formatISO'
 
 import Layout from '../layout'
 import UserInfo from '../components/UserInfo/UserInfo'
-import PostTags from '../components/PostTags/PostTags'
-import SocialLinks from '../components/SocialLinks/SocialLinks'
 import SEO from '../components/SEO/SEO'
-import Footer from '../components/Footer/Footer'
 import config from '../../data/SiteConfig'
 import { TalkBySlugQuery, SitePageContext } from '../../graphql-types'
 
@@ -38,7 +35,6 @@ const TalkTemplate: React.FC<Props> = props => {
         </header>
         <section dangerouslySetInnerHTML={{ __html: talkNode.html }} />
         <UserInfo config={config} />
-        <Footer config={config} />
       </article>
     </Layout>
   )

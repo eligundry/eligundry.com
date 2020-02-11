@@ -23,8 +23,7 @@ class PostListing extends React.Component {
     const { pathPrefix = 'blog' } = this.props
     return (
       <div>
-        {/* Your post list here. */
-        postList.map(post => (
+        {postList.map(post => (
           <article>
             <Link to={`/${pathPrefix}/${post.path}`} key={post.path}>
               <h1>{post.title}</h1>
