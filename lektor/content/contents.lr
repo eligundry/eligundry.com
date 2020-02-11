@@ -11,7 +11,7 @@ body:
   <section class="last-fm">
     <h3>Humming</h3>
     <a href="https://www.last.fm/user/eli_pwnd">
-      <img src="/last-fm.jpeg" alt="eli_pwnd on last.fm" title="eli_pwnd on last.fm">
+      <img src="/img/last.fm.jpg" alt="eli_pwnd on last.fm" title="eli_pwnd on last.fm">
     </a>
   </section>
 </div>
