@@ -2,13 +2,13 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 
-import { ListingQueryQuery } from '../../graphql-types'
+import { TalkListingQueryQuery } from '../../graphql-types'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO/SEO'
 
 interface Props {
-  data: ListingQueryQuery
+  data: TalkListingQueryQuery
 }
 
 const TalkListing: React.FC<Props> = props => {
@@ -20,7 +20,7 @@ const TalkListing: React.FC<Props> = props => {
         <div className="posts-container">
           <Helmet title="Talks" />
           <SEO />
-          <PostListing postEdges={postEdges} />
+          <PostListing postEdges={postEdges} pathPrefix="talks" />
         </div>
       </div>
     </Layout>

@@ -11,6 +11,7 @@ const navLinks = {
   '/': 'Home',
   '/blog': 'Blog',
   '/feelings': 'Feelings',
+  '/talks': 'Talks',
   '/resume': 'Resume',
 }
 
