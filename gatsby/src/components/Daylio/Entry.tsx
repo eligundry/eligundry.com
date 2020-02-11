@@ -17,6 +17,14 @@ const ActivityMapping = {
   movies: '🍿',
   relax: '💆‍♂️',
   'side-project': '👨‍💻',
+  work: '💼',
+  friends: '👯‍♂️',
+  sport: '🏃‍♂️',
+  date: '👫',
+  WFH: '🏚',
+  reading: '📚',
+  shopping: '🛒',
+  'good meal': '🍜',
 }
 
 const EntryWrapper = styled.div`
