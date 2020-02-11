@@ -94,7 +94,11 @@ const resume: Resume = {
       startDate: new Date('2018-01-03'),
       endDate: null,
       summary: '',
-      highlights: [],
+      highlights: [
+        'Completely rebuilt fulfillment platform using React & Go.',
+        'Implemented single sign on through OpenID Connect across all internal applications company wide.',
+        'Architected dynamic payment inititiaves that decreased cost of fulfillment by $3 and time to delivery by a day.',
+      ],
     },
     {
       company: 'Croscon',
@@ -386,6 +390,8 @@ const resume: Resume = {
         Ansible: 'https://www.ansible.com/',
         SQLAlchemy: 'https://www.sqlalchemy.org/',
         jQuery: 'https://jquery.com/',
+        Okta: 'https://www.okta.com/',
+        Jenkins: 'https://jenkins.io/',
       },
     },
   ],

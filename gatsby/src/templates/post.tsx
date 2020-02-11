@@ -3,12 +3,11 @@ import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
 
-import Layout from '../layout'
+import Layout from '../layout/index'
 import UserInfo from '../components/UserInfo/UserInfo'
 import PostTags from '../components/PostTags/PostTags'
 import SocialLinks from '../components/SocialLinks/SocialLinks'
 import SEO from '../components/SEO/SEO'
-import Footer from '../components/Footer/Footer'
 import config from '../../data/SiteConfig'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
 import './b16-tomorrow-dark.css'
@@ -44,7 +43,6 @@ const PostTemplate: React.FC<Props> = props => {
           <SocialLinks postPath={slug} postNode={postNode} />
         </aside>
         <UserInfo config={config} />
-        <Footer config={config} />
       </article>
     </Layout>
   )
