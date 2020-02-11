@@ -61,7 +61,12 @@ const EducationItem: React.FC<EducationItemProps> = ({ education }) => {
           )}
         </address>
       </h4>
-      {education.summary && <p itemProp="summary">{education.summary}</p>}
+      {education.summary && (
+        <p
+          itemProp="summary"
+          dangerouslySetInnerHTML={{ __html: education.summary }}
+        />
+      )}
     </div>
   )
 }

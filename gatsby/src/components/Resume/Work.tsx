@@ -56,11 +56,16 @@ const WorkItem: React.FC<WorkItemProps> = ({ work }) => {
           )}
         </address>
       </h4>
-      {work.summary && <p itemProp="summary">{work.summary}</p>}
+      {work.summary && (
+        <p
+          itemProp="summary"
+          dangerouslySetInnerHTML={{ __html: work.summary }}
+        />
+      )}
       {work.highlights.length > 0 && (
         <ul itemProp="description">
           {work.highlights.map(highlight => (
-            <li>{highlight}</li>
+            <li dangerouslySetInnerHTML={{ __html: highlight }} />
           ))}
         </ul>
       )}

@@ -1,21 +1,28 @@
 import React from 'react'
-import joinArray from 'join-array'
 
 import { Skills } from './data'
 
 interface SkillsItemProps {
   prefix: string
-  keywords: string[]
+  keywords: { [keyword: string]: string }
 }
 
 const SkillsItem: React.FC<SkillsItemProps> = ({ prefix, keywords }) => {
+  const entries = Object.entries(keywords)
+
   return (
     <li>
       {prefix}{' '}
-      {joinArray({
-        array: keywords,
-        seperator: ', ',
-        last: ' & ',
+      {entries.map(([keyword, url], idx) => {
+        return (
+          <>
+            {idx + 1 === entries.length && '& '}
+            <a href={url} key={url}>
+              {keyword}
+            </a>
+            {idx + 1 < entries.length && ', '}
+          </>
+        )
       })}
       .
     </li>
@@ -38,7 +45,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
       <ul>
         <SkillsItem prefix="Fluent in" keywords={languages.keywords} />
         <SkillsItem
-          prefix="Build web applications using"
+          prefix="Built web applications using"
           keywords={frameworks.keywords}
         />
         <SkillsItem prefix="Loves using" keywords={tools.keywords} />

@@ -57,7 +57,7 @@ export interface Education {
 export interface Skills {
   name: string
   level: string
-  keywords: string[]
+  keywords: { [keyword: string]: string }
 }
 
 export interface Resume {
@@ -110,22 +110,23 @@ const resume: Resume = {
       summary: '',
       highlights: [
         `
-        Instilled a culture of [software testing](https://en.wikipedia.org/wiki/Software_testing)
+        Instilled a culture of 
+        <a href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
         into a company that previously had none, reducing the amount of time
         spent testing regressions manually across the company.
         `,
         `
         Developed large portions and was the principal engineer of
-        [Weber Shandwick's](http://www.webershandwick.com/)
+        <a href="http://www.webershandwick.com/">Weber Shandwick's</a>
         MobileCommand, a public relations crisis management web
-        application, and [GemSafe](https://www.gemsafe.com), an
-        insurance platform, using [Python](https://www.python.org/)
-        and [Flask](http://flask.pocoo.org/).
+        application, and <a href="https://www.gemsafe.com">GemSafe</a>, an
+        insurance platform, using <a href="https://www.python.org/">Python</a>
+        and <a href="http://flask.pocoo.org/">Flask</a>.
         `,
         `
-        Co-authored [Fleaker](https://github.com/croscon/fleaker),
+        Co-authored <a href="https://github.com/croscon/fleaker">Fleaker</a>,
         which is a collection of sensible defaults and extensions for the
-        [Flask](http://flask.pocoo.org/) web framework.
+        <a href="http://flask.pocoo.org/">Flask</a> web framework.
         `,
       ],
     },
@@ -141,9 +142,9 @@ const resume: Resume = {
       startDate: new Date('2014-11-01'),
       endDate: new Date('2015-04-01'),
       summary: `
-        Architected [iTree Landscape](https://landscape.itreetools.org)
-        using [Django](https://www.djangoproject.com) and
-        [JavaScript](https://en.wikipedia.org/wiki/JavaScript), which
+        Architected <a href="https://landscape.itreetools.org">iTree Landscape</a>
+        using <a href="https://www.djangoproject.com">Django</a> and
+        <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a>, which
         uses satellite images and various data sources to determine where trees
         should be planted.
       `,
@@ -162,8 +163,8 @@ const resume: Resume = {
       endDate: new Date('2014-12-01'),
       summary: `
         Repaired computers in a retail environment and provided support for
-        customers' networks using [Linux](https://en.wikipedia.org/wiki/Linux)
-        and [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows).
+        customers' networks using <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>
+        and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
     },
@@ -180,7 +181,7 @@ const resume: Resume = {
       endDate: new Date('2013-08-01'),
       summary: `
         Helped provide help desk support for
-        [Kent State's College of Arts and Sciences](http://www.kent.edu/CAS/).
+        <a href="http://www.kent.edu/CAS/">Kent State's College of Arts and Sciences</a>.
       `,
       highlights: [],
     },
@@ -344,37 +345,48 @@ const resume: Resume = {
     {
       name: 'Languages',
       level: 'Master',
-      keywords: [
-        'Python',
-        'Typescript',
-        'JavaScript',
-        'PHP',
-        'Go',
-        'SQL',
-        'HTML5',
-      ],
+      keywords: {
+        Python: 'https://www.python.org/',
+        Typescript: 'https://www.typescriptlang.org/',
+        JavaScript: 'https://en.wikipedia.org/wiki/JavaScript',
+        PHP: 'https://www.php.net/',
+        Go: 'https://golang.org/',
+        SQL: 'https://en.wikipedia.org/wiki/SQL',
+        HTML5: 'https://en.wikipedia.org/wiki/HTML5',
+      },
     },
     {
       name: 'Frameworks',
       level: 'Master',
-      keywords: ['React', 'Flask', 'Django', 'Gin', 'Gatsby', 'WordPress'],
+      keywords: {
+        React: 'https://reactjs.org/',
+        Flask: 'https://www.palletsprojects.com/p/flask/',
+        Django: 'https://www.djangoproject.com/',
+        Gin: 'https://gin-gonic.com/',
+        'Gatsby.js': 'https://www.gatsbyjs.org/',
+        WordPress: 'https://wordpress.org/',
+      },
     },
     {
       name: 'Tools',
       level: 'Master',
-      keywords: [
-        'Vim',
-        'Docker',
-        'Git',
-        'SaltStack',
-        'GitHub Actions',
-        'Serverless',
-      ],
+      keywords: {
+        Vim: 'https://www.vim.org/',
+        Docker: 'https://www.docker.com/',
+        Git: 'https://git-scm.com/',
+        SaltStack: 'https://www.saltstack.com/',
+        'GitHub Actions': 'https://github.com/features/actions',
+        Serverless: 'https://serverless.com/',
+      },
     },
     {
       name: 'Love Hate',
       level: 'Master',
-      keywords: ['Ansible', 'SQLAlchemy', 'jQuery'],
+      keywords: {
+        Ansible: 'https://www.ansible.com/',
+        SQLAlchemy: 'https://www.sqlalchemy.org/',
+        jQuery: 'https://jquery.com/',
+      },
     },
   ],
 }
