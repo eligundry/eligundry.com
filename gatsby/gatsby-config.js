@@ -197,6 +197,7 @@ module.exports = {
         openAnalyzer: false,
         generateStatsFile: true,
         statsFilename: 'public/stats.json',
+        reportFilename: 'public/webpack-report.html',
       },
     },
   ],
