@@ -42,6 +42,10 @@ const config = {
   copyright: 'Copyright © 2019. Advanced User', // Copyright string for the footer of the website and RSS feed.
   themeColor: '#c62828', // Used for setting manifest and progress theme colors.
   backgroundColor: '#e0e0e0', // Used for setting manifest background color.
+  goodreads: {
+    userID: '29665939',
+    apiKey: 'TSX2BO7dC8AMZstT2H6MBg',
+  },
 }
 
 // Validate

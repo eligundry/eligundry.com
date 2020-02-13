@@ -11,6 +11,8 @@
     "react/prop-types": "off",
     "react/no-danger": "off",
     "react/destructuring-assignment": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-one-expression-per-line": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "jsx-a11y/anchor-is-valid": [
       "error",
