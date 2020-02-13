@@ -1,7 +1,6 @@
 const urljoin = require('url-join')
 const path = require('path')
 const config = require('./data/SiteConfig')
-const resume = require('./data/resume')
 
 module.exports = {
   pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
@@ -18,7 +17,6 @@ module.exports = {
       )}/logos/logo-512.png`,
       copyright: config.copyright,
     },
-    resume: resume,
   },
   plugins: [
     'gatsby-plugin-typescript',
@@ -183,6 +181,23 @@ module.exports = {
     {
       resolve: `gatsby-plugin-styled-components`,
     },
-    'gatsby-plugin-graphql-codegen',
+    {
+      resolve: 'gatsby-plugin-graphql-codegen',
+      options: {
+        documentPaths: [
+          './src/**/*.{ts,tsx}',
+          './node_modules/gatsby-*/**/*.js',
+        ],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-webpack-bundle-analyzer',
+      options: {
+        production: true,
+        openAnalyzer: false,
+        generateStatsFile: true,
+        statsFilename: 'public/stats.json',
+      },
+    },
   ],
 }
