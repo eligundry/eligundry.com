@@ -69,11 +69,13 @@ const EntryWrapper = styled.div`
 
 const Emoji = styled.span`
   font-size: 9rem;
+  cursor: default;
 `
 
 const ActivityEmoji = styled.li`
   display: inline;
   font-size: 3rem;
+  cursor: default;
 `
 
 const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
