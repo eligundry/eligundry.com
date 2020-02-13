@@ -1,5 +1,6 @@
 import React from 'react'
 import useFetch from 'react-fetch-hook'
+import ReactTooltip from 'react-tooltip'
 
 import Entry from './Entry'
 import { DaylioEntry } from './types'
@@ -23,12 +24,20 @@ const Daylio: React.FC<Props> = ({ variant = 'home' }) => {
     return <h1>Error!</h1>
   }
 
+  const tooltip = <ReactTooltip place="top" effect="solid" />
+
   if (variant === 'home') {
-    return <Entry {...data[0]} />
+    return (
+      <>
+        {tooltip}
+        <Entry {...data[0]} />
+      </>
+    )
   }
 
   return (
     <>
+      {tooltip}
       {data.map((entry: DaylioEntry) => (
         <Entry key={entry.time} {...entry} />
       ))}

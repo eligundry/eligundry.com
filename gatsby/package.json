@@ -42,6 +42,7 @@
     "react-goodreads-shelf": "^1.0.3",
     "react-helmet": "^5.2.1",
     "react-share": "^3.0.1",
+    "react-tooltip": "^4.0.3",
     "react-twitter-embed": "^3.0.3",
     "react-twitter-widgets": "^1.7.1",
     "react-use": "^13.21.0",

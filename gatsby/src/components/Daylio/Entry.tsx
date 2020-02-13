@@ -54,11 +54,6 @@ const EntryWrapper = styled.div`
   & .activities {
     list-style: none;
     padding-left: 0;
-
-    li {
-      display: inline;
-      font-size: 3rem;
-    }
   }
 
   & .emoji-column::after {
@@ -74,6 +69,11 @@ const EntryWrapper = styled.div`
 
 const Emoji = styled.span`
   font-size: 9rem;
+`
+
+const ActivityEmoji = styled.li`
+  display: inline;
+  font-size: 3rem;
 `
 
 const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
@@ -94,17 +94,17 @@ const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
         {filteredActivities.length > 0 && (
           <ul className="activities">
             {filteredActivities.map(a => (
-              <li key={`${time}-${a}`} title={a}>
+              <ActivityEmoji key={`${time}-${a}`} data-tip={a}>
                 {ActivityMapping[a] || a}
-              </li>
+              </ActivityEmoji>
             ))}
           </ul>
         )}
         {notes &&
           (notes.length > 0 ? (
             <ul className="notes">
-              {notes.map((note, i) => (
-                <li key={i}>{note}</li>
+              {notes.map(note => (
+                <li key={note}>{note}</li>
               ))}
             </ul>
           ) : (
