@@ -33,7 +33,6 @@ const EntryWrapper = styled.div`
   & .emoji-column {
     display: inline-block;
     width: 20%;
-    text-align: center;
 
     & > * {
       display: block;
@@ -55,16 +54,6 @@ const EntryWrapper = styled.div`
     list-style: none;
     padding-left: 0;
   }
-
-  & .emoji-column::after {
-    content: ' ';
-    border: 10px solid black;
-    height: 30px;
-    display: block;
-    width: 5px;
-    background-color: black;
-    margin: -14px auto 7px 45%;
-  }
 `
 
 const Emoji = styled.span`
@@ -84,14 +73,14 @@ const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
   return (
     <EntryWrapper id={time}>
       <div className="emoji-column">
+        <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
+      </div>
+      <div className="text-column">
         <time dateTime={time}>
           <a href={`#${time}`}>
             {format(new Date(time), 'MMMM do, yyyy @ HH:mm')}
           </a>
         </time>
-        <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
-      </div>
-      <div className="text-column">
         <h3>I felt {mood}</h3>
         {filteredActivities.length > 0 && (
           <ul className="activities">

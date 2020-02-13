@@ -24,8 +24,8 @@ class PostListing extends React.Component {
     return (
       <div>
         {postList.map(post => (
-          <article>
-            <Link to={`/${pathPrefix}/${post.path}`} key={post.path}>
+          <article key={post.path}>
+            <Link to={`/${pathPrefix}/${post.path}`}>
               <h1>{post.title}</h1>
             </Link>
             <time dateTime={post.date}>

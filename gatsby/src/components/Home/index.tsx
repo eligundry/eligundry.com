@@ -100,6 +100,20 @@ const Home: React.FC = () => (
         />
       </div>
     </Section>
+    <Section className="triva">
+      <h2>Trivia</h2>
+      <p>Here are some fun facts about me!</p>
+      <ul>
+        <li>
+          Vim user but I actively encourage everyone to use something else.
+          Using Vim in {new Date().getFullYear()} is a cool bar trick.
+        </li>
+        <li>
+          Die hard Cleveland Browns fan and am convinced that we will win a
+          Super Bowl one of these years.
+        </li>
+      </ul>
+    </Section>
     <Section className="tweets">
       <h2>Twitter</h2>
       <p className="summary">
@@ -115,20 +129,6 @@ const Home: React.FC = () => (
         screenName={config.userTwitter}
         options={{ height: 400 }}
       />
-    </Section>
-    <Section className="triva">
-      <h2>Trivia</h2>
-      <p>Here are some fun facts about me!</p>
-      <ul>
-        <li>
-          Vim user but I actively encourage everyone to use something else.
-          Using Vim in {new Date().getFullYear()} is a cool bar trick.
-        </li>
-        <li>
-          Die hard Cleveland Browns fan and am convinced that we will win a
-          Super Bowl one of these years.
-        </li>
-      </ul>
     </Section>
   </Wrapper>
 )
