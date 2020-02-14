@@ -50,7 +50,8 @@
     "rehype-react": "^4.0.1",
     "styled-components": "^5.0.0",
     "typescript-eslint-parser": "^22.0.0",
-    "url-join": "^4.0.0"
+    "url-join": "^4.0.0",
+    "use-detect-print": "0.0.2"
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^1.10.6",

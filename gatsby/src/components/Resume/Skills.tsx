@@ -15,13 +15,11 @@ const SkillsItem: React.FC<SkillsItemProps> = ({ prefix, keywords }) => {
       {prefix}{' '}
       {entries.map(([keyword, url], idx) => {
         return (
-          <>
+          <React.Fragment key={url}>
             {idx + 1 === entries.length && '& '}
-            <a href={url} key={url}>
-              {keyword}
-            </a>
+            <a href={url}>{keyword}</a>
             {idx + 1 < entries.length && ', '}
-          </>
+          </React.Fragment>
         )
       })}
       .

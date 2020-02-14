@@ -80,7 +80,7 @@ const EducationSection: React.FC<EducationProps> = ({ education }) => {
     <section>
       <h2>Education</h2>
       {education.map(e => (
-        <EducationItem education={e} />
+        <EducationItem key={e.institution} education={e} />
       ))}
     </section>
   )

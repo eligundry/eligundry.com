@@ -1,8 +1,13 @@
 import React from 'react'
-import styled from 'styled-components'
-import format from 'date-fns/format'
+import styled, { css } from 'styled-components'
+/* import format from 'date-fns/format' */
+import formatISO from 'date-fns/formatISO'
 
-import { DaylioEntry } from './types'
+import { DaylioEntry, DaylioVariants } from './types'
+
+interface Props extends DaylioEntry {
+  variant: DaylioVariants
+}
 
 const MoodMapping = {
   awful: '😖',
@@ -25,14 +30,21 @@ const ActivityMapping = {
   reading: '📚',
   shopping: '🛒',
   'good meal': '🍜',
+  museum: '🏛',
+  party: '🎉',
+  cleaning: '🧹',
 }
 
-const EntryWrapper = styled.div`
+const EntryWrapper = styled.div<Partial<Props>>`
   display: block;
+  max-width: calc(100% - 7rem);
 
   & .emoji-column {
     display: inline-block;
-    width: 20%;
+    width: 5rem;
+    vertical-align: top;
+    line-height: 1;
+    margin-right: 1em;
 
     & > * {
       display: block;
@@ -42,46 +54,58 @@ const EntryWrapper = styled.div`
 
   & .text-column {
     display: inline-block;
-    width: 80%;
-    vertical-align: top;
 
     & h3 {
-      margin-top: 0;
+      font-size: 1.5em;
+      margin-top: 0.2em;
+      margin-bottom: 0.3em;
     }
   }
 
   & .activities {
     list-style: none;
     padding-left: 0;
+    margin: 0;
   }
+
+  & .notes {
+    margin-top: 0;
+    padding-left: 0;
+  }
+
+  ${props =>
+    props.variant === DaylioVariants.list &&
+    css`
+      margin: 1em 0;
+    `}
 `
 
 const Emoji = styled.span`
-  font-size: 9rem;
+  font-size: 5rem;
   cursor: default;
 `
 
 const ActivityEmoji = styled.li`
   display: inline;
-  font-size: 3rem;
+  font-size: 2rem;
   cursor: default;
 `
 
-const Entry: React.FC<DaylioEntry> = ({ time, mood, activities, notes }) => {
+const Entry: React.FC<Props> = ({ time, mood, activities, notes, variant }) => {
   const filteredActivities = activities.filter(a => !!a && a.length > -1)
 
   return (
-    <EntryWrapper id={time}>
+    <EntryWrapper id={time} variant={variant}>
       <div className="emoji-column">
         <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
       </div>
       <div className="text-column">
+        <h3>I felt {mood}</h3>
         <time dateTime={time}>
-          <a href={`#${time}`}>
-            {format(new Date(time), 'MMMM do, yyyy @ HH:mm')}
+          <a href={`/feelings#${time}`}>
+            {formatISO(new Date(time), 'MMMM do, yyyy @ HH:mm')}
           </a>
         </time>
-        <h3>I felt {mood}</h3>
         {filteredActivities.length > 0 && (
           <ul className="activities">
             {filteredActivities.map(a => (

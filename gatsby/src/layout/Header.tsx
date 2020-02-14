@@ -5,6 +5,10 @@ const Nav = styled.nav`
   & > a {
     margin-right: 1em;
   }
+
+  @media print {
+    display: none;
+  }
 `
 
 const navLinks = {
@@ -21,7 +25,9 @@ const Header: React.FC = () => {
       <h1>Eli Gundry</h1>
       <Nav role="navigation">
         {Object.entries(navLinks).map(([path, title]) => (
-          <a href={path}>{title}</a>
+          <a href={path} key={path}>
+            {title}
+          </a>
         ))}
       </Nav>
     </header>

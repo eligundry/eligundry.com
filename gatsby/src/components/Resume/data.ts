@@ -14,6 +14,7 @@ export interface Experience {
   summary: string
   highlights: string[]
   location: Partial<Location>
+  printHide?: boolean
 }
 
 export interface Work extends Experience {
@@ -171,6 +172,7 @@ const resume: Resume = {
         and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
+      printHide: true,
     },
     {
       company: 'Kent State University',
@@ -188,6 +190,7 @@ const resume: Resume = {
         <a href="http://www.kent.edu/CAS/">Kent State's College of Arts and Sciences</a>.
       `,
       highlights: [],
+      printHide: true,
     },
     {
       company: 'Mindbox Studios',
@@ -213,6 +216,7 @@ const resume: Resume = {
         using <a href="http://www.redmine.org">RedMine</a>.
         `,
       ],
+      printHide: true,
     },
     {
       company: 'Go Media',

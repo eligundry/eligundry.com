@@ -1,6 +1,7 @@
 import React from 'react'
 import format from 'date-fns/format'
 import formatISO from 'date-fns/formatISO'
+import useDetectPrint from 'use-detect-print'
 
 import { Work } from './data'
 
@@ -65,7 +66,10 @@ const WorkItem: React.FC<WorkItemProps> = ({ work }) => {
       {work.highlights.length > 0 && (
         <ul itemProp="description">
           {work.highlights.map(highlight => (
-            <li dangerouslySetInnerHTML={{ __html: highlight }} />
+            <li
+              key={highlight}
+              dangerouslySetInnerHTML={{ __html: highlight }}
+            />
           ))}
         </ul>
       )}
@@ -78,12 +82,21 @@ interface WorkProps {
 }
 
 const WorkSection: React.FC<WorkProps> = ({ work }) => {
+  const isPrinting = useDetectPrint() as boolean
+
   return (
     <section>
-      <h2>Work</h2>
-      {work.map(w => (
-        <WorkItem work={w} />
-      ))}
+      {!isPrinting && <h2>Work</h2>}
+      {isPrinting && (
+        <header>
+          <h2>Selected Work</h2>
+        </header>
+      )}
+      {work
+        .filter(w => !isPrinting || !w.printHide)
+        .map(w => (
+          <WorkItem key={w.company} work={w} />
+        ))}
     </section>
   )
 }

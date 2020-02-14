@@ -3,13 +3,13 @@ import useFetch from 'react-fetch-hook'
 import ReactTooltip from 'react-tooltip'
 
 import Entry from './Entry'
-import { DaylioEntry } from './types'
+import { DaylioEntry, DaylioVariants } from './types'
 
 interface Props {
-  variant?: 'home' | 'list'
+  variant?: DaylioVariants
 }
 
-const Daylio: React.FC<Props> = ({ variant = 'home' }) => {
+const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
   const { loading, error, data } = useFetch<DaylioEntry>(
     variant === 'home' ? '/api/daylio/today' : '/api/daylio',
     {},
@@ -26,11 +26,11 @@ const Daylio: React.FC<Props> = ({ variant = 'home' }) => {
 
   const tooltip = <ReactTooltip place="top" effect="solid" />
 
-  if (variant === 'home') {
+  if (variant === DaylioVariants.home) {
     return (
       <>
         {tooltip}
-        <Entry {...data[0]} />
+        <Entry variant={DaylioVariants.home} {...data[0]} />
       </>
     )
   }
@@ -39,7 +39,7 @@ const Daylio: React.FC<Props> = ({ variant = 'home' }) => {
     <>
       {tooltip}
       {data.map((entry: DaylioEntry) => (
-        <Entry key={entry.time} {...entry} />
+        <Entry key={entry.time} variant={DaylioVariants.list} {...entry} />
       ))}
     </>
   )

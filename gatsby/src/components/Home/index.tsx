@@ -5,7 +5,7 @@ import { GoodreadsBookshelf } from 'react-goodreads-shelf'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
 
 import config from '../../../data/SiteConfig'
-import Daylio from '../Daylio'
+import Daylio from '../Daylio/index'
 
 const Wrapper = styled.main`
   display: flex;
