@@ -36,7 +36,10 @@ export const listingQuery = graphql`
       sort: { fields: [fields___date], order: DESC }
       limit: $limit
       skip: $skip
-      filter: { collection: { eq: "posts" } }
+      filter: {
+        collection: { eq: "posts" }
+        frontmatter: { draft: { ne: true } }
+      }
     ) {
       edges {
         node {
