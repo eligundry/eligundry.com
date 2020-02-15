@@ -2,11 +2,16 @@ import os
 import requests
 
 def deploy():
+    password = os.getenv('SALT_PASSWORD')
+
+    if not password:
+        raise Exception('SALT_PASSWORD must be provided as an env var')
+
     auth_resp = requests.post(
         'https://salt.eligundry.ninja/login',
         data={
-            'password': os.getenv('SALT_PASSWORD'),
             'username': 'github-actions',
+            'password': password,
             'eauth': 'pam',
         }
     )
