@@ -49,4 +49,6 @@ jobs:
       run: pip install requests
 
     - name: Deploy to production
+      env:
+        SALT_PASSWORD: ${{ secrets.SALT_PASSWORD }}
       run: python scripts/deploy.py
