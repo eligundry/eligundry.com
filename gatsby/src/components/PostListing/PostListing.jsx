@@ -22,19 +22,25 @@ class PostListing extends React.Component {
     const postList = this.getPostList()
     const { pathPrefix = 'blog' } = this.props
     return (
-      <div>
+      <main itemScope itemType="http://schema.org/Blog">
         {postList.map(post => (
-          <article key={post.path}>
-            <Link to={`/${pathPrefix}/${post.path}`}>
-              <h1>{post.title}</h1>
+          <article
+            key={post.path}
+            itemScope
+            itemProp="blogPosts"
+            itemType="http://schema.org/BlogPosting"
+          >
+            <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
+              <h1 itemProp="title">{post.title}</h1>
             </Link>
-            <time dateTime={post.date}>
+            <time dateTime={post.date} itemProp="datePublished">
+              🗓
               {formatISO(new Date(post.date), { representation: 'date' })}
             </time>
-            <p>{post.description}</p>
+            <p itemProp="description">{post.description}</p>
           </article>
         ))}
-      </div>
+      </main>
     )
   }
 }

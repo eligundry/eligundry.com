@@ -6,7 +6,6 @@ import formatISO from 'date-fns/formatISO'
 import Layout from '../layout/index'
 import UserInfo from '../components/UserInfo/UserInfo'
 import PostTags from '../components/PostTags/PostTags'
-import SocialLinks from '../components/SocialLinks/SocialLinks'
 import SEO from '../components/SEO/SEO'
 import config from '../../data/SiteConfig'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
@@ -34,6 +33,7 @@ const PostTemplate: React.FC<Props> = props => {
         <header>
           <h1>{post.title}</h1>
           <time dateTime={post.date}>
+            🗓
             {formatISO(new Date(post.date), { representation: 'date' })}
           </time>
         </header>
