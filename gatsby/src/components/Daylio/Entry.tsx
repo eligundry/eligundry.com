@@ -42,7 +42,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
 
   & .emoji-column {
     display: inline-block;
-    width: 5rem;
+    width: 4rem;
     vertical-align: top;
     line-height: 1;
     margin-right: 1em;
@@ -55,6 +55,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
 
   & .text-column {
     display: inline-block;
+    max-width: calc(100% - 7rem);
 
     & h3 {
       font-size: 1.5em;
@@ -78,6 +79,10 @@ const EntryWrapper = styled.div<Partial<Props>>`
     props.variant === DaylioVariants.list &&
     css`
       margin: 1em 0;
+
+      & .text-column {
+        background-color: #fff;
+      }
     `}
 
   ${props =>
@@ -87,9 +92,19 @@ const EntryWrapper = styled.div<Partial<Props>>`
     `}
 `
 
-const Emoji = styled.span`
-  font-size: 5rem;
+interface ActivityEmojiProps {
+  dropShadow?: boolean
+}
+
+const Emoji = styled.span<ActivityEmojiProps>`
+  font-size: 4rem;
   cursor: default;
+
+  ${props =>
+    props.dropShadow &&
+    css`
+      text-shadow: 0px 8px 0px white, 0 -8px 0px white;
+    `}
 `
 
 const ActivityEmoji = styled.li`
@@ -111,7 +126,12 @@ const Entry: React.FC<Props> = ({
   return (
     <EntryWrapper id={time} variant={variant} selected={selected}>
       <div className="emoji-column">
-        <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
+        <Emoji
+          dropShadow={variant === DaylioVariants.list}
+          title={`I felt ${mood}`}
+        >
+          {MoodMapping[mood]}
+        </Emoji>
       </div>
       <div className="text-column">
         <h3>I felt {mood}</h3>

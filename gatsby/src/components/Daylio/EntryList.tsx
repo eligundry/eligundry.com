@@ -10,8 +10,15 @@ interface Props {
 }
 
 const EntryListWrapper = styled.main`
-  &:before: {
+  position: relative;
+
+  &::before {
     content: ' ';
+    border-left: 5px solid black;
+    position: absolute;
+    margin-left: calc(2rem - 3px);
+    height: 100%;
+    z-index: -100;
   }
 `
 
