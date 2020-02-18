@@ -11,7 +11,7 @@ interface Props {
 
 const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
   const { loading, error, data } = useFetch<DaylioEntry>(
-    variant === 'home' ? '/api/daylio/today' : '/api/daylio',
+    variant === 'home' ? '/api/feelings/time/today' : '/api/feelings',
     {},
     []
   )
