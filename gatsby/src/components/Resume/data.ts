@@ -96,7 +96,7 @@ const resume: Resume = {
       endDate: null,
       summary: '',
       highlights: [
-        'Completely rebuilt fulfillment platform using React & Go.',
+        'Completely rebuilt fulfillment platform using <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>.',
         'Implemented single sign on through OpenID Connect across all internal applications company wide.',
         'Architected dynamic payment inititiaves that decreased cost of fulfillment by $3 and time to delivery by a day.',
       ],

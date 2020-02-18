@@ -8,8 +8,7 @@ const config = {
   siteDescription: 'Personal website of Eli Gundry', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '1825356251115265', // FB Application ID for using app insights
-  googleAnalyticsID: 'UA-47311644-5', // GA tracking ID.
-  disqusShortname: 'https-vagr9k-github-io-gatsby-advanced-starter', // Disqus shortname.
+  googleAnalyticsID: 'UA-41741300-1', // GA tracking ID.
   postDefaultCategoryID: 'Tech', // Default category for posts.
   dateFromFormat: 'YYYY-MM-DD', // Date format used in the frontmatter.
   dateFormat: 'YYYY-MM-DD', // Date format for display.
