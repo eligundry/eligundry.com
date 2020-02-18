@@ -1,6 +1,12 @@
 import React from 'react'
 import { IconContext } from 'react-icons'
-import { FaGithub, FaTwitter, FaEnvelope, FaRssSquare } from 'react-icons/fa'
+import {
+  FaGithub,
+  FaTwitter,
+  FaEnvelope,
+  FaRssSquare,
+  FaLinkedin,
+} from 'react-icons/fa'
 
 import config from '../../../data/SiteConfig'
 
@@ -15,6 +21,11 @@ const UserLinks: React.FC = () => {
       label: 'Twitter',
       url: 'https://twitter.com/EliGundry',
       icon: <FaTwitter />,
+    },
+    {
+      label: 'LinkedIn',
+      url: 'https://www.linkedin.com/in/eligundry/',
+      icon: <FaLinkedin />,
     },
     {
       label: 'Email',
@@ -32,7 +43,13 @@ const UserLinks: React.FC = () => {
     <IconContext.Provider value={{}}>
       <div className="user-links">
         {links.map(link => (
-          <a href={link.url} title={link.label}>
+          <a
+            href={link.url}
+            title={link.label}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={link.url}
+          >
             {link.icon}
           </a>
         ))}

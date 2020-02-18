@@ -3,6 +3,7 @@ import useFetch from 'react-fetch-hook'
 import ReactTooltip from 'react-tooltip'
 
 import Entry from './Entry'
+import EntryList from './EntryList'
 import { DaylioEntry, DaylioVariants } from './types'
 
 interface Props {
@@ -38,9 +39,7 @@ const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
   return (
     <>
       {tooltip}
-      {data.map((entry: DaylioEntry) => (
-        <Entry key={entry.time} variant={DaylioVariants.list} {...entry} />
-      ))}
+      <EntryList entries={data} />
     </>
   )
 }

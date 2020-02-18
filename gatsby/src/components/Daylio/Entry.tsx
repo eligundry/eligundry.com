@@ -1,12 +1,13 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-/* import format from 'date-fns/format' */
 import formatISO from 'date-fns/formatISO'
+import isEqual from 'lodash/isEqual'
 
 import { DaylioEntry, DaylioVariants } from './types'
 
 interface Props extends DaylioEntry {
   variant: DaylioVariants
+  selected?: boolean
 }
 
 const MoodMapping = {
@@ -78,6 +79,12 @@ const EntryWrapper = styled.div<Partial<Props>>`
     css`
       margin: 1em 0;
     `}
+
+  ${props =>
+    props.selected &&
+    css`
+      border: 2px solid black;
+    `}
 `
 
 const Emoji = styled.span`
@@ -91,20 +98,25 @@ const ActivityEmoji = styled.li`
   cursor: default;
 `
 
-const Entry: React.FC<Props> = ({ time, mood, activities, notes, variant }) => {
+const Entry: React.FC<Props> = ({
+  time,
+  mood,
+  activities,
+  notes,
+  variant,
+  selected = false,
+}) => {
   const filteredActivities = activities.filter(a => !!a && a.length > -1)
 
   return (
-    <EntryWrapper id={time} variant={variant}>
+    <EntryWrapper id={time} variant={variant} selected={selected}>
       <div className="emoji-column">
         <Emoji title={`I felt ${mood}`}>{MoodMapping[mood]}</Emoji>
       </div>
       <div className="text-column">
         <h3>I felt {mood}</h3>
         <time dateTime={time}>
-          <a href={`/feelings#${time}`}>
-            {formatISO(new Date(time), 'MMMM do, yyyy @ HH:mm')}
-          </a>
+          <a href={`/feelings#${time}`}>{formatISO(new Date(time))}</a>
         </time>
         {filteredActivities.length > 0 && (
           <ul className="activities">
@@ -130,4 +142,4 @@ const Entry: React.FC<Props> = ({ time, mood, activities, notes, variant }) => {
   )
 }
 
-export default Entry
+export default React.memo(Entry, isEqual)
