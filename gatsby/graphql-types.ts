@@ -689,12 +689,12 @@ export type FileFieldsEnum =
   'internal___type' |
   'childMarkdownRemark___id' |
   'childMarkdownRemark___frontmatter___title' |
-  'childMarkdownRemark___frontmatter___description' |
   'childMarkdownRemark___frontmatter___date' |
-  'childMarkdownRemark___frontmatter___slug' |
+  'childMarkdownRemark___frontmatter___description' |
   'childMarkdownRemark___frontmatter___cover' |
   'childMarkdownRemark___frontmatter___tags' |
   'childMarkdownRemark___frontmatter___category' |
+  'childMarkdownRemark___frontmatter___slug' |
   'childMarkdownRemark___frontmatter___draft' |
   'childMarkdownRemark___frontmatter___location' |
   'childMarkdownRemark___excerpt' |
@@ -1472,12 +1472,12 @@ export type MarkdownRemarkFieldsDateArgs = {
 export type MarkdownRemarkFieldsEnum = 
   'id' |
   'frontmatter___title' |
-  'frontmatter___description' |
   'frontmatter___date' |
-  'frontmatter___slug' |
+  'frontmatter___description' |
   'frontmatter___cover' |
   'frontmatter___tags' |
   'frontmatter___category' |
+  'frontmatter___slug' |
   'frontmatter___draft' |
   'frontmatter___location' |
   'excerpt' |
@@ -1610,12 +1610,12 @@ export type MarkdownRemarkFilterInput = {
 
 export type MarkdownRemarkFrontmatter = {
   title?: Maybe<Scalars['String']>,
-  description?: Maybe<Scalars['String']>,
   date?: Maybe<Scalars['Date']>,
-  slug?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
   cover?: Maybe<Scalars['String']>,
   tags?: Maybe<Array<Maybe<Scalars['String']>>>,
   category?: Maybe<Scalars['String']>,
+  slug?: Maybe<Scalars['String']>,
   draft?: Maybe<Scalars['Boolean']>,
   location?: Maybe<Scalars['String']>,
 };
@@ -1630,12 +1630,12 @@ export type MarkdownRemarkFrontmatterDateArgs = {
 
 export type MarkdownRemarkFrontmatterFilterInput = {
   title?: Maybe<StringQueryOperatorInput>,
-  description?: Maybe<StringQueryOperatorInput>,
   date?: Maybe<DateQueryOperatorInput>,
-  slug?: Maybe<StringQueryOperatorInput>,
+  description?: Maybe<StringQueryOperatorInput>,
   cover?: Maybe<StringQueryOperatorInput>,
   tags?: Maybe<StringQueryOperatorInput>,
   category?: Maybe<StringQueryOperatorInput>,
+  slug?: Maybe<StringQueryOperatorInput>,
   draft?: Maybe<BooleanQueryOperatorInput>,
   location?: Maybe<StringQueryOperatorInput>,
 };
@@ -1893,6 +1893,7 @@ export type QuerySiteArgs = {
   port?: Maybe<IntQueryOperatorInput>,
   host?: Maybe<StringQueryOperatorInput>,
   pathPrefix?: Maybe<StringQueryOperatorInput>,
+  polyfill?: Maybe<BooleanQueryOperatorInput>,
   buildTime?: Maybe<DateQueryOperatorInput>
 };
 
@@ -1935,8 +1936,8 @@ export type QuerySitePageArgs = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  internalComponentName?: Maybe<StringQueryOperatorInput>,
   path?: Maybe<StringQueryOperatorInput>,
+  internalComponentName?: Maybe<StringQueryOperatorInput>,
   component?: Maybe<StringQueryOperatorInput>,
   componentChunkName?: Maybe<StringQueryOperatorInput>,
   isCreatedByStatefulCreatePages?: Maybe<BooleanQueryOperatorInput>,
@@ -1963,6 +1964,7 @@ export type Site = Node & {
   port?: Maybe<Scalars['Int']>,
   host?: Maybe<Scalars['String']>,
   pathPrefix?: Maybe<Scalars['String']>,
+  polyfill?: Maybe<Scalars['Boolean']>,
   buildTime?: Maybe<Scalars['Date']>,
 };
 
@@ -2098,6 +2100,7 @@ export type SiteFieldsEnum =
   'port' |
   'host' |
   'pathPrefix' |
+  'polyfill' |
   'buildTime';
 
 export type SiteFilterInput = {
@@ -2109,6 +2112,7 @@ export type SiteFilterInput = {
   port?: Maybe<IntQueryOperatorInput>,
   host?: Maybe<StringQueryOperatorInput>,
   pathPrefix?: Maybe<StringQueryOperatorInput>,
+  polyfill?: Maybe<BooleanQueryOperatorInput>,
   buildTime?: Maybe<DateQueryOperatorInput>,
 };
 
@@ -2126,8 +2130,8 @@ export type SitePage = Node & {
   parent?: Maybe<Node>,
   children: Array<Node>,
   internal: Internal,
-  internalComponentName?: Maybe<Scalars['String']>,
   path?: Maybe<Scalars['String']>,
+  internalComponentName?: Maybe<Scalars['String']>,
   component?: Maybe<Scalars['String']>,
   componentChunkName?: Maybe<Scalars['String']>,
   isCreatedByStatefulCreatePages?: Maybe<Scalars['Boolean']>,
@@ -2279,8 +2283,8 @@ export type SitePageFieldsEnum =
   'internal___mediaType' |
   'internal___owner' |
   'internal___type' |
-  'internalComponentName' |
   'path' |
+  'internalComponentName' |
   'component' |
   'componentChunkName' |
   'isCreatedByStatefulCreatePages' |
@@ -2397,8 +2401,8 @@ export type SitePageFilterInput = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  internalComponentName?: Maybe<StringQueryOperatorInput>,
   path?: Maybe<StringQueryOperatorInput>,
+  internalComponentName?: Maybe<StringQueryOperatorInput>,
   component?: Maybe<StringQueryOperatorInput>,
   componentChunkName?: Maybe<StringQueryOperatorInput>,
   isCreatedByStatefulCreatePages?: Maybe<BooleanQueryOperatorInput>,
