@@ -7,7 +7,7 @@ services:
       - '80:80'
       - '443:443'
     environment:
-      DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
+      DOMAINS: 'eligundry.localhost -> http://dockerhost:8000'
       STAGE: 'local'
       WEBSOCKET: 'true'
     networks:
@@ -28,15 +28,6 @@ services:
     volumes:
       - ./api:/src
       - ./data:/opt/data
-
-  docker-host:
-    container_name: eg-dh
-    image: qoomon/docker-host
-    networks:
-      backend: {}
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
 
 volumes:
   data_https_portal: {}
