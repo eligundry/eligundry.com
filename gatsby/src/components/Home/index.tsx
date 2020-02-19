@@ -5,6 +5,7 @@ import { GoodreadsBookshelf } from 'react-goodreads-shelf'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
 
 import config from '../../../data/SiteConfig'
+import styleConfig from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 
 const Wrapper = styled.main`
@@ -31,7 +32,7 @@ const Section = styled.section<SectionProps>`
     grid-template-columns: repeat(auto-fit, minmax(80px, 100px)) !important;
   }
 
-  @media (max-width: 768px) {
+  @media (${styleConfig.breakPoints.mobile}) {
     width: 100%;
   }
 

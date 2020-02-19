@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import formatISO from 'date-fns/formatISO'
 import isEqual from 'lodash/isEqual'
 
+import styleVariables from '../../../data/styleConfig'
 import { DaylioEntry, DaylioVariants } from './types'
 
 interface Props extends DaylioEntry {
@@ -38,7 +39,23 @@ const ActivityMapping = {
 
 const EntryWrapper = styled.div<Partial<Props>>`
   display: block;
-  max-width: calc(100% - 7rem);
+
+  ${props =>
+    props.variant === DaylioVariants.list &&
+    css`
+      @media (${styleVariables.breakPoints.mobile}) {
+        max-width: 90%;
+        width: 90%;
+      }
+    `}
+
+  ${props =>
+    props.variant === DaylioVariants.home &&
+    css`
+      @media (${styleVariables.breakPoints.mobile}) {
+        max-width: 100%;
+      }
+    `}
 
   & .emoji-column {
     display: inline-block;
@@ -62,6 +79,17 @@ const EntryWrapper = styled.div<Partial<Props>>`
       margin-top: 0.2em;
       margin-bottom: 0.3em;
     }
+
+    ${props =>
+      props.variant === DaylioVariants.list &&
+      css`
+        @media (${styleVariables.breakPoints.mobile}) {
+          width: 100%;
+          max-width: 100%;
+          margin: 2em 0;
+          padding-left: 1.8rem;
+        }
+      `}
   }
 
   & .activities {
