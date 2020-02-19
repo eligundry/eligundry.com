@@ -4,9 +4,7 @@ import { graphql } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
 
 import Layout from '../layout'
-import UserInfo from '../components/UserInfo/UserInfo'
 import SEO from '../components/SEO/SEO'
-import config from '../../data/SiteConfig'
 import { TalkBySlugQuery, SitePageContext } from '../../graphql-types'
 
 interface Props {
@@ -30,11 +28,12 @@ const TalkTemplate: React.FC<Props> = props => {
         <header>
           <h1>{talk.title}</h1>
           <time dateTime={talk.date}>
+            🗓
             {formatISO(new Date(talk.date), { representation: 'date' })}
           </time>
+          <p>{talk.location}</p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: talkNode.html }} />
-        <UserInfo config={config} />
       </article>
     </Layout>
   )
@@ -56,6 +55,7 @@ export const pageQuery = graphql`
         category
         tags
         description
+        location
       }
       fields {
         slug

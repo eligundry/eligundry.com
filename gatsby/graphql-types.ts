@@ -2874,7 +2874,7 @@ export type TalkBySlugQueryVariables = {
 
 export type TalkBySlugQuery = { markdownRemark: Maybe<(
     Pick<MarkdownRemark, 'html' | 'timeToRead' | 'excerpt'>
-    & { frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'cover' | 'date' | 'category' | 'tags' | 'description'>>, fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>> }
+    & { frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'cover' | 'date' | 'category' | 'tags' | 'description' | 'location'>>, fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>> }
   )> };
 
 export type TalkListingQueryQueryVariables = {};
