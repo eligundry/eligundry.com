@@ -9,6 +9,11 @@ const FeelingsPage: React.FC = () => {
     <Layout>
       <Helmet>
         <title>Feelings</title>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          href="/api/feelings/feed.rss"
+        />
       </Helmet>
       <Daylio variant="list" />
     </Layout>

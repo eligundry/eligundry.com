@@ -4,6 +4,7 @@ const styleVariables = {
     size: '16px',
   },
   breakPoints: {
+    tablet: 'max-width: 768px',
     mobile: 'max-width: 400px',
   },
 }

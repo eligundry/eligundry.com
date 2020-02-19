@@ -5,16 +5,16 @@ import styled from 'styled-components'
 import Header from './Header'
 import Footer from './Footer'
 import config from '../../data/SiteConfig'
-import styleConfig from '../../data/styleConfig'
+import style from '../../data/styleConfig'
 import './index.css'
 
 const LayoutWrapper = styled.div`
-  font-family: ${styleConfig.font.family};
-  font-size: ${styleConfig.font.size};
+  font-family: ${style.font.family};
+  font-size: ${style.font.size};
   width: 80%;
   margin: 0 auto;
 
-  @media (${styleConfig.breakPoints.mobile}) {
+  @media (${style.breakPoints.tablet}) {
     width: 90%;
   }
 
