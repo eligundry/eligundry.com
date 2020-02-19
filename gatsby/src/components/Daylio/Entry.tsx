@@ -88,6 +88,8 @@ const EntryWrapper = styled.div<Partial<Props>>`
           max-width: 100%;
           margin: 2em 0;
           padding-left: 1.8rem;
+          z-index: 100;
+          position: relative;
         }
       `}
   }
@@ -117,6 +119,12 @@ const EntryWrapper = styled.div<Partial<Props>>`
     props.selected &&
     css`
       border: 2px solid black;
+
+      & .text-column {
+        @media (${styleVariables.breakPoints.mobile}) {
+          padding-left: calc(1.8rem - 2px);
+        }
+      }
     `}
 `
 
@@ -127,6 +135,8 @@ interface ActivityEmojiProps {
 const Emoji = styled.span<ActivityEmojiProps>`
   font-size: 4rem;
   cursor: default;
+  z-index: 100;
+  position: relative;
 
   ${props =>
     props.dropShadow &&

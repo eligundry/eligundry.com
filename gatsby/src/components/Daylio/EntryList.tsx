@@ -18,7 +18,8 @@ const EntryListWrapper = styled.main`
     position: absolute;
     margin-left: calc(2rem - 3px);
     height: 100%;
-    z-index: -100;
+    z-index: 10;
+    box-shadow: 0 0 0px 8px white;
   }
 `
 
