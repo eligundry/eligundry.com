@@ -37,6 +37,14 @@ const PostTemplate: React.FC<Props> = props => {
             {formatISO(new Date(post.date), { representation: 'date' })}
           </time>
         </header>
+        {post.tags && post.tags.includes('icymi') && (
+          <blockquote>
+            <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
+            review and recommend old albums that you may have missed. I used to
+            write them in a #music Slack channel at a previous job, but now I
+            write them here.
+          </blockquote>
+        )}
         <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
         <aside className="post-meta">
           <PostTags tags={post.tags} />
