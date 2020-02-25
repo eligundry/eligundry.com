@@ -4,10 +4,8 @@ import { graphql } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
 
 import Layout from '../layout/index'
-import UserInfo from '../components/UserInfo/UserInfo'
 import PostTags from '../components/PostTags/PostTags'
 import SEO from '../components/SEO/SEO'
-import config from '../../data/SiteConfig'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
 import './b16-tomorrow-dark.css'
 import './post.css'
@@ -29,7 +27,7 @@ const PostTemplate: React.FC<Props> = props => {
         <title>{post.title}</title>
       </Helmet>
       <SEO postPath={slug} postNode={postNode} postSEO />
-      <article>
+      <article className="blog-post">
         <header>
           <h1>{post.title}</h1>
           <time dateTime={post.date}>
@@ -49,7 +47,6 @@ const PostTemplate: React.FC<Props> = props => {
         <aside className="post-meta">
           <PostTags tags={post.tags} />
         </aside>
-        <UserInfo config={config} />
       </article>
     </Layout>
   )

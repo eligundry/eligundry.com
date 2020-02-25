@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
 
+import './listing.css'
+
 class PostListing extends React.Component {
   getPostList() {
     return this.props.postEdges.map(postEdge => {
@@ -29,15 +31,23 @@ class PostListing extends React.Component {
             itemScope
             itemProp="blogPosts"
             itemType="http://schema.org/BlogPosting"
+            className="listing-post"
           >
             <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
               <h1 itemProp="title">{post.title}</h1>
             </Link>
             <time dateTime={post.date} itemProp="datePublished">
-              🗓
+              <span role="img" aria-labelledby="date of blog post">
+                🗓
+              </span>
               {formatISO(new Date(post.date), { representation: 'date' })}
             </time>
-            <p itemProp="description">{post.description}</p>
+            <p itemProp="description" className="description">
+              <span role="img" aria-labelledby="description of the blog post">
+                📝
+              </span>
+              {post.description}
+            </p>
           </article>
         ))}
       </main>

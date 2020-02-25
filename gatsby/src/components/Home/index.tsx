@@ -21,6 +21,7 @@ interface SectionProps {
 
 const Section = styled.section<SectionProps>`
   width: 50%;
+  padding-right: 1em;
 
   & .listening-img {
     width: 100%;
@@ -35,6 +36,7 @@ const Section = styled.section<SectionProps>`
   }
 
   @media (${style.breakPoints.tablet}) {
+    padding-right: 0;
     width: 100%;
   }
 
@@ -70,8 +72,8 @@ const Home: React.FC = () => {
       <Section className="listening">
         <h2>Listening</h2>
         <p className="summary">
-          I listen to way too much music. Here are the albums I've had on repeat
-          this week.
+          I listen to way too much music and I love to listen to full albums.
+          Here are the albums I've had on repeat this week.
         </p>
         <a href="https://www.last.fm/user/eli_pwnd">
           <img
@@ -117,6 +119,10 @@ const Home: React.FC = () => {
           <li>
             Die hard Cleveland Browns fan and am convinced that we will win a
             Super Bowl one of these years.
+          </li>
+          <li>
+            I have a fat cat named Fonzie and I sorta have a tattoo of him on my
+            arm.
           </li>
         </ul>
       </Section>

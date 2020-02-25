@@ -67,6 +67,7 @@ export interface Resume {
   education: Education[]
   skills: Skills[]
   volunteer?: Volunteer[]
+  activitesInterests: string[]
 }
 
 const resume: Resume = {
@@ -98,7 +99,7 @@ const resume: Resume = {
       highlights: [
         'Completely rebuilt fulfillment platform using <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>.',
         'Implemented single sign on through OpenID Connect across all internal applications company wide.',
-        'Architected dynamic payment inititiaves that decreased cost of fulfillment by $3 and time to delivery by a day.',
+        'Architected dynamic payment inititiaves that decreased cost of fulfillment by $10 and time to delivery by a day.',
       ],
     },
     {
@@ -398,6 +399,23 @@ const resume: Resume = {
         Jenkins: 'https://jenkins.io/',
       },
     },
+  ],
+  activitesInterests: [
+    `
+    Presented <a href="/talks">talks</a> at <a href="https://www.meetup.com/The-New-York-Vim-Meetup/">The New York City Vim Meetup</a> 
+    and <a href="https://www.meetup.com/queensjs/">QueensJS</a>.`,
+    `
+    Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and 
+    <a href="https://devpost.com/eligundry">competed in numerous hackathons</a> including:
+    <ul class="hackathons">
+      <li><a href="https://khe.io/">KHE</a> 2013 (2<sup>nd</sup> place), 2014, 2015</li>
+      <li><a href="https://mhacks.org/">MHacks</a> 2013, 2014, 2015</li>
+      <li><a href="http://pennapps.com/">PennApps</a> 2014 (1<sup>st</sup> place Intel XDK App)</li>
+      <li><a href="http://hackillinois.org/">HackIllinois</a> 2014</a></li>
+      <li>Fashion/Tech 2015</li>
+    </ul>
+    `,
+    `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout">Eagle Scout</a> in 2006.`,
   ],
 }
 

@@ -6,6 +6,7 @@ import formatISO from 'date-fns/formatISO'
 import Layout from '../layout'
 import SEO from '../components/SEO/SEO'
 import { TalkBySlugQuery, SitePageContext } from '../../graphql-types'
+import './talk.css'
 
 interface Props {
   data: TalkBySlugQuery
@@ -24,14 +25,21 @@ const TalkTemplate: React.FC<Props> = props => {
         <title>{talk.title}</title>
       </Helmet>
       <SEO postPath={slug} postNode={talkNode} postSEO />
-      <article>
+      <article className="talk">
         <header>
           <h1>{talk.title}</h1>
           <time dateTime={talk.date}>
-            🗓
+            <span role="img" aria-labelledby="date of talk">
+              🗓
+            </span>
             {formatISO(new Date(talk.date), { representation: 'date' })}
           </time>
-          <p>{talk.location}</p>
+          <p className="location">
+            <span role="img" aria-labelledby="location of talk">
+              📍
+            </span>
+            {talk.location}
+          </p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: talkNode.html }} />
       </article>
