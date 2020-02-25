@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - gatsby-take-2
 
 jobs:
   api:
