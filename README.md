@@ -1,39 +1,23 @@
 # [eligundry.com](https://eligundry.com)
 
+![](https://github.com/eligundry/eligundry.com/workflows/.github/workflows/docker-build.yml/badge.svg)
+
 My personal website.
 
 ## Built With
 
-* [Lektor](https://www.getlektor.com/)
-* [Webpack](https://webpack.github.io/)
+* [Gatsby.js](https://www.gatsbyjs.org/)
+* [React](https://reactjs.org/)
 
-## CLI
+## Development
 
-In order to get the dev server running, run:
+1. `docker-compose up`
+2. Open a new terminal window
+3. `cd gatsby`
+4. `npm ci`
+5. `npm start`
 
-```sh
-$ pip install -r requirements.txt
-$ lektor server -f webpack
-```
+## Deployment
 
-## Docker
-
-This site also provides a [public Docker image][1] so it can be integrated with my
-Docker setup. An automatic build is run when commits are pushed to master on
-GitHub.
-
-This is the preferred way to run the site locally as the Docker container will
-do automatic rebuilds while it is up.
-
-```sh
-# Run the docker containers in docker-compose
-$ docker-compose up
-```
-
-With the Docker containers up, the Lektor debug server will be available at
-[eligundry.localhost:5000][2] and the nginx server will be available at
-[eligundry.localhost:8080][3].
-
-[1]: https://hub.docker.com/r/eligundry/eligundry.com/
-[2]: http://eligundry.dev:5000
-[3]: http://eligundry.dev:8080
+All pushes to master will trigger a Docker build through Github Actions and then a push to production through
+SaltStack's REST API.
