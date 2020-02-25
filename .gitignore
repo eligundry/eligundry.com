@@ -1,6 +1,10 @@
 *.pyc
-node_modules/
-assets/static/gen
-content/last-fm.jpeg
-nginx/*
-.env
+**/node_modules/
+lektor/webpack/node_modules/
+gatsby/node_modules/
+lektor/assets/static/gen
+lektor/content/last-fm.jpeg
+lektor/nginx/*
+lektor/.env
+data/*
+!data/.gitkeep

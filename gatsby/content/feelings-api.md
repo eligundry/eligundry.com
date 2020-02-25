@@ -1,0 +1,42 @@
+---
+title: I made an API for my feelings
+description: "What happens when I open myself up as a programming interface?"
+date: 2020-02-24T05:00
+slug: feelings-api
+cover: 5.jpg
+---
+
+I have been in therapy since I was 18 years old. At this point, I feel no shame about it and I know that it makes me a stronger, healthier adult than I would be otherwise. I think everyone could benefit from some therapy, even if your life is going okay at the moment.
+
+A few months ago, my therapist challenged me to begin journaling my daily life in order to get more in touch with my feelings and to draw connections of my behaviors and mental health. Rather than use a paper journal, they recommended an app called [Daylio](https://daylio.webflow.io). I installed the app and went about living my life.
+
+## Daylio
+
+The app’s flow is pretty simple. At 10pm each day, I get a push notification to enter a journal entry. I’m asked to rate how I feel on a five point scale from rad to awful. I then get prompted with a screen to select activities/vices that I partook in today. Finally, I can leave free form notes for myself to look back on.
+
+![Video of me posting a Daylio entry](https://media.giphy.com/media/cNZfGidBskUeupmA3J/giphy.gif)
+
+What’s cool about this flow is that all activities, vices, and moods are customizable. This allows me to track anything I would like in a nice looking UI. The developers put a lot of thought into this seemingly simple UX.
+
+## API
+
+The Daylio app provides quite a few ways to visualize this data inside the application. For my personal use, these charts are sufficient and I can’t improve on them. But, I am a software engineer and when you give me an easy to use form with interesting data, I’m going to want to make something cool with it!
+
+![Video of the Daylio chart UI](https://media.giphy.com/media/L4BZsZ62oeiPwsSQWf/giphy.gif)
+
+I started working on the next version of my website and the inspiration hit: What if I could display my latest journal entry on the homepage and update it without having to touch a computer? Daylio provides the ability to export your entries to a CSV, so I went to work on making an API endpoint I could `POST` the CSV to. I used Go because I’ve been having to write a lot of it for work and it’s super fast, even though I’m not the biggest fan of the language.
+
+In order to push these updates without using a computer, I made an Apple Shortcut that accepted the CSV as the input and send the request to the server. I am a big fan of Apple Shortcuts and will be sure to use them with this API more in the future.
+
+![Video of me exporting the Daylio entries to the API](https://media.giphy.com/media/j6rC9gdFdrgpa8P0vi/giphy.gif)
+
+## Conclusion
+
+I told my partner that I was making this and they were a little concerned with the idea. “What if you fall into a bout of depression? Do you want potential employers to know this? Isn’t it a little bit weird to be sharing this information?”
+
+These are fair points, but I think I’m okay with these points. I’m at the point now where I wear my feelings on a sleeve. If I’m sad, I’m going to tell you I’m sad, I find no shame in saying so. Also, I’m a software engineer, I would hope that a potential employer would find this cool! But, with some of those points in mind, I did build of safe guards into the API:
+
+- I blocked some activities from being returned by the API, as they are private.
+- I built a feature into the notes to hide notes with a `#private` hashtag in them.
+
+Let’s see how long I can keep this journaling up. Now that it serves a purpose I think is cool, I think it’ll have a little more staying power in my life. 

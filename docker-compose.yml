@@ -1,46 +1,47 @@
-version: '2'
+version: '3'
 services:
-  website:
-    image: eligundry/eligundry.com
-    build: .
-    container_name: website
-    environment:
-      - RUN_LEKTOR=${RUN_LEKTOR}
-      - VIRTUAL_HOST=eligundry.localhost,eligundry.com,www.eligundry.com
-      - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=eligundry.com,www.eligundry.com
-      - LETSENCRYPT_EMAIL=eligundry@gmail.com
-      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
+  proxy: 
+    container_name: eg-proxy
+    image: steveltn/https-portal:1
     ports:
-      - "5000:5000"
-      - "8080:8080"
-    volumes:
-      - .:/opt/eligundry.com
-      - ./docker/site.conf:/etc/nginx/sites-enabled/eligundry.com
-
-  nginx:
-    image: jwilder/nginx-proxy:alpine
-    container_name: eg-nginx-proxy
+      - '80:80'
+      - '443:443'
     environment:
-      - ENABLE_IPV6=true
-    ports:
-      - "80:80"
-      - "443:443"
+      DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
+      STAGE: 'local'
+      WEBSOCKET: 'true'
+    networks:
+      backend: {}
     volumes:
-      - /etc/nginx/conf.d
-      - /etc/nginx/vhost.d
-      - /usr/share/nginx/html
-      - ./nginx/certs:/etc/nginx/certs:ro
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - data_https_portal:/var/lib/https-portal
+      - ./docker/eligundry.localhost.ssl.conf.erb:/var/lib/nginx-conf/eligundry.localhost.ssl.conf.erb
 
-  # The is managed by Salt Now
-  # letsencrypt:
-  #   image: jrcs/letsencrypt-nginx-proxy-companion
-  #   container_name: letsencrypt
-  #   environment:
-  #     - ACME_TOS_HASH=cc88d8d9517f490191401e7b54e9ffd12a2b9082ec7a1d4cec6101f9f1647e7b
-  #   volumes:
-  #     - ./nginx/certs:/etc/nginx/certs:rw
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   volumes_from:
-  #     - nginx
+  api:
+    container_name: eg-api
+    image: eligundry/api.eligundry.com
+    entrypoint: /go/bin/watcher
+    build:
+      context: ./
+      dockerfile: Dockerfile.api
+    networks:
+      backend: {}
+    volumes:
+      - ./api:/src
+      - ./data:/opt/data
+
+  docker-host:
+    container_name: eg-dh
+    image: qoomon/docker-host
+    networks:
+      backend: {}
+    cap_add: 
+      - NET_ADMIN
+      - NET_RAW
+    restart: on-failure
+
+volumes:
+  data_https_portal: {}
+
+networks:
+  backend:
+    driver: bridge
