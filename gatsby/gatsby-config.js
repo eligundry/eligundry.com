@@ -150,6 +150,7 @@ module.exports = {
             }
           `,
             output: config.siteRss,
+            title: "Eli Gundry's Blog",
           },
         ],
       },
