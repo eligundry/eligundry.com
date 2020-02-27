@@ -13,7 +13,8 @@ RUN npm ci
 WORKDIR /opt/gatsby
 ADD ./gatsby /opt/gatsby
 RUN ln -s /opt/modules/node_modules /opt/gatsby/node_modules
-RUN npm run build
+RUN npm run build \
+    && npm run stats:html
 
 # Copy the compiled application into a lightweight nginx container
 FROM nginx:alpine AS final

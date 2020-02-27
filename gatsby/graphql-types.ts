@@ -2357,6 +2357,7 @@ export type SitePageFieldsEnum =
   'pluginCreator___pluginOptions___feeds' |
   'pluginCreator___pluginOptions___feeds___query' |
   'pluginCreator___pluginOptions___feeds___output' |
+  'pluginCreator___pluginOptions___feeds___title' |
   'pluginCreator___pluginOptions___documentPaths' |
   'pluginCreator___pluginOptions___production' |
   'pluginCreator___pluginOptions___openAnalyzer' |
@@ -2568,6 +2569,7 @@ export type SitePluginFieldsEnum =
   'pluginOptions___feeds' |
   'pluginOptions___feeds___query' |
   'pluginOptions___feeds___output' |
+  'pluginOptions___feeds___title' |
   'pluginOptions___documentPaths' |
   'pluginOptions___production' |
   'pluginOptions___openAnalyzer' |
@@ -2710,11 +2712,13 @@ export type SitePluginPluginOptions = {
 export type SitePluginPluginOptionsFeeds = {
   query?: Maybe<Scalars['String']>,
   output?: Maybe<Scalars['String']>,
+  title?: Maybe<Scalars['String']>,
 };
 
 export type SitePluginPluginOptionsFeedsFilterInput = {
   query?: Maybe<StringQueryOperatorInput>,
   output?: Maybe<StringQueryOperatorInput>,
+  title?: Maybe<StringQueryOperatorInput>,
 };
 
 export type SitePluginPluginOptionsFeedsFilterListInput = {
