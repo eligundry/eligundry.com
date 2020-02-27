@@ -4,6 +4,7 @@ import GitHubCalendar from 'react-github-calendar'
 import { GoodreadsBookshelf } from 'react-goodreads-shelf'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
 import { useWindowSize } from 'react-use'
+import LazyLoad from 'react-lazyload'
 
 import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
@@ -49,6 +50,7 @@ const Section = styled.section<SectionProps>`
 
 const Home: React.FC = () => {
   const { width } = useWindowSize()
+  const twitterTimelineHeight = width <= style.breakPoints.tablet ? 600 : 375
 
   return (
     <Wrapper className="about">
@@ -76,11 +78,13 @@ const Home: React.FC = () => {
           Here are the albums I've had on repeat this week.
         </p>
         <a href="https://www.last.fm/user/eli_pwnd">
-          <img
-            className="listening-img"
-            src="/img/last.fm.jpg"
-            alt="My top 9 albums for the past 7 days"
-          />
+          <LazyLoad>
+            <img
+              className="listening-img"
+              src="/img/last.fm.jpg"
+              alt="My top 9 albums for the past 7 days"
+            />
+          </LazyLoad>
         </a>
       </Section>
       <Section className="coding">
@@ -136,11 +140,13 @@ const Home: React.FC = () => {
           has funny memes, which are equally important to keeping up to date
           with tech.
         </p>
-        <TwitterTimelineEmbed
-          sourceType="profile"
-          screenName={config.userTwitter}
-          options={{ height: width <= style.breakPoints.tablet ? 600 : 375 }}
-        />
+        <LazyLoad height={twitterTimelineHeight}>
+          <TwitterTimelineEmbed
+            sourceType="profile"
+            screenName={config.userTwitter}
+            options={{ height: twitterTimelineHeight }}
+          />
+        </LazyLoad>
       </Section>
     </Wrapper>
   )
