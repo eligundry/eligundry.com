@@ -2,4 +2,4 @@ User-agent: *
 Disallow: */tags/
 Disallow: */categories/
 
-sitemap: /sitemap.xml
+Sitemap: https://eligundry.com/sitemap.xml
