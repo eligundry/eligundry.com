@@ -50,7 +50,7 @@ const Section = styled.section<SectionProps>`
 
 const Home: React.FC = () => {
   const { width } = useWindowSize()
-  const twitterTimelineHeight = width <= style.breakPoints.tablet ? 600 : 375
+  const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
 
   return (
     <Wrapper className="about">
@@ -70,22 +70,6 @@ const Home: React.FC = () => {
           read more about this project <a href="/blog/feelings-api">here</a>.
         </p>
         <Daylio variant={DaylioVariants.home} />
-      </Section>
-      <Section className="listening">
-        <h2>Listening</h2>
-        <p className="summary">
-          I listen to way too much music and I love to listen to full albums.
-          Here are the albums I've had on repeat this week.
-        </p>
-        <a href="https://www.last.fm/user/eli_pwnd">
-          <LazyLoad>
-            <img
-              className="listening-img"
-              src="/img/last.fm.jpg"
-              alt="My top 9 albums for the past 7 days"
-            />
-          </LazyLoad>
-        </a>
       </Section>
       <Section className="coding">
         <h2>Coding</h2>
@@ -114,7 +98,6 @@ const Home: React.FC = () => {
       </Section>
       <Section className="triva">
         <h2>Trivia</h2>
-        <p>Here are some fun facts about me!</p>
         <ul>
           <li>
             Vim user but I actively encourage everyone to use something else.
@@ -129,6 +112,22 @@ const Home: React.FC = () => {
             arm.
           </li>
         </ul>
+      </Section>
+      <Section className="listening">
+        <h2>Listening</h2>
+        <p className="summary">
+          I listen to way too much music and I love to listen to full albums.
+          Here are the albums I've had on repeat this week.
+        </p>
+        <a href="https://www.last.fm/user/eli_pwnd">
+          <LazyLoad>
+            <img
+              className="listening-img"
+              src="/img/last.fm.jpg"
+              alt="My top 9 albums for the past 7 days"
+            />
+          </LazyLoad>
+        </a>
       </Section>
       <Section className="tweets">
         <h2>Twitter</h2>

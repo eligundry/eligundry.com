@@ -11,7 +11,7 @@ import './index.css'
 const LayoutWrapper = styled.div`
   font-family: ${style.font.family};
   font-size: ${style.font.size};
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
 
   @media (${style.breakPoints.tablet}) {
