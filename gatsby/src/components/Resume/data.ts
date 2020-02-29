@@ -408,9 +408,9 @@ const resume: Resume = {
     Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and 
     <a href="https://devpost.com/eligundry">competed in numerous hackathons</a> including:
     <ul class="hackathons">
-      <li><a href="https://khe.io/">KHE</a> 2013 (2<sup>nd</sup> place), 2014, 2015</li>
+      <li><a href="https://khe.io/">KHE</a> 2013 (2nd place), 2014, 2015</li>
       <li><a href="https://mhacks.org/">MHacks</a> 2013, 2014, 2015</li>
-      <li><a href="http://pennapps.com/">PennApps</a> 2014 (1<sup>st</sup> place Intel XDK App)</li>
+      <li><a href="http://pennapps.com/">PennApps</a> 2014 (1st place Intel XDK App)</li>
       <li><a href="http://hackillinois.org/">HackIllinois</a> 2014</a></li>
       <li>Fashion/Tech 2015</li>
     </ul>

@@ -2,6 +2,7 @@ import React from 'react'
 import format from 'date-fns/format'
 import formatISO from 'date-fns/formatISO'
 import useDetectPrint from 'use-detect-print'
+import styled from 'styled-components'
 
 import { Work } from './data'
 
@@ -9,9 +10,15 @@ interface WorkItemProps {
   work: Work
 }
 
+const WorkItemStyled = styled.div`
+  & .description {
+    padding-left: 0;
+  }
+`
+
 const WorkItem: React.FC<WorkItemProps> = ({ work }) => {
   return (
-    <div
+    <WorkItemStyled
       itemType="http://schema.org/Organization"
       itemScope
       itemProp="alumniOf"
@@ -27,8 +34,8 @@ const WorkItem: React.FC<WorkItemProps> = ({ work }) => {
           dateTime={formatISO(work.startDate, { representation: 'date' })}
         >
           {format(work.startDate, 'MMMM yyyy')}
-        </time>
-        &mdash;
+        </time>{' '}
+        &mdash;{' '}
         <time
           itemProp="dissolutionDate"
           dateTime={
@@ -64,7 +71,7 @@ const WorkItem: React.FC<WorkItemProps> = ({ work }) => {
         />
       )}
       {work.highlights.length > 0 && (
-        <ul itemProp="description">
+        <ul className="description" itemProp="description">
           {work.highlights.map(highlight => (
             <li
               key={highlight}
@@ -73,7 +80,7 @@ const WorkItem: React.FC<WorkItemProps> = ({ work }) => {
           ))}
         </ul>
       )}
-    </div>
+    </WorkItemStyled>
   )
 }
 
