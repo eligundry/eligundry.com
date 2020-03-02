@@ -35,6 +35,7 @@ const ActivityMapping = {
   museum: '🏛',
   party: '🎉',
   cleaning: '🧹',
+  gaming: '🕹',
 }
 
 const EntryWrapper = styled.div<Partial<Props>>`
