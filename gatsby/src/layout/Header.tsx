@@ -75,6 +75,10 @@ const Nav = styled.nav<NavProps>`
 
 const BetaBanner = styled.h6`
   margin-bottom: 0.25em;
+
+  @media print {
+    display: none;
+  }
 `
 
 const navLinks = {

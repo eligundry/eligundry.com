@@ -286,6 +286,7 @@ const resume: Resume = {
       Provided IT support for customers in their homes and setup various internet cafés around Ohio.
       `,
       highlights: [],
+      printHide: true,
     },
     {
       company: 'RadioShack',
@@ -301,6 +302,7 @@ const resume: Resume = {
       summary:
         'Sold consumer electronics and cell phones in a retail environment.',
       highlights: [],
+      printHide: true,
     },
   ],
   education: [

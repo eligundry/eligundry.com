@@ -16,12 +16,13 @@ const SkillsItem: React.FC<SkillsItemProps> = ({ prefix, keywords }) => {
       {entries.map(([keyword, url], idx) => {
         const isLastKeyword = idx + 1 === entries.length
         const isSecondToLastKeyWord = idx + 2 === entries.length
+        const insertComma = !isLastKeyword && !isSecondToLastKeyWord
 
         return (
           <React.Fragment key={url}>
             {isLastKeyword && '& '}
             <a href={url}>{keyword}</a>
-            {!isSecondToLastKeyWord && ','}
+            {insertComma && ','}
             {!isLastKeyword && ' '}
           </React.Fragment>
         )

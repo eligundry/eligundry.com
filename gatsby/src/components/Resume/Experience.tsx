@@ -20,22 +20,46 @@ interface Props {
 const StyledExperience = styled.div`
   display: flex;
   flex-flow: wrap;
+  margin-bottom: 1em;
 
   & .name,
   & .tenure,
   & .title,
   & .location {
-    width: 50%;
+    width: 60%;
     margin: 0;
+    line-height: 1.25em;
   }
 
-  .tenure,
-  .location {
+  & .location {
+    font-style: normal;
+  }
+
+  & .location:after {
+    content: '📍';
+  }
+
+  & .tenure:after {
+    content: '🗓';
+  }
+
+  & .tenure,
+  & .location {
     text-align: right;
+    width: 40%;
+
+    &:after {
+      margin-left: 0.25em;
+    }
   }
 
   & .description {
     padding-left: 0;
+  }
+
+  & .description,
+  & .summary {
+    margin: 0;
   }
 `
 
