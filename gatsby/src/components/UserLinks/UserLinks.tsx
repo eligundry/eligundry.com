@@ -1,5 +1,4 @@
 import React from 'react'
-import { IconContext } from 'react-icons'
 import {
   FaGithub,
   FaTwitter,
@@ -40,21 +39,19 @@ const UserLinks: React.FC = () => {
   ]
 
   return (
-    <IconContext.Provider value={{}}>
-      <div className="user-links">
-        {links.map(link => (
-          <a
-            href={link.url}
-            title={link.label}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={link.url}
-          >
-            {link.icon}
-          </a>
-        ))}
-      </div>
-    </IconContext.Provider>
+    <div className="user-links">
+      {links.map(link => (
+        <a
+          href={link.url}
+          title={link.label}
+          target="_blank"
+          rel="noopener noreferrer"
+          key={link.url}
+        >
+          {link.icon}
+        </a>
+      ))}
+    </div>
   )
 }
 
