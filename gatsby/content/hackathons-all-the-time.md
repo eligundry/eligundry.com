@@ -1,6 +1,6 @@
 ---
 title: Hackathons All The Time
-date: 2014-02-22
+date: 2014-02-22T05:00
 slug: hackathons-all-the-time
 description: My memories of hackathons I've been to thus far.
 cover: "5.jpg"
