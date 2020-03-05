@@ -97,9 +97,18 @@ const resume: Resume = {
       endDate: null,
       summary: '',
       highlights: [
-        'Completely rebuilt fulfillment platform using <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>.',
-        'Implemented single sign on through OpenID Connect across all internal applications company wide.',
-        'Architected dynamic payment inititiaves that decreased cost of fulfillment by $10 and time to delivery by a day.',
+        `
+        Completely rebuilt fulfillment platform using <a href="https://reactjs.org/">React</a> 
+        & <a href="https://golang.org/">Go</a>, increasing network efficiency by 5%.
+        `,
+        `
+        Architected dynamic payment inititiaves that decreased cost of order 
+        fulfillment by $10 and time to delivery by a day.
+        `,
+        `
+        Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a> 
+        across all internal applications company wide.
+        `,
       ],
     },
     {
@@ -363,7 +372,8 @@ const resume: Resume = {
         PHP: 'https://www.php.net/',
         Go: 'https://golang.org/',
         SQL: 'https://en.wikipedia.org/wiki/SQL',
-        HTML5: 'https://en.wikipedia.org/wiki/HTML5',
+        HTML: 'https://en.wikipedia.org/wiki/HTML5',
+        CSS: 'https://www.w3.org/Style/CSS/Overview.en.html',
       },
     },
     {

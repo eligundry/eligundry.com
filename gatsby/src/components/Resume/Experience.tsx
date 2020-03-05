@@ -63,7 +63,7 @@ const StyledExperience = styled.div`
     margin: 0;
   }
 
-  @media (${styles.breakPoints.mobile}) {
+  @media (${styles.breakPoints.tablet}) {
     & .name,
     & .tenure,
     & .title,

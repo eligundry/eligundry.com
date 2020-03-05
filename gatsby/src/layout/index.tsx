@@ -15,7 +15,7 @@ const LayoutWrapper = styled.div`
   width: 60%;
   margin: 0 auto;
 
-  @media (${style.breakPoints.tablet}) {
+  @media (${style.breakPoints.desktopSmall}) {
     width: 90%;
   }
 
