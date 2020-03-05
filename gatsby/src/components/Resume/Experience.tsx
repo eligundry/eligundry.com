@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import format from 'date-fns/format'
 import formatISO from 'date-fns/formatISO'
 
+import styles from '../../../data/styleConfig'
 import { Location } from './data'
 
 interface Props {
@@ -60,6 +61,48 @@ const StyledExperience = styled.div`
   & .description,
   & .summary {
     margin: 0;
+  }
+
+  @media (${styles.breakPoints.mobile}) {
+    & .name,
+    & .tenure,
+    & .title,
+    & .location {
+      text-align: left;
+      width: 100%;
+    }
+
+    & .name {
+      order: 1;
+    }
+
+    & .title {
+      order: 2;
+    }
+
+    & .tenure {
+      order: 3;
+    }
+
+    & .location {
+      order: 4;
+    }
+
+    & .summary {
+      order: 5;
+    }
+
+    & .description {
+      order: 6;
+    }
+
+    & .tenure,
+    & .location {
+      &:after {
+        float: left;
+        margin-left: 0;
+      }
+    }
   }
 `
 
