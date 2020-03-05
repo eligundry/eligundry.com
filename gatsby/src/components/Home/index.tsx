@@ -30,6 +30,7 @@ const Section = styled.section<SectionProps>`
 
   & .headshot {
     width: 150px;
+    height: 191px;
   }
 
   & .bookshelf > div > div {
@@ -38,8 +39,10 @@ const Section = styled.section<SectionProps>`
 
   &.introduction-hero {
     display: flex;
+    flex-direction: row;
 
     & > .text-column {
+      align-self: center;
       margin-right: 1em;
     }
   }
