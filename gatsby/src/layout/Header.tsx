@@ -82,11 +82,31 @@ const BetaBanner = styled.h6`
 `
 
 const navLinks = {
-  '/': 'Home',
-  '/blog/': 'Blog',
-  '/feelings/': 'Feelings',
-  '/talks/': 'Talks',
-  '/resume/': 'Resume',
+  '/': {
+    title: 'Home',
+    emoji: '🏠',
+    emojiLabel: 'little house to denote the home page',
+  },
+  '/blog/': {
+    title: 'Blog',
+    emoji: '📝',
+    emojiLabel: 'note to denote my blog',
+  },
+  '/feelings/': {
+    title: 'Feelings',
+    emoji: '🥺',
+    emojiLabel: 'emotional looking emoji face to denote my feelings',
+  },
+  '/talks/': {
+    title: 'Talks',
+    emoji: '🗣',
+    emojiLabel: 'silhouette of person speaking',
+  },
+  '/resume/': {
+    title: 'Resume',
+    emoji: '📄',
+    emojiLabel: 'piece of paper representing my resume',
+  },
 }
 
 const Header: React.FC = () => {
@@ -124,16 +144,21 @@ const Header: React.FC = () => {
               {hamburgerExpanded ? '🙅' : '🍔'}
             </a>
           )}
-          {Object.entries(navLinks).map(([path, title]) => (
-            <a
-              href={path}
-              key={path}
-              onClick={() => setHamburgerExpanded(false)}
-              className="nav-page-link"
-            >
-              {title}
-            </a>
-          ))}
+          {Object.entries(navLinks).map(
+            ([path, { title, emoji, emojiLabel }]) => (
+              <a
+                href={path}
+                key={path}
+                onClick={() => setHamburgerExpanded(false)}
+                className="nav-page-link"
+              >
+                <span role="img" aria-label={emojiLabel}>
+                  {emoji}
+                </span>
+                {title}
+              </a>
+            )
+          )}
         </Nav>
       </HeaderElm>
     </>
