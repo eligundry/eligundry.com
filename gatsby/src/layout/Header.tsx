@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useWindowSize } from 'react-use'
-import { FaBars, FaTimes } from 'react-icons/fa'
 
 import style from '../../data/styleConfig'
 
@@ -29,6 +28,7 @@ const Nav = styled.nav<NavProps>`
 
   & > .hamburger {
     font-size: 2em;
+    text-decoration: none;
   }
 
   @media print {
@@ -121,7 +121,7 @@ const Header: React.FC = () => {
                 setHamburgerExpanded(exp => !exp)
               }}
             >
-              {hamburgerExpanded ? <FaTimes /> : <FaBars />}
+              {hamburgerExpanded ? '🙅' : '🍔'}
             </a>
           )}
           {Object.entries(navLinks).map(([path, title]) => (
