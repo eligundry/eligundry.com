@@ -22,7 +22,7 @@ interface NavProps {
 const Nav = styled.nav<NavProps>`
   align-self: center;
 
-  & > .nav-page-link {
+  & .nav-page-link {
     margin-right: 1em;
   }
 
@@ -39,7 +39,7 @@ const Nav = styled.nav<NavProps>`
     props.mobile &&
     !props.expanded &&
     css`
-      & > .nav-page-link {
+      & .nav-links {
         display: none;
       }
     `}
@@ -55,10 +55,6 @@ const Nav = styled.nav<NavProps>`
       width: 100%;
       height: 100%;
       background-color: rgba(255, 255, 255, 0.8);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
 
       & > .hamburger {
         position: absolute;
@@ -66,7 +62,15 @@ const Nav = styled.nav<NavProps>`
         right: 1em;
       }
 
-      & > .nav-page-link {
+      & > .nav-links {
+        height: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      & .nav-page-link {
         font-size: 2em;
         margin-right: 0;
       }
@@ -128,6 +132,7 @@ const Header: React.FC = () => {
           role="navigation"
           expanded={hamburgerExpanded}
           mobile={showHamburger}
+          onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
         >
           {showHamburger && (
             <a
@@ -144,21 +149,23 @@ const Header: React.FC = () => {
               {hamburgerExpanded ? '🙅' : '🍔'}
             </a>
           )}
-          {Object.entries(navLinks).map(
-            ([path, { title, emoji, emojiLabel }]) => (
-              <a
-                href={path}
-                key={path}
-                onClick={() => setHamburgerExpanded(false)}
-                className="nav-page-link"
-              >
-                <span role="img" aria-label={emojiLabel}>
-                  {emoji}
-                </span>
-                {title}
-              </a>
-            )
-          )}
+          <div className="nav-links">
+            {Object.entries(navLinks).map(
+              ([path, { title, emoji, emojiLabel }]) => (
+                <a
+                  href={path}
+                  key={path}
+                  onClick={() => setHamburgerExpanded(false)}
+                  className="nav-page-link"
+                >
+                  <span role="img" aria-label={emojiLabel}>
+                    {emoji}
+                  </span>
+                  {title}
+                </a>
+              )
+            )}
+          </div>
         </Nav>
       </HeaderElm>
     </>
