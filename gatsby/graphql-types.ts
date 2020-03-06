@@ -689,13 +689,13 @@ export type FileFieldsEnum =
   'internal___type' |
   'childMarkdownRemark___id' |
   'childMarkdownRemark___frontmatter___title' |
-  'childMarkdownRemark___frontmatter___cover' |
-  'childMarkdownRemark___frontmatter___category' |
   'childMarkdownRemark___frontmatter___date' |
-  'childMarkdownRemark___frontmatter___slug' |
-  'childMarkdownRemark___frontmatter___tags' |
-  'childMarkdownRemark___frontmatter___draft' |
   'childMarkdownRemark___frontmatter___description' |
+  'childMarkdownRemark___frontmatter___cover' |
+  'childMarkdownRemark___frontmatter___tags' |
+  'childMarkdownRemark___frontmatter___slug' |
+  'childMarkdownRemark___frontmatter___category' |
+  'childMarkdownRemark___frontmatter___draft' |
   'childMarkdownRemark___frontmatter___location' |
   'childMarkdownRemark___excerpt' |
   'childMarkdownRemark___rawMarkdownBody' |
@@ -1472,13 +1472,13 @@ export type MarkdownRemarkFieldsDateArgs = {
 export type MarkdownRemarkFieldsEnum = 
   'id' |
   'frontmatter___title' |
-  'frontmatter___cover' |
-  'frontmatter___category' |
   'frontmatter___date' |
-  'frontmatter___slug' |
-  'frontmatter___tags' |
-  'frontmatter___draft' |
   'frontmatter___description' |
+  'frontmatter___cover' |
+  'frontmatter___tags' |
+  'frontmatter___slug' |
+  'frontmatter___category' |
+  'frontmatter___draft' |
   'frontmatter___location' |
   'excerpt' |
   'rawMarkdownBody' |
@@ -1610,13 +1610,13 @@ export type MarkdownRemarkFilterInput = {
 
 export type MarkdownRemarkFrontmatter = {
   title?: Maybe<Scalars['String']>,
-  cover?: Maybe<Scalars['String']>,
-  category?: Maybe<Scalars['String']>,
   date?: Maybe<Scalars['Date']>,
-  slug?: Maybe<Scalars['String']>,
-  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
-  draft?: Maybe<Scalars['Boolean']>,
   description?: Maybe<Scalars['String']>,
+  cover?: Maybe<Scalars['String']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
+  slug?: Maybe<Scalars['String']>,
+  category?: Maybe<Scalars['String']>,
+  draft?: Maybe<Scalars['Boolean']>,
   location?: Maybe<Scalars['String']>,
 };
 
@@ -1630,13 +1630,13 @@ export type MarkdownRemarkFrontmatterDateArgs = {
 
 export type MarkdownRemarkFrontmatterFilterInput = {
   title?: Maybe<StringQueryOperatorInput>,
-  cover?: Maybe<StringQueryOperatorInput>,
-  category?: Maybe<StringQueryOperatorInput>,
   date?: Maybe<DateQueryOperatorInput>,
-  slug?: Maybe<StringQueryOperatorInput>,
-  tags?: Maybe<StringQueryOperatorInput>,
-  draft?: Maybe<BooleanQueryOperatorInput>,
   description?: Maybe<StringQueryOperatorInput>,
+  cover?: Maybe<StringQueryOperatorInput>,
+  tags?: Maybe<StringQueryOperatorInput>,
+  slug?: Maybe<StringQueryOperatorInput>,
+  category?: Maybe<StringQueryOperatorInput>,
+  draft?: Maybe<BooleanQueryOperatorInput>,
   location?: Maybe<StringQueryOperatorInput>,
 };
 

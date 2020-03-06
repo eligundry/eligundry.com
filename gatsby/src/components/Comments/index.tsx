@@ -1,15 +1,41 @@
 import React from 'react'
 import { useLocation } from 'react-use'
+import styled from 'styled-components'
 
 import useComments from './useComments'
 
+const CommentForm = styled.form`
+  & label {
+    display: block;
+  }
+
+  & input,
+  & textarea {
+    display: block;
+  }
+`
+
 const Comments: React.FC = () => {
-  const { path } = useLocation()
-  const [comments, postComment] = useComments(path)
+  const { pathname } = useLocation()
+  const [comments, postComment] = useComments(pathname)
 
   return (
     <div>
-      <form>
+      <CommentForm
+        onSubmit={e => {
+          // @TODO I can do so much better than this
+          e.preventDefault()
+
+          const payload = Array.from(
+            e.currentTarget.querySelectorAll('input, textarea')
+          ).reduce((acc, current: HTMLInputElement | HTMLTextAreaElement) => {
+            acc[current.name] = current.value
+            return acc
+          }, {})
+
+          postComment(payload)
+        }}
+      >
         <label htmlFor="email">
           Email: <input type="email" id="email" name="email" required />
         </label>
@@ -17,7 +43,7 @@ const Comments: React.FC = () => {
           Comment: <textarea id="comment" name="comment" required />
         </label>
         <button type="submit">Submit</button>
-      </form>
+      </CommentForm>
     </div>
   )
 }
