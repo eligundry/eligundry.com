@@ -1,6 +1,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import styled from 'styled-components'
+import { IconContext } from 'react-icons'
 
 import Header from './Header'
 import Footer from './Footer'
@@ -14,7 +15,7 @@ const LayoutWrapper = styled.div`
   width: 60%;
   margin: 0 auto;
 
-  @media (${style.breakPoints.tablet}) {
+  @media (${style.breakPoints.desktopSmall}) {
     width: 90%;
   }
 
@@ -35,16 +36,18 @@ const MainLayout: React.FC<Props> = ({
   showFooter = true,
 }) => {
   return (
-    <LayoutWrapper className="layout-container">
-      <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
-        <title>{config.siteTitle}</title>
-        <meta name="description" content={config.siteDescription} />
-        <html lang="en" />
-      </Helmet>
-      {showHeader && <Header />}
-      {children}
-      {showFooter && <Footer />}
-    </LayoutWrapper>
+    <IconContext.Provider value={{}}>
+      <LayoutWrapper className="layout-container">
+        <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
+          <title>{config.siteTitle}</title>
+          <meta name="description" content={config.siteDescription} />
+          <html lang="en" />
+        </Helmet>
+        {showHeader && <Header />}
+        {children}
+        {showFooter && <Footer />}
+      </LayoutWrapper>
+    </IconContext.Provider>
   )
 }
 

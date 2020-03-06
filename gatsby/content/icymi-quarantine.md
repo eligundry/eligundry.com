@@ -1,6 +1,6 @@
 ---
 title: "ICYMI: Laurel Halo - Quarantine"
-date: 2016-12-09
+date: 2016-12-09T05:00
 description: A beautiful ambient album about the pain of a breakup.
 cover: https://pitchfork-cdn.s3.amazonaws.com/content/halo624.jpg
 tags: 

@@ -27,7 +27,7 @@ var activitySplitFn = func(c rune) bool {
 }
 
 var noteSplitFn = func(c rune) bool {
-	return c == '-'
+	return c == '-' || c == '*'
 }
 
 func isJSONRelatedError(err error) bool {

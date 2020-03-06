@@ -1,60 +1,72 @@
 import React from 'react'
-import { IconContext } from 'react-icons'
+import styled from 'styled-components'
 import {
-  FaGithub,
-  FaTwitter,
-  FaEnvelope,
+  FaGithubSquare,
+  FaTwitterSquare,
+  FaEnvelopeSquare,
   FaRssSquare,
   FaLinkedin,
+  FaLastfmSquare,
 } from 'react-icons/fa'
 
 import config from '../../../data/SiteConfig'
 
-const UserLinks: React.FC = () => {
-  const links = [
-    {
-      label: 'GitHub',
-      url: 'https://github.com/eligundry',
-      icon: <FaGithub />,
-    },
-    {
-      label: 'Twitter',
-      url: 'https://twitter.com/EliGundry',
-      icon: <FaTwitter />,
-    },
-    {
-      label: 'LinkedIn',
-      url: 'https://www.linkedin.com/in/eligundry/',
-      icon: <FaLinkedin />,
-    },
-    {
-      label: 'Email',
-      url: 'mailto:eligundry@gmail.com',
-      icon: <FaEnvelope />,
-    },
-    {
-      lable: 'RSS',
-      url: config.siteRss,
-      icon: <FaRssSquare />,
-    },
-  ]
+const links = [
+  {
+    label: 'Review my code on GitHub',
+    url: 'https://github.com/eligundry',
+    icon: <FaGithubSquare />,
+  },
+  {
+    label: 'Follow me on Twitter',
+    url: 'https://twitter.com/EliGundry',
+    icon: <FaTwitterSquare />,
+  },
+  {
+    label: 'Add me to your professional network on LinkedIn',
+    url: 'https://www.linkedin.com/in/eligundry/',
+    icon: <FaLinkedin />,
+  },
+  {
+    label: "See what I'm listening to on Last.fm",
+    url: 'https://www.last.fm/user/eli_pwnd',
+    icon: <FaLastfmSquare />,
+  },
+  {
+    label: 'Shoot me an email',
+    url: 'mailto:eligundry@gmail.com',
+    icon: <FaEnvelopeSquare />,
+  },
+  {
+    lable: 'Add my blog to your Google Reader via RSS',
+    url: config.siteRss,
+    icon: <FaRssSquare />,
+  },
+]
 
+const Links = styled.div`
+  font-size: 2em;
+
+  & > a {
+    margin-right: 0.25em;
+  }
+`
+
+const UserLinks: React.FC = () => {
   return (
-    <IconContext.Provider value={{}}>
-      <div className="user-links">
-        {links.map(link => (
-          <a
-            href={link.url}
-            title={link.label}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={link.url}
-          >
-            {link.icon}
-          </a>
-        ))}
-      </div>
-    </IconContext.Provider>
+    <Links className="user-links">
+      {links.map(link => (
+        <a
+          href={link.url}
+          title={link.label}
+          target="_blank"
+          rel="noopener noreferrer"
+          key={link.url}
+        >
+          {link.icon}
+        </a>
+      ))}
+    </Links>
   )
 }
 

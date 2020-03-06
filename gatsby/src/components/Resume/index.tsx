@@ -5,6 +5,7 @@ import Work from './Work'
 import Education from './Education'
 import Skills from './Skills'
 import ActivitiesInterests from './ActivitesInterests'
+import './index.css'
 
 const Resume: React.FC = () => {
   return (

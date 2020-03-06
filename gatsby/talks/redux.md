@@ -1,6 +1,6 @@
 ---
 title: "Redux + Hooks = 🤤"
-date: "2020-02-05"
+date: "2020-02-05T05:00"
 description: How I learned Redux at the exact right time
 slug: redux-hooks
 location: QueensJS

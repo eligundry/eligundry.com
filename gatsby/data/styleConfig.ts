@@ -6,7 +6,9 @@ const styleVariables = {
   breakPoints: {
     tabletPx: 768,
     tablet: 'max-width: 768px',
-    mobile: 'max-width: 400px',
+    mobile: 'max-width: 500px',
+    desktopSmall: 'max-width: 1280px',
+    desktopLarge: 'max-width: 2560px',
   },
 }
 

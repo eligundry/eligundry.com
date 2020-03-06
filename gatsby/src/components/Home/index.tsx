@@ -30,10 +30,21 @@ const Section = styled.section<SectionProps>`
 
   & .headshot {
     width: 150px;
+    height: 191px;
   }
 
   & .bookshelf > div > div {
     grid-template-columns: repeat(auto-fit, minmax(80px, 100px)) !important;
+  }
+
+  &.introduction-hero {
+    display: flex;
+    flex-direction: row;
+
+    & > .text-column {
+      align-self: center;
+      margin-right: 1em;
+    }
   }
 
   @media (${style.breakPoints.tablet}) {
@@ -55,7 +66,24 @@ const Home: React.FC = () => {
   return (
     <Wrapper className="about">
       <Section className="introduction-hero" fullWidth>
-        <h2>Hello there!</h2>
+        <div className="text-column">
+          <h2>Hello there!</h2>
+          <p>
+            <a
+              href="https://hipsum.co/"
+              title="A little bit of hipster ipsum while I figure out what to say"
+            >
+              I'm baby try-hard slow-carb dreamcatcher
+            </a>
+            , selfies affogato copper mug brunch trust fund green juice irony
+            portland asymmetrical polaroid. You probably haven't heard of them
+            selfies street art organic hammock, seitan sartorial lomo affogato.
+            Enamel pin woke authentic godard shaman retro locavore leggings
+            umami farm-to-table raclette jianbing banh mi. Af hexagon put a bird
+            on it fashion axe butcher keffiyeh polaroid kombucha cliche irony.
+            Listicle synth next level quinoa.
+          </p>
+        </div>
         <img
           src="/img/eli-gundry-headshot.jpg"
           alt="Eli Gundry's Headshot"
@@ -108,8 +136,16 @@ const Home: React.FC = () => {
             Super Bowl one of these years.
           </li>
           <li>
-            I have a fat cat named Fonzie and I sorta have a tattoo of him on my
-            arm.
+            I currently live in Astoria, Queens. I didn't think I would settle
+            down in Queens and love it as much as I do, but life is like that
+            sometimes, I guess.
+          </li>
+          <li>
+            I have a fat cat named Fonzie and I sorta have{' '}
+            <a href="https://twitter.com/EliGundry/status/1055933062125703168">
+              a tattoo of him on my arm
+            </a>
+            .
           </li>
         </ul>
       </Section>
