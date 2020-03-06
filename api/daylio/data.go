@@ -10,7 +10,8 @@ import (
 	"github.com/gocarina/gocsv"
 	"github.com/golang-collections/collections/set"
 	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3"
+
+	"github.com/eligundry/eligundry.com/api/common"
 )
 
 const jsonQuery = `
@@ -57,7 +58,7 @@ ORDER BY daylio_entries.time DESC
 
 func GetDaylioEntries() ([]DaylioEntry, error) {
 	var entries []DaylioEntry
-	db := GetDB()
+	db := common.GetDB()
 	whereClause := "AND 1 = 1"
 
 	err := db.Select(&entries, fmt.Sprintf(jsonQuery, whereClause))
@@ -89,7 +90,7 @@ func GetDaylioEntries() ([]DaylioEntry, error) {
 }
 
 func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
-	db := GetDB()
+	db := common.GetDB()
 	var entries []DaylioEntry
 
 	whereClause := `
@@ -182,7 +183,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 	}
 
 	// Submit all the entries
-	db := GetDB()
+	db := common.GetDB()
 	query := fmt.Sprintf(`
         INSERT INTO daylio_entries (time, mood, notes)
         VALUES %s
