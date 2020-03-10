@@ -6,6 +6,7 @@ import formatISO from 'date-fns/formatISO'
 import Layout from '../layout/index'
 import PostTags from '../components/PostTags/PostTags'
 import SEO from '../components/SEO/SEO'
+import Comments from '../components/Comments'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
 import './b16-tomorrow-dark.css'
 import './post.css'
@@ -47,6 +48,7 @@ const PostTemplate: React.FC<Props> = props => {
         <aside className="post-meta">
           <PostTags tags={post.tags} />
         </aside>
+        <Comments />
       </article>
     </Layout>
   )
