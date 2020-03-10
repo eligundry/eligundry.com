@@ -3,7 +3,8 @@ title: Hackathons All The Time
 date: 2014-02-22T05:00
 slug: hackathons-all-the-time
 description: My memories of hackathons I've been to thus far.
-cover: "5.jpg"
+category: tech
+cover: "/img/hacksu_at_penn_apps.jpg"
 ---
 
 Over the past two years, I've been to quite a few hackathons

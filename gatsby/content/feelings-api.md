@@ -3,6 +3,7 @@ title: I made an API for my feelings
 description: "What happens when I open myself up as a programming interface?"
 date: 2020-02-24T05:00
 slug: feelings-api
+category: tech
 cover: 5.jpg
 ---
 

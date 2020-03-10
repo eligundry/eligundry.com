@@ -3,6 +3,7 @@ title: "ICYMI: Edan - Beauty & The Beat"
 date: 2017-01-27T05:00
 description: Underground rap record that will rock you.
 cover: https://images.genius.com/416f22ea37961958d150186442b9592a.500x500x1.jpg
+category: music
 tags: 
   - icymi
 ---

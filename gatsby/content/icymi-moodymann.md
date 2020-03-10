@@ -3,6 +3,7 @@ title: "ICYMI: Moodymann - Moodymann"
 date: 2016-12-02T05:00
 description: A catchy mix of Motown and house music.
 cover: https://s3.amazonaws.com/quietus_production/images/articles/14368/Moodymann-Moodymann-AlbumKings.com__1390917219.jpg
+category: music
 tags: 
   - icymi
 ---
