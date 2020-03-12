@@ -23,6 +23,9 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.api
+    environment:
+      AUTH_USER: eligundry
+      AUTH_PASSWORD: password
     networks:
       backend: {}
     volumes:
