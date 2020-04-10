@@ -141,11 +141,12 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 		return entries, err
 	}
 
-	entriesQs := make([]string, len(entries))
-	entriesVs := make([]interface{}, len(entries))
-	var activitiesQs []string
-	var activitesVs []interface{}
+	// entriesQs := make([]string, len(entries))
+	// entriesVs := make([]interface{}, len(entries))
+	// var activitiesQs []string
+	// var activitesVs []interface{}
 	activitiesSet := set.New()
+	var entryActivities []EntryActivities
 
 	for i := range entries {
 		// time is the primary key
@@ -159,20 +160,24 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 		}
 
 		// Construct query helpers
-		entriesQs[i] = "(?)"
-		entriesVs[i] = &entries[i]
+		// entriesQs[i] = "(?)"
+		// entriesVs[i] = &entries[i]
 
 		// Format activities just right
 		entries[i].Activities = strings.FieldsFunc(entries[i].RawActivities, activitySplitFn)
 
 		for ai := range entries[i].Activities {
 			entries[i].Activities[ai] = strings.TrimSpace(entries[i].Activities[ai])
-			activitiesQs = append(activitiesQs, "(?)")
-			activitesVs = append(activitesVs, []interface{}{
-				&entries[i].DateTime,
-				&entries[i].Activities[ai],
-			})
+			// activitiesQs = append(activitiesQs, "(?)")
+			// activitesVs = append(activitesVs, []interface{}{
+			// 	&entries[i].DateTime,
+			// 	&entries[i].Activities[ai],
+			// })
 			activitiesSet.Insert(entries[i].Activities[ai])
+			entryActivities = append(entryActivities, EntryActivities{
+				Time:     &entries[i].DateTime,
+				Activity: &entries[i].Activities[ai],
+			})
 		}
 
 		entries[i].Notes = strings.FieldsFunc(entries[i].Note, noteSplitFn)
@@ -184,38 +189,28 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 
 	// Submit all the entries
 	db := common.GetDB()
-	query := fmt.Sprintf(`
+	_, err = db.NamedExec(`
         INSERT INTO daylio_entries (time, mood, notes)
-        VALUES %s
+        VALUES (:time, :mood, :notes)
         ON CONFLICT(time) 
         DO UPDATE SET 
             mood = excluded.mood, 
             notes = excluded.notes,
             updated_at = current_timestamp
-    `, strings.Join(entriesQs, ", "))
-	query, args, err := sqlx.In(query, entriesVs...)
+    `, entries)
 
 	if err != nil {
-		return entries, err
-	}
-
-	if _, err = db.Exec(query, args...); err != nil {
 		return entries, err
 	}
 
 	// Log all the activities
-	query = fmt.Sprintf(`
+	_, err = db.NamedExec(`
         INSERT INTO daylio_entry_activities (time, activity)
-        VALUES %s
+        VALUES (:time, :activity)
         ON CONFLICT DO NOTHING
-	`, strings.Join(activitiesQs, ", "))
-	query, args, err = sqlx.In(query, activitesVs...)
+	`, entryActivities)
 
 	if err != nil {
-		return entries, err
-	}
-
-	if _, err = db.Exec(query, args...); err != nil {
 		return entries, err
 	}
 
@@ -227,12 +222,12 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 		actVs = append(actVs, fmt.Sprintf("%v", activity))
 	})
 
-	query = fmt.Sprintf(`
+	query := fmt.Sprintf(`
         INSERT INTO daylio_activities (activity)
         VALUES %s
         ON CONFLICT DO NOTHING
 	`, strings.Join(actQs, ", "))
-	query, args, err = sqlx.In(query, actVs...)
+	query, args, err := sqlx.In(query, actVs...)
 
 	if err != nil {
 		return entries, err

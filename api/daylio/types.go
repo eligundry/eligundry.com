@@ -13,12 +13,12 @@ import (
 type DaylioExport struct {
 	Date          string    `csv:"full_date" json:"-"`
 	Time          string    `csv:"time" json:"-"`
-	DateTime      time.Time `json:"time"`
-	Mood          string    `csv:"mood" json:"mood"`
+	DateTime      time.Time `json:"time" db:"time"`
+	Mood          string    `csv:"mood" json:"mood" db:"mood"`
 	RawActivities string    `csv:"activities" json:"-"`
 	Activities    []string  `json:"activities"`
 	Note          string    `csv:"note" json:"-"`
-	Notes         []string  `json:"notes"`
+	Notes         []string  `json:"notes" db:"notes"`
 }
 
 func (d DaylioExport) Value() (driver.Value, error) {
@@ -29,6 +29,11 @@ func (d DaylioExport) Value() (driver.Value, error) {
 	}
 
 	return []interface{}{d.DateTime, d.Mood, notes}, nil
+}
+
+type EntryActivities struct {
+	Time     *time.Time `db:"time"`
+	Activity *string    `db:"activity"`
 }
 
 type DaylioEntry struct {

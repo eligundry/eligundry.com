@@ -8,7 +8,7 @@ require (
 	github.com/golang-collections/collections v0.0.0-20130729185459-604e922904d3
 	github.com/gorilla/feeds v1.1.1
 	github.com/jinzhu/now v1.1.1
-	github.com/jmoiron/sqlx v1.2.0
+	github.com/jmoiron/sqlx v1.2.1-0.20200324155115-ee514944af4b
 	github.com/mattn/go-sqlite3 v1.9.0
 	github.com/pkg/errors v0.9.1
 	gopkg.in/guregu/null.v3 v3.4.0
