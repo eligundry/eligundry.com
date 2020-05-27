@@ -32,6 +32,21 @@ services:
       - ./api:/src
       - ./data:/opt/data
 
+  rust-api:
+    container_name: eg-rust-api
+    image: eligundry/api.eligundry.com:rust
+    build:
+      context: ./
+      dockerfile: Dockerfile.rust-api
+    networks:
+      backend: {}
+    entrypoint: cargo watch -x run
+    environment:
+      ROCKET_ADDRESS: 0.0.0.0
+      ROCKET_PORT: 8001
+    volumes:
+      - ./rust-api:/usr/src/api
+
   docker-host:
     container_name: eg-dh
     image: qoomon/docker-host

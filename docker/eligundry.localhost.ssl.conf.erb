@@ -45,4 +45,8 @@ server {
     location /api {
         proxy_pass http://api:8080;
     }
+
+    location /rust-api {
+        proxy_pass http://rust-api:8001;
+    }
 }

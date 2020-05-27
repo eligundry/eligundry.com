@@ -1,0 +1,8 @@
+FROM rustlang/rust:nightly
+
+RUN cargo install cargo-watch
+WORKDIR /usr/src/api
+ADD ./rust-api /usr/src/api
+RUN cargo install --path .
+
+ENTRYPOINT ["/usr/local/cargo/bin/rust-api"]

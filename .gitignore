@@ -3,3 +3,5 @@
 gatsby/node_modules/
 data/*
 !data/.gitkeep
+**/target
+rust-api/target

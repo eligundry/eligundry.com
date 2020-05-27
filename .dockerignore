@@ -8,3 +8,4 @@ lektor/webpack/node_modules
 gatsby/node_modules
 gatsby/public
 api/vendor
+rust-api/target
