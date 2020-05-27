@@ -9,14 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/feeds"
 	"github.com/pkg/errors"
+
+	"github.com/eligundry/eligundry.com/api/common"
 )
 
 func RegisterRoutes(router *gin.RouterGroup) {
 	CreateTables()
 	daylio := router.Group("/feelings")
 	{
-		// daylio.POST("", common.BasicAuthMiddleware(), SubmitDaylioExport)
-		daylio.POST("", SubmitDaylioExport)
+		daylio.POST("", common.BasicAuthMiddleware(), SubmitDaylioExport)
 		daylio.GET("", GetAllEntries)
 		daylio.GET("feed.rss", GetDaylioFeed)
 		daylio.GET("/time/:time", GetClosestEntry)
