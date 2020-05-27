@@ -2,7 +2,6 @@ package daylio
 
 import (
 	"bytes"
-	"database/sql/driver"
 	"encoding/json"
 	"html/template"
 	"time"
@@ -21,7 +20,7 @@ type DaylioExport struct {
 	Notes         []string  `json:"notes"`
 }
 
-func (d DaylioExport) Value() (driver.Value, error) {
+func (d DaylioExport) Value() ([]interface{}, error) {
 	notes, err := json.Marshal(d.Notes)
 
 	if err != nil {

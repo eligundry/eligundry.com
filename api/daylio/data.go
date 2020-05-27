@@ -9,7 +9,7 @@ import (
 
 	"github.com/gocarina/gocsv"
 	"github.com/golang-collections/collections/set"
-	"github.com/jmoiron/sqlx"
+	"github.com/pkg/errors"
 
 	"github.com/eligundry/eligundry.com/api/common"
 )
@@ -55,6 +55,35 @@ WHERE (
 GROUP BY daylio_entries.time
 ORDER BY daylio_entries.time DESC
 `
+
+func CreateTables() {
+	db := common.GetDB()
+
+	db.MustExec(`
+        CREATE TABLE IF NOT EXISTS daylio_entries (
+            time DATETIME PRIMARY KEY,
+            mood TEXT NOT NULL,
+            notes JSON NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `)
+	db.MustExec(`
+        CREATE TABLE IF NOT EXISTS daylio_entry_activities (
+            time DATETIME NOT NULL,
+            activity TEXT NOT NULL,
+            PRIMARY KEY (time, activity)
+        )
+    `)
+	db.MustExec(`
+        CREATE TABLE IF NOT EXISTS daylio_activities (
+            activity TEXT PRIMARY KEY,
+            private BOOLEAN DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `)
+}
 
 func GetDaylioEntries() ([]DaylioEntry, error) {
 	var entries []DaylioEntry
@@ -184,61 +213,83 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 
 	// Submit all the entries
 	db := common.GetDB()
-	query := fmt.Sprintf(`
+	tx, err := db.Begin()
+
+	if err != nil {
+		return entries, err
+	}
+
+	defer tx.Rollback()
+
+	entriesStmt, err := tx.Prepare(`
         INSERT INTO daylio_entries (time, mood, notes)
-        VALUES %s
+        VALUES (?, ?, ?)
         ON CONFLICT(time) 
         DO UPDATE SET 
             mood = excluded.mood, 
             notes = excluded.notes,
             updated_at = current_timestamp
-    `, strings.Join(entriesQs, ", "))
-	query, args, err := sqlx.In(query, entriesVs...)
+    `)
 
 	if err != nil {
-		return entries, err
+		return entries, errors.Wrap(err, "preparing daylio_entries")
 	}
 
-	if _, err = db.Exec(query, args...); err != nil {
-		return entries, err
-	}
+	defer entriesStmt.Close()
 
-	// Log all the activities
-	query = fmt.Sprintf(`
+	entryActivitiesStmt, err := tx.Prepare(`
         INSERT INTO daylio_entry_activities (time, activity)
-        VALUES %s
+        VALUES (?, ?)
         ON CONFLICT DO NOTHING
-	`, strings.Join(activitiesQs, ", "))
-	query, args, err = sqlx.In(query, activitesVs...)
+    `)
 
 	if err != nil {
 		return entries, err
 	}
 
-	if _, err = db.Exec(query, args...); err != nil {
-		return entries, err
+	for i := range entries {
+		entryValues, err := entries[i].Value()
+
+		if err != nil {
+			return entries, err
+		}
+
+		_, err = entriesStmt.Exec(entryValues...)
+
+		if err != nil {
+			return entries, errors.Wrap(err, "inserting daylio_entries")
+		}
+
+		for ai := range entries[i].Activities {
+			_, err := entryActivitiesStmt.Exec(
+				&entries[i].DateTime,
+				&entries[i].Activities[ai],
+			)
+
+			if err != nil {
+				return entries, errors.Wrap(err, "inserting daylio_entry_activities")
+			}
+		}
 	}
 
 	// Insert all the activities so that I can tweak visibility
-	var actQs []string
-	var actVs []interface{}
-	activitiesSet.Do(func(activity interface{}) {
-		actQs = append(actQs, "(?)")
-		actVs = append(actVs, fmt.Sprintf("%v", activity))
-	})
-
-	query = fmt.Sprintf(`
+	activitiesStmt, err := tx.Prepare(`
         INSERT INTO daylio_activities (activity)
-        VALUES %s
+        VALUES (?)
         ON CONFLICT DO NOTHING
-	`, strings.Join(actQs, ", "))
-	query, args, err = sqlx.In(query, actVs...)
+    `)
 
 	if err != nil {
 		return entries, err
 	}
 
-	if _, err = db.Exec(query, args...); err != nil {
+	defer activitiesStmt.Close()
+
+	activitiesSet.Do(func(activity interface{}) {
+		activitiesStmt.Exec(activity)
+	})
+
+	if err := tx.Commit(); err != nil {
 		return entries, err
 	}
 
