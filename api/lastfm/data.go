@@ -1,6 +1,9 @@
 package lastfm
 
-import "github.com/eligundry/eligundry.com/api/common"
+import (
+	"github.com/eligundry/eligundry.com/api/common"
+	"gopkg.in/guregu/null.v3"
+)
 
 func CreateTables() {
 	db := common.GetDB()
@@ -16,7 +19,8 @@ func CreateTables() {
         CREATE TABLE IF NOT EXISTS lastfm_albums (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
-            artist_id TEXT NOT NULL
+            artist_id TEXT NOT NULL,
+            art TEXT NULL
         )
 	`)
 
@@ -142,4 +146,16 @@ func SaveProcessedTracks(tracks []ProcessedTrack) error {
 	}
 
 	return nil
+}
+
+func GetLatestScrobbleTime() (null.Time, error) {
+	db := common.GetDB()
+	time := null.Time{}
+	err := db.Get(&time, "SELECT MAX(time) FROM lastfm_scrobbles")
+
+	if err != nil {
+		return time, err
+	}
+
+	return time, nil
 }

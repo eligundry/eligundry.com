@@ -9,27 +9,12 @@ import (
 func RegisterRoutes(router *gin.RouterGroup) {
 	routes := router.Group("/last-fm")
 	{
-		routes.GET("", TestRoute)
+		routes.GET("/stats", StatsRoute)
 	}
 }
 
-func TestRoute(c *gin.Context) {
-	tracks, err := GetRecentTracks(&UserGetRecentTracksArgs{})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	pts, err := UserGetRecentTracksToProcessedTracks(tracks)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-	}
-
-	c.JSON(http.StatusOK, pts)
+func StatsRoute(c *gin.Context) {
+	c.JSON(http.StatusNotImplemented, gin.H{
+		"error": "I'm working on this, chill",
+	})
 }

@@ -4,21 +4,28 @@ import (
 	"os"
 
 	"github.com/shkh/lastfm-go/lastfm"
+	"gopkg.in/guregu/null.v3"
 )
 
-func GetAPI() *lastfm.Api {
-	api := lastfm.New(
-		os.Getenv("LAST_FM_API_KEY"),
-		os.Getenv("LAST_FM_API_SECRET"),
-	)
+type LastFM struct {
+	api *lastfm.Api
+}
 
-	return api
+func NewAPI() LastFM {
+	return LastFM{
+		api: lastfm.New(
+			os.Getenv("LAST_FM_API_KEY"),
+			os.Getenv("LAST_FM_API_SECRET"),
+		),
+	}
 }
 
 type UserGetRecentTracksArgs struct {
 	Limit int
 	User  string
 	Page  int
+	From  null.Time
+	To    null.Time
 }
 
 func (a *UserGetRecentTracksArgs) ToArgs() map[string]interface{} {
@@ -36,16 +43,45 @@ func (a *UserGetRecentTracksArgs) ToArgs() map[string]interface{} {
 		args["page"] = a.Page
 	}
 
+	if a.From.Valid {
+		args["from"] = a.From.Time.Unix()
+	}
+
+	if a.To.Valid {
+		args["to"] = a.To.Time.Unix()
+	}
+
 	return args
 }
 
-func GetRecentTracks(args *UserGetRecentTracksArgs) (lastfm.UserGetRecentTracks, error) {
-	api := GetAPI()
-	tracks, err := api.User.GetRecentTracks(args.ToArgs())
+func (lf LastFM) GetRecentTracks(args *UserGetRecentTracksArgs) (lastfm.UserGetRecentTracks, error) {
+	tracks, err := lf.api.User.GetRecentTracks(args.ToArgs())
 
 	if err != nil {
 		return lastfm.UserGetRecentTracks{}, err
 	}
 
 	return tracks, nil
+}
+
+type GetAlbumArgs struct {
+	MusicBrainzID string
+	Username      string
+}
+
+func (a *GetAlbumArgs) ToArgs() map[string]interface{} {
+	return map[string]interface{}{
+		"mbid":     a.MusicBrainzID,
+		"username": a.Username,
+	}
+}
+
+func (lf LastFM) GetAlbum(args *GetAlbumArgs) (lastfm.AlbumGetInfo, error) {
+	album, err := lf.api.Album.GetInfo(args.ToArgs())
+
+	if err != nil {
+		return lastfm.AlbumGetInfo{}, err
+	}
+
+	return album, nil
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/eligundry/eligundry.com/api/lastfm"
@@ -15,11 +16,12 @@ func main() {
 	lastfm.CreateTables()
 
 	// First, fetch the first page of tracks
+	lfAPI := lastfm.NewAPI()
 	getRecentTrackArgs := lastfm.UserGetRecentTracksArgs{
 		User: "eli_pwnd",
 	}
 	log.Print("fetching page 1 of lastfm tracks")
-	rawTracks, err := lastfm.GetRecentTracks(&getRecentTrackArgs)
+	rawTracks, err := lfAPI.GetRecentTracks(&getRecentTrackArgs)
 
 	if err != nil {
 		panic(err)
@@ -44,7 +46,7 @@ func main() {
 
 	for _ = 0; getRecentTrackArgs.Page <= totalPages; getRecentTrackArgs.Page++ {
 		log.Printf("fetching page %d of tracks", getRecentTrackArgs.Page)
-		rawTracks, err := lastfm.GetRecentTracks(&getRecentTrackArgs)
+		rawTracks, err := lfAPI.GetRecentTracks(&getRecentTrackArgs)
 
 		if err != nil {
 			panic(err)
@@ -60,5 +62,8 @@ func main() {
 			panic(err)
 		}
 		log.Printf("finished saving page %d of tracks", getRecentTrackArgs.Page)
+
+		// Sleep for 5 seconds so I don't get rate limited
+		time.Sleep(time.Second * 5)
 	}
 }
