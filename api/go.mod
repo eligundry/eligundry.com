@@ -11,5 +11,6 @@ require (
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/mattn/go-sqlite3 v1.9.0
 	github.com/pkg/errors v0.9.1
+	github.com/shkh/lastfm-go v0.0.0-20191215035245-89a801c244e0
 	gopkg.in/guregu/null.v3 v3.4.0
 )

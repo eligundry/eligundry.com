@@ -23,7 +23,7 @@ func PostComment(c *gin.Context) {
 	path := c.Param("path")
 	var p Payload
 
-	if err := c.BindJSON(&p); err != nil {
+	if err := c.ShouldBindJSON(&p); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})

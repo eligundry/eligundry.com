@@ -15,7 +15,6 @@ ADD ./api/go.* ./
 RUN go mod download
 
 # Build the app
-ADD ./Makefile /src
 ADD ./api /src
 RUN make static-build
 
