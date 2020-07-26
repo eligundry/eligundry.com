@@ -1,6 +1,8 @@
 package lastfm
 
 import (
+	"crypto/md5"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -40,11 +42,7 @@ func UserGetRecentTracksToProcessedTracks(response lastfm.UserGetRecentTracks) (
 	var res []ProcessedTrack
 
 	for _, track := range response.Tracks {
-		skippable :=
-			track.NowPlaying == "true" ||
-				track.Mbid == "" ||
-				track.Album.Mbid == "" ||
-				track.Artist.Mbid == ""
+		skippable := track.NowPlaying == "true"
 
 		if skippable {
 			continue
@@ -57,21 +55,39 @@ func UserGetRecentTracksToProcessedTracks(response lastfm.UserGetRecentTracks) (
 			return res, err
 		}
 
+		trackID := track.Mbid
+
+		if len(trackID) == 0 {
+			trackID = fmt.Sprintf("md5-%s", md5.Sum([]byte(track.Name)))
+		}
+
+		artistID := track.Artist.Mbid
+
+		if len(artistID) == 0 {
+			artistID = fmt.Sprintf("md5-%s", md5.Sum([]byte(track.Artist.Name)))
+		}
+
+		albumID := track.Album.Mbid
+
+		if (len(albumID)) == 0 {
+			albumID = fmt.Sprintf("md5-%s", md5.Sum([]byte(track.Album.Name)))
+		}
+
 		res = append(res, ProcessedTrack{
 			Scrobble: Scrobble{
-				TrackID: track.Mbid,
+				TrackID: trackID,
 				Time:    time.Unix(ts, 0),
 			},
 			Track: Track{
-				MusicBrainzID: track.Mbid,
+				MusicBrainzID: trackID,
 				Name:          track.Name,
 			},
 			Artist: Artist{
-				MusicBrainzID: track.Artist.Mbid,
+				MusicBrainzID: artistID,
 				Name:          track.Artist.Name,
 			},
 			Album: Album{
-				MusicBrainzID: track.Album.Mbid,
+				MusicBrainzID: albumID,
 				Name:          track.Album.Name,
 			},
 		})

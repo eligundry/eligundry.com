@@ -44,7 +44,7 @@ func main() {
 
 	getRecentTrackArgs.Page++
 
-	for _ = 0; getRecentTrackArgs.Page <= totalPages; getRecentTrackArgs.Page++ {
+	for ; getRecentTrackArgs.Page <= totalPages; getRecentTrackArgs.Page++ {
 		log.Printf("fetching page %d of tracks", getRecentTrackArgs.Page)
 		rawTracks, err := lfAPI.GetRecentTracks(&getRecentTrackArgs)
 
