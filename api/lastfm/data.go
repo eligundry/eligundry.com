@@ -11,7 +11,8 @@ func CreateTables() {
 	db.MustExec(`
         CREATE TABLE IF NOT EXISTS lastfm_artists (
             id TEXT PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            art NULL
         )
 	`)
 
@@ -29,7 +30,25 @@ func CreateTables() {
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
             album_id TEXT NOT NULL,
+            duration INT NULL,
             FOREIGN KEY (album_id) REFERENCES lastfm_albums (id)
+        )
+	`)
+
+	db.MustExec(`
+        CREATE TABLE IF NOT EXISTS lastfm_tags (
+            url TEXT PRIMARY KEY,
+            name TEXT NOT NULL
+        )
+	`)
+
+	db.MustExec(`
+        CREATE TABLE IF NOT EXISTS lastfm_album_tags (
+            tag_url TEXT NOT NULL,
+            album_id TEXT NOT NULL,
+            PRIMARY KEY (tag_url, album_id),
+            FOREIGN KEY (album_id) REFERENCES lastfm_albums (id),
+            FOREIGN KEY (tag_url) REFERENCES lastfm_tags (url)
         )
 	`)
 
@@ -54,8 +73,8 @@ func SaveProcessedTracks(tracks []ProcessedTrack) error {
 	defer tx.Rollback()
 
 	artistStmt, err := tx.Prepare(`
-        INSERT INTO lastfm_artists (id, name)
-        VALUES (?, ?)
+        INSERT INTO lastfm_artists (id, name, art)
+        VALUES (?, ?, ?)
         ON CONFLICT DO NOTHING
     `)
 
@@ -66,8 +85,8 @@ func SaveProcessedTracks(tracks []ProcessedTrack) error {
 	defer artistStmt.Close()
 
 	albumStmt, err := tx.Prepare(`
-        INSERT INTO lastfm_albums (id, name, artist_id)
-        VALUES (?, ?, ?)
+        INSERT INTO lastfm_albums (id, name, artist_id, art)
+        VALUES (?, ?, ?, ?)
         ON CONFLICT DO NOTHING
     `)
 
@@ -105,6 +124,7 @@ func SaveProcessedTracks(tracks []ProcessedTrack) error {
 		_, err := artistStmt.Exec(
 			track.Artist.MusicBrainzID,
 			track.Artist.Name,
+			track.Artist.Art,
 		)
 
 		if err != nil {
@@ -115,6 +135,7 @@ func SaveProcessedTracks(tracks []ProcessedTrack) error {
 			track.Album.MusicBrainzID,
 			track.Album.Name,
 			track.Artist.MusicBrainzID,
+			track.Album.Art,
 		)
 
 		if err != nil {

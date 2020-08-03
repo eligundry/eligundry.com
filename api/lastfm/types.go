@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/shkh/lastfm-go/lastfm"
+	"gopkg.in/guregu/null.v3"
 )
 
 type Scrobble struct {
@@ -15,20 +16,23 @@ type Scrobble struct {
 }
 
 type Track struct {
-	MusicBrainzID string `json:"id"`
-	Name          string `json:"name"`
-	AlbumID       string `json:"album_id"`
-	ArtistID      string `json:"artist_id"`
+	MusicBrainzID string   `json:"id"`
+	Name          string   `json:"name"`
+	AlbumID       string   `json:"album_id"`
+	ArtistID      string   `json:"artist_id"`
+	Duration      null.Int `json:"duration"`
 }
 
 type Artist struct {
-	MusicBrainzID string `json:"id"`
-	Name          string `json:"name"`
+	MusicBrainzID string      `json:"id"`
+	Name          string      `json:"name"`
+	Art           null.String `json:"art"`
 }
 
 type Album struct {
-	MusicBrainzID string `json:"id"`
-	Name          string `json:"name"`
+	MusicBrainzID string      `json:"id"`
+	Name          string      `json:"name"`
+	Art           null.String `json:"art"`
 }
 
 type ProcessedTrack struct {
@@ -69,8 +73,14 @@ func UserGetRecentTracksToProcessedTracks(response lastfm.UserGetRecentTracks) (
 
 		albumID := track.Album.Mbid
 
-		if (len(albumID)) == 0 {
+		if len(albumID) == 0 {
 			albumID = fmt.Sprintf("md5-%s", md5.Sum([]byte(track.Album.Name)))
+		}
+
+		albumArt := null.String{}
+
+		if imgLen := len(track.Images); imgLen > 0 {
+			albumArt.Scan(track.Images[imgLen-1])
 		}
 
 		res = append(res, ProcessedTrack{
@@ -89,6 +99,7 @@ func UserGetRecentTracksToProcessedTracks(response lastfm.UserGetRecentTracks) (
 			Album: Album{
 				MusicBrainzID: albumID,
 				Name:          track.Album.Name,
+				Art:           albumArt,
 			},
 		})
 	}

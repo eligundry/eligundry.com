@@ -2,6 +2,7 @@ package lastfm
 
 import (
 	"os"
+	"strings"
 
 	"github.com/shkh/lastfm-go/lastfm"
 	"gopkg.in/guregu/null.v3"
@@ -66,14 +67,29 @@ func (lf LastFM) GetRecentTracks(args *UserGetRecentTracksArgs) (lastfm.UserGetR
 
 type GetAlbumArgs struct {
 	MusicBrainzID string
+	Album         string
+	Artist        string
 	Username      string
 }
 
 func (a *GetAlbumArgs) ToArgs() map[string]interface{} {
-	return map[string]interface{}{
-		"mbid":     a.MusicBrainzID,
+	args := map[string]interface{}{
 		"username": a.Username,
 	}
+
+	if len(a.MusicBrainzID) > 0 {
+		args["mbid"] = a.MusicBrainzID
+	}
+
+	if len(a.Album) > 0 {
+		args["album"] = a.Album
+	}
+
+	if len(a.Artist) > 0 {
+		args["artist"] = a.Artist
+	}
+
+	return args
 }
 
 func (lf LastFM) GetAlbum(args *GetAlbumArgs) (lastfm.AlbumGetInfo, error) {
@@ -84,4 +100,36 @@ func (lf LastFM) GetAlbum(args *GetAlbumArgs) (lastfm.AlbumGetInfo, error) {
 	}
 
 	return album, nil
+}
+
+func (lf LastFM) AttachAlbumMetadatToProcessedTracks(tracks []ProcessedTrack) error {
+	cache := map[string]lastfm.AlbumGetInfo{}
+
+	for i := range tracks {
+		var err error
+		hit, ok := cache[tracks[i].Album.MusicBrainzID]
+
+		if !ok {
+			args := GetAlbumArgs{
+				Username: "eli_pwnd",
+			}
+
+			if !strings.HasPrefix(tracks[i].Album.MusicBrainzID, "md5-") {
+				args.MusicBrainzID = tracks[i].Album.MusicBrainzID
+			} else {
+				args.Artist = tracks[i].Artist.Name
+				args.Album = tracks[i].Album.Name
+			}
+
+			hit, err = lf.GetAlbum(&args)
+
+			if err != nil {
+				continue
+			}
+
+			cache[tracks[i].Album.MusicBrainzID] = hit
+		}
+	}
+
+	return nil
 }
