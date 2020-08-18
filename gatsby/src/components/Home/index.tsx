@@ -159,7 +159,7 @@ const Home: React.FC = () => {
           <LazyLoad>
             <img
               className="listening-img"
-              src="/img/last.fm.jpg"
+              src="/api/last.fm/collage.jpg"
               alt="My top 9 albums for the past 7 days"
             />
           </LazyLoad>
