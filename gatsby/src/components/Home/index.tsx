@@ -1,5 +1,5 @@
 import React from 'react'
-import tw, { styled, css } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import { GoodreadsBookshelf } from 'react-goodreads-shelf'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
@@ -10,10 +10,6 @@ import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
-
-const Wrapper = styled.main`
-  ${tw`w-3/5 sm:w-full md:w-full lg:w-3/5 xl:w-3/5`}
-`
 
 interface SectionProps {
   fullWidth?: boolean
@@ -45,7 +41,7 @@ const Home: React.FC = () => {
   const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
 
   return (
-    <Wrapper className="about">
+    <>
       <Section className="introduction-hero" fullWidth>
         <div className="text-column">
           <h2>Hello there!</h2>
@@ -164,7 +160,7 @@ const Home: React.FC = () => {
           />
         </LazyLoad>
       </Section>
-    </Wrapper>
+    </>
   )
 }
 

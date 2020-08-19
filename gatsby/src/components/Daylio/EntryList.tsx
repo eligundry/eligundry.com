@@ -9,7 +9,7 @@ interface Props {
   entries: DaylioEntry[]
 }
 
-const EntryListWrapper = styled.main`
+const EntryListWrapper = styled.section`
   position: relative;
 
   &::before {

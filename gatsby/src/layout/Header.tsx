@@ -24,9 +24,11 @@ const Nav = styled.nav<NavProps>`
   position: fixed;
   right: 0;
   align-self: center;
+  z-index: 10000;
 
   & .nav-page-link {
     margin-right: 1em;
+    ${tw`no-underline`}
   }
 
   & > .hamburger {
@@ -61,8 +63,8 @@ const Nav = styled.nav<NavProps>`
 
       & > .hamburger {
         position: absolute;
-        top: 1.5em;
-        right: 1em;
+        top: 0;
+        right: 0;
       }
 
       & > .nav-links {

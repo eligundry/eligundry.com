@@ -48,7 +48,7 @@ const Comments: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="comments-section">
       <h4>{title}</h4>
       <div className="comments">
         {comments.map(comment => (

@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { IconContext } from 'react-icons'
 
-import BaseStyles from './BaseStyles'
+import BaseStyles, { ContentWrapper } from './BaseStyles'
 import Header from './Header'
 import config from '../../data/SiteConfig'
 
@@ -22,7 +22,7 @@ const MainLayout: React.FC<Props> = ({ children, showHeader = true }) => {
           <html lang="en" />
         </Helmet>
         {showHeader && <Header />}
-        {children}
+        <ContentWrapper>{children}</ContentWrapper>
       </BaseStyles>
     </IconContext.Provider>
   )

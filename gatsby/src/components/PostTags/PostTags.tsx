@@ -15,7 +15,10 @@ const PostTags: React.FC<Props> = ({ tags }) => (
           style={{ textDecoration: 'none' }}
           to={`/blog/tags/${kebabCase(tag)}`}
         >
-          <button type="button">{tag}</button>
+          <span role="img" aria-label="tag">
+            🏷️
+          </span>
+          {tag}
         </Link>
       ))}
   </div>

@@ -53,8 +53,8 @@ const PostTemplate: React.FC<Props> = props => {
         <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
         <aside className="post-meta">
           <PostTags tags={post.tags} />
+          <Comments />
         </aside>
-        <Comments />
       </Article>
     </Layout>
   )
