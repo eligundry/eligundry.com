@@ -18,7 +18,7 @@ interface Props {
 
 const Article = styled.article`
   & blockquote {
-    ${tw`italic`}
+    ${tw`italic border-l-2 border-teal-400 pl-2`}
   }
 `
 

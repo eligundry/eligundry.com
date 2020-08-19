@@ -4,7 +4,6 @@ import { IconContext } from 'react-icons'
 
 import BaseStyles from './BaseStyles'
 import Header from './Header'
-import Footer from './Footer'
 import config from '../../data/SiteConfig'
 
 interface Props {
@@ -13,11 +12,7 @@ interface Props {
   children: React.ReactNode[] | React.ReactNode
 }
 
-const MainLayout: React.FC<Props> = ({
-  children,
-  showHeader = true,
-  showFooter = true,
-}) => {
+const MainLayout: React.FC<Props> = ({ children, showHeader = true }) => {
   return (
     <IconContext.Provider value={{}}>
       <BaseStyles>
@@ -28,7 +23,6 @@ const MainLayout: React.FC<Props> = ({
         </Helmet>
         {showHeader && <Header />}
         {children}
-        {showFooter && <Footer />}
       </BaseStyles>
     </IconContext.Provider>
   )

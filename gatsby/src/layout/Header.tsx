@@ -3,6 +3,7 @@ import tw, { styled, css } from 'twin.macro'
 import { useWindowSize } from 'react-use'
 
 import style from '../../data/styleConfig'
+import UserLinks from 'src/components/UserLinks/UserLinks'
 
 const HeaderElm = styled.header`
   display: flex;
@@ -20,6 +21,8 @@ interface NavProps {
 }
 
 const Nav = styled.nav<NavProps>`
+  position: fixed;
+  right: 0;
   align-self: center;
 
   & .nav-page-link {
@@ -106,8 +109,8 @@ const navLinks = {
 }
 
 const Header: React.FC = () => {
-  const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const { width } = useWindowSize()
+  const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const showHamburger = width <= style.breakPoints.tabletPx
 
   return (
@@ -155,6 +158,7 @@ const Header: React.FC = () => {
                 </a>
               )
             )}
+            <UserLinks />
           </div>
         </Nav>
       </HeaderElm>

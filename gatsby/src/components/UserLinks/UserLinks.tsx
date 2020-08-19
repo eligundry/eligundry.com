@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import tw, { styled } from 'twin.macro'
 import {
   FaGithubSquare,
   FaTwitterSquare,
@@ -45,16 +45,12 @@ const links = [
 ]
 
 const Links = styled.div`
-  font-size: 2em;
-
-  & > a {
-    margin-right: 0.25em;
-  }
+  ${tw`flex flex-row text-xl`}
 `
 
 const UserLinks: React.FC = () => {
   return (
-    <Links className="user-links">
+    <Links>
       {links.map(link => (
         <a
           href={link.url}

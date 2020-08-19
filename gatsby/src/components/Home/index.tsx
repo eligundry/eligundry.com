@@ -12,8 +12,7 @@ import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
 
 const Wrapper = styled.main`
-  display: flex;
-  flex-flow: row wrap;
+  ${tw`w-3/5 sm:w-full md:w-full lg:w-3/5 xl:w-3/5`}
 `
 
 interface SectionProps {
@@ -34,22 +33,11 @@ const Section = styled.section<SectionProps>`
       margin-right: 1em;
     }
 
-    & .headshot {
+    & > .headshot {
       width: 150px;
       height: 191px;
     }
   }
-
-  @media (${style.breakPoints.tablet}) {
-    padding-right: 0;
-    width: 100%;
-  }
-
-  ${props =>
-    props.fullWidth &&
-    css`
-      width: 100%;
-    `}
 `
 
 const Home: React.FC = () => {

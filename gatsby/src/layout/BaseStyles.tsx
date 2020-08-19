@@ -1,4 +1,3 @@
-import React from 'react'
 import tw, { styled } from 'twin.macro'
 
 import 'tailwindcss/dist/base.min.css'
@@ -22,11 +21,11 @@ const BaseStyles = styled.div`
   }
 
   & ul {
-    ${tw`list-disc`}
+    ${tw`list-disc pl-8`}
   }
 
   & ol {
-    ${tw`list-decimal`}
+    ${tw`list-decimal pl-8`}
   }
 
   & a {
