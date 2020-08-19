@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import tw, { styled, css } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import { GoodreadsBookshelf } from 'react-goodreads-shelf'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
@@ -21,18 +21,6 @@ interface SectionProps {
 }
 
 const Section = styled.section<SectionProps>`
-  width: 50%;
-  padding-right: 1em;
-
-  & .listening-img {
-    width: 100%;
-  }
-
-  & .headshot {
-    width: 150px;
-    height: 191px;
-  }
-
   & .bookshelf > div > div {
     grid-template-columns: repeat(auto-fit, minmax(80px, 100px)) !important;
   }
@@ -44,6 +32,11 @@ const Section = styled.section<SectionProps>`
     & > .text-column {
       align-self: center;
       margin-right: 1em;
+    }
+
+    & .headshot {
+      width: 150px;
+      height: 191px;
     }
   }
 

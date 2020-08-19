@@ -41,13 +41,13 @@
     "react-helmet": "^5.2.1",
     "react-icons": "^3.9.0",
     "react-lazyload": "^2.6.5",
-    "react-share": "^3.0.1",
     "react-tooltip": "^4.0.3",
     "react-twitter-embed": "^3.0.3",
     "react-twitter-widgets": "^1.7.1",
     "react-use": "^13.21.0",
     "rehype-react": "^4.0.1",
     "styled-components": "^5.0.0",
+    "twin.macro": "^1.7.0",
     "url-join": "^4.0.0",
     "use-detect-print": "0.0.2"
   },
@@ -61,6 +61,7 @@
     "eslint-plugin-import": "^2.19.1",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.17.0",
+    "gatsby-plugin-root-import": "^2.0.5",
     "gatsby-plugin-webpack-bundle-analyzer": "^1.0.5",
     "gh-pages": "^2.2.0",
     "prettier": "^1.17.0",
@@ -106,5 +107,15 @@
     "semi": false,
     "singleQuote": true,
     "bracketSpacing": true
+  },
+  "babelMacros": {
+    "twin": {
+      "config": "src/tailwind.config.js",
+      "preset": "styled-components",
+      "autoCssProp": true,
+      "debugProp": true,
+      "debugPlugins": false,
+      "debug": false
+    }
   }
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
+import tw, { styled, css } from 'twin.macro'
 
 import Layout from '../layout/index'
 import PostTags from '../components/PostTags/PostTags'
@@ -9,12 +10,17 @@ import SEO from '../components/SEO/SEO'
 import Comments from '../components/Comments'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
 import './b16-tomorrow-dark.css'
-import './post.css'
 
 interface Props {
   data: BlogPostBySlugQuery
   pageContext: SitePageContext
 }
+
+const Article = styled.article`
+  & blockquote {
+    ${tw`italic`}
+  }
+`
 
 const PostTemplate: React.FC<Props> = props => {
   const { data, pageContext } = props
@@ -28,7 +34,7 @@ const PostTemplate: React.FC<Props> = props => {
         <title>{post.title}</title>
       </Helmet>
       <SEO postPath={slug} postNode={postNode} postSEO />
-      <article className="blog-post">
+      <Article>
         <header>
           <h1>{post.title}</h1>
           <time dateTime={post.date}>
@@ -49,7 +55,7 @@ const PostTemplate: React.FC<Props> = props => {
           <PostTags tags={post.tags} />
         </aside>
         <Comments />
-      </article>
+      </Article>
     </Layout>
   )
 }

@@ -21,6 +21,7 @@ module.exports = {
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-lodash',
+    'gatsby-plugin-root-import',
     {
       resolve: 'gatsby-source-filesystem',
       options: {

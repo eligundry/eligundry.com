@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled, { css } from 'styled-components'
+import tw, { styled, css } from 'twin.macro'
 import { useWindowSize } from 'react-use'
 
 import style from '../../data/styleConfig'
@@ -77,14 +77,6 @@ const Nav = styled.nav<NavProps>`
     `}
 `
 
-const BetaBanner = styled.h6`
-  margin-bottom: 0.25em;
-
-  @media print {
-    display: none;
-  }
-`
-
 const navLinks = {
   '/': {
     title: 'Home',
@@ -120,13 +112,11 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <BetaBanner>
-        <strong>Beta:</strong> I am developing this site in the open. Please
-        excuse my mess while I figure out styles.
-      </BetaBanner>
       <HeaderElm>
         <h1>
-          <a href="/">Eli Gundry</a>
+          <a rel="root" href="/">
+            Eli Gundry
+          </a>
         </h1>
         <Nav
           role="navigation"
