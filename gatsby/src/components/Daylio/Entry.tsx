@@ -4,38 +4,16 @@ import formatISO from 'date-fns/formatISO'
 import isEqual from 'lodash/isEqual'
 
 import styleVariables from '../../../data/styleConfig'
-import { DaylioEntry, DaylioVariants } from './types'
+import {
+  DaylioEntry,
+  DaylioVariants,
+  MoodMapping,
+  ActivityMapping,
+} from './types'
 
 interface Props extends DaylioEntry {
   variant: DaylioVariants
   selected?: boolean
-}
-
-const MoodMapping = {
-  awful: '😖',
-  bad: '😣',
-  meh: '😕',
-  good: '😀',
-  rad: '🥳',
-}
-
-const ActivityMapping = {
-  cook: '🧑‍🍳',
-  movies: '🍿',
-  relax: '💆‍♂️',
-  'side-project': '👨‍💻',
-  work: '💼',
-  friends: '👯‍♂️',
-  sport: '🏃‍♂️',
-  date: '👫',
-  WFH: '🏚',
-  reading: '📚',
-  shopping: '🛒',
-  'good meal': '🍜',
-  museum: '🏛',
-  party: '🎉',
-  cleaning: '🧹',
-  gaming: '🕹',
 }
 
 const EntryWrapper = styled.div<Partial<Props>>`
