@@ -6,6 +6,7 @@ import { ListingQueryQuery } from '../../graphql-types'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO/SEO'
+import Box from '../components/Shared/Box'
 
 interface Props {
   data: ListingQueryQuery
@@ -16,13 +17,11 @@ const Listing: React.FC<Props> = props => {
 
   return (
     <Layout>
-      <div className="listing-container">
-        <div className="posts-container">
-          <Helmet title="Blog" />
-          <SEO />
-          <PostListing postEdges={postEdges} />
-        </div>
-      </div>
+      <Box className="listing-container">
+        <Helmet title="Blog" />
+        <SEO />
+        <PostListing postEdges={postEdges} />
+      </Box>
     </Layout>
   )
 }

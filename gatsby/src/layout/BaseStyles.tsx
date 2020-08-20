@@ -4,13 +4,14 @@ import 'tailwindcss/dist/base.min.css'
 import './index.css'
 
 const BaseStyles = styled.div`
-  ${tw`container`}
-
   // On computers, give some left margin
-  ${tw`lg:ml-4 xl:ml-4`}
+  ${tw`lg:pl-4 xl:pl-4`}
 
   // On mobile, add margin to the sides so the content can breathe
-  ${tw`sm:mx-8 md:mx-8`}
+  ${tw`sm:px-8 md:px-8`}
+
+  // Let's play around with colors
+  ${tw`bg-pink-100`}
 
   & h1 {
     ${tw`text-2xl`}
@@ -33,7 +34,7 @@ const BaseStyles = styled.div`
   }
 
   & a {
-    ${tw`text-blue-600 underline`}
+    ${tw`text-teal-500 underline`}
   }
 
   & p {

@@ -10,16 +10,18 @@ import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
+import { BoxStyles } from '../Shared/Box'
 
 interface SectionProps {
   fullWidth?: boolean
 }
 
 const Section = styled.section<SectionProps>`
-  ${tw`rounded shadow p-6 mb-2`}
+  ${BoxStyles}
+  ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {
-    ${tw`text-indigo-600`}
+    ${tw`text-teal-500`}
   }
 
   & .bookshelf > div > div {

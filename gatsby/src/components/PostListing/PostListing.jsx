@@ -33,9 +33,11 @@ class PostListing extends React.Component {
             itemType="http://schema.org/BlogPosting"
             className="listing-post"
           >
-            <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
-              <h1 itemProp="title">{post.title}</h1>
-            </Link>
+            <h1 itemProp="title">
+              <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
+                {post.title}
+              </Link>
+            </h1>
             <time dateTime={post.date} itemProp="datePublished">
               <span role="img" aria-labelledby="date of blog post">
                 🗓
