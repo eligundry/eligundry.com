@@ -25,11 +25,11 @@ const BaseStyles = styled.div`
   }
 
   & ul {
-    ${tw`list-disc pl-8`}
+    ${tw`list-disc pl-8 my-4`}
   }
 
   & ol {
-    ${tw`list-decimal pl-8`}
+    ${tw`list-decimal pl-8 my-4`}
   }
 
   & a {

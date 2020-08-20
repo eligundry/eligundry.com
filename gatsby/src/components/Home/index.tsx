@@ -16,6 +16,12 @@ interface SectionProps {
 }
 
 const Section = styled.section<SectionProps>`
+  ${tw`rounded shadow p-6 mb-2`}
+
+  & h2 {
+    ${tw`text-indigo-600`}
+  }
+
   & .bookshelf > div > div {
     grid-template-columns: repeat(auto-fit, minmax(80px, 100px)) !important;
   }

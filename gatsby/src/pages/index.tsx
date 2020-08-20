@@ -1,8 +1,8 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 
-import Layout from 'src/layout'
-import Home from 'src/components/Home'
+import Layout from '../layout'
+import Home from '../components/Home'
 
 const HomePage: React.FC = () => {
   return (

@@ -3,7 +3,7 @@ import tw, { styled, css } from 'twin.macro'
 import { useWindowSize } from 'react-use'
 
 import style from '../../data/styleConfig'
-import UserLinks from 'src/components/UserLinks/UserLinks'
+import UserLinks from '../components/UserLinks/UserLinks'
 
 const HeaderElm = styled.header`
   display: flex;
