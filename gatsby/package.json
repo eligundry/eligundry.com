@@ -14,6 +14,7 @@
     "gatsby-plugin-graphql-codegen": "^2.7.1",
     "gatsby-plugin-lodash": "^3.3.10",
     "gatsby-plugin-no-sourcemaps": "^2.2.0",
+    "gatsby-plugin-nprogress": "^2.3.10",
     "gatsby-plugin-react-helmet": "^3.3.10",
     "gatsby-plugin-sharp": "^2.6.28",
     "gatsby-plugin-sitemap": "^2.4.12",
