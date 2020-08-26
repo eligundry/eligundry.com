@@ -1,54 +1,24 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
 import formatISO from 'date-fns/formatISO'
 import isEqual from 'lodash/isEqual'
+import tw, { styled, css } from 'twin.macro'
 
 import styleVariables from '../../../data/styleConfig'
-import { DaylioEntry, DaylioVariants } from './types'
+import { PaperStyles } from '../Shared/Paper'
+import {
+  DaylioEntry,
+  DaylioVariants,
+  MoodMapping,
+  ActivityMapping,
+} from './types'
 
 interface Props extends DaylioEntry {
   variant: DaylioVariants
   selected?: boolean
 }
 
-const MoodMapping = {
-  awful: '😖',
-  bad: '😣',
-  meh: '😕',
-  good: '😀',
-  rad: '🥳',
-}
-
-const ActivityMapping = {
-  cook: '🧑‍🍳',
-  movies: '🍿',
-  relax: '💆‍♂️',
-  'side-project': '👨‍💻',
-  work: '💼',
-  friends: '👯‍♂️',
-  sport: '🏃‍♂️',
-  date: '👫',
-  WFH: '🏚',
-  reading: '📚',
-  shopping: '🛒',
-  'good meal': '🍜',
-  museum: '🏛',
-  party: '🎉',
-  cleaning: '🧹',
-  gaming: '🕹',
-}
-
 const EntryWrapper = styled.div<Partial<Props>>`
   display: block;
-
-  ${props =>
-    props.variant === DaylioVariants.list &&
-    css`
-      @media (${styleVariables.breakPoints.mobile}) {
-        max-width: 90%;
-        width: 90%;
-      }
-    `}
 
   ${props =>
     props.variant === DaylioVariants.home &&
@@ -73,6 +43,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
 
   & .text-column {
     display: inline-block;
+    width: 100%;
     max-width: calc(100% - 7rem);
 
     & h3 {
@@ -85,20 +56,11 @@ const EntryWrapper = styled.div<Partial<Props>>`
       props.variant === DaylioVariants.list &&
       css`
         @media (${styleVariables.breakPoints.mobile}) {
-          width: 100%;
-          max-width: 100%;
-          margin: 2em 0;
           padding-left: 1.8rem;
           z-index: 100;
           position: relative;
         }
       `}
-  }
-
-  & .activities {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
   }
 
   & .notes {
@@ -109,22 +71,18 @@ const EntryWrapper = styled.div<Partial<Props>>`
   ${props =>
     props.variant === DaylioVariants.list &&
     css`
-      margin: 1em 0;
+      ${tw`my-4`}
 
       & .text-column {
-        background-color: #fff;
+        ${PaperStyles}
       }
     `}
 
   ${props =>
     props.selected &&
     css`
-      border: 2px solid black;
-
       & .text-column {
-        @media (${styleVariables.breakPoints.mobile}) {
-          padding-left: calc(1.8rem - 2px);
-        }
+        ${tw`shadow-lg`}
       }
     `}
 `
@@ -132,6 +90,8 @@ const EntryWrapper = styled.div<Partial<Props>>`
 interface ActivityEmojiProps {
   dropShadow?: boolean
 }
+
+const bgColor = tw`text-pink-100`
 
 const Emoji = styled.span<ActivityEmojiProps>`
   font-size: 4rem;
@@ -142,8 +102,12 @@ const Emoji = styled.span<ActivityEmojiProps>`
   ${props =>
     props.dropShadow &&
     css`
-      text-shadow: 0px 8px 0px white, 0 -8px 0px white;
+      text-shadow: 0px 8px 0px ${bgColor.color}, 0 -8px 0px ${bgColor.color};
     `}
+`
+
+const ActivitiesList = styled.ul`
+  padding-left: 0 !important;
 `
 
 const ActivityEmoji = styled.li`
@@ -178,13 +142,13 @@ const Entry: React.FC<Props> = ({
           <a href={`/feelings#${time}`}>{formatISO(new Date(time))}</a>
         </time>
         {filteredActivities.length > 0 && (
-          <ul className="activities">
+          <ActivitiesList>
             {filteredActivities.map(a => (
               <ActivityEmoji key={`${time}-${a}`} data-tip={a}>
                 {ActivityMapping[a] || a}
               </ActivityEmoji>
             ))}
-          </ul>
+          </ActivitiesList>
         )}
         {notes &&
           (notes.length > 0 ? (

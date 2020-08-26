@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import styled, { css } from 'styled-components'
+import tw, { styled, css } from 'twin.macro'
 import { useWindowSize } from 'react-use'
 
 import style from '../../data/styleConfig'
+import UserLinks from '../components/UserLinks/UserLinks'
+import { PaperStyles } from '../components/Shared/Paper'
 
 const HeaderElm = styled.header`
   display: flex;
@@ -20,10 +22,56 @@ interface NavProps {
 }
 
 const Nav = styled.nav<NavProps>`
+  position: fixed;
+  top: 1em;
+  right: 0;
   align-self: center;
+  z-index: 10000;
+
+  & .nav-links {
+    ${tw`
+      flex
+      flex-col
+    `}
+
+    & > .user-links {
+      ${tw`mt-4`}
+    }
+  }
 
   & .nav-page-link {
     margin-right: 1em;
+
+    ${tw`
+      no-underline 
+      hover:no-underline 
+      focus:no-underline
+      text-teal-500
+    `}
+
+    & > .link-text {
+      ${tw`p-1`}
+    }
+
+    &:hover > .link-text,
+    &:focus > .link-text {
+      ${tw`
+        bg-pink-300 
+        transition 
+        duration-200 
+        ease-linear
+        transition-colors
+        rounded
+      `}
+
+      &:last-child {
+        ${tw`mb-4`}
+      }
+    }
+
+    & > .emoji {
+      ${tw`mr-2`}
+    }
   }
 
   & > .hamburger {
@@ -34,6 +82,12 @@ const Nav = styled.nav<NavProps>`
   @media print {
     display: none;
   }
+
+  ${props =>
+    !props.mobile &&
+    css`
+      ${PaperStyles}
+    `}
 
   ${props =>
     props.mobile &&
@@ -58,8 +112,8 @@ const Nav = styled.nav<NavProps>`
 
       & > .hamburger {
         position: absolute;
-        top: 1.5em;
-        right: 1em;
+        top: 0;
+        right: 0;
       }
 
       & > .nav-links {
@@ -75,14 +129,6 @@ const Nav = styled.nav<NavProps>`
         margin-right: 0;
       }
     `}
-`
-
-const BetaBanner = styled.h6`
-  margin-bottom: 0.25em;
-
-  @media print {
-    display: none;
-  }
 `
 
 const navLinks = {
@@ -114,19 +160,17 @@ const navLinks = {
 }
 
 const Header: React.FC = () => {
-  const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const { width } = useWindowSize()
+  const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const showHamburger = width <= style.breakPoints.tabletPx
 
   return (
     <>
-      <BetaBanner>
-        <strong>Beta:</strong> I am developing this site in the open. Please
-        excuse my mess while I figure out styles.
-      </BetaBanner>
       <HeaderElm>
         <h1>
-          <a href="/">Eli Gundry</a>
+          <a rel="root" href="/">
+            Eli Gundry
+          </a>
         </h1>
         <Nav
           role="navigation"
@@ -158,13 +202,14 @@ const Header: React.FC = () => {
                   onClick={() => setHamburgerExpanded(false)}
                   className="nav-page-link"
                 >
-                  <span role="img" aria-label={emojiLabel}>
+                  <span role="img" aria-label={emojiLabel} className="emoji">
                     {emoji}
                   </span>
-                  {title}
+                  <span className="link-text">{title}</span>
                 </a>
               )
             )}
+            <UserLinks />
           </div>
         </Nav>
       </HeaderElm>

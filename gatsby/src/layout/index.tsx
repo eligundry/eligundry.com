@@ -1,28 +1,10 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import styled from 'styled-components'
 import { IconContext } from 'react-icons'
 
+import BaseStyles, { ContentWrapper } from './BaseStyles'
 import Header from './Header'
-import Footer from './Footer'
 import config from '../../data/SiteConfig'
-import style from '../../data/styleConfig'
-import './index.css'
-
-const LayoutWrapper = styled.div`
-  font-family: ${style.font.family};
-  font-size: ${style.font.size};
-  width: 60%;
-  margin: 0 auto;
-
-  @media (${style.breakPoints.desktopSmall}) {
-    width: 90%;
-  }
-
-  & img {
-    max-width: 100%;
-  }
-`
 
 interface Props {
   showHeader?: boolean
@@ -30,23 +12,18 @@ interface Props {
   children: React.ReactNode[] | React.ReactNode
 }
 
-const MainLayout: React.FC<Props> = ({
-  children,
-  showHeader = true,
-  showFooter = true,
-}) => {
+const MainLayout: React.FC<Props> = ({ children, showHeader = true }) => {
   return (
     <IconContext.Provider value={{}}>
-      <LayoutWrapper className="layout-container">
+      <BaseStyles>
         <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
           <title>{config.siteTitle}</title>
           <meta name="description" content={config.siteDescription} />
           <html lang="en" />
         </Helmet>
         {showHeader && <Header />}
-        {children}
-        {showFooter && <Footer />}
-      </LayoutWrapper>
+        <ContentWrapper>{children}</ContentWrapper>
+      </BaseStyles>
     </IconContext.Provider>
   )
 }

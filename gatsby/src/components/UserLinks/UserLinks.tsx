@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import tw, { styled } from 'twin.macro'
 import {
   FaGithubSquare,
   FaTwitterSquare,
@@ -45,10 +45,16 @@ const links = [
 ]
 
 const Links = styled.div`
-  font-size: 2em;
+  ${tw`flex flex-row text-2xl`}
 
   & > a {
-    margin-right: 0.25em;
+    ${tw`
+      hover:text-pink-300
+      transition 
+      duration-200 
+      ease-linear
+      transition-colors
+    `}
   }
 `
 

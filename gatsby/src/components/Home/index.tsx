@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import tw, { styled } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import { GoodreadsBookshelf } from 'react-goodreads-shelf'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
@@ -10,27 +10,13 @@ import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
+import Paper from '../Shared/Paper'
 
-const Wrapper = styled.main`
-  display: flex;
-  flex-flow: row wrap;
-`
+const Section = styled(Paper.section)`
+  ${tw`sm:mx-2 md:mx-2`}
 
-interface SectionProps {
-  fullWidth?: boolean
-}
-
-const Section = styled.section<SectionProps>`
-  width: 50%;
-  padding-right: 1em;
-
-  & .listening-img {
-    width: 100%;
-  }
-
-  & .headshot {
-    width: 150px;
-    height: 191px;
+  & h2 {
+    ${tw`text-teal-500 italic`}
   }
 
   & .bookshelf > div > div {
@@ -45,18 +31,12 @@ const Section = styled.section<SectionProps>`
       align-self: center;
       margin-right: 1em;
     }
-  }
 
-  @media (${style.breakPoints.tablet}) {
-    padding-right: 0;
-    width: 100%;
+    & > .headshot {
+      width: 150px;
+      height: 191px;
+    }
   }
-
-  ${props =>
-    props.fullWidth &&
-    css`
-      width: 100%;
-    `}
 `
 
 const Home: React.FC = () => {
@@ -64,7 +44,7 @@ const Home: React.FC = () => {
   const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
 
   return (
-    <Wrapper className="about">
+    <>
       <Section className="introduction-hero" fullWidth>
         <div className="text-column">
           <h2>Hello there!</h2>
@@ -118,9 +98,9 @@ const Home: React.FC = () => {
         </p>
         <div className="bookshelf">
           <GoodreadsBookshelf
+            shelf="currently-reading"
             userId={config.goodreads.userID}
             apiKey={config.goodreads.apiKey}
-            shelf="currently-reading"
           />
         </div>
       </Section>
@@ -183,7 +163,7 @@ const Home: React.FC = () => {
           />
         </LazyLoad>
       </Section>
-    </Wrapper>
+    </>
   )
 }
 

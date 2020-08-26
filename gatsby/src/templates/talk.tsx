@@ -2,8 +2,10 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
+import tw, { styled } from 'twin.macro'
 
 import Layout from '../layout'
+import Paper from '../components/Shared/Paper'
 import SEO from '../components/SEO/SEO'
 import { TalkBySlugQuery, SitePageContext } from '../../graphql-types'
 import './talk.css'
@@ -12,6 +14,8 @@ interface Props {
   data: TalkBySlugQuery
   pageContext: SitePageContext
 }
+
+const Article = styled(Paper.article)``
 
 const TalkTemplate: React.FC<Props> = props => {
   const { data, pageContext } = props
@@ -25,7 +29,7 @@ const TalkTemplate: React.FC<Props> = props => {
         <title>{talk.title}</title>
       </Helmet>
       <SEO postPath={slug} postNode={talkNode} postSEO />
-      <article className="talk">
+      <Article className="talk">
         <header>
           <h1>{talk.title}</h1>
           <time dateTime={talk.date}>
@@ -42,7 +46,7 @@ const TalkTemplate: React.FC<Props> = props => {
           </p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: talkNode.html }} />
-      </article>
+      </Article>
     </Layout>
   )
 }
