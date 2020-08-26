@@ -19,7 +19,8 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-typescript',
-    'gatsby-plugin-no-sourcemaps',
+    // If things get slow, try this
+    // 'gatsby-plugin-no-sourcemaps',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-lodash',
     'gatsby-plugin-sharp',
