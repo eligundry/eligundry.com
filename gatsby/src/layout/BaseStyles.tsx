@@ -10,9 +10,6 @@ const BaseStyles = styled.div`
   // On mobile, add margin to the sides so the content can breathe
   ${tw`sm:px-8 md:px-8`}
 
-  // Let's play around with colors
-  ${tw`bg-pink-100`}
-
   & h1 {
     ${tw`text-2xl`}
   }
@@ -53,6 +50,10 @@ const BaseStyles = styled.div`
 
   & button {
     ${tw`bg-teal-400 p-4 text-white`}
+  }
+
+  @media print {
+    ${tw`bg-transparent`}
   }
 `
 

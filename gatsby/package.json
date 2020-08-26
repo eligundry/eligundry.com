@@ -37,7 +37,7 @@
     "react-fetch-hook": "^1.8.3",
     "react-github-calendar": "^0.14.1",
     "react-goodreads": "^1.0.8",
-    "react-goodreads-shelf": "^1.1.2",
+    "react-goodreads-shelf": "1.1.1",
     "react-helmet": "^5.2.1",
     "react-icons": "^3.11.0",
     "react-lazyload": "^2.6.9",

@@ -2,9 +2,10 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
-import tw, { styled, css } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 
 import Layout from '../layout/index'
+import Paper from '../components/Shared/Paper'
 import PostTags from '../components/PostTags/PostTags'
 import SEO from '../components/SEO/SEO'
 import Comments from '../components/Comments'
@@ -16,7 +17,7 @@ interface Props {
   pageContext: SitePageContext
 }
 
-const Article = styled.article`
+const Article = styled(Paper.article)`
   & blockquote {
     ${tw`italic border-l-2 border-teal-400 pl-2`}
   }

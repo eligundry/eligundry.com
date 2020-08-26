@@ -45,12 +45,22 @@ const links = [
 ]
 
 const Links = styled.div`
-  ${tw`flex flex-row text-xl`}
+  ${tw`flex flex-row text-2xl`}
+
+  & > a {
+    ${tw`
+      hover:text-pink-300
+      transition 
+      duration-200 
+      ease-linear
+      transition-colors
+    `}
+  }
 `
 
 const UserLinks: React.FC = () => {
   return (
-    <Links>
+    <Links className="user-links">
       {links.map(link => (
         <a
           href={link.url}

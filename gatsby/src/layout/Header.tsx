@@ -4,6 +4,7 @@ import { useWindowSize } from 'react-use'
 
 import style from '../../data/styleConfig'
 import UserLinks from '../components/UserLinks/UserLinks'
+import { PaperStyles } from '../components/Shared/Paper'
 
 const HeaderElm = styled.header`
   display: flex;
@@ -22,9 +23,21 @@ interface NavProps {
 
 const Nav = styled.nav<NavProps>`
   position: fixed;
+  top: 1em;
   right: 0;
   align-self: center;
   z-index: 10000;
+
+  & .nav-links {
+    ${tw`
+      flex
+      flex-col
+    `}
+
+    & > .user-links {
+      ${tw`mt-4`}
+    }
+  }
 
   & .nav-page-link {
     margin-right: 1em;
@@ -36,11 +49,28 @@ const Nav = styled.nav<NavProps>`
       text-teal-500
     `}
 
+    & > .link-text {
+      ${tw`p-1`}
+    }
+
     &:hover > .link-text,
     &:focus > .link-text {
       ${tw`
-        bg-pink-300
+        bg-pink-300 
+        transition 
+        duration-200 
+        ease-linear
+        transition-colors
+        rounded
       `}
+
+      &:last-child {
+        ${tw`mb-4`}
+      }
+    }
+
+    & > .emoji {
+      ${tw`mr-2`}
     }
   }
 
@@ -52,6 +82,12 @@ const Nav = styled.nav<NavProps>`
   @media print {
     display: none;
   }
+
+  ${props =>
+    !props.mobile &&
+    css`
+      ${PaperStyles}
+    `}
 
   ${props =>
     props.mobile &&
@@ -166,7 +202,7 @@ const Header: React.FC = () => {
                   onClick={() => setHamburgerExpanded(false)}
                   className="nav-page-link"
                 >
-                  <span role="img" aria-label={emojiLabel}>
+                  <span role="img" aria-label={emojiLabel} className="emoji">
                     {emoji}
                   </span>
                   <span className="link-text">{title}</span>

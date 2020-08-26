@@ -10,9 +10,9 @@ import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
-import { PaperSection } from '../Shared/Paper'
+import Paper from '../Shared/Paper'
 
-const Section = styled(PaperSection)`
+const Section = styled(Paper.section)`
   ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {

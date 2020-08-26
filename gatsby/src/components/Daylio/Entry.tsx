@@ -106,6 +106,10 @@ const Emoji = styled.span<ActivityEmojiProps>`
     `}
 `
 
+const ActivitiesList = styled.ul`
+  padding-left: 0 !important;
+`
+
 const ActivityEmoji = styled.li`
   display: inline;
   font-size: 2rem;
@@ -138,13 +142,13 @@ const Entry: React.FC<Props> = ({
           <a href={`/feelings#${time}`}>{formatISO(new Date(time))}</a>
         </time>
         {filteredActivities.length > 0 && (
-          <ul className="activities">
+          <ActivitiesList>
             {filteredActivities.map(a => (
               <ActivityEmoji key={`${time}-${a}`} data-tip={a}>
                 {ActivityMapping[a] || a}
               </ActivityEmoji>
             ))}
-          </ul>
+          </ActivitiesList>
         )}
         {notes &&
           (notes.length > 0 ? (
