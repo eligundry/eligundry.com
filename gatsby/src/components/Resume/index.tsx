@@ -5,16 +5,16 @@ import Work from './Work'
 import Education from './Education'
 import Skills from './Skills'
 import ActivitiesInterests from './ActivitesInterests'
-import './index.css'
+import PaperArticle from '../Shared/Paper'
 
 const Resume: React.FC = () => {
   return (
-    <article>
+    <PaperArticle>
       <Work work={resumeData.work} />
       <Education education={resumeData.education} />
       <Skills skills={resumeData.skills} />
       <ActivitiesInterests activitesInterests={resumeData.activitesInterests} />
-    </article>
+    </PaperArticle>
   )
 }
 

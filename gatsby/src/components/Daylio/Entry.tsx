@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 import tw, { styled, css } from 'twin.macro'
 
 import styleVariables from '../../../data/styleConfig'
-import { BoxStyles } from '../Shared/Box'
+import { PaperStyles } from '../Shared/Paper'
 import {
   DaylioEntry,
   DaylioVariants,
@@ -74,7 +74,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
       ${tw`my-4`}
 
       & .text-column {
-        ${BoxStyles}
+        ${PaperStyles}
       }
     `}
 

@@ -28,7 +28,20 @@ const Nav = styled.nav<NavProps>`
 
   & .nav-page-link {
     margin-right: 1em;
-    ${tw`no-underline`}
+
+    ${tw`
+      no-underline 
+      hover:no-underline 
+      focus:no-underline
+      text-teal-500
+    `}
+
+    &:hover > .link-text,
+    &:focus > .link-text {
+      ${tw`
+        bg-pink-300
+      `}
+    }
   }
 
   & > .hamburger {
@@ -156,7 +169,7 @@ const Header: React.FC = () => {
                   <span role="img" aria-label={emojiLabel}>
                     {emoji}
                   </span>
-                  {title}
+                  <span className="link-text">{title}</span>
                 </a>
               )
             )}

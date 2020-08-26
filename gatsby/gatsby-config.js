@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-typescript',
+    'gatsby-plugin-no-sourcemaps',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-lodash',
     'gatsby-plugin-sharp',
@@ -26,7 +27,12 @@ module.exports = {
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
     'gatsby-plugin-sitemap',
-    'gatsby-plugin-styled-components',
+    {
+      resolve: 'gatsby-plugin-styled-components',
+      options: {
+        minify: process.env.NODE_ENV === 'production',
+      },
+    },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -52,12 +58,12 @@ module.exports = {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
-          // {
-          //   resolve: 'gatsby-remark-images',
-          //   options: {
-          //     maxWidth: 690,
-          //   },
-          // },
+          {
+            resolve: 'gatsby-remark-images',
+            options: {
+              maxWidth: 690,
+            },
+          },
           'gatsby-remark-responsive-iframe',
           'gatsby-remark-copy-linked-files',
           'gatsby-remark-autolink-headers',
@@ -69,6 +75,12 @@ module.exports = {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: config.googleAnalyticsID,
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-nprogress',
+      options: {
+        color: config.themeColor,
       },
     },
     {
@@ -157,15 +169,17 @@ module.exports = {
         ],
       },
     },
-    {
-      resolve: 'gatsby-plugin-webpack-bundle-analyzer',
-      options: {
-        production: true,
-        openAnalyzer: false,
-        generateStatsFile: true,
-        statsFilename: 'public/stats.json',
-        reportFilename: 'public/webpack-report.html',
-      },
-    },
+    // @TODO This is slowing down dev build from 5 seconds to 2 minutes. Figure
+    // out what's happening here when I care about build-stats again.
+    // {
+    //   resolve: 'gatsby-plugin-webpack-bundle-analyzer',
+    //   options: {
+    //     production: true,
+    //     openAnalyzer: false,
+    //     generateStatsFile: true,
+    //     statsFilename: 'public/stats.json',
+    //     reportFilename: 'public/webpack-report.html',
+    //   },
+    // },
   ],
 }

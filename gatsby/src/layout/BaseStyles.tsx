@@ -34,7 +34,7 @@ const BaseStyles = styled.div`
   }
 
   & a {
-    ${tw`text-teal-500 underline`}
+    ${tw`text-teal-500 hover:underline focus:underline`}
   }
 
   & p {

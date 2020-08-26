@@ -10,18 +10,13 @@ import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
-import { BoxStyles } from '../Shared/Box'
+import { PaperSection } from '../Shared/Paper'
 
-interface SectionProps {
-  fullWidth?: boolean
-}
-
-const Section = styled.section<SectionProps>`
-  ${BoxStyles}
+const Section = styled(PaperSection)`
   ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {
-    ${tw`text-teal-500`}
+    ${tw`text-teal-500 italic`}
   }
 
   & .bookshelf > div > div {
@@ -103,9 +98,9 @@ const Home: React.FC = () => {
         </p>
         <div className="bookshelf">
           <GoodreadsBookshelf
+            shelf="currently-reading"
             userId={config.goodreads.userID}
             apiKey={config.goodreads.apiKey}
-            shelf="currently-reading"
           />
         </div>
       </Section>
