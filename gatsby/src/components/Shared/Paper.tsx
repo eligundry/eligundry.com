@@ -13,6 +13,10 @@ export const PaperStyles = tw`
 
 const Paper = styled.div`
   ${PaperStyles}
+
+  @media print {
+    ${tw`shadow-none`}
+  }
 `
 
 Paper.article = Paper.withComponent('article')

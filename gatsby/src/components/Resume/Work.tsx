@@ -1,5 +1,5 @@
 import React from 'react'
-import useDetectPrint from 'use-detect-print'
+import { useMedia } from 'react-use'
 
 import Experience from './Experience'
 import { Work } from './data'
@@ -9,14 +9,14 @@ interface WorkProps {
 }
 
 const WorkSection: React.FC<WorkProps> = ({ work }) => {
-  const isPrinting = useDetectPrint() as boolean
+  const isPrinting = useMedia('print')
 
   return (
     <section>
       {!isPrinting && <h2>Work</h2>}
       {isPrinting && (
         <header>
-          <h2>Selected Work</h2>
+          <h2>Selected Work History</h2>
         </header>
       )}
       {work

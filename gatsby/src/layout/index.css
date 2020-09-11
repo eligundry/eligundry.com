@@ -6,3 +6,7 @@
 body {
   background-color: rgba(255, 245, 247, 1);
 }
+
+@media print {
+  background-color: transparent;
+}
