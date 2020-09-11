@@ -17,10 +17,11 @@ const EntryListWrapper = styled.section`
   &::before {
     content: ' ';
     position: absolute;
-    margin-left: calc(2rem - 3px);
+    margin-left: calc(2rem - 4px);
     height: 100%;
     z-index: 10;
     box-shadow: 0 0 0px 8px ${bgColor.color};
+    margin-top: 5px;
 
     ${tw`border-4 border-pink-600 border-solid`}
   }

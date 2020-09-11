@@ -4,6 +4,7 @@ import { IconContext } from 'react-icons'
 
 import BaseStyles, { ContentWrapper } from './BaseStyles'
 import Header from './Header'
+import Nav from './Nav'
 import config from '../../data/SiteConfig'
 
 interface Props {
@@ -22,6 +23,7 @@ const MainLayout: React.FC<Props> = ({ children, showHeader = true }) => {
           <html lang="en" />
         </Helmet>
         {showHeader && <Header />}
+        <Nav />
         <ContentWrapper>{children}</ContentWrapper>
       </BaseStyles>
     </IconContext.Provider>
