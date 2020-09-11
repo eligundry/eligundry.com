@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
 import tw, { styled, css } from 'twin.macro'
-import { useWindowSize } from 'react-use'
-import { useMedia } from 'react-use'
+import { useMedia, useWindowScroll } from 'react-use'
 
-import style from '../../data/styleConfig'
 import UserLinks from '../components/UserLinks/UserLinks'
 import { PaperStyles } from '../components/Shared/Paper'
 
 interface NavProps {
   mobile?: boolean
   expanded?: boolean
+  scrolledPastHeader?: boolean
 }
 
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
-  top: 3em;
+  top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
   left: 60%;
   align-self: center;
   z-index: 10000;
@@ -63,13 +62,6 @@ const NavContainer = styled.nav<NavProps>`
     & > .emoji {
       ${tw`mr-2`}
     }
-  }
-
-  & > .hamburger {
-    font-size: 2em;
-    text-decoration: none;
-    right: .5em;
-    top: 1em;
   }
 
   @media print {
@@ -163,7 +155,8 @@ const navLinks = {
 
 const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
-  const showHamburger = useMedia('(max-width: 1024px)', true)
+  const showHamburger = useMedia('(max-width: 1024px)')
+  const { y: scrollY } = useWindowScroll()
 
   return (
     <>
@@ -180,6 +173,7 @@ const Nav: React.FC = () => {
         expanded={hamburgerExpanded}
         mobile={showHamburger}
         onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
+        scrolledPastHeader={showHamburger || scrollY >= 32}
       >
         <div className="nav-links">
           {Object.entries(navLinks).map(
