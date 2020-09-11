@@ -48,10 +48,6 @@ const BaseStyles = styled.div`
     }
   }
 
-  & button {
-    ${tw`bg-teal-400 p-4 text-white`}
-  }
-
   @media print {
     ${tw`bg-transparent`}
   }
