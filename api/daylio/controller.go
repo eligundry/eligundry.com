@@ -14,7 +14,6 @@ import (
 )
 
 func RegisterRoutes(router *gin.RouterGroup) {
-	CreateTables()
 	daylio := router.Group("/feelings")
 	{
 		daylio.POST("", common.BasicAuthMiddleware(), SubmitDaylioExport)

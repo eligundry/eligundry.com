@@ -2,43 +2,6 @@ package lastfm
 
 import "github.com/eligundry/eligundry.com/api/common"
 
-func CreateTables() {
-	db := common.GetDB()
-
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS lastfm_artists (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL
-        )
-	`)
-
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS lastfm_albums (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            artist_id TEXT NOT NULL
-        )
-	`)
-
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS lastfm_tracks (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            album_id TEXT NOT NULL,
-            FOREIGN KEY (album_id) REFERENCES lastfm_albums (id)
-        )
-	`)
-
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS lastfm_scrobbles (
-            time DATETIME NOT NULL,
-            track_id TEXT NOT NULL,
-            PRIMARY KEY (time, track_id),
-            FOREIGN KEY (track_id) REFERENCES lastfm_tracks (id)
-        )
-	`)
-}
-
 func SaveProcessedTracks(tracks []ProcessedTrack) error {
 	db := common.GetDB()
 	tx, err := db.Begin()
