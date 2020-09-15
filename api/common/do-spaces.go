@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/google/uuid"
 	minio "github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/pkg/errors"
@@ -63,20 +64,22 @@ func validateSpacesConfig() error {
 }
 
 type UploadMultipartArgs struct {
-	FileHeader *multipart.FileHeader
-	Path       string
-	Public     bool
+	FileHeader     *multipart.FileHeader
+	Path           string
+	Public         bool
+	RandomFilename bool
 }
 
-func (dos *DigitalOceanSpacesClient) UploadMultipart(args *UploadMultipartArgs) error {
+func (dos *DigitalOceanSpacesClient) UploadMultipart(args *UploadMultipartArgs) (minio.UploadInfo, error) {
 	file, err := args.FileHeader.Open()
 
 	if err != nil {
-		return err
+		return minio.UploadInfo{}, err
 	}
 
 	defer file.Close()
 
+	filename := args.FileHeader.Filename
 	opts := minio.PutObjectOptions{
 		ContentType: args.FileHeader.Header.Get("Content-Type"),
 	}
@@ -87,18 +90,23 @@ func (dos *DigitalOceanSpacesClient) UploadMultipart(args *UploadMultipartArgs) 
 		}
 	}
 
-	_, err = dos.minioClient.PutObject(
+	if args.RandomFilename {
+		ext := filepath.Ext(filename)
+		filename = uuid.New().String() + ext
+	}
+
+	info, err := dos.minioClient.PutObject(
 		dos.ctx,
 		os.Getenv("DO_SPACES_BUCKET"),
-		filepath.Join(args.Path, args.FileHeader.Filename),
+		filepath.Join(args.Path, filename),
 		file,
 		args.FileHeader.Size,
 		opts,
 	)
 
 	if err != nil {
-		return err
+		return minio.UploadInfo{}, err
 	}
 
-	return nil
+	return info, nil
 }

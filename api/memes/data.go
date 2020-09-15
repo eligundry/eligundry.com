@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"mime/multipart"
 	"os"
+	"path/filepath"
 
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/jmoiron/sqlx"
@@ -27,10 +28,11 @@ func (d Data) SaveMeme(file *multipart.FileHeader) (int64, error) {
 		return -1, err
 	}
 
-	err = spacesClient.UploadMultipart(&common.UploadMultipartArgs{
-		FileHeader: file,
-		Path:       MemesSpacesPath,
-		Public:     true,
+	info, err := spacesClient.UploadMultipart(&common.UploadMultipartArgs{
+		FileHeader:     file,
+		Path:           MemesSpacesPath,
+		Public:         true,
+		RandomFilename: true,
 	})
 
 	if err != nil {
@@ -40,7 +42,7 @@ func (d Data) SaveMeme(file *multipart.FileHeader) (int64, error) {
 	res, err := d.DB.Exec(`
         INSERT INTO memes (filename)
         VALUES (?)
-    `, file.Filename)
+    `, filepath.Base(info.Key))
 
 	if err != nil {
 		return -1, err
