@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro'
+import tw, { styled, css } from 'twin.macro'
 
 import 'tailwindcss/dist/base.min.css'
 import './index.css'
@@ -53,9 +53,15 @@ const BaseStyles = styled.div`
   }
 `
 
-export const ContentWrapper = styled.main`
+interface ContentWrapperProps {
+  wider: boolean
+}
+
+export const ContentWrapper = styled.main<ContentWrapperProps>`
   // On computers, make the context 60%, full screen for mobile and templates
-  ${tw`sm:w-full md:w-full lg:w-3/5 xl:w-3/5`}
+  ${tw`sm:w-full md:w-full lg:w-1/2 xl:w-1/2`}
+
+  ${props => props.wider && tw`lg:w-4/5 xl:w-4/5`}
 `
 
 export default BaseStyles

@@ -11,9 +11,14 @@ interface Props {
   showHeader?: boolean
   showFooter?: boolean
   children: React.ReactNode[] | React.ReactNode
+  wider?: boolean
 }
 
-const MainLayout: React.FC<Props> = ({ children, showHeader = true }) => {
+const MainLayout: React.FC<Props> = ({
+  children,
+  showHeader = true,
+  wider = false,
+}) => {
   return (
     <IconContext.Provider value={{}}>
       <BaseStyles>
@@ -23,8 +28,8 @@ const MainLayout: React.FC<Props> = ({ children, showHeader = true }) => {
           <html lang="en" />
         </Helmet>
         {showHeader && <Header />}
-        <Nav />
-        <ContentWrapper>{children}</ContentWrapper>
+        <Nav wider={wider} />
+        <ContentWrapper wider={wider}>{children}</ContentWrapper>
       </BaseStyles>
     </IconContext.Provider>
   )
