@@ -146,6 +146,11 @@ const navLinks = {
     emoji: '🗣',
     emojiLabel: 'silhouette of person speaking',
   },
+  '/memes/': {
+    title: 'Memes',
+    emoji: '😂',
+    emojiLabel: 'person cry laughing at the quality of my saved memes',
+  },
   '/resume/': {
     title: 'Resume',
     emoji: '📄',
