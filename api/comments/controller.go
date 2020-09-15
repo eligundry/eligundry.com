@@ -10,7 +10,6 @@ import (
 )
 
 func RegisterRoutes(router *gin.RouterGroup) {
-	CreateTable()
 	comments := router.Group("/comments")
 	{
 		comments.POST("/path/*path", PostComment)

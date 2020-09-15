@@ -56,35 +56,6 @@ GROUP BY daylio_entries.time
 ORDER BY daylio_entries.time DESC
 `
 
-func CreateTables() {
-	db := common.GetDB()
-
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS daylio_entries (
-            time DATETIME PRIMARY KEY,
-            mood TEXT NOT NULL,
-            notes JSON NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `)
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS daylio_entry_activities (
-            time DATETIME NOT NULL,
-            activity TEXT NOT NULL,
-            PRIMARY KEY (time, activity)
-        )
-    `)
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS daylio_activities (
-            activity TEXT PRIMARY KEY,
-            private BOOLEAN DEFAULT 0,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `)
-}
-
 func GetDaylioEntries() ([]DaylioEntry, error) {
 	var entries []DaylioEntry
 	db := common.GetDB()

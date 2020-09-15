@@ -5,3 +5,4 @@ data/*
 !data/.gitkeep
 .env
 api/vendor
+!api/migrations/*.sql

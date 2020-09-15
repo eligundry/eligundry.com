@@ -1,4 +1,4 @@
-FROM golang:1.13
+FROM golang:1.14
 
 # Install deps to install packages
 RUN apt-get update \
@@ -6,8 +6,10 @@ RUN apt-get update \
     && echo "PRAGMA compile_options;" | sqlite3 | grep JSON1
 
 # Install go-watcher for auto rebuilds during development
+# Install goose for database migrations
 RUN go get github.com/canthefason/go-watcher \
-    && go install github.com/canthefason/go-watcher/cmd/watcher
+    && go install github.com/canthefason/go-watcher/cmd/watcher \
+    && go get github.com/pressly/goose/cmd/goose
 
 # Install go dependencies
 WORKDIR /src

@@ -7,19 +7,6 @@ import (
 	"github.com/eligundry/eligundry.com/api/common"
 )
 
-func CreateTable() {
-	db := common.GetDB()
-	db.MustExec(`
-        CREATE TABLE IF NOT EXISTS comments (
-            id INTEGER PRIMARY KEY,
-            email TEXT NOT NULL,
-            path TEXT NOT NULL,
-            comment TEXT NOT NULL,
-            posted_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `)
-}
-
 func CreateComment(path string, payload Payload) (int, error) {
 	db := common.GetDB()
 	res, err := db.Exec(`

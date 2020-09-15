@@ -11,8 +11,6 @@ func main() {
 	// Create tables if they don't already exist
 	db := common.GetDB()
 	defer db.Close()
-	log.Print("creating tables")
-	lastfm.CreateTables()
 
 	// First, fetch the first page of tracks
 	getRecentTrackArgs := lastfm.UserGetRecentTracksArgs{
