@@ -21,15 +21,6 @@ func SaveMeme(c *gin.Context) {
 	formFile, err := c.FormFile("file")
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	file, err := formFile.Open()
-
-	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -37,7 +28,7 @@ func SaveMeme(c *gin.Context) {
 	}
 
 	dl := NewData()
-	memeID, err := dl.SaveMeme(&file)
+	memeID, err := dl.SaveMeme(formFile)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

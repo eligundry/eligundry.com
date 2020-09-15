@@ -18,8 +18,39 @@ func NewData() Data {
 	return d
 }
 
-func (d Data) SaveMeme(file *multipart.File) (int64, error) {
-	return -1, nil
+func (d Data) SaveMeme(file *multipart.FileHeader) (int64, error) {
+	spacesClient, err := common.NewDigitalOceanSpacesClient()
+
+	if err != nil {
+		return -1, err
+	}
+
+	err = spacesClient.UploadMultipart(&common.UploadMultipartArgs{
+		FileHeader: file,
+		Path:       MemesSpacesPath,
+		Public:     true,
+	})
+
+	if err != nil {
+		return -1, err
+	}
+
+	res, err := d.DB.Exec(`
+        INSERT INTO memes (filename)
+        VALUES (?)
+    `, file.Filename)
+
+	if err != nil {
+		return -1, err
+	}
+
+	memeID, err := res.LastInsertId()
+
+	if err != nil {
+		return -1, err
+	}
+
+	return memeID, nil
 }
 
 func (d Data) GetMemes() ([]Meme, error) {
