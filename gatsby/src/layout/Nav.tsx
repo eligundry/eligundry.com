@@ -9,14 +9,21 @@ interface NavProps {
   mobile?: boolean
   expanded?: boolean
   scrolledPastHeader?: boolean
+  wider?: boolean
 }
 
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
   top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
-  left: 60%;
+  left: 50%;
   align-self: center;
   z-index: 10000;
+
+  ${props =>
+    props.wider &&
+    css`
+      left: 80%;
+    `}
 
   & .nav-links {
     ${tw`
@@ -141,15 +148,15 @@ const navLinks = {
     emoji: '🥺',
     emojiLabel: 'emotional looking emoji face to denote my feelings',
   },
-  '/talks/': {
-    title: 'Talks',
-    emoji: '🗣',
-    emojiLabel: 'silhouette of person speaking',
-  },
   '/memes/': {
     title: 'Memes',
     emoji: '😂',
     emojiLabel: 'person cry laughing at the quality of my saved memes',
+  },
+  '/talks/': {
+    title: 'Talks',
+    emoji: '🗣',
+    emojiLabel: 'silhouette of person speaking',
   },
   '/resume/': {
     title: 'Resume',
@@ -158,7 +165,7 @@ const navLinks = {
   },
 }
 
-const Nav: React.FC = () => {
+const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const showHamburger = useMedia('(max-width: 1024px)')
   const { y: scrollY } = useWindowScroll()
@@ -179,6 +186,7 @@ const Nav: React.FC = () => {
         mobile={showHamburger}
         onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
         scrolledPastHeader={showHamburger || scrollY >= 32}
+        wider={wider}
       >
         <div className="nav-links">
           {Object.entries(navLinks).map(

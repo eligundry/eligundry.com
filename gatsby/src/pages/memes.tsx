@@ -5,7 +5,7 @@ import Layout from '../layout'
 import MemeListView from '../components/Memes/ListView'
 
 const MemesPage: React.FC = () => (
-  <Layout>
+  <Layout wider>
     <Helmet>
       <title>Memes</title>
     </Helmet>
