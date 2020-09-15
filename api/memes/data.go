@@ -1,7 +1,9 @@
 package memes
 
 import (
+	"fmt"
 	"mime/multipart"
+	"os"
 
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/jmoiron/sqlx"
@@ -68,6 +70,15 @@ func (d Data) GetMemes() ([]Meme, error) {
 		return memes, err
 	}
 
+	for i := range memes {
+		memes[i].URL = fmt.Sprintf(
+			"%s/%s/%s",
+			os.Getenv("DO_CDN_URL"),
+			MemesSpacesPath,
+			memes[i].Filename,
+		)
+	}
+
 	return memes, nil
 }
 
@@ -85,6 +96,13 @@ func (d Data) GetMemeByID(id int64) (Meme, error) {
 	if err != nil {
 		return meme, err
 	}
+
+	meme.URL = fmt.Sprintf(
+		"%s/%s/%s",
+		os.Getenv("DO_CDN_URL"),
+		MemesSpacesPath,
+		meme.Filename,
+	)
 
 	return meme, nil
 }
