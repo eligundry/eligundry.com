@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/eligundry/eligundry.com/api/common"
+	"github.com/eligundry/eligundry.com/api/auth"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 )
@@ -12,7 +12,7 @@ import (
 func RegisterRoutes(router *gin.RouterGroup) {
 	memes := router.Group("/memes")
 	{
-		memes.POST("", common.BasicAuthMiddleware(), SaveMeme)
+		memes.POST("", auth.BasicAuthMiddleware(), SaveMeme)
 		memes.GET("", GetMemes)
 	}
 }

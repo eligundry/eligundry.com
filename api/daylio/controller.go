@@ -6,17 +6,16 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/eligundry/eligundry.com/api/auth"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/feeds"
 	"github.com/pkg/errors"
-
-	"github.com/eligundry/eligundry.com/api/common"
 )
 
 func RegisterRoutes(router *gin.RouterGroup) {
 	daylio := router.Group("/feelings")
 	{
-		daylio.POST("", common.BasicAuthMiddleware(), SubmitDaylioExport)
+		daylio.POST("", auth.BasicAuthMiddleware(), SubmitDaylioExport)
 		daylio.GET("", GetAllEntries)
 		daylio.GET("feed.rss", GetDaylioFeed)
 		daylio.GET("/time/:time", GetClosestEntry)
