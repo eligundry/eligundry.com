@@ -23,7 +23,6 @@ const Image = styled(Paper)`
     height: auto;
     // max-width: 33.3%;
     max-height: 300px;
-    min-width: 300px;
     margin: 1em 0;
   }
 `
