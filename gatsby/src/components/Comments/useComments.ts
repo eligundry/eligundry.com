@@ -39,11 +39,9 @@ function useComments(
 
       const comment = await resp.json()
 
-      setComments(currentComments => {
-        return [...currentComments, comment]
-      }, [])
+      setComments(currentComments => [...currentComments, comment])
     },
-    [path, setComments]
+    [path]
   )
 
   return [comments, postComment]

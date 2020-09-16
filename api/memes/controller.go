@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/eligundry/eligundry.com/api/auth"
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 )
@@ -14,6 +15,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	{
 		memes.POST("", auth.BasicAuthMiddleware(), SaveMeme)
 		memes.GET("", GetMemes)
+		memes.DELETE("/:memeID", auth.BasicAuthMiddleware(), DeleteMeme)
 	}
 }
 
@@ -61,4 +63,26 @@ func GetMemes(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, memes)
+}
+
+func DeleteMeme(c *gin.Context) {
+	memeID, err := common.GetIDParam(c, "memeID")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": errors.Wrap(err, "could not convert the memeID to an int").Error(),
+		})
+		return
+	}
+
+	dl := NewData()
+
+	if err := dl.DeleteMeme(memeID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": errors.Wrap(err, "could not delete meme").Error(),
+		})
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }

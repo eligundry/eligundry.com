@@ -110,3 +110,18 @@ func (dos *DigitalOceanSpacesClient) UploadMultipart(args *UploadMultipartArgs) 
 
 	return info, nil
 }
+
+func (dos *DigitalOceanSpacesClient) RemoveObject(objectName string) error {
+	err := dos.minioClient.RemoveObject(
+		dos.ctx,
+		os.Getenv("DO_SPACES_BUCKET"),
+		objectName,
+		minio.RemoveObjectOptions{},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

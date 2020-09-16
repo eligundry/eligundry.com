@@ -1,9 +1,11 @@
 import React from 'react'
 import { useQuery } from 'react-query'
 import tw, { styled } from 'twin.macro'
+import LazyLoad from 'react-lazyload'
 
 import { Meme } from './types'
 import Paper from '../Shared/Paper'
+import customFetch, { processResponse } from '../../utils/fetch'
 
 const Intro = styled.blockquote`
   ${tw`italic border-l-2 border-teal-400 pl-2 m-4`}
@@ -22,21 +24,14 @@ const Image = styled(Paper)`
     height: auto;
     // max-width: 33.3%;
     max-height: 300px;
+    min-width: 300px;
     margin: 1em 0;
   }
 `
 
 const MemeListView: React.FC = () => {
-  const { data: memes, isFetching, error } = useQuery<Meme[]>(['memes'], () =>
-    fetch('/api/memes')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Could not fetch memes')
-        }
-
-        return res
-      })
-      .then(res => res.json())
+  const { data: memes, isFetching, error } = useQuery(['memes'], () =>
+    customFetch('/api/memes').then(res => processResponse<Meme[]>(res))
   )
 
   if ((!memes && isFetching) || error) {
@@ -54,7 +49,9 @@ const MemeListView: React.FC = () => {
       <ImageList>
         {memes.map(meme => (
           <Image key={`meme-${meme.id}`}>
-            <img src={meme.url} alt="" />
+            <LazyLoad height={300}>
+              <img src={meme.url} alt="" />
+            </LazyLoad>
           </Image>
         ))}
       </ImageList>

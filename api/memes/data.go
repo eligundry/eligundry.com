@@ -108,3 +108,25 @@ func (d Data) GetMemeByID(id int64) (Meme, error) {
 
 	return meme, nil
 }
+
+func (d Data) DeleteMeme(id int64) error {
+	meme, err := d.GetMemeByID(id)
+
+	if err != nil {
+		return err
+	}
+
+	spacesClient, err := common.NewDigitalOceanSpacesClient()
+
+	if err != nil {
+		return err
+	}
+
+	err = spacesClient.RemoveObject(filepath.Join(MemesSpacesPath, meme.Filename))
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
