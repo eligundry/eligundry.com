@@ -1,8 +1,6 @@
 package memes
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 	"strconv"
 
@@ -68,8 +66,8 @@ func (d Data) SaveMeme(payload *MemePayload) (int64, error) {
 	return memeID, nil
 }
 
-func (d Data) GetMemes() ([]Meme, error) {
-	memes := []Meme{}
+func (d Data) GetMemes() (Memes, error) {
+	memes := Memes{}
 	err := d.DB.Select(&memes, `
         SELECT
             id,
@@ -85,15 +83,6 @@ func (d Data) GetMemes() ([]Meme, error) {
 
 	if err != nil {
 		return memes, err
-	}
-
-	for i := range memes {
-		memes[i].URL = fmt.Sprintf(
-			"%s/%s/%s",
-			os.Getenv("DO_CDN_URL"),
-			MemesSpacesPath,
-			memes[i].Filename,
-		)
 	}
 
 	return memes, nil
@@ -117,13 +106,6 @@ func (d Data) GetMemeByID(id int64) (Meme, error) {
 	if err != nil {
 		return meme, err
 	}
-
-	meme.URL = fmt.Sprintf(
-		"%s/%s/%s",
-		os.Getenv("DO_CDN_URL"),
-		MemesSpacesPath,
-		meme.Filename,
-	)
 
 	return meme, nil
 }

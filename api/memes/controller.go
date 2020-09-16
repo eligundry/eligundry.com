@@ -49,7 +49,7 @@ func SaveMeme(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, meme)
+	c.JSON(http.StatusCreated, meme.MemeResponse())
 }
 
 func GetMemes(c *gin.Context) {
@@ -63,7 +63,7 @@ func GetMemes(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, memes)
+	c.JSON(http.StatusOK, memes.MemeResponse())
 }
 
 func DeleteMeme(c *gin.Context) {

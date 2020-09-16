@@ -1,7 +1,6 @@
 import React from 'react'
 import { useQuery } from 'react-query'
 import tw, { styled } from 'twin.macro'
-import LazyLoad from 'react-lazyload'
 
 import { Meme } from './types'
 import Paper from '../Shared/Paper'
@@ -49,9 +48,7 @@ const MemeListView: React.FC = () => {
       <ImageList>
         {memes.map(meme => (
           <Image key={`meme-${meme.id}`}>
-            <LazyLoad height={300}>
-              <img src={meme.url} alt="" />
-            </LazyLoad>
+            <img src={meme.url} alt="" />
           </Image>
         ))}
       </ImageList>
