@@ -1,5 +1,7 @@
 export interface Meme {
   id: number
   url: string
-  created_at: string
+  size: (number | null)[]
+  notes: string
+  created_at: Date
 }

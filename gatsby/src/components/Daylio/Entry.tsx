@@ -139,7 +139,7 @@ const Entry: React.FC<Props> = ({
       <div className="text-column">
         <h3>I felt {mood}</h3>
         <time dateTime={time}>
-          <a href={`/feelings#${time}`}>{formatISO(new Date(time))}</a>
+          <a href={`/feelings#${time}`}>{formatISO(time)}</a>
         </time>
         {filteredActivities.length > 0 && (
           <ActivitiesList>

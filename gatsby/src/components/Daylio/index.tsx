@@ -5,27 +5,22 @@ import ReactTooltip from 'react-tooltip'
 import Entry from './Entry'
 import EntryList from './EntryList'
 import { DaylioEntry, DaylioVariants } from './types'
+import customFetch, { processResponse } from '../../utils/fetch'
 
 interface Props {
   variant?: DaylioVariants
 }
 
 const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
-  const { isFetching, error, data } = useQuery<DaylioEntry[]>(
+  const { isFetching, error, data: entries } = useQuery(
     ['feelings', variant],
     () =>
-      fetch(`/api/feelings${variant === 'home' ? '/time/today' : ''}`)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error('Could not fetch feelings')
-          }
-
-          return res
-        })
-        .then(res => res.json())
+      customFetch(
+        `/api/feelings${variant === 'home' ? '/time/today' : ''}`
+      ).then(res => processResponse<DaylioEntry[]>(res))
   )
 
-  if (isFetching && !data) {
+  if (isFetching && !entries) {
     return <h1>Loading Eli's Feelings...</h1>
   }
 
@@ -39,7 +34,7 @@ const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
     return (
       <>
         {tooltip}
-        <Entry variant={DaylioVariants.home} {...data[0]} />
+        <Entry variant={DaylioVariants.home} {...entries[0]} />
       </>
     )
   }
@@ -47,7 +42,7 @@ const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
   return (
     <>
       {tooltip}
-      <EntryList entries={data} />
+      <EntryList entries={entries} />
     </>
   )
 }

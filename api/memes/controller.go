@@ -4,23 +4,26 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/eligundry/eligundry.com/api/auth"
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/pkg/errors"
 )
 
 func RegisterRoutes(router *gin.RouterGroup) {
 	memes := router.Group("/memes")
 	{
-		memes.POST("", common.BasicAuthMiddleware(), SaveMeme)
+		memes.POST("", auth.BasicAuthMiddleware(), SaveMeme)
 		memes.GET("", GetMemes)
+		memes.DELETE("/:memeID", auth.BasicAuthMiddleware(), DeleteMeme)
 	}
 }
 
 func SaveMeme(c *gin.Context) {
-	formFile, err := c.FormFile("file")
+	var payload MemePayload
 
-	if err != nil {
+	if err := c.ShouldBindWith(&payload, binding.FormMultipart); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -28,7 +31,7 @@ func SaveMeme(c *gin.Context) {
 	}
 
 	dl := NewData()
-	memeID, err := dl.SaveMeme(formFile)
+	memeID, err := dl.SaveMeme(&payload)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -46,7 +49,7 @@ func SaveMeme(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, meme)
+	c.JSON(http.StatusCreated, meme.MemeResponse())
 }
 
 func GetMemes(c *gin.Context) {
@@ -60,5 +63,27 @@ func GetMemes(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, memes)
+	c.JSON(http.StatusOK, memes.MemeResponse())
+}
+
+func DeleteMeme(c *gin.Context) {
+	memeID, err := common.GetIDParam(c, "memeID")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": errors.Wrap(err, "could not convert the memeID to an int").Error(),
+		})
+		return
+	}
+
+	dl := NewData()
+
+	if err := dl.DeleteMeme(memeID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": errors.Wrap(err, "could not delete meme").Error(),
+		})
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }

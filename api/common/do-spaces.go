@@ -68,6 +68,7 @@ type UploadMultipartArgs struct {
 	Path           string
 	Public         bool
 	RandomFilename bool
+	Metadata       map[string]string
 }
 
 func (dos *DigitalOceanSpacesClient) UploadMultipart(args *UploadMultipartArgs) (minio.UploadInfo, error) {
@@ -84,10 +85,14 @@ func (dos *DigitalOceanSpacesClient) UploadMultipart(args *UploadMultipartArgs) 
 		ContentType: args.FileHeader.Header.Get("Content-Type"),
 	}
 
+	if args.Metadata != nil {
+		opts.UserMetadata = args.Metadata
+	} else {
+		opts.UserMetadata = map[string]string{}
+	}
+
 	if args.Public {
-		opts.UserMetadata = map[string]string{
-			"x-amz-acl": "public-read",
-		}
+		opts.UserMetadata["x-amz-acl"] = "public-read"
 	}
 
 	if args.RandomFilename {
@@ -109,4 +114,19 @@ func (dos *DigitalOceanSpacesClient) UploadMultipart(args *UploadMultipartArgs) 
 	}
 
 	return info, nil
+}
+
+func (dos *DigitalOceanSpacesClient) RemoveObject(objectName string) error {
+	err := dos.minioClient.RemoveObject(
+		dos.ctx,
+		os.Getenv("DO_SPACES_BUCKET"),
+		objectName,
+		minio.RemoveObjectOptions{},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
