@@ -7,6 +7,7 @@ import (
 	"github.com/eligundry/eligundry.com/api/auth"
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/pkg/errors"
 )
 
@@ -20,9 +21,9 @@ func RegisterRoutes(router *gin.RouterGroup) {
 }
 
 func SaveMeme(c *gin.Context) {
-	formFile, err := c.FormFile("file")
+	var payload MemePayload
 
-	if err != nil {
+	if err := c.ShouldBindWith(&payload, binding.FormMultipart); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -30,7 +31,7 @@ func SaveMeme(c *gin.Context) {
 	}
 
 	dl := NewData()
-	memeID, err := dl.SaveMeme(formFile)
+	memeID, err := dl.SaveMeme(&payload)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

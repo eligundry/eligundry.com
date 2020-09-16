@@ -2,9 +2,9 @@ package memes
 
 import (
 	"fmt"
-	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/jmoiron/sqlx"
@@ -21,18 +21,29 @@ func NewData() Data {
 	return d
 }
 
-func (d Data) SaveMeme(file *multipart.FileHeader) (int64, error) {
+func (d Data) SaveMeme(payload *MemePayload) (int64, error) {
 	spacesClient, err := common.NewDigitalOceanSpacesClient()
 
 	if err != nil {
 		return -1, err
 	}
 
+	metadata := map[string]string{}
+
+	if payload.Width.Valid {
+		metadata["width"] = strconv.FormatInt(payload.Width.Int64, 10)
+	}
+
+	if payload.Height.Valid {
+		metadata["height"] = strconv.FormatInt(payload.Height.Int64, 10)
+	}
+
 	info, err := spacesClient.UploadMultipart(&common.UploadMultipartArgs{
-		FileHeader:     file,
+		FileHeader:     payload.File,
 		Path:           MemesSpacesPath,
 		Public:         true,
 		RandomFilename: true,
+		Metadata:       metadata,
 	})
 
 	if err != nil {
@@ -40,9 +51,9 @@ func (d Data) SaveMeme(file *multipart.FileHeader) (int64, error) {
 	}
 
 	res, err := d.DB.Exec(`
-        INSERT INTO memes (filename)
-        VALUES (?)
-    `, filepath.Base(info.Key))
+        INSERT INTO memes (filename, width, height, notes)
+        VALUES (?, ?, ?, ?)
+    `, filepath.Base(info.Key), payload.Width, payload.Height, payload.Notes)
 
 	if err != nil {
 		return -1, err
@@ -63,7 +74,11 @@ func (d Data) GetMemes() ([]Meme, error) {
         SELECT
             id,
             filename,
-            created_at
+            width,
+            height,
+            notes,
+            created_at,
+            updated_at
         FROM memes
         ORDER BY id DESC
     `)
@@ -90,7 +105,11 @@ func (d Data) GetMemeByID(id int64) (Meme, error) {
         SELECT
             id,
             filename,
-            created_at
+            width,
+            height,
+            notes,
+            created_at,
+            updated_at
         FROM memes
         WHERE id = ?
     `, id)
@@ -123,6 +142,12 @@ func (d Data) DeleteMeme(id int64) error {
 	}
 
 	err = spacesClient.RemoveObject(filepath.Join(MemesSpacesPath, meme.Filename))
+
+	if err != nil {
+		return err
+	}
+
+	_, err = d.DB.Exec("DELETE FROM memes WHERE id = ?", id)
 
 	if err != nil {
 		return err
