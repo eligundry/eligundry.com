@@ -167,7 +167,7 @@ const navLinks = {
 
 const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
-  const showHamburger = useMedia('(max-width: 1024px)')
+  const showHamburger = useMedia('(max-width: 1024px)', false)
   const { y: scrollY } = useWindowScroll()
 
   return (

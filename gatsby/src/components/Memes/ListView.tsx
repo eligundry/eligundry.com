@@ -17,7 +17,7 @@ const ImageList = styled.div`
   justify-content: space-around;
 `
 
-const Image = styled(Paper)`
+const Image = styled(Paper.figure)`
   & > img {
     width: auto;
     height: auto;
@@ -47,7 +47,12 @@ const MemeListView: React.FC = () => {
       <ImageList>
         {memes.map(meme => (
           <Image key={`meme-${meme.id}`}>
-            <img src={meme.url} alt="" />
+            <img
+              src={meme.url}
+              alt={meme.notes}
+              width={meme.size[0] || undefined}
+              height={meme.size[1] || undefined}
+            />
           </Image>
         ))}
       </ImageList>

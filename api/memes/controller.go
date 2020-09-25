@@ -16,6 +16,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	{
 		memes.POST("", auth.BasicAuthMiddleware(), SaveMeme)
 		memes.GET("", GetMemes)
+		memes.PATCH("/:memeID", auth.BasicAuthMiddleware(), UpdateMeme)
 		memes.DELETE("/:memeID", auth.BasicAuthMiddleware(), DeleteMeme)
 	}
 }
@@ -64,6 +65,46 @@ func GetMemes(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, memes.MemeResponse())
+}
+
+func UpdateMeme(c *gin.Context) {
+	memeID, err := common.GetIDParam(c, "memeID")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": errors.Wrap(err, "could not convert the memeID to an int").Error(),
+		})
+		return
+	}
+
+	var payload MemePayload
+
+	if err := c.Bind(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": errors.Wrap(err, "could not parse payload").Error(),
+		})
+		return
+	}
+
+	data := NewData()
+
+	if err := data.UpdateMeme(memeID, &payload); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": errors.Wrap(err, "could not update meme").Error(),
+		})
+		return
+	}
+
+	meme, err := data.GetMemeByID(memeID)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": errors.Wrap(err, "updated meme, but couldn't fetch the updated data").Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, meme)
 }
 
 func DeleteMeme(c *gin.Context) {
