@@ -20,6 +20,8 @@ const ImageList = styled.div`
 `
 
 const Image = styled(Paper.figure)`
+  cursor: pointer;
+
   & > img {
     width: auto;
     height: auto;
