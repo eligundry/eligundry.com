@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import tw, { styled } from 'twin.macro'
+import Lightbox from 'react-image-lightbox'
+import 'react-image-lightbox/style.css'
 
 import { Meme } from './types'
 import Paper from '../Shared/Paper'
@@ -27,7 +29,13 @@ const Image = styled(Paper.figure)`
   }
 `
 
+const ImageLightbox = styled(Lightbox)``
+
 const MemeListView: React.FC = () => {
+  const [lightBoxState, setLightBoxState] = useState({
+    index: 0,
+    open: false,
+  })
   const { data: memes, isFetching, error } = useQuery(['memes'], () =>
     customFetch('/api/memes').then(res => processResponse<Meme[]>(res))
   )
@@ -45,8 +53,11 @@ const MemeListView: React.FC = () => {
         Enjoy and don't hold it against me!
       </Intro>
       <ImageList>
-        {memes.map(meme => (
-          <Image key={`meme-${meme.id}`}>
+        {memes.map((meme, index) => (
+          <Image
+            key={`meme-${meme.id}`}
+            onClick={() => setLightBoxState({ index, open: true })}
+          >
             <img
               src={meme.url}
               alt={meme.notes}
@@ -56,6 +67,33 @@ const MemeListView: React.FC = () => {
           </Image>
         ))}
       </ImageList>
+      {lightBoxState.open && (
+        <ImageLightbox
+          mainSrc={memes[lightBoxState.index].url}
+          nextSrc={memes[(lightBoxState.index + 1) % memes.length].url}
+          prevSrc={
+            memes[(lightBoxState.index + memes.length - 1) % memes.length].url
+          }
+          onCloseRequest={() =>
+            setLightBoxState(state => ({
+              ...state,
+              open: false,
+            }))
+          }
+          onMovePrevRequest={() =>
+            setLightBoxState(state => ({
+              ...state,
+              index: (state.index + memes.length - 1) % memes.length,
+            }))
+          }
+          onMoveNextRequest={() =>
+            setLightBoxState(state => ({
+              ...state,
+              index: (state.index + 1) % memes.length,
+            }))
+          }
+        />
+      )}
     </>
   )
 }

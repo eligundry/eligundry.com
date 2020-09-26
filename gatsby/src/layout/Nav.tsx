@@ -17,7 +17,7 @@ const NavContainer = styled.nav<NavProps>`
   top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
   left: 50%;
   align-self: center;
-  z-index: 10000;
+  z-index: 99;
 
   ${props =>
     props.wider &&
