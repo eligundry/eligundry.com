@@ -1,8 +1,11 @@
 package memes
 
 import (
+	"errors"
+	"fmt"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/jmoiron/sqlx"
@@ -64,6 +67,44 @@ func (d Data) SaveMeme(payload *MemePayload) (int64, error) {
 	}
 
 	return memeID, nil
+}
+
+func (d Data) UpdateMeme(memeID int64, payload *MemePayload) error {
+	updateFields := []string{}
+	values := map[string]interface{}{
+		"id": memeID,
+	}
+
+	if len(payload.Notes) > 0 {
+		updateFields = append(updateFields, "notes = :notes")
+		values["notes"] = payload.Notes
+	}
+
+	if payload.Width.Valid {
+		updateFields = append(updateFields, "width = :width")
+		values["width"] = payload.Width
+	}
+
+	if payload.Height.Valid {
+		updateFields = append(updateFields, "height = :height")
+		values["height"] = payload.Height
+	}
+
+	if len(updateFields) == 0 {
+		return errors.New("no fields provided to update")
+	}
+
+	query := fmt.Sprintf(`
+        UPDATE memes
+        SET %s
+        WHERE id = :id
+    `, strings.Join(updateFields, ", "))
+
+	if _, err := d.DB.NamedExec(query, values); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (d Data) GetMemes() (Memes, error) {

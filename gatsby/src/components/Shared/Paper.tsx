@@ -21,5 +21,6 @@ const Paper = styled.div`
 
 Paper.article = Paper.withComponent('article')
 Paper.section = Paper.withComponent('section')
+Paper.figure = Paper.withComponent('figure')
 
 export default Paper

@@ -17,7 +17,7 @@ const NavContainer = styled.nav<NavProps>`
   top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
   left: 50%;
   align-self: center;
-  z-index: 10000;
+  z-index: 99;
 
   ${props =>
     props.wider &&
@@ -167,7 +167,7 @@ const navLinks = {
 
 const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
-  const showHamburger = useMedia('(max-width: 1024px)')
+  const showHamburger = useMedia('(max-width: 1024px)', false)
   const { y: scrollY } = useWindowScroll()
 
   return (
