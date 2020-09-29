@@ -182,5 +182,13 @@ module.exports = {
     //     reportFilename: 'public/webpack-report.html',
     //   },
     // },
+    {
+      resolve: 'gatsby-plugin-s3',
+      options: {
+        bucketName: 'nyc-cdn.eligundry.com',
+        bucketPrefix: 'site',
+        protocol: 'https',
+      },
+    },
   ],
 }

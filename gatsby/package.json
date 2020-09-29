@@ -16,6 +16,7 @@
     "gatsby-plugin-no-sourcemaps": "^2.2.0",
     "gatsby-plugin-nprogress": "^2.3.10",
     "gatsby-plugin-react-helmet": "^3.3.10",
+    "gatsby-plugin-s3": "^0.3.5",
     "gatsby-plugin-sharp": "^2.6.28",
     "gatsby-plugin-sitemap": "^2.4.12",
     "gatsby-plugin-styled-components": "^3.3.10",
@@ -99,7 +100,8 @@
     "write-good": "write-good $(glob 'content/posts/**/*.md')",
     "format:js": "prettier '**/*.{js,jsx}' --write",
     "format:styles": "prettier '**/*.{css,scss}' --write",
-    "stats:html": "source-map-explorer public/*.js --html public/stats.html"
+    "stats:html": "source-map-explorer public/*.js --html public/stats.html",
+    "deploy": "HTTP_PROXY=https://nyc3.digitaloceanspaces.com gatsby-plugin-s3 deploy"
   },
   "remarkConfig": {
     "plugins": [
