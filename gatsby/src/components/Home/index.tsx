@@ -37,6 +37,16 @@ const Section = styled(Paper.section)`
       height: 191px;
     }
   }
+
+  &.listening {
+    & > .listening-media {
+      ${tw`flex flex-col sm:flex-row`}
+
+      & > iframe {
+        ${tw`mr-4 sm:mb-4`}
+      }
+    }
+  }
 `
 
 const Home: React.FC = () => {
@@ -133,17 +143,27 @@ const Home: React.FC = () => {
         <h2>Listening</h2>
         <p className="summary">
           I listen to way too much music and I love to listen to full albums.
-          Here are the albums I've had on repeat this week.
+          Below is my current playlist of songs I have on repeat and the top
+          albums I've listened to this week.
         </p>
-        <a href="https://www.last.fm/user/eli_pwnd">
-          <LazyLoad>
+        <div className="listening-media">
+          <iframe
+            title="Spotify playlist that I have on repeat"
+            src="https://open.spotify.com/embed/playlist/3vyj3O0B7OaaZr5nckqZDR"
+            width="300"
+            height="380"
+            frameBorder="0"
+            allowTransparency
+            allow="encrypted-media"
+          />
+          <a href="https://www.last.fm/user/eli_pwnd">
             <img
               className="listening-img"
               src="/api/last.fm/collage.jpg"
               alt="My top 9 albums for the past 7 days"
             />
-          </LazyLoad>
-        </a>
+          </a>
+        </div>
       </Section>
       <Section className="tweets">
         <h2>Twitter</h2>
