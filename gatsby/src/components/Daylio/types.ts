@@ -14,6 +14,7 @@ export enum MoodMapping {
 export enum ActivityMapping {
   cook = '🧑‍🍳',
   movies = '🍿',
+  movie = '🍿',
   relax = '💆‍♂️',
   'side-project' = '👨‍💻',
   work = '💼',
@@ -29,6 +30,11 @@ export enum ActivityMapping {
   cleaning = '🧹',
   gaming = '🕹',
   'binging tv' = '📺',
+  'ate meat' = '🥩',
+  'no meat' = '🌿',
+  travel = '✈️',
+  'went outside' = '🌞',
+  delivery = '🥡',
 }
 
 export interface DaylioEntry {
