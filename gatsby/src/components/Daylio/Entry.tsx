@@ -125,9 +125,10 @@ const Entry: React.FC<Props> = ({
   selected = false,
 }) => {
   const filteredActivities = activities.filter(a => !!a && a.length > -1)
+  const isoTime = formatISO(time)
 
   return (
-    <EntryWrapper id={time} variant={variant} selected={selected}>
+    <EntryWrapper id={isoTime} variant={variant} selected={selected}>
       <div className="emoji-column">
         <Emoji
           dropShadow={variant === DaylioVariants.list}
@@ -138,8 +139,8 @@ const Entry: React.FC<Props> = ({
       </div>
       <div className="text-column">
         <h3>I felt {mood}</h3>
-        <time dateTime={time}>
-          <a href={`/feelings#${time}`}>{formatISO(time)}</a>
+        <time dateTime={isoTime}>
+          <a href={`/feelings#${isoTime}`}>{isoTime}</a>
         </time>
         {filteredActivities.length > 0 && (
           <ActivitiesList>
