@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import tw, { styled } from 'twin.macro'
 import Lightbox from 'react-image-lightbox'
+import {
+  LazyLoadImage,
+  trackWindowScroll,
+  ScrollPosition,
+} from 'react-lazy-load-image-component'
 import 'react-image-lightbox/style.css'
 
 import { Meme } from './types'
@@ -33,7 +38,11 @@ const Image = styled(Paper.figure)`
 
 const ImageLightbox = styled(Lightbox)``
 
-const MemeListView: React.FC = () => {
+interface Props {
+  scrollPosition?: ScrollPosition
+}
+
+const MemeListView: React.FC<Props> = ({ scrollPosition }) => {
   const [lightBoxState, setLightBoxState] = useState({
     index: 0,
     open: false,
@@ -60,11 +69,12 @@ const MemeListView: React.FC = () => {
             key={`meme-${meme.id}`}
             onClick={() => setLightBoxState({ index, open: true })}
           >
-            <img
+            <LazyLoadImage
               src={meme.url}
               alt={meme.notes}
               width={meme.size[0] || undefined}
               height={meme.size[1] || undefined}
+              scrollPosition={scrollPosition}
             />
           </Image>
         ))}
@@ -100,4 +110,4 @@ const MemeListView: React.FC = () => {
   )
 }
 
-export default MemeListView
+export default trackWindowScroll(MemeListView)
