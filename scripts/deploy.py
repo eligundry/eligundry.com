@@ -27,7 +27,7 @@ def deploy():
         },
         json={
             'client': 'local',
-            'tgt': 'salt-eligundry-ninja',
+            'tgt': 'new.eligundry.ninja',
             'fun': 'state.apply',
             'arg': [
                 'server.website',
