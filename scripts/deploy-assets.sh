@@ -10,6 +10,6 @@ docker cp website:/usr/share/nginx/html $COMPILED_PATH
 docker stop website
 aws s3 sync \
     --endpoint="$DO_SPACES_ENDPOINT" \
-    --cache-control "max-age=604800" \
+    --acl="public-read" \
     $COMPILED_PATH \
     "s3://$DO_SPACES_BUCKET/site"
