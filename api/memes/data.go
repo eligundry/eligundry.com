@@ -1,8 +1,11 @@
 package memes
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"image"
+	"io"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -30,6 +33,7 @@ func (d Data) SaveMeme(payload *MemePayload) (int64, error) {
 	}
 
 	metadata := map[string]string{}
+	file, err := payload.File.Open()
 
 	if payload.Width.Valid {
 		metadata["width"] = strconv.FormatInt(payload.Width.Int64, 10)
@@ -37,6 +41,13 @@ func (d Data) SaveMeme(payload *MemePayload) (int64, error) {
 
 	if payload.Height.Valid {
 		metadata["height"] = strconv.FormatInt(payload.Height.Int64, 10)
+	}
+
+	if !payload.BlurHash.Valid {
+		var blurhashBuffer bytes.Buffer
+		tee := io.TeeReader(payload.File.Open())
+
+		image.Decode(payload.File.Open())
 	}
 
 	info, err := spacesClient.UploadMultipart(&common.UploadMultipartArgs{
@@ -90,13 +101,18 @@ func (d Data) UpdateMeme(memeID int64, payload *MemePayload) error {
 		values["height"] = payload.Height
 	}
 
+	if payload.BlurHash.Valid {
+		updateFields = append(updateFields, "blurhash = :blurhash")
+		values["blurhash"] = payload.BlurHash
+	}
+
 	if len(updateFields) == 0 {
 		return errors.New("no fields provided to update")
 	}
 
 	query := fmt.Sprintf(`
         UPDATE memes
-        SET %s
+        SET %s, updated_at = NOW()
         WHERE id = :id
     `, strings.Join(updateFields, ", "))
 

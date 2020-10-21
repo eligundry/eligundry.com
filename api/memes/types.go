@@ -12,13 +12,14 @@ import (
 const MemesSpacesPath = "memes"
 
 type Meme struct {
-	ID        int64     `json:"id" db:"id"`
-	Filename  string    `json:"-" db:"filename"`
-	Width     null.Int  `json:"width" db:"width"`
-	Height    null.Int  `json:"height" db:"height"`
-	Notes     string    `json:"notes" db:"notes"`
-	CreatedAt time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	ID        int64       `json:"id" db:"id"`
+	Filename  string      `json:"-" db:"filename"`
+	Width     null.Int    `json:"width" db:"width"`
+	Height    null.Int    `json:"height" db:"height"`
+	Notes     string      `json:"notes" db:"notes"`
+	BlurHash  null.String `json:"blurhash" db:"blurhash"`
+	CreatedAt time.Time   `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time   `json:"updated_at" db:"updated_at"`
 }
 
 func (meme Meme) MemeResponse() MemeResponse {
@@ -53,12 +54,14 @@ type MemeResponse struct {
 	URL       string      `json:"url"`
 	Size      [2]null.Int `json:"size"`
 	Notes     string      `json:"notes"`
+	BlurHash  null.String `json:"blurhash"`
 	CreatedAt time.Time   `json:"created_at"`
 }
 
 type MemePayload struct {
-	File   *multipart.FileHeader `json:"-" form:"file"`
-	Width  null.Int              `json:"width" form:"width"`
-	Height null.Int              `json:"height" form:"height"`
-	Notes  string                `json:"notes" form:"notes"`
+	File     *multipart.FileHeader `json:"-" form:"file"`
+	Width    null.Int              `json:"width" form:"width"`
+	Height   null.Int              `json:"height" form:"height"`
+	BlurHash null.String           `json:"blurhash" form:"blurhash"`
+	Notes    string                `json:"notes" form:"notes"`
 }

@@ -694,12 +694,12 @@ export type FileFieldsEnum =
   | 'internal___type'
   | 'childMarkdownRemark___id'
   | 'childMarkdownRemark___frontmatter___title'
-  | 'childMarkdownRemark___frontmatter___description'
   | 'childMarkdownRemark___frontmatter___date'
   | 'childMarkdownRemark___frontmatter___slug'
+  | 'childMarkdownRemark___frontmatter___description'
   | 'childMarkdownRemark___frontmatter___cover'
-  | 'childMarkdownRemark___frontmatter___tags'
   | 'childMarkdownRemark___frontmatter___category'
+  | 'childMarkdownRemark___frontmatter___tags'
   | 'childMarkdownRemark___frontmatter___draft'
   | 'childMarkdownRemark___frontmatter___location'
   | 'childMarkdownRemark___excerpt'
@@ -1484,12 +1484,12 @@ export type MarkdownRemarkFieldsDateArgs = {
 export type MarkdownRemarkFieldsEnum = 
   | 'id'
   | 'frontmatter___title'
-  | 'frontmatter___description'
   | 'frontmatter___date'
   | 'frontmatter___slug'
+  | 'frontmatter___description'
   | 'frontmatter___cover'
-  | 'frontmatter___tags'
   | 'frontmatter___category'
+  | 'frontmatter___tags'
   | 'frontmatter___draft'
   | 'frontmatter___location'
   | 'excerpt'
@@ -1623,12 +1623,12 @@ export type MarkdownRemarkFilterInput = {
 
 export type MarkdownRemarkFrontmatter = {
   title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['Date']>;
   slug?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
   cover?: Maybe<Scalars['String']>;
-  tags?: Maybe<Array<Maybe<Scalars['String']>>>;
   category?: Maybe<Scalars['String']>;
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>;
   draft?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Scalars['String']>;
 };
@@ -1643,12 +1643,12 @@ export type MarkdownRemarkFrontmatterDateArgs = {
 
 export type MarkdownRemarkFrontmatterFilterInput = {
   title?: Maybe<StringQueryOperatorInput>;
-  description?: Maybe<StringQueryOperatorInput>;
   date?: Maybe<DateQueryOperatorInput>;
   slug?: Maybe<StringQueryOperatorInput>;
+  description?: Maybe<StringQueryOperatorInput>;
   cover?: Maybe<StringQueryOperatorInput>;
-  tags?: Maybe<StringQueryOperatorInput>;
   category?: Maybe<StringQueryOperatorInput>;
+  tags?: Maybe<StringQueryOperatorInput>;
   draft?: Maybe<BooleanQueryOperatorInput>;
   location?: Maybe<StringQueryOperatorInput>;
 };
@@ -2559,6 +2559,7 @@ export type SitePageFieldsEnum =
   | 'pluginCreator___packageJson___description'
   | 'pluginCreator___packageJson___version'
   | 'pluginCreator___packageJson___main'
+  | 'pluginCreator___packageJson___author'
   | 'pluginCreator___packageJson___license'
   | 'pluginCreator___packageJson___dependencies'
   | 'pluginCreator___packageJson___dependencies___name'
@@ -2767,6 +2768,7 @@ export type SitePluginFieldsEnum =
   | 'packageJson___description'
   | 'packageJson___version'
   | 'packageJson___main'
+  | 'packageJson___author'
   | 'packageJson___license'
   | 'packageJson___dependencies'
   | 'packageJson___dependencies___name'
@@ -2809,6 +2811,7 @@ export type SitePluginPackageJson = {
   description?: Maybe<Scalars['String']>;
   version?: Maybe<Scalars['String']>;
   main?: Maybe<Scalars['String']>;
+  author?: Maybe<Scalars['String']>;
   license?: Maybe<Scalars['String']>;
   dependencies?: Maybe<Array<Maybe<SitePluginPackageJsonDependencies>>>;
   devDependencies?: Maybe<Array<Maybe<SitePluginPackageJsonDevDependencies>>>;
@@ -2849,6 +2852,7 @@ export type SitePluginPackageJsonFilterInput = {
   description?: Maybe<StringQueryOperatorInput>;
   version?: Maybe<StringQueryOperatorInput>;
   main?: Maybe<StringQueryOperatorInput>;
+  author?: Maybe<StringQueryOperatorInput>;
   license?: Maybe<StringQueryOperatorInput>;
   dependencies?: Maybe<SitePluginPackageJsonDependenciesFilterListInput>;
   devDependencies?: Maybe<SitePluginPackageJsonDevDependenciesFilterListInput>;
