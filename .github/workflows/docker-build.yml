@@ -3,33 +3,38 @@ on:
   push:
     branches:
       - master
+      - docker-layer-caching
 
 jobs:
   api:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - uses: whoan/docker-build-with-cache-action@v3
-      with:
-        username: eligundry
-        password: "${{ secrets.DOCKER_PASSWORD }}"
-        image_name: eligundry/api.eligundry.com
-        image_tag: latest
-        dockerfile: Dockerfile.api
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+          username: eligundry
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: satackey/action-docker-layer-caching@v0.0.8
+        continue-on-error: true
+      - name: Docker Build
+        run: docker build -t eligundry/api.eligundry.com -f Dockerfile.api .
+      - name: Docker Push
+        run: docker push eligundry/api.eligundry.com
 
   frontend:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - uses: whoan/docker-build-with-cache-action@v3
-      with:
-        username: eligundry
-        password: "${{ secrets.DOCKER_PASSWORD }}"
-        image_name: eligundry/website.eligundry.com
-        image_tag: latest
-        dockerfile: Dockerfile.frontend
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+          username: eligundry
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: satackey/action-docker-layer-caching@v0.0.8
+        continue-on-error: true
+      - name: Docker Build
+        run: docker build -t eligundry/website.eligundry.com -f Dockerfile.frontend .
+      - name: Docker Push
+        run: docker push eligundry/website.eligundry.com
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,17 +42,17 @@ jobs:
       - api
       - frontend
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
 
-    - name: Install dependencies
-      run: pip install requests
+      - name: Install dependencies
+        run: pip install requests
 
-    - name: Deploy to production
-      env:
-        SALT_PASSWORD: ${{ secrets.SALT_PASSWORD }}
-      run: python scripts/deploy.py
+      - name: Deploy to production
+        env:
+          SALT_PASSWORD: ${{ secrets.SALT_PASSWORD }}
+        run: python scripts/deploy.py
