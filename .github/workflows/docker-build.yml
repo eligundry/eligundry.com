@@ -31,8 +31,18 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: satackey/action-docker-layer-caching@v0.0.8
         continue-on-error: true
+
       - name: Docker Build
         run: docker build -t eligundry/website.eligundry.com -f Dockerfile.frontend .
+
+      - name: Upload assets to CDN
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.DO_SPACES_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DO_SPACES_SECRET }}
+          DO_SPACES_ENDPOINT: "https://nyc3.digitaloceanspaces.com" 
+          DO_SPACES_BUCKET: nyc-cdn.eligundry.com
+        run: ./scripts/deploy-assets.sh
+
       - name: Docker Push
         run: docker push eligundry/website.eligundry.com
 
