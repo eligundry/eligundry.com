@@ -10,6 +10,7 @@ import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
+import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
 
 const Section = styled(Paper.section)`
@@ -88,6 +89,7 @@ const Home: React.FC = () => {
           read more about this project <a href="/blog/feelings-api">here</a>.
         </p>
         <Daylio variant={DaylioVariants.home} />
+        <DaylioChart />
       </Section>
       <Section className="coding">
         <h2>Coding</h2>
