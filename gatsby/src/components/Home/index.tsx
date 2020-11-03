@@ -98,7 +98,7 @@ const Home: React.FC = () => {
           bad? I'll do my best. A query running to slow? Stop, I can't deal with
           all this excitment.
         </p>
-        <GitHubCalendar username="eligundry" dateFormat="YYYY-MM-DD" />
+        <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd" />
       </Section>
       <Section className="reading">
         <h2>Reading</h2>
