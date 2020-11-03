@@ -14,7 +14,7 @@ docker stop website
 # this my own damn self. The Gatsby build will precompress the files and this
 # will chop off the gz portion of it so, overwriting the non-compressed version
 # that the HTML refers to. 
-for f in *.gz; do mv -v -- "$f" "${f%.gz}"; done 
+for f in $COMPILED_PATH/*.gz; do mv -v -- "$f" "${f%.gz}"; done 
 
 # Sync all files to Digital Ocean Spaces
 aws s3 sync \
