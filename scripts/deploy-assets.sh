@@ -21,5 +21,6 @@ aws s3 sync \
     --endpoint="$DO_SPACES_ENDPOINT" \
     --acl="public-read" \
     --content-encoding "gzip" \
+    --cache-control "max-age=$(echo "60 * 60 * 24 * 7" | bc)" \
     $COMPILED_PATH \
     "s3://$DO_SPACES_BUCKET/site"
