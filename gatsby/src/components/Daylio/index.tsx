@@ -1,24 +1,17 @@
 import React from 'react'
-import { useQuery } from 'react-query'
 import ReactTooltip from 'react-tooltip'
 
 import Entry from './Entry'
 import EntryList from './EntryList'
 import { DaylioEntry, DaylioVariants } from './types'
-import customFetch, { processResponse } from '../../utils/fetch'
+import useFeelings from './useFeelings'
 
 interface Props {
   variant?: DaylioVariants
 }
 
 const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
-  const { isFetching, error, data: entries } = useQuery(
-    ['feelings', variant],
-    () =>
-      customFetch(
-        `/api/feelings${variant === 'home' ? '/time/today' : ''}`
-      ).then(res => processResponse<DaylioEntry[]>(res))
-  )
+  const { isFetching, error, entries } = useFeelings(variant)
 
   if (isFetching && !entries) {
     return <h1>Loading Eli's Feelings...</h1>

@@ -30,6 +30,9 @@ module.exports = {
     'gatsby-plugin-twitter',
     'gatsby-plugin-sitemap',
     {
+      resolve: 'gatsby-plugin-zopfli',
+    },
+    {
       resolve: 'gatsby-plugin-styled-components',
       options: {
         minify: process.env.NODE_ENV === 'production',
