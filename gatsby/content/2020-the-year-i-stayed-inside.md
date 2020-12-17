@@ -43,7 +43,8 @@ that is always happening.
 
 Moving in with someone is always an adjustment where you must be open to change. Moving in together during COVID is
 another level of complexity because we've had to be around each other 24/7 with no ability to see our friends or choose
-to not be around the other person. 
+to not be around the other person. We've had to get very good at communicating with each other very quickly (and even
+with that, it can be challenging at times!)
 
 My partner is a Medicare shift counselor who is very loud and on the phone all day with old people that can't hear well.
 I'm very happy that I pushed for us to get a two bedroom so I can have a home office and not listen to her all day, but
@@ -54,12 +55,15 @@ Shortly after moving in together, we adopted a new cat, Laverne. She is a very s
 Harlem. She is not getting along with my old cat, Fonzie, but they are working on it and maybe in 2021, they will start
 cuddling?
 
+@TODO Put picture of Laverne here
+
 ### Cooking
 
 In 2019, I got really into cooking and boy that couldn't have happened at a better time. This year, I have cooked half
-of our meals weekly and have really enjoyed it. For years, I have to fine a hobby to compliment some of the programming
+of our meals weekly and have really enjoyed it. For years, I have to find a hobby to compliment some of the programming
 that I do on the side and I finally realized that I'm spending about 8 hours a week cooking and meal planning that this
-is as good a hobby as I'm going to find.
+is as good a hobby as I'm going to find. Cooking also pokes the engineer part of my mind, because there are elements of
+rule following, improvisation, and short term success that I associate a lot with programming.
 
 Some of my favorite recipies I made this year:
 
@@ -122,5 +126,40 @@ stack.
 2. We deprecated our old Jenkins box and now have everything in Github Actions. Shouts out to my devops teammates for
    putting in the dirty work here while I just write fun CI pipelines in Github Actions.
 
+### My First Talk!
+
+Since I moved to New York City in 2015, I have been a big of the Boro.js meetups. I've learned so much but have
+struggled to come up with a talk to give back. Finally, after writing a large React app last year, I finally came up
+with a talk about [Redux and Hooks in React][3]. I gave it at QueensJS in February right before COVID locked everything
+down and it was everything I hoped for and more! My boss and some of my coworkers came out to Astoria to see my talk and
+my favorite speaker in the scene followed me!
+
+## Music That Got Me Through The Year
+
+1. _Active Listening: Night on Earth_ by Empath
+2. _Couldn't Wait To Tell You_ by Liv.e
+3. _Origami Angel Broke Minecraft_ by Origami Angel
+4. _Cold Water_ by Medhane
+5. _Muck_ by Dikembe
+6. _Live Forever_ by Bartees Strange
+7. _Heaven to a Tortured Mind_ by Yves Tumor
+8. _FREE I.H.: This Is Not the One You've Been Waiting For_ by Illuminati Hotties
+9. _Only Diamonds Cut Diamonds_ by Vegyn
+10. _A Quiet Farewell, Twenty Sixteen to Twenty Eighteen_ by slauson malone
+11. _Capsule Losing Contact_ by Duster
+12. _The Avalanche_ by Owen
+13. _Hiding Places_ by Billy Woods
+14. _We Will Always Love You_ by The Avalanches
+15. _The Cycle Is Complete_ by Bruce Palmer
+
+## Conclusion
+
+Let's hope 2021 is better than this year! My goals for next year are:
+
+1. Get really good with money
+2. Lose some weight and be more active
+3. Continue the personal progress I made this year
+
 [1]: https://www.reuters.com/article/us-health-coronavirus-china-cdc-exclusiv/exclusive-u-s-slashed-cdc-staff-inside-china-prior-to-coronavirus-outbreak-idUSKBN21C3N5
 [2]: https://www.talentinc.com/
+[3]: /talks/redux-hooks
