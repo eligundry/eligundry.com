@@ -100,7 +100,7 @@
     "clean": "rm -rf public && rm -rf .cache",
     "lint:js": "eslint --ext .js,.jsx .",
     "lint:md": "remark content/",
-    "write-good": "write-good $(glob 'content/posts/**/*.md')",
+    "write-good": "write-good $(glob 'content/*.md')",
     "format:js": "prettier '**/*.{js,jsx}' --write",
     "format:styles": "prettier '**/*.{css,scss}' --write",
     "stats:html": "source-map-explorer public/*.js --html public/stats.html"
