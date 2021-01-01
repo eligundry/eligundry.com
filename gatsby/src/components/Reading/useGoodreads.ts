@@ -20,22 +20,19 @@ export default function useGoodreadsShelf(accountID: string, shelf: string) {
 
       return Array.from(
         goodreadsDocument.querySelectorAll('#booksBody .bookalike')
-      ).map(row => {
-        console.log(row)
-        return {
-          isbn: row.querySelector('td.field.isbn .value').textContent,
-          title: row.querySelector('td.field.title a').getAttribute('title'),
-          author: row.querySelector('td.field.author .value').textContent,
-          cover: row
-            .querySelector('td.field.cover img')
-            .getAttribute('src')
-            // Get the full sized thumbnail
-            .replace(/\._\w+\d+_/, ''),
-          url: `https://www.goodreads.com/${row
-            .querySelector('td.field.cover a')
-            .getAttribute('href')}`,
-        }
-      })
+      ).map(row => ({
+        isbn: row.querySelector('td.field.isbn .value').textContent,
+        title: row.querySelector('td.field.title a').getAttribute('title'),
+        author: row.querySelector('td.field.author .value').textContent,
+        cover: row
+          .querySelector('td.field.cover img')
+          .getAttribute('src')
+          // Get the full sized thumbnail
+          .replace(/\._\w+\d+_/, ''),
+        url: `https://www.goodreads.com/${row
+          .querySelector('td.field.cover a')
+          .getAttribute('href')}`,
+      }))
     }
   )
 
