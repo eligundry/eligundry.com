@@ -1,7 +1,6 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
-import { GoodreadsBookshelf } from 'react-goodreads-shelf'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
 import { useWindowSize } from 'react-use'
 import LazyLoad from 'react-lazyload'
@@ -12,6 +11,7 @@ import Daylio from '../Daylio/index'
 import { DaylioVariants } from '../Daylio/types'
 import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
+import Reading from '../Reading'
 
 const Section = styled(Paper.section)`
   ${tw`sm:mx-2 md:mx-2`}
@@ -20,8 +20,17 @@ const Section = styled(Paper.section)`
     ${tw`text-teal-500 italic`}
   }
 
-  & .bookshelf > div > div {
-    grid-template-columns: repeat(auto-fit, minmax(80px, 100px)) !important;
+  & .bookshelf {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    column-gap: 1vw;
+    margin: 1vw;
+    text-align: center;
+
+    & img {
+      min-width: 75px;
+    }
   }
 
   &.introduction-hero {
@@ -109,10 +118,9 @@ const Home: React.FC = () => {
           are the books that I'm reading right now.
         </p>
         <div className="bookshelf">
-          <GoodreadsBookshelf
+          <Reading
             shelf="currently-reading"
-            userId={config.goodreads.userID}
-            apiKey={config.goodreads.apiKey}
+            accountID={config.goodreads.userID}
           />
         </div>
       </Section>
