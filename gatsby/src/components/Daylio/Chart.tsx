@@ -16,6 +16,7 @@ const DaylioChart: React.FC = () => {
 
   return (
     <Line
+      height={50}
       data={{
         labels: Object.values(MoodMapping).map((_, i) => i),
         datasets: [
@@ -27,7 +28,11 @@ const DaylioChart: React.FC = () => {
                 y: Object.keys(MoodMapping).findIndex(m => m === entry.mood),
               })),
             backgroundColor: 'transparent',
-            borderColor: 'rgba(56, 178, 172, 0.75)',
+            pointStyle: 'rect',
+            borderColor: 'rgb(184, 50, 128)',
+            pointBorderColor: 'rgb(56, 178, 172)',
+            pointBackgroundColor: 'rgb(56, 178, 172)',
+            radius: 5,
           },
         ],
       }}
