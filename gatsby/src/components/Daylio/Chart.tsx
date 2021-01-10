@@ -40,6 +40,20 @@ const DaylioChart: React.FC = () => {
         legend: {
           display: false,
         },
+        tooltips: {
+          displayColors: false,
+          backgroundColor: 'white',
+          titleFontColor: 'black',
+          titleFontSize: 14,
+          bodyFontColor: 'black',
+          bodyFontSize: 14,
+          borderWidth: 1,
+          borderColor: 'rgb(226 232 240)',
+          callbacks: {
+            title: (item, _) => item[0].xLabel.toString(),
+            label: (item, _) => Object.keys(MoodMapping)[item.yLabel.valueOf()],
+          },
+        },
         scales: {
           xAxes: [
             {
