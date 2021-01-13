@@ -12,7 +12,7 @@ const DaylioChart: React.FC = () => {
     return null
   }
 
-  const timeWindow = subMonths(new Date(), 3)
+  const timeWindow = subMonths(new Date(), 1)
 
   return (
     <Line
