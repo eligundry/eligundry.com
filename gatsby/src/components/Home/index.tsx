@@ -159,7 +159,7 @@ const Home: React.FC = () => {
         <div className="listening-media">
           <iframe
             title="Spotify playlist that I have on repeat"
-            src="https://open.spotify.com/embed/playlist/3vyj3O0B7OaaZr5nckqZDR"
+            src="https://open.spotify.com/embed/playlist/1gD4BMDtHdnUnIDmxOCV5w"
             width="300"
             height="380"
             frameBorder="0"
