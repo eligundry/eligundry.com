@@ -169,7 +169,7 @@ const Home: React.FC = () => {
           <a href="https://www.last.fm/user/eli_pwnd">
             <img
               className="listening-img"
-              src="/api/last.fm/collage.jpg"
+              src="https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3"
               alt="My top 9 albums for the past 7 days"
             />
           </a>
