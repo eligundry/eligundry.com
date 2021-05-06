@@ -5,6 +5,13 @@ on:
       - master
       - gatsby-learnings
 
+  workflow_dispatch:
+    inputs:
+      clear_gatsby_cache:
+        description: 'Should the Gatsby cache be cleared before building (true/false)?'
+        required: false
+        default: "false"
+
 jobs:
   api:
     runs-on: ubuntu-latest
@@ -42,6 +49,11 @@ jobs:
           key: ${{ runner.os }}-gatsby-build-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-gatsby-build-
+
+      - name: Build site
+        run: |
+          cd gatsby
+          npm run build:pp
 
       - name: Upload assets to CDN
         env:
