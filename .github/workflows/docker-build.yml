@@ -57,18 +57,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gatsby-build-
 
-      - name: Build site
-        run: |
-          cd gatsby
-          npm run build:gh-actions
-
-      - name: Upload assets to CDN
+      - name: Build and deploy site
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.DO_SPACES_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.DO_SPACES_SECRET }}
           DO_SPACES_ENDPOINT: "https://nyc3.digitaloceanspaces.com" 
           DO_SPACES_BUCKET: nyc-cdn.eligundry.com
-        run: ./scripts/deploy-assets.sh
+        run: |
+          cd gatsby
+          npm run build:gh-actions
+          cd ..
+          ./scripts/deploy-assets.sh
 
   deploy:
     runs-on: ubuntu-latest
