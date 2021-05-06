@@ -20,8 +20,8 @@ services:
     container_name: eg-api
     image: eligundry/api.eligundry.com:latest
     entrypoint: /go/bin/watcher
-    env_file:
-      - ./.env
+    # env_file:
+    #   - ./.env
     build:
       context: ./
       dockerfile: Dockerfile.api

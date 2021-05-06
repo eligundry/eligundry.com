@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip'
 
 import Entry from './Entry'
 import EntryList from './EntryList'
-import { DaylioEntry, DaylioVariants } from './types'
+import { DaylioVariants } from './types'
 import useFeelings from './useFeelings'
 
 interface Props {
@@ -11,14 +11,10 @@ interface Props {
 }
 
 const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
-  const { isFetching, error, entries } = useFeelings(variant)
+  const entries = useFeelings()
 
-  if (isFetching && !entries) {
+  if (!entries) {
     return <h1>Loading Eli's Feelings...</h1>
-  }
-
-  if (error) {
-    return <h1>Error!</h1>
   }
 
   const tooltip = <ReactTooltip place="top" effect="solid" />

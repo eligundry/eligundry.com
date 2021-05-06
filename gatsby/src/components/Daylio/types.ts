@@ -37,8 +37,8 @@ export enum ActivityMapping {
   delivery = '🥡',
 }
 
-export interface DaylioEntry {
-  time: Date
+export interface DaylioEntry<TimeType = Date> {
+  time: TimeType
   mood: keyof typeof MoodMapping
   activities: (keyof typeof ActivityMapping)[]
   notes: string[] | null

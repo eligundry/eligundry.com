@@ -256,6 +256,8 @@ export type DirectoryCtimeArgs = {
 export type Site = Node & {
   buildTime?: Maybe<Scalars['Date']>;
   siteMetadata?: Maybe<SiteSiteMetadata>;
+  port?: Maybe<Scalars['Int']>;
+  host?: Maybe<Scalars['String']>;
   pathPrefix?: Maybe<Scalars['String']>;
   assetPrefix?: Maybe<Scalars['String']>;
   polyfill?: Maybe<Scalars['Boolean']>;
@@ -655,13 +657,13 @@ export type MarkdownRemarkTableOfContentsArgs = {
 
 export type MarkdownRemarkFrontmatter = {
   title?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  category?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['Date']>;
   slug?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  cover?: Maybe<Scalars['String']>;
   tags?: Maybe<Array<Maybe<Scalars['String']>>>;
-  category?: Maybe<Scalars['String']>;
   draft?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
 };
 
@@ -680,6 +682,25 @@ export type MarkdownRemarkFields = {
 
 
 export type MarkdownRemarkFieldsDateArgs = {
+  formatString?: Maybe<Scalars['String']>;
+  fromNow?: Maybe<Scalars['Boolean']>;
+  difference?: Maybe<Scalars['String']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type Feelings = Node & {
+  id: Scalars['ID'];
+  parent?: Maybe<Node>;
+  children: Array<Node>;
+  internal: Internal;
+  time?: Maybe<Scalars['Date']>;
+  mood?: Maybe<Scalars['String']>;
+  activities?: Maybe<Array<Maybe<Scalars['String']>>>;
+  notes?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+export type FeelingsTimeArgs = {
   formatString?: Maybe<Scalars['String']>;
   fromNow?: Maybe<Scalars['Boolean']>;
   difference?: Maybe<Scalars['String']>;
@@ -739,6 +760,8 @@ export type SitePluginPluginOptions = {
   pure?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   path?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+  rootKey?: Maybe<Scalars['String']>;
   maxWidth?: Maybe<Scalars['Int']>;
   linkImagesToOriginal?: Maybe<Scalars['Boolean']>;
   showCaptions?: Maybe<Scalars['Boolean']>;
@@ -842,6 +865,8 @@ export type Query = {
   allImageSharp: ImageSharpConnection;
   markdownRemark?: Maybe<MarkdownRemark>;
   allMarkdownRemark: MarkdownRemarkConnection;
+  feelings?: Maybe<Feelings>;
+  allFeelings: FeelingsConnection;
   siteBuildMetadata?: Maybe<SiteBuildMetadata>;
   allSiteBuildMetadata: SiteBuildMetadataConnection;
   sitePlugin?: Maybe<SitePlugin>;
@@ -955,6 +980,8 @@ export type QueryAllDirectoryArgs = {
 export type QuerySiteArgs = {
   buildTime?: Maybe<DateQueryOperatorInput>;
   siteMetadata?: Maybe<SiteSiteMetadataFilterInput>;
+  port?: Maybe<IntQueryOperatorInput>;
+  host?: Maybe<StringQueryOperatorInput>;
   pathPrefix?: Maybe<StringQueryOperatorInput>;
   assetPrefix?: Maybe<StringQueryOperatorInput>;
   polyfill?: Maybe<BooleanQueryOperatorInput>;
@@ -1065,6 +1092,26 @@ export type QueryMarkdownRemarkArgs = {
 export type QueryAllMarkdownRemarkArgs = {
   filter?: Maybe<MarkdownRemarkFilterInput>;
   sort?: Maybe<MarkdownRemarkSortInput>;
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryFeelingsArgs = {
+  id?: Maybe<StringQueryOperatorInput>;
+  parent?: Maybe<NodeFilterInput>;
+  children?: Maybe<NodeFilterListInput>;
+  internal?: Maybe<InternalFilterInput>;
+  time?: Maybe<DateQueryOperatorInput>;
+  mood?: Maybe<StringQueryOperatorInput>;
+  activities?: Maybe<StringQueryOperatorInput>;
+  notes?: Maybe<StringQueryOperatorInput>;
+};
+
+
+export type QueryAllFeelingsArgs = {
+  filter?: Maybe<FeelingsFilterInput>;
+  sort?: Maybe<FeelingsSortInput>;
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 };
@@ -1276,13 +1323,13 @@ export type MarkdownRemarkFilterInput = {
 
 export type MarkdownRemarkFrontmatterFilterInput = {
   title?: Maybe<StringQueryOperatorInput>;
+  cover?: Maybe<StringQueryOperatorInput>;
+  category?: Maybe<StringQueryOperatorInput>;
   date?: Maybe<DateQueryOperatorInput>;
   slug?: Maybe<StringQueryOperatorInput>;
-  description?: Maybe<StringQueryOperatorInput>;
-  cover?: Maybe<StringQueryOperatorInput>;
   tags?: Maybe<StringQueryOperatorInput>;
-  category?: Maybe<StringQueryOperatorInput>;
   draft?: Maybe<BooleanQueryOperatorInput>;
+  description?: Maybe<StringQueryOperatorInput>;
   location?: Maybe<StringQueryOperatorInput>;
 };
 
@@ -1541,13 +1588,13 @@ export type FileFieldsEnum =
   | 'childrenMarkdownRemark'
   | 'childrenMarkdownRemark___id'
   | 'childrenMarkdownRemark___frontmatter___title'
+  | 'childrenMarkdownRemark___frontmatter___cover'
+  | 'childrenMarkdownRemark___frontmatter___category'
   | 'childrenMarkdownRemark___frontmatter___date'
   | 'childrenMarkdownRemark___frontmatter___slug'
-  | 'childrenMarkdownRemark___frontmatter___description'
-  | 'childrenMarkdownRemark___frontmatter___cover'
   | 'childrenMarkdownRemark___frontmatter___tags'
-  | 'childrenMarkdownRemark___frontmatter___category'
   | 'childrenMarkdownRemark___frontmatter___draft'
+  | 'childrenMarkdownRemark___frontmatter___description'
   | 'childrenMarkdownRemark___frontmatter___location'
   | 'childrenMarkdownRemark___excerpt'
   | 'childrenMarkdownRemark___rawMarkdownBody'
@@ -1606,13 +1653,13 @@ export type FileFieldsEnum =
   | 'childrenMarkdownRemark___internal___type'
   | 'childMarkdownRemark___id'
   | 'childMarkdownRemark___frontmatter___title'
+  | 'childMarkdownRemark___frontmatter___cover'
+  | 'childMarkdownRemark___frontmatter___category'
   | 'childMarkdownRemark___frontmatter___date'
   | 'childMarkdownRemark___frontmatter___slug'
-  | 'childMarkdownRemark___frontmatter___description'
-  | 'childMarkdownRemark___frontmatter___cover'
   | 'childMarkdownRemark___frontmatter___tags'
-  | 'childMarkdownRemark___frontmatter___category'
   | 'childMarkdownRemark___frontmatter___draft'
+  | 'childMarkdownRemark___frontmatter___description'
   | 'childMarkdownRemark___frontmatter___location'
   | 'childMarkdownRemark___excerpt'
   | 'childMarkdownRemark___rawMarkdownBody'
@@ -2111,6 +2158,8 @@ export type SiteFieldsEnum =
   | 'siteMetadata___rssMetadata___description'
   | 'siteMetadata___rssMetadata___image_url'
   | 'siteMetadata___rssMetadata___copyright'
+  | 'port'
+  | 'host'
   | 'pathPrefix'
   | 'assetPrefix'
   | 'polyfill'
@@ -2213,6 +2262,8 @@ export type SiteGroupConnection = {
 export type SiteFilterInput = {
   buildTime?: Maybe<DateQueryOperatorInput>;
   siteMetadata?: Maybe<SiteSiteMetadataFilterInput>;
+  port?: Maybe<IntQueryOperatorInput>;
+  host?: Maybe<StringQueryOperatorInput>;
   pathPrefix?: Maybe<StringQueryOperatorInput>;
   assetPrefix?: Maybe<StringQueryOperatorInput>;
   polyfill?: Maybe<BooleanQueryOperatorInput>;
@@ -2442,6 +2493,8 @@ export type SitePluginPluginOptionsFilterInput = {
   pure?: Maybe<BooleanQueryOperatorInput>;
   name?: Maybe<StringQueryOperatorInput>;
   path?: Maybe<StringQueryOperatorInput>;
+  url?: Maybe<StringQueryOperatorInput>;
+  rootKey?: Maybe<StringQueryOperatorInput>;
   maxWidth?: Maybe<IntQueryOperatorInput>;
   linkImagesToOriginal?: Maybe<BooleanQueryOperatorInput>;
   showCaptions?: Maybe<BooleanQueryOperatorInput>;
@@ -2768,6 +2821,8 @@ export type SitePageFieldsEnum =
   | 'pluginCreator___pluginOptions___pure'
   | 'pluginCreator___pluginOptions___name'
   | 'pluginCreator___pluginOptions___path'
+  | 'pluginCreator___pluginOptions___url'
+  | 'pluginCreator___pluginOptions___rootKey'
   | 'pluginCreator___pluginOptions___maxWidth'
   | 'pluginCreator___pluginOptions___linkImagesToOriginal'
   | 'pluginCreator___pluginOptions___showCaptions'
@@ -3075,13 +3130,13 @@ export type MarkdownRemarkEdge = {
 export type MarkdownRemarkFieldsEnum = 
   | 'id'
   | 'frontmatter___title'
+  | 'frontmatter___cover'
+  | 'frontmatter___category'
   | 'frontmatter___date'
   | 'frontmatter___slug'
-  | 'frontmatter___description'
-  | 'frontmatter___cover'
   | 'frontmatter___tags'
-  | 'frontmatter___category'
   | 'frontmatter___draft'
+  | 'frontmatter___description'
   | 'frontmatter___location'
   | 'excerpt'
   | 'rawMarkdownBody'
@@ -3198,6 +3253,168 @@ export type MarkdownRemarkGroupConnection = {
 
 export type MarkdownRemarkSortInput = {
   fields?: Maybe<Array<Maybe<MarkdownRemarkFieldsEnum>>>;
+  order?: Maybe<Array<Maybe<SortOrderEnum>>>;
+};
+
+export type FeelingsConnection = {
+  totalCount: Scalars['Int'];
+  edges: Array<FeelingsEdge>;
+  nodes: Array<Feelings>;
+  pageInfo: PageInfo;
+  distinct: Array<Scalars['String']>;
+  max?: Maybe<Scalars['Float']>;
+  min?: Maybe<Scalars['Float']>;
+  sum?: Maybe<Scalars['Float']>;
+  group: Array<FeelingsGroupConnection>;
+};
+
+
+export type FeelingsConnectionDistinctArgs = {
+  field: FeelingsFieldsEnum;
+};
+
+
+export type FeelingsConnectionMaxArgs = {
+  field: FeelingsFieldsEnum;
+};
+
+
+export type FeelingsConnectionMinArgs = {
+  field: FeelingsFieldsEnum;
+};
+
+
+export type FeelingsConnectionSumArgs = {
+  field: FeelingsFieldsEnum;
+};
+
+
+export type FeelingsConnectionGroupArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  field: FeelingsFieldsEnum;
+};
+
+export type FeelingsEdge = {
+  next?: Maybe<Feelings>;
+  node: Feelings;
+  previous?: Maybe<Feelings>;
+};
+
+export type FeelingsFieldsEnum = 
+  | 'id'
+  | 'parent___id'
+  | 'parent___parent___id'
+  | 'parent___parent___parent___id'
+  | 'parent___parent___parent___children'
+  | 'parent___parent___children'
+  | 'parent___parent___children___id'
+  | 'parent___parent___children___children'
+  | 'parent___parent___internal___content'
+  | 'parent___parent___internal___contentDigest'
+  | 'parent___parent___internal___description'
+  | 'parent___parent___internal___fieldOwners'
+  | 'parent___parent___internal___ignoreType'
+  | 'parent___parent___internal___mediaType'
+  | 'parent___parent___internal___owner'
+  | 'parent___parent___internal___type'
+  | 'parent___children'
+  | 'parent___children___id'
+  | 'parent___children___parent___id'
+  | 'parent___children___parent___children'
+  | 'parent___children___children'
+  | 'parent___children___children___id'
+  | 'parent___children___children___children'
+  | 'parent___children___internal___content'
+  | 'parent___children___internal___contentDigest'
+  | 'parent___children___internal___description'
+  | 'parent___children___internal___fieldOwners'
+  | 'parent___children___internal___ignoreType'
+  | 'parent___children___internal___mediaType'
+  | 'parent___children___internal___owner'
+  | 'parent___children___internal___type'
+  | 'parent___internal___content'
+  | 'parent___internal___contentDigest'
+  | 'parent___internal___description'
+  | 'parent___internal___fieldOwners'
+  | 'parent___internal___ignoreType'
+  | 'parent___internal___mediaType'
+  | 'parent___internal___owner'
+  | 'parent___internal___type'
+  | 'children'
+  | 'children___id'
+  | 'children___parent___id'
+  | 'children___parent___parent___id'
+  | 'children___parent___parent___children'
+  | 'children___parent___children'
+  | 'children___parent___children___id'
+  | 'children___parent___children___children'
+  | 'children___parent___internal___content'
+  | 'children___parent___internal___contentDigest'
+  | 'children___parent___internal___description'
+  | 'children___parent___internal___fieldOwners'
+  | 'children___parent___internal___ignoreType'
+  | 'children___parent___internal___mediaType'
+  | 'children___parent___internal___owner'
+  | 'children___parent___internal___type'
+  | 'children___children'
+  | 'children___children___id'
+  | 'children___children___parent___id'
+  | 'children___children___parent___children'
+  | 'children___children___children'
+  | 'children___children___children___id'
+  | 'children___children___children___children'
+  | 'children___children___internal___content'
+  | 'children___children___internal___contentDigest'
+  | 'children___children___internal___description'
+  | 'children___children___internal___fieldOwners'
+  | 'children___children___internal___ignoreType'
+  | 'children___children___internal___mediaType'
+  | 'children___children___internal___owner'
+  | 'children___children___internal___type'
+  | 'children___internal___content'
+  | 'children___internal___contentDigest'
+  | 'children___internal___description'
+  | 'children___internal___fieldOwners'
+  | 'children___internal___ignoreType'
+  | 'children___internal___mediaType'
+  | 'children___internal___owner'
+  | 'children___internal___type'
+  | 'internal___content'
+  | 'internal___contentDigest'
+  | 'internal___description'
+  | 'internal___fieldOwners'
+  | 'internal___ignoreType'
+  | 'internal___mediaType'
+  | 'internal___owner'
+  | 'internal___type'
+  | 'time'
+  | 'mood'
+  | 'activities'
+  | 'notes';
+
+export type FeelingsGroupConnection = {
+  totalCount: Scalars['Int'];
+  edges: Array<FeelingsEdge>;
+  nodes: Array<Feelings>;
+  pageInfo: PageInfo;
+  field: Scalars['String'];
+  fieldValue?: Maybe<Scalars['String']>;
+};
+
+export type FeelingsFilterInput = {
+  id?: Maybe<StringQueryOperatorInput>;
+  parent?: Maybe<NodeFilterInput>;
+  children?: Maybe<NodeFilterListInput>;
+  internal?: Maybe<InternalFilterInput>;
+  time?: Maybe<DateQueryOperatorInput>;
+  mood?: Maybe<StringQueryOperatorInput>;
+  activities?: Maybe<StringQueryOperatorInput>;
+  notes?: Maybe<StringQueryOperatorInput>;
+};
+
+export type FeelingsSortInput = {
+  fields?: Maybe<Array<Maybe<FeelingsFieldsEnum>>>;
   order?: Maybe<Array<Maybe<SortOrderEnum>>>;
 };
 
@@ -3534,6 +3751,8 @@ export type SitePluginFieldsEnum =
   | 'pluginOptions___pure'
   | 'pluginOptions___name'
   | 'pluginOptions___path'
+  | 'pluginOptions___url'
+  | 'pluginOptions___rootKey'
   | 'pluginOptions___maxWidth'
   | 'pluginOptions___linkImagesToOriginal'
   | 'pluginOptions___showCaptions'
@@ -3594,6 +3813,11 @@ export type SitePluginSortInput = {
   fields?: Maybe<Array<Maybe<SitePluginFieldsEnum>>>;
   order?: Maybe<Array<Maybe<SortOrderEnum>>>;
 };
+
+export type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UseFeelingsQuery = { allFeelings: { feelings: Array<Pick<Feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
 export type CategoryPageQueryVariables = Exact<{
   category?: Maybe<Scalars['String']>;

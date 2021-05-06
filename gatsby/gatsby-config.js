@@ -59,6 +59,13 @@ module.exports = {
       },
     },
     {
+      resolve: 'gatsby-source-custom-api',
+      options: {
+        url: 'https://eligundry.com/api/feelings',
+        rootKey: 'feelings',
+      },
+    },
+    {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [

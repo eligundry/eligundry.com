@@ -1,16 +1,30 @@
-import { useQuery } from 'react-query'
+import { useStaticQuery, graphql } from 'gatsby'
+import parseISO from 'date-fns/parseISO'
 
-import { DaylioEntry, DaylioVariants } from './types'
-import customFetch, { processResponse } from '../../utils/fetch'
+import { DaylioEntry } from './types'
 
-export default function useFeelings(variant = DaylioVariants.list) {
-  const { isFetching, error, data: entries } = useQuery(
-    ['feelings', variant],
-    () =>
-      customFetch(
-        `/api/feelings${variant === 'home' ? '/time/today' : ''}`
-      ).then(res => processResponse<DaylioEntry[]>(res))
-  )
+interface QueryResults {
+  allFeelings: {
+    feelings: DaylioEntry<string>[]
+  }
+}
 
-  return { isFetching, error, entries }
+export default function useFeelings(): DaylioEntry[] {
+  const entries = useStaticQuery<QueryResults>(graphql`
+    query UseFeelings {
+      allFeelings {
+        feelings: nodes {
+          time
+          mood
+          activities
+          notes
+        }
+      }
+    }
+  `)
+
+  return entries.allFeelings.feelings.map(entry => ({
+    ...entry,
+    time: parseISO(entry.time),
+  }))
 }

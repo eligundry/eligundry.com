@@ -6,11 +6,7 @@ import useFeelings from './useFeelings'
 import { DaylioVariants, MoodMapping } from './types'
 
 const DaylioChart: React.FC = () => {
-  const { isFetching, entries } = useFeelings(DaylioVariants.list)
-
-  if (isFetching && !entries) {
-    return null
-  }
+  const entries = useFeelings(DaylioVariants.list)
 
   const timeWindow = subMonths(new Date(), 1)
 
