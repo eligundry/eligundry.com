@@ -189,6 +189,7 @@ module.exports = {
           bucketName: process.env.DO_SPACES_BUCKET,
           customAwsEndpointHostname: process.env.DO_SPACES_ENDPOINT,
           params: {
+            ACL: 'public-read',
             ContentEncoding: 'gzip',
           },
         },
