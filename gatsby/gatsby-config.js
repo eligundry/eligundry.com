@@ -29,9 +29,8 @@ module.exports = {
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
     'gatsby-plugin-sitemap',
-    {
-      resolve: 'gatsby-plugin-zopfli',
-    },
+    'gatsby-plugin-postcss',
+    'gatsby-plugin-zopfli',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
