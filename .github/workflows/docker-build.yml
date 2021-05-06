@@ -33,6 +33,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: gatsby
@@ -53,7 +57,7 @@ jobs:
       - name: Build site
         run: |
           cd gatsby
-          npm run build:pp
+          npm run build:gh-actions
 
       - name: Upload assets to CDN
         env:
