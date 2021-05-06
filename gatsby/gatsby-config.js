@@ -174,16 +174,18 @@ module.exports = {
         ],
       },
     },
-    process.env.AWS_ACCESS_KEY_ID && {
-      resolve: 'gatsby-plugin-s3',
-      options: {
-        bucketPrefix: 'site',
-        bucketName: process.env.DO_SPACES_BUCKET,
-        customAwsEndpointHostname: process.env.DO_SPACES_ENDPOINT,
-        params: {
-          ContentEncoding: 'gzip',
+    process.env.AWS_ACCESS_KEY_ID &&
+      process.env.DO_SPACES_BUCKET &&
+      process.env.DO_SPACES_ENDPOINT && {
+        resolve: 'gatsby-plugin-s3',
+        options: {
+          bucketPrefix: 'site',
+          bucketName: process.env.DO_SPACES_BUCKET,
+          customAwsEndpointHostname: process.env.DO_SPACES_ENDPOINT,
+          params: {
+            ContentEncoding: 'gzip',
+          },
         },
       },
-    },
   ].filter(Boolean),
 }
