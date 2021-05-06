@@ -174,17 +174,5 @@ module.exports = {
         ],
       },
     },
-    // @TODO This is slowing down dev build from 5 seconds to 2 minutes. Figure
-    // out what's happening here when I care about build-stats again.
-    // {
-    //   resolve: 'gatsby-plugin-webpack-bundle-analyzer',
-    //   options: {
-    //     production: true,
-    //     openAnalyzer: false,
-    //     generateStatsFile: true,
-    //     statsFilename: 'public/stats.json',
-    //     reportFilename: 'public/webpack-report.html',
-    //   },
-    // },
   ],
 }
