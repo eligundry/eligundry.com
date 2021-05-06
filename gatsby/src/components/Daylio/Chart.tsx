@@ -3,10 +3,10 @@ import { Line } from 'react-chartjs-2'
 import subMonths from 'date-fns/subMonths'
 
 import useFeelings from './useFeelings'
-import { DaylioVariants, MoodMapping } from './types'
+import { MoodMapping } from './types'
 
 const DaylioChart: React.FC = () => {
-  const entries = useFeelings(DaylioVariants.list)
+  const entries = useFeelings()
 
   const timeWindow = subMonths(new Date(), 1)
 

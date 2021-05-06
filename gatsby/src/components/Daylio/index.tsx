@@ -5,32 +5,25 @@ import Entry from './Entry'
 import EntryList from './EntryList'
 import { DaylioVariants } from './types'
 import useFeelings from './useFeelings'
+import useLatestFeelings from './useLatestFeelings'
 
-interface Props {
-  variant?: DaylioVariants
-}
-
-const Daylio: React.FC<Props> = ({ variant = DaylioVariants.home }) => {
-  const entries = useFeelings()
-
-  if (!entries) {
-    return <h1>Loading Eli's Feelings...</h1>
-  }
-
-  const tooltip = <ReactTooltip place="top" effect="solid" />
-
-  if (variant === DaylioVariants.home) {
-    return (
-      <>
-        {tooltip}
-        <Entry variant={DaylioVariants.home} {...entries[0]} />
-      </>
-    )
-  }
+const Daylio: React.FC = () => {
+  const entry = useLatestFeelings()
 
   return (
     <>
-      {tooltip}
+      <ReactTooltip place="top" effect="solid" />
+      <Entry variant={DaylioVariants.home} {...entry} />
+    </>
+  )
+}
+
+export const DaylioList: React.FC = () => {
+  const entries = useFeelings()
+
+  return (
+    <>
+      <ReactTooltip place="top" effect="solid" />
       <EntryList entries={entries} />
     </>
   )

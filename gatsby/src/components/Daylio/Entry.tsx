@@ -2,6 +2,7 @@ import React from 'react'
 import formatISO from 'date-fns/formatISO'
 import isEqual from 'lodash/isEqual'
 import tw, { styled, css } from 'twin.macro'
+import { Link } from 'gatsby'
 
 import styleVariables from '../../../data/styleConfig'
 import { PaperStyles } from '../Shared/Paper'
@@ -140,7 +141,7 @@ const Entry: React.FC<Props> = ({
       <div className="text-column">
         <h3>I felt {mood}</h3>
         <time dateTime={isoTime}>
-          <a href={`/feelings#${isoTime}`}>{isoTime}</a>
+          <Link to={`/feelings#${isoTime}`}>{isoTime}</Link>
         </time>
         {filteredActivities.length > 0 && (
           <ActivitiesList>

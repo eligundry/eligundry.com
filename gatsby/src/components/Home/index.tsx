@@ -4,11 +4,11 @@ import GitHubCalendar from 'react-github-calendar'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
 import { useWindowSize } from 'react-use'
 import LazyLoad from 'react-lazyload'
+import { Link } from 'gatsby'
 
 import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
-import { DaylioVariants } from '../Daylio/types'
 import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
@@ -95,9 +95,10 @@ const Home: React.FC = () => {
         <p className="summary">
           Recently, I decided to start journaling my feelings. Being a software
           engineer, I made an API out of it and put it on my website. You can
-          read more about this project <a href="/blog/feelings-api">here</a>.
+          read more about this project <Link to="/blog/feelings-api">here</Link>
+          .
         </p>
-        <Daylio variant={DaylioVariants.home} />
+        <Daylio />
         <DaylioChart />
       </Section>
       <Section className="coding">

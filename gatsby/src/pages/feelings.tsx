@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 
 import Layout from '../layout'
-import Daylio from '../components/Daylio'
+import { DaylioList } from '../components/Daylio'
 
 const FeelingsPage: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const FeelingsPage: React.FC = () => {
           href="/api/feelings/feed.rss"
         />
       </Helmet>
-      <Daylio variant="list" />
+      <DaylioList />
     </Layout>
   )
 }

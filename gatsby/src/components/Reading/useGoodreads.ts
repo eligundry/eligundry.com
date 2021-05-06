@@ -5,7 +5,7 @@ export default function useGoodreadsShelf(accountID: string, shelf: string) {
     ['goodreads', accountID, shelf],
     async () => {
       const resp = await fetch(
-        `https://cors-anywhere.herokuapp.com/https://www.goodreads.com/review/list/${accountID}?ref=nav_mybooks&shelf=${shelf}`
+        `https://www.goodreads.com/review/list/${accountID}?ref=nav_mybooks&shelf=${shelf}`
       )
 
       if (!resp.ok) {

@@ -3819,6 +3819,11 @@ export type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type UseFeelingsQuery = { allFeelings: { feelings: Array<Pick<Feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
+export type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UseLatestFeelingsQuery = { feelings?: Maybe<Pick<Feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+
 export type CategoryPageQueryVariables = Exact<{
   category?: Maybe<Scalars['String']>;
 }>;
