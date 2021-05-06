@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - gatsby-learnings
 
 jobs:
   api:
@@ -24,15 +25,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: azure/docker-login@v1
-        with:
-          username: eligundry
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - uses: satackey/action-docker-layer-caching@v0.0.8
-        continue-on-error: true
 
-      - name: Docker Build
-        run: docker build -t eligundry/website.eligundry.com -f Dockerfile.frontend .
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: gatsby
+
+      # Incremental builds in Gatsby!
+      # https://dev.to/danielbayerlein/incremental-gatsby-builds-with-github-actions-2p7o
+      - name: Cache Gatsby
+        id: gatsby-cache-build
+        uses: actions/cache@v2
+        with:
+          path: |
+            gatsby/public
+            gatsby/.cache
+          key: ${{ runner.os }}-gatsby-build-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-gatsby-build-
 
       - name: Upload assets to CDN
         env:
@@ -41,9 +50,6 @@ jobs:
           DO_SPACES_ENDPOINT: "https://nyc3.digitaloceanspaces.com" 
           DO_SPACES_BUCKET: nyc-cdn.eligundry.com
         run: ./scripts/deploy-assets.sh
-
-      - name: Docker Push
-        run: docker push eligundry/website.eligundry.com
 
   deploy:
     runs-on: ubuntu-latest
