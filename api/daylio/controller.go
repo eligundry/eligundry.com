@@ -83,6 +83,13 @@ func SubmitDaylioExport(c *gin.Context) {
 		return
 	}
 
+	// if err := common.TriggerGithubActionsDeployOfSite(); err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{
+	// 		"error": err.Error(),
+	// 	})
+	// 	return
+	// }
+
 	c.JSON(http.StatusCreated, data)
 }
 
