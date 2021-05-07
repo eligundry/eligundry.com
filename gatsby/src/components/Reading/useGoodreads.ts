@@ -1,4 +1,3 @@
-import { useQuery } from 'react-query'
 import { useStaticQuery, graphql } from 'gatsby'
 
 interface GoodreadsBook {

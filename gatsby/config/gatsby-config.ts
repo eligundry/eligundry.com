@@ -76,6 +76,22 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
+      resolve: 'gatsby-source-custom-api',
+      options: {
+        url: 'https://eligundry.com/api/memes',
+        rootKey: 'memes',
+        imageKeys: ['url'],
+        schemas: {
+          memes: `
+            url: String!
+            size: [Int]
+            notes: String!
+            created_at: String!
+          `,
+        },
+      },
+    },
+    {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
@@ -151,8 +167,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             query: `
             {
               allMarkdownRemark(
-                limit: 1000,
-                sort: { order: DESC, fields: [fields___date] },
+                sort: { order: DESC, fields: [frontmatter___date] },
               ) {
                 edges {
                   node {
