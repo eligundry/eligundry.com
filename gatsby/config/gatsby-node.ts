@@ -7,10 +7,48 @@ import path from 'path'
 import trim from 'lodash/trim'
 import kebabCase from 'lodash/kebabCase'
 import dateCompareDesc from 'date-fns/compareDesc'
+import parseISO from 'date-fns/parseISO'
+import isValidDate from 'date-fns/isValid'
 
 import siteConfig from '../data/SiteConfig'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
+  onCreateNode: ({ node, actions, getNode }) => {
+    const { createNodeField } = actions
+    let slug
+    if (node.internal.type === 'MarkdownRemark') {
+      node.collection = getNode(node.parent).sourceInstanceName
+      const fileNode = getNode(node.parent)
+      const parsedFilePath = path.parse(fileNode.relativePath)
+      if (
+        Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
+        Object.prototype.hasOwnProperty.call(node.frontmatter, 'title')
+      ) {
+        slug = `${kebabCase(node.frontmatter.title)}`
+      } else if (parsedFilePath.name !== 'index' && parsedFilePath.dir !== '') {
+        slug = `${parsedFilePath.dir}/${parsedFilePath.name}`
+      } else if (parsedFilePath.dir === '') {
+        slug = `${parsedFilePath.name}`
+      } else {
+        slug = `/{parsedFilePath.dir}`
+      }
+
+      if (Object.prototype.hasOwnProperty.call(node, 'frontmatter')) {
+        if (Object.prototype.hasOwnProperty.call(node.frontmatter, 'slug'))
+          slug = `${kebabCase(node.frontmatter.slug)}`
+        if (Object.prototype.hasOwnProperty.call(node.frontmatter, 'date')) {
+          const date = parseISO(node.frontmatter.date)
+
+          if (!isValidDate(date)) {
+            console.warn(`WARNING: Invalid date.`, node.frontmatter)
+          }
+
+          createNodeField({ node, name: 'date', value: date.toISOString() })
+        }
+      }
+      createNodeField({ node, name: 'slug', value: slug })
+    }
+  },
   createPages: async ({ graphql, actions }) => {
     const { createPage } = actions
     const postPage = path.resolve('src/templates/post.tsx')
