@@ -32,7 +32,7 @@ export default TalkListing
 export const talkListingQuery = graphql`
   query TalkListingQuery {
     allMarkdownRemark(
-      sort: { fields: [fields___date], order: DESC }
+      sort: { fields: [frontmatter___date], order: DESC }
       filter: {
         collection: { eq: "talks" }
         frontmatter: { draft: { ne: true } }

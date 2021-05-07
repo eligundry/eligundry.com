@@ -32,7 +32,7 @@ export default Listing
 export const listingQuery = graphql`
   query ListingQuery {
     allMarkdownRemark(
-      sort: { fields: [fields___date], order: DESC }
+      sort: { fields: [frontmatter___date], order: DESC }
       filter: {
         collection: { eq: "posts" }
         frontmatter: { draft: { ne: true } }
