@@ -30,11 +30,9 @@ export default Listing
 
 /* eslint no-undef: "off" */
 export const listingQuery = graphql`
-  query ListingQuery($skip: Int!, $limit: Int!) {
+  query ListingQuery {
     allMarkdownRemark(
       sort: { fields: [fields___date], order: DESC }
-      limit: $limit
-      skip: $skip
       filter: {
         collection: { eq: "posts" }
         frontmatter: { draft: { ne: true } }

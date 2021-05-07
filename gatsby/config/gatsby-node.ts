@@ -3,13 +3,13 @@ import { ITSConfigFn } from 'gatsby-plugin-ts-config'
 import axios from 'axios'
 import { JSDOM } from 'jsdom'
 import { SourceNodesArgs } from 'gatsby'
+import path from 'path'
 import trim from 'lodash/trim'
+import kebabCase from 'lodash/kebabCase'
+import parseISO from 'date-fns/parseISO'
+import isValidDate from 'date-fns/isValidDate'
 
-const path = require('path')
-const kebabCase = require('lodash/kebabCase')
-const parseISO = require('date-fns/parseISO')
-const isValidDate = require('date-fns/isValid')
-const siteConfig = require('../data/SiteConfig')
+import siteConfig from '../data/SiteConfig'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
   createPages: async ({ graphql, actions }) => {
@@ -64,20 +64,11 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       return 0
     })
 
-    // Paging
-    const { postsPerPage } = siteConfig
-    const pageCount = Math.ceil(postsEdges.length / postsPerPage)
-    ;[...Array(pageCount)].forEach((_val, pageNum) => {
-      createPage({
-        path: pageNum === 0 ? `/blog/` : `/blog/page/${pageNum + 1}/`,
-        component: listingPage,
-        context: {
-          limit: postsPerPage,
-          skip: pageNum * postsPerPage,
-          pageCount,
-          currentPageNum: pageNum + 1,
-        },
-      })
+    // Blog post listing
+    createPage({
+      path: '/blog',
+      component: listingPage,
+      context: {},
     })
 
     // Post page creating
