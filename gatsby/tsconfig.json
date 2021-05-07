@@ -15,5 +15,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "files": ["twin.d.ts", "gatsby-types.d.ts"]
+  "files": ["gatsby-types.d.ts"]
 }

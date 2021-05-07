@@ -8,9 +8,7 @@ interface Props {
 }
 
 const Reading: React.FC<Props> = ({ accountID, shelf }) => {
-  // With Goodreads deprecating their API, I need to screen scrape my now
-  // reading page to get a pretty view. Luckily, this is pretty easy.
-  const { books } = useGoodreadsShelf(accountID, shelf)
+  const books = useGoodreadsShelf()
 
   if (!books) {
     return null

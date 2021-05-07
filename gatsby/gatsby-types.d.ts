@@ -704,6 +704,18 @@ type feelings = Node & {
   readonly internal: Internal;
 };
 
+type GoodreadsBook = Node & {
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+  readonly isbn: Maybe<Scalars['String']>;
+  readonly title: Maybe<Scalars['String']>;
+  readonly author: Maybe<Scalars['String']>;
+  readonly cover: Maybe<Scalars['String']>;
+  readonly url: Maybe<Scalars['String']>;
+};
+
 type SiteBuildMetadata = Node & {
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
@@ -782,6 +794,8 @@ type SitePluginPluginOptions = {
   readonly color: Maybe<Scalars['String']>;
   readonly feeds: Maybe<ReadonlyArray<Maybe<SitePluginPluginOptionsFeeds>>>;
   readonly outputPath: Maybe<Scalars['String']>;
+  readonly configDir: Maybe<Scalars['String']>;
+  readonly siteMetadata: Maybe<SitePluginPluginOptionsSiteMetadata>;
   readonly pathCheck: Maybe<Scalars['Boolean']>;
 };
 
@@ -822,6 +836,20 @@ type SitePluginPluginOptionsFeeds = {
   readonly query: Maybe<Scalars['String']>;
   readonly output: Maybe<Scalars['String']>;
   readonly title: Maybe<Scalars['String']>;
+};
+
+type SitePluginPluginOptionsSiteMetadata = {
+  readonly siteUrl: Maybe<Scalars['String']>;
+  readonly rssMetadata: Maybe<SitePluginPluginOptionsSiteMetadataRssMetadata>;
+};
+
+type SitePluginPluginOptionsSiteMetadataRssMetadata = {
+  readonly site_url: Maybe<Scalars['String']>;
+  readonly feed_url: Maybe<Scalars['String']>;
+  readonly title: Maybe<Scalars['String']>;
+  readonly description: Maybe<Scalars['String']>;
+  readonly image_url: Maybe<Scalars['String']>;
+  readonly copyright: Maybe<Scalars['String']>;
 };
 
 type SitePluginPackageJson = {
@@ -868,6 +896,8 @@ type Query = {
   readonly allMarkdownRemark: MarkdownRemarkConnection;
   readonly feelings: Maybe<feelings>;
   readonly allFeelings: feelingsConnection;
+  readonly goodreadsBook: Maybe<GoodreadsBook>;
+  readonly allGoodreadsBook: GoodreadsBookConnection;
   readonly siteBuildMetadata: Maybe<SiteBuildMetadata>;
   readonly allSiteBuildMetadata: SiteBuildMetadataConnection;
   readonly sitePlugin: Maybe<SitePlugin>;
@@ -1113,6 +1143,27 @@ type Query_feelingsArgs = {
 type Query_allFeelingsArgs = {
   filter: Maybe<feelingsFilterInput>;
   sort: Maybe<feelingsSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_goodreadsBookArgs = {
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+  isbn: Maybe<StringQueryOperatorInput>;
+  title: Maybe<StringQueryOperatorInput>;
+  author: Maybe<StringQueryOperatorInput>;
+  cover: Maybe<StringQueryOperatorInput>;
+  url: Maybe<StringQueryOperatorInput>;
+};
+
+
+type Query_allGoodreadsBookArgs = {
+  filter: Maybe<GoodreadsBookFilterInput>;
+  sort: Maybe<GoodreadsBookSortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -2519,6 +2570,8 @@ type SitePluginPluginOptionsFilterInput = {
   readonly color: Maybe<StringQueryOperatorInput>;
   readonly feeds: Maybe<SitePluginPluginOptionsFeedsFilterListInput>;
   readonly outputPath: Maybe<StringQueryOperatorInput>;
+  readonly configDir: Maybe<StringQueryOperatorInput>;
+  readonly siteMetadata: Maybe<SitePluginPluginOptionsSiteMetadataFilterInput>;
   readonly pathCheck: Maybe<BooleanQueryOperatorInput>;
 };
 
@@ -2567,6 +2620,20 @@ type SitePluginPluginOptionsFeedsFilterInput = {
   readonly query: Maybe<StringQueryOperatorInput>;
   readonly output: Maybe<StringQueryOperatorInput>;
   readonly title: Maybe<StringQueryOperatorInput>;
+};
+
+type SitePluginPluginOptionsSiteMetadataFilterInput = {
+  readonly siteUrl: Maybe<StringQueryOperatorInput>;
+  readonly rssMetadata: Maybe<SitePluginPluginOptionsSiteMetadataRssMetadataFilterInput>;
+};
+
+type SitePluginPluginOptionsSiteMetadataRssMetadataFilterInput = {
+  readonly site_url: Maybe<StringQueryOperatorInput>;
+  readonly feed_url: Maybe<StringQueryOperatorInput>;
+  readonly title: Maybe<StringQueryOperatorInput>;
+  readonly description: Maybe<StringQueryOperatorInput>;
+  readonly image_url: Maybe<StringQueryOperatorInput>;
+  readonly copyright: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePluginPackageJsonFilterInput = {
@@ -2854,6 +2921,8 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.feeds.output'
   | 'pluginCreator.pluginOptions.feeds.title'
   | 'pluginCreator.pluginOptions.outputPath'
+  | 'pluginCreator.pluginOptions.configDir'
+  | 'pluginCreator.pluginOptions.siteMetadata.siteUrl'
   | 'pluginCreator.pluginOptions.pathCheck'
   | 'pluginCreator.nodeAPIs'
   | 'pluginCreator.browserAPIs'
@@ -3423,6 +3492,170 @@ type feelingsSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type GoodreadsBookConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<GoodreadsBookEdge>;
+  readonly nodes: ReadonlyArray<GoodreadsBook>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<GoodreadsBookGroupConnection>;
+};
+
+
+type GoodreadsBookConnection_distinctArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_maxArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_minArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_sumArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: GoodreadsBookFieldsEnum;
+};
+
+type GoodreadsBookEdge = {
+  readonly next: Maybe<GoodreadsBook>;
+  readonly node: GoodreadsBook;
+  readonly previous: Maybe<GoodreadsBook>;
+};
+
+type GoodreadsBookFieldsEnum =
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type'
+  | 'isbn'
+  | 'title'
+  | 'author'
+  | 'cover'
+  | 'url';
+
+type GoodreadsBookGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<GoodreadsBookEdge>;
+  readonly nodes: ReadonlyArray<GoodreadsBook>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type GoodreadsBookFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+  readonly isbn: Maybe<StringQueryOperatorInput>;
+  readonly title: Maybe<StringQueryOperatorInput>;
+  readonly author: Maybe<StringQueryOperatorInput>;
+  readonly cover: Maybe<StringQueryOperatorInput>;
+  readonly url: Maybe<StringQueryOperatorInput>;
+};
+
+type GoodreadsBookSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<GoodreadsBookFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
 type SiteBuildMetadataConnection = {
   readonly totalCount: Scalars['Int'];
   readonly edges: ReadonlyArray<SiteBuildMetadataEdge>;
@@ -3784,6 +4017,14 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.feeds.output'
   | 'pluginOptions.feeds.title'
   | 'pluginOptions.outputPath'
+  | 'pluginOptions.configDir'
+  | 'pluginOptions.siteMetadata.siteUrl'
+  | 'pluginOptions.siteMetadata.rssMetadata.site_url'
+  | 'pluginOptions.siteMetadata.rssMetadata.feed_url'
+  | 'pluginOptions.siteMetadata.rssMetadata.title'
+  | 'pluginOptions.siteMetadata.rssMetadata.description'
+  | 'pluginOptions.siteMetadata.rssMetadata.image_url'
+  | 'pluginOptions.siteMetadata.rssMetadata.copyright'
   | 'pluginOptions.pathCheck'
   | 'nodeAPIs'
   | 'browserAPIs'
@@ -3898,6 +4139,11 @@ type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+
+type UseGoodreadsShelfQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseGoodreadsShelfQuery = { readonly allGoodreadsBook: { readonly books: ReadonlyArray<Pick<GoodreadsBook, 'title' | 'author' | 'cover' | 'isbn' | 'url'>> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
