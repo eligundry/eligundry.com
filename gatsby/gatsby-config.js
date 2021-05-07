@@ -63,6 +63,14 @@ module.exports = {
       options: {
         url: 'https://eligundry.com/api/feelings',
         rootKey: 'feelings',
+        schemas: {
+          feelings: `
+            time: String!
+            mood: String!
+            activities: [String]
+            notes: [String!]
+          `,
+        },
       },
     },
     {
@@ -172,12 +180,9 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-graphql-codegen',
+      resolve: 'gatsby-plugin-typegen',
       options: {
-        documentPaths: [
-          './src/**/*.{ts,tsx}',
-          './node_modules/gatsby-*/**/*.js',
-        ],
+        outputPath: './gatsby-types.d.ts',
       },
     },
     process.env.AWS_ACCESS_KEY_ID &&

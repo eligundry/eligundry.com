@@ -23,6 +23,7 @@
     "gatsby-plugin-sitemap": "^4.0.0",
     "gatsby-plugin-styled-components": "^4.4.0",
     "gatsby-plugin-twitter": "^3.4.0",
+    "gatsby-plugin-typegen": "^2.2.4",
     "gatsby-plugin-typescript": "^3.4.0",
     "gatsby-remark-autolink-headers": "^4.1.0",
     "gatsby-remark-copy-linked-files": "^4.1.0",

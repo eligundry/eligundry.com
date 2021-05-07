@@ -8,7 +8,7 @@ interface QueryResults {
 }
 
 export default function useLatestFeelings(): DaylioEntry {
-  const entry = useStaticQuery<QueryResults>(
+  const entry = useStaticQuery<GatsbyTypes.UseLatestFeelingsQuery>(
     graphql`
       query UseLatestFeelings {
         feelings {
