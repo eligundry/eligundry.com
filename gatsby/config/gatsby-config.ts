@@ -20,11 +20,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       copyright: config.copyright,
     },
   },
-  flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    DEV_SSR: true,
-    PARALLEL_SOURCING: true,
-  },
   plugins: [
     'gatsby-plugin-typescript',
     // If things get slow, try this

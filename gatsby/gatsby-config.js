@@ -18,4 +18,9 @@ module.exports = generateConfig({
       copyright: config.copyright,
     },
   },
+  flags: {
+    PRESERVE_WEBPACK_CACHE: true,
+    DEV_SSR: true,
+    PARALLEL_SOURCING: true,
+  },
 })
