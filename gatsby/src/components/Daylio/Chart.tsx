@@ -4,15 +4,16 @@ import subMonths from 'date-fns/subMonths'
 
 import useFeelings from './useFeelings'
 import { MoodMapping } from './types'
+import useIsMobile from '../../utils/useIsMobile'
 
 const DaylioChart: React.FC = () => {
   const entries = useFeelings()
-
   const timeWindow = subMonths(new Date(), 1)
+  const isMobile = useIsMobile()
 
   return (
     <Line
-      height={50}
+      height={isMobile ? 100 : 50}
       data={{
         labels: Object.values(MoodMapping).map((_, i) => i),
         datasets: [
