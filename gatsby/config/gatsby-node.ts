@@ -6,8 +6,7 @@ import { SourceNodesArgs } from 'gatsby'
 import path from 'path'
 import trim from 'lodash/trim'
 import kebabCase from 'lodash/kebabCase'
-import parseISO from 'date-fns/parseISO'
-import isValidDate from 'date-fns/isValidDate'
+import dateCompareDesc from 'date-fns/compareDesc'
 
 import siteConfig from '../data/SiteConfig'
 
@@ -54,15 +53,12 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     const postsEdges = markdownQueryResult.data.allMarkdownRemark.edges
 
     // Sort posts
-    postsEdges.sort((postA, postB) => {
-      const dateA = new Date(postA.node.frontmatter.date)
-      const dateB = new Date(postB.node.frontmatter.date)
-
-      if (dateA < dateB) return 1
-      if (dateB < dateA) return -1
-
-      return 0
-    })
+    postsEdges.sort((postA, postB) =>
+      dateCompareDesc(
+        new Date(postA.node.frontmatter.date),
+        new Date(postB.node.frontmatter.date)
+      )
+    )
 
     // Blog post listing
     createPage({
@@ -107,7 +103,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     //  Create tag pages
     tagSet.forEach(tag => {
       createPage({
-        path: `/blog/tags/${kebabCase(tag)}/`,
+        path: `/blog/tags/${kebabCase(tag)}`,
         component: tagPage,
         context: { tag },
       })
@@ -116,7 +112,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     // Create category pages
     categorySet.forEach(category => {
       createPage({
-        path: `/blog/categories/${kebabCase(category)}/`,
+        path: `/blog/categories/${kebabCase(category)}`,
         component: categoryPage,
         context: { category },
       })
