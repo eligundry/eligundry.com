@@ -5,6 +5,7 @@ import { TwitterTimelineEmbed } from 'react-twitter-embed'
 import { useWindowSize } from 'react-use'
 import LazyLoad from 'react-lazyload'
 import { Link } from 'gatsby'
+import { StaticImage } from 'gatsby-plugin-image'
 
 import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
@@ -40,11 +41,6 @@ const Section = styled(Paper.section)`
     & > .text-column {
       align-self: center;
       margin-right: 1em;
-    }
-
-    & > .headshot {
-      width: 150px;
-      height: 191px;
     }
   }
 
@@ -84,8 +80,8 @@ const Home: React.FC = () => {
             Listicle synth next level quinoa.
           </p>
         </div>
-        <img
-          src="/img/eli-gundry-headshot.jpg"
+        <StaticImage
+          src="../../../static/img/eli-gundry-headshot.jpg"
           alt="Eli Gundry's Headshot"
           className="headshot"
         />

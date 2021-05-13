@@ -13,6 +13,7 @@
     "gatsby-plugin-catch-links": "^3.4.0",
     "gatsby-plugin-feed": "^3.4.0",
     "gatsby-plugin-google-analytics": "^3.4.0",
+    "gatsby-plugin-image": "^1.5.0",
     "gatsby-plugin-lodash": "^4.4.0",
     "gatsby-plugin-no-sourcemaps": "^3.4.0",
     "gatsby-plugin-nprogress": "^3.4.0",

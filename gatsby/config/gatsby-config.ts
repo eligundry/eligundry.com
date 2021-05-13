@@ -24,6 +24,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-lodash',
+    'gatsby-plugin-image',
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
     'gatsby-plugin-catch-links',
