@@ -221,19 +221,15 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             },
             '**/**.js': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
             '**/**.css': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
             '**/**.html': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
             '**/**.json': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
           },
         },

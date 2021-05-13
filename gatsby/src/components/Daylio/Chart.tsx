@@ -2,13 +2,13 @@ import React from 'react'
 import { Line } from 'react-chartjs-2'
 import subMonths from 'date-fns/subMonths'
 
-import useFeelings from './useFeelings'
-import { MoodMapping } from './types'
+import useFeelingsChartData from './useFeelingsChartData'
 import useIsMobile from '../../utils/useIsMobile'
+import { MoodMapping } from './types'
 
 const DaylioChart: React.FC = () => {
-  const entries = useFeelings()
   const timeWindow = subMonths(new Date(), 1)
+  const data = useFeelingsChartData(timeWindow)
   const isMobile = useIsMobile()
 
   return (
@@ -18,12 +18,7 @@ const DaylioChart: React.FC = () => {
         labels: Object.values(MoodMapping).map((_, i) => i),
         datasets: [
           {
-            data: entries
-              .filter(entry => entry.time >= timeWindow)
-              .map(entry => ({
-                x: entry.time,
-                y: Object.keys(MoodMapping).findIndex(m => m === entry.mood),
-              })),
+            data,
             backgroundColor: 'transparent',
             pointStyle: 'rect',
             borderColor: 'rgb(184, 50, 128)',
