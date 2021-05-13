@@ -46,16 +46,16 @@ jobs:
 
       # Incremental builds in Gatsby!
       # https://dev.to/danielbayerlein/incremental-gatsby-builds-with-github-actions-2p7o
-      - name: Cache Gatsby
-        id: gatsby-cache-build
-        uses: actions/cache@v2
-        with:
-          path: |
-            gatsby/public
-            gatsby/.cache
-          key: ${{ runner.os }}-gatsby-build-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-gatsby-build-
+      # - name: Cache Gatsby
+      #   id: gatsby-cache-build
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       gatsby/public
+      #       gatsby/.cache
+      #     key: ${{ runner.os }}-gatsby-build-${{ github.run_id }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-gatsby-build-
 
       - name: Build and deploy site
         env:
