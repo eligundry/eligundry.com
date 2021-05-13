@@ -32,7 +32,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-plugin-twitter',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-postcss',
-    'gatsby-plugin-zopfli',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
@@ -202,6 +201,10 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
         outputPath: './gatsby-types.d.ts',
       },
     },
+    {
+      resolve: 'gatsby-plugin-zopfli',
+      extensions: ['css', 'js', 'html', 'json'],
+    },
     process.env.AWS_ACCESS_KEY_ID &&
       process.env.DO_SPACES_BUCKET &&
       process.env.DO_SPACES_ENDPOINT && {
@@ -210,9 +213,23 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
           bucketPrefix: 'site',
           bucketName: process.env.DO_SPACES_BUCKET,
           customAwsEndpointHostname: process.env.DO_SPACES_ENDPOINT,
+          mergeCachingParams: true,
           params: {
-            ACL: 'public-read',
-            ContentEncoding: 'gzip',
+            '*': {
+              ACL: 'public-read',
+            },
+            '*.js': {
+              ContentEncoding: 'gzip',
+            },
+            '*.css': {
+              ContentEncoding: 'gzip',
+            },
+            '*.html': {
+              ContentEncoding: 'gzip',
+            },
+            '*.json': {
+              ContentEncoding: 'gzip',
+            },
           },
         },
       },
