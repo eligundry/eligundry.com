@@ -238,6 +238,10 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
           },
         },
       },
+    process.env.NETLIFY === 'true' && {
+      resolve: 'gatsby-plugin-netlify-cache',
+      options: {},
+    },
   ].filter(Boolean),
 })
 

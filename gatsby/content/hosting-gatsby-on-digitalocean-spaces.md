@@ -39,3 +39,10 @@ draft: true
   saying that the file is compressed with gzip. This could cause issues with older clients AND it will mess with you
   because you'll be like "my files aren't compressed" but they are.
 * Precompressing and overwriting files might not work with Gatsby build caching?
+
+## HTTP/2 Is Not Supported
+
+* DO Spaces does not support HTTP/2
+* This means that you are limited in the number of concurrent requests you can make, which is bad.
+* Lighthouse is telling me I could have 0.5 seconds off of my home page load, that is enough to make me want to ditch
+  this endevor.
