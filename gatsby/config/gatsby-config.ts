@@ -200,44 +200,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
         outputPath: './gatsby-types.d.ts',
       },
     },
-    {
-      resolve: 'gatsby-plugin-zopfli',
-      options: {
-        extensions: ['css', 'js', 'html', 'json'],
-      },
-    },
-    process.env.AWS_ACCESS_KEY_ID &&
-      process.env.DO_SPACES_BUCKET &&
-      process.env.DO_SPACES_ENDPOINT && {
-        resolve: 'gatsby-plugin-s3',
-        options: {
-          bucketPrefix: 'site',
-          bucketName: process.env.DO_SPACES_BUCKET,
-          customAwsEndpointHostname: process.env.DO_SPACES_ENDPOINT,
-          mergeCachingParams: true,
-          params: {
-            '**/**': {
-              ACL: 'public-read',
-            },
-            '**/**.js': {
-              ContentEncoding: 'gzip',
-            },
-            '**/**.css': {
-              ContentEncoding: 'gzip',
-            },
-            '**/**.html': {
-              ContentEncoding: 'gzip',
-            },
-            '**/**.json': {
-              ContentEncoding: 'gzip',
-            },
-          },
-        },
-      },
-    process.env.NETLIFY === 'true' && {
-      resolve: 'gatsby-plugin-netlify-cache',
-      options: {},
-    },
   ].filter(Boolean),
 })
 
