@@ -1,4 +1,5 @@
 import React from 'react'
+import { GatsbyImage } from 'gatsby-plugin-image'
 
 import useGoodreadsShelf from './useGoodreads'
 
@@ -23,7 +24,10 @@ const Reading: React.FC<Props> = ({ accountID, shelf }) => {
           target="_blank"
           key={book.isbn}
         >
-          <img alt={`${book.title} - ${book.author}`} src={book.cover} />
+          <GatsbyImage
+            image={book.coverImage.childImageSharp.gatsbyImageData}
+            alt={`${book.title} - ${book.author}`}
+          />
         </a>
       ))}
     </>

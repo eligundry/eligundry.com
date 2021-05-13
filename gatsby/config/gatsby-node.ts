@@ -1,5 +1,6 @@
 /* eslint "no-console": "off" */
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
+import { createRemoteFileNode } from 'gatsby-source-filesystem'
 import axios from 'axios'
 import { JSDOM } from 'jsdom'
 import { SourceNodesArgs } from 'gatsby'
@@ -13,8 +14,15 @@ import isValidDate from 'date-fns/isValid'
 import siteConfig from '../data/SiteConfig'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
-  onCreateNode: ({ node, actions, getNode }) => {
-    const { createNodeField } = actions
+  onCreateNode: async ({
+    node,
+    actions,
+    getNode,
+    createNodeId,
+    store,
+    cache,
+  }) => {
+    const { createNodeField, createNode } = actions
     let slug
     if (node.internal.type === 'MarkdownRemark') {
       node.collection = getNode(node.parent).sourceInstanceName
@@ -47,6 +55,21 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         }
       }
       createNodeField({ node, name: 'slug', value: slug })
+    }
+
+    if (node.internal.type === 'GoodreadsBook' && node.cover) {
+      const imageNode = await createRemoteFileNode({
+        url: node.cover,
+        parentNodeId: node.id,
+        createNode,
+        createNodeId,
+        cache,
+        store,
+      })
+
+      if (imageNode) {
+        node.coverImage___NODE = imageNode.id
+      }
     }
   },
   createPages: async ({ graphql, actions }) => {
@@ -249,7 +272,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
 
     Array.from(
       goodreadsDocument.querySelectorAll('#booksBody .bookalike')
-    ).forEach(row => {
+    ).forEach(async row => {
       const book = {
         isbn: trim(
           row.querySelector('td.field.isbn .value').textContent,
