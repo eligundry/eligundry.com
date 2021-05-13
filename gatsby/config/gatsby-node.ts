@@ -238,6 +238,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
             content: JSON.stringify(book),
             contentDigest: createContentDigest(book),
           },
+          ...book,
         })
       )
 
