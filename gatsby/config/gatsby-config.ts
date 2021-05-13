@@ -203,7 +203,9 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     },
     {
       resolve: 'gatsby-plugin-zopfli',
-      extensions: ['css', 'js', 'html', 'json'],
+      options: {
+        extensions: ['css', 'js', 'html', 'json'],
+      },
     },
     process.env.AWS_ACCESS_KEY_ID &&
       process.env.DO_SPACES_BUCKET &&
@@ -220,15 +222,19 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             },
             '*.js': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
             '*.css': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
             '*.html': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
             '*.json': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
           },
         },
