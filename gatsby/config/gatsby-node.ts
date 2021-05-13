@@ -204,9 +204,14 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     const { createNodeId, createContentDigest } = args
     const { createNode } = args.actions
 
-    const goodreadsHTML = await axios.get<string>(
-      `https://www.goodreads.com/review/list/${siteConfig.goodreads.userID}?ref=nav_mybooks&shelf=currently-reading`
-    )
+    try {
+      var goodreadsHTML = await axios.get<string>(
+        `https://www.goodreads.com/review/list/${siteConfig.goodreads.userID}?ref=nav_mybooks&shelf=currently-reading`
+      )
+    } catch (e) {
+      console.error('could not fetch Goodreads shelf', e)
+      return
+    }
     const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
     const trimChars = '\n *'
 
