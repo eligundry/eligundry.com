@@ -10,6 +10,7 @@ services:
       DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
       STAGE: 'local'
       WEBSOCKET: 'true'
+      TEST_CDN: 'true'
     networks:
       backend: {}
     volumes:
