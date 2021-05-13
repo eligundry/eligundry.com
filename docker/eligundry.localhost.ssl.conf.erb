@@ -11,6 +11,7 @@ server {
     ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;
     ssl_prefer_server_ciphers on;
     ssl_dhparam <%= dhparam_path %>;
+
     <% if ENV['TEST_CDN'] && ENV['TEST_CDN'].downcase == 'true' %>
 
     location / {
@@ -18,6 +19,8 @@ server {
         set $cdn_url "https://cdn.eligundry.com/site/";
         proxy_pass $cdn_url;
         proxy_set_header Host "cdn.eligundry.com";
+        # Without this, SSL handshakes fail?
+        # https://stackoverflow.com/a/52199403
         proxy_ssl_server_name on;
         # proxy_hide_header Strict-Transport-Security;
     }

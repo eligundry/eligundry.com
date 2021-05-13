@@ -64,9 +64,7 @@ jobs:
           DO_SPACES_ENDPOINT: "https://nyc3.digitaloceanspaces.com" 
           DO_SPACES_BUCKET: nyc-cdn.eligundry.com
         run: |
-          cd gatsby
-          npm run build:gh-actions
-          cd ..
+          npm --prefix=gatsby run build:gh-actions
           ./scripts/deploy-assets.sh
 
   deploy:

@@ -22,8 +22,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
   },
   plugins: [
     'gatsby-plugin-typescript',
-    // If things get slow, try this
-    // 'gatsby-plugin-no-sourcemaps',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-lodash',
     'gatsby-plugin-sharp',
@@ -222,15 +220,19 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             },
             '**/**.js': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
             '**/**.css': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
             '**/**.html': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
             '**/**.json': {
               ContentEncoding: 'gzip',
+              'Content-Encoding': 'gzip',
             },
           },
         },
