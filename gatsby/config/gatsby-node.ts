@@ -210,6 +210,26 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       )
     } catch (e) {
       console.error('could not fetch Goodreads shelf', e)
+
+      const book = {
+        isbn: '1',
+        title: 'Error',
+        author: 'Error',
+        cover: 'https://http.cat/500',
+        url: 'https://http.cat/500',
+      }
+
+      createNode({
+        id: createNodeId(`goodreads-book-${book.isbn}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: 'GoodreadsBook',
+          content: JSON.stringify(book),
+          contentDigest: createContentDigest(book),
+        },
+      })
+
       return
     }
     const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
