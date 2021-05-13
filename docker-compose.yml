@@ -11,6 +11,7 @@ services:
       STAGE: 'local'
       WEBSOCKET: 'true'
       TEST_CDN: 'true'
+      ACCESS_LOG: stdout
     networks:
       backend: {}
     volumes:
