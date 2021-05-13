@@ -14,6 +14,7 @@ server {
 
     <% if ENV['TEST_CDN'] && ENV['TEST_CDN'].downcase == 'true' %>
 
+    # All non html assets
     location / {
         resolver 1.1.1.1 [::1]:5353 valid=30s;
         set $cdn_url "https://cdn.eligundry.com/site/";
@@ -25,6 +26,7 @@ server {
         # proxy_hide_header Strict-Transport-Security;
     }
 
+    # index.html
     location = / {
         resolver 1.1.1.1 [::1]:5353 valid=30s;
         set $cdn_url "https://cdn.eligundry.com/site/";
@@ -34,6 +36,7 @@ server {
         # proxy_hide_header Strict-Transport-Security;
     }
 
+    # All other HTML pages
     location ~ /(?<req_path>.+) {
         resolver 1.1.1.1 [::1]:5353 valid=30s;
         set $cdn_url "https://cdn.eligundry.com/site/";
