@@ -9,6 +9,7 @@ draft: true
 
 * gatsby-plugin-s3 for deployment
   * This works perfectly (once you have the params) right because DO Spaces is S3 compatible
+  * The way params work is not perfectly documented, show how I did it.
 
 # Gotchas
 

@@ -217,24 +217,20 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
           customAwsEndpointHostname: process.env.DO_SPACES_ENDPOINT,
           mergeCachingParams: true,
           params: {
-            '*': {
+            '**/**': {
               ACL: 'public-read',
             },
-            '*.js': {
+            '**/**.js': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
-            '*.css': {
+            '**/**.css': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
-            '*.html': {
+            '**/**.html': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
-            '*.json': {
+            '**/**.json': {
               ContentEncoding: 'gzip',
-              'Content-Encoding': 'gzip',
             },
           },
         },
