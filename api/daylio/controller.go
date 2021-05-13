@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/eligundry/eligundry.com/api/auth"
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/feeds"
 	"github.com/pkg/errors"
@@ -83,12 +84,13 @@ func SubmitDaylioExport(c *gin.Context) {
 		return
 	}
 
-	// if err := common.TriggerGithubActionsDeployOfSite(); err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{
-	// 		"error": err.Error(),
-	// 	})
-	// 	return
-	// }
+	// Trigger a rebuild of the static site when I submit a new feelings CSV
+	if err := common.TriggerGithubActionsDeployOfSite(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
 	c.JSON(http.StatusCreated, data)
 }

@@ -12,6 +12,10 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_dhparam <%= dhparam_path %>;
 
+    location ~ ^/api {
+        proxy_pass http://api:8080;
+    }
+
     <% if ENV['TEST_CDN'] && ENV['TEST_CDN'].downcase == 'true' %>
 
     # All non html assets
@@ -69,8 +73,4 @@ server {
     }
 
     <% end %>
-
-    location /api {
-        proxy_pass http://api:8080;
-    }
 }

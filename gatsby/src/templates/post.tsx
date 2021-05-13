@@ -17,11 +17,7 @@ interface Props {
   pageContext: SitePageContext
 }
 
-const Article = styled(Paper.article)`
-  & blockquote {
-    ${tw`italic border-l-2 border-teal-400 pl-2`}
-  }
-`
+const Article = styled(Paper.article)``
 
 const PostTemplate: React.FC<Props> = props => {
   const { data, pageContext } = props

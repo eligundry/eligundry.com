@@ -4,9 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 var client = http.Client{
@@ -14,8 +17,12 @@ var client = http.Client{
 }
 
 func TriggerGithubActionsDeployOfSite() error {
+	if len(os.Getenv("GITHUB_TOKEN")) == 0 {
+		return errors.New("GITHUB_TOKEN env var is not set")
+	}
+
 	payload, err := json.Marshal(map[string]string{
-		"ref": "master",
+		"ref": "gatsby-learnings",
 	})
 
 	if err != nil {
@@ -24,7 +31,7 @@ func TriggerGithubActionsDeployOfSite() error {
 
 	req, err := http.NewRequest(
 		"POST",
-		"https://api.github.com/repos/eligundry/eligundry.com/actions/workflows/docker-build/dispatches",
+		"https://api.github.com/repos/eligundry/eligundry.com/actions/workflows/149594/dispatches",
 		bytes.NewBuffer(payload),
 	)
 
@@ -40,8 +47,24 @@ func TriggerGithubActionsDeployOfSite() error {
 		return err
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("could not trigger GitHub Actions build (status code %d)", resp.StatusCode)
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusNoContent {
+		body, err := ioutil.ReadAll(resp.Body)
+
+		if err != nil {
+			return errors.Wrapf(
+				err,
+				"could not trigger GitHub Actions build (status code %d) and could not read request body",
+				resp.StatusCode,
+			)
+		}
+
+		return fmt.Errorf(
+			"could not trigger GitHub Actions build (status code %d, body %s)",
+			resp.StatusCode,
+			body,
+		)
 	}
 
 	return nil
