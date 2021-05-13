@@ -23,15 +23,14 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     cache,
   }) => {
     const { createNodeField, createNode } = actions
-    let slug
+
     if (node.internal.type === 'MarkdownRemark') {
+      let slug
       node.collection = getNode(node.parent).sourceInstanceName
       const fileNode = getNode(node.parent)
       const parsedFilePath = path.parse(fileNode.relativePath)
-      if (
-        Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
-        Object.prototype.hasOwnProperty.call(node.frontmatter, 'title')
-      ) {
+
+      if (node?.frontmatter?.title) {
         slug = `${kebabCase(node.frontmatter.title)}`
       } else if (parsedFilePath.name !== 'index' && parsedFilePath.dir !== '') {
         slug = `${parsedFilePath.dir}/${parsedFilePath.name}`
@@ -41,10 +40,12 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         slug = `/{parsedFilePath.dir}`
       }
 
-      if (Object.prototype.hasOwnProperty.call(node, 'frontmatter')) {
-        if (Object.prototype.hasOwnProperty.call(node.frontmatter, 'slug'))
+      if (node?.frontmatter) {
+        if (node.frontmatter?.slug) {
           slug = `${kebabCase(node.frontmatter.slug)}`
-        if (Object.prototype.hasOwnProperty.call(node.frontmatter, 'date')) {
+        }
+
+        if (node.frontmatter?.date) {
           const date = parseISO(node.frontmatter.date)
 
           if (!isValidDate(date)) {
@@ -84,9 +85,10 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     // Get a full list of markdown posts
     const markdownQueryResult = await graphql(`
       {
-        allMarkdownRemark(filter: { collection: { eq: "posts" } }) {
+        allMarkdownRemark(sort: { fields: frontmatter___date, order: DESC }) {
           edges {
             node {
+              collection
               fields {
                 slug
               }
@@ -96,7 +98,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
                 category
                 date
               }
-              htmlAst
             }
           }
         }
@@ -108,18 +109,10 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       throw markdownQueryResult.errors
     }
 
-    const tagSet = new Set()
-    const categorySet = new Set()
+    const tagSet = new Set<string>()
+    const categorySet = new Set<string>()
 
     const postsEdges = markdownQueryResult.data.allMarkdownRemark.edges
-
-    // Sort posts
-    postsEdges.sort((postA, postB) =>
-      dateCompareDesc(
-        new Date(postA.node.frontmatter.date),
-        new Date(postB.node.frontmatter.date)
-      )
-    )
 
     // Blog post listing
     createPage({
@@ -128,37 +121,54 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       context: {},
     })
 
-    // Post page creating
+    // Talk post listing
+    createPage({
+      path: '/talks',
+      component: talkListingPage,
+      context: {},
+    })
+
+    // Post and talk page creation
     postsEdges.forEach((edge, index) => {
-      // Generate a list of tags
-      if (edge.node.frontmatter.tags) {
-        edge.node.frontmatter.tags.forEach(tag => {
-          tagSet.add(tag)
+      if (edge.node.collection === 'posts') {
+        // Generate a list of tags
+        if (edge.node.frontmatter.tags) {
+          edge.node.frontmatter.tags.forEach(tag => {
+            tagSet.add(tag)
+          })
+        }
+
+        // Generate a list of categories
+        if (edge.node.frontmatter.category) {
+          categorySet.add(edge.node.frontmatter.category)
+        }
+
+        // Create post pages
+        const nextID = index + 1 < postsEdges.length ? index + 1 : 0
+        const prevID = index - 1 >= 0 ? index - 1 : postsEdges.length - 1
+        const nextEdge = postsEdges[nextID]
+        const prevEdge = postsEdges[prevID]
+
+        createPage({
+          path: `/blog/${edge.node.fields.slug}`,
+          component: postPage,
+          context: {
+            slug: edge.node.fields.slug,
+            nexttitle: nextEdge.node.frontmatter.title,
+            nextslug: nextEdge.node.fields.slug,
+            prevtitle: prevEdge.node.frontmatter.title,
+            prevslug: prevEdge.node.fields.slug,
+          },
+        })
+      } else if (edge.node.collection === 'talks') {
+        createPage({
+          path: `/talks/${edge.node.fields.slug}`,
+          component: talkPage,
+          context: {
+            slug: edge.node.fields.slug,
+          },
         })
       }
-
-      // Generate a list of categories
-      if (edge.node.frontmatter.category) {
-        categorySet.add(edge.node.frontmatter.category)
-      }
-
-      // Create post pages
-      const nextID = index + 1 < postsEdges.length ? index + 1 : 0
-      const prevID = index - 1 >= 0 ? index - 1 : postsEdges.length - 1
-      const nextEdge = postsEdges[nextID]
-      const prevEdge = postsEdges[prevID]
-
-      createPage({
-        path: `/blog/${edge.node.fields.slug}`,
-        component: postPage,
-        context: {
-          slug: edge.node.fields.slug,
-          nexttitle: nextEdge.node.frontmatter.title,
-          nextslug: nextEdge.node.fields.slug,
-          prevtitle: prevEdge.node.frontmatter.title,
-          prevslug: prevEdge.node.fields.slug,
-        },
-      })
     })
 
     //  Create tag pages
@@ -176,50 +186,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         path: `/blog/categories/${kebabCase(category)}`,
         component: categoryPage,
         context: { category },
-      })
-    })
-
-    // Create talk pages
-    const talkQueryResult = await graphql(`
-      {
-        allMarkdownRemark(filter: { collection: { eq: "talks" } }) {
-          edges {
-            node {
-              fields {
-                slug
-              }
-              frontmatter {
-                title
-                tags
-                category
-                date
-              }
-              htmlAst
-            }
-          }
-        }
-      }
-    `)
-
-    if (talkQueryResult.errors) {
-      console.error(talkQueryResult.errors)
-      throw talkQueryResult.errors
-    }
-
-    const talkEdges = talkQueryResult.data.allMarkdownRemark.edges
-
-    createPage({
-      path: '/talks',
-      component: talkListingPage,
-    })
-
-    talkEdges.forEach(edge => {
-      createPage({
-        path: `/talks/${edge.node.fields.slug}`,
-        component: talkPage,
-        context: {
-          slug: edge.node.fields.slug,
-        },
       })
     })
   },

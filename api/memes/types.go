@@ -12,7 +12,7 @@ import (
 const MemesSpacesPath = "memes"
 
 type Meme struct {
-	ID        int64     `json:"id" db:"id"`
+	ID        int64     `json:"meme_id" db:"id"`
 	Filename  string    `json:"-" db:"filename"`
 	Width     null.Int  `json:"width" db:"width"`
 	Height    null.Int  `json:"height" db:"height"`

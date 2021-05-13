@@ -115,10 +115,7 @@ const Home: React.FC = () => {
           are the books that I'm reading right now.
         </p>
         <div className="bookshelf">
-          <Reading
-            shelf="currently-reading"
-            accountID={config.goodreads.userID}
-          />
+          <Reading />
         </div>
       </Section>
       <Section className="triva">
