@@ -91,6 +91,9 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             notes: String!
             created_at: String!
           `,
+          images: `
+            url: String!
+          `,
         },
       },
     },
