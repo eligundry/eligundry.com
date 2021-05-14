@@ -83,8 +83,27 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     const talkPage = path.resolve('src/templates/talk.tsx')
     const talkListingPage = path.resolve('src/templates/talkListing.tsx')
 
+    interface MarkdownQuery {
+      allMarkdownRemark: {
+        edges: {
+          node: {
+            collection: 'talks' | 'posts'
+            fields: {
+              slug: string
+            }
+            frontmatter: {
+              title: string
+              date: string
+              category: string | null
+              tags: string[] | null
+            }
+          }
+        }[]
+      }
+    }
+
     // Get a full list of markdown posts
-    const markdownQueryResult = await graphql(`
+    const markdownQueryResult = await graphql<MarkdownQuery>(`
       {
         allMarkdownRemark(sort: { fields: frontmatter___date, order: DESC }) {
           edges {
