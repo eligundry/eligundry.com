@@ -73,21 +73,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         store,
       })
     }
-
-    if (node.internal.type === 'memes' && node.url) {
-      await loadImage({
-        cacheKey: `local-meme-${node.meme_id}`,
-        node,
-        createRemoteFileNode,
-        targetNodeKey: 'image',
-        url: node.url,
-        parentNodeId: node.id,
-        createNode,
-        createNodeId,
-        cache,
-        store,
-      })
-    }
   },
   createPages: async ({ graphql, actions }) => {
     const { createPage } = actions

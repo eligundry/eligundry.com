@@ -12,11 +12,6 @@ export default function useMemes(): Meme[] {
             notes
             size
             url
-            image {
-              childImageSharp {
-                gatsbyImageData(quality: 100, layout: FULL_WIDTH)
-              }
-            }
             created_at
           }
         }

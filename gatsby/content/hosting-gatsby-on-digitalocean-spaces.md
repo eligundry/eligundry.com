@@ -161,8 +161,8 @@ order. I was greeted with this waterfall:
 
 ![My site on DigitalOcean Spaces connection waterfall. There is a lot of stalling.](../static/img/gatsby-digitialocean-spaces/do-spaces-waterfall.png)
 
-**Those highlighted gray bars are bad.** They are connections are stalling because of too many other connections. This
-is happening because [DigitalOcean Spaces does not support HTTP/2][do-spaces-no-http2]. [People have been voting on
+**Those highlighted gray bars are bad.** They are connections that are stalling because of too many other connections.
+This is happening because [DigitalOcean Spaces does not support HTTP/2][do-spaces-no-http2]. [People have been voting on
 adding this feature since 2018][pokemon-go-to-the-polls] and yet there is still no progress on this.
 
 You can see how this is bad by how the grey bars become green as the bars starting with orange finish. For most web
