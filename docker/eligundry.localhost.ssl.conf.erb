@@ -1,5 +1,3 @@
-proxy_cache_path /tmp levels=1:2 keys_zone=lastfm_image_cache:1m max_size=10m inactive=60m use_temp_path=off;
-
 server {
     listen 443 ssl http2;
     server_name <%= domain.name %>;
@@ -11,46 +9,6 @@ server {
     ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;
     ssl_prefer_server_ciphers on;
     ssl_dhparam <%= dhparam_path %>;
-
-    location ~ ^/api {
-        proxy_pass http://api:8080;
-    }
-
-    <% if ENV['TEST_CDN'] && ENV['TEST_CDN'].downcase == 'true' %>
-
-    # All non html assets
-    location / {
-        resolver 1.1.1.1 [::1]:5353 valid=30s;
-        set $cdn_url "https://cdn.eligundry.com/site/";
-        proxy_pass $cdn_url;
-        proxy_set_header Host "cdn.eligundry.com";
-        # Without this, SSL handshakes fail?
-        # https://stackoverflow.com/a/52199403
-        proxy_ssl_server_name on;
-        # proxy_hide_header Strict-Transport-Security;
-    }
-
-    # index.html
-    location = / {
-        resolver 1.1.1.1 [::1]:5353 valid=30s;
-        set $cdn_url "https://cdn.eligundry.com/site/";
-        proxy_pass $cdn_url/index.html;
-        proxy_set_header Host "cdn.eligundry.com";
-        proxy_ssl_server_name on;
-        # proxy_hide_header Strict-Transport-Security;
-    }
-
-    # All other HTML pages
-    location ~ /(?<req_path>.+) {
-        resolver 1.1.1.1 [::1]:5353 valid=30s;
-        set $cdn_url "https://cdn.eligundry.com/site/";
-        proxy_pass $cdn_url/$req_path/index.html;
-        proxy_set_header Host "cdn.eligundry.com";
-        proxy_ssl_server_name on;
-        # proxy_hide_header Strict-Transport-Security;
-    }
-
-    <% else %>
 
     location / {
         <% if ENV['DYNAMIC_UPSTREAM'] && ENV['DYNAMIC_UPSTREAM'].downcase == 'true' %>
@@ -72,5 +30,7 @@ server {
         <% end %>
     }
 
-    <% end %>
+    location /api {
+        proxy_pass http://api:8080;
+    }
 }

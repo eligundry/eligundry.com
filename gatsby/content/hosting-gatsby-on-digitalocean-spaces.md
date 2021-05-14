@@ -211,6 +211,9 @@ recommend DigitalOcean Spaces for static site hosting. For what it's worth, it d
 recommends it either. They have thousands of guides on how to do things, but none on hosting static sites here. Also,
 there is this [support answer saying "good idea, maybe our product team will look at it?"][do-support-answer].
 
+But, you should not use Spaces for anything related to static sites. It might be okay of simple object storage for an
+app (which seems like their target use case).
+
 [do-spaces]: https://www.digitalocean.com/products/spaces/
 [lighthouse]: https://developers.google.com/web/tools/lighthouse
 [gatsby-plugin-zopfli]: https://www.gatsbyjs.com/plugins/gatsby-plugin-zopfli/
