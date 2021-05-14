@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import tw, { styled } from 'twin.macro'
+import { GatsbyImage } from 'gatsby-plugin-image'
 import Lightbox from 'react-image-lightbox'
 import {
   LazyLoadImage,
@@ -25,7 +26,8 @@ const ImageList = styled.div`
 const Image = styled(Paper.figure)`
   cursor: pointer;
 
-  & > img {
+  & picture,
+  & img {
     width: auto;
     height: auto;
     // max-width: 33.3%;
@@ -51,6 +53,8 @@ const MemeListView: React.FC<Props> = ({ scrollPosition }) => {
     return null
   }
 
+  console.log(memes)
+
   return (
     <>
       <Intro>
@@ -60,20 +64,31 @@ const MemeListView: React.FC<Props> = ({ scrollPosition }) => {
         Enjoy and don't hold it against me!
       </Intro>
       <ImageList>
-        {memes.map((meme, index) => (
-          <Image
-            key={`meme-${meme.id}`}
-            onClick={() => setLightBoxState({ index, open: true })}
-          >
-            <LazyLoadImage
-              src={meme.url}
-              alt={meme.notes}
-              width={meme.size[0] || undefined}
-              height={meme.size[1] || undefined}
-              scrollPosition={scrollPosition}
-            />
-          </Image>
-        ))}
+        {memes
+          .filter(meme => !!meme?.image?.childImageSharp?.gatsbyImageData)
+          .map((meme, index) => (
+            <Image
+              key={`meme-${meme.id}`}
+              onClick={() => setLightBoxState({ index, open: true })}
+            >
+              <GatsbyImage
+                image={meme.image.childImageSharp.gatsbyImageData}
+                alt={meme.notes}
+                style={{
+                  maxHeight:
+                    meme.image.childImageSharp.gatsbyImageData?.layout ===
+                    'constrained'
+                      ? meme.image.childImageSharp.gatsbyImageData.height
+                      : 'auto',
+                  maxWidth:
+                    meme.image.childImageSharp.gatsbyImageData?.layout ===
+                    'constrained'
+                      ? meme.image.childImageSharp.gatsbyImageData.width
+                      : 'auto',
+                }}
+              />
+            </Image>
+          ))}
       </ImageList>
       {lightBoxState.open && (
         <ImageLightbox

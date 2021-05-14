@@ -24,6 +24,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     PRESERVE_WEBPACK_CACHE: true,
     DEV_SSR: true,
     PARALLEL_SOURCING: true,
+    PRESERVE_FILE_DOWNLOAD_CACHE: true,
   },
   plugins: [
     'gatsby-plugin-typescript',
@@ -83,16 +84,14 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       options: {
         url: 'https://eligundry.com/api/memes',
         rootKey: 'memes',
-        imageKeys: ['url'],
+        imageKeys: [],
         schemas: {
           memes: `
             url: String!
             size: [Int]
             notes: String!
             created_at: String!
-          `,
-          images: `
-            url: String!
+            modified: String!
           `,
         },
       },

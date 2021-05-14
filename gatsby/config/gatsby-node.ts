@@ -11,6 +11,7 @@ import parseISO from 'date-fns/parseISO'
 import isValidDate from 'date-fns/isValid'
 
 import siteConfig from '../data/SiteConfig'
+import loadImage from './utils/loadImage'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
   onCreateNode: async ({
@@ -21,7 +22,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     store,
     cache,
   }) => {
-    const { createNodeField, createNode } = actions
+    const { createNodeField, createNode, touchNode } = actions
 
     if (node.internal.type === 'MarkdownRemark') {
       let slug
@@ -58,7 +59,12 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     }
 
     if (node.internal.type === 'GoodreadsBook' && node.cover) {
-      const imageNode = await createRemoteFileNode({
+      await loadImage({
+        cacheKey: `local-goodreads-cover-${node.isbn}`,
+        node,
+        createRemoteFileNode,
+        targetNodeKey: 'coverImage',
+
         url: node.cover,
         parentNodeId: node.id,
         createNode,
@@ -66,10 +72,21 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         cache,
         store,
       })
+    }
 
-      if (imageNode) {
-        node.coverImage___NODE = imageNode.id
-      }
+    if (node.internal.type === 'memes' && node.url) {
+      await loadImage({
+        cacheKey: `local-meme-${node.meme_id}`,
+        node,
+        createRemoteFileNode,
+        targetNodeKey: 'image',
+        url: node.url,
+        parentNodeId: node.id,
+        createNode,
+        createNodeId,
+        cache,
+        store,
+      })
     }
   },
   createPages: async ({ graphql, actions }) => {
