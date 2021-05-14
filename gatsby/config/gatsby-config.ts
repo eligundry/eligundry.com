@@ -126,7 +126,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: 'gatsby-plugin-feed',
       options: {
-        setup(ref) {
+        setup: ref => {
           const ret = ref.query.site.siteMetadata.rssMetadata
           ret.allMarkdownRemark = ref.query.allMarkdownRemark
           ret.generator = 'GatsbyJS Advanced Starter'
@@ -150,23 +150,8 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       `,
         feeds: [
           {
-            serialize(ctx) {
-              const { rssMetadata } = ctx.query.site.siteMetadata
-              return ctx.query.allMarkdownRemark.edges
-                .filter(edge => !edge.node.frontmatter.draft)
-                .map(edge => ({
-                  categories: edge.node.frontmatter.tags,
-                  date: edge.node.fields.date,
-                  title: edge.node.frontmatter.title,
-                  description: edge.node.excerpt,
-                  url: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
-                  guid: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
-                  custom_elements: [
-                    { 'content:encoded': edge.node.html },
-                    { author: config.userEmail },
-                  ],
-                }))
-            },
+            output: config.siteRss,
+            title: "Eli Gundry's Blog",
             query: `
             {
               allMarkdownRemark(
@@ -193,8 +178,67 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               }
             }
           `,
-            output: config.siteRss,
-            title: "Eli Gundry's Blog",
+            serialize: ctx => {
+              const { rssMetadata } = ctx.query.site.siteMetadata
+              return ctx.query.allMarkdownRemark.edges
+                .filter(edge => !edge.node.frontmatter.draft)
+                .map(edge => ({
+                  categories: edge.node.frontmatter.tags,
+                  date: edge.node.fields.date,
+                  title: edge.node.frontmatter.title,
+                  description: edge.node.excerpt,
+                  url: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
+                  guid: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
+                  custom_elements: [
+                    { 'content:encoded': edge.node.html },
+                    { author: config.userEmail },
+                  ],
+                }))
+            },
+          },
+        ],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-feed',
+      options: {
+        setup: ref => ({
+          title: "Eli Gundry's Feelings",
+          description: "A daily journal of how I'm feeling",
+          managingEditor: 'eligundry@gmail.com (Eli Gundry)',
+          site_url: 'https://eligundry.com/feelings',
+          language: 'en-US',
+          copyright: `${new Date().getFullYear()} Eli Gundry`,
+        }),
+        feeds: [
+          {
+            title: "Eli Gundry's Feelings",
+            output: '/feelings.rss',
+            query: `
+              {
+                allFeelings {
+                  nodes {
+                    time
+                    mood
+                    notes
+                  }
+                }
+              }
+            `,
+            serialize: ctx =>
+              ctx.query.allFeelings.nodes.map(entry => ({
+                date: entry.time,
+                author: 'Eli Gundry',
+                url: `https://eligundry.com/feelings#${entry.time}`,
+                guid: `https://eligundry.com/feelings#${entry.time}`,
+                title: `I felt ${entry.mood}`,
+                description: `
+                  <ul>
+                    ${entry.notes?.map(note => `<li>${note}</li>`).join('\n') ??
+                      `<li>No notes!</li>`}
+                  </ul>
+                `,
+              })),
           },
         ],
       },
