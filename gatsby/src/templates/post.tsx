@@ -10,14 +10,22 @@ import PostTags from '../components/PostTags/PostTags'
 import SEO from '../components/SEO/SEO'
 import Comments from '../components/Comments'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
-import './b16-tomorrow-dark.css'
+import './prism-material-light.css'
 
 interface Props {
   data: BlogPostBySlugQuery
   pageContext: SitePageContext
 }
 
-const Article = styled(Paper.article)``
+const Article = styled(Paper.article)`
+  & .twitter-tweet {
+    margin: 0 auto;
+  }
+
+  & img[src*='.gif'] {
+    margin: 0 auto;
+  }
+`
 
 const PostTemplate: React.FC<Props> = props => {
   const { data, pageContext } = props
@@ -48,6 +56,7 @@ const PostTemplate: React.FC<Props> = props => {
           </blockquote>
         )}
         <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
+        <hr />
         <aside className="post-meta">
           <PostTags tags={post.tags} />
           <Comments />

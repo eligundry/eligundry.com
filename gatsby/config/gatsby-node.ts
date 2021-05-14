@@ -7,7 +7,6 @@ import { SourceNodesArgs } from 'gatsby'
 import path from 'path'
 import trim from 'lodash/trim'
 import kebabCase from 'lodash/kebabCase'
-import dateCompareDesc from 'date-fns/compareDesc'
 import parseISO from 'date-fns/parseISO'
 import isValidDate from 'date-fns/isValid'
 

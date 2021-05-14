@@ -9,6 +9,7 @@ import Paper from '../components/Shared/Paper'
 import SEO from '../components/SEO/SEO'
 import { TalkBySlugQuery, SitePageContext } from '../../graphql-types'
 import './talk.css'
+import './prism-material-light.css'
 
 interface Props {
   data: TalkBySlugQuery

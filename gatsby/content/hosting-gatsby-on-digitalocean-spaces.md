@@ -5,17 +5,20 @@ slug: hosting-gatsby-on-digitalocean-spaces
 draft: true
 ---
 
-# Process
+# Why?
 
-* Build site normally
-* gatsby-plugin-s3 for deployment
-  * https://www.gatsbyjs.com/plugins/gatsby-plugin-s3/
-  * This works perfectly (once you have the params) right because DO Spaces is S3 compatible
-  * The way params work is not perfectly documented, show how I did it.
+[DigitalOcean Spaces][do-spaces] is an object storage service that is S3 compatible (you can use all the AWS S3
+libraries, which is nifty) with a CDN automatically built in. It even lets you bring your own domain and it will handle
+the SSL certificates for you through Let's Encrypt. Based upon my experience with Gatsby and S3, this seemed like
+a great fit and since I'm already a DigitalOcean customer, I figured I might as well give it a shot instead of signing
+up for another service.
 
-# Gotchas
+Long story short, I was able to get it working, but I ended up ditching my plans for it to go with [Netlify][netlify].
+Still, if you are here, you might have a do or die situation where you must host your site on Spaces and maybe this will
+be useful.
 
 ## No Cloudfront or S3 Static Website Hosting Equivalent
+
 
 * DO Spaces is like if S3 and Cloudfront were integrated, but not well
   * Based upon what I have read, DigitalOcean Spaces was the result of an acquisition of an acquisition and not something
@@ -27,12 +30,57 @@ draft: true
   * An nginx reverse proxy to do the URL rewriting that S3 Static Website hosting would do
   * Building the site with `--prefix-paths` to your CDN endpoint
 
+
+```nginx
+server {
+    listen 443 ssl http2;
+
+    # I have an API that I serve on the same domain and it must come 
+    # first because of the rules that come after
+    location ~ ^/api {
+        proxy_pass http://api:8080;
+    }
+
+    # All these rules could probably be collapsed into one meta location.
+    # I didn't have enough patience to really hammer that out, sue me.
+
+    # All non html assets that are not on the CDN
+    location / {
+        resolver 1.1.1.1 [::1]:5353 valid=30s;
+        set $cdn_url "https://cdn.eligundry.com/site/";
+        proxy_pass $cdn_url;
+        proxy_set_header Host "cdn.eligundry.com";
+        # Without this, SSL handshakes fail?
+        # https://stackoverflow.com/a/52199403
+        proxy_ssl_server_name on;
+    }
+
+    # /index.html
+    location = / {
+        resolver 1.1.1.1 [::1]:5353 valid=30s;
+        set $cdn_url "https://cdn.eligundry.com/site/";
+        proxy_pass $cdn_url/index.html;
+        proxy_set_header Host "cdn.eligundry.com";
+        proxy_ssl_server_name on;
+    }
+
+    # All other HTML pages
+    location ~ /(?<req_path>.+) {
+        resolver 1.1.1.1 [::1]:5353 valid=30s;
+        set $cdn_url "https://cdn.eligundry.com/site/";
+        proxy_pass $cdn_url/$req_path/index.html;
+        proxy_set_header Host "cdn.eligundry.com";
+        proxy_ssl_server_name on;
+    }
+}
+```
+
 ## No Automatic GZIP
 
 If you want to get that sweet sweet 💯 from [Lighthouse][lighthouse], you need your content gzip'd. Unfortunately,
 DigitalOcean Spaces' CDN  does not support gzip'ing on the fly like Cloudfront does, so you have to precompress your
 assets as a part of your build. I used [`gatsby-plugin-zopfli`][gatsby-plugin-zopfli], which hooks into the Gatsby build
-process to compress your assets, with the following config.
+process to compress your assets, with the following config:
 
 ```javascript
 {
@@ -113,14 +161,14 @@ order. I was greeted with this waterfall:
 
 ![My site on DigitalOcean Spaces connection waterfall. There is a lot of stalling.](../static/img/gatsby-digitialocean-spaces/do-spaces-waterfall.png)
 
-Those highlighted gray bars are bad. They are connections are stalling because of too many other connections. This is
-happening because [DigitalOcean Spaces does not support HTTP/2][do-spaces-no-http2]. [People have been voting on getting
-this supported since 2018][pokemon-go-to-the-polls] and yet there is still no progress on this.
+**Those highlighted gray bars are bad.** They are connections are stalling because of too many other connections. This
+is happening because [DigitalOcean Spaces does not support HTTP/2][do-spaces-no-http2]. [People have been voting on
+adding this feature since 2018][pokemon-go-to-the-polls] and yet there is still no progress on this.
 
 You can see how this is bad by how the grey bars become green as the bars starting with orange finish. For most web
-browsers, [only 6 HTTP/1.1 connections can be made to the same host at once][6-http1-connections]. Before HTTP/2,
+browsers, [only six HTTP/1.1 connections can be made to the same host at once][6-http1-connections]. Before HTTP/2,
 developers used to use CDNs that could provide multiple domains to side step this issue, but I really don't want to go
-that route.
+that route as it isn't 2011 anymore.
 
 One of the big benefits to HTTP/2 is that this limit is removed and common connection things, like SSL handshakes, can
 be shared between connections. **The fact that DigitalOcean Spaces does not support this in 2021 is going to prevent you
@@ -135,7 +183,7 @@ I was able to get a 100 from Lighthouse! But at what cost?
 
 ![No HTTP/2 from DigitalOcean Spaces hurt me](../static/img/gatsby-digitialocean-spaces/do-spaces-lighthouse-no-http2.png)
 
-The site is still a little glitchy, I suspect because of the nginx routing I setup poorly and maybe some script loading
+The site was still a little glitchy, I suspect because of the nginx routing I setup poorly and maybe some script loading
 issues related to scripts sometimes loading out of order related to HTTP/1.1 restrictions.
 
 I decided that this was too much work. As much as I love maintaining my own infrastructure and writing Github Actions,
@@ -147,8 +195,8 @@ site through Netlify.
 ## Netlify
 
 Netlify was so easy to setup! I had my site running in about 10 minutes and I got a slightly better Lighthouse score
-without any of the bugginess that I was seeing on DigitalOcean Spaces. And look at how much flatter this connection
-waterfall is (the time scale is roughly the same as the waterfall for DigitalOcean Spaces).
+without any of the bugginess that I was seeing on DigitalOcean Spaces. And look at how much flatter and full of happy
+colors this connection waterfall is (the time scale is roughly the same as the waterfall for DigitalOcean Spaces).
 
 ![My site on Netlify connection waterfall. All the JS and images end up fetching concurrently!](../static/img/gatsby-digitialocean-spaces/netlify-waterfall.png)
 
@@ -163,6 +211,7 @@ recommend DigitalOcean Spaces for static site hosting. For what it's worth, it d
 recommends it either. They have thousands of guides on how to do things, but none on hosting static sites here. Also,
 there is this [support answer saying "good idea, maybe our product team will look at it?"][do-support-answer].
 
+[do-spaces]: https://www.digitalocean.com/products/spaces/
 [lighthouse]: https://developers.google.com/web/tools/lighthouse
 [gatsby-plugin-zopfli]: https://www.gatsbyjs.com/plugins/gatsby-plugin-zopfli/
 [gatsby-incremental-builds]: https://www.gatsbyjs.com/docs/reference/release-notes/v3.0/#incremental-builds-in-oss
