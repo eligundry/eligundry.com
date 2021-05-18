@@ -29,6 +29,7 @@ services:
     environment:
       AUTH_USER: eligundry
       AUTH_PASSWORD: password
+      CGO_CFLAGS: "-DSQLITE_ENABLE_JSON1"
     networks:
       backend: {}
     volumes:

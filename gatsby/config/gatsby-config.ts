@@ -67,7 +67,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: 'gatsby-source-custom-api',
       options: {
-        url: 'https://eligundry.com/api/feelings',
+        url: 'https://api.eligundry.com/api/feelings',
         rootKey: 'feelings',
         schemas: {
           feelings: `
@@ -82,7 +82,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: 'gatsby-source-custom-api',
       options: {
-        url: 'https://eligundry.com/api/memes',
+        url: 'https://api.eligundry.com/api/memes',
         rootKey: 'memes',
         imageKeys: [],
         schemas: {
