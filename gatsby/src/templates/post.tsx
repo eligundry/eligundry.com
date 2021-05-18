@@ -6,7 +6,7 @@ import tw, { styled } from 'twin.macro'
 
 import Layout from '../layout/index'
 import Paper from '../components/Shared/Paper'
-import SEO from '../components/SEO/SEO'
+import SEO from '../components/SEO'
 import Comments from '../components/Comments'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
 import './prism-material-light.css'
@@ -29,7 +29,7 @@ const Article = styled<React.FC>(Paper.article)`
 const PostTemplate: React.FC<PageProps<
   GatsbyTypes.BlogPostBySlugQuery
 >> = props => {
-  const { data, pageContext, path } = props
+  const { data, path } = props
   const postNode = data.markdownRemark
   const post = postNode?.frontmatter
 
@@ -42,7 +42,7 @@ const PostTemplate: React.FC<PageProps<
       <Helmet>
         <title>{post.title}</title>
       </Helmet>
-      <SEO postPath={path} postNode={postNode} postSEO />
+      <SEO path={path} post={postNode} />
       <Article>
         <header>
           <h1>{post.title}</h1>

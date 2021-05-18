@@ -4,7 +4,7 @@ import { graphql, PageProps } from 'gatsby'
 
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
-import SEO from '../components/SEO/SEO'
+import SEO from '../components/SEO'
 import Paper from '../components/Shared/Paper'
 
 const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = props => {
@@ -14,8 +14,8 @@ const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = props => {
     <Layout>
       <Paper className="listing-container">
         <Helmet title="Blog" />
-        <SEO />
-        <PostListing postEdges={postEdges} />
+        <SEO path={props.path} />
+        <PostListing postEdges={postEdges} pathPrefix="blog" />
       </Paper>
     </Layout>
   )

@@ -1,20 +1,17 @@
 import React from 'react'
-import Helmet from 'react-helmet'
 
 import Layout from '../layout'
+import SEO from '../components/SEO'
 import { DaylioList } from '../components/Daylio'
 
 const FeelingsPage: React.FC = () => {
   return (
     <Layout>
-      <Helmet>
-        <title>Feelings</title>
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          href="/api/feelings/feed.rss"
-        />
-      </Helmet>
+      <SEO
+        path="feelings"
+        title="Feelings"
+        description="A log of my feelings"
+      />
       <DaylioList />
     </Layout>
   )

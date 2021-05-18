@@ -6,9 +6,10 @@ import './listing.css'
 
 interface Props {
   postEdges: GatsbyTypes.BlogListingQuery['allMarkdownRemark']['edges']
+  pathPrefix: string
 }
 
-const PostListing: React.FC<Props> = ({ postEdges }) => {
+const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
   const postList = postEdges.map(postEdge => ({
     path: postEdge?.node?.fields?.slug,
     cover: postEdge?.node?.frontmatter?.cover,
@@ -32,7 +33,7 @@ const PostListing: React.FC<Props> = ({ postEdges }) => {
             className="listing-post"
           >
             <h1 itemProp="title">
-              <Link to={`/blog/${post.path}`} itemProp="url">
+              <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
                 {post.title}
               </Link>
             </h1>

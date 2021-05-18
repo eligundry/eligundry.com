@@ -6,7 +6,7 @@ import tw, { styled } from 'twin.macro'
 
 import Layout from '../layout'
 import Paper from '../components/Shared/Paper'
-import SEO from '../components/SEO/SEO'
+import SEO from '../components/SEO'
 import './talk.css'
 import './prism-material-light.css'
 
@@ -28,7 +28,7 @@ const TalkTemplate: React.FC<PageProps<
       <Helmet>
         <title>{talk.title}</title>
       </Helmet>
-      <SEO postPath={path} postNode={talkNode} postSEO />
+      <SEO path={path} post={talkNode} />
       <Article className="talk">
         <header>
           <h1>{talk.title}</h1>

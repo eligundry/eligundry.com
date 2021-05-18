@@ -5,7 +5,7 @@ import { graphql, PageProps } from 'gatsby'
 import Paper from '../components/Shared/Paper'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
-import SEO from '../components/SEO/SEO'
+import SEO from '../components/SEO'
 
 const TalkListing: React.FC<PageProps<
   GatsbyTypes.TalkListingQuery
@@ -16,7 +16,7 @@ const TalkListing: React.FC<PageProps<
     <Layout>
       <Paper className="listing-container">
         <Helmet title="Talks" />
-        <SEO />
+        <SEO path={props.path} />
         <PostListing postEdges={postEdges} pathPrefix="talks" />
       </Paper>
     </Layout>
