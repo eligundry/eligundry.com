@@ -1,18 +1,15 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import { graphql, PageProps } from 'gatsby'
 
-import { TalkListingQueryQuery } from '../../graphql-types'
 import Paper from '../components/Shared/Paper'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO/SEO'
 
-interface Props {
-  data: TalkListingQueryQuery
-}
-
-const TalkListing: React.FC<Props> = props => {
+const TalkListing: React.FC<PageProps<
+  GatsbyTypes.TalkListingQuery
+>> = props => {
   const postEdges = props.data.allMarkdownRemark.edges
 
   return (
@@ -28,9 +25,8 @@ const TalkListing: React.FC<Props> = props => {
 
 export default TalkListing
 
-/* eslint no-undef: "off" */
 export const talkListingQuery = graphql`
-  query TalkListingQuery {
+  query TalkListing {
     allMarkdownRemark(
       sort: { fields: [frontmatter___date], order: DESC }
       filter: {

@@ -1,19 +1,6 @@
 import { useStaticQuery, graphql } from 'gatsby'
-import { IGatsbyImageData } from 'gatsby-plugin-image'
 
-interface GoodreadsBook {
-  title: string
-  author: string
-  isbn: string
-  url: string
-  coverImage: {
-    childImageSharp: {
-      gatsbyImageData: IGatsbyImageData
-    }
-  }
-}
-
-export default function useGoodreadsShelf(): GoodreadsBook[] {
+export default function useGoodreadsShelf() {
   const queryResult = useStaticQuery<GatsbyTypes.UseGoodreadsShelfQuery>(
     graphql`
       query UseGoodreadsShelf {

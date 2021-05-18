@@ -68,8 +68,8 @@ const MemeListView: React.FC<Props> = ({ scrollPosition }) => {
             <LazyLoadImage
               src={meme.url}
               alt={meme.notes}
-              width={meme.size[0] || undefined}
-              height={meme.size[1] || undefined}
+              width={meme.size?.[0] ?? undefined}
+              height={meme.size?.[1] ?? undefined}
               scrollPosition={scrollPosition}
             />
           </Image>

@@ -1,15 +1,7 @@
 import { useStaticQuery, graphql } from 'gatsby'
 import parseISO from 'date-fns/parseISO'
 
-import { DaylioEntry } from './types'
-
-interface QueryResults {
-  allFeelings: {
-    feelings: DaylioEntry<string>[]
-  }
-}
-
-export default function useFeelings(): DaylioEntry[] {
+export default function useFeelings() {
   const entries = useStaticQuery<GatsbyTypes.UseFeelingsQuery>(graphql`
     query UseFeelings {
       allFeelings {

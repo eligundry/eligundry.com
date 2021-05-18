@@ -1,8 +1,6 @@
 import { useStaticQuery, graphql } from 'gatsby'
 
-import { Meme } from './types'
-
-export default function useMemes(): Meme[] {
+export default function useMemes() {
   const memes = useStaticQuery<GatsbyTypes.UseMemesQuery>(
     graphql`
       query UseMemes {

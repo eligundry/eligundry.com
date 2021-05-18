@@ -1,12 +1,11 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import { graphql, PageProps } from 'gatsby'
 import formatISO from 'date-fns/formatISO'
 import tw, { styled } from 'twin.macro'
 
 import Layout from '../layout/index'
 import Paper from '../components/Shared/Paper'
-import PostTags from '../components/PostTags/PostTags'
 import SEO from '../components/SEO/SEO'
 import Comments from '../components/Comments'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
@@ -17,7 +16,7 @@ interface Props {
   pageContext: SitePageContext
 }
 
-const Article = styled(Paper.article)`
+const Article = styled<React.FC>(Paper.article)`
   & .twitter-tweet {
     margin: 0 auto;
   }
@@ -27,27 +26,34 @@ const Article = styled(Paper.article)`
   }
 `
 
-const PostTemplate: React.FC<Props> = props => {
-  const { data, pageContext } = props
-  const { slug } = pageContext
+const PostTemplate: React.FC<PageProps<
+  GatsbyTypes.BlogPostBySlugQuery
+>> = props => {
+  const { data, pageContext, path } = props
   const postNode = data.markdownRemark
-  const post = postNode.frontmatter
+  const post = postNode?.frontmatter
+
+  if (!post) {
+    return null
+  }
 
   return (
     <Layout>
       <Helmet>
         <title>{post.title}</title>
       </Helmet>
-      <SEO postPath={slug} postNode={postNode} postSEO />
+      <SEO postPath={path} postNode={postNode} postSEO />
       <Article>
         <header>
           <h1>{post.title}</h1>
-          <time dateTime={post.date}>
-            🗓
-            {formatISO(new Date(post.date), { representation: 'date' })}
-          </time>
+          {post?.date && (
+            <time dateTime={post.date}>
+              🗓
+              {formatISO(new Date(post.date), { representation: 'date' })}
+            </time>
+          )}
         </header>
-        {post.tags && post.tags.includes('icymi') && (
+        {post?.tags?.includes('icymi') && (
           <blockquote>
             <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
             review and recommend old albums that you may have missed. I used to
@@ -55,10 +61,11 @@ const PostTemplate: React.FC<Props> = props => {
             write them here.
           </blockquote>
         )}
-        <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
+        {postNode?.html && (
+          <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
+        )}
         <hr />
         <aside className="post-meta">
-          <PostTags tags={post.tags} />
           <Comments />
         </aside>
       </Article>

@@ -1,18 +1,13 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import { graphql, PageProps } from 'gatsby'
 
-import { ListingQueryQuery } from '../../graphql-types'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO/SEO'
 import Paper from '../components/Shared/Paper'
 
-interface Props {
-  data: ListingQueryQuery
-}
-
-const Listing: React.FC<Props> = props => {
+const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = props => {
   const postEdges = props.data.allMarkdownRemark.edges
 
   return (
@@ -30,7 +25,7 @@ export default Listing
 
 /* eslint no-undef: "off" */
 export const listingQuery = graphql`
-  query ListingQuery {
+  query BlogListing {
     allMarkdownRemark(
       sort: { fields: [frontmatter___date], order: DESC }
       filter: {
@@ -48,7 +43,6 @@ export const listingQuery = graphql`
           timeToRead
           frontmatter {
             title
-            tags
             cover
             date
             description

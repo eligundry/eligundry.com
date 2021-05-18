@@ -77,8 +77,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
   createPages: async ({ graphql, actions }) => {
     const { createPage } = actions
     const postPage = path.resolve('src/templates/post.tsx')
-    const tagPage = path.resolve('src/templates/tag.tsx')
-    const categoryPage = path.resolve('src/templates/category.tsx')
     const listingPage = path.resolve('src/templates/listing.tsx')
     const talkPage = path.resolve('src/templates/talk.tsx')
     const talkListingPage = path.resolve('src/templates/talkListing.tsx')
@@ -129,9 +127,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       throw markdownQueryResult.errors
     }
 
-    const tagSet = new Set<string>()
-    const categorySet = new Set<string>()
-
     const postsEdges = markdownQueryResult.data.allMarkdownRemark.edges
 
     // Blog post listing
@@ -151,18 +146,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     // Post and talk page creation
     postsEdges.forEach((edge, index) => {
       if (edge.node.collection === 'posts') {
-        // Generate a list of tags
-        if (edge.node.frontmatter.tags) {
-          edge.node.frontmatter.tags.forEach(tag => {
-            tagSet.add(tag)
-          })
-        }
-
-        // Generate a list of categories
-        if (edge.node.frontmatter.category) {
-          categorySet.add(edge.node.frontmatter.category)
-        }
-
         // Create post pages
         const nextID = index + 1 < postsEdges.length ? index + 1 : 0
         const prevID = index - 1 >= 0 ? index - 1 : postsEdges.length - 1
@@ -189,24 +172,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
           },
         })
       }
-    })
-
-    //  Create tag pages
-    tagSet.forEach(tag => {
-      createPage({
-        path: `/blog/tags/${kebabCase(tag)}`,
-        component: tagPage,
-        context: { tag },
-      })
-    })
-
-    // Create category pages
-    categorySet.forEach(category => {
-      createPage({
-        path: `/blog/categories/${kebabCase(category)}`,
-        component: categoryPage,
-        context: { category },
-      })
     })
   },
   sourceNodes: async (args: SourceNodesArgs) => {

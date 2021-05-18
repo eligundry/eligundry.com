@@ -14,7 +14,12 @@ import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
 
-const Section = styled(Paper.section)`
+interface SectionProps {
+  className?: string
+  fullWidth?: boolean
+}
+
+const Section = styled<React.FC<SectionProps>>(Paper.section)`
   ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {
@@ -112,7 +117,11 @@ const Home: React.FC = () => {
         <h2>Reading</h2>
         <p className="summary">
           I wish I read more, but there are only so many hours in the day. These
-          are the books that I'm reading right now.
+          are the books that I'm reading right now. You can find me on{' '}
+          <a href="https://www.goodreads.com/user/show/29665939-eli-gundry">
+            Goodreads
+          </a>
+          .
         </p>
         <div className="bookshelf">
           <Reading />

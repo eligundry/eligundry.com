@@ -42,7 +42,8 @@ const DaylioChart: React.FC = () => {
           borderWidth: 1,
           borderColor: 'rgb(226 232 240)',
           callbacks: {
-            title: (item, _) => item[0].xLabel.toString(),
+            title: (item, _) => item[0]?.xLabel?.toString() ?? 'bad',
+            // @ts-ignore
             label: (item, _) => Object.keys(MoodMapping)[item.yLabel.valueOf()],
           },
         },
@@ -61,6 +62,7 @@ const DaylioChart: React.FC = () => {
           yAxes: [
             {
               ticks: {
+                // @ts-ignore
                 callback: value => Object.values(MoodMapping)[value],
                 min: 0,
                 fontSize: 24,
