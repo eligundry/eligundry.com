@@ -48,6 +48,10 @@ func filterNotesForEntries(entries []DaylioEntry) error {
 				entries[ei].Notes = append(entries[ei].Notes, note)
 			}
 		}
+
+		if entries[ei].RawActivities != nil {
+			entries[ei].Activities = json.RawMessage(*entries[ei].RawActivities)
+		}
 	}
 
 	return nil

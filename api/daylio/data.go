@@ -1,7 +1,6 @@
 package daylio
 
 import (
-	"encoding/json"
 	"fmt"
 	"mime/multipart"
 	"strings"
@@ -18,28 +17,7 @@ const jsonQuery = `
 SELECT
     daylio_entries.time,
     daylio_entries.mood,
-    json_group_array(daylio_entry_activities.activity) AS activities,
-    daylio_entries.notes AS raw_notes
-FROM daylio_entries 
-LEFT JOIN daylio_entry_activities ON (
-    daylio_entry_activities.time = daylio_entries.time
-)
-LEFT JOIN daylio_activities ON (
-    daylio_activities.activity = daylio_entry_activities.activity
-)
-WHERE (
-    (daylio_activities.activity IS NULL OR daylio_activities.private = 0)
-    %s
-)
-GROUP BY daylio_entries.time
-ORDER BY daylio_entries.time DESC
-`
-
-const jsonlessQuery = `
-SELECT
-    daylio_entries.time,
-    daylio_entries.mood,
-    GROUP_CONCAT(daylio_entry_activities.activity) AS raw_activities,
+    json_group_array(daylio_entry_activities.activity) AS raw_activities,
     daylio_entries.notes AS raw_notes
 FROM daylio_entries 
 LEFT JOIN daylio_entry_activities ON (
@@ -63,22 +41,7 @@ func GetDaylioEntries() ([]DaylioEntry, error) {
 
 	err := db.Select(&entries, fmt.Sprintf(jsonQuery, whereClause))
 
-	if err != nil && isJSONRelatedError(err) {
-		err := db.Select(&entries, fmt.Sprintf(jsonlessQuery, whereClause))
-
-		if err != nil {
-			return entries, err
-		}
-
-		for i := range entries {
-			splitActivities := strings.Split(entries[i].RawActivities.ValueOrZero(), ",")
-			entries[i].Activities, err = json.Marshal(splitActivities)
-
-			if err != nil {
-				return entries, err
-			}
-		}
-	} else if err != nil {
+	if err != nil {
 		return entries, err
 	}
 
@@ -105,24 +68,7 @@ func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
 
 	err := db.Select(&entries, fmt.Sprintf(jsonQuery, whereClause), t)
 
-	// In dev mode, this will fail because go-watcher cannot take build
-	// tags/flags
-	if err != nil && isJSONRelatedError(err) {
-		err := db.Select(&entries, fmt.Sprintf(jsonlessQuery, whereClause), t)
-
-		if err != nil {
-			return entries, err
-		}
-
-		for i := range entries {
-			splitActivities := strings.Split(entries[i].RawActivities.ValueOrZero(), ",")
-			entries[i].Activities, err = json.Marshal(splitActivities)
-
-			if err != nil {
-				return entries, err
-			}
-		}
-	} else if err != nil {
+	if err != nil {
 		return entries, err
 	}
 
