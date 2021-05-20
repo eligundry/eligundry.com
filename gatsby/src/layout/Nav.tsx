@@ -20,10 +20,10 @@ const NavContainer = styled.nav<NavProps>`
   z-index: 99;
 
   // On mobile, hide by default
-  ${tw`sm:hidden`}
+  ${tw`sm:hidden md:hidden lg:block xl:block 2xl:block`}
 
   // But once expanded, show it
-  ${props => props.expanded && tw`sm:block`}
+  ${props => props.expanded && tw`sm:block md:block`}
 
   ${props =>
     props.wider &&
@@ -131,6 +131,9 @@ const Hamburger = styled.button`
   top: 0;
   z-index: 10001;
 
+  // On mobile, hide by default
+  ${tw`sm:block md:block lg:hidden xl:hidden 2xl:hidden`}
+
   &:hover,
   &:focus {
     text-shadow: 0px 0px 5px #e172da;
@@ -178,14 +181,12 @@ const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
 
   return (
     <>
-      {showHamburger && (
-        <Hamburger
-          aria-label={`${hamburgerExpanded ? 'close' : 'open'} the nav menu`}
-          onClick={() => setHamburgerExpanded(exp => !exp)}
-        >
-          {hamburgerExpanded ? '🙅' : '🍔'}
-        </Hamburger>
-      )}
+      <Hamburger
+        aria-label={`${hamburgerExpanded ? 'close' : 'open'} the nav menu`}
+        onClick={() => setHamburgerExpanded(exp => !exp)}
+      >
+        {hamburgerExpanded ? '🙅' : '🍔'}
+      </Hamburger>
       <NavContainer
         role="navigation"
         expanded={hamburgerExpanded}
