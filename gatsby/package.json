@@ -5,7 +5,7 @@
   "author": "Eli Gundry <eligundry@gmail.com>",
   "repository": "https://github.com/eligundry/eligundry.com",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "date-fns": "^2.16.1",
     "gatsby": "^3.4.0",
