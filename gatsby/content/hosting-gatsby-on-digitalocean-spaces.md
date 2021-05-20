@@ -102,7 +102,7 @@ CDN would provide via proximity, but at least it's working, so onward to the nex
 ## No Automatic GZIP
 
 If you want to get that sweet sweet 💯 from [Lighthouse][lighthouse], you need your content gzip'd. Unfortunately,
-[DigitalOcean Spaces' CDN  does not support gzip'ing on the fly][no-gizp-issue] like Cloudfront does, so you have to precompress your
+[DigitalOcean Spaces' CDN  does not support gzip'ing on the fly][no-gzip-issue] like Cloudfront does, so you have to precompress your
 assets as a part of the build. I used [`gatsby-plugin-zopfli`][gatsby-plugin-zopfli], which hooks into the Gatsby build
 process to compress the assets, with the following config:
 
