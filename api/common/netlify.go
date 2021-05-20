@@ -47,7 +47,7 @@ func TriggerNetlifyDeployOfSite(triggerTitle string) error {
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusNoContent {
+	if resp.StatusCode != http.StatusOK {
 		body, err := ioutil.ReadAll(resp.Body)
 
 		if err != nil {

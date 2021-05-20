@@ -3,7 +3,8 @@ title: Hackathons All The Time
 date: 2014-02-22T05:00
 slug: hackathons-all-the-time
 description: My memories of hackathons I've been to thus far.
-cover: "5.jpg"
+cover: ./img/hackathons/hacksu_at_penn_apps.jpg
+draft: false
 ---
 
 Over the past two years, I've been to quite a few hackathons
@@ -23,7 +24,7 @@ groundbreaking, amazing stuff that you could only dream to make. And they are
 doing it with such ease.
 
 <figure class="pull-right">
-  <img src="../static/img/nerf-gun-turret.png" alt="Nerf Gun Turret" width="400" height="275" />
+  <img src="./img/hackathons/nerf-gun-turret.png" alt="Nerf Gun Turret" width="400" height="275" />
   <figcaption>They fired this bad boy at judges. It was a sight to behold.</figure>
 </figure>
 
@@ -96,6 +97,6 @@ events, go to one. I'll probably be attending [Hack PSU](http://www.hackpsu.com/
 in a few weeks. Hopefully, I'll see you there.
 
 <figure class="center">
-    <img src="../static/img/hacksu_at_penn_apps.jpg" alt="HacKSU at Penn Apps 2014" />
+    <img src="./img/hackathons/hacksu_at_penn_apps.jpg" alt="HacKSU at Penn Apps 2014" />
     <figcaption>HacKSU at Penn Apps 2014</figcaption>
 </figure>
