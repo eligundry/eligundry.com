@@ -19,6 +19,12 @@ const NavContainer = styled.nav<NavProps>`
   align-self: center;
   z-index: 99;
 
+  // On mobile, hide by default
+  ${tw`sm:hidden`}
+
+  // But once expanded, show it
+  ${props => props.expanded && tw`sm:block`}
+
   ${props =>
     props.wider &&
     css`
