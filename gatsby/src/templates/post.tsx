@@ -7,14 +7,8 @@ import Layout from '../layout/index'
 import Paper from '../components/Shared/Paper'
 import SEO from '../components/SEO'
 import Comments from '../components/Comments'
-import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
 import Time from '../components/Shared/Time'
 import './prism-material-light.css'
-
-interface Props {
-  data: BlogPostBySlugQuery
-  pageContext: SitePageContext
-}
 
 const Article = styled<React.FC>(Paper.article)`
   & header {
@@ -52,7 +46,6 @@ const PostTemplate: React.FC<PageProps<
           <h1>{post.title}</h1>
           {post?.date && <Time dateTime={new Date(post.date)} />}
         </header>
-        <hr />
         {post?.tags?.includes('icymi') && (
           <blockquote>
             <abbr title="I See You Missed It">ICYMI</abbr> is a series where I

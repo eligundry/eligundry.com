@@ -85,7 +85,7 @@ func SubmitDaylioExport(c *gin.Context) {
 	}
 
 	// Trigger a rebuild of the static site when I submit a new feelings CSV
-	if err := common.TriggerGithubActionsDeployOfSite(); err != nil {
+	if err := common.TriggerNetlifyDeployOfSite("Daylio Submission"); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
