@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import tw, { styled, css } from 'twin.macro'
 import { useMedia, useWindowScroll } from 'react-use'
+import { Link } from 'gatsby'
 
 import UserLinks from '../components/UserLinks/UserLinks'
 import { PaperStyles } from '../components/Shared/Paper'
+import EmojiText from '../components/Shared/EmojiText'
 
 interface NavProps {
   mobile?: boolean
@@ -20,10 +22,10 @@ const NavContainer = styled.nav<NavProps>`
   z-index: 99;
 
   // On mobile, hide by default
-  ${tw`sm:hidden md:hidden lg:block xl:block 2xl:block`}
+  ${tw`xs:hidden sm:hidden md:hidden lg:block xl:block 2xl:block`}
 
   // But once expanded, show it
-  ${props => props.expanded && tw`sm:block md:block`}
+  ${props => props.expanded && tw`xs:hidden sm:block md:block`}
 
   ${props =>
     props.wider &&
@@ -131,8 +133,7 @@ const Hamburger = styled.button`
   top: 0;
   z-index: 10001;
 
-  // On mobile, hide by default
-  ${tw`sm:block md:block lg:hidden xl:hidden 2xl:hidden`}
+  ${tw`xs:block sm:block md:block lg:hidden xl:hidden 2xl:hidden`}
 
   &:hover,
   &:focus {
@@ -198,17 +199,16 @@ const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
         <div className="nav-links">
           {Object.entries(navLinks).map(
             ([path, { title, emoji, emojiLabel }]) => (
-              <a
-                href={path}
+              <Link
+                to={path}
                 key={path}
                 onClick={() => setHamburgerExpanded(false)}
                 className="nav-page-link"
               >
-                <span role="img" aria-label={emojiLabel} className="emoji">
-                  {emoji}
-                </span>
-                <span className="link-text">{title}</span>
-              </a>
+                <EmojiText label={emojiLabel} emoji={emoji}>
+                  <span className="link-text">{title}</span>
+                </EmojiText>
+              </Link>
             )
           )}
           <UserLinks />

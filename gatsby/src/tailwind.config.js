@@ -9,8 +9,12 @@ module.exports = {
     },
     screens: {
       ...defaultTheme.screens,
-      sm: {
+      xs: {
         min: '0px',
+        max: '399px',
+      },
+      sm: {
+        min: '400px',
         max: '767px',
       },
     },

@@ -54,10 +54,11 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
   &.listening {
     & > .listening-media {
-      ${tw`flex flex-col sm:flex-row`}
+      ${tw`flex flex-row xs:flex-col`}
 
       & > iframe {
-        ${tw`mr-4 sm:mb-4`}
+        ${tw`mr-4 xs:mb-4`}
+        max-width: 100%;
       }
     }
   }
