@@ -12,6 +12,7 @@ import isValidDate from 'date-fns/isValid'
 
 import siteConfig from '../data/SiteConfig'
 import loadImage from './utils/loadImage'
+import sourceGoodreadsNodes from './utils/sourceGoodreadsNodes'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
   onCreateNode: async ({
@@ -52,10 +53,19 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
             console.warn(`WARNING: Invalid date.`, node.frontmatter)
           }
 
-          createNodeField({ node, name: 'date', value: date.toISOString() })
+          createNodeField({
+            node,
+            name: 'date',
+            value: date.toISOString(),
+          })
         }
       }
-      createNodeField({ node, name: 'slug', value: slug })
+
+      createNodeField({
+        node,
+        name: 'slug',
+        value: slug,
+      })
     }
 
     if (node.internal.type === 'GoodreadsBook' && node.cover) {
@@ -64,7 +74,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         node,
         createRemoteFileNode,
         targetNodeKey: 'coverImage',
-
         url: node.cover,
         parentNodeId: node.id,
         createNode,
@@ -175,89 +184,9 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     })
   },
   sourceNodes: async (args: SourceNodesArgs) => {
-    const { createNodeId, createContentDigest } = args
-    const { createNode } = args.actions
-
-    try {
-      var goodreadsHTML = await axios.get<string>(
-        `https://www.goodreads.com/review/list/${siteConfig.goodreads.userID}?ref=nav_mybooks&shelf=currently-reading`
-      )
-    } catch (e) {
-      console.error('could not fetch Goodreads shelf', e)
-
-      const books = [
-        {
-          isbn: '1',
-          title: 'Error',
-          author: 'Error',
-          cover: 'https://http.cat/500',
-          url: 'https://http.cat/500',
-        },
-        {
-          isbn: '2',
-          title: 'Error',
-          author: 'Error',
-          cover: 'https://http.cat/500',
-          url: 'https://http.cat/500',
-        },
-      ]
-
-      books.forEach(book =>
-        createNode({
-          id: createNodeId(`goodreads-book-${book.isbn}`),
-          parent: null,
-          children: [],
-          internal: {
-            type: 'GoodreadsBook',
-            content: JSON.stringify(book),
-            contentDigest: createContentDigest(book),
-          },
-          ...book,
-        })
-      )
-
-      return
-    }
-    const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
-    const trimChars = '\n *'
-
-    Array.from(
-      goodreadsDocument.querySelectorAll('#booksBody .bookalike')
-    ).forEach(async row => {
-      const book = {
-        isbn: trim(
-          row.querySelector('td.field.isbn .value').textContent,
-          trimChars
-        ),
-        title: trim(
-          row.querySelector('td.field.title a').getAttribute('title'),
-          trimChars
-        ),
-        author: trim(
-          row.querySelector('td.field.author .value').textContent,
-          trimChars
-        ),
-        cover: row
-          .querySelector('td.field.cover img')
-          .getAttribute('src')
-          // Get the full sized thumbnail
-          .replace(/\._\w+\d+_/, ''),
-        url: `https://www.goodreads.com/${row
-          .querySelector('td.field.cover a')
-          .getAttribute('href')}`,
-      }
-
-      createNode({
-        id: createNodeId(`goodreads-book-${book.isbn}`),
-        parent: null,
-        children: [],
-        internal: {
-          type: 'GoodreadsBook',
-          content: JSON.stringify(book),
-          contentDigest: createContentDigest(book),
-        },
-        ...book,
-      })
+    await sourceGoodreadsNodes(args, {
+      userID: siteConfig.goodreads.userID,
+      shelf: 'currently-reading',
     })
   },
 })

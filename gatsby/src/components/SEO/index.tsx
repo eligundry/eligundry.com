@@ -24,6 +24,7 @@ const SEO: React.FC<Props> = ({
 }) => {
   const schemaOrg: ReturnType<typeof helmetJsonLdProp>[] = []
   const url = urljoin(config.siteUrl, path)
+  let image: string | undefined = undefined
 
   if (post) {
     if (post.frontmatter?.title) {
@@ -36,6 +37,10 @@ const SEO: React.FC<Props> = ({
       description = post.excerpt
     }
 
+    if (post.frontmatter?.cover) {
+      image = urljoin(config.siteUrl, post.frontmatter.cover)
+    }
+
     schemaOrg.push(
       helmetJsonLdProp<BlogPosting>({
         '@context': 'https://schema.org',
@@ -45,6 +50,10 @@ const SEO: React.FC<Props> = ({
         headline: title,
         description,
         datePublished: post.fields?.date ?? undefined,
+        image: {
+          '@type': 'ImageObject',
+          url: image,
+        },
       }),
       helmetJsonLdProp<BreadcrumbList>({
         '@context': 'https://schema.org',
@@ -78,7 +87,7 @@ const SEO: React.FC<Props> = ({
     >
       {/* General tags */}
       {title && <title>{title}</title>}
-      <meta name="description" content={description} />
+      {description && <meta name="description" content={description} />}
       <link rel="canonical" href={url} />
 
       {/* OpenGraph tags */}
@@ -86,7 +95,7 @@ const SEO: React.FC<Props> = ({
       {post && <meta property="og:type" content="article" />}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      {/* <meta property="og:image" content={image} /> */}
+      {image && <meta property="og:image" content={image} />}
 
       {/* Twitter Card tags */}
       <meta name="twitter:card" content="summary_large_image" />
@@ -96,7 +105,7 @@ const SEO: React.FC<Props> = ({
       />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      {/* <meta name="twitter:image" content={image} /> */}
+      {image && <meta name="twitter:image" content={image} />}
 
       {children}
     </Helmet>

@@ -1,11 +1,11 @@
 ---
 title: Hosting Gatsby on DigitalOcean Spaces
+description: You shouldn't use DigitalOcean Spaces to host a Gatsby site, but I had to do it to them for science.
 date: 2021-05-12T05:00
 slug: hosting-gatsby-on-digitalocean-spaces
-draft: true
+cover: /static/img/gatsby-digitialocean-spaces/grimace-cover.png
 ---
-
-# Why?
+![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](../static/img/gatsby-digitialocean-spaces/grimace-cover.png)
 
 [DigitalOcean Spaces][do-spaces] is an object storage service that is S3 compatible (you can use all the AWS S3
 libraries, which is nifty) with a CDN automatically built in. It even lets you bring your own domain and it will handle
@@ -17,19 +17,38 @@ Long story short, I was able to get it working, but I ended up ditching my plans
 Still, if you are here, you might have a do or die situation where you must host your site on Spaces and maybe this will
 be useful.
 
+## How to deploy to DigitalOcean Spaces
+
+You will build and deploy your site in the standard Gatsby way:
+
+1. Build your Gatsby site using `gatsby build --prefix-paths`
+    * Set the `PREFIX_PATHS` environment variable to what your CDN URL is. 
+    * Mine is `https://cdn.eligundry.com/site` because I host in a folder in the bucket.
+2. Deploy your site using [gatsby-plugin-s3][gatsby-plugin-s3].
+    * This plugin will correctly set the cache headers on your files for optimal performance.
+    * You will need to provide the option `customAwsEndpointHostname` set to the endpoint provided to you in your
+      DigitalOcean Console. Mine was `nyc3.digitaloceanspaces.com`.
+
+After you do this, your site's files will be in your Spaces bucket, but it definitely will not be working. Read on for
+the issues and how to fix them! 
+
 ## No Cloudfront or S3 Static Website Hosting Equivalent
 
+DigitalOcean Spaces is like [S3][s3] and [Cloudfront][cloudfront] were merged together in a time machine that went back
+to when both were launched. It is object storage (S3) with a built in CDN (Cloudfront). As previously mentioned, Spaces
+is S3 compatible, which means you can use the AWS CLI/SDKs for S3 for bucket operations. And the CDN is pretty user
+friendly in that it provides SSL automatically through LetsEncrypt and you can bring your own domain.
 
-* DO Spaces is like if S3 and Cloudfront were integrated, but not well
-  * Based upon what I have read, DigitalOcean Spaces was the result of an acquisition of an acquisition and not something
-    that DigitalOcean built in house. As a result, the quality is not what you would expect from DigitalOcean's other
-    offerings.
-  * Really seems optimized for like video hosting or blob storage for your application?
-* It isn't built to serve static websites, so things like automatically routing to `index.html` don't work
-* I attempted a solution of:
-  * An nginx reverse proxy to do the URL rewriting that S3 Static Website hosting would do
-  * Building the site with `--prefix-paths` to your CDN endpoint
+But, the similarities stop there. Spaces' object storage is missing a bunch of S3 features, like [object
+expiration][s3-object-expiration], [a rich ecosystem of programmatic add-ons via Lambda][s3-lambda], and, most
+importantly for our use case, [static website hosting][s3-static-website-hosting]. Gatsby likes to serve it's routes
+without an extension, which means that all paths end up being folders with an `index.html` in them for the page. S3's
+static website hosting will rewrite that request so that it will serve up `index.html` when a path is requested. It also
+has other cool features that Gatsby can leverage, like error pages and [programmatic redirects][gatsby-redirect].
 
+Since Spaces has none of these features, I wanted to at least get the URL rewriting working. I already was running an
+nginx instance on a DigitalOcean VPS, so I wrote this quick 'n dirty config to reverse proxy the HTML files from the
+CDN.
 
 ```nginx
 server {
@@ -75,6 +94,11 @@ server {
 }
 ```
 
+Because I built the site with `--prefix-paths https://cdn.eligundry.com/site/`, all the HTML files being served point
+straight to the CDN making it unnecessary to reverse proxy those resources. In practice, the only requests hitting the
+reverse proxy would the requests for HTML pages. This is slightly slower and doesn't provide the benefits to the end
+user a normal CDN would provide, but at least it's working, so onward to the next issue!
+
 ## No Automatic GZIP
 
 If you want to get that sweet sweet 💯 from [Lighthouse][lighthouse], you need your content gzip'd. Unfortunately,
@@ -102,9 +126,9 @@ A quick note on the above snippet: If you plan on having this in a CI pipeline a
 [Gatsby incremental builds][gatsby-incremental-builds], this will break that, as it will be unable to detect if files
 have changed or not. Such are the sacrifices we make for performance.
 
-Finally, when you upload your files to DigitalOcean Spaces with `gatsby-plugin-s3`, you will need to manually set the
-`Content-Encoding: gzip` header via the `params` option. It took me a little bit to understand how to do this so maybe
-this will help you:
+Finally, when you upload your files to DigitalOcean Spaces with [`gatsby-plugin-s3`][gatsby-plugin-s3], you will need to
+manually set the `Content-Encoding: gzip` header via the `params` option. It took me a little bit to understand how to
+do this so maybe this will help you:
 
 ```javascript
 {
@@ -135,7 +159,7 @@ this will help you:
 With these settings, I was able to deploy my site! I opened my site, popped open up the network inspector to ensure
 everything is gzip'd. I opened up a JS file and looked at the headers. Strange, there wasn't a `Content-Encoding: gzip`
 header? Did this even work? I opened up the CDN console, purged the cache, redeployed 3 times (for luck), but still no
-header. What am I doing wrong!?
+header. What was I doing wrong!?
 
 I was doing nothing wrong. In the network panel, when I hovered over the request size, I saw that the transfer size
 is smaller than the resource size, just like it would if it was gzip'd.
@@ -217,9 +241,15 @@ app (which seems like their target use case).
 [do-spaces]: https://www.digitalocean.com/products/spaces/
 [lighthouse]: https://developers.google.com/web/tools/lighthouse
 [gatsby-plugin-zopfli]: https://www.gatsbyjs.com/plugins/gatsby-plugin-zopfli/
+[gatsby-plugin-s3]: https://www.gatsbyjs.com/plugins/gatsby-plugin-s3/
 [gatsby-incremental-builds]: https://www.gatsbyjs.com/docs/reference/release-notes/v3.0/#incremental-builds-in-oss
 [do-support-answer]: https://www.digitalocean.com/community/questions/how-to-configure-a-static-website-from-a-do-space?answer=63554
 [s3]: https://aws.amazon.com/s3/
+[s3-object-expiration]: https://aws.amazon.com/blogs/aws/amazon-s3-object-expiration/
+[s3-lambda]: https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html
+[s3-static-website-hosting]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html
+[gatsby-redirect]: https://www.gatsbyjs.com/docs/reference/config-files/actions/#createRedirect
+[cloudfront]: https://aws.amazon.com/cloudfront/
 [gatsby-cloud]: https://www.gatsbyjs.com/products/cloud/
 [vercel]: https://vercel.com/
 [netlify]: https://www.netlify.com/

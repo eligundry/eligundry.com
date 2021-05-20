@@ -1,7 +1,6 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
-import formatISO from 'date-fns/formatISO'
 import tw, { styled } from 'twin.macro'
 
 import Layout from '../layout/index'
@@ -9,6 +8,7 @@ import Paper from '../components/Shared/Paper'
 import SEO from '../components/SEO'
 import Comments from '../components/Comments'
 import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
+import Time from '../components/Shared/Time'
 import './prism-material-light.css'
 
 interface Props {
@@ -17,6 +17,10 @@ interface Props {
 }
 
 const Article = styled<React.FC>(Paper.article)`
+  & header {
+    ${tw`mb-8 pb-8`}
+  }
+
   & .twitter-tweet {
     margin: 0 auto;
   }
@@ -46,13 +50,9 @@ const PostTemplate: React.FC<PageProps<
       <Article>
         <header>
           <h1>{post.title}</h1>
-          {post?.date && (
-            <time dateTime={post.date}>
-              🗓
-              {formatISO(new Date(post.date), { representation: 'date' })}
-            </time>
-          )}
+          {post?.date && <Time time={new Date(post.date)} />}
         </header>
+        <hr />
         {post?.tags?.includes('icymi') && (
           <blockquote>
             <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
