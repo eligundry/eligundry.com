@@ -2,7 +2,7 @@
 title: "ICYMI: Titus Andronicus - The Monitor"
 date: 2017-01-20T05:00
 description: Epic punk album about anxiety and fighting the man.
-cover: https://images.genius.com/c10f76fc286e025ed39eaef2b41dae12.400x400x1.jpg
+cover: ./img/icymi/the-monitor.jpg
 tags:
   - icymi
 ---
@@ -72,4 +72,4 @@ are about to fight.
 
 [1]: https://open.spotify.com/album/5U09FQWagzAU5HPmufUAlU
 [2]: https://genius.com/albums/Titus-andronicus/The-monitor
-[3]: https://images.genius.com/c10f76fc286e025ed39eaef2b41dae12.400x400x1.jpg
+[3]: ./img/icymi/the-monitor.jpg

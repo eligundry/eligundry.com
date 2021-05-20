@@ -101,7 +101,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
             frontmatter: {
               title: string
               date: string
-              category: string | null
               tags: string[] | null
             }
           }
@@ -122,7 +121,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
               frontmatter {
                 title
                 tags
-                category
                 date
               }
             }

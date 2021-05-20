@@ -21,10 +21,10 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     },
   },
   flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    DEV_SSR: true,
-    PARALLEL_SOURCING: true,
-    PRESERVE_FILE_DOWNLOAD_CACHE: true,
+    // PRESERVE_WEBPACK_CACHE: true,
+    // DEV_SSR: true,
+    // PARALLEL_SOURCING: true,
+    // PRESERVE_FILE_DOWNLOAD_CACHE: true,
   },
   plugins: [
     'gatsby-plugin-typescript',
@@ -104,6 +104,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             resolve: 'gatsby-remark-images',
             options: {
               maxWidth: 690,
+              quality: 100,
             },
           },
           'gatsby-remark-responsive-iframe',
@@ -163,17 +164,14 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                   node {
                     excerpt
                     html
-                    timeToRead
                     fields {
                       slug
-                      date
                     }
                     frontmatter {
                       title
-                      cover
                       date
-                      category
                       tags
+                      description
                     }
                   }
                 }
@@ -188,7 +186,8 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                   categories: edge.node.frontmatter.tags,
                   date: edge.node.fields.date,
                   title: edge.node.frontmatter.title,
-                  description: edge.node.excerpt,
+                  description:
+                    edge.node?.description?.frontmatter ?? edge.node.excerpt,
                   url: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
                   guid: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
                   custom_elements: [

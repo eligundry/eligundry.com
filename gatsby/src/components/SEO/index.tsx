@@ -38,7 +38,7 @@ const SEO: React.FC<Props> = ({
     }
 
     if (post.frontmatter?.cover) {
-      image = urljoin(config.siteUrl, post.frontmatter.cover)
+      image = urljoin(config.siteUrl, post.frontmatter.cover.publicURL)
     }
 
     schemaOrg.push(

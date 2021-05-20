@@ -7,6 +7,8 @@ import tw, { styled } from 'twin.macro'
 import Layout from '../layout'
 import Paper from '../components/Shared/Paper'
 import SEO from '../components/SEO'
+import EmojiText from '../components/Shared/EmojiText'
+import Time from '../components/Shared/Time'
 import './talk.css'
 import './prism-material-light.css'
 
@@ -32,20 +34,14 @@ const TalkTemplate: React.FC<PageProps<
       <Article className="talk">
         <header>
           <h1>{talk.title}</h1>
-          {talk.date && (
-            <time dateTime={talk.date}>
-              <span role="img" aria-labelledby="date of talk">
-                🗓
-              </span>
-              {formatISO(new Date(talk.date), { representation: 'date' })}
-            </time>
+          {talk.date && <Time dateTime={new Date(talk.date)} />}
+          {talk.location && (
+            <p className="location">
+              <EmojiText label="location of talk" emoji="📍">
+                {talk.location}
+              </EmojiText>
+            </p>
           )}
-          <p className="location">
-            <span role="img" aria-labelledby="location of talk">
-              📍
-            </span>
-            {talk.location}
-          </p>
         </header>
         {talkNode?.html && (
           <section dangerouslySetInnerHTML={{ __html: talkNode.html }} />
@@ -61,14 +57,14 @@ export default TalkTemplate
 export const pageQuery = graphql`
   query TalkBySlug($slug: String!) {
     markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
       timeToRead
       excerpt
       frontmatter {
         title
-        cover
+        cover {
+          publicURL
+        }
         date
-        category
         tags
         description
         location
@@ -77,6 +73,7 @@ export const pageQuery = graphql`
         slug
         date
       }
+      html
     }
   }
 `

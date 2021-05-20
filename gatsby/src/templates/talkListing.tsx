@@ -45,7 +45,6 @@ export const talkListingQuery = graphql`
           frontmatter {
             title
             tags
-            cover
             date
             description
           }

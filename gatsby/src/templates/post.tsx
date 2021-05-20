@@ -72,14 +72,14 @@ export default PostTemplate
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
     markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
       timeToRead
       excerpt
       frontmatter {
         title
-        cover
+        cover {
+          publicURL
+        }
         date
-        category
         tags
         description
       }
@@ -87,6 +87,7 @@ export const pageQuery = graphql`
         slug
         date
       }
+      html
     }
   }
 `
