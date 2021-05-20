@@ -38,7 +38,7 @@ const links = [
     icon: <FaEnvelopeSquare />,
   },
   {
-    lable: 'Add my blog to your Google Reader via RSS',
+    label: 'Add my blog to your Google Reader via RSS',
     url: config.siteRss,
     icon: <FaRssSquare />,
   },

@@ -1,49 +1,52 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
-import formatISO from 'date-fns/formatISO'
+import { graphql, PageProps } from 'gatsby'
 import tw, { styled } from 'twin.macro'
 
 import Layout from '../layout/index'
 import Paper from '../components/Shared/Paper'
-import PostTags from '../components/PostTags/PostTags'
-import SEO from '../components/SEO/SEO'
+import SEO from '../components/SEO'
 import Comments from '../components/Comments'
-import { BlogPostBySlugQuery, SitePageContext } from '../../graphql-types'
-import './b16-tomorrow-dark.css'
+import Time from '../components/Shared/Time'
+import './prism-material-light.css'
 
-interface Props {
-  data: BlogPostBySlugQuery
-  pageContext: SitePageContext
-}
+const Article = styled<React.FC>(Paper.article)`
+  & header {
+    ${tw`mb-2`}
+  }
 
-const Article = styled(Paper.article)`
-  & blockquote {
-    ${tw`italic border-l-2 border-teal-400 pl-2`}
+  & .twitter-tweet {
+    margin: 0 auto;
+  }
+
+  & img[src*='.gif'] {
+    margin: 0 auto;
   }
 `
 
-const PostTemplate: React.FC<Props> = props => {
-  const { data, pageContext } = props
-  const { slug } = pageContext
+const PostTemplate: React.FC<PageProps<
+  GatsbyTypes.BlogPostBySlugQuery
+>> = props => {
+  const { data, path } = props
   const postNode = data.markdownRemark
-  const post = postNode.frontmatter
+  const post = postNode?.frontmatter
+
+  if (!post) {
+    return null
+  }
 
   return (
     <Layout>
       <Helmet>
         <title>{post.title}</title>
       </Helmet>
-      <SEO postPath={slug} postNode={postNode} postSEO />
+      <SEO path={path} post={postNode} />
       <Article>
         <header>
           <h1>{post.title}</h1>
-          <time dateTime={post.date}>
-            🗓
-            {formatISO(new Date(post.date), { representation: 'date' })}
-          </time>
+          {post?.date && <Time dateTime={new Date(post.date)} />}
         </header>
-        {post.tags && post.tags.includes('icymi') && (
+        {post?.tags?.includes('icymi') && (
           <blockquote>
             <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
             review and recommend old albums that you may have missed. I used to
@@ -51,9 +54,11 @@ const PostTemplate: React.FC<Props> = props => {
             write them here.
           </blockquote>
         )}
-        <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
+        {postNode?.html && (
+          <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
+        )}
+        <hr />
         <aside className="post-meta">
-          <PostTags tags={post.tags} />
           <Comments />
         </aside>
       </Article>

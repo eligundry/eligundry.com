@@ -33,6 +33,7 @@ func (meme Meme) MemeResponse() MemeResponse {
 		Size:      [2]null.Int{meme.Width, meme.Height},
 		Notes:     meme.Notes,
 		CreatedAt: meme.CreatedAt,
+		Modified:  meme.UpdatedAt,
 	}
 }
 
@@ -49,11 +50,12 @@ func (memes Memes) MemeResponse() []MemeResponse {
 }
 
 type MemeResponse struct {
-	ID        int64       `json:"id"`
+	ID        int64       `json:"meme_id"`
 	URL       string      `json:"url"`
 	Size      [2]null.Int `json:"size"`
 	Notes     string      `json:"notes"`
 	CreatedAt time.Time   `json:"created_at"`
+	Modified  time.Time   `json:"modified"`
 }
 
 type MemePayload struct {

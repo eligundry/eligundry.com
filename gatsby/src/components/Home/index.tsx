@@ -4,20 +4,39 @@ import GitHubCalendar from 'react-github-calendar'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
 import { useWindowSize } from 'react-use'
 import LazyLoad from 'react-lazyload'
+import { Link } from 'gatsby'
+import { StaticImage } from 'gatsby-plugin-image'
 
 import config from '../../../data/SiteConfig'
 import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
-import { DaylioVariants } from '../Daylio/types'
 import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
+import underConstructionGif from '../../../static/img/under-construction.gif'
 
-const Section = styled(Paper.section)`
+interface SectionProps {
+  className?: string
+  fullWidth?: boolean
+}
+
+const Section = styled<React.FC<SectionProps>>(Paper.section)`
   ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {
     ${tw`text-teal-500 italic`}
+  }
+
+  &.introduction-hero {
+    display: block;
+  }
+
+  & .headshot {
+    min-width: 200px;
+    width: 200px;
+    height: 250px;
+    float: right;
+    ${tw`ml-8`}
   }
 
   & .bookshelf {
@@ -30,21 +49,6 @@ const Section = styled(Paper.section)`
 
     & img {
       min-width: 75px;
-    }
-  }
-
-  &.introduction-hero {
-    display: flex;
-    flex-direction: row;
-
-    & > .text-column {
-      align-self: center;
-      margin-right: 1em;
-    }
-
-    & > .headshot {
-      width: 150px;
-      height: 191px;
     }
   }
 
@@ -65,68 +69,25 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Section className="introduction-hero" fullWidth>
-        <div className="text-column">
-          <h2>Hello there!</h2>
-          <p>
-            <a
-              href="https://hipsum.co/"
-              title="A little bit of hipster ipsum while I figure out what to say"
-            >
-              I'm baby try-hard slow-carb dreamcatcher
-            </a>
-            , selfies affogato copper mug brunch trust fund green juice irony
-            portland asymmetrical polaroid. You probably haven't heard of them
-            selfies street art organic hammock, seitan sartorial lomo affogato.
-            Enamel pin woke authentic godard shaman retro locavore leggings
-            umami farm-to-table raclette jianbing banh mi. Af hexagon put a bird
-            on it fashion axe butcher keffiyeh polaroid kombucha cliche irony.
-            Listicle synth next level quinoa.
-          </p>
-        </div>
-        <img
-          src="/img/eli-gundry-headshot.jpg"
+      <Section className="introduction-hero">
+        <h2>Hello there!</h2>
+        <StaticImage
+          src="../../../static/img/eli-gundry-headshot.jpg"
           alt="Eli Gundry's Headshot"
           className="headshot"
+          width={200}
+          height={250}
         />
-      </Section>
-      <Section className="feeling">
-        <h2>Feeling</h2>
-        <p className="summary">
-          Recently, I decided to start journaling my feelings. Being a software
-          engineer, I made an API out of it and put it on my website. You can
-          read more about this project <a href="/blog/feelings-api">here</a>.
+        <p>
+          I only really write in lists, so here's the top line facts about me.
         </p>
-        <Daylio variant={DaylioVariants.home} />
-        <DaylioChart />
-      </Section>
-      <Section className="coding">
-        <h2>Coding</h2>
-        <p className="summary">
-          I make a living developing web applications. I jump all around the
-          stack and will do whatever it takes to ship. Need me to do some devops
-          to get this feature out? I gotcha. Some CSS is making a button look
-          bad? I'll do my best. A query running to slow? Stop, I can't deal with
-          all this excitment.
-        </p>
-        <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd" />
-      </Section>
-      <Section className="reading">
-        <h2>Reading</h2>
-        <p className="summary">
-          I wish I read more, but there are only so many hours in the day. These
-          are the books that I'm reading right now.
-        </p>
-        <div className="bookshelf">
-          <Reading
-            shelf="currently-reading"
-            accountID={config.goodreads.userID}
-          />
-        </div>
-      </Section>
-      <Section className="triva">
-        <h2>Trivia</h2>
         <ul>
+          <li>I'm a full stack web engineer.</li>
+          <li>
+            I love to plan and cook elaborate meals. It really activates the
+            engineering part of my brain!
+          </li>
+          <li>I have a non-traditional computer science education.</li>
           <li>
             Vim user but I actively encourage everyone to use something else.
             Using Vim in {new Date().getFullYear()} is a cool bar trick.
@@ -148,6 +109,62 @@ const Home: React.FC = () => {
             .
           </li>
         </ul>
+        <p>
+          I don't think I'll ever truly be happy with the layout of style of
+          this site. I know what looks good but am uterly powerless to make
+          something that looks good. Until I am happy, the 90s under
+          construction gif will stay up.
+        </p>
+        <a href="http://textfiles.com/underconstruction/">
+          <img
+            src={underConstructionGif}
+            alt="90s style under construction gif"
+          />
+        </a>
+      </Section>
+      <Section className="feeling">
+        <h2>Feeling</h2>
+        <p className="summary">
+          A while ago, I decided to start journaling my feelings. Being a
+          software engineer,{' '}
+          <Link to="blog/feelings-api">
+            I made an API out of it and put it on my website
+          </Link>
+          .
+        </p>
+        <Daylio />
+        <DaylioChart />
+      </Section>
+      <Section className="coding">
+        <h2>Coding</h2>
+        <p className="summary">
+          I make a living developing web applications. I jump all around the
+          stack and will do whatever it takes to ship. Need me to do some devops
+          to get this feature out? I gotcha. Some CSS is making a button look
+          bad? I'll do my best. A query running to slow? Stop, I can't deal with
+          all this excitment.
+        </p>
+        <GitHubCalendar
+          username="eligundry"
+          dateFormat="yyyy-MM-dd"
+          style={{
+            minHeight: '142px',
+          }}
+        />
+      </Section>
+      <Section className="reading">
+        <h2>Reading</h2>
+        <p className="summary">
+          I wish I read more, but there are only so many hours in the day. These
+          are the books that I'm reading right now. You can find me on{' '}
+          <a href="https://www.goodreads.com/user/show/29665939-eli-gundry">
+            Goodreads
+          </a>
+          .
+        </p>
+        <div className="bookshelf">
+          <Reading />
+        </div>
       </Section>
       <Section className="listening">
         <h2>Listening</h2>
@@ -171,6 +188,8 @@ const Home: React.FC = () => {
               className="listening-img"
               src="https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3"
               alt="My top 9 albums for the past 7 days"
+              width={900}
+              height={900}
             />
           </a>
         </div>

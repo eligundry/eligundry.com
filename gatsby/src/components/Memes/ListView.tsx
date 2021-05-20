@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useQuery } from 'react-query'
 import tw, { styled } from 'twin.macro'
 import Lightbox from 'react-image-lightbox'
 import {
@@ -9,9 +8,8 @@ import {
 } from 'react-lazy-load-image-component'
 import 'react-image-lightbox/style.css'
 
-import { Meme } from './types'
+import useMemes from './useMemes'
 import Paper from '../Shared/Paper'
-import customFetch, { processResponse } from '../../utils/fetch'
 
 const Intro = styled.blockquote`
   ${tw`italic border-l-2 border-teal-400 pl-2 m-4`}
@@ -43,15 +41,13 @@ interface Props {
 }
 
 const MemeListView: React.FC<Props> = ({ scrollPosition }) => {
+  const memes = useMemes()
   const [lightBoxState, setLightBoxState] = useState({
     index: 0,
     open: false,
   })
-  const { data: memes, isFetching, error } = useQuery(['memes'], () =>
-    customFetch('/api/memes').then(res => processResponse<Meme[]>(res))
-  )
 
-  if ((!memes && isFetching) || error) {
+  if (!memes) {
     return null
   }
 
@@ -72,8 +68,8 @@ const MemeListView: React.FC<Props> = ({ scrollPosition }) => {
             <LazyLoadImage
               src={meme.url}
               alt={meme.notes}
-              width={meme.size[0] || undefined}
-              height={meme.size[1] || undefined}
+              width={meme.size?.[0] ?? undefined}
+              height={meme.size?.[1] ?? undefined}
               scrollPosition={scrollPosition}
             />
           </Image>

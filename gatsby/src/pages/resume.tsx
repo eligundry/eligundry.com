@@ -1,15 +1,13 @@
 import React from 'react'
-import Helmet from 'react-helmet'
 
 import Layout from '../layout'
 import Resume from '../components/Resume'
+import SEO from '../components/SEO'
 
 const ResumePage: React.FC = () => {
   return (
     <Layout showFooter={false}>
-      <Helmet>
-        <title>Resume</title>
-      </Helmet>
+      <SEO path="resume" title="Resume" description="My resume in HTML form" />
       <Resume />
     </Layout>
   )

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/eligundry/eligundry.com/api/auth"
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/feeds"
 	"github.com/pkg/errors"
@@ -77,6 +78,14 @@ func SubmitDaylioExport(c *gin.Context) {
 	data, err := ProcessDaylioExport(file)
 
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	// Trigger a rebuild of the static site when I submit a new feelings CSV
+	if err := common.TriggerNetlifyDeployOfSite("Daylio Submission"); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})

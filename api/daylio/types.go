@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"html/template"
 	"time"
-
-	"gopkg.in/guregu/null.v3"
 )
 
 type DaylioExport struct {
@@ -34,7 +32,7 @@ type DaylioEntry struct {
 	Time          time.Time       `json:"time"`
 	Mood          string          `json:"mood"`
 	Activities    json.RawMessage `json:"activities"`
-	RawActivities null.String     `json:"-" db:"raw_activities"`
+	RawActivities *[]byte         `json:"-" db:"raw_activities"`
 	RawNotes      json.RawMessage `json:"-" db:"raw_notes"`
 	Notes         []string        `json:"notes"`
 }

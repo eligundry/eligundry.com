@@ -24,10 +24,22 @@ const BaseStyles = styled.div`
 
   & ul {
     ${tw`list-disc pl-8 my-4`}
+
+    & ul, & ol {
+      ${tw`mt-0 mb-0`}
+    }
   }
 
   & ol {
     ${tw`list-decimal pl-8 my-4`}
+
+    & ul, & ol {
+      ${tw`mt-0 mb-0`}
+    }
+  }
+
+  & blockquote {
+    ${tw`italic border-l-2 border-teal-400 pl-2`}
   }
 
   & a {

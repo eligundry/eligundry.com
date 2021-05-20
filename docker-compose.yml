@@ -10,6 +10,7 @@ services:
       DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
       STAGE: 'local'
       WEBSOCKET: 'true'
+      TEST_CDN: 'false'
     networks:
       backend: {}
     volumes:
@@ -28,6 +29,7 @@ services:
     environment:
       AUTH_USER: eligundry
       AUTH_PASSWORD: password
+      CGO_CFLAGS: "-DSQLITE_ENABLE_JSON1"
     networks:
       backend: {}
     volumes:

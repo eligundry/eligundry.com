@@ -51,9 +51,9 @@ const EntryList: React.FC<Props> = ({ entries }) => {
     <EntryListWrapper>
       {entries.map(entry => (
         <Entry
-          key={entry.time}
+          key={entry.time.toISOString()}
           variant={DaylioVariants.list}
-          selected={entry.time === selectedEntryTime}
+          selected={entry.time.toISOString() === selectedEntryTime}
           {...entry}
         />
       ))}
