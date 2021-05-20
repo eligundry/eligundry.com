@@ -1,16 +1,21 @@
 import React from 'react'
 import formatISO from 'date-fns/formatISO'
 
-interface Props {
-  time: Date
+import EmojiText from './EmojiText'
+
+interface Props
+  extends Omit<
+    React.DetailedHTMLProps<React.TimeHTMLAttributes<HTMLElement>, HTMLElement>,
+    'dateTime'
+  > {
+  dateTime: Date
 }
 
-const Time: React.FC<Props> = ({ time }) => (
-  <time>
-    <span role="img" aria-label="calendar for the date">
-      🗓
-    </span>
-    {formatISO(time, { representation: 'date' })}
+const Time: React.FC<Props> = ({ dateTime, ...props }) => (
+  <time dateTime={dateTime.toISOString()} {...props}>
+    <EmojiText label="calendar for the date" emoji="🗓">
+      {formatISO(dateTime, { representation: 'date' })}
+    </EmojiText>
   </time>
 )
 

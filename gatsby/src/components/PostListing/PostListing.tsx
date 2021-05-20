@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import formatISO from 'date-fns/formatISO'
 
+import Time from '../Shared/Time'
+import EmojiText from '../Shared/EmojiText'
 import './listing.css'
 
 interface Props {
@@ -21,14 +22,13 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
   }))
 
   return (
-    <main itemScope itemType="http://schema.org/Blog">
+    <main>
       {postList
         .filter(post => !!post.title)
         .map(post => (
           <article
             key={post.path}
             itemScope
-            itemProp="blogPosts"
             itemType="http://schema.org/BlogPosting"
             className="listing-post"
           >
@@ -38,19 +38,13 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
               </Link>
             </h1>
             {post.date && (
-              <time dateTime={post.date} itemProp="datePublished">
-                <span role="img" aria-labelledby="date of blog post">
-                  🗓
-                </span>
-                {formatISO(new Date(post.date), { representation: 'date' })}
-              </time>
+              <Time dateTime={new Date(post.date)} itemProp="datePublished" />
             )}
             {post.description && (
               <p itemProp="description" className="description">
-                <span role="img" aria-labelledby="description of the blog post">
-                  📝
-                </span>
-                {post.description}
+                <EmojiText label="description of the blog post" emoji="📝">
+                  {post.description}
+                </EmojiText>
               </p>
             )}
           </article>

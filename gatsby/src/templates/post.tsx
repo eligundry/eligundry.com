@@ -18,7 +18,7 @@ interface Props {
 
 const Article = styled<React.FC>(Paper.article)`
   & header {
-    ${tw`mb-8 pb-8`}
+    ${tw`mb-2`}
   }
 
   & .twitter-tweet {
@@ -50,7 +50,7 @@ const PostTemplate: React.FC<PageProps<
       <Article>
         <header>
           <h1>{post.title}</h1>
-          {post?.date && <Time time={new Date(post.date)} />}
+          {post?.date && <Time dateTime={new Date(post.date)} />}
         </header>
         <hr />
         {post?.tags?.includes('icymi') && (

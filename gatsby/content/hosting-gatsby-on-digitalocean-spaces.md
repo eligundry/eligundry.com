@@ -8,22 +8,22 @@ cover: /static/img/gatsby-digitialocean-spaces/grimace-cover.png
 ![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](../static/img/gatsby-digitialocean-spaces/grimace-cover.png)
 
 [DigitalOcean Spaces][do-spaces] is an object storage service that is S3 compatible (you can use all the AWS S3
-libraries, which is nifty) with a CDN automatically built in. It even lets you bring your own domain and it will handle
-the SSL certificates for you through Let's Encrypt. Based upon my experience with Gatsby and S3, this seemed like
-a great fit and since I'm already a DigitalOcean customer, I figured I might as well give it a shot instead of signing
+libraries, which is nifty) with a CDN automatically built in. It even lets you bring your own domain and will handle
+the SSL certificates for you through [Let's Encrypt][letsencrypt]. Based upon my experience with Gatsby and S3, this seemed like
+a great fit and since I'm already a DigitalOcean customer and figured I might as well give it a shot instead of signing
 up for another service.
 
-Long story short, I was able to get it working, but I ended up ditching my plans for it to go with [Netlify][netlify].
-Still, if you are here, you might have a do or die situation where you must host your site on Spaces and maybe this will
-be useful.
+Long story short, I was able to get it working, but I ended up ditching it to go with [Netlify][netlify]. Still, if you
+are here, you might have a do or die situation where you must host your site on Spaces and maybe this will be useful.
+Also, it's a fun story for me to tell!
 
-## How to deploy to DigitalOcean Spaces
+## How to deploy Gatsby to DigitalOcean Spaces
 
 You will build and deploy your site in the standard Gatsby way:
 
 1. Build your Gatsby site using `gatsby build --prefix-paths`
     * Set the `PREFIX_PATHS` environment variable to what your CDN URL is. 
-    * Mine is `https://cdn.eligundry.com/site` because I host in a folder in the bucket.
+    * Mine is `https://cdn.eligundry.com/site` because I host the site in a folder in the bucket.
 2. Deploy your site using [gatsby-plugin-s3][gatsby-plugin-s3].
     * This plugin will correctly set the cache headers on your files for optimal performance.
     * You will need to provide the option `customAwsEndpointHostname` set to the endpoint provided to you in your
@@ -34,10 +34,10 @@ the issues and how to fix them!
 
 ## No Cloudfront or S3 Static Website Hosting Equivalent
 
-DigitalOcean Spaces is like [S3][s3] and [Cloudfront][cloudfront] were merged together in a time machine that went back
+DigitalOcean Spaces is like if [S3][s3] and [Cloudfront][cloudfront] were merged together in a time machine that went back
 to when both were launched. It is object storage (S3) with a built in CDN (Cloudfront). As previously mentioned, Spaces
 is S3 compatible, which means you can use the AWS CLI/SDKs for S3 for bucket operations. And the CDN is pretty user
-friendly in that it provides SSL automatically through LetsEncrypt and you can bring your own domain.
+friendly in that it provides SSL automatically through Let's Encrypt and you can bring your own domain.
 
 But, the similarities stop there. Spaces' object storage is missing a bunch of S3 features, like [object
 expiration][s3-object-expiration], [a rich ecosystem of programmatic add-ons via Lambda][s3-lambda], and, most
@@ -94,17 +94,17 @@ server {
 }
 ```
 
-Because I built the site with `--prefix-paths https://cdn.eligundry.com/site/`, all the HTML files being served point
-straight to the CDN making it unnecessary to reverse proxy those resources. In practice, the only requests hitting the
-reverse proxy would the requests for HTML pages. This is slightly slower and doesn't provide the benefits to the end
-user a normal CDN would provide, but at least it's working, so onward to the next issue!
+Because I built the site with `--prefix-paths`, all the HTML files being served point straight to the CDN making it
+unnecessary to reverse proxy those resources. In practice, the only requests hitting the reverse proxy would the
+requests for HTML pages on first load. This is slightly slower and doesn't provide the benefits to the end user a normal
+CDN would provide via proximity, but at least it's working, so onward to the next issue!
 
 ## No Automatic GZIP
 
 If you want to get that sweet sweet 💯 from [Lighthouse][lighthouse], you need your content gzip'd. Unfortunately,
-DigitalOcean Spaces' CDN  does not support gzip'ing on the fly like Cloudfront does, so you have to precompress your
-assets as a part of your build. I used [`gatsby-plugin-zopfli`][gatsby-plugin-zopfli], which hooks into the Gatsby build
-process to compress your assets, with the following config:
+[DigitalOcean Spaces' CDN  does not support gzip'ing on the fly][no-gizp-issue] like Cloudfront does, so you have to precompress your
+assets as a part of the build. I used [`gatsby-plugin-zopfli`][gatsby-plugin-zopfli], which hooks into the Gatsby build
+process to compress the assets, with the following config:
 
 ```javascript
 {
@@ -124,7 +124,7 @@ $ for f in "public/*.gz"; do mv -v -- "$f" "${f%.gz}"; done
 
 A quick note on the above snippet: If you plan on having this in a CI pipeline and want to leverage 
 [Gatsby incremental builds][gatsby-incremental-builds], this will break that, as it will be unable to detect if files
-have changed or not. Such are the sacrifices we make for performance.
+have changed or not. Such are the sacrifices we make for speed.
 
 Finally, when you upload your files to DigitalOcean Spaces with [`gatsby-plugin-s3`][gatsby-plugin-s3], you will need to
 manually set the `Content-Encoding: gzip` header via the `params` option. It took me a little bit to understand how to
@@ -162,7 +162,7 @@ header? Did this even work? I opened up the CDN console, purged the cache, redep
 header. What was I doing wrong!?
 
 I was doing nothing wrong. In the network panel, when I hovered over the request size, I saw that the transfer size
-is smaller than the resource size, just like it would if it was gzip'd.
+was smaller than the resource size, just like it would if it was gzip'd.
 
 ![The gzip lie](../static/img/gatsby-digitialocean-spaces/do-spaces-gzip-lie.png)
 
@@ -194,10 +194,10 @@ browsers, [only six HTTP/1.1 connections can be made to the same host at once][6
 developers used to use CDNs that could provide multiple domains to side step this issue, but I really don't want to go
 that route as it isn't 2011 anymore.
 
-One of the big benefits to HTTP/2 is that this limit is removed and common connection things, like SSL handshakes, can
-be shared between connections. **The fact that DigitalOcean Spaces does not support this in 2021 is going to prevent you
-from getting the max score you could in Lighthouse.** With HTTP/3 around the corner, I am not optimistic in that getting
-here anytime soon as well.
+One of the big benefits to HTTP/2 is that this limit is removed and common connection resources, like SSL handshakes,
+can be shared between connections. **The fact that DigitalOcean Spaces does not support this in 2021 is going to prevent
+you from getting the max score you could in Lighthouse.** With HTTP/3 around the corner, I am not optimistic in Spaces
+supporting that anytime soon.
 
 # Results
 
@@ -208,9 +208,9 @@ I was able to get a 100 from Lighthouse! But at what cost?
 ![No HTTP/2 from DigitalOcean Spaces hurt me](../static/img/gatsby-digitialocean-spaces/do-spaces-lighthouse-no-http2.png)
 
 The site was still a little glitchy, I suspect because of the nginx routing I setup poorly and maybe some script loading
-issues related to scripts sometimes loading out of order related to HTTP/1.1 restrictions.
+issues related to scripts sometimes loading out of order because of HTTP/1.1 restrictions.
 
-I decided that this was too much work. As much as I love maintaining my own infrastructure and writing Github Actions,
+**I decided that this was too much work.** As much as I love maintaining my own infrastructure and writing Github Actions,
 this is a solved problem by [S3][s3], [Gatsby Cloud][gatsby-cloud], [Vercel][vercel], and [Netlify][netlify]. I've used Gatsby
 Cloud and became frustrated with it (too "convention over configuration" for my tastes, though the build speeds are
 fast). I'm using Vercel and S3 at work and they are pretty good, but just to round out the list, I decided to host my
@@ -236,9 +236,11 @@ recommends it either. They have thousands of guides on how to do things, but non
 there is this [support answer saying "good idea, maybe our product team will look at it?"][do-support-answer].
 
 But, you should not use Spaces for anything related to static sites. It might be okay of simple object storage for an
-app (which seems like their target use case).
+app (which seems like their target use case). Otherwise, avoid the like the plauge and use a service that knows Gatsby
+inside and out!
 
 [do-spaces]: https://www.digitalocean.com/products/spaces/
+[letsencrypt]: https://letsencrypt.org/
 [lighthouse]: https://developers.google.com/web/tools/lighthouse
 [gatsby-plugin-zopfli]: https://www.gatsbyjs.com/plugins/gatsby-plugin-zopfli/
 [gatsby-plugin-s3]: https://www.gatsbyjs.com/plugins/gatsby-plugin-s3/
@@ -256,3 +258,4 @@ app (which seems like their target use case).
 [do-spaces-no-http2]: https://www.digitalocean.com/community/questions/spaces-cdn-http-2-support
 [pokemon-go-to-the-polls]: https://www.digitalocean.com/community/questions/spaces-cdn-http-2-support
 [6-http1-connections]: https://docs.pushtechnology.com/cloud/latest/manual/html/designguide/solution/support/connection_limitations.html
+[no-gzip-issue]: https://www.digitalocean.com/community/questions/how-do-i-enable-gzip-compression-on-spaces
