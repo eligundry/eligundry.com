@@ -115,9 +115,10 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
-      resolve: 'gatsby-plugin-google-analytics',
+      resolve: 'gatsby-plugin-google-tagmanager',
       options: {
-        trackingId: config.googleAnalyticsID,
+        id: config.googleTagManagerID,
+        includeInDevelopment: false,
       },
     },
     {

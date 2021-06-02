@@ -1,7 +1,7 @@
 ---
 title: Hosting Gatsby on DigitalOcean Spaces
 description: You shouldn't use DigitalOcean Spaces to host a Gatsby site, but I had to do it to them for science.
-date: 2021-05-20T05:00
+date: 2021-06-02T05:00
 slug: hosting-gatsby-on-digitalocean-spaces
 cover: ./img/gatsby-digitialocean-spaces/grimace-cover.png
 ---
