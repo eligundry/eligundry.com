@@ -76,6 +76,7 @@ const sourceGoodreadsNodes = async (
       url: `https://www.goodreads.com${row
         .querySelector('td.field.cover a')
         .getAttribute('href')}`,
+      shelf: query.shelf,
     }
 
     createNode({

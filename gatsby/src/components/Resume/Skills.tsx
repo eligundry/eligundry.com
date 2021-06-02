@@ -1,4 +1,5 @@
 import React from 'react'
+import tw, { styled } from 'twin.macro'
 
 import { Skills } from './data'
 
@@ -21,7 +22,9 @@ const SkillsItem: React.FC<SkillsItemProps> = ({ prefix, keywords }) => {
         return (
           <React.Fragment key={url}>
             {isLastKeyword && '& '}
-            <a href={url}>{keyword}</a>
+            <a href={url} itemProp="knowsAbout">
+              {keyword}
+            </a>
             {insertComma && ','}
             {!isLastKeyword && ' '}
           </React.Fragment>
@@ -45,20 +48,34 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
   return (
     <section>
       <h2>Skills</h2>
-      <ul>
-        <SkillsItem prefix="Fluent in" keywords={languages.keywords} />
-        <SkillsItem
-          prefix="Built web applications using"
-          keywords={frameworks.keywords}
-        />
-        <SkillsItem prefix="Loves using" keywords={tools.keywords} />
-        <SkillsItem
-          prefix="Has a love hate relationship (that I will happily explain) with"
-          keywords={loveHate.keywords}
-        />
-      </ul>
+      <SkillsList>
+        {languages?.keywords && (
+          <SkillsItem prefix="Fluent in" keywords={languages.keywords} />
+        )}
+        {frameworks?.keywords && (
+          <SkillsItem
+            prefix="Built web applications using"
+            keywords={frameworks.keywords}
+          />
+        )}
+        {tools?.keywords && (
+          <SkillsItem prefix="Loves using" keywords={tools.keywords} />
+        )}
+        {loveHate?.keywords && (
+          <SkillsItem
+            prefix="Has a love hate relationship (that I will happily explain) with"
+            keywords={loveHate.keywords}
+          />
+        )}
+      </SkillsList>
     </section>
   )
 }
+
+const SkillsList = styled.ul`
+  && {
+    ${tw`pl-0`}
+  }
+`
 
 export default SkillsSection

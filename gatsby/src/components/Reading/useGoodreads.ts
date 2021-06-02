@@ -4,12 +4,13 @@ export default function useGoodreadsShelf() {
   const queryResult = useStaticQuery<GatsbyTypes.UseGoodreadsShelfQuery>(
     graphql`
       query UseGoodreadsShelf {
-        allGoodreadsBook {
+        allGoodreadsBook(sort: { fields: started, order: DESC }) {
           books: nodes {
             title
             author
             isbn
             url
+            started
             coverImage {
               childImageSharp {
                 gatsbyImageData(width: 200)

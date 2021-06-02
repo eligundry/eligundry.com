@@ -78,7 +78,7 @@ const resume: Resume = {
     phone: '3308286147',
     website: 'https://eligundry.com',
     location: {
-      city: 'Long Island City',
+      city: 'Astoria',
       countryCode: 'US',
       region: 'NY',
     },
@@ -114,7 +114,7 @@ const resume: Resume = {
     {
       company: 'Croscon',
       position: 'Principal Engineer',
-      website: 'http://croscon.com',
+      website: 'https://croscon.com',
       location: {
         city: 'New York',
         countryCode: 'US',
@@ -148,7 +148,7 @@ const resume: Resume = {
     {
       company: 'Davey Tree',
       position: 'Web Development Consultant',
-      website: 'http://www.davey.com',
+      website: 'https://www.davey.com',
       location: {
         city: 'Kent',
         countryCode: 'US',
@@ -187,7 +187,7 @@ const resume: Resume = {
     {
       company: 'Kent State University',
       position: 'Student IT Worker',
-      website: 'http://www.kent.edu',
+      website: 'https://www.kent.edu',
       location: {
         city: 'Kent',
         countryCode: 'US',
@@ -205,7 +205,7 @@ const resume: Resume = {
     {
       company: 'Mindbox Studios',
       position: 'Web Developer',
-      website: 'http://mindboxstudios.com',
+      website: 'https://mindboxstudios.com',
       location: {
         city: 'Cincinnati',
         countryCode: 'US',
@@ -231,7 +231,7 @@ const resume: Resume = {
     {
       company: 'Go Media',
       position: 'Web Developer',
-      website: 'http://gomedia.us',
+      website: 'https://gomedia.us',
       location: {
         city: 'Cleveland',
         countryCode: 'US',
@@ -258,7 +258,7 @@ const resume: Resume = {
     {
       company: 'Great Lakes Publishing',
       position: 'Web Development Intern',
-      website: 'http://www.glpublishing.com',
+      website: 'https://www.glpublishing.com',
       location: {
         city: 'Cleveland',
         countryCode: 'US',
@@ -427,7 +427,7 @@ const resume: Resume = {
       <li>Fashion/Tech 2015</li>
     </ul>
     `,
-    `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout">Eagle Scout</a> in 2006.`,
+    `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout" itemprop="award">Eagle Scout</a> in 2006.`,
   ],
 }
 

@@ -71,7 +71,7 @@ interface ContentWrapperProps {
 
 export const ContentWrapper = styled.main<ContentWrapperProps>`
   // On computers, make the context 60%, full screen for mobile and templates
-  ${tw`sm:w-full md:w-full lg:w-1/2 xl:w-1/2`}
+  ${tw`xs:w-full sm:w-full md:w-full lg:w-4/5 xl:w-3/5`}
 
   ${props => props.wider && tw`lg:w-4/5 xl:w-4/5`}
 `

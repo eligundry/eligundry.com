@@ -62,11 +62,22 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
       }
     }
   }
+
+  &.tweets {
+    & .content {
+      ${tw`flex flex-row sm:flex-col`}
+
+      & > * {
+        ${tw`w-1/2 sm:w-full`}
+      }
+    }
+  }
 `
 
 const Home: React.FC = () => {
-  const { width } = useWindowSize()
-  const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
+  // const { width } = useWindowSize()
+  // const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
+  const twitterTimelineHeight = 400
 
   return (
     <>
@@ -177,7 +188,7 @@ const Home: React.FC = () => {
         <div className="listening-media">
           <iframe
             title="Spotify playlist that I have on repeat"
-            src="https://open.spotify.com/embed/playlist/1gD4BMDtHdnUnIDmxOCV5w"
+            src="https://open.spotify.com/embed/playlist/1cm6mo8oxk8axeEhQZff8Z"
             width="300"
             height="380"
             frameBorder="0"
@@ -197,21 +208,25 @@ const Home: React.FC = () => {
       </Section>
       <Section className="tweets">
         <h2>Twitter</h2>
-        <p className="summary">
-          Twitter is my <del>vice</del> social network of choice. It's been
-          instrumental in developing my career. I started following other
-          developers years ago, read their blog posts, followed the people they
-          retweeted, and stayed up to date with the latest technologies. It also
-          has funny memes, which are equally important to keeping up to date
-          with tech.
-        </p>
-        <LazyLoad height={twitterTimelineHeight}>
-          <TwitterTimelineEmbed
-            sourceType="profile"
-            screenName={config.userTwitter}
-            options={{ height: twitterTimelineHeight }}
-          />
-        </LazyLoad>
+        <div className="content">
+          <p className="summary">
+            Twitter is my <del>vice</del> social network of choice. It's been
+            instrumental in developing my career. I started following other
+            developers years ago, read their blog posts, followed the people
+            they retweeted, and stayed up to date with the latest technologies.
+            It also has funny memes, which are equally important to keeping up
+            to date with tech.
+          </p>
+          <LazyLoad>
+            <TwitterTimelineEmbed
+              sourceType="profile"
+              screenName={config.userTwitter}
+              options={{
+                height: twitterTimelineHeight,
+              }}
+            />
+          </LazyLoad>
+        </div>
       </Section>
     </>
   )
