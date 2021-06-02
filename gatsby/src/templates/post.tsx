@@ -58,9 +58,7 @@ const PostTemplate: React.FC<PageProps<
           <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
         )}
         <hr />
-        <aside className="post-meta">
-          <Comments />
-        </aside>
+        <Comments />
       </Article>
     </Layout>
   )

@@ -35,7 +35,6 @@
     "gatsby-source-filesystem": "^3.4.0",
     "gatsby-transformer-remark": "^4.1.0",
     "gatsby-transformer-sharp": "^3.4.0",
-    "gravatar": "^1.8.1",
     "js-cookie": "^2.2.1",
     "jsdom": "^16.5.3",
     "lodash": "^4.17.20",

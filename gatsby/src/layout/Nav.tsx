@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import tw, { styled, css } from 'twin.macro'
+import tw, { styled, css, theme } from 'twin.macro'
 import { useMedia, useWindowScroll } from 'react-use'
 import { Link } from 'gatsby'
 
@@ -16,8 +16,8 @@ interface NavProps {
 
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
-  top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
-  left: 50%;
+  top: ${props => (props.scrolledPastHeader ? '.5em' : '2.75em')};
+  left: 80%;
   align-self: center;
   z-index: 99;
 
@@ -26,6 +26,10 @@ const NavContainer = styled.nav<NavProps>`
 
   // But once expanded, show it
   ${props => props.expanded && tw`xs:hidden sm:block md:block`}
+
+  @media (min-width: ${theme`screens.xl`}) {
+    left: 60%;
+  }
 
   ${props =>
     props.wider &&
