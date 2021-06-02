@@ -10,6 +10,7 @@ interface Props {
   path: string
   title?: string
   description?: string
+  image?: string
   post?:
     | GatsbyTypes.BlogPostBySlugQuery['markdownRemark']
     | GatsbyTypes.TalkBySlugQuery['markdownRemark']
@@ -20,11 +21,11 @@ const SEO: React.FC<Props> = ({
   post,
   title = '',
   description = config.siteDescription,
+  image,
   children,
 }) => {
   const schemaOrg: ReturnType<typeof helmetJsonLdProp>[] = []
   const url = urljoin(config.siteUrl, path)
-  let image: string | undefined = undefined
 
   if (post) {
     if (post.frontmatter?.title) {

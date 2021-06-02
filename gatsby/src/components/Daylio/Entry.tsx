@@ -1,7 +1,7 @@
 import React from 'react'
 import formatISO from 'date-fns/formatISO'
 import isEqual from 'lodash/isEqual'
-import tw, { styled, css, theme } from 'twin.macro'
+import tw, { styled, css } from 'twin.macro'
 import { Link } from 'gatsby'
 
 import styleVariables from '../../../data/styleConfig'
