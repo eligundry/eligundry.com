@@ -16,7 +16,7 @@ const EducationSection: React.FC<EducationProps> = ({ education }) => {
           key={e.institution}
           variant="education"
           name={e.institution}
-          url=""
+          url={e.website}
           startDate={e.startDate}
           endDate={e.endDate}
           position={[e.studyType, e.area].filter(i => !!i).join(' - ')}

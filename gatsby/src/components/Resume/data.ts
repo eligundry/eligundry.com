@@ -50,6 +50,7 @@ export interface Education {
   startDate: Date
   endDate: Date
   completed: boolean
+  website: string
   gpa?: number
   location: Partial<Location>
   summary: string
@@ -322,6 +323,7 @@ const resume: Resume = {
       startDate: new Date('2009-08-01'),
       endDate: new Date('2015-05-01'),
       completed: false,
+      website: 'https://www.kent.edu/',
       location: {
         city: 'Kent',
         countryCode: 'US',
@@ -340,6 +342,7 @@ const resume: Resume = {
       endDate: new Date('2009-05-01'),
       completed: true,
       gpa: 3.3,
+      website: 'http://www.wayne-jvs.k12.oh.us/',
       location: {
         city: 'Smithville',
         countryCode: 'US',
