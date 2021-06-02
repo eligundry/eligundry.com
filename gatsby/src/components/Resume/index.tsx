@@ -9,7 +9,10 @@ import PaperArticle from '../Shared/Paper'
 
 const Resume: React.FC = () => {
   return (
-    <PaperArticle>
+    <PaperArticle itemScope itemType="https://schema.org/Person">
+      <meta itemProp="name" content={resumeData.basics.name} />
+      <meta itemProp="telephone" content={resumeData.basics.phone} />
+      <meta itemProp="email" content={resumeData.basics.email} />
       <Work work={resumeData.work} />
       <Education education={resumeData.education} />
       <Skills skills={resumeData.skills} />

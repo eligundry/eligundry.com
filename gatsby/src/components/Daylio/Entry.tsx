@@ -1,7 +1,7 @@
 import React from 'react'
 import formatISO from 'date-fns/formatISO'
 import isEqual from 'lodash/isEqual'
-import tw, { styled, css } from 'twin.macro'
+import tw, { styled, css, theme } from 'twin.macro'
 import { Link } from 'gatsby'
 
 import styleVariables from '../../../data/styleConfig'
@@ -45,7 +45,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
   & .text-column {
     display: inline-block;
     width: 100%;
-    max-width: calc(100% - 7rem);
+    max-width: calc(100% - 6rem);
 
     & h3 {
       font-size: 1.5em;

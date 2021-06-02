@@ -1,9 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
+import tw, { styled, theme } from 'twin.macro'
 import format from 'date-fns/format'
 import formatISO from 'date-fns/formatISO'
 
-import styles from '../../../data/styleConfig'
 import { Location } from './data'
 
 interface Props {
@@ -19,48 +18,67 @@ interface Props {
 }
 
 const StyledExperience = styled.section`
-  display: flex;
-  flex-flow: wrap;
-  margin-bottom: 1em;
+  ${tw`flex flex-wrap justify-between mb-4`}
 
   & .name,
   & .tenure,
   & .title,
   & .location {
-    width: 60%;
-    margin: 0;
+    ${tw`w-1/2 sm:w-full xs:w-full m-0`}
     line-height: 1.25em;
   }
 
+  & .name {
+    ${tw`order-1`}
+  }
+
+  & .title {
+    ${tw`order-3 xs:order-2 sm:order-2`}
+  }
+
+  & .tenure {
+    ${tw`order-2 xs:order-3 sm:order-3`}
+  }
+
   & .location {
-    font-style: normal;
+    ${tw`not-italic order-4`}
   }
 
-  & .location:after {
-    content: '📍';
-  }
 
-  & .tenure:after {
-    content: '🗓';
-  }
-
-  & .tenure,
-  & .location {
-    text-align: right;
-    width: 40%;
-
-    &:after {
-      margin-left: 0.25em;
+  @media (min-width: ${theme`screens.md`}) {
+    & .location:after {
+      content: '📍';
+      ${tw`ml-1`}
     }
-  }
 
-  & .description {
-    padding-left: 0;
+    & .tenure:after {
+      content: '🗓';
+      ${tw`ml-1`}
+    }
   }
 
   & .description,
   & .summary {
     margin: 0;
+    ${tw`m-0 pl-0 order-5`}
+  }
+
+  @media (max-width: ${theme`screens.md`}) {
+    & .location:before {
+      content: '📍';
+      ${tw`mr-2`}
+    }
+
+    & .tenure:before {
+      content: '🗓';
+      ${tw`mr-2`}
+    }
+    }
+  }
+
+  & .tenure,
+  & .location {
+    ${tw`text-right sm:text-left xs:text-left`}
   }
 `
 
@@ -79,23 +97,29 @@ const Experience: React.FC<Props> = ({
     <StyledExperience
       itemType="http://schema.org/Organization"
       itemScope
-      itemProp="alumniOf"
+      itemProp={endDate ? 'alumniOf' : 'worksFor'}
     >
       <h3 className="name" itemProp="name">
         <a href={url} itemProp="url">
           {name}
         </a>
       </h3>
-      <span className="tenure">
+      <span
+        className="tenure"
+        itemScope
+        itemType="https://schema.org/OrganizationRole"
+        itemProp="member"
+      >
+        <meta itemProp="roleName" content={position} />
         <time
-          itemProp="foundingDate"
+          itemProp="startDate"
           dateTime={formatISO(startDate, { representation: 'date' })}
         >
           {format(startDate, 'MMMM yyyy')}
         </time>{' '}
         &mdash;{' '}
         <time
-          itemProp="dissolutionDate"
+          itemProp="endDate"
           dateTime={
             endDate ? formatISO(endDate, { representation: 'date' }) : ''
           }
@@ -103,12 +127,7 @@ const Experience: React.FC<Props> = ({
           {endDate ? format(endDate, 'MMMM yyyy') : 'Present'}
         </time>
       </span>
-      <h4
-        className="title"
-        itemProp={variant === 'work' ? 'jobTitle' : 'award'}
-      >
-        {position}
-      </h4>
+      <h4 className="title">{position}</h4>
       <address
         itemProp="address"
         itemScope
@@ -127,7 +146,7 @@ const Experience: React.FC<Props> = ({
       {summary && (
         <p
           className="summary"
-          itemProp="summary"
+          itemProp="description"
           dangerouslySetInnerHTML={{ __html: summary }}
         />
       )}

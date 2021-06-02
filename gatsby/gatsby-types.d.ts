@@ -298,8 +298,10 @@ type SiteSiteMetadataRssMetadata = {
 };
 
 type SiteFunction = Node & {
-  readonly apiRoute: Scalars['String'];
-  readonly originalFilePath: Scalars['String'];
+  readonly functionRoute: Scalars['String'];
+  readonly pluginName: Scalars['String'];
+  readonly originalAbsoluteFilePath: Scalars['String'];
+  readonly originalRelativeFilePath: Scalars['String'];
   readonly relativeCompiledFilePath: Scalars['String'];
   readonly absoluteCompiledFilePath: Scalars['String'];
   readonly matchPath: Maybe<Scalars['String']>;
@@ -323,7 +325,6 @@ type SitePage = Node & {
   readonly context: Maybe<SitePageContext>;
   readonly pluginCreator: Maybe<SitePlugin>;
   readonly pluginCreatorId: Maybe<Scalars['String']>;
-  readonly componentPath: Maybe<Scalars['String']>;
 };
 
 type SitePageContext = {
@@ -726,6 +727,7 @@ type GoodreadsBook = Node & {
   readonly started: Maybe<Scalars['Date']>;
   readonly cover: Maybe<Scalars['String']>;
   readonly url: Maybe<Scalars['String']>;
+  readonly shelf: Maybe<Scalars['String']>;
   readonly coverImage: Maybe<File>;
 };
 
@@ -815,11 +817,9 @@ type SitePluginPluginOptions = {
   readonly disableBgImage: Maybe<Scalars['Boolean']>;
   readonly offsetY: Maybe<Scalars['Int']>;
   readonly className: Maybe<Scalars['String']>;
-  readonly trackingId: Maybe<Scalars['String']>;
-  readonly head: Maybe<Scalars['Boolean']>;
-  readonly anonymize: Maybe<Scalars['Boolean']>;
-  readonly respectDNT: Maybe<Scalars['Boolean']>;
-  readonly pageTransitionDelay: Maybe<Scalars['Int']>;
+  readonly id: Maybe<Scalars['String']>;
+  readonly includeInDevelopment: Maybe<Scalars['Boolean']>;
+  readonly routeChangeEventName: Maybe<Scalars['String']>;
   readonly color: Maybe<Scalars['String']>;
   readonly feeds: Maybe<ReadonlyArray<Maybe<SitePluginPluginOptionsFeeds>>>;
   readonly outputPath: Maybe<Scalars['String']>;
@@ -1065,8 +1065,10 @@ type Query_allSiteArgs = {
 
 
 type Query_siteFunctionArgs = {
-  apiRoute: Maybe<StringQueryOperatorInput>;
-  originalFilePath: Maybe<StringQueryOperatorInput>;
+  functionRoute: Maybe<StringQueryOperatorInput>;
+  pluginName: Maybe<StringQueryOperatorInput>;
+  originalAbsoluteFilePath: Maybe<StringQueryOperatorInput>;
+  originalRelativeFilePath: Maybe<StringQueryOperatorInput>;
   relativeCompiledFilePath: Maybe<StringQueryOperatorInput>;
   absoluteCompiledFilePath: Maybe<StringQueryOperatorInput>;
   matchPath: Maybe<StringQueryOperatorInput>;
@@ -1099,7 +1101,6 @@ type Query_sitePageArgs = {
   context: Maybe<SitePageContextFilterInput>;
   pluginCreator: Maybe<SitePluginFilterInput>;
   pluginCreatorId: Maybe<StringQueryOperatorInput>;
-  componentPath: Maybe<StringQueryOperatorInput>;
 };
 
 
@@ -1218,6 +1219,7 @@ type Query_goodreadsBookArgs = {
   started: Maybe<DateQueryOperatorInput>;
   cover: Maybe<StringQueryOperatorInput>;
   url: Maybe<StringQueryOperatorInput>;
+  shelf: Maybe<StringQueryOperatorInput>;
   coverImage: Maybe<FileFilterInput>;
 };
 
@@ -2512,8 +2514,10 @@ type SiteFunctionEdge = {
 };
 
 type SiteFunctionFieldsEnum =
-  | 'apiRoute'
-  | 'originalFilePath'
+  | 'functionRoute'
+  | 'pluginName'
+  | 'originalAbsoluteFilePath'
+  | 'originalRelativeFilePath'
   | 'relativeCompiledFilePath'
   | 'absoluteCompiledFilePath'
   | 'matchPath'
@@ -2614,8 +2618,10 @@ type SiteFunctionGroupConnection = {
 };
 
 type SiteFunctionFilterInput = {
-  readonly apiRoute: Maybe<StringQueryOperatorInput>;
-  readonly originalFilePath: Maybe<StringQueryOperatorInput>;
+  readonly functionRoute: Maybe<StringQueryOperatorInput>;
+  readonly pluginName: Maybe<StringQueryOperatorInput>;
+  readonly originalAbsoluteFilePath: Maybe<StringQueryOperatorInput>;
+  readonly originalRelativeFilePath: Maybe<StringQueryOperatorInput>;
   readonly relativeCompiledFilePath: Maybe<StringQueryOperatorInput>;
   readonly absoluteCompiledFilePath: Maybe<StringQueryOperatorInput>;
   readonly matchPath: Maybe<StringQueryOperatorInput>;
@@ -2692,11 +2698,9 @@ type SitePluginPluginOptionsFilterInput = {
   readonly disableBgImage: Maybe<BooleanQueryOperatorInput>;
   readonly offsetY: Maybe<IntQueryOperatorInput>;
   readonly className: Maybe<StringQueryOperatorInput>;
-  readonly trackingId: Maybe<StringQueryOperatorInput>;
-  readonly head: Maybe<BooleanQueryOperatorInput>;
-  readonly anonymize: Maybe<BooleanQueryOperatorInput>;
-  readonly respectDNT: Maybe<BooleanQueryOperatorInput>;
-  readonly pageTransitionDelay: Maybe<IntQueryOperatorInput>;
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly includeInDevelopment: Maybe<BooleanQueryOperatorInput>;
+  readonly routeChangeEventName: Maybe<StringQueryOperatorInput>;
   readonly color: Maybe<StringQueryOperatorInput>;
   readonly feeds: Maybe<SitePluginPluginOptionsFeedsFilterListInput>;
   readonly outputPath: Maybe<StringQueryOperatorInput>;
@@ -3036,11 +3040,9 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.disableBgImage'
   | 'pluginCreator.pluginOptions.offsetY'
   | 'pluginCreator.pluginOptions.className'
-  | 'pluginCreator.pluginOptions.trackingId'
-  | 'pluginCreator.pluginOptions.head'
-  | 'pluginCreator.pluginOptions.anonymize'
-  | 'pluginCreator.pluginOptions.respectDNT'
-  | 'pluginCreator.pluginOptions.pageTransitionDelay'
+  | 'pluginCreator.pluginOptions.id'
+  | 'pluginCreator.pluginOptions.includeInDevelopment'
+  | 'pluginCreator.pluginOptions.routeChangeEventName'
   | 'pluginCreator.pluginOptions.color'
   | 'pluginCreator.pluginOptions.feeds'
   | 'pluginCreator.pluginOptions.feeds.output'
@@ -3069,8 +3071,7 @@ type SitePageFieldsEnum =
   | 'pluginCreator.packageJson.peerDependencies.name'
   | 'pluginCreator.packageJson.peerDependencies.version'
   | 'pluginCreator.packageJson.keywords'
-  | 'pluginCreatorId'
-  | 'componentPath';
+  | 'pluginCreatorId';
 
 type SitePageGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -3095,7 +3096,6 @@ type SitePageFilterInput = {
   readonly context: Maybe<SitePageContextFilterInput>;
   readonly pluginCreator: Maybe<SitePluginFilterInput>;
   readonly pluginCreatorId: Maybe<StringQueryOperatorInput>;
-  readonly componentPath: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePageSortInput = {
@@ -4005,6 +4005,7 @@ type GoodreadsBookFieldsEnum =
   | 'started'
   | 'cover'
   | 'url'
+  | 'shelf'
   | 'coverImage.sourceInstanceName'
   | 'coverImage.absolutePath'
   | 'coverImage.relativePath'
@@ -4275,6 +4276,7 @@ type GoodreadsBookFilterInput = {
   readonly started: Maybe<DateQueryOperatorInput>;
   readonly cover: Maybe<StringQueryOperatorInput>;
   readonly url: Maybe<StringQueryOperatorInput>;
+  readonly shelf: Maybe<StringQueryOperatorInput>;
   readonly coverImage: Maybe<FileFilterInput>;
 };
 
@@ -4634,11 +4636,9 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.disableBgImage'
   | 'pluginOptions.offsetY'
   | 'pluginOptions.className'
-  | 'pluginOptions.trackingId'
-  | 'pluginOptions.head'
-  | 'pluginOptions.anonymize'
-  | 'pluginOptions.respectDNT'
-  | 'pluginOptions.pageTransitionDelay'
+  | 'pluginOptions.id'
+  | 'pluginOptions.includeInDevelopment'
+  | 'pluginOptions.routeChangeEventName'
   | 'pluginOptions.color'
   | 'pluginOptions.feeds'
   | 'pluginOptions.feeds.output'
@@ -4712,7 +4712,7 @@ type UseGoodreadsShelfQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseGoodreadsShelfQuery = { readonly allGoodreadsBook: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url'>
+      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
@@ -4750,14 +4750,6 @@ type TalkBySlugQuery = { readonly markdownRemark: Maybe<(
     )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>> }
   )> };
 
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TalkListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
-
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
 type GatsbyImageSharpFixed_tracedSVGFragment = Pick<ImageSharpFixed, 'tracedSVG' | 'width' | 'height' | 'src' | 'srcSet'>;
@@ -4784,9 +4776,17 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TalkListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
+
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'apiRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

@@ -8,7 +8,7 @@ const BaseStyles = styled.div`
   ${tw`lg:pl-4 xl:pl-4`}
 
   // On mobile, add margin to the sides so the content can breathe
-  ${tw`sm:px-8 md:px-8`}
+  ${tw`xs:px-2 sm:px-4 md:px-4`}
 
   & h1 {
     ${tw`text-2xl`}
@@ -71,7 +71,7 @@ interface ContentWrapperProps {
 
 export const ContentWrapper = styled.main<ContentWrapperProps>`
   // On computers, make the context 60%, full screen for mobile and templates
-  ${tw`sm:w-full md:w-full lg:w-1/2 xl:w-1/2`}
+  ${tw`xs:w-full sm:w-full md:w-full lg:w-4/5 xl:w-3/5`}
 
   ${props => props.wider && tw`lg:w-4/5 xl:w-4/5`}
 `

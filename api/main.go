@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/eligundry/eligundry.com/api/auth"
-	"github.com/eligundry/eligundry.com/api/comments"
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/eligundry/eligundry.com/api/daylio"
 	"github.com/eligundry/eligundry.com/api/lastfm"
@@ -17,7 +16,6 @@ func main() {
 	{
 		auth.RegisterRoutes(api)
 		daylio.RegisterRoutes(api)
-		comments.RegisterRoutes(api)
 		lastfm.RegisterRoutes(api)
 		memes.RegisterRoutes(api)
 	}

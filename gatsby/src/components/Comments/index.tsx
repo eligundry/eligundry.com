@@ -1,80 +1,29 @@
-import React from 'react'
-import { useLocation } from 'react-use'
-import styled from 'styled-components'
-import gravatar from 'gravatar'
+import React, { useEffect, useRef } from 'react'
+import useEffectOnce from 'react-use/lib/useEffectOnce'
+import tw, { styled } from 'twin.macro'
 
-import useComments, { CommentPayload } from './useComments'
-
-const CommentForm = styled.form`
-  margin-bottom: 1em;
-
-  & label {
-    display: block;
-    margin-bottom: 1em;
-  }
-
-  & input,
-  & textarea {
-    display: block;
+const UtterancesContainer = styled.aside`
+  & .utterances {
+    ${tw`m-0`}
   }
 `
 
 const Comments: React.FC = () => {
-  const { pathname } = useLocation()
-  const [comments, postComment] = useComments(pathname)
+  const utterancesRef = useRef<HTMLDivElement>(null)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const form = e.currentTarget
+  useEffectOnce(() => {
+    const scriptElem = document.createElement('script')
+    scriptElem.src = 'https://utteranc.es/client.js'
+    scriptElem.async = true
+    scriptElem.crossOrigin = 'anonymous'
+    scriptElem.setAttribute('repo', 'eligundry/eligundry.com')
+    scriptElem.setAttribute('issue-term', 'pathname')
+    scriptElem.setAttribute('label', '✨💬✨  Blog')
+    scriptElem.setAttribute('theme', 'github-light')
+    utterancesRef.current?.appendChild(scriptElem)
+  })
 
-    const payload = Array.from(form.querySelectorAll('input, textarea')).reduce(
-      (acc, current: HTMLInputElement | HTMLTextAreaElement) => {
-        acc[current.name] = current.value
-        return acc
-      },
-      {}
-    ) as CommentPayload
-
-    await postComment(payload)
-    form.reset()
-  }
-
-  let title = 'No Comments'
-
-  if (comments.length === 1) {
-    title = '1 Comment'
-  } else if (comments.length > 1) {
-    title = `${comments.length} Comments`
-  }
-
-  return (
-    <div className="comments-section">
-      <h4>{title}</h4>
-      <div className="comments">
-        {comments.map(comment => (
-          <div key={comment.id} className="comment">
-            <img
-              src={gravatar.url(comment.email)}
-              alt={`${comment.email}'s avatar from Gravatar.com'`}
-            />
-            <div className="body">{comment.comment}</div>
-            <p>
-              from {comment.email} at {comment.posted_at}
-            </p>
-          </div>
-        ))}
-      </div>
-      <CommentForm onSubmit={handleSubmit}>
-        <label htmlFor="email">
-          Email: <input type="email" id="email" name="email" required />
-        </label>
-        <label htmlFor="comment">
-          Comment: <textarea id="comment" name="comment" required />
-        </label>
-        <button type="submit">Submit</button>
-      </CommentForm>
-    </div>
-  )
+  return <UtterancesContainer ref={utterancesRef} />
 }
 
 export default Comments
