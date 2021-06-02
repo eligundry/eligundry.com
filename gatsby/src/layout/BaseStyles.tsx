@@ -8,7 +8,7 @@ const BaseStyles = styled.div`
   ${tw`lg:pl-4 xl:pl-4`}
 
   // On mobile, add margin to the sides so the content can breathe
-  ${tw`sm:px-8 md:px-8`}
+  ${tw`xs:px-2 sm:px-4 md:px-4`}
 
   & h1 {
     ${tw`text-2xl`}

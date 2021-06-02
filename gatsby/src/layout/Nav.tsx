@@ -133,7 +133,7 @@ const Hamburger = styled.button`
   position: fixed;
   font-size: 2em;
   text-decoration: none;
-  right: 1.5em;
+  right: 0.75em;
   top: 0;
   z-index: 10001;
 

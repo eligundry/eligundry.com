@@ -1,14 +1,12 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
+import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
-import { useWindowSize } from 'react-use'
 import LazyLoad from 'react-lazyload'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
 
 import config from '../../../data/SiteConfig'
-import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
 import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
@@ -35,8 +33,17 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
     min-width: 200px;
     width: 200px;
     height: 250px;
-    float: right;
-    ${tw`ml-8`}
+
+    ${tw`
+      float-right 
+      ml-8 
+      sm:float-none 
+      xs:float-none 
+      sm:ml-0 
+      sm:mt-4
+      xs:ml-0
+      xs:mt-4
+    `}
   }
 
   & .bookshelf {
@@ -54,10 +61,10 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
   &.listening {
     & > .listening-media {
-      ${tw`flex flex-row xs:flex-col`}
+      ${tw`flex flex-row xs:flex-col sm:flex-col`}
 
       & > iframe {
-        ${tw`mr-4 xs:mb-4`}
+        ${tw`mr-4 xs:mb-4 sm:mb-4`}
         max-width: 100%;
       }
     }
@@ -90,9 +97,7 @@ const Home: React.FC = () => {
           width={200}
           height={250}
         />
-        <p>
-          I only really write in lists, so here's the top line facts about me.
-        </p>
+        <p>I only really write in lists, so here's my deal.</p>
         <ul>
           <li>I'm a full stack web engineer.</li>
           <li>
@@ -154,15 +159,13 @@ const Home: React.FC = () => {
           stack and will do whatever it takes to ship. Need me to do some devops
           to get this feature out? I gotcha. Some CSS is making a button look
           bad? I'll do my best. A query running to slow? Stop, I can't deal with
-          all this excitment.
+          all this excitement.
         </p>
-        <GitHubCalendar
-          username="eligundry"
-          dateFormat="yyyy-MM-dd"
-          style={{
-            minHeight: '142px',
-          }}
-        />
+        <p>
+          Github contribution calendars are not a good indicator of whether or
+          not someone is a good developer, but they are very pretty.
+        </p>
+        <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd" />
       </Section>
       <Section className="reading">
         <h2>Reading</h2>

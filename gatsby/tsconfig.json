@@ -15,5 +15,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["gatsby-types.d.ts", "src", "twin.d.ts"]
+  "include": ["gatsby-types.d.ts", "src", "twin.d.ts", "static"]
 }
