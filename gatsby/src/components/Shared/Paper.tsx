@@ -15,7 +15,7 @@ const Paper = styled.div`
   ${PaperStyles}
 
   @media print {
-    ${tw`shadow-none`}
+    ${tw`shadow-none p-0 mb-0`}
   }
 `
 

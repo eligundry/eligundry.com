@@ -29,7 +29,7 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
         <article
           key={post.path}
           itemScope
-          itemType="http://schema.org/BlogPosting"
+          itemType="https://schema.org/BlogPosting"
           className="listing-post"
         >
           <link itemProp="author" href="#eli-gundry" />

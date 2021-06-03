@@ -50,19 +50,7 @@ const BaseStyles = styled.div`
     ${tw`my-4`}
   }
 
-  & input,
-  & textarea {
-    ${tw`border-2 border-gray-500 rounded`}
-
-    &:active,
-    &:focus {
-      ${tw`border-teal-400 outline-none`}
-    }
-  }
-
-  @media print {
-    ${tw`bg-transparent`}
-  }
+  ${tw`print:bg-transparent`}
 `
 
 interface ContentWrapperProps {

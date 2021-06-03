@@ -137,7 +137,7 @@ const Hamburger = styled.button`
   top: 0;
   z-index: 10001;
 
-  ${tw`xs:block sm:block md:block lg:hidden xl:hidden 2xl:hidden`}
+  ${tw`xs:block sm:block md:block lg:hidden xl:hidden 2xl:hidden print:hidden`}
 
   &:hover,
   &:focus {

@@ -2,10 +2,10 @@ import React from 'react'
 import tw, { styled } from 'twin.macro'
 
 const HeaderElm = styled.header`
-  ${tw`ml-6`}
+  ${tw`ml-6 print:ml-2`}
 
   & h1 {
-    margin: 0.25em 0;
+    ${tw`my-2 mx-0`}
   }
 `
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import tw, { styled, theme } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 
 interface Props {
   activitesInterests: string[]
@@ -8,7 +8,9 @@ interface Props {
 const ActivitiesInterests: React.FC<Props> = ({ activitesInterests }) => {
   return (
     <section>
-      <h2>Activities & Interests</h2>
+      <header>
+        <h2>Activities & Interests</h2>
+      </header>
       <ActivitiesList>
         {activitesInterests.map(ai => (
           <li key={ai} dangerouslySetInnerHTML={{ __html: ai }} />
@@ -20,7 +22,7 @@ const ActivitiesInterests: React.FC<Props> = ({ activitesInterests }) => {
 
 const ActivitiesList = styled.ul`
   && {
-    ${tw`pl-0`}
+    ${tw`pl-0 mt-0`}
   }
 `
 
