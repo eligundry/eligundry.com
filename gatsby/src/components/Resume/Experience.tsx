@@ -24,28 +24,54 @@ const StyledExperience = styled.section`
   & .tenure,
   & .title,
   & .location {
-    ${tw`w-1/2 sm:w-full xs:w-full m-0`}
+    ${tw`w-1/2 print:w-1/2 sm:w-full xs:w-full m-0`}
     line-height: 1.25em;
   }
 
   & .name {
     ${tw`order-1`}
+    ${tw`font-bold`}
   }
 
   & .title {
-    ${tw`order-3 xs:order-2 sm:order-2`}
+    ${tw`order-3 print:order-3 xs:order-2 sm:order-2`}
+    ${tw`font-bold`}
   }
 
   & .tenure {
-    ${tw`order-2 xs:order-3 sm:order-3`}
+    ${tw`order-2 print:order-2 xs:order-3 sm:order-3`}
   }
 
   & .location {
-    ${tw`not-italic order-4`}
+    ${tw`not-italic print:order-4 order-4`}
   }
 
-
   @media (min-width: ${theme`screens.md`}) {
+    & .location:after {
+      content: '📍';
+      ${tw`ml-1`}
+    }
+
+    & .tenure:after {
+      content: '🗓';
+      ${tw`ml-1`}
+    }
+  }
+
+  @media (max-width: ${theme`screens.md`}) and not print {
+    & .location:before {
+      content: '📍';
+      ${tw`mr-2`}
+    }
+
+    & .tenure:before {
+      content: '🗓';
+      ${tw`mr-2`}
+    }
+    }
+  }
+
+  @media print {
     & .location:after {
       content: '📍';
       ${tw`ml-1`}
@@ -63,22 +89,9 @@ const StyledExperience = styled.section`
     ${tw`m-0 pl-0 order-5`}
   }
 
-  @media (max-width: ${theme`screens.md`}) {
-    & .location:before {
-      content: '📍';
-      ${tw`mr-2`}
-    }
-
-    & .tenure:before {
-      content: '🗓';
-      ${tw`mr-2`}
-    }
-    }
-  }
-
   & .tenure,
   & .location {
-    ${tw`text-right sm:text-left xs:text-left`}
+    ${tw`text-right print:text-right sm:text-left xs:text-left`}
   }
 `
 
@@ -95,7 +108,9 @@ const Experience: React.FC<Props> = ({
 }) => {
   return (
     <StyledExperience
-      itemType="http://schema.org/Organization"
+      itemType={`http://schema.org/${
+        variant === 'work' ? 'Organization' : 'CollegeOrUniversity'
+      }`}
       itemScope
       itemProp={endDate ? 'alumniOf' : 'worksFor'}
     >

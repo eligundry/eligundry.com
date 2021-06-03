@@ -183,7 +183,7 @@ const resume: Resume = {
         and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
-      printHide: true,
+      // printHide: true,
     },
     {
       company: 'Kent State University',

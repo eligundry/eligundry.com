@@ -147,7 +147,7 @@ const Home: React.FC = () => {
           <Link to="blog/feelings-api">
             I made an API out of it and put it on my website
           </Link>
-          .
+          . The favicon for the site the emoji for my latest entry.
         </p>
         <Daylio />
         <DaylioChart />
@@ -172,7 +172,10 @@ const Home: React.FC = () => {
         <p className="summary">
           I wish I read more, but there are only so many hours in the day. These
           are the books that I'm reading right now. You can find me on{' '}
-          <a href="https://www.goodreads.com/user/show/29665939-eli-gundry">
+          <a
+            href="https://www.goodreads.com/user/show/29665939-eli-gundry"
+            itemProp="sameAs"
+          >
             Goodreads
           </a>
           .

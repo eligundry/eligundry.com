@@ -1,13 +1,12 @@
 import { useStaticQuery, graphql } from 'gatsby'
 import parseISO from 'date-fns/parseISO'
 
-import { DaylioEntry } from './types'
-
-interface QueryResults {
-  feelings: DaylioEntry<string>
+interface Feeling
+  extends Omit<GatsbyTypes.UseLatestFeelingsQuery['feelings'], 'time'> {
+  time: Date
 }
 
-export default function useLatestFeelings(): DaylioEntry {
+export default function useLatestFeelings(): Feeling {
   const entry = useStaticQuery<GatsbyTypes.UseLatestFeelingsQuery>(
     graphql`
       query UseLatestFeelings {
@@ -23,6 +22,7 @@ export default function useLatestFeelings(): DaylioEntry {
 
   return {
     ...entry.feelings,
+    // @ts-ignore
     time: parseISO(entry.feelings.time),
   }
 }

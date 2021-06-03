@@ -21,7 +21,11 @@ const MainLayout: React.FC<Props> = ({
 }) => {
   return (
     <IconContext.Provider value={{}}>
-      <BaseStyles>
+      <BaseStyles
+        itemScope
+        itemType="https://schema.org/Person"
+        itemID="#eli-gundry"
+      >
         <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
           <title>{config.siteTitle}</title>
           <meta name="description" content={config.siteDescription} />

@@ -16,7 +16,7 @@ interface NavProps {
 
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
-  top: ${props => (props.scrolledPastHeader ? '.5em' : '2.75em')};
+  top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
   left: 80%;
   align-self: center;
   z-index: 99;
@@ -137,7 +137,7 @@ const Hamburger = styled.button`
   top: 0;
   z-index: 10001;
 
-  ${tw`xs:block sm:block md:block lg:hidden xl:hidden 2xl:hidden`}
+  ${tw`xs:block sm:block md:block lg:hidden xl:hidden 2xl:hidden print:hidden`}
 
   &:hover,
   &:focus {
@@ -152,27 +152,27 @@ const navLinks = {
     emoji: '🏠',
     emojiLabel: 'little house to denote the home page',
   },
-  '/blog/': {
+  '/blog': {
     title: 'Blog',
     emoji: '📝',
     emojiLabel: 'note to denote my blog',
   },
-  '/feelings/': {
+  '/feelings': {
     title: 'Feelings',
     emoji: '🥺',
     emojiLabel: 'emotional looking emoji face to denote my feelings',
   },
-  '/memes/': {
+  '/memes': {
     title: 'Memes',
     emoji: '😂',
     emojiLabel: 'person cry laughing at the quality of my saved memes',
   },
-  '/talks/': {
+  '/talks': {
     title: 'Talks',
     emoji: '🗣',
     emojiLabel: 'silhouette of person speaking',
   },
-  '/resume/': {
+  '/resume': {
     title: 'Resume',
     emoji: '📄',
     emojiLabel: 'piece of paper representing my resume',

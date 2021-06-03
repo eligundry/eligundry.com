@@ -1,15 +1,17 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { helmetJsonLdProp } from 'react-schemaorg'
-import { BlogPosting, WebSite, BreadcrumbList } from 'schema-dts'
+import { WebSite, BreadcrumbList } from 'schema-dts'
 import urljoin from 'url-join'
 
 import config from '../../../data/SiteConfig'
+import { useLatestFeelingsImage } from '../Daylio/useFeelingsImage'
 
 interface Props {
   path: string
   title?: string
   description?: string
+  image?: string
   post?:
     | GatsbyTypes.BlogPostBySlugQuery['markdownRemark']
     | GatsbyTypes.TalkBySlugQuery['markdownRemark']
@@ -20,11 +22,12 @@ const SEO: React.FC<Props> = ({
   post,
   title = '',
   description = config.siteDescription,
+  image,
   children,
 }) => {
   const schemaOrg: ReturnType<typeof helmetJsonLdProp>[] = []
   const url = urljoin(config.siteUrl, path)
-  let image: string | undefined = undefined
+  const faviconURL = useLatestFeelingsImage()
 
   if (post) {
     if (post.frontmatter?.title) {
@@ -42,19 +45,6 @@ const SEO: React.FC<Props> = ({
     }
 
     schemaOrg.push(
-      helmetJsonLdProp<BlogPosting>({
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        url,
-        name: title,
-        headline: title,
-        description,
-        datePublished: post.fields?.date ?? undefined,
-        image: {
-          '@type': 'ImageObject',
-          url: image,
-        },
-      }),
       helmetJsonLdProp<BreadcrumbList>({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
@@ -80,7 +70,6 @@ const SEO: React.FC<Props> = ({
           '@type': 'WebSite',
           url: config.siteUrl,
           name: config.siteTitle,
-          alternateName: config.siteTitleAlt ?? '',
         }),
         ...schemaOrg,
       ]}
@@ -89,6 +78,7 @@ const SEO: React.FC<Props> = ({
       {title && <title>{title}</title>}
       {description && <meta name="description" content={description} />}
       <link rel="canonical" href={url} />
+      <link rel="icon" href={faviconURL} />
 
       {/* OpenGraph tags */}
       <meta property="og:url" content={url} />

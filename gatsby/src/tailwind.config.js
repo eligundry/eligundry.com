@@ -17,6 +17,9 @@ module.exports = {
         min: '400px',
         max: '767px',
       },
+      print: {
+        raw: 'print',
+      },
     },
   },
   variants: {},

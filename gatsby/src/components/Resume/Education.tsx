@@ -10,7 +10,9 @@ interface EducationProps {
 const EducationSection: React.FC<EducationProps> = ({ education }) => {
   return (
     <section>
-      <h2>Education</h2>
+      <header>
+        <h2>Education</h2>
+      </header>
       {education.map(e => (
         <Experience
           key={e.institution}

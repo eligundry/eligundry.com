@@ -47,7 +47,9 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
 
   return (
     <section>
-      <h2>Skills</h2>
+      <header>
+        <h2>Skills</h2>
+      </header>
       <SkillsList>
         {languages?.keywords && (
           <SkillsItem prefix="Fluent in" keywords={languages.keywords} />
@@ -74,7 +76,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
 
 const SkillsList = styled.ul`
   && {
-    ${tw`pl-0`}
+    ${tw`pl-0 mt-0`}
   }
 `
 
