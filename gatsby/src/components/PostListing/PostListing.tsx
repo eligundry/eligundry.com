@@ -11,44 +11,45 @@ interface Props {
 }
 
 const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
-  const postList = postEdges.map(postEdge => ({
-    path: postEdge?.node?.fields?.slug,
-    cover: postEdge?.node?.frontmatter?.cover,
-    title: postEdge?.node?.frontmatter?.title,
-    date: postEdge?.node?.fields?.date,
-    excerpt: postEdge.node.excerpt,
-    timeToRead: postEdge.node.timeToRead,
-    description: postEdge?.node?.frontmatter?.description,
-  }))
+  const postList = postEdges
+    .map(postEdge => ({
+      path: postEdge?.node?.fields?.slug,
+      cover: postEdge?.node?.frontmatter?.cover,
+      title: postEdge?.node?.frontmatter?.title,
+      date: postEdge?.node?.fields?.date,
+      excerpt: postEdge.node.excerpt,
+      timeToRead: postEdge.node.timeToRead,
+      description: postEdge?.node?.frontmatter?.description,
+    }))
+    .filter(post => !!post.title)
 
   return (
     <main>
-      {postList
-        .filter(post => !!post.title)
-        .map(post => (
-          <article
-            key={post.path}
-            itemScope
-            itemType="http://schema.org/BlogPosting"
-            className="listing-post"
-          >
-            <h1 itemProp="title">
-              <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
-                {post.title}
-              </Link>
-            </h1>
-            {post.date && (
-              <Time dateTime={new Date(post.date)} itemProp="datePublished" />
-            )}
-            {post.description && (
-              <p itemProp="description" className="description">
-                <EmojiText label="description of the blog post" emoji="📝">
-                  {post.description}
-                </EmojiText>
-              </p>
-            )}
-          </article>
-        ))}
+      {postList.map(post => (
+        <article
+          key={post.path}
+          itemScope
+          itemType="http://schema.org/BlogPosting"
+          className="listing-post"
+        >
+          <link itemProp="author" href="#eli-gundry" />
+          <h1 itemProp="name">
+            <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
+              {post.title}
+            </Link>
+          </h1>
+          {post.date && (
+            <Time dateTime={new Date(post.date)} itemProp="datePublished" />
+          )}
+          {post.description && (
+            <p itemProp="description" className="description">
+              <EmojiText label="description of the blog post" emoji="📝">
+                {post.description}
+              </EmojiText>
+            </p>
+          )}
+        </article>
+      ))}
     </main>
   )
 }

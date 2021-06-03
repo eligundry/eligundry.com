@@ -95,7 +95,9 @@ const Experience: React.FC<Props> = ({
 }) => {
   return (
     <StyledExperience
-      itemType="http://schema.org/Organization"
+      itemType={`http://schema.org/${
+        variant === 'work' ? 'Organization' : 'CollegeOrUniversity'
+      }`}
       itemScope
       itemProp={endDate ? 'alumniOf' : 'worksFor'}
     >

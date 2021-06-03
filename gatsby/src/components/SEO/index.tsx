@@ -1,7 +1,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { helmetJsonLdProp } from 'react-schemaorg'
-import { BlogPosting, WebSite, BreadcrumbList } from 'schema-dts'
+import { WebSite, BreadcrumbList } from 'schema-dts'
 import urljoin from 'url-join'
 
 import config from '../../../data/SiteConfig'
@@ -45,19 +45,6 @@ const SEO: React.FC<Props> = ({
     }
 
     schemaOrg.push(
-      helmetJsonLdProp<BlogPosting>({
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        url,
-        name: title,
-        headline: title,
-        description,
-        datePublished: post.fields?.date ?? undefined,
-        image: {
-          '@type': 'ImageObject',
-          url: image,
-        },
-      }),
       helmetJsonLdProp<BreadcrumbList>({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',

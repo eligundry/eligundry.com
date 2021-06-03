@@ -152,27 +152,27 @@ const navLinks = {
     emoji: '🏠',
     emojiLabel: 'little house to denote the home page',
   },
-  '/blog/': {
+  '/blog': {
     title: 'Blog',
     emoji: '📝',
     emojiLabel: 'note to denote my blog',
   },
-  '/feelings/': {
+  '/feelings': {
     title: 'Feelings',
     emoji: '🥺',
     emojiLabel: 'emotional looking emoji face to denote my feelings',
   },
-  '/memes/': {
+  '/memes': {
     title: 'Memes',
     emoji: '😂',
     emojiLabel: 'person cry laughing at the quality of my saved memes',
   },
-  '/talks/': {
+  '/talks': {
     title: 'Talks',
     emoji: '🗣',
     emojiLabel: 'silhouette of person speaking',
   },
-  '/resume/': {
+  '/resume': {
     title: 'Resume',
     emoji: '📄',
     emojiLabel: 'piece of paper representing my resume',

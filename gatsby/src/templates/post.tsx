@@ -41,10 +41,13 @@ const PostTemplate: React.FC<PageProps<
         <title>{post.title}</title>
       </Helmet>
       <SEO path={path} post={postNode} />
-      <Article>
+      <Article itemScope itemType="https://schema.org/BlogPosting">
+        <link itemProp="author" href="#eli-gundry" />
         <header>
-          <h1>{post.title}</h1>
-          {post?.date && <Time dateTime={new Date(post.date)} />}
+          <h1 itemProp="name">{post.title}</h1>
+          {post?.date && (
+            <Time itemProp="datePublished" dateTime={new Date(post.date)} />
+          )}
         </header>
         {post?.tags?.includes('icymi') && (
           <blockquote>
