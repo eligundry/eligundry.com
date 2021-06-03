@@ -1,5 +1,5 @@
 import React from 'react'
-import tw, { styled, theme } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import { TwitterTimelineEmbed } from 'react-twitter-embed'
 import LazyLoad from 'react-lazyload'
@@ -63,7 +63,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
     & > .listening-media {
       ${tw`flex flex-row xs:flex-col sm:flex-col`}
 
-      & > iframe {
+      & > .spotify-playlist-wrapper {
         ${tw`mr-4 xs:mb-4 sm:mb-4`}
         max-width: 100%;
       }
@@ -192,15 +192,17 @@ const Home: React.FC = () => {
           albums I've listened to this week.
         </p>
         <div className="listening-media">
-          <iframe
-            title="Spotify playlist that I have on repeat"
-            src="https://open.spotify.com/embed/playlist/1cm6mo8oxk8axeEhQZff8Z"
-            width="300"
-            height="380"
-            frameBorder="0"
-            allowTransparency
-            allow="encrypted-media"
-          />
+          <LazyLoad once offset={300} classNamePrefix="spotify-playlist">
+            <iframe
+              title="Spotify playlist that I have on repeat"
+              src="https://open.spotify.com/embed/playlist/1cm6mo8oxk8axeEhQZff8Z"
+              width="300"
+              height="380"
+              frameBorder="0"
+              allowTransparency
+              allow="encrypted-media"
+            />
+          </LazyLoad>
           <a href="https://www.last.fm/user/eli_pwnd">
             <img
               className="listening-img"
@@ -223,7 +225,7 @@ const Home: React.FC = () => {
             It also has funny memes, which are equally important to keeping up
             to date with tech.
           </p>
-          <LazyLoad>
+          <LazyLoad once offset={200}>
             <TwitterTimelineEmbed
               sourceType="profile"
               screenName={config.userTwitter}
@@ -232,7 +234,7 @@ const Home: React.FC = () => {
               }}
             />
           </LazyLoad>
-          <LazyLoad>
+          <LazyLoad once offset={200}>
             <TwitterTimelineEmbed
               sourceType="likes"
               screenName={config.userTwitter}
