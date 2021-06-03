@@ -16,7 +16,7 @@ interface NavProps {
 
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
-  top: ${props => (props.scrolledPastHeader ? '.5em' : '2.75em')};
+  top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
   left: 80%;
   align-self: center;
   z-index: 99;

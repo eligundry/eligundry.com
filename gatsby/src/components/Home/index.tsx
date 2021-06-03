@@ -147,7 +147,7 @@ const Home: React.FC = () => {
           <Link to="blog/feelings-api">
             I made an API out of it and put it on my website
           </Link>
-          .
+          . The favicon for the site the emoji for my latest entry.
         </p>
         <Daylio />
         <DaylioChart />
