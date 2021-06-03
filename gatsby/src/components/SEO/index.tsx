@@ -62,6 +62,10 @@ const SEO: React.FC<Props> = ({
     )
   }
 
+  if (image && !image.startsWith('https://')) {
+    image = urljoin(config.siteUrl, image)
+  }
+
   return (
     <Helmet
       script={[
