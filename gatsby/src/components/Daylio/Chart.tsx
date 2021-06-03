@@ -1,6 +1,9 @@
 import React from 'react'
 import { Line } from 'react-chartjs-2'
 import subMonths from 'date-fns/subMonths'
+import parseISO from 'date-fns/parseISO'
+import formatISO from 'date-fns/formatISO'
+import 'chartjs-adapter-date-fns'
 
 import useFeelingsChartData from './useFeelingsChartData'
 import useIsMobile from '../../utils/useIsMobile'
@@ -13,6 +16,7 @@ const DaylioChart: React.FC = () => {
 
   return (
     <Line
+      type="line"
       height={isMobile ? 100 : 50}
       data={{
         labels: Object.values(MoodMapping).map((_, i) => i),
@@ -29,46 +33,53 @@ const DaylioChart: React.FC = () => {
         ],
       }}
       options={{
-        legend: {
-          display: false,
-        },
-        tooltips: {
-          displayColors: false,
-          backgroundColor: 'white',
-          titleFontColor: 'black',
-          titleFontSize: 14,
-          bodyFontColor: 'black',
-          bodyFontSize: 14,
-          borderWidth: 1,
-          borderColor: 'rgb(226 232 240)',
-          callbacks: {
-            title: (item, _) => item[0]?.xLabel?.toString() ?? 'bad',
-            // @ts-ignore
-            label: (item, _) => Object.keys(MoodMapping)[item.yLabel.valueOf()],
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            displayColors: false,
+            backgroundColor: 'white',
+            titleFont: {
+              size: 14,
+            },
+            titleColor: 'black',
+            bodyFont: {
+              size: 16,
+            },
+            bodyColor: 'black',
+            borderWidth: 1,
+            borderColor: 'rgb(226 232 240)',
+            callbacks: {
+              title: (item, _) => {
+                return `📅   ${formatISO(parseISO(item[0].raw.x))}`
+              },
+              // @ts-ignore
+              label: (item, _) => {
+                return `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
+                  Object.keys(MoodMapping)[item.raw.y]
+                }`
+              },
+            },
           },
         },
         scales: {
-          xAxes: [
-            {
-              type: 'time',
-              time: {
-                unit: 'month',
-              },
-              ticks: {
-                min: timeWindow,
+          x: {
+            min: timeWindow,
+            ticks: {
+              callback: () => null,
+            },
+          },
+          y: {
+            min: 0,
+            ticks: {
+              // @ts-ignore
+              callback: value => Object.values(MoodMapping)[value],
+              font: {
+                size: 20,
               },
             },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                // @ts-ignore
-                callback: value => Object.values(MoodMapping)[value],
-                min: 0,
-                fontSize: 24,
-              },
-            },
-          ],
+          },
         },
       }}
     />
