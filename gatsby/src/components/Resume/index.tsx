@@ -7,8 +7,11 @@ import Education from './Education'
 import Skills from './Skills'
 import ActivitiesInterests from './ActivitesInterests'
 import PaperArticle from '../Shared/Paper'
+import ResumeFooter from './Footer'
 
 const ResumeArticle = styled(PaperArticle)`
+  ${tw`print:mb-16`}
+
   & h2 {
     ${tw`font-extrabold`}
   }
@@ -22,7 +25,7 @@ const ResumeArticle = styled(PaperArticle)`
     }
   }
 
-  & section section {
+  & section {
     page-break-inside: avoid;
   }
 `
@@ -34,6 +37,7 @@ const Resume: React.FC = () => {
       <Education education={resumeData.education} />
       <Skills skills={resumeData.skills} />
       <ActivitiesInterests activitesInterests={resumeData.activitesInterests} />
+      <ResumeFooter />
     </ResumeArticle>
   )
 }

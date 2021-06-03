@@ -1,5 +1,6 @@
 import React from 'react'
-import { useMedia } from 'react-use'
+import useMedia from 'react-use/lib/useMedia'
+import useSearchParam from 'react-use/lib/useSearchParam'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import Experience from './Experience'
@@ -11,6 +12,12 @@ interface WorkProps {
 
 const WorkSection: React.FC<WorkProps> = ({ work }) => {
   const isPrinting = useMedia('print')
+  const targetedEmployer = useSearchParam('employer')
+  const targeting = new URLSearchParams({
+    utm_source: 'resume',
+    utm_medium: 'view-full-resume',
+    utm_campaign: targetedEmployer || 'none',
+  })
 
   return (
     <section>
@@ -24,7 +31,7 @@ const WorkSection: React.FC<WorkProps> = ({ work }) => {
           <h2>Selected Work History</h2>
           <span>
             Full resume at{' '}
-            <a href="/resume">
+            <a href={`/resume?${targeting.toString()}`}>
               eligundry.com/resume <FaExternalLinkAlt fontSize=".75em" />
             </a>
           </span>

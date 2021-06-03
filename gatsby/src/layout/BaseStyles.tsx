@@ -50,6 +50,10 @@ const BaseStyles = styled.div`
     ${tw`my-4`}
   }
 
+  & address {
+    ${tw`not-italic`}
+  }
+
   ${tw`print:bg-transparent`}
 `
 
