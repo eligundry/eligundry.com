@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://eligundry.com/sitemap.xml
+Sitemap: https://eligundry.com/sitemap/sitemap-index.xml
