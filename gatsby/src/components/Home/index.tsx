@@ -75,7 +75,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
       ${tw`flex flex-row sm:flex-col`}
 
       & > * {
-        ${tw`w-1/3 sm:w-full`}
+        ${tw`w-1/2`}
       }
     }
   }
@@ -84,7 +84,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 const Home: React.FC = () => {
   // const { width } = useWindowSize()
   // const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
-  const twitterTimelineHeight = 400
+  const twitterTimelineHeight = 450
 
   return (
     <>
@@ -216,16 +216,16 @@ const Home: React.FC = () => {
       </Section>
       <Section className="tweets">
         <h2>Twitter</h2>
+        <p className="summary">
+          Twitter is my <del>vice</del> social network of choice. It's been
+          instrumental in developing my career. I started following other
+          developers years ago, read their blog posts, followed the people they
+          retweeted, and stayed up to date with the latest technologies. It also
+          has funny memes, which are equally important to keeping up to date
+          with tech.
+        </p>
         <div className="content">
-          <p className="summary">
-            Twitter is my <del>vice</del> social network of choice. It's been
-            instrumental in developing my career. I started following other
-            developers years ago, read their blog posts, followed the people
-            they retweeted, and stayed up to date with the latest technologies.
-            It also has funny memes, which are equally important to keeping up
-            to date with tech.
-          </p>
-          <LazyLoad once offset={200}>
+          <LazyLoad once offset={200} height={twitterTimelineHeight}>
             <TwitterTimelineEmbed
               sourceType="profile"
               screenName={config.userTwitter}
@@ -234,7 +234,7 @@ const Home: React.FC = () => {
               }}
             />
           </LazyLoad>
-          <LazyLoad once offset={200}>
+          <LazyLoad once offset={200} height={twitterTimelineHeight}>
             <TwitterTimelineEmbed
               sourceType="likes"
               screenName={config.userTwitter}
