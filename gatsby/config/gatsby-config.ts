@@ -163,6 +163,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               ) {
                 edges {
                   node {
+                    collection
                     excerpt
                     html
                     fields {
@@ -189,8 +190,12 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                   title: edge.node.frontmatter.title,
                   description:
                     edge.node?.description?.frontmatter ?? edge.node.excerpt,
-                  url: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
-                  guid: `${rssMetadata.site_url}/blog/${edge.node.fields.slug}`,
+                  url: `${rssMetadata.site_url}/${
+                    edge.node.collection === 'posts' ? 'blog' : 'talks'
+                  }/${edge.node.fields.slug}`,
+                  guid: `${rssMetadata.site_url}/${
+                    edge.node.collection === 'posts' ? 'blog' : 'talks'
+                  }/${edge.node.fields.slug}`,
                   custom_elements: [
                     { 'content:encoded': edge.node.html },
                     { author: config.userEmail },
