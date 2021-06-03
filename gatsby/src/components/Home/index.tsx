@@ -22,7 +22,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {
-    ${tw`text-teal-500 italic`}
+    ${tw`text-teal-500 font-extrabold`}
   }
 
   &.introduction-hero {
@@ -75,7 +75,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
       ${tw`flex flex-row sm:flex-col`}
 
       & > * {
-        ${tw`w-1/2 sm:w-full`}
+        ${tw`w-1/3 sm:w-full`}
       }
     }
   }
@@ -226,6 +226,15 @@ const Home: React.FC = () => {
           <LazyLoad>
             <TwitterTimelineEmbed
               sourceType="profile"
+              screenName={config.userTwitter}
+              options={{
+                height: twitterTimelineHeight,
+              }}
+            />
+          </LazyLoad>
+          <LazyLoad>
+            <TwitterTimelineEmbed
+              sourceType="likes"
               screenName={config.userTwitter}
               options={{
                 height: twitterTimelineHeight,
