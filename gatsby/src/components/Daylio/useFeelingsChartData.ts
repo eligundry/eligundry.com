@@ -1,10 +1,10 @@
 import { useStaticQuery, graphql } from 'gatsby'
 import parseISO from 'date-fns/parseISO'
-import type Chart from 'chart.js'
+import dateCompareAsc from 'date-fns/compareAsc'
 
 import { MoodMapping } from './types'
 
-export default function useFeelingsChartData(timeWindow: Date): Chart.ChartPoint[] {
+export default function useFeelingsChartData(timeWindow: Date) {
   const entries = useStaticQuery<GatsbyTypes.UseFeelingsChartDataQuery>(graphql`
     query UseFeelingsChartData {
       allFeelings(limit: 100) {
@@ -17,10 +17,11 @@ export default function useFeelingsChartData(timeWindow: Date): Chart.ChartPoint
   `)
 
   return entries.allFeelings.data
-    .map(entry => ({ ...entry, time: parseISO(entry.time)  }))
-    .filter(entry => entry.time >= timeWindow)
     .map(entry => ({
-      x: entry.time,
+      x: parseISO(entry.time),
       y: Object.keys(MoodMapping).findIndex(m => m === entry.mood),
-  }))
+    }))
+    .filter(entry => entry.x >= timeWindow)
+    .sort((a, b) => dateCompareAsc(a.x, b.x))
+    .map(entry => ({ ...entry, x: entry.x.toISOString() }))
 }
