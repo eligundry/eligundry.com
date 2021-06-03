@@ -5,6 +5,7 @@ import { BlogPosting, WebSite, BreadcrumbList } from 'schema-dts'
 import urljoin from 'url-join'
 
 import config from '../../../data/SiteConfig'
+import { useLatestFeelingsImage } from '../Daylio/useFeelingsImage'
 
 interface Props {
   path: string
@@ -26,6 +27,7 @@ const SEO: React.FC<Props> = ({
 }) => {
   const schemaOrg: ReturnType<typeof helmetJsonLdProp>[] = []
   const url = urljoin(config.siteUrl, path)
+  const faviconURL = useLatestFeelingsImage()
 
   if (post) {
     if (post.frontmatter?.title) {
@@ -81,7 +83,6 @@ const SEO: React.FC<Props> = ({
           '@type': 'WebSite',
           url: config.siteUrl,
           name: config.siteTitle,
-          alternateName: config.siteTitleAlt ?? '',
         }),
         ...schemaOrg,
       ]}
@@ -90,6 +91,7 @@ const SEO: React.FC<Props> = ({
       {title && <title>{title}</title>}
       {description && <meta name="description" content={description} />}
       <link rel="canonical" href={url} />
+      <link rel="icon" href={faviconURL} />
 
       {/* OpenGraph tags */}
       <meta property="og:url" content={url} />
