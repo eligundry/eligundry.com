@@ -74,13 +74,12 @@ const UserLinks: React.FC = () => {
   return (
     <Links className="user-links">
       {links.map(link => (
-        <>
+        <React.Fragment key={link.url}>
           <a
             href={link.url}
             title={link.label}
             target="_blank"
             rel="noopener noreferrer"
-            key={link.url}
             itemProp={link.itemProp}
           >
             {link.icon}
@@ -88,7 +87,7 @@ const UserLinks: React.FC = () => {
           {link.name === 'email' && (
             <meta itemProp="email" content={link.url.replace('mailto:', '')} />
           )}
-        </>
+        </React.Fragment>
       ))}
     </Links>
   )

@@ -47,6 +47,10 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
     `}
   }
 
+  & .under-construction {
+    ${tw`inline-block`}
+  }
+
   & .bookshelf {
     display: grid;
     align-items: center;
@@ -133,7 +137,10 @@ const Home: React.FC = () => {
           something that looks good. Until I am happy, the 90s under
           construction gif will stay up.
         </p>
-        <a href="http://textfiles.com/underconstruction/">
+        <a
+          href="http://textfiles.com/underconstruction/"
+          className="under-construction"
+        >
           <img
             src={underConstructionGif}
             alt="90s style under construction gif"
@@ -163,7 +170,7 @@ const Home: React.FC = () => {
           all this excitement.
         </p>
         <p>
-          Github contribution calendars are not a good indicator of whether or
+          GitHub contribution calendars are not a good indicator of whether or
           not someone is a good developer, but they are very pretty.
         </p>
         <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd" />
@@ -200,7 +207,7 @@ const Home: React.FC = () => {
               width="300"
               height="380"
               frameBorder="0"
-              allowTransparency
+              allowtransparency="true"
               allow="encrypted-media"
             />
           </LazyLoad>

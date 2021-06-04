@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Line } from 'react-chartjs-2'
 import subMonths from 'date-fns/subMonths'
 import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
+import type { CoreChartOptions, ChartType } from 'chart.js/types/index.esm'
 import 'chartjs-adapter-date-fns'
+import { navigate } from 'gatsby'
 
 import useFeelingsChartData from './useFeelingsChartData'
 import useIsMobile from '../../utils/useIsMobile'
@@ -13,6 +15,34 @@ const DaylioChart: React.FC = () => {
   const timeWindow = subMonths(new Date(), 1)
   const data = useFeelingsChartData(timeWindow)
   const isMobile = useIsMobile()
+
+  // Clicking on an entry will navigate to the entry on the feelings page
+  const handlePointClick = useCallback<CoreChartOptions<ChartType>['onClick']>(
+    (_, points) => {
+      if (!points?.length) {
+        return
+      }
+
+      const targetEntry = data[points[0].index]
+
+      if (!targetEntry) {
+        return
+      }
+
+      navigate(`/feelings#${targetEntry.x}`)
+    }, 
+    [data]
+  )
+
+  // Hovering on a point will change cursor to denote that it is a link
+  const handlePointHover = useCallback<CoreChartOptions<ChartType>['onHover']>(
+    (event, points) => {
+      if (event.native?.target?.style) {
+        event.native.target.style.cursor = points.length ? 'pointer' : 'default'
+      }
+    },
+    []
+  )
 
   return (
     <Line
@@ -33,6 +63,8 @@ const DaylioChart: React.FC = () => {
         ],
       }}
       options={{
+        onClick: handlePointClick,
+        onHover: handlePointHover,
         plugins: {
           legend: {
             display: false,
