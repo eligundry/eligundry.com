@@ -1,11 +1,8 @@
 /* eslint "no-console": "off" */
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
 import { createRemoteFileNode } from 'gatsby-source-filesystem'
-import axios from 'axios'
-import { JSDOM } from 'jsdom'
 import { SourceNodesArgs } from 'gatsby'
 import path from 'path'
-import trim from 'lodash/trim'
 import kebabCase from 'lodash/kebabCase'
 import parseISO from 'date-fns/parseISO'
 import isValidDate from 'date-fns/isValid'
@@ -13,6 +10,7 @@ import isValidDate from 'date-fns/isValid'
 import siteConfig from '../data/SiteConfig'
 import loadImage from './utils/loadImage'
 import sourceGoodreadsNodes from './utils/sourceGoodreadsNodes'
+import sourceSingleImage from './utils/sourceSingleImage'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
   onCreateNode: async ({
@@ -80,6 +78,21 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         createNodeId,
         cache,
         store,
+      })
+    }
+
+    if (node.internal.type === 'DownloadedImage' && node.url) {
+      await loadImage({
+        node,
+        createRemoteFileNode,
+        targetNodeKey: 'image',
+        url: node.url,
+        parentNodeId: node.id,
+        createNode,
+        createNodeId,
+        cache,
+        store,
+        ext: '.jpg',
       })
     }
   },
@@ -186,6 +199,10 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       userID: siteConfig.goodreads.userID,
       shelf: 'currently-reading',
     })
+    await sourceSingleImage(
+      args,
+      'https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3'
+    )
   },
 })
 

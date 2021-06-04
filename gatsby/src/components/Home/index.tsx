@@ -11,6 +11,7 @@ import Daylio from '../Daylio/index'
 import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
+import LastFmCover from '../Listening/LastFmCover'
 import underConstructionGif from '../../../static/img/under-construction.gif'
 
 interface SectionProps {
@@ -204,13 +205,7 @@ const Home: React.FC = () => {
             />
           </LazyLoad>
           <a href="https://www.last.fm/user/eli_pwnd">
-            <img
-              className="listening-img"
-              src="https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3"
-              alt="My top 9 albums for the past 7 days"
-              width={900}
-              height={900}
-            />
+            <LastFmCover />
           </a>
         </div>
       </Section>
