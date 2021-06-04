@@ -357,7 +357,7 @@ const resume: Resume = {
         <a href="http://wordpress.org/">WordPress</a>,
         <a href="https://en.wikipedia.org/wiki/Adobe_Photoshop">Photoshop</a>,
         <a href="https://en.wikipedia.org/wiki/Adobe_Illustrator">Illustrator</a>,
-        <a href="https://en.wikipedia.org/wiki/Adobe_Premiere_Pro">Premiere Pro</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Premiere_Pro">Premiere Pro</a>
         &amp;
         <a href="https://en.wikipedia.org/wiki/Adobe_Flash">Flash</a>.
         Using these skills, I created websites used by classes and external clients.
