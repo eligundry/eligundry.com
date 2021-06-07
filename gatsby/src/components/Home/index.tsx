@@ -11,7 +11,7 @@ import Paper from '../Shared/Paper'
 import Reading from '../Reading'
 import LastFmCover from '../Listening/LastFmCover'
 import underConstructionGif from '../../../static/img/under-construction.gif'
-import useIsMobile from '../../utils/useIsMobile'
+import { useIsPhone } from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 
 const TwitterTimelineEmbed = React.lazy(async () =>
@@ -97,7 +97,7 @@ const Home: React.FC = () => {
   // const { width } = useWindowSize()
   // const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
   const twitterTimelineHeight = 450
-  const isMobile = useIsMobile()
+  const isMobile = useIsPhone()
 
   return (
     <>
