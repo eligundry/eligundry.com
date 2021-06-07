@@ -1,18 +1,25 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
-import { TwitterTimelineEmbed } from 'react-twitter-embed'
 import LazyLoad from 'react-lazyload'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
 
 import config from '../../../data/SiteConfig'
 import Daylio from '../Daylio/index'
-import DaylioChart from '../Daylio/Chart'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
 import LastFmCover from '../Listening/LastFmCover'
 import underConstructionGif from '../../../static/img/under-construction.gif'
+import useIsMobile from '../../utils/useIsMobile'
+import GatsbySuspense from '../Shared/GatsbySuspense'
+
+const TwitterTimelineEmbed = React.lazy(async () =>
+  import('react-twitter-embed').then(module => ({
+    default: module.TwitterTimelineEmbed,
+  }))
+)
+const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
 interface SectionProps {
   className?: string
@@ -90,6 +97,7 @@ const Home: React.FC = () => {
   // const { width } = useWindowSize()
   // const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
   const twitterTimelineHeight = 450
+  const isMobile = useIsMobile()
 
   return (
     <>
@@ -158,7 +166,12 @@ const Home: React.FC = () => {
           . The favicon for the site the emoji for my latest entry.
         </p>
         <Daylio />
-        <DaylioChart />
+        {/* Don't show the chart on mobile because it looks terrible, functions poorly and impacts performance on an outsized basis */}
+        {!isMobile && (
+          <GatsbySuspense fallback={null}>
+            <DaylioChart />
+          </GatsbySuspense>
+        )}
       </Section>
       <Section className="coding">
         <h2>Coding</h2>
@@ -228,22 +241,26 @@ const Home: React.FC = () => {
         </p>
         <div className="content">
           <LazyLoad once offset={200} height={twitterTimelineHeight}>
-            <TwitterTimelineEmbed
-              sourceType="profile"
-              screenName={config.userTwitter}
-              options={{
-                height: twitterTimelineHeight,
-              }}
-            />
+            <GatsbySuspense fallback={null}>
+              <TwitterTimelineEmbed
+                sourceType="profile"
+                screenName={config.userTwitter}
+                options={{
+                  height: twitterTimelineHeight,
+                }}
+              />
+            </GatsbySuspense>
           </LazyLoad>
           <LazyLoad once offset={200} height={twitterTimelineHeight}>
-            <TwitterTimelineEmbed
-              sourceType="likes"
-              screenName={config.userTwitter}
-              options={{
-                height: twitterTimelineHeight,
-              }}
-            />
+            <GatsbySuspense fallback={null}>
+              <TwitterTimelineEmbed
+                sourceType="likes"
+                screenName={config.userTwitter}
+                options={{
+                  height: twitterTimelineHeight,
+                }}
+              />
+            </GatsbySuspense>
           </LazyLoad>
         </div>
       </Section>

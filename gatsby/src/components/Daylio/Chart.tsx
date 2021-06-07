@@ -8,13 +8,11 @@ import 'chartjs-adapter-date-fns'
 import { navigate } from 'gatsby'
 
 import useFeelingsChartData from './useFeelingsChartData'
-import useIsMobile from '../../utils/useIsMobile'
 import { MoodMapping } from './types'
 
 const DaylioChart: React.FC = () => {
   const timeWindow = subMonths(new Date(), 1)
   const data = useFeelingsChartData(timeWindow)
-  const isMobile = useIsMobile()
 
   // Clicking on an entry will navigate to the entry on the feelings page
   const handlePointClick = useCallback<CoreChartOptions<ChartType>['onClick']>(
@@ -47,7 +45,7 @@ const DaylioChart: React.FC = () => {
   return (
     <Line
       type="line"
-      height={isMobile ? 100 : 50}
+      height={100}
       data={{
         labels: Object.values(MoodMapping).map((_, i) => i),
         datasets: [
