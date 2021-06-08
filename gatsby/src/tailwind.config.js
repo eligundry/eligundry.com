@@ -11,10 +11,10 @@ module.exports = {
       ...defaultTheme.screens,
       xs: {
         min: '0px',
-        max: '399px',
+        max: '375px',
       },
       sm: {
-        min: '400px',
+        min: '376px',
         max: '767px',
       },
       print: {
