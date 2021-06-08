@@ -1,5 +1,6 @@
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
 import urljoin from 'url-join'
+import round from 'lodash/round'
 
 import config from '../data/SiteConfig'
 
@@ -104,7 +105,9 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             resolve: 'gatsby-remark-images',
             options: {
               maxWidth: 690,
-              quality: 100,
+              quality: 95,
+              withWebp: true,
+              linkImagesToOriginal: false,
             },
           },
           'gatsby-remark-responsive-iframe',

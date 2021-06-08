@@ -814,12 +814,12 @@ type SitePluginPluginOptions = {
   readonly schemas: Maybe<SitePluginPluginOptionsSchemas>;
   readonly maxWidth: Maybe<Scalars['Int']>;
   readonly quality: Maybe<Scalars['Int']>;
+  readonly withWebp: Maybe<Scalars['Boolean']>;
   readonly linkImagesToOriginal: Maybe<Scalars['Boolean']>;
   readonly showCaptions: Maybe<Scalars['Boolean']>;
   readonly markdownCaptions: Maybe<Scalars['Boolean']>;
   readonly sizeByPixelDensity: Maybe<Scalars['Boolean']>;
   readonly backgroundColor: Maybe<Scalars['String']>;
-  readonly withWebp: Maybe<Scalars['Boolean']>;
   readonly tracedSVG: Maybe<Scalars['Boolean']>;
   readonly loading: Maybe<Scalars['String']>;
   readonly disableBgImageOnAlpha: Maybe<Scalars['Boolean']>;
@@ -852,12 +852,12 @@ type SitePluginPluginOptionsPlugins = {
 type SitePluginPluginOptionsPluginsPluginOptions = {
   readonly maxWidth: Maybe<Scalars['Int']>;
   readonly quality: Maybe<Scalars['Int']>;
+  readonly withWebp: Maybe<Scalars['Boolean']>;
   readonly linkImagesToOriginal: Maybe<Scalars['Boolean']>;
   readonly showCaptions: Maybe<Scalars['Boolean']>;
   readonly markdownCaptions: Maybe<Scalars['Boolean']>;
   readonly sizeByPixelDensity: Maybe<Scalars['Boolean']>;
   readonly backgroundColor: Maybe<Scalars['String']>;
-  readonly withWebp: Maybe<Scalars['Boolean']>;
   readonly tracedSVG: Maybe<Scalars['Boolean']>;
   readonly loading: Maybe<Scalars['String']>;
   readonly disableBgImageOnAlpha: Maybe<Scalars['Boolean']>;
@@ -2860,12 +2860,12 @@ type SitePluginPluginOptionsFilterInput = {
   readonly schemas: Maybe<SitePluginPluginOptionsSchemasFilterInput>;
   readonly maxWidth: Maybe<IntQueryOperatorInput>;
   readonly quality: Maybe<IntQueryOperatorInput>;
+  readonly withWebp: Maybe<BooleanQueryOperatorInput>;
   readonly linkImagesToOriginal: Maybe<BooleanQueryOperatorInput>;
   readonly showCaptions: Maybe<BooleanQueryOperatorInput>;
   readonly markdownCaptions: Maybe<BooleanQueryOperatorInput>;
   readonly sizeByPixelDensity: Maybe<BooleanQueryOperatorInput>;
   readonly backgroundColor: Maybe<StringQueryOperatorInput>;
-  readonly withWebp: Maybe<BooleanQueryOperatorInput>;
   readonly tracedSVG: Maybe<BooleanQueryOperatorInput>;
   readonly loading: Maybe<StringQueryOperatorInput>;
   readonly disableBgImageOnAlpha: Maybe<BooleanQueryOperatorInput>;
@@ -2902,12 +2902,12 @@ type SitePluginPluginOptionsPluginsFilterInput = {
 type SitePluginPluginOptionsPluginsPluginOptionsFilterInput = {
   readonly maxWidth: Maybe<IntQueryOperatorInput>;
   readonly quality: Maybe<IntQueryOperatorInput>;
+  readonly withWebp: Maybe<BooleanQueryOperatorInput>;
   readonly linkImagesToOriginal: Maybe<BooleanQueryOperatorInput>;
   readonly showCaptions: Maybe<BooleanQueryOperatorInput>;
   readonly markdownCaptions: Maybe<BooleanQueryOperatorInput>;
   readonly sizeByPixelDensity: Maybe<BooleanQueryOperatorInput>;
   readonly backgroundColor: Maybe<StringQueryOperatorInput>;
-  readonly withWebp: Maybe<BooleanQueryOperatorInput>;
   readonly tracedSVG: Maybe<BooleanQueryOperatorInput>;
   readonly loading: Maybe<StringQueryOperatorInput>;
   readonly disableBgImageOnAlpha: Maybe<BooleanQueryOperatorInput>;
@@ -3119,12 +3119,12 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.schemas.memes'
   | 'pluginCreator.pluginOptions.maxWidth'
   | 'pluginCreator.pluginOptions.quality'
+  | 'pluginCreator.pluginOptions.withWebp'
   | 'pluginCreator.pluginOptions.linkImagesToOriginal'
   | 'pluginCreator.pluginOptions.showCaptions'
   | 'pluginCreator.pluginOptions.markdownCaptions'
   | 'pluginCreator.pluginOptions.sizeByPixelDensity'
   | 'pluginCreator.pluginOptions.backgroundColor'
-  | 'pluginCreator.pluginOptions.withWebp'
   | 'pluginCreator.pluginOptions.tracedSVG'
   | 'pluginCreator.pluginOptions.loading'
   | 'pluginCreator.pluginOptions.disableBgImageOnAlpha'
@@ -5167,12 +5167,12 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.plugins.version'
   | 'pluginOptions.plugins.pluginOptions.maxWidth'
   | 'pluginOptions.plugins.pluginOptions.quality'
+  | 'pluginOptions.plugins.pluginOptions.withWebp'
   | 'pluginOptions.plugins.pluginOptions.linkImagesToOriginal'
   | 'pluginOptions.plugins.pluginOptions.showCaptions'
   | 'pluginOptions.plugins.pluginOptions.markdownCaptions'
   | 'pluginOptions.plugins.pluginOptions.sizeByPixelDensity'
   | 'pluginOptions.plugins.pluginOptions.backgroundColor'
-  | 'pluginOptions.plugins.pluginOptions.withWebp'
   | 'pluginOptions.plugins.pluginOptions.tracedSVG'
   | 'pluginOptions.plugins.pluginOptions.loading'
   | 'pluginOptions.plugins.pluginOptions.disableBgImageOnAlpha'
@@ -5208,12 +5208,12 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.schemas.memes'
   | 'pluginOptions.maxWidth'
   | 'pluginOptions.quality'
+  | 'pluginOptions.withWebp'
   | 'pluginOptions.linkImagesToOriginal'
   | 'pluginOptions.showCaptions'
   | 'pluginOptions.markdownCaptions'
   | 'pluginOptions.sizeByPixelDensity'
   | 'pluginOptions.backgroundColor'
-  | 'pluginOptions.withWebp'
   | 'pluginOptions.tracedSVG'
   | 'pluginOptions.loading'
   | 'pluginOptions.disableBgImageOnAlpha'
@@ -5490,31 +5490,30 @@ type StaticImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+
 type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
 type LastFmCoverQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type LastFmCoverQuery = { readonly downloadedImage: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }> };
 
-type UseGoodreadsShelfQueryVariables = Exact<{ [key: string]: never; }>;
+type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseGoodreadsShelfQuery = { readonly allGoodreadsBook: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
-      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
-    )> } };
-
-type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'description'>> }
-      ) }> } };
+type UseMemesQuery = { readonly allMemes: { readonly memes: ReadonlyArray<Pick<memes, 'id' | 'notes' | 'size' | 'url' | 'created_at'>> } };
 
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -5528,37 +5527,6 @@ type BlogPostBySlugQuery = { readonly markdownRemark: Maybe<(
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
     )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>> }
   )> };
-
-type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
-
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TalkListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
-
-type TalkBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-type TalkBySlugQuery = { readonly markdownRemark: Maybe<(
-    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'html'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>> }
-  )> };
-
-type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseMemesQuery = { readonly allMemes: { readonly memes: ReadonlyArray<Pick<memes, 'id' | 'notes' | 'size' | 'url' | 'created_at'>> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -5586,10 +5554,42 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+type TalkListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
+
+type TalkBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+type TalkBySlugQuery = { readonly markdownRemark: Maybe<(
+    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'html'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>> }
+  )> };
+
+type UseGoodreadsShelfQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseGoodreadsShelfQuery = { readonly allGoodreadsBook: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
+    )> } };
+
+type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'description'>> }
+      ) }> } };
 
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
