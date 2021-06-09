@@ -5,11 +5,7 @@ import { useStaticQuery, graphql } from 'gatsby'
 const LastFmCover: React.FC = () => {
   const cover = useStaticQuery<GatsbyTypes.LastFmCoverQuery>(graphql`
     query LastFmCover {
-      downloadedImage(
-        url: {
-          eq: "https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3"
-        }
-      ) {
+      downloadedImage(name: { eq: "last-fm-cover.jpg" }) {
         image {
           childImageSharp {
             gatsbyImageData(width: 800, quality: 80)

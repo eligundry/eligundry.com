@@ -201,7 +201,9 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     })
     await sourceSingleImage(
       args,
-      'https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3'
+      // ts is to cache bust as it should be downloaded for each build
+      `https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3&ts=${new Date().toISOString()}`,
+      'last-fm-cover.jpg'
     )
   },
 })

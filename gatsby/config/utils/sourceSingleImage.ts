@@ -1,6 +1,10 @@
 import { SourceNodesArgs } from 'gatsby'
 
-const sourceSingleImage = async (args: SourceNodesArgs, imageURL: string) => {
+const sourceSingleImage = async (
+  args: SourceNodesArgs,
+  imageURL: string,
+  name: string
+) => {
   const {
     createNodeId,
     createContentDigest,
@@ -8,6 +12,7 @@ const sourceSingleImage = async (args: SourceNodesArgs, imageURL: string) => {
   } = args
   const image = {
     url: imageURL,
+    name,
   }
 
   createNode({
