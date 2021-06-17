@@ -1,6 +1,7 @@
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
 import urljoin from 'url-join'
 import round from 'lodash/round'
+import dateMax from 'date-fns/max'
 
 import config from '../data/SiteConfig'
 
@@ -36,8 +37,8 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-transformer-sharp',
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
-    'gatsby-plugin-sitemap',
     'gatsby-plugin-postcss',
+    'gatsby-plugin-remove-trailing-slashes',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
@@ -254,6 +255,116 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        query: `
+          {
+            allSitePage(
+              filter: {path: {regex: "/^((?!(404)).)*$/"}}
+              sort: {fields: path, order: ASC}
+            ) {
+              nodes {
+                path
+              }
+            }
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+            allMarkdownRemark(
+              sort: {fields: frontmatter___slug, order: ASC}
+              filter: {frontmatter: {draft: {ne: true}}}
+            ) {
+              nodes {
+                collection
+                fields {
+                  date
+                  slug
+                }
+              }
+            }
+            latestFeelingEntry: feelings {
+              time
+            }
+            latestMeme: memes {
+              created_at
+            }
+          }
+        `,
+        resolveSiteUrl: () => 'https://eligundry.com',
+        filterPages: () => true,
+        resolvePages: (query: SitemapQuery): SitemapSerialize[] => {
+          const posts: Record<string, string> = {}
+          let latestPost = new Date(0)
+          let latestTalk = new Date(0)
+
+          query.allMarkdownRemark.nodes.forEach(post => {
+            const postDate = new Date(post.fields.date)
+            let path = `/${post.collection}/${post.fields.slug}`
+
+            if (post.collection === 'posts') {
+              path = `/blog/${post.fields.slug}`
+              latestPost = dateMax([latestPost, postDate])
+            } else {
+              latestTalk = dateMax([latestTalk, postDate])
+            }
+
+            posts[path] = postDate.toISOString()
+          })
+
+          return query.allSitePage.nodes.map(({ path }) => {
+            if (posts[path]) {
+              return {
+                path,
+                lastmodISO: posts[path],
+              }
+            }
+
+            if (path === '/blog') {
+              return {
+                path,
+                lastmodISO: latestPost.toISOString(),
+              }
+            }
+
+            if (path === '/talks') {
+              return {
+                path,
+                lastmodISO: latestTalk.toISOString(),
+              }
+            }
+
+            if (path === '/') {
+              return {
+                path,
+                lastmodISO: query.latestFeelingEntry.time,
+              }
+            }
+
+            if (path === '/memes') {
+              return {
+                path,
+                lastmodISO: query.latestMeme.created_at,
+              }
+            }
+
+            return {
+              path,
+            }
+          })
+        },
+        serialize: (item: SitemapSerialize) => {
+          return {
+            url: item.path,
+            lastmodISO: item.lastmodISO,
+            changefreq: 'daily',
+            priority: 0.7,
+          }
+        },
+      },
+    },
+    {
       resolve: 'gatsby-plugin-typegen',
       options: {
         outputPath: './gatsby-types.d.ts',
@@ -261,5 +372,33 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     },
   ].filter(Boolean),
 })
+
+interface SitemapSerialize {
+  path: string
+  lastmodISO?: string
+}
+
+interface SitemapQuery {
+  allSitePage: {
+    nodes: {
+      path: string
+    }[]
+  }
+  allMarkdownRemark: {
+    nodes: {
+      collection: 'talks' | 'posts'
+      fields: {
+        date: string
+        slug: string
+      }
+    }[]
+  }
+  latestFeelingEntry: {
+    time: string
+  }
+  latestMeme: {
+    created_at: string
+  }
+}
 
 export default gatsbyConfig
