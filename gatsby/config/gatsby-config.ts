@@ -1,6 +1,5 @@
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
 import urljoin from 'url-join'
-import round from 'lodash/round'
 import dateMax from 'date-fns/max'
 
 import config from '../data/SiteConfig'
