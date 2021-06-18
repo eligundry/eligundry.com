@@ -129,7 +129,14 @@ const Entry: React.FC<Props> = ({
   const isoTime = formatISO(time)
 
   return (
-    <EntryWrapper id={isoTime} variant={variant} selected={selected}>
+    <EntryWrapper
+      id={isoTime}
+      variant={variant}
+      selected={selected}
+      itemScope
+      itemType="https://schema.org/BlogPosting"
+    >
+      <link itemProp="author" href="#eli-gundry" />
       <div className="emoji-column">
         <Emoji
           dropShadow={variant === DaylioVariants.list}
@@ -139,14 +146,22 @@ const Entry: React.FC<Props> = ({
         </Emoji>
       </div>
       <div className="text-column">
-        <h3>I felt {mood}</h3>
-        <time dateTime={isoTime}>
-          <Link to={`/feelings#${isoTime}`}>{isoTime}</Link>
+        <h3 itemProp="name">I felt {mood}</h3>
+        <time dateTime={isoTime} itemProp="datePublished dateModified">
+          <Link to={`/feelings#${isoTime}`} itemProp="url">
+            {isoTime}
+          </Link>
         </time>
         {filteredActivities.length > 0 && (
           <ActivitiesList>
             {filteredActivities.map(a => (
-              <ActivityEmoji key={`${time}-${a}`} data-tip={a}>
+              <ActivityEmoji
+                key={`${time}-${a}`}
+                data-tip={a}
+                itemProp="keywords"
+                content={`${ActivityMapping[a] ?? a} ${a}`}
+                aria-label={a}
+              >
                 {ActivityMapping[a] || a}
               </ActivityEmoji>
             ))}
@@ -154,13 +169,15 @@ const Entry: React.FC<Props> = ({
         )}
         {notes &&
           (notes.length > 0 ? (
-            <ul className="notes">
+            <ul className="notes" itemProp="articleBody">
               {notes.map(note => (
                 <li key={note}>{note}</li>
               ))}
             </ul>
           ) : (
-            <p className="note">{notes[0]}</p>
+            <p className="note" itemProp="articleBody">
+              {notes[0]}
+            </p>
           ))}
       </div>
     </EntryWrapper>
