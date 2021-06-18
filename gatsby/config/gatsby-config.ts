@@ -316,10 +316,11 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             posts[path] = postDate
           })
 
-          return query.allSitePage.nodes.map(
-            ({ path, fields: { latestCommitDate } }) => {
-              const latestPageCommitDate = latestCommitDate
-                ? new Date(latestCommitDate)
+          return query.allSitePage.nodes
+            .filter(({ path }) => path === '/' || !path.endsWith('/'))
+            .map(({ path, fields }) => {
+              const latestPageCommitDate = fields?.latestCommitDate
+                ? new Date(fields.latestCommitDate)
                 : new Date(0)
 
               if (posts[path]) {
@@ -376,8 +377,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 path,
                 lastmodISO: latestPageCommitDate?.toISOString(),
               }
-            }
-          )
+            })
         },
         serialize: ({ path: url, lastmodISO }: SitemapSerialize) => {
           return {
