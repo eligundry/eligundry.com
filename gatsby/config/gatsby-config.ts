@@ -313,7 +313,10 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               latestTalk = dateMax([latestTalk, postDate])
             }
 
-            posts[path] = postDate
+            posts[path] = dateMax([
+              postDate,
+              new Date(post.fields.latestCommitDate),
+            ])
           })
 
           return query.allSitePage.nodes
