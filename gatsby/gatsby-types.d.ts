@@ -5238,7 +5238,7 @@ type BlogPostBySlugQueryVariables = Exact<{
 
 
 type BlogPostBySlugQuery = { readonly markdownRemark: Maybe<(
-    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'html'>
+    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'collection' | 'html'>
     & { readonly frontmatter: Maybe<(
       Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'tags' | 'description'>
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
@@ -5251,7 +5251,7 @@ type TalkBySlugQueryVariables = Exact<{
 
 
 type TalkBySlugQuery = { readonly markdownRemark: Maybe<(
-    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'html'>
+    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'collection' | 'html'>
     & { readonly frontmatter: Maybe<(
       Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }

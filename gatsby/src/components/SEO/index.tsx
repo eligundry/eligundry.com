@@ -3,6 +3,7 @@ import Helmet from 'react-helmet'
 import { helmetJsonLdProp } from 'react-schemaorg'
 import { WebSite, BreadcrumbList } from 'schema-dts'
 import urljoin from 'url-join'
+import startCase from 'lodash/startCase'
 
 import config from '../../../data/SiteConfig'
 import { useLatestFeelingsImage } from '../Daylio/useFeelingsImage'
@@ -52,6 +53,28 @@ const SEO: React.FC<Props> = ({
           {
             '@type': 'ListItem',
             position: 1,
+            item: {
+              '@id': config.siteUrl,
+              name: 'Eli Gundry',
+            },
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            item: {
+              '@id': urljoin(
+                config.siteUrl,
+                post.collection === 'posts' ? 'blog' : post.collection
+              ),
+              name:
+                post.collection === 'posts'
+                  ? 'Blog'
+                  : startCase(post.collection),
+            },
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
             item: {
               '@id': url,
               name: title,
