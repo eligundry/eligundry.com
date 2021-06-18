@@ -43,7 +43,7 @@ const TalkTemplate: React.FC<PageProps<
           />
         )}
         <header>
-          <h1 itemProp="name">{talk.title}</h1>
+          <h1 itemProp="name headline">{talk.title}</h1>
           {talk.date && (
             <Time itemProp="datePublished" dateTime={new Date(talk.date)} />
           )}

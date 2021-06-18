@@ -146,7 +146,7 @@ const Entry: React.FC<Props> = ({
         </Emoji>
       </div>
       <div className="text-column">
-        <h3 itemProp="name">I felt {mood}</h3>
+        <h3 itemProp="name headline">I felt {mood}</h3>
         <time dateTime={isoTime} itemProp="datePublished dateModified">
           <Link to={`/feelings#${isoTime}`} itemProp="url">
             {isoTime}

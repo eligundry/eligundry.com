@@ -50,7 +50,7 @@ const PostTemplate: React.FC<PageProps<
           />
         )}
         <header>
-          <h1 itemProp="name">{post.title}</h1>
+          <h1 itemProp="name headline">{post.title}</h1>
           {post?.date && (
             <Time itemProp="datePublished" dateTime={new Date(post.date)} />
           )}
