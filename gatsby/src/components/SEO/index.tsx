@@ -41,7 +41,7 @@ const SEO: React.FC<Props> = ({
       description = post.excerpt
     }
 
-    if (post.frontmatter?.cover) {
+    if (post.frontmatter?.cover?.publicURL) {
       image = urljoin(config.siteUrl, post.frontmatter.cover.publicURL)
     }
 
@@ -64,12 +64,12 @@ const SEO: React.FC<Props> = ({
             item: {
               '@id': urljoin(
                 config.siteUrl,
-                post.collection === 'posts' ? 'blog' : post.collection
+                post.collection === 'posts' ? 'blog' : post.collection ?? 'blog'
               ),
               name:
                 post.collection === 'posts'
                   ? 'Blog'
-                  : startCase(post.collection),
+                  : startCase(post.collection ?? 'Blog'),
             },
           },
           {
