@@ -11,17 +11,12 @@ import siteConfig from '../data/SiteConfig'
 import loadImage from './utils/loadImage'
 import sourceGoodreadsNodes from './utils/sourceGoodreadsNodes'
 import sourceSingleImage from './utils/sourceSingleImage'
+import addGitLastModifiedToNode from './utils/addGitLastmodifiedToNode'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
-  onCreateNode: async ({
-    node,
-    actions,
-    getNode,
-    createNodeId,
-    store,
-    cache,
-  }) => {
-    const { createNodeField, createNode, touchNode } = actions
+  onCreateNode: async args => {
+    const { node, actions, getNode, createNodeId, store, cache } = args
+    const { createNodeField, createNode } = actions
 
     if (node.internal.type === 'MarkdownRemark') {
       let slug
@@ -95,6 +90,8 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         ext: '.jpg',
       })
     }
+
+    await addGitLastModifiedToNode(args)
   },
   createPages: async ({ graphql, actions }) => {
     const { createPage } = actions

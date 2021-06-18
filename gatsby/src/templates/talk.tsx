@@ -1,8 +1,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
-import formatISO from 'date-fns/formatISO'
-import tw, { styled } from 'twin.macro'
+import { styled } from 'twin.macro'
 
 import Layout from '../layout'
 import Paper from '../components/Shared/Paper'
@@ -31,10 +30,23 @@ const TalkTemplate: React.FC<PageProps<
         <title>{talk.title}</title>
       </Helmet>
       <SEO path={path} post={talkNode} />
-      <Article className="talk">
+      <Article
+        className="talk"
+        itemScope
+        itemType="https://schema.org/CreativeWork"
+      >
+        <link itemProp="author publisher" href="#eli-gundry" />
+        {talkNode?.fields?.latestCommitDate && (
+          <meta
+            itemProp="dateModified"
+            content={talkNode.fields.latestCommitDate}
+          />
+        )}
         <header>
-          <h1>{talk.title}</h1>
-          {talk.date && <Time dateTime={new Date(talk.date)} />}
+          <h1 itemProp="name">{talk.title}</h1>
+          {talk.date && (
+            <Time itemProp="datePublished" dateTime={new Date(talk.date)} />
+          )}
           {talk.location && (
             <p className="location">
               <EmojiText label="location of talk" emoji="📍">
@@ -44,7 +56,10 @@ const TalkTemplate: React.FC<PageProps<
           )}
         </header>
         {talkNode?.html && (
-          <section dangerouslySetInnerHTML={{ __html: talkNode.html }} />
+          <section
+            itemProp="text"
+            dangerouslySetInnerHTML={{ __html: talkNode.html }}
+          />
         )}
       </Article>
     </Layout>
@@ -72,6 +87,7 @@ export const pageQuery = graphql`
       fields {
         slug
         date
+        latestCommitDate
       }
       html
     }

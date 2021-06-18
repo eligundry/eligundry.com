@@ -264,6 +264,9 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             ) {
               nodes {
                 path
+                fields {
+                  latestCommitDate
+                }
               }
             }
             site {
@@ -280,6 +283,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 fields {
                   date
                   slug
+                  latestCommitDate
                 }
               }
             }
@@ -294,7 +298,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
         resolveSiteUrl: () => 'https://eligundry.com',
         filterPages: () => true,
         resolvePages: (query: SitemapQuery): SitemapSerialize[] => {
-          const posts: Record<string, string> = {}
+          const posts: Record<string, Date> = {}
           let latestPost = new Date(0)
           let latestTalk = new Date(0)
 
@@ -309,54 +313,76 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               latestTalk = dateMax([latestTalk, postDate])
             }
 
-            posts[path] = postDate.toISOString()
+            posts[path] = postDate
           })
 
-          return query.allSitePage.nodes.map(({ path }) => {
-            if (posts[path]) {
+          return query.allSitePage.nodes.map(
+            ({ path, fields: { latestCommitDate } }) => {
+              const latestPageCommitDate = latestCommitDate
+                ? new Date(latestCommitDate)
+                : new Date(0)
+
+              if (posts[path]) {
+                return {
+                  path,
+                  lastmodISO: dateMax([
+                    posts[path],
+                    latestPageCommitDate,
+                  ]).toISOString(),
+                }
+              }
+
+              if (path === '/blog') {
+                return {
+                  path,
+                  lastmodISO: dateMax([
+                    latestPost,
+                    latestPageCommitDate,
+                  ]).toISOString(),
+                }
+              }
+
+              if (path === '/talks') {
+                return {
+                  path,
+                  lastmodISO: dateMax([
+                    latestTalk,
+                    latestPageCommitDate,
+                  ]).toISOString(),
+                }
+              }
+
+              if (path === '/') {
+                return {
+                  path,
+                  lastmodISO: dateMax([
+                    new Date(query.latestFeelingEntry.time),
+                    latestPageCommitDate,
+                  ]).toISOString(),
+                }
+              }
+
+              if (path === '/memes') {
+                return {
+                  path,
+                  lastmodISO: dateMax([
+                    new Date(query.latestMeme.created_at),
+                    latestPageCommitDate,
+                  ]).toISOString(),
+                }
+              }
+
               return {
                 path,
-                lastmodISO: posts[path],
+                lastmodISO: latestPageCommitDate?.toISOString(),
               }
             }
-
-            if (path === '/blog') {
-              return {
-                path,
-                lastmodISO: latestPost.toISOString(),
-              }
-            }
-
-            if (path === '/talks') {
-              return {
-                path,
-                lastmodISO: latestTalk.toISOString(),
-              }
-            }
-
-            if (path === '/') {
-              return {
-                path,
-                lastmodISO: query.latestFeelingEntry.time,
-              }
-            }
-
-            if (path === '/memes') {
-              return {
-                path,
-                lastmodISO: query.latestMeme.created_at,
-              }
-            }
-
-            return {
-              path,
-            }
-          })
+          )
         },
-        serialize: (item: SitemapSerialize) => {
+        serialize: ({ path: url, lastmodISO }: SitemapSerialize) => {
           return {
-            url: item.path,
-            lastmodISO: item.lastmodISO,
+            url,
+            lastmodISO,
             changefreq: 'daily',
             priority: 0.7,
           }
@@ -381,6 +407,9 @@ interface SitemapQuery {
   allSitePage: {
     nodes: {
       path: string
+      fields: {
+        latestCommitDate: string | null
+      }
     }[]
   }
   allMarkdownRemark: {
@@ -389,6 +418,7 @@ interface SitemapQuery {
       fields: {
         date: string
         slug: string
+        latestCommitDate: string
       }
     }[]
   }

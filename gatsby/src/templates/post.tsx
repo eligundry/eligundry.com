@@ -42,7 +42,13 @@ const PostTemplate: React.FC<PageProps<
       </Helmet>
       <SEO path={path} post={postNode} />
       <Article itemScope itemType="https://schema.org/BlogPosting">
-        <link itemProp="author" href="#eli-gundry" />
+        <link itemProp="author publisher" href="#eli-gundry" />
+        {postNode?.fields?.latestCommitDate && (
+          <meta
+            itemProp="dateModified"
+            content={postNode.fields.latestCommitDate}
+          />
+        )}
         <header>
           <h1 itemProp="name">{post.title}</h1>
           {post?.date && (
@@ -58,7 +64,10 @@ const PostTemplate: React.FC<PageProps<
           </blockquote>
         )}
         {postNode?.html && (
-          <section dangerouslySetInnerHTML={{ __html: postNode.html }} />
+          <section
+            itemProp="articleBody"
+            dangerouslySetInnerHTML={{ __html: postNode.html }}
+          />
         )}
         <hr />
         <Comments />
@@ -87,6 +96,7 @@ export const pageQuery = graphql`
       fields {
         slug
         date
+        latestCommitDate
       }
       html
     }
