@@ -2,17 +2,18 @@
 title: "Blogging My Failures: Google Page Speed Insights Shield"
 description: I wanted Google Page Speed Insights to work with GitHub badges, but latency stays undefeated.
 slug: google-page-speed-shield
+cover: ./img/page-speed-shield/cover.png
 date: 2021-06-21T05:00
 ---
 
 As a software engineer, it's rare to have an idea for a personal project and actually finish it. We have ideas all the
 time, buy domains for them, and then never finish them. For me, I've had a brain block for coding that isn't work for
-like 5 years. Well, maybe that isn't completely true, but for the purposes of this post, let's just roll with it.
+like 5 years. *Well, maybe* that isn't completely true, but for the purposes of this post, let's just roll with it.
 
-At work, I've been working a lot with Gatsby. One of our big metrics that we are tracking with this new site we are
-building is [Google Page Speed Insights][page-speed-insights]. For those that don't know, Page Speed Insights is a like
-a special version of [Google Lighthouse][lighthouse] that runs outside of Chrome's devtools. It was during one of these
-runs that I got an idea:
+At work, I've been working a lot with Gatsby on a new site. One of our big metrics that we are tracking with this new
+site we are building is [Google Page Speed Insights][page-speed-insights]. For those that don't know, Page Speed
+Insights is a like a special version of [Google Lighthouse][lighthouse] that runs outside of Chrome's Dev Tools. It was
+during one of these runs that I got an idea:
 
 > What if I made a GitHub badge so that I can check on this passively?
 
@@ -22,8 +23,8 @@ I did some Googling and couldn't find any implementations of it and went to work
 
 [Page Speed Insights provides an API endpoint in the Go Google client][pagespeedonline] which is easy enough to use.
 I went ahead are wired it into a [Gin HTTP server][gin] (I probably could have done this using the stdlib, but I like
-Gin's routing and middlewares, so suck it nerds). After I ran the Page Speed test, I reverse proxied to
-[shields.io][shields.io], which is a service that can generate GitHub shield badges.
+Gin's routing and middlewares). After I ran the Page Speed test, I reverse proxied to [shields.io][shields.io], which is
+a service that can generate GitHub shield badges.
 
 This took me an evening and I was able to fetch a Page Speed badge using the following Markdown.
 
@@ -32,7 +33,7 @@ This took me an evening and I was able to fetch a Page Speed badge using the fol
 ![eligundry.com Desktop Page Speed Insights](https://page-speed-shield.eligundry.com/desktop/https://eligundry.com)
 ```
 
-And this is what it looks like.
+Look at these badges!
 
 ![eligundry.com Mobile Page Speed Insights](https://page-speed-shield.eligundry.com/mobile/https://eligundry.com)
 
@@ -48,10 +49,11 @@ Ah man, it failed to load! I did some Googling and it turns out that [GitHub pro
 service which has a 4 second timeout][camo-timeout]. This is good for the end user (prevents tracking pixels on GitHub
 and images taking forever to load is bad UX), but terrible for my use case.
 
-What if cache it server side? The first Page Speed image load will take forever, but after that, we should be golden for
+🤔 What if I cache it server side? The first Page Speed image load will take forever, but after that, we should be golden for
 the cache lifetime. I added [Gin's caching middleware][gin-cache] and deployed. Sure enough, the first touch penalty was
-around 30 seconds but after that it loaded instantly! **Unfortunately**, GitHub's camo proxy does it's own caching and
-it's impossible for the second image load to work. 
+around 30 seconds but after that it loaded instantly! **Unfortunately**, GitHub's camo proxy does it's own caching (so
+that it can be on a CDN close to your geographic location) and it's impossible for the second image load to work as
+outlined 😭.
 
 # Conclusion
 
@@ -60,9 +62,9 @@ code is pretty "clean" (though that is subjective and I cringed saying that).
 
 <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Feligundry%2Fpage-speed-shield%2Fblob%2Fmain%2Fapi%2Fmain.go&style=github-gist&showBorder=on&showLineNumbers=on&showFileMeta=on"></script>
 
-One really cool thing I found was this [Gin middleware][gin-server-timing] for writing [`Server-Timing`
-headers][server-timing] to a response. This allowed me to see how long Page Speed Insights was taking in the Chrome
-Dev Tools!
+One really cool thing I found while building this was this [server timing Gin middleware][gin-server-timing] for writing
+[`Server-Timing` headers][server-timing] to a response. This allowed me to see how long Page Speed Insights was taking
+in the Chrome Dev Tools!
 
 ![Server-Timing headers in the Chrome Dev Tools](./img/page-speed-shield/server-timing.png)
 
