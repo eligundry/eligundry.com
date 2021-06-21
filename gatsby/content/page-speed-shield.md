@@ -58,7 +58,7 @@ outlined 😭.
 # Conclusion
 
 Even though this is an impossible project to get working as I envisioned, I'm really happy with how it turned out! The
-code is pretty "clean" (though that is subjective and I cringed saying that).
+[code][repo] is pretty "clean" (though that is subjective and I cringed saying that).
 
 <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Feligundry%2Fpage-speed-shield%2Fblob%2Fmain%2Fapi%2Fmain.go&style=github-gist&showBorder=on&showLineNumbers=on&showFileMeta=on"></script>
 
@@ -79,3 +79,4 @@ It's like having a mini-DataDog right in your browser!
 [gin-cache]: https://github.com/gin-contrib/cache
 [gin-server-timing]: https://github.com/p768lwy3/gin-server-timing
 [server-timing]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing
+[repo]: https://github.com/eligundry/page-speed-shield/
