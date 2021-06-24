@@ -13,6 +13,7 @@ import LastFmCover from '../Listening/LastFmCover'
 import underConstructionGif from '../../../static/img/under-construction.gif'
 import { useIsPhone } from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
+import Tooltip from '../Shared/Tooltip'
 
 const TwitterTimelineEmbed = React.lazy(async () =>
   import('react-twitter-embed').then(module => ({
@@ -186,7 +187,9 @@ const Home: React.FC = () => {
           GitHub contribution calendars are not a good indicator of whether or
           not someone is a good developer, but they are very pretty.
         </p>
-        <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd" />
+        <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd">
+          <Tooltip />
+        </GitHubCalendar>
       </Section>
       <Section className="reading">
         <h2>Reading</h2>
