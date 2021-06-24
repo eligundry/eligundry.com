@@ -5,6 +5,7 @@ import { IconContext } from 'react-icons'
 import BaseStyles, { ContentWrapper } from './BaseStyles'
 import Header from './Header'
 import Nav from './Nav'
+import Tooltip from '../components/Shared/Tooltip'
 import config from '../../data/SiteConfig'
 
 interface Props {
@@ -34,6 +35,7 @@ const MainLayout: React.FC<Props> = ({
         {showHeader && <Header />}
         <Nav wider={wider} />
         <ContentWrapper wider={wider}>{children}</ContentWrapper>
+        <Tooltip />
       </BaseStyles>
     </IconContext.Provider>
   )

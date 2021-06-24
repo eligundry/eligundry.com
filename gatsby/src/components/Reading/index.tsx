@@ -16,6 +16,7 @@ const Reading: React.FC = () => {
         <a
           href={book.url}
           title={`${book.title} - ${book.author}`}
+          data-tip={`${book.title} - ${book.author}`}
           target="_blank"
           key={book.isbn}
           rel="noopener noreferrer"

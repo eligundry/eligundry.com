@@ -9,7 +9,7 @@ import config from '../../../data/SiteConfig'
 import Daylio from '../Daylio/index'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
-import LastFmCover from '../Listening/LastFmCover'
+import Listening from '../Listening'
 import underConstructionGif from '../../../static/img/under-construction.gif'
 import { useIsPhone } from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
@@ -69,17 +69,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
     & img {
       min-width: 75px;
-    }
-  }
-
-  &.listening {
-    & > .listening-media {
-      ${tw`flex flex-row xs:flex-col sm:flex-col`}
-
-      & > .spotify-playlist-wrapper {
-        ${tw`mr-4 xs:mb-4 sm:mb-4`}
-        max-width: 100%;
-      }
     }
   }
 
@@ -161,7 +150,7 @@ const Home: React.FC = () => {
         <p className="summary">
           A while ago, I decided to start journaling my feelings. Being a
           software engineer,{' '}
-          <Link to="blog/feelings-api">
+          <Link to="/blog/feelings-api">
             I made an API out of it and put it on my website
           </Link>
           . The favicon for the site the emoji for my latest entry.
@@ -215,22 +204,7 @@ const Home: React.FC = () => {
           Below is my current playlist of songs I have on repeat and the top
           albums I've listened to this week.
         </p>
-        <div className="listening-media">
-          <LazyLoad once offset={300} classNamePrefix="spotify-playlist">
-            <iframe
-              title="Spotify playlist that I have on repeat"
-              src="https://open.spotify.com/embed/playlist/1cm6mo8oxk8axeEhQZff8Z"
-              width="300"
-              height="380"
-              frameBorder="0"
-              allowtransparency="true"
-              allow="encrypted-media"
-            />
-          </LazyLoad>
-          <a href="https://www.last.fm/user/eli_pwnd">
-            <LastFmCover />
-          </a>
-        </div>
+        <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/1cm6mo8oxk8axeEhQZff8Z" />
       </Section>
       <Section className="tweets">
         <h2>Twitter</h2>
@@ -247,17 +221,6 @@ const Home: React.FC = () => {
             <GatsbySuspense fallback={null}>
               <TwitterTimelineEmbed
                 sourceType="profile"
-                screenName={config.userTwitter}
-                options={{
-                  height: twitterTimelineHeight,
-                }}
-              />
-            </GatsbySuspense>
-          </LazyLoad>
-          <LazyLoad once offset={200} height={twitterTimelineHeight}>
-            <GatsbySuspense fallback={null}>
-              <TwitterTimelineEmbed
-                sourceType="likes"
                 screenName={config.userTwitter}
                 options={{
                   height: twitterTimelineHeight,

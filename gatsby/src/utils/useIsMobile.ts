@@ -2,7 +2,7 @@ import { theme } from 'twin.macro'
 import useMedia from 'react-use/lib/useMedia'
 
 export default function useIsMobile() {
-  return useMedia('(max-width: 1023px)')
+  return useMedia(`(max-width: ${theme`screens.sm.max`})`)
 }
 
 export function useIsPhone() {
