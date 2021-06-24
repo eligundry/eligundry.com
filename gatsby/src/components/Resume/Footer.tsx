@@ -44,11 +44,8 @@ const ResumeFooter: React.FC = () => {
         </EmojiText>
       </address>
       <span>
-        <EmojiText
-          emoji={<FaGithubSquare fontSize="1.2em" />}
-          label="GitHub Octocat"
-        >
-          <a href="https://github.com/eligundry">/eligundry</a>
+        <EmojiText emoji="👨‍💻" label="lil man at computer because i'm coding">
+          <a href="https://github.com/eligundry">github/eligundry</a>
         </EmojiText>
       </span>
     </Footer>

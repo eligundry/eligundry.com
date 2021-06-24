@@ -82,7 +82,7 @@ const DaylioChart: React.FC = () => {
             },
             bodyColor: 'black',
             borderWidth: 1,
-            borderColor: 'rgb(226 232 240)',
+            borderColor: 'rgb(226, 232, 240)',
             callbacks: {
               title: (item, _) => {
                 return `📅   ${formatISO(parseISO(item[0].raw.x))}`
