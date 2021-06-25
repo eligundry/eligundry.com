@@ -14,14 +14,17 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
   const postList = postEdges
     .map(postEdge => ({
       path: postEdge?.node?.fields?.slug,
-      cover: postEdge?.node?.frontmatter?.cover,
+      cover: postEdge?.node?.frontmatter?.cover?.publicURL,
       title: postEdge?.node?.frontmatter?.title,
       date: postEdge?.node?.fields?.date,
       excerpt: postEdge.node.excerpt,
       timeToRead: postEdge.node.timeToRead,
       description: postEdge?.node?.frontmatter?.description,
+      dateModified: postEdge?.node?.fields?.latestCommitDate,
     }))
     .filter(post => !!post.title)
+
+  console.log(postList)
 
   return (
     <main>
@@ -32,8 +35,10 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
           itemType="https://schema.org/BlogPosting"
           className="listing-post"
         >
-          <link itemProp="author" href="#eli-gundry" />
-          <h1 itemProp="name">
+          <link itemProp="author publisher" href="#eli-gundry" />
+          <meta itemProp="image" content={post.cover} />
+          <meta itemProp="dateModified" content={post.dateModified} />
+          <h1 itemProp="name headline">
             <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
               {post.title}
             </Link>

@@ -11,15 +11,13 @@ const HeaderElm = styled.header`
 
 const Header: React.FC = () => {
   return (
-    <>
-      <HeaderElm>
-        <h1 itemProp="name">
-          <a rel="root" href="/">
-            Eli Gundry
-          </a>
-        </h1>
-      </HeaderElm>
-    </>
+    <HeaderElm>
+      <h1 itemProp="name">
+        <a rel="root" href="/" itemProp="sameAs">
+          Eli Gundry
+        </a>
+      </h1>
+    </HeaderElm>
   )
 }
 

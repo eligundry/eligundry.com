@@ -11,7 +11,7 @@ import {
 
 import config from '../../../data/SiteConfig'
 
-const links = Object.freeze([
+export const links = Object.freeze([
   {
     name: 'github',
     label: 'Review my code on GitHub',

@@ -38,6 +38,7 @@ export const listingQuery = graphql`
           fields {
             slug
             date
+            latestCommitDate
           }
           excerpt
           timeToRead
@@ -45,6 +46,9 @@ export const listingQuery = graphql`
             title
             date
             description
+            cover {
+              publicURL
+            }
           }
         }
       }

@@ -12,6 +12,7 @@ import {
   MoodMapping,
   ActivityMapping,
 } from './types'
+import useFeelingsImage from './useFeelingsImage'
 
 interface Props extends DaylioEntry {
   variant: DaylioVariants
@@ -125,6 +126,7 @@ const Entry: React.FC<Props> = ({
   variant,
   selected = false,
 }) => {
+  const feelingsImage = useFeelingsImage(time)
   const filteredActivities = activities.filter(a => !!a && a.length > -1)
   const isoTime = formatISO(time)
 
@@ -136,7 +138,8 @@ const Entry: React.FC<Props> = ({
       itemScope
       itemType="https://schema.org/BlogPosting"
     >
-      <link itemProp="author" href="#eli-gundry" />
+      <meta content={feelingsImage} itemProp="image" />
+      <link itemProp="author publisher" href="#eli-gundry" />
       <div className="emoji-column">
         <Emoji
           dropShadow={variant === DaylioVariants.list}
