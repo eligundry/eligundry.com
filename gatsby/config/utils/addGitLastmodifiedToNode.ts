@@ -53,26 +53,21 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
     switch (node.path) {
       case '/':
         paths.push(
-          path.join(__dirname, '..', '..', 'src', 'components', 'Home')
+          path.join('src', 'components', 'Home'),
+          path.join('src', 'components', 'Listening')
         )
         break
 
       case '/memes':
-        paths.push(
-          path.join(__dirname, '..', '..', 'src', 'components', 'Memes')
-        )
+        paths.push(path.join('src', 'components', 'Memes'))
         break
 
       case '/feelings':
-        paths.push(
-          path.join(__dirname, '..', '..', 'src', 'components', 'Daylio')
-        )
+        paths.push(path.join('src', 'components', 'Daylio'))
         break
 
       case '/resume':
-        paths.push(
-          path.join(__dirname, '..', '..', 'src', 'components', 'Resume')
-        )
+        paths.push(path.join('src', 'components', 'Resume'))
         break
     }
 
