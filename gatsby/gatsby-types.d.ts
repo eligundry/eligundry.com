@@ -324,14 +324,14 @@ type SitePage = Node & {
   readonly componentChunkName: Scalars['String'];
   readonly matchPath: Maybe<Scalars['String']>;
   readonly isCreatedByStatefulCreatePages: Maybe<Scalars['Boolean']>;
-  readonly context: Maybe<SitePageContext>;
   readonly pluginCreator: Maybe<SitePlugin>;
   readonly pluginCreatorId: Maybe<Scalars['String']>;
-  readonly fields: Maybe<SitePageFields>;
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
   readonly children: ReadonlyArray<Node>;
   readonly internal: Internal;
+  readonly context: Maybe<SitePageContext>;
+  readonly fields: Maybe<SitePageFields>;
 };
 
 type SitePageContext = {
@@ -346,14 +346,6 @@ type SitePageFields = {
   readonly latestCommitDate: Maybe<Scalars['Date']>;
   readonly latestCommitMessage: Maybe<Scalars['String']>;
   readonly latestCommit: Maybe<Scalars['String']>;
-};
-
-
-type SitePageFields_latestCommitDateArgs = {
-  formatString: Maybe<Scalars['String']>;
-  fromNow: Maybe<Scalars['Boolean']>;
-  difference: Maybe<Scalars['String']>;
-  locale: Maybe<Scalars['String']>;
 };
 
 type ImageFormat =
@@ -1335,14 +1327,14 @@ type Query_sitePageArgs = {
   componentChunkName: Maybe<StringQueryOperatorInput>;
   matchPath: Maybe<StringQueryOperatorInput>;
   isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
-  context: Maybe<SitePageContextFilterInput>;
   pluginCreator: Maybe<SitePluginFilterInput>;
   pluginCreatorId: Maybe<StringQueryOperatorInput>;
-  fields: Maybe<SitePageFieldsFilterInput>;
   id: Maybe<StringQueryOperatorInput>;
   parent: Maybe<NodeFilterInput>;
   children: Maybe<NodeFilterListInput>;
   internal: Maybe<InternalFilterInput>;
+  context: Maybe<SitePageContextFilterInput>;
+  fields: Maybe<SitePageFieldsFilterInput>;
 };
 
 
@@ -3067,14 +3059,6 @@ type SiteFunctionSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type SitePageContextFilterInput = {
-  readonly slug: Maybe<StringQueryOperatorInput>;
-  readonly nexttitle: Maybe<StringQueryOperatorInput>;
-  readonly nextslug: Maybe<StringQueryOperatorInput>;
-  readonly prevtitle: Maybe<StringQueryOperatorInput>;
-  readonly prevslug: Maybe<StringQueryOperatorInput>;
-};
-
 type SitePluginFilterInput = {
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
@@ -3252,6 +3236,14 @@ type SitePluginPackageJsonPeerDependenciesFilterInput = {
   readonly version: Maybe<StringQueryOperatorInput>;
 };
 
+type SitePageContextFilterInput = {
+  readonly slug: Maybe<StringQueryOperatorInput>;
+  readonly nexttitle: Maybe<StringQueryOperatorInput>;
+  readonly nextslug: Maybe<StringQueryOperatorInput>;
+  readonly prevtitle: Maybe<StringQueryOperatorInput>;
+  readonly prevslug: Maybe<StringQueryOperatorInput>;
+};
+
 type SitePageFieldsFilterInput = {
   readonly latestCommitDate: Maybe<DateQueryOperatorInput>;
   readonly latestCommitMessage: Maybe<StringQueryOperatorInput>;
@@ -3310,11 +3302,6 @@ type SitePageFieldsEnum =
   | 'componentChunkName'
   | 'matchPath'
   | 'isCreatedByStatefulCreatePages'
-  | 'context.slug'
-  | 'context.nexttitle'
-  | 'context.nextslug'
-  | 'context.prevtitle'
-  | 'context.prevslug'
   | 'pluginCreator.id'
   | 'pluginCreator.parent.id'
   | 'pluginCreator.parent.parent.id'
@@ -3440,9 +3427,6 @@ type SitePageFieldsEnum =
   | 'pluginCreator.packageJson.peerDependencies.version'
   | 'pluginCreator.packageJson.keywords'
   | 'pluginCreatorId'
-  | 'fields.latestCommitDate'
-  | 'fields.latestCommitMessage'
-  | 'fields.latestCommit'
   | 'id'
   | 'parent.id'
   | 'parent.parent.id'
@@ -3528,7 +3512,15 @@ type SitePageFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'context.slug'
+  | 'context.nexttitle'
+  | 'context.nextslug'
+  | 'context.prevtitle'
+  | 'context.prevslug'
+  | 'fields.latestCommitDate'
+  | 'fields.latestCommitMessage'
+  | 'fields.latestCommit';
 
 type SitePageGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -3546,14 +3538,14 @@ type SitePageFilterInput = {
   readonly componentChunkName: Maybe<StringQueryOperatorInput>;
   readonly matchPath: Maybe<StringQueryOperatorInput>;
   readonly isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
-  readonly context: Maybe<SitePageContextFilterInput>;
   readonly pluginCreator: Maybe<SitePluginFilterInput>;
   readonly pluginCreatorId: Maybe<StringQueryOperatorInput>;
-  readonly fields: Maybe<SitePageFieldsFilterInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
   readonly children: Maybe<NodeFilterListInput>;
   readonly internal: Maybe<InternalFilterInput>;
+  readonly context: Maybe<SitePageContextFilterInput>;
+  readonly fields: Maybe<SitePageFieldsFilterInput>;
 };
 
 type SitePageSortInput = {

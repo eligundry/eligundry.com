@@ -43,7 +43,7 @@ const PostTemplate: React.FC<PageProps<
       <SEO path={path} post={postNode} />
       <Article itemScope itemType="https://schema.org/BlogPosting">
         <link itemProp="author publisher" href="#eli-gundry" />
-        <meta itemProp="image" content={post.cover.publicURL} />
+        <meta itemProp="image" content={post.cover?.publicURL} />
         {postNode?.fields?.latestCommitDate && (
           <meta
             itemProp="dateModified"
