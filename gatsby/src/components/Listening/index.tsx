@@ -24,7 +24,7 @@ const ListeningContainer = styled.div`
 `
 
 const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
-  const [ref, { height }] = useMeasure()
+  const [ref, { width, height }] = useMeasure()
   const iframeHeight = useIsMobile() ? 380 : height
 
   return (
@@ -36,7 +36,7 @@ const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
           width="300"
           height={iframeHeight}
           frameBorder="0"
-          allowTransparency={true}
+          allowtransparency={true}
           allow="encrypted-media"
         />
       </LazyLoad>
@@ -45,7 +45,7 @@ const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
         ref={ref}
         className="last-fm-image"
       >
-        <LastFmCover />
+        <LastFmCover width={width} height={height} />
       </a>
     </ListeningContainer>
   )
