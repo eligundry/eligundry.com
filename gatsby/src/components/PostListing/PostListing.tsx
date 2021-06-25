@@ -24,8 +24,6 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
     }))
     .filter(post => !!post.title)
 
-  console.log(postList)
-
   return (
     <main>
       {postList.map(post => (
