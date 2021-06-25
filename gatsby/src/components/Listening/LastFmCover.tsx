@@ -23,7 +23,6 @@ const LastFmCover: React.FC = () => {
               name
             }
             artist {
-              id
               name
             }
           }
