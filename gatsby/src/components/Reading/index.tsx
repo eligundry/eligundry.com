@@ -15,7 +15,6 @@ const Reading: React.FC = () => {
       {books.map(book => (
         <a
           href={book.url}
-          title={`${book.title} - ${book.author}`}
           data-tip={`${book.title} - ${book.author}`}
           target="_blank"
           key={book.isbn}

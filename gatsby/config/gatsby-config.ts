@@ -22,9 +22,9 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     },
   },
   flags: {
-    // PRESERVE_WEBPACK_CACHE: true,
+    PRESERVE_WEBPACK_CACHE: true,
     // DEV_SSR: true,
-    // PARALLEL_SOURCING: true,
+    PARALLEL_SOURCING: true,
     // PRESERVE_FILE_DOWNLOAD_CACHE: true,
   },
   plugins: [
@@ -95,6 +95,14 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             modified: String!
           `,
         },
+      },
+    },
+    {
+      resolve: 'gatsby-source-lastfm',
+      options: {
+        api_key: process.env.LAST_FM_API_KEY,
+        username: 'eli_pwnd',
+        limit: 1000,
       },
     },
     {

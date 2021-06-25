@@ -266,6 +266,7 @@ type Site = Node & {
   readonly host: Maybe<Scalars['String']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly assetPrefix: Maybe<Scalars['String']>;
+  readonly flags: Maybe<SiteFlags>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
@@ -279,6 +280,11 @@ type Site_buildTimeArgs = {
   fromNow: Maybe<Scalars['Boolean']>;
   difference: Maybe<Scalars['String']>;
   locale: Maybe<Scalars['String']>;
+};
+
+type SiteFlags = {
+  readonly PRESERVE_WEBPACK_CACHE: Maybe<Scalars['Boolean']>;
+  readonly PARALLEL_SOURCING: Maybe<Scalars['Boolean']>;
 };
 
 type SiteSiteMetadata = {
@@ -766,6 +772,9 @@ type SitePluginPluginOptions = {
   readonly url: Maybe<Scalars['String']>;
   readonly rootKey: Maybe<Scalars['String']>;
   readonly schemas: Maybe<SitePluginPluginOptionsSchemas>;
+  readonly api_key: Maybe<Scalars['String']>;
+  readonly username: Maybe<Scalars['String']>;
+  readonly limit: Maybe<Scalars['Int']>;
   readonly maxWidth: Maybe<Scalars['Int']>;
   readonly quality: Maybe<Scalars['Int']>;
   readonly withWebp: Maybe<Scalars['Boolean']>;
@@ -894,6 +903,76 @@ type SiteBuildMetadata_buildTimeArgs = {
   locale: Maybe<Scalars['String']>;
 };
 
+type LastfmTrack = Node & {
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+  readonly name: Maybe<Scalars['String']>;
+  readonly loved: Maybe<Scalars['String']>;
+  readonly mbid: Maybe<Scalars['String']>;
+  readonly streamable: Maybe<Scalars['String']>;
+  readonly url: Maybe<Scalars['String']>;
+  readonly image: Maybe<ReadonlyArray<Maybe<LastfmTrackImage>>>;
+  readonly playbacks: Maybe<ReadonlyArray<Maybe<LastfmPlayback>>>;
+  readonly artist: Maybe<LastfmArtist>;
+  readonly album: Maybe<LastfmAlbum>;
+};
+
+type LastfmTrackImage = {
+  readonly size: Maybe<Scalars['String']>;
+  readonly text: Maybe<Scalars['String']>;
+};
+
+type LastfmPlayback = Node & {
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+  readonly date: Maybe<Scalars['String']>;
+  readonly track: Maybe<LastfmTrack>;
+};
+
+type LastfmMeta = Node & {
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+  readonly total_playbacks: Maybe<Scalars['String']>;
+};
+
+type LastfmArtist = Node & {
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+  readonly name: Maybe<Scalars['String']>;
+  readonly mbid: Maybe<Scalars['String']>;
+  readonly url: Maybe<Scalars['String']>;
+  readonly image: Maybe<ReadonlyArray<Maybe<LastfmArtistImage>>>;
+  readonly playbacks: Maybe<ReadonlyArray<Maybe<LastfmPlayback>>>;
+  readonly albums: Maybe<ReadonlyArray<Maybe<LastfmAlbum>>>;
+  readonly tracks: Maybe<ReadonlyArray<Maybe<LastfmTrack>>>;
+};
+
+type LastfmArtistImage = {
+  readonly size: Maybe<Scalars['String']>;
+  readonly text: Maybe<Scalars['String']>;
+};
+
+type LastfmAlbum = Node & {
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+  readonly name: Maybe<Scalars['String']>;
+  readonly mbid: Maybe<Scalars['String']>;
+  readonly url: Maybe<Scalars['String']>;
+  readonly playbacks: Maybe<ReadonlyArray<Maybe<LastfmPlayback>>>;
+  readonly artist: Maybe<LastfmArtist>;
+  readonly tracks: Maybe<ReadonlyArray<Maybe<LastfmTrack>>>;
+};
+
 type GoodreadsBook = Node & {
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
@@ -962,6 +1041,16 @@ type Query = {
   readonly allSitePlugin: SitePluginConnection;
   readonly siteBuildMetadata: Maybe<SiteBuildMetadata>;
   readonly allSiteBuildMetadata: SiteBuildMetadataConnection;
+  readonly lastfmTrack: Maybe<LastfmTrack>;
+  readonly allLastfmTrack: LastfmTrackConnection;
+  readonly lastfmPlayback: Maybe<LastfmPlayback>;
+  readonly allLastfmPlayback: LastfmPlaybackConnection;
+  readonly lastfmMeta: Maybe<LastfmMeta>;
+  readonly allLastfmMeta: LastfmMetaConnection;
+  readonly lastfmArtist: Maybe<LastfmArtist>;
+  readonly allLastfmArtist: LastfmArtistConnection;
+  readonly lastfmAlbum: Maybe<LastfmAlbum>;
+  readonly allLastfmAlbum: LastfmAlbumConnection;
   readonly goodreadsBook: Maybe<GoodreadsBook>;
   readonly allGoodreadsBook: GoodreadsBookConnection;
   readonly downloadedImage: Maybe<DownloadedImage>;
@@ -1080,6 +1169,7 @@ type Query_siteArgs = {
   host: Maybe<StringQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   assetPrefix: Maybe<StringQueryOperatorInput>;
+  flags: Maybe<SiteFlagsFilterInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
   parent: Maybe<NodeFilterInput>;
@@ -1274,6 +1364,111 @@ type Query_siteBuildMetadataArgs = {
 type Query_allSiteBuildMetadataArgs = {
   filter: Maybe<SiteBuildMetadataFilterInput>;
   sort: Maybe<SiteBuildMetadataSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_lastfmTrackArgs = {
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+  name: Maybe<StringQueryOperatorInput>;
+  loved: Maybe<StringQueryOperatorInput>;
+  mbid: Maybe<StringQueryOperatorInput>;
+  streamable: Maybe<StringQueryOperatorInput>;
+  url: Maybe<StringQueryOperatorInput>;
+  image: Maybe<LastfmTrackImageFilterListInput>;
+  playbacks: Maybe<LastfmPlaybackFilterListInput>;
+  artist: Maybe<LastfmArtistFilterInput>;
+  album: Maybe<LastfmAlbumFilterInput>;
+};
+
+
+type Query_allLastfmTrackArgs = {
+  filter: Maybe<LastfmTrackFilterInput>;
+  sort: Maybe<LastfmTrackSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_lastfmPlaybackArgs = {
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+  date: Maybe<StringQueryOperatorInput>;
+  track: Maybe<LastfmTrackFilterInput>;
+};
+
+
+type Query_allLastfmPlaybackArgs = {
+  filter: Maybe<LastfmPlaybackFilterInput>;
+  sort: Maybe<LastfmPlaybackSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_lastfmMetaArgs = {
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+  total_playbacks: Maybe<StringQueryOperatorInput>;
+};
+
+
+type Query_allLastfmMetaArgs = {
+  filter: Maybe<LastfmMetaFilterInput>;
+  sort: Maybe<LastfmMetaSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_lastfmArtistArgs = {
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+  name: Maybe<StringQueryOperatorInput>;
+  mbid: Maybe<StringQueryOperatorInput>;
+  url: Maybe<StringQueryOperatorInput>;
+  image: Maybe<LastfmArtistImageFilterListInput>;
+  playbacks: Maybe<LastfmPlaybackFilterListInput>;
+  albums: Maybe<LastfmAlbumFilterListInput>;
+  tracks: Maybe<LastfmTrackFilterListInput>;
+};
+
+
+type Query_allLastfmArtistArgs = {
+  filter: Maybe<LastfmArtistFilterInput>;
+  sort: Maybe<LastfmArtistSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_lastfmAlbumArgs = {
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+  name: Maybe<StringQueryOperatorInput>;
+  mbid: Maybe<StringQueryOperatorInput>;
+  url: Maybe<StringQueryOperatorInput>;
+  playbacks: Maybe<LastfmPlaybackFilterListInput>;
+  artist: Maybe<LastfmArtistFilterInput>;
+  tracks: Maybe<LastfmTrackFilterListInput>;
+};
+
+
+type Query_allLastfmAlbumArgs = {
+  filter: Maybe<LastfmAlbumFilterInput>;
+  sort: Maybe<LastfmAlbumSortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -2353,6 +2548,11 @@ type SiteSiteMetadataRssMetadataFilterInput = {
   readonly copyright: Maybe<StringQueryOperatorInput>;
 };
 
+type SiteFlagsFilterInput = {
+  readonly PRESERVE_WEBPACK_CACHE: Maybe<BooleanQueryOperatorInput>;
+  readonly PARALLEL_SOURCING: Maybe<BooleanQueryOperatorInput>;
+};
+
 type SiteConnection = {
   readonly totalCount: Scalars['Int'];
   readonly edges: ReadonlyArray<SiteEdge>;
@@ -2413,6 +2613,8 @@ type SiteFieldsEnum =
   | 'host'
   | 'pathPrefix'
   | 'assetPrefix'
+  | 'flags.PRESERVE_WEBPACK_CACHE'
+  | 'flags.PARALLEL_SOURCING'
   | 'polyfill'
   | 'id'
   | 'parent.id'
@@ -2517,6 +2719,7 @@ type SiteFilterInput = {
   readonly host: Maybe<StringQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly assetPrefix: Maybe<StringQueryOperatorInput>;
+  readonly flags: Maybe<SiteFlagsFilterInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
@@ -2741,6 +2944,9 @@ type SitePluginPluginOptionsFilterInput = {
   readonly url: Maybe<StringQueryOperatorInput>;
   readonly rootKey: Maybe<StringQueryOperatorInput>;
   readonly schemas: Maybe<SitePluginPluginOptionsSchemasFilterInput>;
+  readonly api_key: Maybe<StringQueryOperatorInput>;
+  readonly username: Maybe<StringQueryOperatorInput>;
+  readonly limit: Maybe<IntQueryOperatorInput>;
   readonly maxWidth: Maybe<IntQueryOperatorInput>;
   readonly quality: Maybe<IntQueryOperatorInput>;
   readonly withWebp: Maybe<BooleanQueryOperatorInput>;
@@ -3091,6 +3297,9 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.rootKey'
   | 'pluginCreator.pluginOptions.schemas.feelings'
   | 'pluginCreator.pluginOptions.schemas.memes'
+  | 'pluginCreator.pluginOptions.api_key'
+  | 'pluginCreator.pluginOptions.username'
+  | 'pluginCreator.pluginOptions.limit'
   | 'pluginCreator.pluginOptions.maxWidth'
   | 'pluginCreator.pluginOptions.quality'
   | 'pluginCreator.pluginOptions.withWebp'
@@ -4118,6 +4327,9 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.rootKey'
   | 'pluginOptions.schemas.feelings'
   | 'pluginOptions.schemas.memes'
+  | 'pluginOptions.api_key'
+  | 'pluginOptions.username'
+  | 'pluginOptions.limit'
   | 'pluginOptions.maxWidth'
   | 'pluginOptions.quality'
   | 'pluginOptions.withWebp'
@@ -4342,6 +4554,2166 @@ type SiteBuildMetadataFilterInput = {
 
 type SiteBuildMetadataSortInput = {
   readonly fields: Maybe<ReadonlyArray<Maybe<SiteBuildMetadataFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
+type LastfmTrackImageFilterListInput = {
+  readonly elemMatch: Maybe<LastfmTrackImageFilterInput>;
+};
+
+type LastfmTrackImageFilterInput = {
+  readonly size: Maybe<StringQueryOperatorInput>;
+  readonly text: Maybe<StringQueryOperatorInput>;
+};
+
+type LastfmPlaybackFilterListInput = {
+  readonly elemMatch: Maybe<LastfmPlaybackFilterInput>;
+};
+
+type LastfmPlaybackFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+  readonly date: Maybe<StringQueryOperatorInput>;
+  readonly track: Maybe<LastfmTrackFilterInput>;
+};
+
+type LastfmTrackFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+  readonly name: Maybe<StringQueryOperatorInput>;
+  readonly loved: Maybe<StringQueryOperatorInput>;
+  readonly mbid: Maybe<StringQueryOperatorInput>;
+  readonly streamable: Maybe<StringQueryOperatorInput>;
+  readonly url: Maybe<StringQueryOperatorInput>;
+  readonly image: Maybe<LastfmTrackImageFilterListInput>;
+  readonly playbacks: Maybe<LastfmPlaybackFilterListInput>;
+  readonly artist: Maybe<LastfmArtistFilterInput>;
+  readonly album: Maybe<LastfmAlbumFilterInput>;
+};
+
+type LastfmArtistFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+  readonly name: Maybe<StringQueryOperatorInput>;
+  readonly mbid: Maybe<StringQueryOperatorInput>;
+  readonly url: Maybe<StringQueryOperatorInput>;
+  readonly image: Maybe<LastfmArtistImageFilterListInput>;
+  readonly playbacks: Maybe<LastfmPlaybackFilterListInput>;
+  readonly albums: Maybe<LastfmAlbumFilterListInput>;
+  readonly tracks: Maybe<LastfmTrackFilterListInput>;
+};
+
+type LastfmArtistImageFilterListInput = {
+  readonly elemMatch: Maybe<LastfmArtistImageFilterInput>;
+};
+
+type LastfmArtistImageFilterInput = {
+  readonly size: Maybe<StringQueryOperatorInput>;
+  readonly text: Maybe<StringQueryOperatorInput>;
+};
+
+type LastfmAlbumFilterListInput = {
+  readonly elemMatch: Maybe<LastfmAlbumFilterInput>;
+};
+
+type LastfmAlbumFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+  readonly name: Maybe<StringQueryOperatorInput>;
+  readonly mbid: Maybe<StringQueryOperatorInput>;
+  readonly url: Maybe<StringQueryOperatorInput>;
+  readonly playbacks: Maybe<LastfmPlaybackFilterListInput>;
+  readonly artist: Maybe<LastfmArtistFilterInput>;
+  readonly tracks: Maybe<LastfmTrackFilterListInput>;
+};
+
+type LastfmTrackFilterListInput = {
+  readonly elemMatch: Maybe<LastfmTrackFilterInput>;
+};
+
+type LastfmTrackConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmTrackEdge>;
+  readonly nodes: ReadonlyArray<LastfmTrack>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<LastfmTrackGroupConnection>;
+};
+
+
+type LastfmTrackConnection_distinctArgs = {
+  field: LastfmTrackFieldsEnum;
+};
+
+
+type LastfmTrackConnection_maxArgs = {
+  field: LastfmTrackFieldsEnum;
+};
+
+
+type LastfmTrackConnection_minArgs = {
+  field: LastfmTrackFieldsEnum;
+};
+
+
+type LastfmTrackConnection_sumArgs = {
+  field: LastfmTrackFieldsEnum;
+};
+
+
+type LastfmTrackConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: LastfmTrackFieldsEnum;
+};
+
+type LastfmTrackEdge = {
+  readonly next: Maybe<LastfmTrack>;
+  readonly node: LastfmTrack;
+  readonly previous: Maybe<LastfmTrack>;
+};
+
+type LastfmTrackFieldsEnum =
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type'
+  | 'name'
+  | 'loved'
+  | 'mbid'
+  | 'streamable'
+  | 'url'
+  | 'image'
+  | 'image.size'
+  | 'image.text'
+  | 'playbacks'
+  | 'playbacks.id'
+  | 'playbacks.parent.id'
+  | 'playbacks.parent.parent.id'
+  | 'playbacks.parent.parent.children'
+  | 'playbacks.parent.children'
+  | 'playbacks.parent.children.id'
+  | 'playbacks.parent.children.children'
+  | 'playbacks.parent.internal.content'
+  | 'playbacks.parent.internal.contentDigest'
+  | 'playbacks.parent.internal.description'
+  | 'playbacks.parent.internal.fieldOwners'
+  | 'playbacks.parent.internal.ignoreType'
+  | 'playbacks.parent.internal.mediaType'
+  | 'playbacks.parent.internal.owner'
+  | 'playbacks.parent.internal.type'
+  | 'playbacks.children'
+  | 'playbacks.children.id'
+  | 'playbacks.children.parent.id'
+  | 'playbacks.children.parent.children'
+  | 'playbacks.children.children'
+  | 'playbacks.children.children.id'
+  | 'playbacks.children.children.children'
+  | 'playbacks.children.internal.content'
+  | 'playbacks.children.internal.contentDigest'
+  | 'playbacks.children.internal.description'
+  | 'playbacks.children.internal.fieldOwners'
+  | 'playbacks.children.internal.ignoreType'
+  | 'playbacks.children.internal.mediaType'
+  | 'playbacks.children.internal.owner'
+  | 'playbacks.children.internal.type'
+  | 'playbacks.internal.content'
+  | 'playbacks.internal.contentDigest'
+  | 'playbacks.internal.description'
+  | 'playbacks.internal.fieldOwners'
+  | 'playbacks.internal.ignoreType'
+  | 'playbacks.internal.mediaType'
+  | 'playbacks.internal.owner'
+  | 'playbacks.internal.type'
+  | 'playbacks.date'
+  | 'playbacks.track.id'
+  | 'playbacks.track.parent.id'
+  | 'playbacks.track.parent.children'
+  | 'playbacks.track.children'
+  | 'playbacks.track.children.id'
+  | 'playbacks.track.children.children'
+  | 'playbacks.track.internal.content'
+  | 'playbacks.track.internal.contentDigest'
+  | 'playbacks.track.internal.description'
+  | 'playbacks.track.internal.fieldOwners'
+  | 'playbacks.track.internal.ignoreType'
+  | 'playbacks.track.internal.mediaType'
+  | 'playbacks.track.internal.owner'
+  | 'playbacks.track.internal.type'
+  | 'playbacks.track.name'
+  | 'playbacks.track.loved'
+  | 'playbacks.track.mbid'
+  | 'playbacks.track.streamable'
+  | 'playbacks.track.url'
+  | 'playbacks.track.image'
+  | 'playbacks.track.image.size'
+  | 'playbacks.track.image.text'
+  | 'playbacks.track.playbacks'
+  | 'playbacks.track.playbacks.id'
+  | 'playbacks.track.playbacks.children'
+  | 'playbacks.track.playbacks.date'
+  | 'playbacks.track.artist.id'
+  | 'playbacks.track.artist.children'
+  | 'playbacks.track.artist.name'
+  | 'playbacks.track.artist.mbid'
+  | 'playbacks.track.artist.url'
+  | 'playbacks.track.artist.image'
+  | 'playbacks.track.artist.playbacks'
+  | 'playbacks.track.artist.albums'
+  | 'playbacks.track.artist.tracks'
+  | 'playbacks.track.album.id'
+  | 'playbacks.track.album.children'
+  | 'playbacks.track.album.name'
+  | 'playbacks.track.album.mbid'
+  | 'playbacks.track.album.url'
+  | 'playbacks.track.album.playbacks'
+  | 'playbacks.track.album.tracks'
+  | 'artist.id'
+  | 'artist.parent.id'
+  | 'artist.parent.parent.id'
+  | 'artist.parent.parent.children'
+  | 'artist.parent.children'
+  | 'artist.parent.children.id'
+  | 'artist.parent.children.children'
+  | 'artist.parent.internal.content'
+  | 'artist.parent.internal.contentDigest'
+  | 'artist.parent.internal.description'
+  | 'artist.parent.internal.fieldOwners'
+  | 'artist.parent.internal.ignoreType'
+  | 'artist.parent.internal.mediaType'
+  | 'artist.parent.internal.owner'
+  | 'artist.parent.internal.type'
+  | 'artist.children'
+  | 'artist.children.id'
+  | 'artist.children.parent.id'
+  | 'artist.children.parent.children'
+  | 'artist.children.children'
+  | 'artist.children.children.id'
+  | 'artist.children.children.children'
+  | 'artist.children.internal.content'
+  | 'artist.children.internal.contentDigest'
+  | 'artist.children.internal.description'
+  | 'artist.children.internal.fieldOwners'
+  | 'artist.children.internal.ignoreType'
+  | 'artist.children.internal.mediaType'
+  | 'artist.children.internal.owner'
+  | 'artist.children.internal.type'
+  | 'artist.internal.content'
+  | 'artist.internal.contentDigest'
+  | 'artist.internal.description'
+  | 'artist.internal.fieldOwners'
+  | 'artist.internal.ignoreType'
+  | 'artist.internal.mediaType'
+  | 'artist.internal.owner'
+  | 'artist.internal.type'
+  | 'artist.name'
+  | 'artist.mbid'
+  | 'artist.url'
+  | 'artist.image'
+  | 'artist.image.size'
+  | 'artist.image.text'
+  | 'artist.playbacks'
+  | 'artist.playbacks.id'
+  | 'artist.playbacks.parent.id'
+  | 'artist.playbacks.parent.children'
+  | 'artist.playbacks.children'
+  | 'artist.playbacks.children.id'
+  | 'artist.playbacks.children.children'
+  | 'artist.playbacks.internal.content'
+  | 'artist.playbacks.internal.contentDigest'
+  | 'artist.playbacks.internal.description'
+  | 'artist.playbacks.internal.fieldOwners'
+  | 'artist.playbacks.internal.ignoreType'
+  | 'artist.playbacks.internal.mediaType'
+  | 'artist.playbacks.internal.owner'
+  | 'artist.playbacks.internal.type'
+  | 'artist.playbacks.date'
+  | 'artist.playbacks.track.id'
+  | 'artist.playbacks.track.children'
+  | 'artist.playbacks.track.name'
+  | 'artist.playbacks.track.loved'
+  | 'artist.playbacks.track.mbid'
+  | 'artist.playbacks.track.streamable'
+  | 'artist.playbacks.track.url'
+  | 'artist.playbacks.track.image'
+  | 'artist.playbacks.track.playbacks'
+  | 'artist.albums'
+  | 'artist.albums.id'
+  | 'artist.albums.parent.id'
+  | 'artist.albums.parent.children'
+  | 'artist.albums.children'
+  | 'artist.albums.children.id'
+  | 'artist.albums.children.children'
+  | 'artist.albums.internal.content'
+  | 'artist.albums.internal.contentDigest'
+  | 'artist.albums.internal.description'
+  | 'artist.albums.internal.fieldOwners'
+  | 'artist.albums.internal.ignoreType'
+  | 'artist.albums.internal.mediaType'
+  | 'artist.albums.internal.owner'
+  | 'artist.albums.internal.type'
+  | 'artist.albums.name'
+  | 'artist.albums.mbid'
+  | 'artist.albums.url'
+  | 'artist.albums.playbacks'
+  | 'artist.albums.playbacks.id'
+  | 'artist.albums.playbacks.children'
+  | 'artist.albums.playbacks.date'
+  | 'artist.albums.artist.id'
+  | 'artist.albums.artist.children'
+  | 'artist.albums.artist.name'
+  | 'artist.albums.artist.mbid'
+  | 'artist.albums.artist.url'
+  | 'artist.albums.artist.image'
+  | 'artist.albums.artist.playbacks'
+  | 'artist.albums.artist.albums'
+  | 'artist.albums.artist.tracks'
+  | 'artist.albums.tracks'
+  | 'artist.albums.tracks.id'
+  | 'artist.albums.tracks.children'
+  | 'artist.albums.tracks.name'
+  | 'artist.albums.tracks.loved'
+  | 'artist.albums.tracks.mbid'
+  | 'artist.albums.tracks.streamable'
+  | 'artist.albums.tracks.url'
+  | 'artist.albums.tracks.image'
+  | 'artist.albums.tracks.playbacks'
+  | 'artist.tracks'
+  | 'artist.tracks.id'
+  | 'artist.tracks.parent.id'
+  | 'artist.tracks.parent.children'
+  | 'artist.tracks.children'
+  | 'artist.tracks.children.id'
+  | 'artist.tracks.children.children'
+  | 'artist.tracks.internal.content'
+  | 'artist.tracks.internal.contentDigest'
+  | 'artist.tracks.internal.description'
+  | 'artist.tracks.internal.fieldOwners'
+  | 'artist.tracks.internal.ignoreType'
+  | 'artist.tracks.internal.mediaType'
+  | 'artist.tracks.internal.owner'
+  | 'artist.tracks.internal.type'
+  | 'artist.tracks.name'
+  | 'artist.tracks.loved'
+  | 'artist.tracks.mbid'
+  | 'artist.tracks.streamable'
+  | 'artist.tracks.url'
+  | 'artist.tracks.image'
+  | 'artist.tracks.image.size'
+  | 'artist.tracks.image.text'
+  | 'artist.tracks.playbacks'
+  | 'artist.tracks.playbacks.id'
+  | 'artist.tracks.playbacks.children'
+  | 'artist.tracks.playbacks.date'
+  | 'artist.tracks.artist.id'
+  | 'artist.tracks.artist.children'
+  | 'artist.tracks.artist.name'
+  | 'artist.tracks.artist.mbid'
+  | 'artist.tracks.artist.url'
+  | 'artist.tracks.artist.image'
+  | 'artist.tracks.artist.playbacks'
+  | 'artist.tracks.artist.albums'
+  | 'artist.tracks.artist.tracks'
+  | 'artist.tracks.album.id'
+  | 'artist.tracks.album.children'
+  | 'artist.tracks.album.name'
+  | 'artist.tracks.album.mbid'
+  | 'artist.tracks.album.url'
+  | 'artist.tracks.album.playbacks'
+  | 'artist.tracks.album.tracks'
+  | 'album.id'
+  | 'album.parent.id'
+  | 'album.parent.parent.id'
+  | 'album.parent.parent.children'
+  | 'album.parent.children'
+  | 'album.parent.children.id'
+  | 'album.parent.children.children'
+  | 'album.parent.internal.content'
+  | 'album.parent.internal.contentDigest'
+  | 'album.parent.internal.description'
+  | 'album.parent.internal.fieldOwners'
+  | 'album.parent.internal.ignoreType'
+  | 'album.parent.internal.mediaType'
+  | 'album.parent.internal.owner'
+  | 'album.parent.internal.type'
+  | 'album.children'
+  | 'album.children.id'
+  | 'album.children.parent.id'
+  | 'album.children.parent.children'
+  | 'album.children.children'
+  | 'album.children.children.id'
+  | 'album.children.children.children'
+  | 'album.children.internal.content'
+  | 'album.children.internal.contentDigest'
+  | 'album.children.internal.description'
+  | 'album.children.internal.fieldOwners'
+  | 'album.children.internal.ignoreType'
+  | 'album.children.internal.mediaType'
+  | 'album.children.internal.owner'
+  | 'album.children.internal.type'
+  | 'album.internal.content'
+  | 'album.internal.contentDigest'
+  | 'album.internal.description'
+  | 'album.internal.fieldOwners'
+  | 'album.internal.ignoreType'
+  | 'album.internal.mediaType'
+  | 'album.internal.owner'
+  | 'album.internal.type'
+  | 'album.name'
+  | 'album.mbid'
+  | 'album.url'
+  | 'album.playbacks'
+  | 'album.playbacks.id'
+  | 'album.playbacks.parent.id'
+  | 'album.playbacks.parent.children'
+  | 'album.playbacks.children'
+  | 'album.playbacks.children.id'
+  | 'album.playbacks.children.children'
+  | 'album.playbacks.internal.content'
+  | 'album.playbacks.internal.contentDigest'
+  | 'album.playbacks.internal.description'
+  | 'album.playbacks.internal.fieldOwners'
+  | 'album.playbacks.internal.ignoreType'
+  | 'album.playbacks.internal.mediaType'
+  | 'album.playbacks.internal.owner'
+  | 'album.playbacks.internal.type'
+  | 'album.playbacks.date'
+  | 'album.playbacks.track.id'
+  | 'album.playbacks.track.children'
+  | 'album.playbacks.track.name'
+  | 'album.playbacks.track.loved'
+  | 'album.playbacks.track.mbid'
+  | 'album.playbacks.track.streamable'
+  | 'album.playbacks.track.url'
+  | 'album.playbacks.track.image'
+  | 'album.playbacks.track.playbacks'
+  | 'album.artist.id'
+  | 'album.artist.parent.id'
+  | 'album.artist.parent.children'
+  | 'album.artist.children'
+  | 'album.artist.children.id'
+  | 'album.artist.children.children'
+  | 'album.artist.internal.content'
+  | 'album.artist.internal.contentDigest'
+  | 'album.artist.internal.description'
+  | 'album.artist.internal.fieldOwners'
+  | 'album.artist.internal.ignoreType'
+  | 'album.artist.internal.mediaType'
+  | 'album.artist.internal.owner'
+  | 'album.artist.internal.type'
+  | 'album.artist.name'
+  | 'album.artist.mbid'
+  | 'album.artist.url'
+  | 'album.artist.image'
+  | 'album.artist.image.size'
+  | 'album.artist.image.text'
+  | 'album.artist.playbacks'
+  | 'album.artist.playbacks.id'
+  | 'album.artist.playbacks.children'
+  | 'album.artist.playbacks.date'
+  | 'album.artist.albums'
+  | 'album.artist.albums.id'
+  | 'album.artist.albums.children'
+  | 'album.artist.albums.name'
+  | 'album.artist.albums.mbid'
+  | 'album.artist.albums.url'
+  | 'album.artist.albums.playbacks'
+  | 'album.artist.albums.tracks'
+  | 'album.artist.tracks'
+  | 'album.artist.tracks.id'
+  | 'album.artist.tracks.children'
+  | 'album.artist.tracks.name'
+  | 'album.artist.tracks.loved'
+  | 'album.artist.tracks.mbid'
+  | 'album.artist.tracks.streamable'
+  | 'album.artist.tracks.url'
+  | 'album.artist.tracks.image'
+  | 'album.artist.tracks.playbacks'
+  | 'album.tracks'
+  | 'album.tracks.id'
+  | 'album.tracks.parent.id'
+  | 'album.tracks.parent.children'
+  | 'album.tracks.children'
+  | 'album.tracks.children.id'
+  | 'album.tracks.children.children'
+  | 'album.tracks.internal.content'
+  | 'album.tracks.internal.contentDigest'
+  | 'album.tracks.internal.description'
+  | 'album.tracks.internal.fieldOwners'
+  | 'album.tracks.internal.ignoreType'
+  | 'album.tracks.internal.mediaType'
+  | 'album.tracks.internal.owner'
+  | 'album.tracks.internal.type'
+  | 'album.tracks.name'
+  | 'album.tracks.loved'
+  | 'album.tracks.mbid'
+  | 'album.tracks.streamable'
+  | 'album.tracks.url'
+  | 'album.tracks.image'
+  | 'album.tracks.image.size'
+  | 'album.tracks.image.text'
+  | 'album.tracks.playbacks'
+  | 'album.tracks.playbacks.id'
+  | 'album.tracks.playbacks.children'
+  | 'album.tracks.playbacks.date'
+  | 'album.tracks.artist.id'
+  | 'album.tracks.artist.children'
+  | 'album.tracks.artist.name'
+  | 'album.tracks.artist.mbid'
+  | 'album.tracks.artist.url'
+  | 'album.tracks.artist.image'
+  | 'album.tracks.artist.playbacks'
+  | 'album.tracks.artist.albums'
+  | 'album.tracks.artist.tracks'
+  | 'album.tracks.album.id'
+  | 'album.tracks.album.children'
+  | 'album.tracks.album.name'
+  | 'album.tracks.album.mbid'
+  | 'album.tracks.album.url'
+  | 'album.tracks.album.playbacks'
+  | 'album.tracks.album.tracks';
+
+type LastfmTrackGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmTrackEdge>;
+  readonly nodes: ReadonlyArray<LastfmTrack>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type LastfmTrackSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<LastfmTrackFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
+type LastfmPlaybackConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmPlaybackEdge>;
+  readonly nodes: ReadonlyArray<LastfmPlayback>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<LastfmPlaybackGroupConnection>;
+};
+
+
+type LastfmPlaybackConnection_distinctArgs = {
+  field: LastfmPlaybackFieldsEnum;
+};
+
+
+type LastfmPlaybackConnection_maxArgs = {
+  field: LastfmPlaybackFieldsEnum;
+};
+
+
+type LastfmPlaybackConnection_minArgs = {
+  field: LastfmPlaybackFieldsEnum;
+};
+
+
+type LastfmPlaybackConnection_sumArgs = {
+  field: LastfmPlaybackFieldsEnum;
+};
+
+
+type LastfmPlaybackConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: LastfmPlaybackFieldsEnum;
+};
+
+type LastfmPlaybackEdge = {
+  readonly next: Maybe<LastfmPlayback>;
+  readonly node: LastfmPlayback;
+  readonly previous: Maybe<LastfmPlayback>;
+};
+
+type LastfmPlaybackFieldsEnum =
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type'
+  | 'date'
+  | 'track.id'
+  | 'track.parent.id'
+  | 'track.parent.parent.id'
+  | 'track.parent.parent.children'
+  | 'track.parent.children'
+  | 'track.parent.children.id'
+  | 'track.parent.children.children'
+  | 'track.parent.internal.content'
+  | 'track.parent.internal.contentDigest'
+  | 'track.parent.internal.description'
+  | 'track.parent.internal.fieldOwners'
+  | 'track.parent.internal.ignoreType'
+  | 'track.parent.internal.mediaType'
+  | 'track.parent.internal.owner'
+  | 'track.parent.internal.type'
+  | 'track.children'
+  | 'track.children.id'
+  | 'track.children.parent.id'
+  | 'track.children.parent.children'
+  | 'track.children.children'
+  | 'track.children.children.id'
+  | 'track.children.children.children'
+  | 'track.children.internal.content'
+  | 'track.children.internal.contentDigest'
+  | 'track.children.internal.description'
+  | 'track.children.internal.fieldOwners'
+  | 'track.children.internal.ignoreType'
+  | 'track.children.internal.mediaType'
+  | 'track.children.internal.owner'
+  | 'track.children.internal.type'
+  | 'track.internal.content'
+  | 'track.internal.contentDigest'
+  | 'track.internal.description'
+  | 'track.internal.fieldOwners'
+  | 'track.internal.ignoreType'
+  | 'track.internal.mediaType'
+  | 'track.internal.owner'
+  | 'track.internal.type'
+  | 'track.name'
+  | 'track.loved'
+  | 'track.mbid'
+  | 'track.streamable'
+  | 'track.url'
+  | 'track.image'
+  | 'track.image.size'
+  | 'track.image.text'
+  | 'track.playbacks'
+  | 'track.playbacks.id'
+  | 'track.playbacks.parent.id'
+  | 'track.playbacks.parent.children'
+  | 'track.playbacks.children'
+  | 'track.playbacks.children.id'
+  | 'track.playbacks.children.children'
+  | 'track.playbacks.internal.content'
+  | 'track.playbacks.internal.contentDigest'
+  | 'track.playbacks.internal.description'
+  | 'track.playbacks.internal.fieldOwners'
+  | 'track.playbacks.internal.ignoreType'
+  | 'track.playbacks.internal.mediaType'
+  | 'track.playbacks.internal.owner'
+  | 'track.playbacks.internal.type'
+  | 'track.playbacks.date'
+  | 'track.playbacks.track.id'
+  | 'track.playbacks.track.children'
+  | 'track.playbacks.track.name'
+  | 'track.playbacks.track.loved'
+  | 'track.playbacks.track.mbid'
+  | 'track.playbacks.track.streamable'
+  | 'track.playbacks.track.url'
+  | 'track.playbacks.track.image'
+  | 'track.playbacks.track.playbacks'
+  | 'track.artist.id'
+  | 'track.artist.parent.id'
+  | 'track.artist.parent.children'
+  | 'track.artist.children'
+  | 'track.artist.children.id'
+  | 'track.artist.children.children'
+  | 'track.artist.internal.content'
+  | 'track.artist.internal.contentDigest'
+  | 'track.artist.internal.description'
+  | 'track.artist.internal.fieldOwners'
+  | 'track.artist.internal.ignoreType'
+  | 'track.artist.internal.mediaType'
+  | 'track.artist.internal.owner'
+  | 'track.artist.internal.type'
+  | 'track.artist.name'
+  | 'track.artist.mbid'
+  | 'track.artist.url'
+  | 'track.artist.image'
+  | 'track.artist.image.size'
+  | 'track.artist.image.text'
+  | 'track.artist.playbacks'
+  | 'track.artist.playbacks.id'
+  | 'track.artist.playbacks.children'
+  | 'track.artist.playbacks.date'
+  | 'track.artist.albums'
+  | 'track.artist.albums.id'
+  | 'track.artist.albums.children'
+  | 'track.artist.albums.name'
+  | 'track.artist.albums.mbid'
+  | 'track.artist.albums.url'
+  | 'track.artist.albums.playbacks'
+  | 'track.artist.albums.tracks'
+  | 'track.artist.tracks'
+  | 'track.artist.tracks.id'
+  | 'track.artist.tracks.children'
+  | 'track.artist.tracks.name'
+  | 'track.artist.tracks.loved'
+  | 'track.artist.tracks.mbid'
+  | 'track.artist.tracks.streamable'
+  | 'track.artist.tracks.url'
+  | 'track.artist.tracks.image'
+  | 'track.artist.tracks.playbacks'
+  | 'track.album.id'
+  | 'track.album.parent.id'
+  | 'track.album.parent.children'
+  | 'track.album.children'
+  | 'track.album.children.id'
+  | 'track.album.children.children'
+  | 'track.album.internal.content'
+  | 'track.album.internal.contentDigest'
+  | 'track.album.internal.description'
+  | 'track.album.internal.fieldOwners'
+  | 'track.album.internal.ignoreType'
+  | 'track.album.internal.mediaType'
+  | 'track.album.internal.owner'
+  | 'track.album.internal.type'
+  | 'track.album.name'
+  | 'track.album.mbid'
+  | 'track.album.url'
+  | 'track.album.playbacks'
+  | 'track.album.playbacks.id'
+  | 'track.album.playbacks.children'
+  | 'track.album.playbacks.date'
+  | 'track.album.artist.id'
+  | 'track.album.artist.children'
+  | 'track.album.artist.name'
+  | 'track.album.artist.mbid'
+  | 'track.album.artist.url'
+  | 'track.album.artist.image'
+  | 'track.album.artist.playbacks'
+  | 'track.album.artist.albums'
+  | 'track.album.artist.tracks'
+  | 'track.album.tracks'
+  | 'track.album.tracks.id'
+  | 'track.album.tracks.children'
+  | 'track.album.tracks.name'
+  | 'track.album.tracks.loved'
+  | 'track.album.tracks.mbid'
+  | 'track.album.tracks.streamable'
+  | 'track.album.tracks.url'
+  | 'track.album.tracks.image'
+  | 'track.album.tracks.playbacks';
+
+type LastfmPlaybackGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmPlaybackEdge>;
+  readonly nodes: ReadonlyArray<LastfmPlayback>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type LastfmPlaybackSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<LastfmPlaybackFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
+type LastfmMetaConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmMetaEdge>;
+  readonly nodes: ReadonlyArray<LastfmMeta>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<LastfmMetaGroupConnection>;
+};
+
+
+type LastfmMetaConnection_distinctArgs = {
+  field: LastfmMetaFieldsEnum;
+};
+
+
+type LastfmMetaConnection_maxArgs = {
+  field: LastfmMetaFieldsEnum;
+};
+
+
+type LastfmMetaConnection_minArgs = {
+  field: LastfmMetaFieldsEnum;
+};
+
+
+type LastfmMetaConnection_sumArgs = {
+  field: LastfmMetaFieldsEnum;
+};
+
+
+type LastfmMetaConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: LastfmMetaFieldsEnum;
+};
+
+type LastfmMetaEdge = {
+  readonly next: Maybe<LastfmMeta>;
+  readonly node: LastfmMeta;
+  readonly previous: Maybe<LastfmMeta>;
+};
+
+type LastfmMetaFieldsEnum =
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type'
+  | 'total_playbacks';
+
+type LastfmMetaGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmMetaEdge>;
+  readonly nodes: ReadonlyArray<LastfmMeta>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type LastfmMetaFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+  readonly total_playbacks: Maybe<StringQueryOperatorInput>;
+};
+
+type LastfmMetaSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<LastfmMetaFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
+type LastfmArtistConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmArtistEdge>;
+  readonly nodes: ReadonlyArray<LastfmArtist>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<LastfmArtistGroupConnection>;
+};
+
+
+type LastfmArtistConnection_distinctArgs = {
+  field: LastfmArtistFieldsEnum;
+};
+
+
+type LastfmArtistConnection_maxArgs = {
+  field: LastfmArtistFieldsEnum;
+};
+
+
+type LastfmArtistConnection_minArgs = {
+  field: LastfmArtistFieldsEnum;
+};
+
+
+type LastfmArtistConnection_sumArgs = {
+  field: LastfmArtistFieldsEnum;
+};
+
+
+type LastfmArtistConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: LastfmArtistFieldsEnum;
+};
+
+type LastfmArtistEdge = {
+  readonly next: Maybe<LastfmArtist>;
+  readonly node: LastfmArtist;
+  readonly previous: Maybe<LastfmArtist>;
+};
+
+type LastfmArtistFieldsEnum =
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type'
+  | 'name'
+  | 'mbid'
+  | 'url'
+  | 'image'
+  | 'image.size'
+  | 'image.text'
+  | 'playbacks'
+  | 'playbacks.id'
+  | 'playbacks.parent.id'
+  | 'playbacks.parent.parent.id'
+  | 'playbacks.parent.parent.children'
+  | 'playbacks.parent.children'
+  | 'playbacks.parent.children.id'
+  | 'playbacks.parent.children.children'
+  | 'playbacks.parent.internal.content'
+  | 'playbacks.parent.internal.contentDigest'
+  | 'playbacks.parent.internal.description'
+  | 'playbacks.parent.internal.fieldOwners'
+  | 'playbacks.parent.internal.ignoreType'
+  | 'playbacks.parent.internal.mediaType'
+  | 'playbacks.parent.internal.owner'
+  | 'playbacks.parent.internal.type'
+  | 'playbacks.children'
+  | 'playbacks.children.id'
+  | 'playbacks.children.parent.id'
+  | 'playbacks.children.parent.children'
+  | 'playbacks.children.children'
+  | 'playbacks.children.children.id'
+  | 'playbacks.children.children.children'
+  | 'playbacks.children.internal.content'
+  | 'playbacks.children.internal.contentDigest'
+  | 'playbacks.children.internal.description'
+  | 'playbacks.children.internal.fieldOwners'
+  | 'playbacks.children.internal.ignoreType'
+  | 'playbacks.children.internal.mediaType'
+  | 'playbacks.children.internal.owner'
+  | 'playbacks.children.internal.type'
+  | 'playbacks.internal.content'
+  | 'playbacks.internal.contentDigest'
+  | 'playbacks.internal.description'
+  | 'playbacks.internal.fieldOwners'
+  | 'playbacks.internal.ignoreType'
+  | 'playbacks.internal.mediaType'
+  | 'playbacks.internal.owner'
+  | 'playbacks.internal.type'
+  | 'playbacks.date'
+  | 'playbacks.track.id'
+  | 'playbacks.track.parent.id'
+  | 'playbacks.track.parent.children'
+  | 'playbacks.track.children'
+  | 'playbacks.track.children.id'
+  | 'playbacks.track.children.children'
+  | 'playbacks.track.internal.content'
+  | 'playbacks.track.internal.contentDigest'
+  | 'playbacks.track.internal.description'
+  | 'playbacks.track.internal.fieldOwners'
+  | 'playbacks.track.internal.ignoreType'
+  | 'playbacks.track.internal.mediaType'
+  | 'playbacks.track.internal.owner'
+  | 'playbacks.track.internal.type'
+  | 'playbacks.track.name'
+  | 'playbacks.track.loved'
+  | 'playbacks.track.mbid'
+  | 'playbacks.track.streamable'
+  | 'playbacks.track.url'
+  | 'playbacks.track.image'
+  | 'playbacks.track.image.size'
+  | 'playbacks.track.image.text'
+  | 'playbacks.track.playbacks'
+  | 'playbacks.track.playbacks.id'
+  | 'playbacks.track.playbacks.children'
+  | 'playbacks.track.playbacks.date'
+  | 'playbacks.track.artist.id'
+  | 'playbacks.track.artist.children'
+  | 'playbacks.track.artist.name'
+  | 'playbacks.track.artist.mbid'
+  | 'playbacks.track.artist.url'
+  | 'playbacks.track.artist.image'
+  | 'playbacks.track.artist.playbacks'
+  | 'playbacks.track.artist.albums'
+  | 'playbacks.track.artist.tracks'
+  | 'playbacks.track.album.id'
+  | 'playbacks.track.album.children'
+  | 'playbacks.track.album.name'
+  | 'playbacks.track.album.mbid'
+  | 'playbacks.track.album.url'
+  | 'playbacks.track.album.playbacks'
+  | 'playbacks.track.album.tracks'
+  | 'albums'
+  | 'albums.id'
+  | 'albums.parent.id'
+  | 'albums.parent.parent.id'
+  | 'albums.parent.parent.children'
+  | 'albums.parent.children'
+  | 'albums.parent.children.id'
+  | 'albums.parent.children.children'
+  | 'albums.parent.internal.content'
+  | 'albums.parent.internal.contentDigest'
+  | 'albums.parent.internal.description'
+  | 'albums.parent.internal.fieldOwners'
+  | 'albums.parent.internal.ignoreType'
+  | 'albums.parent.internal.mediaType'
+  | 'albums.parent.internal.owner'
+  | 'albums.parent.internal.type'
+  | 'albums.children'
+  | 'albums.children.id'
+  | 'albums.children.parent.id'
+  | 'albums.children.parent.children'
+  | 'albums.children.children'
+  | 'albums.children.children.id'
+  | 'albums.children.children.children'
+  | 'albums.children.internal.content'
+  | 'albums.children.internal.contentDigest'
+  | 'albums.children.internal.description'
+  | 'albums.children.internal.fieldOwners'
+  | 'albums.children.internal.ignoreType'
+  | 'albums.children.internal.mediaType'
+  | 'albums.children.internal.owner'
+  | 'albums.children.internal.type'
+  | 'albums.internal.content'
+  | 'albums.internal.contentDigest'
+  | 'albums.internal.description'
+  | 'albums.internal.fieldOwners'
+  | 'albums.internal.ignoreType'
+  | 'albums.internal.mediaType'
+  | 'albums.internal.owner'
+  | 'albums.internal.type'
+  | 'albums.name'
+  | 'albums.mbid'
+  | 'albums.url'
+  | 'albums.playbacks'
+  | 'albums.playbacks.id'
+  | 'albums.playbacks.parent.id'
+  | 'albums.playbacks.parent.children'
+  | 'albums.playbacks.children'
+  | 'albums.playbacks.children.id'
+  | 'albums.playbacks.children.children'
+  | 'albums.playbacks.internal.content'
+  | 'albums.playbacks.internal.contentDigest'
+  | 'albums.playbacks.internal.description'
+  | 'albums.playbacks.internal.fieldOwners'
+  | 'albums.playbacks.internal.ignoreType'
+  | 'albums.playbacks.internal.mediaType'
+  | 'albums.playbacks.internal.owner'
+  | 'albums.playbacks.internal.type'
+  | 'albums.playbacks.date'
+  | 'albums.playbacks.track.id'
+  | 'albums.playbacks.track.children'
+  | 'albums.playbacks.track.name'
+  | 'albums.playbacks.track.loved'
+  | 'albums.playbacks.track.mbid'
+  | 'albums.playbacks.track.streamable'
+  | 'albums.playbacks.track.url'
+  | 'albums.playbacks.track.image'
+  | 'albums.playbacks.track.playbacks'
+  | 'albums.artist.id'
+  | 'albums.artist.parent.id'
+  | 'albums.artist.parent.children'
+  | 'albums.artist.children'
+  | 'albums.artist.children.id'
+  | 'albums.artist.children.children'
+  | 'albums.artist.internal.content'
+  | 'albums.artist.internal.contentDigest'
+  | 'albums.artist.internal.description'
+  | 'albums.artist.internal.fieldOwners'
+  | 'albums.artist.internal.ignoreType'
+  | 'albums.artist.internal.mediaType'
+  | 'albums.artist.internal.owner'
+  | 'albums.artist.internal.type'
+  | 'albums.artist.name'
+  | 'albums.artist.mbid'
+  | 'albums.artist.url'
+  | 'albums.artist.image'
+  | 'albums.artist.image.size'
+  | 'albums.artist.image.text'
+  | 'albums.artist.playbacks'
+  | 'albums.artist.playbacks.id'
+  | 'albums.artist.playbacks.children'
+  | 'albums.artist.playbacks.date'
+  | 'albums.artist.albums'
+  | 'albums.artist.albums.id'
+  | 'albums.artist.albums.children'
+  | 'albums.artist.albums.name'
+  | 'albums.artist.albums.mbid'
+  | 'albums.artist.albums.url'
+  | 'albums.artist.albums.playbacks'
+  | 'albums.artist.albums.tracks'
+  | 'albums.artist.tracks'
+  | 'albums.artist.tracks.id'
+  | 'albums.artist.tracks.children'
+  | 'albums.artist.tracks.name'
+  | 'albums.artist.tracks.loved'
+  | 'albums.artist.tracks.mbid'
+  | 'albums.artist.tracks.streamable'
+  | 'albums.artist.tracks.url'
+  | 'albums.artist.tracks.image'
+  | 'albums.artist.tracks.playbacks'
+  | 'albums.tracks'
+  | 'albums.tracks.id'
+  | 'albums.tracks.parent.id'
+  | 'albums.tracks.parent.children'
+  | 'albums.tracks.children'
+  | 'albums.tracks.children.id'
+  | 'albums.tracks.children.children'
+  | 'albums.tracks.internal.content'
+  | 'albums.tracks.internal.contentDigest'
+  | 'albums.tracks.internal.description'
+  | 'albums.tracks.internal.fieldOwners'
+  | 'albums.tracks.internal.ignoreType'
+  | 'albums.tracks.internal.mediaType'
+  | 'albums.tracks.internal.owner'
+  | 'albums.tracks.internal.type'
+  | 'albums.tracks.name'
+  | 'albums.tracks.loved'
+  | 'albums.tracks.mbid'
+  | 'albums.tracks.streamable'
+  | 'albums.tracks.url'
+  | 'albums.tracks.image'
+  | 'albums.tracks.image.size'
+  | 'albums.tracks.image.text'
+  | 'albums.tracks.playbacks'
+  | 'albums.tracks.playbacks.id'
+  | 'albums.tracks.playbacks.children'
+  | 'albums.tracks.playbacks.date'
+  | 'albums.tracks.artist.id'
+  | 'albums.tracks.artist.children'
+  | 'albums.tracks.artist.name'
+  | 'albums.tracks.artist.mbid'
+  | 'albums.tracks.artist.url'
+  | 'albums.tracks.artist.image'
+  | 'albums.tracks.artist.playbacks'
+  | 'albums.tracks.artist.albums'
+  | 'albums.tracks.artist.tracks'
+  | 'albums.tracks.album.id'
+  | 'albums.tracks.album.children'
+  | 'albums.tracks.album.name'
+  | 'albums.tracks.album.mbid'
+  | 'albums.tracks.album.url'
+  | 'albums.tracks.album.playbacks'
+  | 'albums.tracks.album.tracks'
+  | 'tracks'
+  | 'tracks.id'
+  | 'tracks.parent.id'
+  | 'tracks.parent.parent.id'
+  | 'tracks.parent.parent.children'
+  | 'tracks.parent.children'
+  | 'tracks.parent.children.id'
+  | 'tracks.parent.children.children'
+  | 'tracks.parent.internal.content'
+  | 'tracks.parent.internal.contentDigest'
+  | 'tracks.parent.internal.description'
+  | 'tracks.parent.internal.fieldOwners'
+  | 'tracks.parent.internal.ignoreType'
+  | 'tracks.parent.internal.mediaType'
+  | 'tracks.parent.internal.owner'
+  | 'tracks.parent.internal.type'
+  | 'tracks.children'
+  | 'tracks.children.id'
+  | 'tracks.children.parent.id'
+  | 'tracks.children.parent.children'
+  | 'tracks.children.children'
+  | 'tracks.children.children.id'
+  | 'tracks.children.children.children'
+  | 'tracks.children.internal.content'
+  | 'tracks.children.internal.contentDigest'
+  | 'tracks.children.internal.description'
+  | 'tracks.children.internal.fieldOwners'
+  | 'tracks.children.internal.ignoreType'
+  | 'tracks.children.internal.mediaType'
+  | 'tracks.children.internal.owner'
+  | 'tracks.children.internal.type'
+  | 'tracks.internal.content'
+  | 'tracks.internal.contentDigest'
+  | 'tracks.internal.description'
+  | 'tracks.internal.fieldOwners'
+  | 'tracks.internal.ignoreType'
+  | 'tracks.internal.mediaType'
+  | 'tracks.internal.owner'
+  | 'tracks.internal.type'
+  | 'tracks.name'
+  | 'tracks.loved'
+  | 'tracks.mbid'
+  | 'tracks.streamable'
+  | 'tracks.url'
+  | 'tracks.image'
+  | 'tracks.image.size'
+  | 'tracks.image.text'
+  | 'tracks.playbacks'
+  | 'tracks.playbacks.id'
+  | 'tracks.playbacks.parent.id'
+  | 'tracks.playbacks.parent.children'
+  | 'tracks.playbacks.children'
+  | 'tracks.playbacks.children.id'
+  | 'tracks.playbacks.children.children'
+  | 'tracks.playbacks.internal.content'
+  | 'tracks.playbacks.internal.contentDigest'
+  | 'tracks.playbacks.internal.description'
+  | 'tracks.playbacks.internal.fieldOwners'
+  | 'tracks.playbacks.internal.ignoreType'
+  | 'tracks.playbacks.internal.mediaType'
+  | 'tracks.playbacks.internal.owner'
+  | 'tracks.playbacks.internal.type'
+  | 'tracks.playbacks.date'
+  | 'tracks.playbacks.track.id'
+  | 'tracks.playbacks.track.children'
+  | 'tracks.playbacks.track.name'
+  | 'tracks.playbacks.track.loved'
+  | 'tracks.playbacks.track.mbid'
+  | 'tracks.playbacks.track.streamable'
+  | 'tracks.playbacks.track.url'
+  | 'tracks.playbacks.track.image'
+  | 'tracks.playbacks.track.playbacks'
+  | 'tracks.artist.id'
+  | 'tracks.artist.parent.id'
+  | 'tracks.artist.parent.children'
+  | 'tracks.artist.children'
+  | 'tracks.artist.children.id'
+  | 'tracks.artist.children.children'
+  | 'tracks.artist.internal.content'
+  | 'tracks.artist.internal.contentDigest'
+  | 'tracks.artist.internal.description'
+  | 'tracks.artist.internal.fieldOwners'
+  | 'tracks.artist.internal.ignoreType'
+  | 'tracks.artist.internal.mediaType'
+  | 'tracks.artist.internal.owner'
+  | 'tracks.artist.internal.type'
+  | 'tracks.artist.name'
+  | 'tracks.artist.mbid'
+  | 'tracks.artist.url'
+  | 'tracks.artist.image'
+  | 'tracks.artist.image.size'
+  | 'tracks.artist.image.text'
+  | 'tracks.artist.playbacks'
+  | 'tracks.artist.playbacks.id'
+  | 'tracks.artist.playbacks.children'
+  | 'tracks.artist.playbacks.date'
+  | 'tracks.artist.albums'
+  | 'tracks.artist.albums.id'
+  | 'tracks.artist.albums.children'
+  | 'tracks.artist.albums.name'
+  | 'tracks.artist.albums.mbid'
+  | 'tracks.artist.albums.url'
+  | 'tracks.artist.albums.playbacks'
+  | 'tracks.artist.albums.tracks'
+  | 'tracks.artist.tracks'
+  | 'tracks.artist.tracks.id'
+  | 'tracks.artist.tracks.children'
+  | 'tracks.artist.tracks.name'
+  | 'tracks.artist.tracks.loved'
+  | 'tracks.artist.tracks.mbid'
+  | 'tracks.artist.tracks.streamable'
+  | 'tracks.artist.tracks.url'
+  | 'tracks.artist.tracks.image'
+  | 'tracks.artist.tracks.playbacks'
+  | 'tracks.album.id'
+  | 'tracks.album.parent.id'
+  | 'tracks.album.parent.children'
+  | 'tracks.album.children'
+  | 'tracks.album.children.id'
+  | 'tracks.album.children.children'
+  | 'tracks.album.internal.content'
+  | 'tracks.album.internal.contentDigest'
+  | 'tracks.album.internal.description'
+  | 'tracks.album.internal.fieldOwners'
+  | 'tracks.album.internal.ignoreType'
+  | 'tracks.album.internal.mediaType'
+  | 'tracks.album.internal.owner'
+  | 'tracks.album.internal.type'
+  | 'tracks.album.name'
+  | 'tracks.album.mbid'
+  | 'tracks.album.url'
+  | 'tracks.album.playbacks'
+  | 'tracks.album.playbacks.id'
+  | 'tracks.album.playbacks.children'
+  | 'tracks.album.playbacks.date'
+  | 'tracks.album.artist.id'
+  | 'tracks.album.artist.children'
+  | 'tracks.album.artist.name'
+  | 'tracks.album.artist.mbid'
+  | 'tracks.album.artist.url'
+  | 'tracks.album.artist.image'
+  | 'tracks.album.artist.playbacks'
+  | 'tracks.album.artist.albums'
+  | 'tracks.album.artist.tracks'
+  | 'tracks.album.tracks'
+  | 'tracks.album.tracks.id'
+  | 'tracks.album.tracks.children'
+  | 'tracks.album.tracks.name'
+  | 'tracks.album.tracks.loved'
+  | 'tracks.album.tracks.mbid'
+  | 'tracks.album.tracks.streamable'
+  | 'tracks.album.tracks.url'
+  | 'tracks.album.tracks.image'
+  | 'tracks.album.tracks.playbacks';
+
+type LastfmArtistGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmArtistEdge>;
+  readonly nodes: ReadonlyArray<LastfmArtist>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type LastfmArtistSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<LastfmArtistFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
+type LastfmAlbumConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmAlbumEdge>;
+  readonly nodes: ReadonlyArray<LastfmAlbum>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<LastfmAlbumGroupConnection>;
+};
+
+
+type LastfmAlbumConnection_distinctArgs = {
+  field: LastfmAlbumFieldsEnum;
+};
+
+
+type LastfmAlbumConnection_maxArgs = {
+  field: LastfmAlbumFieldsEnum;
+};
+
+
+type LastfmAlbumConnection_minArgs = {
+  field: LastfmAlbumFieldsEnum;
+};
+
+
+type LastfmAlbumConnection_sumArgs = {
+  field: LastfmAlbumFieldsEnum;
+};
+
+
+type LastfmAlbumConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: LastfmAlbumFieldsEnum;
+};
+
+type LastfmAlbumEdge = {
+  readonly next: Maybe<LastfmAlbum>;
+  readonly node: LastfmAlbum;
+  readonly previous: Maybe<LastfmAlbum>;
+};
+
+type LastfmAlbumFieldsEnum =
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type'
+  | 'name'
+  | 'mbid'
+  | 'url'
+  | 'playbacks'
+  | 'playbacks.id'
+  | 'playbacks.parent.id'
+  | 'playbacks.parent.parent.id'
+  | 'playbacks.parent.parent.children'
+  | 'playbacks.parent.children'
+  | 'playbacks.parent.children.id'
+  | 'playbacks.parent.children.children'
+  | 'playbacks.parent.internal.content'
+  | 'playbacks.parent.internal.contentDigest'
+  | 'playbacks.parent.internal.description'
+  | 'playbacks.parent.internal.fieldOwners'
+  | 'playbacks.parent.internal.ignoreType'
+  | 'playbacks.parent.internal.mediaType'
+  | 'playbacks.parent.internal.owner'
+  | 'playbacks.parent.internal.type'
+  | 'playbacks.children'
+  | 'playbacks.children.id'
+  | 'playbacks.children.parent.id'
+  | 'playbacks.children.parent.children'
+  | 'playbacks.children.children'
+  | 'playbacks.children.children.id'
+  | 'playbacks.children.children.children'
+  | 'playbacks.children.internal.content'
+  | 'playbacks.children.internal.contentDigest'
+  | 'playbacks.children.internal.description'
+  | 'playbacks.children.internal.fieldOwners'
+  | 'playbacks.children.internal.ignoreType'
+  | 'playbacks.children.internal.mediaType'
+  | 'playbacks.children.internal.owner'
+  | 'playbacks.children.internal.type'
+  | 'playbacks.internal.content'
+  | 'playbacks.internal.contentDigest'
+  | 'playbacks.internal.description'
+  | 'playbacks.internal.fieldOwners'
+  | 'playbacks.internal.ignoreType'
+  | 'playbacks.internal.mediaType'
+  | 'playbacks.internal.owner'
+  | 'playbacks.internal.type'
+  | 'playbacks.date'
+  | 'playbacks.track.id'
+  | 'playbacks.track.parent.id'
+  | 'playbacks.track.parent.children'
+  | 'playbacks.track.children'
+  | 'playbacks.track.children.id'
+  | 'playbacks.track.children.children'
+  | 'playbacks.track.internal.content'
+  | 'playbacks.track.internal.contentDigest'
+  | 'playbacks.track.internal.description'
+  | 'playbacks.track.internal.fieldOwners'
+  | 'playbacks.track.internal.ignoreType'
+  | 'playbacks.track.internal.mediaType'
+  | 'playbacks.track.internal.owner'
+  | 'playbacks.track.internal.type'
+  | 'playbacks.track.name'
+  | 'playbacks.track.loved'
+  | 'playbacks.track.mbid'
+  | 'playbacks.track.streamable'
+  | 'playbacks.track.url'
+  | 'playbacks.track.image'
+  | 'playbacks.track.image.size'
+  | 'playbacks.track.image.text'
+  | 'playbacks.track.playbacks'
+  | 'playbacks.track.playbacks.id'
+  | 'playbacks.track.playbacks.children'
+  | 'playbacks.track.playbacks.date'
+  | 'playbacks.track.artist.id'
+  | 'playbacks.track.artist.children'
+  | 'playbacks.track.artist.name'
+  | 'playbacks.track.artist.mbid'
+  | 'playbacks.track.artist.url'
+  | 'playbacks.track.artist.image'
+  | 'playbacks.track.artist.playbacks'
+  | 'playbacks.track.artist.albums'
+  | 'playbacks.track.artist.tracks'
+  | 'playbacks.track.album.id'
+  | 'playbacks.track.album.children'
+  | 'playbacks.track.album.name'
+  | 'playbacks.track.album.mbid'
+  | 'playbacks.track.album.url'
+  | 'playbacks.track.album.playbacks'
+  | 'playbacks.track.album.tracks'
+  | 'artist.id'
+  | 'artist.parent.id'
+  | 'artist.parent.parent.id'
+  | 'artist.parent.parent.children'
+  | 'artist.parent.children'
+  | 'artist.parent.children.id'
+  | 'artist.parent.children.children'
+  | 'artist.parent.internal.content'
+  | 'artist.parent.internal.contentDigest'
+  | 'artist.parent.internal.description'
+  | 'artist.parent.internal.fieldOwners'
+  | 'artist.parent.internal.ignoreType'
+  | 'artist.parent.internal.mediaType'
+  | 'artist.parent.internal.owner'
+  | 'artist.parent.internal.type'
+  | 'artist.children'
+  | 'artist.children.id'
+  | 'artist.children.parent.id'
+  | 'artist.children.parent.children'
+  | 'artist.children.children'
+  | 'artist.children.children.id'
+  | 'artist.children.children.children'
+  | 'artist.children.internal.content'
+  | 'artist.children.internal.contentDigest'
+  | 'artist.children.internal.description'
+  | 'artist.children.internal.fieldOwners'
+  | 'artist.children.internal.ignoreType'
+  | 'artist.children.internal.mediaType'
+  | 'artist.children.internal.owner'
+  | 'artist.children.internal.type'
+  | 'artist.internal.content'
+  | 'artist.internal.contentDigest'
+  | 'artist.internal.description'
+  | 'artist.internal.fieldOwners'
+  | 'artist.internal.ignoreType'
+  | 'artist.internal.mediaType'
+  | 'artist.internal.owner'
+  | 'artist.internal.type'
+  | 'artist.name'
+  | 'artist.mbid'
+  | 'artist.url'
+  | 'artist.image'
+  | 'artist.image.size'
+  | 'artist.image.text'
+  | 'artist.playbacks'
+  | 'artist.playbacks.id'
+  | 'artist.playbacks.parent.id'
+  | 'artist.playbacks.parent.children'
+  | 'artist.playbacks.children'
+  | 'artist.playbacks.children.id'
+  | 'artist.playbacks.children.children'
+  | 'artist.playbacks.internal.content'
+  | 'artist.playbacks.internal.contentDigest'
+  | 'artist.playbacks.internal.description'
+  | 'artist.playbacks.internal.fieldOwners'
+  | 'artist.playbacks.internal.ignoreType'
+  | 'artist.playbacks.internal.mediaType'
+  | 'artist.playbacks.internal.owner'
+  | 'artist.playbacks.internal.type'
+  | 'artist.playbacks.date'
+  | 'artist.playbacks.track.id'
+  | 'artist.playbacks.track.children'
+  | 'artist.playbacks.track.name'
+  | 'artist.playbacks.track.loved'
+  | 'artist.playbacks.track.mbid'
+  | 'artist.playbacks.track.streamable'
+  | 'artist.playbacks.track.url'
+  | 'artist.playbacks.track.image'
+  | 'artist.playbacks.track.playbacks'
+  | 'artist.albums'
+  | 'artist.albums.id'
+  | 'artist.albums.parent.id'
+  | 'artist.albums.parent.children'
+  | 'artist.albums.children'
+  | 'artist.albums.children.id'
+  | 'artist.albums.children.children'
+  | 'artist.albums.internal.content'
+  | 'artist.albums.internal.contentDigest'
+  | 'artist.albums.internal.description'
+  | 'artist.albums.internal.fieldOwners'
+  | 'artist.albums.internal.ignoreType'
+  | 'artist.albums.internal.mediaType'
+  | 'artist.albums.internal.owner'
+  | 'artist.albums.internal.type'
+  | 'artist.albums.name'
+  | 'artist.albums.mbid'
+  | 'artist.albums.url'
+  | 'artist.albums.playbacks'
+  | 'artist.albums.playbacks.id'
+  | 'artist.albums.playbacks.children'
+  | 'artist.albums.playbacks.date'
+  | 'artist.albums.artist.id'
+  | 'artist.albums.artist.children'
+  | 'artist.albums.artist.name'
+  | 'artist.albums.artist.mbid'
+  | 'artist.albums.artist.url'
+  | 'artist.albums.artist.image'
+  | 'artist.albums.artist.playbacks'
+  | 'artist.albums.artist.albums'
+  | 'artist.albums.artist.tracks'
+  | 'artist.albums.tracks'
+  | 'artist.albums.tracks.id'
+  | 'artist.albums.tracks.children'
+  | 'artist.albums.tracks.name'
+  | 'artist.albums.tracks.loved'
+  | 'artist.albums.tracks.mbid'
+  | 'artist.albums.tracks.streamable'
+  | 'artist.albums.tracks.url'
+  | 'artist.albums.tracks.image'
+  | 'artist.albums.tracks.playbacks'
+  | 'artist.tracks'
+  | 'artist.tracks.id'
+  | 'artist.tracks.parent.id'
+  | 'artist.tracks.parent.children'
+  | 'artist.tracks.children'
+  | 'artist.tracks.children.id'
+  | 'artist.tracks.children.children'
+  | 'artist.tracks.internal.content'
+  | 'artist.tracks.internal.contentDigest'
+  | 'artist.tracks.internal.description'
+  | 'artist.tracks.internal.fieldOwners'
+  | 'artist.tracks.internal.ignoreType'
+  | 'artist.tracks.internal.mediaType'
+  | 'artist.tracks.internal.owner'
+  | 'artist.tracks.internal.type'
+  | 'artist.tracks.name'
+  | 'artist.tracks.loved'
+  | 'artist.tracks.mbid'
+  | 'artist.tracks.streamable'
+  | 'artist.tracks.url'
+  | 'artist.tracks.image'
+  | 'artist.tracks.image.size'
+  | 'artist.tracks.image.text'
+  | 'artist.tracks.playbacks'
+  | 'artist.tracks.playbacks.id'
+  | 'artist.tracks.playbacks.children'
+  | 'artist.tracks.playbacks.date'
+  | 'artist.tracks.artist.id'
+  | 'artist.tracks.artist.children'
+  | 'artist.tracks.artist.name'
+  | 'artist.tracks.artist.mbid'
+  | 'artist.tracks.artist.url'
+  | 'artist.tracks.artist.image'
+  | 'artist.tracks.artist.playbacks'
+  | 'artist.tracks.artist.albums'
+  | 'artist.tracks.artist.tracks'
+  | 'artist.tracks.album.id'
+  | 'artist.tracks.album.children'
+  | 'artist.tracks.album.name'
+  | 'artist.tracks.album.mbid'
+  | 'artist.tracks.album.url'
+  | 'artist.tracks.album.playbacks'
+  | 'artist.tracks.album.tracks'
+  | 'tracks'
+  | 'tracks.id'
+  | 'tracks.parent.id'
+  | 'tracks.parent.parent.id'
+  | 'tracks.parent.parent.children'
+  | 'tracks.parent.children'
+  | 'tracks.parent.children.id'
+  | 'tracks.parent.children.children'
+  | 'tracks.parent.internal.content'
+  | 'tracks.parent.internal.contentDigest'
+  | 'tracks.parent.internal.description'
+  | 'tracks.parent.internal.fieldOwners'
+  | 'tracks.parent.internal.ignoreType'
+  | 'tracks.parent.internal.mediaType'
+  | 'tracks.parent.internal.owner'
+  | 'tracks.parent.internal.type'
+  | 'tracks.children'
+  | 'tracks.children.id'
+  | 'tracks.children.parent.id'
+  | 'tracks.children.parent.children'
+  | 'tracks.children.children'
+  | 'tracks.children.children.id'
+  | 'tracks.children.children.children'
+  | 'tracks.children.internal.content'
+  | 'tracks.children.internal.contentDigest'
+  | 'tracks.children.internal.description'
+  | 'tracks.children.internal.fieldOwners'
+  | 'tracks.children.internal.ignoreType'
+  | 'tracks.children.internal.mediaType'
+  | 'tracks.children.internal.owner'
+  | 'tracks.children.internal.type'
+  | 'tracks.internal.content'
+  | 'tracks.internal.contentDigest'
+  | 'tracks.internal.description'
+  | 'tracks.internal.fieldOwners'
+  | 'tracks.internal.ignoreType'
+  | 'tracks.internal.mediaType'
+  | 'tracks.internal.owner'
+  | 'tracks.internal.type'
+  | 'tracks.name'
+  | 'tracks.loved'
+  | 'tracks.mbid'
+  | 'tracks.streamable'
+  | 'tracks.url'
+  | 'tracks.image'
+  | 'tracks.image.size'
+  | 'tracks.image.text'
+  | 'tracks.playbacks'
+  | 'tracks.playbacks.id'
+  | 'tracks.playbacks.parent.id'
+  | 'tracks.playbacks.parent.children'
+  | 'tracks.playbacks.children'
+  | 'tracks.playbacks.children.id'
+  | 'tracks.playbacks.children.children'
+  | 'tracks.playbacks.internal.content'
+  | 'tracks.playbacks.internal.contentDigest'
+  | 'tracks.playbacks.internal.description'
+  | 'tracks.playbacks.internal.fieldOwners'
+  | 'tracks.playbacks.internal.ignoreType'
+  | 'tracks.playbacks.internal.mediaType'
+  | 'tracks.playbacks.internal.owner'
+  | 'tracks.playbacks.internal.type'
+  | 'tracks.playbacks.date'
+  | 'tracks.playbacks.track.id'
+  | 'tracks.playbacks.track.children'
+  | 'tracks.playbacks.track.name'
+  | 'tracks.playbacks.track.loved'
+  | 'tracks.playbacks.track.mbid'
+  | 'tracks.playbacks.track.streamable'
+  | 'tracks.playbacks.track.url'
+  | 'tracks.playbacks.track.image'
+  | 'tracks.playbacks.track.playbacks'
+  | 'tracks.artist.id'
+  | 'tracks.artist.parent.id'
+  | 'tracks.artist.parent.children'
+  | 'tracks.artist.children'
+  | 'tracks.artist.children.id'
+  | 'tracks.artist.children.children'
+  | 'tracks.artist.internal.content'
+  | 'tracks.artist.internal.contentDigest'
+  | 'tracks.artist.internal.description'
+  | 'tracks.artist.internal.fieldOwners'
+  | 'tracks.artist.internal.ignoreType'
+  | 'tracks.artist.internal.mediaType'
+  | 'tracks.artist.internal.owner'
+  | 'tracks.artist.internal.type'
+  | 'tracks.artist.name'
+  | 'tracks.artist.mbid'
+  | 'tracks.artist.url'
+  | 'tracks.artist.image'
+  | 'tracks.artist.image.size'
+  | 'tracks.artist.image.text'
+  | 'tracks.artist.playbacks'
+  | 'tracks.artist.playbacks.id'
+  | 'tracks.artist.playbacks.children'
+  | 'tracks.artist.playbacks.date'
+  | 'tracks.artist.albums'
+  | 'tracks.artist.albums.id'
+  | 'tracks.artist.albums.children'
+  | 'tracks.artist.albums.name'
+  | 'tracks.artist.albums.mbid'
+  | 'tracks.artist.albums.url'
+  | 'tracks.artist.albums.playbacks'
+  | 'tracks.artist.albums.tracks'
+  | 'tracks.artist.tracks'
+  | 'tracks.artist.tracks.id'
+  | 'tracks.artist.tracks.children'
+  | 'tracks.artist.tracks.name'
+  | 'tracks.artist.tracks.loved'
+  | 'tracks.artist.tracks.mbid'
+  | 'tracks.artist.tracks.streamable'
+  | 'tracks.artist.tracks.url'
+  | 'tracks.artist.tracks.image'
+  | 'tracks.artist.tracks.playbacks'
+  | 'tracks.album.id'
+  | 'tracks.album.parent.id'
+  | 'tracks.album.parent.children'
+  | 'tracks.album.children'
+  | 'tracks.album.children.id'
+  | 'tracks.album.children.children'
+  | 'tracks.album.internal.content'
+  | 'tracks.album.internal.contentDigest'
+  | 'tracks.album.internal.description'
+  | 'tracks.album.internal.fieldOwners'
+  | 'tracks.album.internal.ignoreType'
+  | 'tracks.album.internal.mediaType'
+  | 'tracks.album.internal.owner'
+  | 'tracks.album.internal.type'
+  | 'tracks.album.name'
+  | 'tracks.album.mbid'
+  | 'tracks.album.url'
+  | 'tracks.album.playbacks'
+  | 'tracks.album.playbacks.id'
+  | 'tracks.album.playbacks.children'
+  | 'tracks.album.playbacks.date'
+  | 'tracks.album.artist.id'
+  | 'tracks.album.artist.children'
+  | 'tracks.album.artist.name'
+  | 'tracks.album.artist.mbid'
+  | 'tracks.album.artist.url'
+  | 'tracks.album.artist.image'
+  | 'tracks.album.artist.playbacks'
+  | 'tracks.album.artist.albums'
+  | 'tracks.album.artist.tracks'
+  | 'tracks.album.tracks'
+  | 'tracks.album.tracks.id'
+  | 'tracks.album.tracks.children'
+  | 'tracks.album.tracks.name'
+  | 'tracks.album.tracks.loved'
+  | 'tracks.album.tracks.mbid'
+  | 'tracks.album.tracks.streamable'
+  | 'tracks.album.tracks.url'
+  | 'tracks.album.tracks.image'
+  | 'tracks.album.tracks.playbacks';
+
+type LastfmAlbumGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<LastfmAlbumEdge>;
+  readonly nodes: ReadonlyArray<LastfmAlbum>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type LastfmAlbumSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<LastfmAlbumFieldsEnum>>>;
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
@@ -5183,25 +7555,33 @@ type DownloadedImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+
+type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+
 type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
 
+type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
+      Pick<LastfmPlayback, 'date'>
+      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'id' | 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'id' | 'name'>> }> }
+    )> } };
+
 type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseMemesQuery = { readonly allMemes: { readonly memes: ReadonlyArray<Pick<memes, 'id' | 'notes' | 'size' | 'url' | 'created_at'>> } };
-
-type LastFmCoverQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type LastFmCoverQuery = { readonly downloadedImage: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }> };
-
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
 type UseGoodreadsShelfQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5232,6 +7612,14 @@ type TalkBySlugQuery = { readonly markdownRemark: Maybe<(
     )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
 
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TalkListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
+
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -5244,19 +7632,6 @@ type BlogPostBySlugQuery = { readonly markdownRemark: Maybe<(
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
     )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
-
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TalkListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
-
-type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
