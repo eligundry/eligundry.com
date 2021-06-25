@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 import { useStaticQuery, graphql } from 'gatsby'
 import groupBy from 'lodash/groupBy'
@@ -32,24 +32,24 @@ const LastFmCover: React.FC = () => {
     }
   `)
 
-  const cutoffTimeStamp = Number(subDays(new Date(), 7)) / 1000
-  const scopedScrobbles = query.playback.scrobbles.filter(
-    scrobble => parseInt(scrobble.date) >= cutoffTimeStamp
-  )
-  const groupedScrobbles = groupBy(
-    scopedScrobbles,
-    scrobble => scrobble.track.album.id
-  )
-  const topAlbums = Object.values(groupedScrobbles)
-    .map(group => ({
-      album: group[0].track.album.name,
-      artist: group[0].track.artist.name,
-      count: group.length,
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 8)
-
-  console.log({ topAlbums })
+  const topAlbums = useMemo(() => {
+    const cutoffTimeStamp = Number(subDays(new Date(), 7)) / 1000
+    const scopedScrobbles = query.playback.scrobbles.filter(
+      scrobble => parseInt(scrobble.date) >= cutoffTimeStamp
+    )
+    const groupedScrobbles = groupBy(
+      scopedScrobbles,
+      scrobble => scrobble.track.album.id
+    )
+    const topAlbums = Object.values(groupedScrobbles)
+      .map(group => ({
+        album: group[0].track.album.name,
+        artist: group[0].track.artist.name,
+        count: group.length,
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 8)
+  }, [query.playback.scrobbles.length])
 
   return (
     <GatsbyImage
