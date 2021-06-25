@@ -2,7 +2,7 @@
 title: "ICYMI: Wiz Khalifa & Curren$y - Live In Concert EP"
 date: 2016-11-18T05:00
 description: Weed rap meets classic jazz flute with fun results.
-cover: https://i.imgur.com/GyorSxJ.jpg
+cover: ./img/icymi/live-in-concert.jpg
 tags: 
   - icymi
 ---
