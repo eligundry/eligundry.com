@@ -673,8 +673,8 @@ type MarkdownRemarkFrontmatter = {
   readonly date: Maybe<Scalars['Date']>;
   readonly slug: Maybe<Scalars['String']>;
   readonly cover: Maybe<File>;
-  readonly draft: Maybe<Scalars['Boolean']>;
   readonly tags: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly draft: Maybe<Scalars['Boolean']>;
   readonly location: Maybe<Scalars['String']>;
 };
 
@@ -799,6 +799,7 @@ type SitePluginPluginOptions = {
   readonly entryLimit: Maybe<Scalars['Int']>;
   readonly outputPath: Maybe<Scalars['String']>;
   readonly configDir: Maybe<Scalars['String']>;
+  readonly flags: Maybe<SitePluginPluginOptionsFlags>;
   readonly siteMetadata: Maybe<SitePluginPluginOptionsSiteMetadata>;
   readonly pathCheck: Maybe<Scalars['Boolean']>;
 };
@@ -842,6 +843,11 @@ type SitePluginPluginOptionsFeeds = {
   readonly output: Maybe<Scalars['String']>;
   readonly title: Maybe<Scalars['String']>;
   readonly query: Maybe<Scalars['String']>;
+};
+
+type SitePluginPluginOptionsFlags = {
+  readonly PRESERVE_WEBPACK_CACHE: Maybe<Scalars['Boolean']>;
+  readonly PARALLEL_SOURCING: Maybe<Scalars['Boolean']>;
 };
 
 type SitePluginPluginOptionsSiteMetadata = {
@@ -1685,8 +1691,8 @@ type MarkdownRemarkFrontmatterFilterInput = {
   readonly date: Maybe<DateQueryOperatorInput>;
   readonly slug: Maybe<StringQueryOperatorInput>;
   readonly cover: Maybe<FileFilterInput>;
-  readonly draft: Maybe<BooleanQueryOperatorInput>;
   readonly tags: Maybe<StringQueryOperatorInput>;
+  readonly draft: Maybe<BooleanQueryOperatorInput>;
   readonly location: Maybe<StringQueryOperatorInput>;
 };
 
@@ -2037,8 +2043,8 @@ type FileFieldsEnum =
   | 'childrenMarkdownRemark.frontmatter.cover.childrenMarkdownRemark'
   | 'childrenMarkdownRemark.frontmatter.cover.id'
   | 'childrenMarkdownRemark.frontmatter.cover.children'
-  | 'childrenMarkdownRemark.frontmatter.draft'
   | 'childrenMarkdownRemark.frontmatter.tags'
+  | 'childrenMarkdownRemark.frontmatter.draft'
   | 'childrenMarkdownRemark.frontmatter.location'
   | 'childrenMarkdownRemark.excerpt'
   | 'childrenMarkdownRemark.rawMarkdownBody'
@@ -2142,8 +2148,8 @@ type FileFieldsEnum =
   | 'childMarkdownRemark.frontmatter.cover.childrenMarkdownRemark'
   | 'childMarkdownRemark.frontmatter.cover.id'
   | 'childMarkdownRemark.frontmatter.cover.children'
-  | 'childMarkdownRemark.frontmatter.draft'
   | 'childMarkdownRemark.frontmatter.tags'
+  | 'childMarkdownRemark.frontmatter.draft'
   | 'childMarkdownRemark.frontmatter.location'
   | 'childMarkdownRemark.excerpt'
   | 'childMarkdownRemark.rawMarkdownBody'
@@ -2965,6 +2971,7 @@ type SitePluginPluginOptionsFilterInput = {
   readonly entryLimit: Maybe<IntQueryOperatorInput>;
   readonly outputPath: Maybe<StringQueryOperatorInput>;
   readonly configDir: Maybe<StringQueryOperatorInput>;
+  readonly flags: Maybe<SitePluginPluginOptionsFlagsFilterInput>;
   readonly siteMetadata: Maybe<SitePluginPluginOptionsSiteMetadataFilterInput>;
   readonly pathCheck: Maybe<BooleanQueryOperatorInput>;
 };
@@ -3016,6 +3023,11 @@ type SitePluginPluginOptionsFeedsFilterInput = {
   readonly output: Maybe<StringQueryOperatorInput>;
   readonly title: Maybe<StringQueryOperatorInput>;
   readonly query: Maybe<StringQueryOperatorInput>;
+};
+
+type SitePluginPluginOptionsFlagsFilterInput = {
+  readonly PRESERVE_WEBPACK_CACHE: Maybe<BooleanQueryOperatorInput>;
+  readonly PARALLEL_SOURCING: Maybe<BooleanQueryOperatorInput>;
 };
 
 type SitePluginPluginOptionsSiteMetadataFilterInput = {
@@ -3321,6 +3333,8 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.entryLimit'
   | 'pluginCreator.pluginOptions.outputPath'
   | 'pluginCreator.pluginOptions.configDir'
+  | 'pluginCreator.pluginOptions.flags.PRESERVE_WEBPACK_CACHE'
+  | 'pluginCreator.pluginOptions.flags.PARALLEL_SOURCING'
   | 'pluginCreator.pluginOptions.siteMetadata.siteUrl'
   | 'pluginCreator.pluginOptions.pathCheck'
   | 'pluginCreator.nodeAPIs'
@@ -3689,8 +3703,8 @@ type MarkdownRemarkFieldsEnum =
   | 'frontmatter.cover.internal.mediaType'
   | 'frontmatter.cover.internal.owner'
   | 'frontmatter.cover.internal.type'
-  | 'frontmatter.draft'
   | 'frontmatter.tags'
+  | 'frontmatter.draft'
   | 'frontmatter.location'
   | 'excerpt'
   | 'rawMarkdownBody'
@@ -4351,6 +4365,8 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.entryLimit'
   | 'pluginOptions.outputPath'
   | 'pluginOptions.configDir'
+  | 'pluginOptions.flags.PRESERVE_WEBPACK_CACHE'
+  | 'pluginOptions.flags.PARALLEL_SOURCING'
   | 'pluginOptions.siteMetadata.siteUrl'
   | 'pluginOptions.siteMetadata.rssMetadata.site_url'
   | 'pluginOptions.siteMetadata.rssMetadata.feed_url'
@@ -6986,8 +7002,8 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childrenMarkdownRemark.frontmatter.description'
   | 'coverImage.childrenMarkdownRemark.frontmatter.date'
   | 'coverImage.childrenMarkdownRemark.frontmatter.slug'
-  | 'coverImage.childrenMarkdownRemark.frontmatter.draft'
   | 'coverImage.childrenMarkdownRemark.frontmatter.tags'
+  | 'coverImage.childrenMarkdownRemark.frontmatter.draft'
   | 'coverImage.childrenMarkdownRemark.frontmatter.location'
   | 'coverImage.childrenMarkdownRemark.excerpt'
   | 'coverImage.childrenMarkdownRemark.rawMarkdownBody'
@@ -7028,8 +7044,8 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childMarkdownRemark.frontmatter.description'
   | 'coverImage.childMarkdownRemark.frontmatter.date'
   | 'coverImage.childMarkdownRemark.frontmatter.slug'
-  | 'coverImage.childMarkdownRemark.frontmatter.draft'
   | 'coverImage.childMarkdownRemark.frontmatter.tags'
+  | 'coverImage.childMarkdownRemark.frontmatter.draft'
   | 'coverImage.childMarkdownRemark.frontmatter.location'
   | 'coverImage.childMarkdownRemark.excerpt'
   | 'coverImage.childMarkdownRemark.rawMarkdownBody'
@@ -7405,8 +7421,8 @@ type DownloadedImageFieldsEnum =
   | 'image.childrenMarkdownRemark.frontmatter.description'
   | 'image.childrenMarkdownRemark.frontmatter.date'
   | 'image.childrenMarkdownRemark.frontmatter.slug'
-  | 'image.childrenMarkdownRemark.frontmatter.draft'
   | 'image.childrenMarkdownRemark.frontmatter.tags'
+  | 'image.childrenMarkdownRemark.frontmatter.draft'
   | 'image.childrenMarkdownRemark.frontmatter.location'
   | 'image.childrenMarkdownRemark.excerpt'
   | 'image.childrenMarkdownRemark.rawMarkdownBody'
@@ -7447,8 +7463,8 @@ type DownloadedImageFieldsEnum =
   | 'image.childMarkdownRemark.frontmatter.description'
   | 'image.childMarkdownRemark.frontmatter.date'
   | 'image.childMarkdownRemark.frontmatter.slug'
-  | 'image.childMarkdownRemark.frontmatter.draft'
   | 'image.childMarkdownRemark.frontmatter.tags'
+  | 'image.childMarkdownRemark.frontmatter.draft'
   | 'image.childMarkdownRemark.frontmatter.location'
   | 'image.childMarkdownRemark.excerpt'
   | 'image.childMarkdownRemark.rawMarkdownBody'
@@ -7557,6 +7573,11 @@ type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
+type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+
 type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -7565,10 +7586,10 @@ type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly ch
       & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'id' | 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'id' | 'name'>> }> }
     )> } };
 
-type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+type UseMemesQuery = { readonly allMemes: { readonly memes: ReadonlyArray<Pick<memes, 'id' | 'notes' | 'size' | 'url' | 'created_at'>> } };
 
 type UseGoodreadsShelfQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7578,23 +7599,13 @@ type UseGoodreadsShelfQuery = { readonly allGoodreadsBook: { readonly books: Rea
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
-type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
+type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseMemesQuery = { readonly allMemes: { readonly memes: ReadonlyArray<Pick<memes, 'id' | 'notes' | 'size' | 'url' | 'created_at'>> } };
-
-type BlogPostBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-type BlogPostBySlugQuery = { readonly markdownRemark: Maybe<(
-    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'collection' | 'html'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'tags' | 'description'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date' | 'latestCommitDate'>> }
-  )> };
+type BlogListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'description'>> }
+      ) }> } };
 
 type TalkBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7643,12 +7654,17 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
-type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
+type BlogPostBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
 
 
-type BlogListingQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<MarkdownRemark, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'description'>> }
-      ) }> } };
+type BlogPostBySlugQuery = { readonly markdownRemark: Maybe<(
+    Pick<MarkdownRemark, 'timeToRead' | 'excerpt' | 'collection' | 'html'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'tags' | 'description'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<Pick<MarkdownRemarkFields, 'slug' | 'date' | 'latestCommitDate'>> }
+  )> };
 
 }

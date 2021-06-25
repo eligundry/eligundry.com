@@ -6,6 +6,12 @@ require('dotenv').config()
 
 module.exports = generateConfig({
   configDir: 'config',
+  flags: {
+    PRESERVE_WEBPACK_CACHE: true,
+    // DEV_SSR: true,
+    PARALLEL_SOURCING: true,
+    // PRESERVE_FILE_DOWNLOAD_CACHE: true,
+  },
   siteMetadata: {
     siteUrl: urljoin(config.siteUrl, config.pathPrefix),
     rssMetadata: {
