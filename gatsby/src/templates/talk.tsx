@@ -2,6 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
 import { styled } from 'twin.macro'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import Layout from '../layout'
 import Paper from '../components/Shared/Paper'
@@ -17,7 +18,7 @@ const TalkTemplate: React.FC<PageProps<
   GatsbyTypes.TalkBySlugQuery
 >> = props => {
   const { data, path } = props
-  const talkNode = data.markdownRemark
+  const talkNode = data.mdx
   const talk = talkNode?.frontmatter
 
   if (!talk?.title) {
@@ -55,11 +56,8 @@ const TalkTemplate: React.FC<PageProps<
             </p>
           )}
         </header>
-        {talkNode?.html && (
-          <section
-            itemProp="text"
-            dangerouslySetInnerHTML={{ __html: talkNode.html }}
-          />
+        {talkNode?.body && (
+          <MDXRenderer itemProp="text">{talkNode.body}</MDXRenderer>
         )}
       </Article>
     </Layout>
@@ -71,7 +69,7 @@ export default TalkTemplate
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query TalkBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    mdx(fields: { slug: { eq: $slug } }) {
       timeToRead
       excerpt
       collection
@@ -90,7 +88,7 @@ export const pageQuery = graphql`
         date
         latestCommitDate
       }
-      html
+      body
     }
   }
 `

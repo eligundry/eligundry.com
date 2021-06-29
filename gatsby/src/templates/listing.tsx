@@ -8,7 +8,7 @@ import SEO from '../components/SEO'
 import Paper from '../components/Shared/Paper'
 
 const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = props => {
-  const postEdges = props.data.allMarkdownRemark.edges
+  const postEdges = props.data.allMdx.edges
 
   return (
     <Layout>
@@ -26,7 +26,7 @@ export default Listing
 /* eslint no-undef: "off" */
 export const listingQuery = graphql`
   query BlogListing {
-    allMarkdownRemark(
+    allMdx(
       sort: { fields: [frontmatter___date], order: DESC }
       filter: {
         collection: { eq: "posts" }

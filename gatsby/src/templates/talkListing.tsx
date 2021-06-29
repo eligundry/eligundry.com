@@ -10,7 +10,7 @@ import SEO from '../components/SEO'
 const TalkListing: React.FC<PageProps<
   GatsbyTypes.TalkListingQuery
 >> = props => {
-  const postEdges = props.data.allMarkdownRemark.edges
+  const postEdges = props.data.allMdx.edges
 
   return (
     <Layout>
@@ -27,7 +27,7 @@ export default TalkListing
 
 export const talkListingQuery = graphql`
   query TalkListing {
-    allMarkdownRemark(
+    allMdx(
       sort: { fields: [frontmatter___date], order: DESC }
       filter: {
         collection: { eq: "talks" }

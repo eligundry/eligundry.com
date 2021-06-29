@@ -6,7 +6,7 @@ import EmojiText from '../Shared/EmojiText'
 import './listing.css'
 
 interface Props {
-  postEdges: GatsbyTypes.BlogListingQuery['allMarkdownRemark']['edges']
+  postEdges: GatsbyTypes.BlogListingQuery['allMdx']['edges']
   pathPrefix: string
 }
 

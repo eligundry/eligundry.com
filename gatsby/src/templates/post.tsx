@@ -2,6 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
 import tw, { styled } from 'twin.macro'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import Layout from '../layout/index'
 import Paper from '../components/Shared/Paper'
@@ -35,7 +36,7 @@ const PostTemplate: React.FC<PageProps<
   GatsbyTypes.BlogPostBySlugQuery
 >> = props => {
   const { data, path } = props
-  const postNode = data.markdownRemark
+  const postNode = data.mdx
   const post = postNode?.frontmatter
 
   if (!post) {
@@ -71,11 +72,8 @@ const PostTemplate: React.FC<PageProps<
             write them here.
           </blockquote>
         )}
-        {postNode?.html && (
-          <section
-            itemProp="articleBody"
-            dangerouslySetInnerHTML={{ __html: postNode.html }}
-          />
+        {postNode?.body && (
+          <MDXRenderer itemProp="articleBody">{postNode.body}</MDXRenderer>
         )}
         <hr />
         <Comments />
@@ -89,7 +87,7 @@ export default PostTemplate
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    mdx(fields: { slug: { eq: $slug } }) {
       timeToRead
       excerpt
       collection
@@ -107,7 +105,7 @@ export const pageQuery = graphql`
         date
         latestCommitDate
       }
-      html
+      body
     }
   }
 `

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import useEffectOnce from 'react-use/lib/useEffectOnce'
 import tw, { styled } from 'twin.macro'
 
 const UtterancesContainer = styled.aside`
@@ -11,7 +10,7 @@ const UtterancesContainer = styled.aside`
 const Comments: React.FC = () => {
   const utterancesRef = useRef<HTMLDivElement>(null)
 
-  useEffectOnce(() => {
+  useEffect(() => {
     const scriptElem = document.createElement('script')
     scriptElem.src = 'https://utteranc.es/client.js'
     scriptElem.async = true
@@ -21,7 +20,13 @@ const Comments: React.FC = () => {
     scriptElem.setAttribute('label', '✨💬✨  Blog')
     scriptElem.setAttribute('theme', 'github-light')
     utterancesRef.current?.appendChild(scriptElem)
-  })
+
+    return function cleanup() {
+      if (utterancesRef.current) {
+        utterancesRef.current.innerHTML = ''
+      }
+    }
+  }, [utterancesRef.current])
 
   return <UtterancesContainer ref={utterancesRef} />
 }
