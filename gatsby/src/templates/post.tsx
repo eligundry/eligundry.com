@@ -22,6 +22,13 @@ const Article = styled<React.FC>(Paper.article)`
   & img[src*='.gif'] {
     margin: 0 auto;
   }
+
+  & figure {
+    figcaption {
+      font-style: italic;
+      text-align: center;
+    }
+  }
 `
 
 const PostTemplate: React.FC<PageProps<
