@@ -2,6 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
 import { styled } from 'twin.macro'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import Layout from '../layout'
 import Paper from '../components/Shared/Paper'
@@ -55,11 +56,8 @@ const TalkTemplate: React.FC<PageProps<
             </p>
           )}
         </header>
-        {talkNode?.html && (
-          <section
-            itemProp="text"
-            dangerouslySetInnerHTML={{ __html: talkNode.html }}
-          />
+        {talkNode?.body && (
+          <MDXRenderer itemProp="text">{talkNode.body}</MDXRenderer>
         )}
       </Article>
     </Layout>
@@ -90,7 +88,7 @@ export const pageQuery = graphql`
         date
         latestCommitDate
       }
-      html
+      body
     }
   }
 `
