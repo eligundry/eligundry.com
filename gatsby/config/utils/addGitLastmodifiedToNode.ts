@@ -35,7 +35,6 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
   }
 
   if (node.internal.type === 'Mdx') {
-    console.log('boom, mdx!')
     const fileNode = getNode(node.parent)
     const log = await git.log({
       file: fileNode.absolutePath as string,
