@@ -1,34 +1,75 @@
-import React, { useRef } from 'react'
-import useEffectOnce from 'react-use/lib/useEffectOnce'
-import postscribe from 'postscribe'
+import React, { useRef, useState, useEffect } from 'react'
+import tw, { styled, css } from 'twin.macro'
 
 interface Props {
   fileURL: string
 }
 
+interface EmGitHubContainerProps {
+  expanded: boolean
+}
+
+const EmGitHubContainer = styled.div<EmGitHubContainerProps>`
+  ${props =>
+    !props.expanded &&
+    css`
+      max-height: 200px;
+      overflow: hidden;
+    `}
+`
+
+const ExpandButtonContainer = styled.div`
+  position: relative;
+  top: -3em;
+  height: 3em;
+  background-image: linear-gradient(to bottom, transparent, white);
+  display: flex;
+  justify-content: center;
+
+  & button {
+    ${tw`bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded`}
+  }
+`
+
 const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
+  const [expanded, setExpanded] = useState(false)
   const scriptTarget = useRef<HTMLDivElement>()
 
-  useEffectOnce(() => {
-    if (!scriptTarget.current) {
-      return
-    }
+  useEffect(() => {
+    ;(async function() {
+      if (!scriptTarget.current || scriptTarget.current.innerHTML) {
+        return
+      }
 
-    const query = new URLSearchParams({
-      target: fileURL,
-      style: 'github-gist',
-      showBorder: 'on',
-      showLineNumbers: 'on',
-      showFileMeta: 'on',
-    })
+      // emgithub uses document.write, which doesn't work well with React post
+      // render. postscribe patches document.write to document.appendChild,
+      // which makes it work with this effect.
+      const postscribe = (await import('postscribe')).default
+      const query = new URLSearchParams({
+        target: fileURL,
+        style: 'github-gist',
+        showBorder: 'on',
+        showLineNumbers: 'on',
+        showFileMeta: 'on',
+      })
 
-    postscribe(
-      scriptTarget.current,
-      `<script async cross-origin="anonymous" src="https://emgithub.com/embed.js?${query.toString()}"></script>`
-    )
-  })
+      postscribe(
+        scriptTarget.current,
+        `<script async cross-origin="anonymous" src="https://emgithub.com/embed.js?${query.toString()}"></script>`
+      )
+    })()
+  }, [scriptTarget.current, fileURL])
 
-  return <div ref={scriptTarget} />
+  return (
+    <>
+      <EmGitHubContainer ref={scriptTarget} expanded={expanded} />
+      {!expanded && (
+        <ExpandButtonContainer>
+          <button onClick={() => setExpanded(true)}>Expand File</button>
+        </ExpandButtonContainer>
+      )}
+    </>
+  )
 }
 
 export default GitHubFileEmbed
