@@ -18,7 +18,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     const { node, actions, getNode, createNodeId, store, cache } = args
     const { createNodeField, createNode } = actions
 
-    if (node.internal.type === 'MarkdownRemark') {
+    if (node.internal.type === 'Mdx') {
       let slug
       node.collection = getNode(node.parent).sourceInstanceName
       const fileNode = getNode(node.parent)
@@ -101,7 +101,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     const talkListingPage = path.resolve('src/templates/talkListing.tsx')
 
     interface MarkdownQuery {
-      allMarkdownRemark: {
+      allMdx: {
         edges: {
           node: {
             collection: 'talks' | 'posts'
@@ -121,7 +121,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     // Get a full list of markdown posts
     const markdownQueryResult = await graphql<MarkdownQuery>(`
       {
-        allMarkdownRemark(sort: { fields: frontmatter___date, order: DESC }) {
+        allMdx(sort: { fields: frontmatter___date, order: DESC }) {
           edges {
             node {
               collection
@@ -144,7 +144,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       throw markdownQueryResult.errors
     }
 
-    const postsEdges = markdownQueryResult.data.allMarkdownRemark.edges
+    const postsEdges = markdownQueryResult.data.allMdx.edges
 
     // Blog post listing
     createPage({

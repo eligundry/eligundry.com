@@ -14,8 +14,8 @@ interface Props {
   description?: string
   image?: string
   post?:
-    | GatsbyTypes.BlogPostBySlugQuery['markdownRemark']
-    | GatsbyTypes.TalkBySlugQuery['markdownRemark']
+    | GatsbyTypes.BlogPostBySlugQuery['mdx']
+    | GatsbyTypes.TalkBySlugQuery['mdx']
 }
 
 const SEO: React.FC<Props> = ({

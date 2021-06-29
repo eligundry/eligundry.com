@@ -35,7 +35,7 @@ const PostTemplate: React.FC<PageProps<
   GatsbyTypes.BlogPostBySlugQuery
 >> = props => {
   const { data, path } = props
-  const postNode = data.markdownRemark
+  const postNode = data.mdx
   const post = postNode?.frontmatter
 
   if (!post) {
@@ -89,7 +89,7 @@ export default PostTemplate
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    mdx(fields: { slug: { eq: $slug } }) {
       timeToRead
       excerpt
       collection

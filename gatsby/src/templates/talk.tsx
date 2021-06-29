@@ -17,7 +17,7 @@ const TalkTemplate: React.FC<PageProps<
   GatsbyTypes.TalkBySlugQuery
 >> = props => {
   const { data, path } = props
-  const talkNode = data.markdownRemark
+  const talkNode = data.mdx
   const talk = talkNode?.frontmatter
 
   if (!talk?.title) {
@@ -71,7 +71,7 @@ export default TalkTemplate
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query TalkBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    mdx(fields: { slug: { eq: $slug } }) {
       timeToRead
       excerpt
       collection

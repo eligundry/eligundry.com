@@ -106,9 +106,9 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
-      resolve: 'gatsby-transformer-remark',
+      resolve: 'gatsby-plugin-mdx',
       options: {
-        plugins: [
+        gatsbyRemarkPlugins: [
           {
             resolve: 'gatsby-remark-images',
             options: {
@@ -143,7 +143,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       options: {
         setup: ref => {
           const ret = ref.query.site.siteMetadata.rssMetadata
-          ret.allMarkdownRemark = ref.query.allMarkdownRemark
+          ret.allMdx = ref.query.allMdx
           ret.generator = 'GatsbyJS Advanced Starter'
           return ret
         },
@@ -169,7 +169,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             title: "Eli Gundry's Blog",
             query: `
             {
-              allMarkdownRemark(
+              allMdx(
                 sort: { order: DESC, fields: [frontmatter___date] },
               ) {
                 edges {
@@ -193,7 +193,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
           `,
             serialize: ctx => {
               const { rssMetadata } = ctx.query.site.siteMetadata
-              return ctx.query.allMarkdownRemark.edges
+              return ctx.query.allMdx.edges
                 .filter(edge => !edge.node.frontmatter.draft)
                 .map(edge => ({
                   categories: edge.node.frontmatter.tags,
@@ -282,7 +282,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 siteUrl
               }
             }
-            allMarkdownRemark(
+            allMdx(
               sort: {fields: frontmatter___slug, order: ASC}
               filter: {frontmatter: {draft: {ne: true}}}
             ) {
@@ -310,7 +310,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
           let latestPost = new Date(0)
           let latestTalk = new Date(0)
 
-          query.allMarkdownRemark.nodes.forEach(post => {
+          query.allMdx.nodes.forEach(post => {
             const postDate = new Date(post.fields.date)
             let path = `/${post.collection}/${post.fields.slug}`
 
@@ -423,7 +423,7 @@ interface SitemapQuery {
       }
     }[]
   }
-  allMarkdownRemark: {
+  allMdx: {
     nodes: {
       collection: 'talks' | 'posts'
       fields: {
