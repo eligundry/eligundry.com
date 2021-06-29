@@ -1,7 +1,7 @@
 ---
 title: "Cooking: Strawberry Pretzel Pie & Spiked Cucumber Soup"
 description: Trying my hand at "lifestyle blogging" with some cooking I did for a warm summer day.
-date: 2021-06-07
+date: 2021-06-07T04:00
 slug: cooking-strawberry-pretzel-pie-spiked-cucumber-soup
 cover: ./img/cooking-strawberry-pie-cucumber-soup/finished-pie.jpeg
 tags:
