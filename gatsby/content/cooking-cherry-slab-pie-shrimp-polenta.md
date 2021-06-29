@@ -93,13 +93,38 @@ will be the summer of pies for Eli!
 
 # [Hot Sauce Shrimp][hot-sauce-shrimp] + [Cheesy Polenta][cheesy-polenta]
 
+Now, you might be asking, "Eli, isn't this just shrimp and grits?" to which you wouldn't be wrong. That is definitely
+the inspiration for this pairing. But, I live in Astoria, Queens which is not the south last I checked, so I don't want
+to offend my southern readers with a Yank daring to tackle a southern delicacy. Also, the selection of polenta in an
+Italian neighborhood is very very good.
+
 ![Cooking the red onions and the shrimp](./img/cooking-cherry-slab-pie/cooking-shrimp.jpg)
+
+This recipe didn't call for caramelized red onion, but I love caramelized red onion, so in it goes. Also, I didn't
+have time to do a proper mise in place, so caramelizing onions bought me a little bit of time to prep the shrimp.
+Once the onions were good, I dumped the shrimp and cooked for six minutes (doubling the butter because why not).
 
 ![Shrimp in the hot sauce... sauce?](./img/cooking-cherry-slab-pie/shrimp-in-sauce.jpeg)
 
+The sauce is just butter and hot sauce. I got my hands on some [Crystal hot sauce][crystal], which is probably a basic
+hot sauce not worth noting, but I really like it. A little spicier than Frank's, but still lots of flavor. I dumped the
+shrimp in here with some green onion and tossed.
+
 ![Cheesy polenta](./img/cooking-cherry-slab-pie/cheesy-polenta.jpeg)
 
+I really liked this [polenta recipe from Rachel Ray][cheesy-polenta]. It was just instant polenta with a bunch of
+Parmesan cheese and a little bit of honey. The polenta we got came with instructions in Italian, so that was a little
+stressful to decipher while the pot was boiling over, but it all worked out in the end.
+
 ![Finished shrimp & cheesy polenta](./img/cooking-cherry-slab-pie/finished-shimp-polenta.jpeg)
+
+The end result was a spicy and savory dish that complimented itself very well. If I were to do it again, I would de-tail
+the shrimp as a part of my mise en place so that I could more easily blend the shrimp and polenta.
+
+Also, [please clap][please-clap] for my new plates! We got them from S&P Restaurant Supply on Ditmars between 36th and
+37th street. The owner, Kosmo, is a very hairy and friendly Greek man that we adore. The plates cost more than if we
+bought them off of Amazon, but they are built like tanks and will last forever in our kitchen. Look at how pretty they
+are, I love them.
 
 [cherry-slab-pie]: https://smittenkitchen.com/2009/07/sour-cherry-slab-pie/
 [hot-sauce-shrimp]: https://cooking.nytimes.com/recipes/1022328-hot-sauce-shrimp
@@ -108,3 +133,5 @@ will be the summer of pies for Eli!
 [pie-dough]: https://smittenkitchen.com/2008/11/pie-crust-102-all-butter-really-flaky-pie-dough/  
 [pastry-blender]: http://www.amazon.com/gp/product/B000QJE48O?ie=UTF8&tag=smitten-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=B000QJE48O
 [what-had-happened-was]: https://starburns.audio/podcasts/what-had-happened-was/
+[crystal]: https://crystalhotsauce.com/
+[please-clap]: https://youtu.be/DdCYMvaUcrA
