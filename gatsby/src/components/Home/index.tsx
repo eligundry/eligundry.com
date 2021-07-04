@@ -60,15 +60,25 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   }
 
   & .bookshelf {
-    display: grid;
-    align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    column-gap: 1vw;
-    margin: 1vw;
-    text-align: center;
+    & .shelf {
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      column-gap: 1vw;
+      margin: 1vw;
+      text-align: center;
 
-    & img {
-      min-width: 75px;
+      & h3 {
+        flex: 0 0 100%;
+      }
+
+      & a {
+        flex: 1;
+      }
+
+      & img {
+        min-width: 75px;
+      }
     }
   }
 
