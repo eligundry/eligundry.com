@@ -60,17 +60,18 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   }
 
   & .bookshelf {
-    & .shelf {
+    h3 {
+      ${tw`font-semibold text-teal-500`}
+    }
+
+    & .books {
       display: grid;
       align-items: center;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       column-gap: 1vw;
       margin: 1vw;
+      margin-left: 0;
       text-align: center;
-
-      & h3 {
-        flex: 0 0 100%;
-      }
 
       & a {
         flex: 1;
