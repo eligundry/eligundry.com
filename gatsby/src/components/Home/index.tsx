@@ -11,7 +11,7 @@ import Paper from '../Shared/Paper'
 import Reading from '../Reading'
 import Listening from '../Listening'
 import underConstructionGif from '../../../static/img/under-construction.gif'
-import { useIsPhone } from '../../utils/useIsMobile'
+import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
 
@@ -86,10 +86,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   &.tweets {
     & .content {
       ${tw`flex flex-row sm:flex-col`}
-
-      & > * {
-        ${tw`w-1/2`}
-      }
     }
   }
 `
