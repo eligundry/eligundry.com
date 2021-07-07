@@ -11,7 +11,7 @@ import Paper from '../Shared/Paper'
 import Reading from '../Reading'
 import Listening from '../Listening'
 import underConstructionGif from '../../../static/img/under-construction.gif'
-import { useIsPhone } from '../../utils/useIsMobile'
+import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
 
@@ -60,25 +60,32 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   }
 
   & .bookshelf {
-    display: grid;
-    align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    column-gap: 1vw;
-    margin: 1vw;
-    text-align: center;
+    h3 {
+      ${tw`font-semibold text-teal-500`}
+    }
 
-    & img {
-      min-width: 75px;
+    & .books {
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      column-gap: 1vw;
+      margin: 1vw;
+      margin-left: 0;
+      text-align: center;
+
+      & a {
+        flex: 1;
+      }
+
+      & img {
+        min-width: 75px;
+      }
     }
   }
 
   &.tweets {
     & .content {
       ${tw`flex flex-row sm:flex-col`}
-
-      & > * {
-        ${tw`w-1/2`}
-      }
     }
   }
 `

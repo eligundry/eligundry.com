@@ -194,7 +194,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
   sourceNodes: async (args: SourceNodesArgs) => {
     await sourceGoodreadsNodes(args, {
       userID: siteConfig.goodreads.userID,
-      shelf: 'currently-reading',
+      shelves: ['currently-reading', 'read'],
     })
     await sourceSingleImage(
       args,

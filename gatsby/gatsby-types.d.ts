@@ -262,6 +262,8 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
+  readonly port: Maybe<Scalars['Int']>;
+  readonly host: Maybe<Scalars['String']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly assetPrefix: Maybe<Scalars['String']>;
   readonly flags: Maybe<SiteFlags>;
@@ -933,6 +935,7 @@ type GoodreadsBook = Node & {
   readonly pages: Maybe<Scalars['Int']>;
   readonly published: Maybe<Scalars['Date']>;
   readonly started: Maybe<Scalars['Date']>;
+  readonly finished: Maybe<Scalars['Date']>;
   readonly cover: Maybe<Scalars['String']>;
   readonly url: Maybe<Scalars['String']>;
   readonly shelf: Maybe<Scalars['String']>;
@@ -949,6 +952,14 @@ type GoodreadsBook_publishedArgs = {
 
 
 type GoodreadsBook_startedArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type GoodreadsBook_finishedArgs = {
   formatString: Maybe<Scalars['String']>;
   fromNow: Maybe<Scalars['Boolean']>;
   difference: Maybe<Scalars['String']>;
@@ -1112,6 +1123,8 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  port: Maybe<IntQueryOperatorInput>;
+  host: Maybe<StringQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   assetPrefix: Maybe<StringQueryOperatorInput>;
   flags: Maybe<SiteFlagsFilterInput>;
@@ -1433,6 +1446,7 @@ type Query_goodreadsBookArgs = {
   pages: Maybe<IntQueryOperatorInput>;
   published: Maybe<DateQueryOperatorInput>;
   started: Maybe<DateQueryOperatorInput>;
+  finished: Maybe<DateQueryOperatorInput>;
   cover: Maybe<StringQueryOperatorInput>;
   url: Maybe<StringQueryOperatorInput>;
   shelf: Maybe<StringQueryOperatorInput>;
@@ -2555,6 +2569,8 @@ type SiteFieldsEnum =
   | 'siteMetadata.rssMetadata.description'
   | 'siteMetadata.rssMetadata.image_url'
   | 'siteMetadata.rssMetadata.copyright'
+  | 'port'
+  | 'host'
   | 'pathPrefix'
   | 'assetPrefix'
   | 'flags.PRESERVE_WEBPACK_CACHE'
@@ -2659,6 +2675,8 @@ type SiteGroupConnection = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  readonly port: Maybe<IntQueryOperatorInput>;
+  readonly host: Maybe<StringQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly assetPrefix: Maybe<StringQueryOperatorInput>;
   readonly flags: Maybe<SiteFlagsFilterInput>;
@@ -6710,6 +6728,7 @@ type GoodreadsBookFieldsEnum =
   | 'pages'
   | 'published'
   | 'started'
+  | 'finished'
   | 'cover'
   | 'url'
   | 'shelf'
@@ -6987,6 +7006,7 @@ type GoodreadsBookFilterInput = {
   readonly pages: Maybe<IntQueryOperatorInput>;
   readonly published: Maybe<DateQueryOperatorInput>;
   readonly started: Maybe<DateQueryOperatorInput>;
+  readonly finished: Maybe<DateQueryOperatorInput>;
   readonly cover: Maybe<StringQueryOperatorInput>;
   readonly url: Maybe<StringQueryOperatorInput>;
   readonly shelf: Maybe<StringQueryOperatorInput>;
@@ -7408,15 +7428,15 @@ type DownloadedImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
-
 type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
 type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7436,11 +7456,14 @@ type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
 
 type UseMemesQuery = { readonly allMemes: { readonly memes: ReadonlyArray<Pick<memes, 'id' | 'notes' | 'size' | 'url' | 'created_at'>> } };
 
-type UseGoodreadsShelfQueryVariables = Exact<{ [key: string]: never; }>;
+type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseGoodreadsShelfQuery = { readonly allGoodreadsBook: { readonly books: ReadonlyArray<(
+type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: ReadonlyArray<(
       Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
+    )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
@@ -7454,19 +7477,6 @@ type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ rea
           & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
         )> }
       ) }> } };
-
-type TalkBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-type TalkBySlugQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
-  )> };
 
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7488,6 +7498,19 @@ type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ rea
         Pick<Mdx, 'excerpt' | 'timeToRead'>
         & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
       ) }> } };
+
+type TalkBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+type TalkBySlugQuery = { readonly mdx: Maybe<(
+    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
+  )> };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -7514,5 +7537,10 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = Pick<ImageSharpFluid, 't
 type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'sizes'>;
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
+
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

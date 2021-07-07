@@ -7,7 +7,7 @@ const trimChars = '\n *'
 
 interface GoodreadsQueryArgs {
   userID: string | number
-  shelf: 'read' | 'currently-reading' | 'to-read' | string
+  shelves: ('read' | 'currently-reading' | 'to-read' | string)[]
 }
 
 const sourceGoodreadsNodes = async (
@@ -17,80 +17,82 @@ const sourceGoodreadsNodes = async (
   const { createNodeId, createContentDigest } = args
   const { createNode } = args.actions
 
-  try {
-    var goodreadsHTML = await axios.get<string>(
-      `https://www.goodreads.com/review/list/${query.userID}`,
-      {
-        params: {
-          ref: 'nav_mybooks',
-          shelf: query.shelf,
-          per_page: 100,
-        },
-      }
-    )
-  } catch (e) {
-    console.error('could not fetch Goodreads shelf', e)
-    return
-  }
-
-  const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
-
-  Array.from(
-    goodreadsDocument.querySelectorAll('#booksBody .bookalike')
-  ).forEach(row => {
-    const book = {
-      title: trim(
-        row.querySelector('td.field.title a').getAttribute('title'),
-        trimChars
-      ),
-      author: trim(
-        row.querySelector('td.field.author .value').textContent,
-        trimChars
-      ),
-      isbn: trim(
-        row.querySelector('td.field.isbn .value').textContent,
-        trimChars
-      ),
-      isbn13: trim(
-        row.querySelector('td.field.isbn13 .value').textContent,
-        trimChars
-      ),
-      asin: trim(
-        row.querySelector('td.field.asin .value').textContent,
-        trimChars
-      ),
-      pages: parseInt(
-        trim(
-          row.querySelector('td.field.num_pages .value').textContent,
-          trimChars
-        )
-      ),
-      published: getDateField(row, 'td.field.date_pub .value'),
-      started: getDateField(row, 'td.field.date_started .date_started_value'),
-      finished: getDateField(row, 'td.field.date_read .date_read_value'),
-      cover: row
-        .querySelector('td.field.cover img')
-        .getAttribute('src')
-        // Get the full sized thumbnail
-        .replace(/\._\w+\d+_/, ''),
-      url: `https://www.goodreads.com${row
-        .querySelector('td.field.cover a')
-        .getAttribute('href')}`,
-      shelf: query.shelf,
+  for (const shelf of query.shelves) {
+    try {
+      var goodreadsHTML = await axios.get<string>(
+        `https://www.goodreads.com/review/list/${query.userID}`,
+        {
+          params: {
+            ref: 'nav_mybooks',
+            shelf,
+            per_page: 100,
+          },
+        }
+      )
+    } catch (e) {
+      console.error('could not fetch Goodreads shelf', e)
+      return
     }
 
-    createNode({
-      id: createNodeId(`goodreads-book-${book.isbn}`),
-      parent: null,
-      children: [],
-      internal: {
-        type: 'GoodreadsBook',
-        content: JSON.stringify(book),
-        contentDigest: createContentDigest(book),
-      },
-      ...book,
+    const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
+
+    Array.from(
+      goodreadsDocument.querySelectorAll('#booksBody .bookalike')
+    ).forEach(row => {
+      const book = {
+        title: trim(
+          row.querySelector('td.field.title a').getAttribute('title'),
+          trimChars
+        ),
+        author: trim(
+          row.querySelector('td.field.author .value').textContent,
+          trimChars
+        ),
+        isbn: trim(
+          row.querySelector('td.field.isbn .value').textContent,
+          trimChars
+        ),
+        isbn13: trim(
+          row.querySelector('td.field.isbn13 .value').textContent,
+          trimChars
+        ),
+        asin: trim(
+          row.querySelector('td.field.asin .value').textContent,
+          trimChars
+        ),
+        pages: parseInt(
+          trim(
+            row.querySelector('td.field.num_pages .value').textContent,
+            trimChars
+          )
+        ),
+        published: getDateField(row, 'td.field.date_pub .value'),
+        started: getDateField(row, 'td.field.date_started .date_started_value'),
+        finished: getDateField(row, 'td.field.date_read .date_read_value'),
+        cover: row
+          .querySelector('td.field.cover img')
+          .getAttribute('src')
+          // Get the full sized thumbnail
+          .replace(/\._\w+\d+_/, ''),
+        url: `https://www.goodreads.com${row
+          .querySelector('td.field.cover a')
+          .getAttribute('href')}`,
+        shelf,
+      }
+
+      createNode({
+        id: createNodeId(`goodreads-book-${book.isbn}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: 'GoodreadsBook',
+          content: JSON.stringify(book),
+          contentDigest: createContentDigest(book),
+        },
+        ...book,
+      })
     })
-  })
+  }
 }
 
 const getDateField = (row: Element, selector: string): Date | null => {
@@ -100,7 +102,7 @@ const getDateField = (row: Element, selector: string): Date | null => {
     return new Date(trim(rawDate, trimChars))
   }
 
-  return null
+  return new Date('2000-01-01')
 }
 
 export default sourceGoodreadsNodes
