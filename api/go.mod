@@ -3,7 +3,7 @@ module github.com/eligundry/eligundry.com/api
 go 1.13
 
 require (
-	github.com/gin-gonic/gin v1.7.1
+	github.com/gin-gonic/gin v1.7.2
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/gocarina/gocsv v0.0.0-20210408192840-02d7211d929d
 	github.com/golang-collections/collections v0.0.0-20130729185459-604e922904d3
@@ -26,9 +26,6 @@ require (
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a // indirect
 	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
 	golang.org/x/sys v0.0.0-20210514084401-e8d321eab015 // indirect
-	google.golang.org/appengine v1.6.6 // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
-	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
 	gopkg.in/guregu/null.v3 v3.5.0
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
