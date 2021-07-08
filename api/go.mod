@@ -11,7 +11,7 @@ require (
 	github.com/google/uuid v1.2.0
 	github.com/gorilla/feeds v1.1.1
 	github.com/jinzhu/now v1.1.2
-	github.com/jmoiron/sqlx v1.3.3
+	github.com/jmoiron/sqlx v1.3.4
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/klauspost/cpuid/v2 v2.0.6 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
@@ -26,9 +26,6 @@ require (
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a // indirect
 	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
 	golang.org/x/sys v0.0.0-20210514084401-e8d321eab015 // indirect
-	google.golang.org/appengine v1.6.6 // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
-	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
 	gopkg.in/guregu/null.v3 v3.5.0
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
