@@ -3,7 +3,8 @@ on:
   push:
     branches:
       - master
-      - gatsby-learnings
+    paths:
+      - 'api/**'
 
 jobs:
   api:
