@@ -100,11 +100,7 @@ const getTopAlbums = (
     }))
     .sort((a, b) => {
       if (b.count === a.count) {
-        if (b.artist === a.artist) {
-          return b.album > a.album ? -1 : 1
-        }
-
-        return b.artist > a.artist ? -1 : 1
+        return b.album > a.album ? -1 : 1
       }
 
       return b.count - a.count
