@@ -8,14 +8,16 @@ import SEO from '../components/SEO'
 import Paper from '../components/Shared/Paper'
 
 const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = props => {
-  const postEdges = props.data.allMdx.edges
+  const posts = props.data.allMdx.nodes
 
   return (
     <Layout>
       <Paper className="listing-container">
         <Helmet title="Blog" />
         <SEO path={props.path} />
-        <PostListing postEdges={postEdges} pathPrefix="blog" />
+        <main>
+          <PostListing posts={posts} pathPrefix="blog" />
+        </main>
       </Paper>
     </Layout>
   )
@@ -33,22 +35,20 @@ export const listingQuery = graphql`
         frontmatter: { draft: { ne: true } }
       }
     ) {
-      edges {
-        node {
-          fields {
-            slug
-            date
-            latestCommitDate
-          }
-          excerpt
-          timeToRead
-          frontmatter {
-            title
-            date
-            description
-            cover {
-              publicURL
-            }
+      nodes {
+        fields {
+          slug
+          date
+          latestCommitDate
+        }
+        excerpt
+        timeToRead
+        frontmatter {
+          title
+          date
+          description
+          cover {
+            publicURL
           }
         }
       }

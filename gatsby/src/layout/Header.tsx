@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro'
 import { ContentWrapper } from '../layout/BaseStyles'
 
 const HeaderElm = styled(ContentWrapper.withComponent('header'))`
-  ${tw`font-mono`}
+  ${tw`font-mono pl-8`}
 
   & h1 {
     ${tw`ml-2 my-2 mx-0`}

@@ -6,54 +6,49 @@ import EmojiText from '../Shared/EmojiText'
 import './listing.css'
 
 interface Props {
-  postEdges: GatsbyTypes.BlogListingQuery['allMdx']['edges']
+  posts:
+    | GatsbyTypes.BlogListingQuery['allMdx']['nodes']
+    | GatsbyTypes.TalkListingQuery['allMdx']['nodes']
   pathPrefix: string
 }
 
-const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
-  const postList = postEdges
-    .map(postEdge => ({
-      path: postEdge?.node?.fields?.slug,
-      cover: postEdge?.node?.frontmatter?.cover?.publicURL,
-      title: postEdge?.node?.frontmatter?.title,
-      date: postEdge?.node?.fields?.date,
-      excerpt: postEdge.node.excerpt,
-      timeToRead: postEdge.node.timeToRead,
-      description: postEdge?.node?.frontmatter?.description,
-      dateModified: postEdge?.node?.fields?.latestCommitDate,
-    }))
-    .filter(post => !!post.title)
-
+const PostListing: React.FC<Props> = ({ posts, pathPrefix }) => {
   return (
-    <main>
-      {postList.map(post => (
+    <>
+      {posts.map(post => (
         <article
-          key={post.path}
+          key={post.fields.slug}
           itemScope
           itemType="https://schema.org/BlogPosting"
           className="listing-post"
         >
           <link itemProp="author publisher" href="#eli-gundry" />
-          <meta itemProp="image" content={post.cover} />
-          <meta itemProp="dateModified" content={post.dateModified} />
+          <meta itemProp="image" content={post.frontmatter.cover?.publicURL} />
+          <meta
+            itemProp="dateModified"
+            content={post.fields.latestCommitDate}
+          />
           <h1 itemProp="name headline">
-            <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
-              {post.title}
+            <Link to={`/${pathPrefix}/${post.fields.slug}`} itemProp="url">
+              {post.frontmatter.title}
             </Link>
           </h1>
-          {post.date && (
-            <Time dateTime={new Date(post.date)} itemProp="datePublished" />
+          {post.frontmatter?.date && (
+            <Time
+              dateTime={new Date(post.frontmatter.date)}
+              itemProp="datePublished"
+            />
           )}
-          {post.description && (
+          {post.frontmatter?.description && (
             <p itemProp="description" className="description">
               <EmojiText label="description of the blog post" emoji="📝">
-                {post.description}
+                {post.frontmatter.description}
               </EmojiText>
             </p>
           )}
         </article>
       ))}
-    </main>
+    </>
   )
 }
 

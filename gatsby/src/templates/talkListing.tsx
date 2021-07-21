@@ -10,14 +10,14 @@ import SEO from '../components/SEO'
 const TalkListing: React.FC<PageProps<
   GatsbyTypes.TalkListingQuery
 >> = props => {
-  const postEdges = props.data.allMdx.edges
+  const posts = props.data.allMdx.nodes
 
   return (
     <Layout>
       <Paper className="listing-container">
         <Helmet title="Talks" />
         <SEO path={props.path} />
-        <PostListing postEdges={postEdges} pathPrefix="talks" />
+        <PostListing posts={posts} pathPrefix="talks" />
       </Paper>
     </Layout>
   )
@@ -34,20 +34,19 @@ export const talkListingQuery = graphql`
         frontmatter: { draft: { ne: true } }
       }
     ) {
-      edges {
-        node {
-          fields {
-            slug
-            date
-          }
-          excerpt
-          timeToRead
-          frontmatter {
-            title
-            tags
-            date
-            description
-          }
+      nodes {
+        fields {
+          slug
+          date
+          latestCommitDate
+        }
+        excerpt
+        timeToRead
+        frontmatter {
+          title
+          tags
+          date
+          description
         }
       }
     }

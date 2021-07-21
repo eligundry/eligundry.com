@@ -12,6 +12,7 @@ import underConstructionGif from '../../../static/img/under-construction.gif'
 import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
+import RecentBlogPosts from '../PostListing/RecentBlogPosts'
 
 const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
@@ -102,14 +103,11 @@ const Home: React.FC = () => {
         />
         <p>I only really write in lists, so here's my deal.</p>
         <ul>
-          <li>I'm a full stack web engineer.</li>
+          <li>Full stack web engineer.</li>
+          <li>Has a non-traditional computer science education.</li>
+          <li>Loves planning and cooking elaborate meals.</li>
           <li>
-            I love to plan and cook elaborate meals. It really activates the
-            engineering part of my brain!
-          </li>
-          <li>I have a non-traditional computer science education.</li>
-          <li>
-            Vim user but I actively encourage everyone to use something else.
+            Vim user but actively encourages everyone to use something else.
             Using Vim in {new Date().getFullYear()} is a cool bar trick.
           </li>
           <li>
@@ -117,14 +115,13 @@ const Home: React.FC = () => {
             Super Bowl one of these years.
           </li>
           <li>
-            I currently live in Astoria, Queens. I didn't think I would settle
-            down in Queens and love it as much as I do, but life is like that
-            sometimes, I guess.
+            Currently lives in Astoria, Queens. Loves the food and the
+            neighborhood.
           </li>
           <li>
-            I have a fat cat named Fonzie and I sorta have{' '}
+            Has fat cat named Fonzie and has{' '}
             <a href="https://twitter.com/EliGundry/status/1055933062125703168">
-              a tattoo of him on my arm
+              a tattoo of him on his arm
             </a>
             .
           </li>
@@ -142,6 +139,8 @@ const Home: React.FC = () => {
           <img
             src={underConstructionGif}
             alt="90s style under construction gif"
+            width={356}
+            height={105}
           />
         </a>
       </Section>
@@ -179,6 +178,10 @@ const Home: React.FC = () => {
         <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd">
           <Tooltip />
         </GitHubCalendar>
+      </Section>
+      <Section className="blogging">
+        <h2>Blogging</h2>
+        <RecentBlogPosts />
       </Section>
       <Section className="reading">
         <h2>Reading</h2>
