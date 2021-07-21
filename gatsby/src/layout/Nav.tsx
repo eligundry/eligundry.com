@@ -21,6 +21,8 @@ const NavContainer = styled.nav<NavProps>`
   align-self: center;
   z-index: 99;
 
+  ${tw`font-mono`}
+
   // On mobile, hide by default
   ${tw`xs:hidden sm:hidden md:hidden lg:block xl:block 2xl:block`}
 

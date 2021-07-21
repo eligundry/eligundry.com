@@ -11,15 +11,15 @@ const BaseStyles = styled.div`
   ${tw`xs:px-2 sm:px-4 md:px-4`}
 
   & h1 {
-    ${tw`text-2xl`}
+    ${tw`text-2xl font-mono`}
   }
 
   & h2 {
-    ${tw`text-xl`}
+    ${tw`text-xl font-mono`}
   }
 
   & h3 {
-    ${tw`text-lg`}
+    ${tw`text-lg font-mono`}
   }
 
   & ul {
@@ -52,6 +52,11 @@ const BaseStyles = styled.div`
 
   & address {
     ${tw`not-italic`}
+  }
+
+  & code,
+  & pre {
+    ${tw`font-mono`}
   }
 
   ${tw`print:bg-transparent`}
