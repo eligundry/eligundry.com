@@ -1,11 +1,10 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
+import { ContentWrapper } from '../layout/BaseStyles'
 
-const HeaderElm = styled.header`
-  ${tw`ml-6 print:ml-2`}
-
+const HeaderElm = styled(ContentWrapper.withComponent('header'))`
   & h1 {
-    ${tw`my-2 mx-0`}
+    ${tw`ml-2 my-2 mx-0`}
   }
 `
 

@@ -36,7 +36,7 @@ const MainLayout: React.FC<Props> = ({
         <meta itemProp="image" content={eliHeadshot} />
         {showHeader && <Header />}
         <Nav wider={wider} />
-        <ContentWrapper wider={wider}>{children}</ContentWrapper>
+        <ContentWrapper>{children}</ContentWrapper>
         <Tooltip />
       </BaseStyles>
     </IconContext.Provider>

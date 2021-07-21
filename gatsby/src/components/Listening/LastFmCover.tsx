@@ -42,7 +42,7 @@ const LastFmCover: React.FC<Props> = ({ width, height }) => {
   let mapX = 0
   let mapY = 0
   const albumWidth = Math.round(width / 3)
-  const albumHeight = Math.round(width / 3)
+  const albumHeight = Math.round(height / 3)
 
   return (
     <>

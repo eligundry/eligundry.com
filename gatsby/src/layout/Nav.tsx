@@ -17,7 +17,7 @@ interface NavProps {
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
   top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
-  left: 80%;
+  right: 7%;
   align-self: center;
   z-index: 99;
 
@@ -27,9 +27,9 @@ const NavContainer = styled.nav<NavProps>`
   // But once expanded, show it
   ${props => props.expanded && tw`xs:hidden sm:block md:block`}
 
-  @media (min-width: ${theme`screens.xl`}) {
-    left: 60%;
-  }
+  // @media (min-width: ${theme`screens.xl`}) {
+  //   right: 60%;
+  // }
 
   ${props =>
     props.wider &&
@@ -64,14 +64,7 @@ const NavContainer = styled.nav<NavProps>`
 
     &:hover > .link-text,
     &:focus > .link-text {
-      ${tw`
-        bg-pink-300 
-        transition 
-        duration-200 
-        ease-linear
-        transition-colors
-        rounded
-      `}
+      ${tw`underline`}
 
       &:last-child {
         ${tw`mb-4`}
@@ -161,11 +154,6 @@ const navLinks = {
     title: 'Feelings',
     emoji: '🥺',
     emojiLabel: 'emotional looking emoji face to denote my feelings',
-  },
-  '/memes': {
-    title: 'Memes',
-    emoji: '😂',
-    emojiLabel: 'person cry laughing at the quality of my saved memes',
   },
   '/talks': {
     title: 'Talks',

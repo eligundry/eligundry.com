@@ -1,11 +1,9 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
-import LazyLoad from 'react-lazyload'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
 
-import config from '../../../data/SiteConfig'
 import Daylio from '../Daylio/index'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
@@ -15,11 +13,6 @@ import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
 
-const TwitterTimelineEmbed = React.lazy(async () =>
-  import('react-twitter-embed').then(module => ({
-    default: module.TwitterTimelineEmbed,
-  }))
-)
 const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
 interface SectionProps {
@@ -212,30 +205,6 @@ const Home: React.FC = () => {
           albums I've listened to this week.
         </p>
         <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/1cm6mo8oxk8axeEhQZff8Z" />
-      </Section>
-      <Section className="tweets">
-        <h2>Twitter</h2>
-        <p className="summary">
-          Twitter is my <del>vice</del> social network of choice. It's been
-          instrumental in developing my career. I started following other
-          developers years ago, read their blog posts, followed the people they
-          retweeted, and stayed up to date with the latest technologies. It also
-          has funny memes, which are equally important to keeping up to date
-          with tech.
-        </p>
-        <div className="content">
-          <LazyLoad once offset={200} height={twitterTimelineHeight}>
-            <GatsbySuspense fallback={null}>
-              <TwitterTimelineEmbed
-                sourceType="profile"
-                screenName={config.userTwitter}
-                options={{
-                  height: twitterTimelineHeight,
-                }}
-              />
-            </GatsbySuspense>
-          </LazyLoad>
-        </div>
       </Section>
     </>
   )
