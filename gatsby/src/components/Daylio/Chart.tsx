@@ -46,7 +46,6 @@ const DaylioChart: React.FC = () => {
 
   return (
     <Line
-      type="line"
       height={60}
       data={{
         labels: Object.values(MoodMapping).map((_, i) => i),
