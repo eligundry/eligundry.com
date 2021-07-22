@@ -10,7 +10,6 @@ import SEO from '../components/SEO'
 import EmojiText from '../components/Shared/EmojiText'
 import Time from '../components/Shared/Time'
 import './talk.css'
-import './prism-material-light.css'
 
 const Article = styled<React.FC<{ className?: string }>>(Paper.article)``
 

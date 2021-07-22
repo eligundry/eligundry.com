@@ -27,7 +27,7 @@ const ExpandButtonContainer = styled.div`
   justify-content: center;
 
   & button {
-    ${tw`bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded`}
+    ${tw`bg-green hover:bg-green hover:bg-opacity-50 text-white px-4 py-2 rounded`}
   }
 `
 

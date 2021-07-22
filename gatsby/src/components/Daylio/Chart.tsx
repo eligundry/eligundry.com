@@ -6,6 +6,7 @@ import formatISO from 'date-fns/formatISO'
 import type { CoreChartOptions, ChartType } from 'chart.js/types/index.esm'
 import 'chartjs-adapter-date-fns'
 import { navigate } from 'gatsby'
+import { theme } from 'twin.macro'
 
 import useFeelingsChartData from './useFeelingsChartData'
 import { MoodMapping } from './types'
@@ -54,9 +55,9 @@ const DaylioChart: React.FC = () => {
             data,
             backgroundColor: 'transparent',
             pointStyle: 'rect',
-            borderColor: 'rgb(184, 50, 128)',
-            pointBorderColor: 'rgb(56, 178, 172)',
-            pointBackgroundColor: 'rgb(56, 178, 172)',
+            borderColor: theme`colors.tangerine`,
+            pointBorderColor: theme`colors.red`,
+            pointBackgroundColor: theme`colors.red`,
             radius: 5,
           },
         ],

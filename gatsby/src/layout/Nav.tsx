@@ -11,7 +11,6 @@ interface NavProps {
   mobile?: boolean
   expanded?: boolean
   scrolledPastHeader?: boolean
-  wider?: boolean
 }
 
 const NavContainer = styled.nav<NavProps>`
@@ -20,8 +19,6 @@ const NavContainer = styled.nav<NavProps>`
   right: 7%;
   align-self: center;
   z-index: 99;
-
-  ${tw`font-mono`}
 
   // On mobile, hide by default
   ${tw`xs:hidden sm:hidden md:hidden lg:block xl:block 2xl:block`}
@@ -32,12 +29,6 @@ const NavContainer = styled.nav<NavProps>`
   // @media (min-width: ${theme`screens.xl`}) {
   //   right: 60%;
   // }
-
-  ${props =>
-    props.wider &&
-    css`
-      left: 80%;
-    `}
 
   & .nav-links {
     ${tw`
@@ -168,7 +159,7 @@ const navLinks = {
   },
 }
 
-const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
+const Nav: React.FC<NavProps> = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const showHamburger = useMedia('(max-width: 1024px)', false)
   const { y: scrollY } = useWindowScroll()
@@ -187,7 +178,6 @@ const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
         mobile={showHamburger}
         onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
         scrolledPastHeader={showHamburger || scrollY >= 32}
-        wider={wider}
       >
         <div className="nav-links">
           {Object.entries(navLinks).map(

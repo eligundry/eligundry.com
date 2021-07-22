@@ -1,82 +1,9 @@
-export interface Location {
-  address: string
-  postalCode: string
-  city: string
-  countryCode: string
-  region: string
-}
-
-export interface Experience {
-  position: string
-  website: string
-  startDate: Date
-  endDate: Date | null
-  summary: string
-  highlights: string[]
-  location: Partial<Location>
-  printHide?: boolean
-}
-
-export interface Work extends Experience {
-  company: string
-}
-
-export interface Volunteer extends Experience {
-  organization: string
-}
-
-export interface Profile {
-  network: string
-  username: string
-  url: string
-}
-
-export interface Basics {
-  name: string
-  label: string
-  picture?: string
-  email: string
-  phone: string
-  website: string
-  summary?: string
-  location: Partial<Location>
-  profiles?: Profile[]
-}
-
-export interface Education {
-  institution: string
-  area: string
-  studyType?: string
-  startDate: Date
-  endDate: Date
-  completed: boolean
-  website: string
-  gpa?: number
-  location: Partial<Location>
-  summary: string
-}
-
-export interface Skills {
-  name: string
-  level: string
-  keywords: { [keyword: string]: string }
-}
-
-export interface Resume {
-  basics: Basics
-  work: Work[]
-  education: Education[]
-  skills: Skills[]
-  volunteer?: Volunteer[]
-  activitesInterests: string[]
-}
-
 const resume: Resume = {
   basics: {
     name: 'Eli Gundry',
     label: 'Software Engineer',
     email: 'eligundry@gmail.com',
-    phone: '3308286147',
+    phone: '3475232652',
     website: 'https://eligundry.com',
     location: {
       city: 'Astoria',
@@ -407,6 +334,7 @@ const resume: Resume = {
       name: 'Love Hate',
       level: 'Master',
       keywords: {
+        'Gatsby.js': 'https://www.gatsbyjs.org/',
         Ansible: 'https://www.ansible.com/',
         SQLAlchemy: 'https://www.sqlalchemy.org/',
         jQuery: 'https://jquery.com/',
@@ -432,6 +360,79 @@ const resume: Resume = {
     `,
     `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout" itemprop="award">Eagle Scout</a> in 2006.`,
   ],
+}
+
+export interface Location {
+  address: string
+  postalCode: string
+  city: string
+  countryCode: string
+  region: string
+}
+
+export interface Experience {
+  position: string
+  website: string
+  startDate: Date
+  endDate: Date | null
+  summary: string
+  highlights: string[]
+  location: Partial<Location>
+  printHide?: boolean
+}
+
+export interface Work extends Experience {
+  company: string
+}
+
+export interface Volunteer extends Experience {
+  organization: string
+}
+
+export interface Profile {
+  network: string
+  username: string
+  url: string
+}
+
+export interface Basics {
+  name: string
+  label: string
+  picture?: string
+  email: string
+  phone: string
+  website: string
+  summary?: string
+  location: Partial<Location>
+  profiles?: Profile[]
+}
+
+export interface Education {
+  institution: string
+  area: string
+  studyType?: string
+  startDate: Date
+  endDate: Date
+  completed: boolean
+  website: string
+  gpa?: number
+  location: Partial<Location>
+  summary: string
+}
+
+export interface Skills {
+  name: string
+  level: string
+  keywords: { [keyword: string]: string }
+}
+
+export interface Resume {
+  basics: Basics
+  work: Work[]
+  education: Education[]
+  skills: Skills[]
+  volunteer?: Volunteer[]
+  activitesInterests: string[]
 }
 
 export default resume

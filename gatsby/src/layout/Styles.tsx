@@ -1,8 +1,10 @@
+import React from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import { createGlobalStyle } from 'styled-components'
+import Helmet from 'react-helmet'
 
 import 'tailwindcss/dist/base.min.css'
-import './index.css'
+import './prism-material-light.css'
 
 export const GlobalStyles = createGlobalStyle`
   #___gatsby #gatsby-focus-wrapper {
@@ -11,7 +13,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    ${tw`bg-cream bg-opacity-10 print:bg-transparent`};
+    ${tw`bg-cream bg-opacity-10 print:bg-transparent font-sans`};
 
     // On computers, give some left margin
     ${tw`lg:pl-4 xl:pl-4`}
@@ -21,11 +23,11 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1 {
-    ${tw`text-2xl font-mono`}
+    ${tw`text-3xl font-mono`}
   }
 
   h2 {
-    ${tw`text-xl font-mono`}
+    ${tw`text-2xl font-mono`}
   }
 
   h3 {
@@ -49,7 +51,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   blockquote {
-    ${tw`italic border-l-2 border-teal-400 pl-2`}
+    ${tw`italic border-l-2 border-green pl-2`}
   }
 
   a {
@@ -69,14 +71,32 @@ export const GlobalStyles = createGlobalStyle`
   code,
   pre {
     ${tw`font-mono`}
+
+    & .token.comment {
+      ${tw`italic`}
+    }
   }
 `
 
-export const ContentWrapper = styled.main`
+export const ContentWrapper = styled.main<Record<string, any>>`
   // On computers, make the context 60%, full screen for mobile and templates
   ${tw`xs:w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2`}
 
   margin: 0 auto;
 `
 
-export default GlobalStyles
+const Styles: React.FC = () => (
+  <>
+    <Helmet>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap"
+        rel="stylesheet"
+      />
+    </Helmet>
+    <GlobalStyles />
+  </>
+)
+
+export default Styles

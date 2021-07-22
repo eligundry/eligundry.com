@@ -16,6 +16,10 @@ const ResumeArticle = styled(PaperArticle)`
     ${tw`font-extrabold`}
   }
 
+  & h3 {
+    ${tw`font-sans`}
+  }
+
   & header {
     ${tw`border-b-2 mb-2 flex flex-row justify-between`}
 

@@ -61,7 +61,7 @@ const Links = styled.div`
 
   & > a {
     ${tw`
-      hover:text-pink-300
+      hover:text-green
       transition 
       duration-200 
       ease-linear

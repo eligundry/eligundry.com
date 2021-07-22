@@ -18,7 +18,6 @@ const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
 interface SectionProps {
   className?: string
-  fullWidth?: boolean
 }
 
 const Section = styled<React.FC<SectionProps>>(Paper.section)`
@@ -77,6 +76,12 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
     }
   }
 
+  &.blogging {
+    h1 {
+      ${tw`text-lg`}
+    }
+  }
+
   &.tweets {
     & .content {
       ${tw`flex flex-row sm:flex-col`}
@@ -85,9 +90,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 `
 
 const Home: React.FC = () => {
-  // const { width } = useWindowSize()
-  // const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
-  const twitterTimelineHeight = 450
   const isMobile = useIsPhone()
 
   return (
@@ -181,6 +183,7 @@ const Home: React.FC = () => {
       </Section>
       <Section className="blogging">
         <h2>Blogging</h2>
+        <p className="summary">I like to write about cooking and tech.</p>
         <RecentBlogPosts />
       </Section>
       <Section className="reading">
