@@ -7432,15 +7432,20 @@ type DownloadedImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+
 type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
-type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
+type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
 
 type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7466,15 +7471,16 @@ type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: R
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
-type UseLatestPostsQueryVariables = Exact<{ [key: string]: never; }>;
+type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseLatestPostsQuery = { readonly allMdx: { readonly posts: ReadonlyArray<{ readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'description'>>, readonly fields: Maybe<Pick<MdxFields, 'slug'>> }> } };
-
-type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+type BlogListingQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+      Pick<Mdx, 'excerpt' | 'timeToRead'>
+      & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>>, readonly frontmatter: Maybe<(
+        Pick<MdxFrontmatter, 'title' | 'date' | 'description'>
+        & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+      )> }
+    )> } };
 
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7488,17 +7494,6 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
-
-type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogListingQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'excerpt' | 'timeToRead'>
-      & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>>, readonly frontmatter: Maybe<(
-        Pick<MdxFrontmatter, 'title' | 'date' | 'description'>
-        & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-      )> }
-    )> } };
 
 type TalkBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7546,6 +7541,11 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = Pick<ImageSharpFluid, 't
 type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'sizes'>;
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
+
+type UseLatestPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseLatestPostsQuery = { readonly allMdx: { readonly posts: ReadonlyArray<{ readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'description'>>, readonly fields: Maybe<Pick<MdxFields, 'slug'>> }> } };
 
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 

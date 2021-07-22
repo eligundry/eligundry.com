@@ -1,28 +1,38 @@
-import tw, { styled } from 'twin.macro'
+import tw, { styled, theme } from 'twin.macro'
+import { createGlobalStyle } from 'styled-components'
 
 import 'tailwindcss/dist/base.min.css'
 import './index.css'
 
-const BaseStyles = styled.div`
-  // On computers, give some left margin
-  ${tw`lg:pl-4 xl:pl-4`}
+export const GlobalStyles = createGlobalStyle`
+  #___gatsby #gatsby-focus-wrapper {
+    min-height: 100vh;
+    min-width: 100vw;
+  }
 
-  // On mobile, add margin to the sides so the content can breathe
-  ${tw`xs:px-2 sm:px-4 md:px-4`}
+  body {
+    ${tw`bg-cream bg-opacity-10 print:bg-transparent`};
 
-  & h1 {
+    // On computers, give some left margin
+    ${tw`lg:pl-4 xl:pl-4`}
+
+    // On mobile, add margin to the sides so the content can breathe
+    ${tw`xs:px-2 sm:px-4 md:px-4`}
+  }
+
+  h1 {
     ${tw`text-2xl font-mono`}
   }
 
-  & h2 {
+  h2 {
     ${tw`text-xl font-mono`}
   }
 
-  & h3 {
+  h3 {
     ${tw`text-lg font-mono`}
   }
 
-  & ul {
+  ul {
     ${tw`list-disc pl-8 my-4`}
 
     & ul, & ol {
@@ -30,7 +40,7 @@ const BaseStyles = styled.div`
     }
   }
 
-  & ol {
+  ol {
     ${tw`list-decimal pl-8 my-4`}
 
     & ul, & ol {
@@ -38,28 +48,28 @@ const BaseStyles = styled.div`
     }
   }
 
-  & blockquote {
+  blockquote {
     ${tw`italic border-l-2 border-teal-400 pl-2`}
   }
 
-  & a {
-    ${tw`text-teal-500 hover:underline focus:underline`}
+  a {
+    ${tw`text-red hover:underline focus:underline`}
+
+    text-decoration-color: ${theme`colors.green`} 
   }
 
-  & p {
+  p {
     ${tw`my-4`}
   }
 
-  & address {
+  address {
     ${tw`not-italic`}
   }
 
-  & code,
-  & pre {
+  code,
+  pre {
     ${tw`font-mono`}
   }
-
-  ${tw`print:bg-transparent`}
 `
 
 export const ContentWrapper = styled.main`
@@ -69,4 +79,4 @@ export const ContentWrapper = styled.main`
   margin: 0 auto;
 `
 
-export default BaseStyles
+export default GlobalStyles

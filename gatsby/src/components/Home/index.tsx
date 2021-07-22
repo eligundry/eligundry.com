@@ -25,7 +25,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {
-    ${tw`text-teal-500 font-extrabold`}
+    ${tw`text-orange font-extrabold`}
   }
 
   &.introduction-hero {
@@ -55,7 +55,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
   & .bookshelf {
     h3 {
-      ${tw`font-semibold text-teal-500`}
+      ${tw`font-semibold text-orange`}
     }
 
     & .books {

@@ -57,7 +57,6 @@ const NavContainer = styled.nav<NavProps>`
       no-underline 
       hover:no-underline 
       focus:no-underline
-      text-teal-500
     `}
 
     & > .link-text {

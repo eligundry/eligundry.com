@@ -6,6 +6,12 @@ module.exports = {
     colors: {
       ...colors,
       transparent: 'transparent',
+      // https://www.colourlovers.com/palette/1916178/Happy_Day_
+      red: '#F45D4C',
+      orange: '#F7A541',
+      tangerine: '#FACA66',
+      cream: '#FEE5AD',
+      green: '#A1DBB2',
     },
     screens: {
       ...defaultTheme.screens,
