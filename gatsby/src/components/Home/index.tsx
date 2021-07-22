@@ -76,12 +76,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
     }
   }
 
-  &.blogging {
-    h1 {
-      ${tw`text-lg`}
-    }
-  }
-
   &.tweets {
     & .content {
       ${tw`flex flex-row sm:flex-col`}

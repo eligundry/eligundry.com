@@ -7,10 +7,15 @@ import { ContentWrapper } from '../layout/Styles'
 const HeaderElm = styled<{ animate?: boolean }>(
   ContentWrapper.withComponent('header')
 )`
-  ${tw`font-mono pl-8 mb-2`}
+  ${tw`
+    font-mono 
+    pl-8 
+    print:pl-0
+    mb-2
+  `}
 
   & h1 {
-    ${tw`ml-2 my-2 mx-0`}
+    ${tw`ml-2 my-2 mx-0 font-bold`}
 
     & a {
       ${tw`text-green`}
@@ -18,11 +23,10 @@ const HeaderElm = styled<{ animate?: boolean }>(
   }
 
   & h2 {
-    ${tw`text-orange`}
+    ${tw`text-orange text-base inline-block`}
 
     & .comment {
-      ${tw`sm:hidden xs:hidden`}
-      color: rgba(0, 0, 0, 0.5);
+      ${tw`sm:hidden xs:hidden print:inline`}
     }
   }
 
@@ -45,7 +49,7 @@ const HeaderElm = styled<{ animate?: boolean }>(
             width: 0;
           }
           to {
-            width: 719px;
+            width: 573px;
           }
         }
 
@@ -65,7 +69,7 @@ const HeaderElm = styled<{ animate?: boolean }>(
 const Header: React.FC = () => {
   // @TODO Figure out how we want to persist this.
   const [animate, setAnimate] = useState(true)
-  useTimeoutFn(() => setAnimate(false), 5000)
+  // useTimeoutFn(() => setAnimate(false), 5000)
 
   return (
     <HeaderElm animate={animate}>
@@ -75,8 +79,9 @@ const Header: React.FC = () => {
         </a>
       </h1>
       <h2>
+        <span className="token comment">$ </span>
         Full Stack Engineer{' '}
-        <span className="comment">
+        <span className="token comment">
           // ❤️ Javascript, Devops & Web Standards
         </span>
       </h2>

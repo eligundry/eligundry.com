@@ -5,7 +5,7 @@ export const PaperStyles = tw`
   rounded 
   shadow 
   p-6 
-  mb-4 
+  mb-8 
   bg-white 
   sm:mx-2 
   md:mx-2

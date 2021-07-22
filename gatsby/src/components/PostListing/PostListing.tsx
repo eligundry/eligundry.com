@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import tw, { styled } from 'twin.macro'
 
 import Time from '../Shared/Time'
 import EmojiText from '../Shared/EmojiText'
@@ -12,11 +13,19 @@ interface Props {
   pathPrefix: string
 }
 
+const PostPreview = styled.article`
+  ${tw`mb-4`}
+
+  & h1 {
+    ${tw`text-lg font-bold`}
+  }
+`
+
 const PostListing: React.FC<Props> = ({ posts, pathPrefix }) => {
   return (
     <>
       {posts.map(post => (
-        <article
+        <PostPreview
           key={post.fields.slug}
           itemScope
           itemType="https://schema.org/BlogPosting"
@@ -46,7 +55,7 @@ const PostListing: React.FC<Props> = ({ posts, pathPrefix }) => {
               </EmojiText>
             </p>
           )}
-        </article>
+        </PostPreview>
       ))}
     </>
   )
