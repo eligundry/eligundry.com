@@ -79,6 +79,7 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
       .sort((a, b) => dateCompareDesc(new Date(a.date), new Date(b.date)))?.[0]
 
     if (latestCommit) {
+      console.log(node)
       addCommitFieldsToNode(latestCommit)
     }
 
