@@ -13,7 +13,8 @@ module.exports = {
       orange: '#F7A541',
       tangerine: '#FACA66',
       cream: '#FEE5AD',
-      green: '#A1DBB2',
+      // green: '#A1DBB2',
+      green: '#79BD9A',
     },
     fontFamily: {
       ...defaultTheme.fontFamily,
