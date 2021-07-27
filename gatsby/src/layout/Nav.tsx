@@ -11,12 +11,13 @@ interface NavProps {
   mobile?: boolean
   expanded?: boolean
   scrolledPastHeader?: boolean
+  horizontalPositionRelativeToLeft: number
 }
 
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
-  top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
-  right: 7%;
+  top: .5em;
+  left: ${props => props.horizontalPositionRelativeToLeft}px;
   align-self: center;
   z-index: 99;
 
@@ -159,7 +160,7 @@ const navLinks = {
   },
 }
 
-const Nav: React.FC<NavProps> = () => {
+const Nav: React.FC<NavProps> = ({ horizontalPositionRelativeToLeft }) => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const showHamburger = useMedia('(max-width: 1024px)', false)
   const { y: scrollY } = useWindowScroll()
@@ -178,6 +179,7 @@ const Nav: React.FC<NavProps> = () => {
         mobile={showHamburger}
         onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
         scrolledPastHeader={showHamburger || scrollY >= 32}
+        horizontalPositionRelativeToLeft={horizontalPositionRelativeToLeft}
       >
         <div className="nav-links">
           {Object.entries(navLinks).map(

@@ -13,13 +13,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    ${tw`bg-cream bg-opacity-10 print:bg-transparent font-sans`};
-
-    // On computers, give some left margin
-    ${tw`lg:pl-4 xl:pl-4`}
-
-    // On mobile, add margin to the sides so the content can breathe
-    ${tw`xs:px-2 sm:px-4 md:px-4`}
+    ${tw`bg-cream bg-opacity-10 print:bg-transparent font-sans`}
   }
 
   h1 {
@@ -57,7 +51,7 @@ export const GlobalStyles = createGlobalStyle`
   a {
     ${tw`text-red hover:underline focus:underline`}
 
-    text-decoration-color: ${theme`colors.green`} 
+    text-decoration-color: ${theme`colors.green`};
   }
 
   p {

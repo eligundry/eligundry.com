@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import tw, { styled, theme, css } from 'twin.macro'
 import useTimeoutFn from 'react-use/lib/useTimeoutFn'
 
 import { ContentWrapper } from '../layout/Styles'
 import { PaperStyles } from '../components/Shared/Paper'
+import { useUserInterfaceState } from '../components/State/UserInterfaceState'
 
 const HeaderElm = styled<{ animate?: boolean }>(
   ContentWrapper.withComponent('header')
@@ -73,13 +74,12 @@ const HeaderElm = styled<{ animate?: boolean }>(
     `}
 `
 
-const Header: React.FC = () => {
-  // @TODO Figure out how we want to persist this.
-  const [animate, setAnimate] = useState(true)
-  // useTimeoutFn(() => setAnimate(false), 5000)
+const Header = React.forwardRef((_, ref) => {
+  const { animateHeader, disableHeaderAnimation } = useUserInterfaceState()
+  useTimeoutFn(disableHeaderAnimation, 5000)
 
   return (
-    <HeaderElm animate={animate}>
+    <HeaderElm animate={animateHeader} ref={ref}>
       <h1 itemProp="name">
         <a rel="root" href="/" itemProp="sameAs">
           Eli Gundry
@@ -94,6 +94,6 @@ const Header: React.FC = () => {
       </h2>
     </HeaderElm>
   )
-}
+})
 
 export default Header
