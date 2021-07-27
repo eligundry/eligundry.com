@@ -3,14 +3,19 @@ import { IconContext } from 'react-icons'
 
 interface UserInterfaceState {
   animateHeader: boolean
-  disableHeaderAnimation: () => void
+  headerWidth: number
+  updateState: (update: Partial<UpdateableUserInterfaceState>) => void
 }
+
+type UpdateableUserInterfaceState = Omit<UserInterfaceState, 'updateState'>
 
 const defaultState = Object.freeze<UserInterfaceState>({
   animateHeader: true,
-  disableHeaderAnimation: () =>
+  headerWidth: 0,
+  updateState: update =>
     console.warn(
-      'disableHeaderAnimation called without the UserInterfaceProvider being setup'
+      'updateState called without the UserInterfaceProvider being setup',
+      { update }
     ),
 })
 
@@ -22,11 +27,11 @@ UserInterfaceContext.displayName = 'UserInterfaceContext'
 export const UserInterfaceProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<UserInterfaceState>(defaultState)
 
-  const disableHeaderAnimation = useCallback(
-    () =>
+  const updateState = useCallback(
+    (update: Partial<UpdateableUserInterfaceState>) =>
       setState(s => ({
         ...s,
-        animateHeader: false,
+        ...update,
       })),
     []
   )
@@ -34,9 +39,10 @@ export const UserInterfaceProvider: React.FC = ({ children }) => {
   const value = useMemo<UserInterfaceState>(
     () => ({
       animateHeader: state.animateHeader,
-      disableHeaderAnimation,
+      headerWidth: state.headerWidth,
+      updateState,
     }),
-    [state.animateHeader, disableHeaderAnimation]
+    [state.animateHeader, state.headerWidth, updateState]
   )
 
   return (

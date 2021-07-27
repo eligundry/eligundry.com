@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import tw, { styled, theme, css } from 'twin.macro'
 import useTimeoutFn from 'react-use/lib/useTimeoutFn'
+import useMeasure from 'react-use/lib/useMeasure'
 
 import { ContentWrapper } from '../layout/Styles'
 import { PaperStyles } from '../components/Shared/Paper'
@@ -74,9 +75,18 @@ const HeaderElm = styled<{ animate?: boolean }>(
     `}
 `
 
-const Header = React.forwardRef((_, ref) => {
-  const { animateHeader, disableHeaderAnimation } = useUserInterfaceState()
-  useTimeoutFn(disableHeaderAnimation, 5000)
+const Header: React.FC = () => {
+  const [ref, { right: width, x: padding }] = useMeasure()
+  const { animateHeader, updateState } = useUserInterfaceState()
+
+  // Only allow the header to be animated on the first page load
+  useTimeoutFn(() => updateState({ animateHeader: false }), 5000)
+
+  useEffect(() => updateState({ headerWidth: width + padding }), [
+    width,
+    padding,
+    updateState,
+  ])
 
   return (
     <HeaderElm animate={animateHeader} ref={ref}>
@@ -94,6 +104,6 @@ const Header = React.forwardRef((_, ref) => {
       </h2>
     </HeaderElm>
   )
-})
+}
 
 export default Header
