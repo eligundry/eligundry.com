@@ -10,21 +10,21 @@ import eliHeadshot from '../../static/img/eli-gundry-headshot.jpg'
 
 const MainLayout: React.FC = ({ children }) => {
   return (
-    <>
+    <div itemScope itemType="https://schema.org/Person" itemID="#eli-gundry">
       <Styles />
       <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
         <html lang="en" />
         <title>{config.siteTitle}</title>
         <meta name="description" content={config.siteDescription} />
       </Helmet>
-      <div itemScope itemType="https://schema.org/Person" itemID="#eli-gundry">
-        <meta itemProp="image" content={eliHeadshot} />
+      <meta itemProp="image" content={eliHeadshot} />
+      <ContentWrapper>
         <Header />
         <Nav />
-        <ContentWrapper>{children}</ContentWrapper>
-        <Tooltip />
-      </div>
-    </>
+        {children}
+      </ContentWrapper>
+      <Tooltip />
+    </div>
   )
 }
 

@@ -21,8 +21,6 @@ interface SectionProps {
 }
 
 const Section = styled<React.FC<SectionProps>>(Paper.section)`
-  ${tw`sm:mx-2 md:mx-2`}
-
   & h2 {
     ${tw`text-orange font-extrabold`}
   }

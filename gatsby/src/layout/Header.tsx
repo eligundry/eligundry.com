@@ -3,25 +3,11 @@ import tw, { styled, theme, css } from 'twin.macro'
 import useTimeoutFn from 'react-use/lib/useTimeoutFn'
 import useMeasure from 'react-use/lib/useMeasure'
 
-import { ContentWrapper } from '../layout/Styles'
-import { PaperStyles } from '../components/Shared/Paper'
+import Paper from '../components/Shared/Paper'
 import { useUserInterfaceState } from '../components/State/UserInterfaceState'
 
-const HeaderElm = styled<{ animate?: boolean }>(
-  ContentWrapper.withComponent('header')
-)`
-  ${PaperStyles}
-
-  ${tw`
-    font-mono 
-    pl-8 
-    print:pl-0
-    mb-2
-  `}
-
-  margin-top: .5em;
-  margin-left: auto !important;
-  margin-right: auto !important;
+const HeaderElm = styled<{ animate?: boolean }>(Paper.withComponent('header'))`
+  ${tw`font-mono mt-2`}
 
   & h1 {
     ${tw`ml-2 my-2 mx-0 font-bold`}

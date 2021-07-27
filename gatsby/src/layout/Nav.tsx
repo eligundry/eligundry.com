@@ -17,7 +17,7 @@ interface NavProps {
 const NavContainer = styled.nav<NavProps>`
   position: fixed;
   top: .5em;
-  left: ${props => props.horizontalPositionRelativeToLeft}px;
+  left: calc(${props => props.horizontalPositionRelativeToLeft}px + 1em);
   align-self: center;
   z-index: 99;
 
@@ -167,6 +167,8 @@ const Nav: React.FC = () => {
   const { headerWidth } = useUserInterfaceState()
   const horizontalPositionRelativeToLeft =
     windowWidth - (windowWidth - headerWidth) / 2
+
+  console.log({ windowWidth, headerWidth, horizontalPositionRelativeToLeft })
 
   return (
     <>
