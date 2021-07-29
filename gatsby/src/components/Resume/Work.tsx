@@ -1,10 +1,10 @@
 import React from 'react'
 import useMedia from 'react-use/lib/useMedia'
-import useSearchParam from 'react-use/lib/useSearchParam'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import Experience from './Experience'
 import { Work } from './data'
+import { useEmployerTargeting } from '../../hooks/useEmployerTracking'
 
 interface WorkProps {
   work: Work[]
@@ -12,11 +12,9 @@ interface WorkProps {
 
 const WorkSection: React.FC<WorkProps> = ({ work }) => {
   const isPrinting = useMedia('print')
-  const targetedEmployer = useSearchParam('employer')
-  const targeting = new URLSearchParams({
+  const targeting = useEmployerTargeting({
     utm_source: 'resume',
     utm_medium: 'view-full-resume',
-    utm_campaign: targetedEmployer || 'none',
   })
 
   return (

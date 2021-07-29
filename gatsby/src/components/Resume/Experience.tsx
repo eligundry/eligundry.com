@@ -20,6 +20,8 @@ interface Props {
 const StyledExperience = styled.section`
   ${tw`flex flex-wrap justify-between mb-4`}
 
+  page-break-inside: avoid;
+
   & .name,
   & .tenure,
   & .title,

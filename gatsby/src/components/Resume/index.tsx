@@ -28,10 +28,6 @@ const ResumeArticle = styled(PaperArticle)`
       margin-top: 3px;
     }
   }
-
-  & section {
-    page-break-inside: avoid;
-  }
 `
 
 const Resume: React.FC = () => {

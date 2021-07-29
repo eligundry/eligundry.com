@@ -74,7 +74,7 @@ export const GlobalStyles = createGlobalStyle`
 
 export const ContentWrapper = styled.main<Record<string, any>>`
   // On computers, make the context 60%, full screen for mobile and templates
-  ${tw`xs:w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2`}
+  ${tw`xs:w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2 print:w-11/12`}
 
   margin: 0 auto;
 `
