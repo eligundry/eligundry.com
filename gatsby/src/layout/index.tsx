@@ -20,9 +20,9 @@ const MainLayout: React.FC = ({ children }) => {
       <meta itemProp="image" content={eliHeadshot} />
       <ContentWrapper>
         <Header />
-        <Nav />
         {children}
       </ContentWrapper>
+      <Nav />
       <Tooltip />
     </div>
   )
