@@ -168,8 +168,6 @@ const Nav: React.FC = () => {
   const horizontalPositionRelativeToLeft =
     windowWidth - (windowWidth - headerWidth) / 2
 
-  console.log({ windowWidth, headerWidth, horizontalPositionRelativeToLeft })
-
   return (
     <>
       <Hamburger

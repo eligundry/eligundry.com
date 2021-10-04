@@ -37,5 +37,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [],
+  plugins: [require('daisyui')],
 }

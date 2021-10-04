@@ -10,6 +10,7 @@
     "axios": "^0.21.1",
     "chart.js": "^3.3.2",
     "chartjs-adapter-date-fns": "^1.1.0-beta.1",
+    "daisyui": "^1.10.0",
     "date-fns": "^2.22.1",
     "dotenv": "^8.6.0",
     "gatsby": "^3.10.0",
