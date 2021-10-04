@@ -77,7 +77,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     }
 
     if (node.internal.type === 'DownloadedImage' && node.url) {
-      await loadImage({
+      const image = await loadImage({
         node,
         createRemoteFileNode,
         targetNodeKey: 'image',
@@ -89,6 +89,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         store,
         ext: '.jpg',
       })
+      console.log(image)
     }
 
     await addGitLastModifiedToNode(args)
@@ -199,7 +200,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     await sourceSingleImage(
       args,
       // ts is to cache bust as it should be downloaded for each build
-      `https://www.tapmusic.net/collage.php?user=eli_pwnd&type=7day&size=3x3&ts=${new Date().toISOString()}`,
+      `https://lastfm-collage.herokuapp.com/collage?username=eli_pwnd&method=album&period=7day&column=3&row=3&caption=false&scrobble=false&ts=${new Date().toISOString()}`,
       'last-fm-cover.jpg'
     )
   },
