@@ -1,6 +1,9 @@
 const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
+/**
+ * @type {import("@types/tailwindcss/tailwind-config").TailwindConfig}
+ */
 module.exports = {
   theme: {
     colors: {
@@ -20,6 +23,10 @@ module.exports = {
       print: {
         raw: 'print',
       },
+    },
+    fontFamily: {
+      ...defaultTheme.fontFamily,
+      serif: ['Georgia', 'serif'],
     },
   },
   variants: {},

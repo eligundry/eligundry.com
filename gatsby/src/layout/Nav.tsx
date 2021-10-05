@@ -15,135 +15,36 @@ interface NavProps {
 }
 
 const NavContainer = styled.nav<NavProps>`
-  position: fixed;
-  top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
-  left: 80%;
-  align-self: center;
-  z-index: 99;
-
-  // On mobile, hide by default
-  ${tw`xs:hidden sm:hidden md:hidden lg:block xl:block 2xl:block`}
-
-  // But once expanded, show it
-  ${props => props.expanded && tw`xs:hidden sm:block md:block`}
-
-  @media (min-width: ${theme`screens.xl`}) {
-    left: 60%;
-  }
-
-  ${props =>
-    props.wider &&
-    css`
-      left: 80%;
-    `}
+  ${tw`w-full flex-grow lg:flex lg:items-center lg:w-auto lg:block mt-2 lg:mt-0 bg-gray-100 md:bg-transparent z-20 font-sans`}
 
   & .nav-links {
-    ${tw`
-      flex
-      flex-col
-    `}
+    ${tw`lg:flex justify-end flex-1 items-center`}
 
-    & > .user-links {
-      ${tw`mt-4`}
+    & a {
+      ${tw`inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-2 px-4`}
     }
   }
 
-  & .nav-page-link {
-    margin-right: 1em;
-
-    ${tw`
-      no-underline 
-      hover:no-underline 
-      focus:no-underline
-      text-teal-500
-    `}
-
-    & > .link-text {
-      ${tw`p-1`}
-    }
-
-    &:hover > .link-text,
-    &:focus > .link-text {
-      ${tw`
-        bg-pink-300 
-        transition 
-        duration-200 
-        ease-linear
-        transition-colors
-        rounded
-      `}
-
-      &:last-child {
-        ${tw`mb-4`}
-      }
-    }
-
-    & > .emoji {
-      ${tw`mr-2`}
-    }
-  }
-
-  @media print {
-    display: none;
-  }
-
-  ${props =>
-    !props.mobile &&
-    css`
-      ${PaperStyles}
-    `}
-
-  ${props =>
-    props.mobile &&
-    !props.expanded &&
-    css`
-      & .nav-links {
-        display: none;
-      }
-    `}
-
-  ${props =>
-    props.mobile &&
-    props.expanded &&
-    css`
-      position: fixed;
-      z-index: 10000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.8);
-
-      & > .nav-links {
-        height: 60%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-      }
-
-      & .nav-page-link {
-        font-size: 2em;
-        margin-right: 0;
-      }
-    `}
+  ${props => !props.expanded && tw`hidden`}
 `
 
 const Hamburger = styled.button`
-  position: fixed;
-  font-size: 2em;
-  text-decoration: none;
-  right: 0.75em;
-  top: 0;
-  z-index: 10001;
-
-  ${tw`xs:block sm:block md:block lg:hidden xl:hidden 2xl:hidden print:hidden`}
-
-  &:hover,
-  &:focus {
-    text-shadow: 0px 0px 5px #e172da;
-    ${tw`transition-all ease-linear duration-200`}
-  }
+  ${tw`
+    block 
+    lg:hidden 
+    pr-4 flex 
+    items-center 
+    px-3 
+    py-2 
+    border 
+    rounded 
+    text-gray-500 
+    border-gray-600 
+    hover:text-gray-900 
+    hover:border-green-500 
+    appearance-none 
+    focus:outline-none
+  `}
 `
 
 const navLinks = {
@@ -215,7 +116,7 @@ const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
               </Link>
             )
           )}
-          <UserLinks />
+          {/* <UserLinks /> */}
         </div>
       </NavContainer>
     </>
