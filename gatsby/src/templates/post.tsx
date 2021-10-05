@@ -9,7 +9,6 @@ import Paper from '../components/Shared/Paper'
 import SEO from '../components/SEO'
 import Comments from '../components/Comments'
 import Time from '../components/Shared/Time'
-import './prism-material-light.css'
 
 const Article = styled<React.FC>(Paper.article)`
   & header {

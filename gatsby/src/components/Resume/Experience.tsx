@@ -40,12 +40,16 @@ const StyledExperience = styled.section`
 
   & .tenure {
     ${tw`order-2 print:order-2 xs:order-3 sm:order-3`}
-    ${tw`text-lg`}
   }
 
   & .location {
     ${tw`not-italic print:order-4 order-4`}
-    ${tw`text-lg`}
+  }
+
+  & .tenure, & .location {
+    ${tw`text-sm font-mono`}
+    letter-spacing: -0.6px;
+    margin-top: 4px;
   }
 
   @media (min-width: ${theme`screens.md`}) {

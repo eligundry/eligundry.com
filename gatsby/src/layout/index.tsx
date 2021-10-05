@@ -3,6 +3,7 @@ import Helmet from 'react-helmet'
 import { IconContext } from 'react-icons'
 
 import { ContentWrapper, GlobalStyles } from './styles'
+import Head from './Head'
 import Header from './Header'
 import Footer from './Footer'
 import Tooltip from '../components/Shared/Tooltip'
@@ -12,6 +13,7 @@ import eliHeadshot from '../../static/img/eli-gundry-headshot.jpg'
 const MainLayout: React.FC = ({ children }) => {
   return (
     <IconContext.Provider value={{}}>
+      <Head />
       <GlobalStyles />
       <div itemScope itemType="https://schema.org/Person" itemID="#eli-gundry">
         <Helmet titleTemplate={`%s | ${config.siteTitle}`}>

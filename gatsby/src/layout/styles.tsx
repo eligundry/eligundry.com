@@ -2,7 +2,7 @@ import tw, { styled } from 'twin.macro'
 import { createGlobalStyle } from 'styled-components'
 
 import 'tailwindcss/dist/base.min.css'
-import './index.css'
+import './prism-material-light.css'
 
 export const GlobalStyles = createGlobalStyle`
   body {
@@ -62,6 +62,10 @@ export const GlobalStyles = createGlobalStyle`
 
   address {
     ${tw`not-italic`}
+  }
+
+  code {
+    ${tw`font-mono`}
   }
 `
 
