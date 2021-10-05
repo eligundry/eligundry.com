@@ -59,7 +59,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
       css`
         @media (${styleVariables.breakPoints.mobile}) {
           padding-left: 1.8rem;
-          z-index: 100;
+          z-index: 11;
           position: relative;
         }
       `}
@@ -98,7 +98,7 @@ const bgColor = tw`text-pink-100`
 const Emoji = styled.span<ActivityEmojiProps>`
   font-size: 4rem;
   cursor: default;
-  z-index: 100;
+  z-index: 9;
   position: relative;
 
   ${props =>

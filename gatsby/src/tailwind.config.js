@@ -30,7 +30,7 @@ module.exports = {
     },
     fontFamily: {
       ...defaultTheme.fontFamily,
-      serif: ['Georgia', 'serif'],
+      // serif: ['Georgia', 'serif'],
     },
   },
   variants: {},

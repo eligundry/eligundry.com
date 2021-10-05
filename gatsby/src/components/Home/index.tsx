@@ -24,7 +24,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   ${tw`sm:mx-2 md:mx-2`}
 
   & h2 {
-    ${tw`text-primary font-extrabold`}
+    ${tw`text-4xl text-primary font-extrabold`}
   }
 
   &.introduction-hero {

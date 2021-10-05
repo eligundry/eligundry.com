@@ -7,7 +7,7 @@ export default function useGoodreadsShelf() {
         currentlyReading: allGoodreadsBook(
           filter: { shelf: { eq: "currently-reading" } }
           sort: { fields: started, order: DESC }
-          limit: 7
+          limit: 6
         ) {
           books: nodes {
             title
@@ -25,7 +25,7 @@ export default function useGoodreadsShelf() {
         recentlyFinished: allGoodreadsBook(
           filter: { shelf: { eq: "read" } }
           sort: { fields: finished, order: DESC }
-          limit: 7
+          limit: 6
         ) {
           books: nodes {
             finished

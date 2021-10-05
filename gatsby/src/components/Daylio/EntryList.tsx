@@ -19,11 +19,11 @@ const EntryListWrapper = styled.section`
     position: absolute;
     margin-left: calc(2rem - 4px);
     height: 100%;
-    z-index: 10;
+    z-index: 8;
     box-shadow: 0 0 0px 8px ${bgColor.color};
     margin-top: 5px;
 
-    ${tw`border-4 border-pink-600 border-solid`}
+    ${tw`border-4 border-primary border-solid`}
   }
 `
 

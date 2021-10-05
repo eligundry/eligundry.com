@@ -21,15 +21,15 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1 {
-    ${tw`text-2xl font-sans`}
+    ${tw`text-2xl font-sans font-bold text-3xl`}
   }
 
   h2 {
-    ${tw`text-xl font-sans`}
+    ${tw`text-xl font-sans font-bold`}
   }
 
   h3 {
-    ${tw`text-lg font-sans`}
+    ${tw`text-lg font-sans font-bold`}
   }
 
   ul {
@@ -49,7 +49,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   blockquote {
-    ${tw`italic border-l-2 border-primaryDark pl-2`}
+    ${tw`border-l-4 border-primary italic my-8 pl-8 md:pl-12`}
   }
 
   a {

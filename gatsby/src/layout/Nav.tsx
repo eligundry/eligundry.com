@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-import tw, { styled } from 'twin.macro'
+import tw, { styled, css } from 'twin.macro'
 import { Link } from 'gatsby'
+import useLocation from 'react-use/lib/useLocation'
 
 import UserLinks from '../components/UserLinks/UserLinks'
 import EmojiText from '../components/Shared/EmojiText'
 
 interface NavProps {
   expanded: boolean
+  activePath: string | undefined
 }
 
 const NavContainer = styled.nav<NavProps>`
@@ -23,6 +25,14 @@ const NavContainer = styled.nav<NavProps>`
         hover:text-primary
         py-2 
         px-4
+      `}
+
+      ${props =>
+        props.activePath &&
+        css`
+        &[href="${props.activePath}"] {
+          ${tw`font-bold text-primary`}
+        }
       `}
     }
   }
@@ -72,6 +82,7 @@ const navLinks = {
 
 const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
+  const { pathname } = useLocation()
 
   return (
     <>
@@ -84,6 +95,7 @@ const Nav: React.FC = () => {
       <NavContainer
         role="navigation"
         expanded={hamburgerExpanded}
+        activePath={pathname}
         onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
       >
         <div className="nav-links">

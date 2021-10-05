@@ -1,14 +1,24 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import tw, { styled } from 'twin.macro'
 
 import Time from '../Shared/Time'
 import EmojiText from '../Shared/EmojiText'
-import './listing.css'
 
 interface Props {
   postEdges: GatsbyTypes.BlogListingQuery['allMdx']['edges']
   pathPrefix: string
 }
+
+const Article = styled.article`
+  & h1 {
+    ${tw`font-extrabold`}
+  }
+
+  & .description {
+    margin-top: 0;
+  }
+`
 
 const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
   const postList = postEdges
@@ -27,7 +37,7 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
   return (
     <main>
       {postList.map(post => (
-        <article
+        <Article
           key={post.path}
           itemScope
           itemType="https://schema.org/BlogPosting"
@@ -51,7 +61,7 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
               </EmojiText>
             </p>
           )}
-        </article>
+        </Article>
       ))}
     </main>
   )
