@@ -19,6 +19,7 @@ const Tooltip = styled(({ className }) => {
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: capitalize;
+  font-family: ${theme`fontFamily.sans`};
 
   &.show {
     opacity: 1;

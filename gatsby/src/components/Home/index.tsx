@@ -1,5 +1,5 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
+import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
@@ -50,6 +50,10 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
   & .under-construction {
     ${tw`inline-block`}
+  }
+
+  & .react-activity-calendar {
+    ${tw`font-mono`}
   }
 
   & .bookshelf {
@@ -181,8 +185,13 @@ const Home: React.FC = () => {
           GitHub contribution calendars are not a good indicator of whether or
           not someone is a good developer, but they are very pretty.
         </p>
-        <GitHubCalendar username="eligundry" dateFormat="yyyy-MM-dd">
-          <Tooltip />
+        <GitHubCalendar
+          username="eligundry"
+          dateFormat="yyyy-MM-dd"
+          color={theme`colors.primary`}
+          hideColorLegend
+        >
+          <Tooltip html />
         </GitHubCalendar>
       </Section>
       <Section className="reading">
