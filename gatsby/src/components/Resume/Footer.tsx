@@ -4,7 +4,7 @@ import tw, { styled } from 'twin.macro'
 import EmojiText from '../Shared/EmojiText'
 
 const Footer = styled.footer`
-  ${tw`fixed bottom-0 flex flex-row w-full border-t-2 font-sans font-bold`}
+  ${tw`fixed bottom-0 flex flex-row w-full border-t-2 font-sans font-bold text-xs pt-2`}
 
   & > * {
     ${tw`mr-4`}

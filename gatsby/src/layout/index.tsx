@@ -10,7 +10,11 @@ import Tooltip from '../components/Shared/Tooltip'
 import config from '../../data/SiteConfig'
 import eliHeadshot from '../../static/img/eli-gundry-headshot.jpg'
 
-const MainLayout: React.FC = ({ children }) => {
+interface Props {
+  hideHeader?: boolean
+}
+
+const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => {
   return (
     <IconContext.Provider value={{}}>
       <Head />
@@ -22,7 +26,7 @@ const MainLayout: React.FC = ({ children }) => {
           <meta name="description" content={config.siteDescription} />
         </Helmet>
         <meta itemProp="image" content={eliHeadshot} />
-        <Header />
+        {!hideHeader && <Header />}
         <ContentWrapper>{children}</ContentWrapper>
         <Footer />
         <Tooltip />

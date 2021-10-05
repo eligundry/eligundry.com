@@ -7,13 +7,14 @@ import Education from './Education'
 import Skills from './Skills'
 import ActivitiesInterests from './ActivitesInterests'
 import PaperArticle from '../Shared/Paper'
+import ResumeHeader from './Header'
 import ResumeFooter from './Footer'
 
 const ResumeArticle = styled(PaperArticle)`
-  ${tw`print:mb-16 print:text-base`}
+  ${tw`print:mb-16 print:text-base print:ml-1`}
 
   & h2 {
-    ${tw`font-extrabold text-2xl`}
+    ${tw`font-extrabold text-xl`}
   }
 
   & header {
@@ -25,6 +26,12 @@ const ResumeArticle = styled(PaperArticle)`
     }
   }
 
+  & .full-work-cta {
+    ${tw`font-mono text-xs`}
+    letter-spacing: -0.6px;
+    margin-top: 9px;
+  }
+
   & section {
     page-break-inside: avoid;
   }
@@ -33,6 +40,7 @@ const ResumeArticle = styled(PaperArticle)`
 const Resume: React.FC = () => {
   return (
     <ResumeArticle>
+      <ResumeHeader />
       <Work work={resumeData.work} />
       <Education education={resumeData.education} />
       <Skills skills={resumeData.skills} />

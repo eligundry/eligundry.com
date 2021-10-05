@@ -35,7 +35,7 @@ const StyledExperience = styled.section`
 
   & .title {
     ${tw`order-3 print:order-3 xs:order-2 sm:order-2`}
-    ${tw`font-semibold font-sans text-lg`}
+    ${tw`font-semibold font-sans text-base`}
   }
 
   & .tenure {

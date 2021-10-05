@@ -33,7 +33,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   ul {
-    ${tw`list-disc pl-8 my-4`}
+    ${tw`pl-8 my-4`}
+
+    list-style: square;
 
     & ul, & ol {
       ${tw`mt-0 mb-0`}
