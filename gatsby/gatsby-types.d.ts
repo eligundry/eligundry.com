@@ -609,19 +609,6 @@ type feelings = Node & {
   readonly internal: Internal;
 };
 
-type memes = Node & {
-  readonly url: Scalars['String'];
-  readonly size: Maybe<ReadonlyArray<Maybe<Scalars['Int']>>>;
-  readonly notes: Scalars['String'];
-  readonly created_at: Scalars['String'];
-  readonly modified: Scalars['String'];
-  readonly meme_id: Maybe<Scalars['Int']>;
-  readonly id: Scalars['ID'];
-  readonly parent: Maybe<Node>;
-  readonly children: ReadonlyArray<Node>;
-  readonly internal: Internal;
-};
-
 type MdxFrontmatter = {
   readonly title: Scalars['String'];
   readonly description: Maybe<Scalars['String']>;
@@ -781,7 +768,6 @@ type SitePluginPluginOptions = {
 
 type SitePluginPluginOptionsSchemas = {
   readonly feelings: Maybe<Scalars['String']>;
-  readonly memes: Maybe<Scalars['String']>;
 };
 
 type SitePluginPluginOptionsFeeds = {
@@ -991,8 +977,6 @@ type Query = {
   readonly allImageSharp: ImageSharpConnection;
   readonly feelings: Maybe<feelings>;
   readonly allFeelings: feelingsConnection;
-  readonly memes: Maybe<memes>;
-  readonly allMemes: memesConnection;
   readonly mdx: Maybe<Mdx>;
   readonly allMdx: MdxConnection;
   readonly sitePlugin: Maybe<SitePlugin>;
@@ -1229,28 +1213,6 @@ type Query_feelingsArgs = {
 type Query_allFeelingsArgs = {
   filter: Maybe<feelingsFilterInput>;
   sort: Maybe<feelingsSortInput>;
-  skip: Maybe<Scalars['Int']>;
-  limit: Maybe<Scalars['Int']>;
-};
-
-
-type Query_memesArgs = {
-  url: Maybe<StringQueryOperatorInput>;
-  size: Maybe<IntQueryOperatorInput>;
-  notes: Maybe<StringQueryOperatorInput>;
-  created_at: Maybe<StringQueryOperatorInput>;
-  modified: Maybe<StringQueryOperatorInput>;
-  meme_id: Maybe<IntQueryOperatorInput>;
-  id: Maybe<StringQueryOperatorInput>;
-  parent: Maybe<NodeFilterInput>;
-  children: Maybe<NodeFilterListInput>;
-  internal: Maybe<InternalFilterInput>;
-};
-
-
-type Query_allMemesArgs = {
-  filter: Maybe<memesFilterInput>;
-  sort: Maybe<memesSortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -2928,7 +2890,6 @@ type SitePluginPluginOptionsFilterInput = {
 
 type SitePluginPluginOptionsSchemasFilterInput = {
   readonly feelings: Maybe<StringQueryOperatorInput>;
-  readonly memes: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePluginPluginOptionsFeedsFilterListInput = {
@@ -3207,7 +3168,6 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.url'
   | 'pluginCreator.pluginOptions.rootKey'
   | 'pluginCreator.pluginOptions.schemas.feelings'
-  | 'pluginCreator.pluginOptions.schemas.memes'
   | 'pluginCreator.pluginOptions.api_key'
   | 'pluginCreator.pluginOptions.username'
   | 'pluginCreator.pluginOptions.limit'
@@ -3629,172 +3589,6 @@ type feelingsSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type memesConnection = {
-  readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<memesEdge>;
-  readonly nodes: ReadonlyArray<memes>;
-  readonly pageInfo: PageInfo;
-  readonly distinct: ReadonlyArray<Scalars['String']>;
-  readonly max: Maybe<Scalars['Float']>;
-  readonly min: Maybe<Scalars['Float']>;
-  readonly sum: Maybe<Scalars['Float']>;
-  readonly group: ReadonlyArray<memesGroupConnection>;
-};
-
-
-type memesConnection_distinctArgs = {
-  field: memesFieldsEnum;
-};
-
-
-type memesConnection_maxArgs = {
-  field: memesFieldsEnum;
-};
-
-
-type memesConnection_minArgs = {
-  field: memesFieldsEnum;
-};
-
-
-type memesConnection_sumArgs = {
-  field: memesFieldsEnum;
-};
-
-
-type memesConnection_groupArgs = {
-  skip: Maybe<Scalars['Int']>;
-  limit: Maybe<Scalars['Int']>;
-  field: memesFieldsEnum;
-};
-
-type memesEdge = {
-  readonly next: Maybe<memes>;
-  readonly node: memes;
-  readonly previous: Maybe<memes>;
-};
-
-type memesFieldsEnum =
-  | 'url'
-  | 'size'
-  | 'notes'
-  | 'created_at'
-  | 'modified'
-  | 'meme_id'
-  | 'id'
-  | 'parent.id'
-  | 'parent.parent.id'
-  | 'parent.parent.parent.id'
-  | 'parent.parent.parent.children'
-  | 'parent.parent.children'
-  | 'parent.parent.children.id'
-  | 'parent.parent.children.children'
-  | 'parent.parent.internal.content'
-  | 'parent.parent.internal.contentDigest'
-  | 'parent.parent.internal.description'
-  | 'parent.parent.internal.fieldOwners'
-  | 'parent.parent.internal.ignoreType'
-  | 'parent.parent.internal.mediaType'
-  | 'parent.parent.internal.owner'
-  | 'parent.parent.internal.type'
-  | 'parent.children'
-  | 'parent.children.id'
-  | 'parent.children.parent.id'
-  | 'parent.children.parent.children'
-  | 'parent.children.children'
-  | 'parent.children.children.id'
-  | 'parent.children.children.children'
-  | 'parent.children.internal.content'
-  | 'parent.children.internal.contentDigest'
-  | 'parent.children.internal.description'
-  | 'parent.children.internal.fieldOwners'
-  | 'parent.children.internal.ignoreType'
-  | 'parent.children.internal.mediaType'
-  | 'parent.children.internal.owner'
-  | 'parent.children.internal.type'
-  | 'parent.internal.content'
-  | 'parent.internal.contentDigest'
-  | 'parent.internal.description'
-  | 'parent.internal.fieldOwners'
-  | 'parent.internal.ignoreType'
-  | 'parent.internal.mediaType'
-  | 'parent.internal.owner'
-  | 'parent.internal.type'
-  | 'children'
-  | 'children.id'
-  | 'children.parent.id'
-  | 'children.parent.parent.id'
-  | 'children.parent.parent.children'
-  | 'children.parent.children'
-  | 'children.parent.children.id'
-  | 'children.parent.children.children'
-  | 'children.parent.internal.content'
-  | 'children.parent.internal.contentDigest'
-  | 'children.parent.internal.description'
-  | 'children.parent.internal.fieldOwners'
-  | 'children.parent.internal.ignoreType'
-  | 'children.parent.internal.mediaType'
-  | 'children.parent.internal.owner'
-  | 'children.parent.internal.type'
-  | 'children.children'
-  | 'children.children.id'
-  | 'children.children.parent.id'
-  | 'children.children.parent.children'
-  | 'children.children.children'
-  | 'children.children.children.id'
-  | 'children.children.children.children'
-  | 'children.children.internal.content'
-  | 'children.children.internal.contentDigest'
-  | 'children.children.internal.description'
-  | 'children.children.internal.fieldOwners'
-  | 'children.children.internal.ignoreType'
-  | 'children.children.internal.mediaType'
-  | 'children.children.internal.owner'
-  | 'children.children.internal.type'
-  | 'children.internal.content'
-  | 'children.internal.contentDigest'
-  | 'children.internal.description'
-  | 'children.internal.fieldOwners'
-  | 'children.internal.ignoreType'
-  | 'children.internal.mediaType'
-  | 'children.internal.owner'
-  | 'children.internal.type'
-  | 'internal.content'
-  | 'internal.contentDigest'
-  | 'internal.description'
-  | 'internal.fieldOwners'
-  | 'internal.ignoreType'
-  | 'internal.mediaType'
-  | 'internal.owner'
-  | 'internal.type';
-
-type memesGroupConnection = {
-  readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<memesEdge>;
-  readonly nodes: ReadonlyArray<memes>;
-  readonly pageInfo: PageInfo;
-  readonly field: Scalars['String'];
-  readonly fieldValue: Maybe<Scalars['String']>;
-};
-
-type memesFilterInput = {
-  readonly url: Maybe<StringQueryOperatorInput>;
-  readonly size: Maybe<IntQueryOperatorInput>;
-  readonly notes: Maybe<StringQueryOperatorInput>;
-  readonly created_at: Maybe<StringQueryOperatorInput>;
-  readonly modified: Maybe<StringQueryOperatorInput>;
-  readonly meme_id: Maybe<IntQueryOperatorInput>;
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly parent: Maybe<NodeFilterInput>;
-  readonly children: Maybe<NodeFilterListInput>;
-  readonly internal: Maybe<InternalFilterInput>;
-};
-
-type memesSortInput = {
-  readonly fields: Maybe<ReadonlyArray<Maybe<memesFieldsEnum>>>;
-  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
-};
-
 type MdxConnection = {
   readonly totalCount: Scalars['Int'];
   readonly edges: ReadonlyArray<MdxEdge>;
@@ -4206,7 +4000,6 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.url'
   | 'pluginOptions.rootKey'
   | 'pluginOptions.schemas.feelings'
-  | 'pluginOptions.schemas.memes'
   | 'pluginOptions.api_key'
   | 'pluginOptions.username'
   | 'pluginOptions.limit'
@@ -7443,10 +7236,13 @@ type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
 
-type UseMemesQueryVariables = Exact<{ [key: string]: never; }>;
+type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseMemesQuery = { readonly allMemes: { readonly memes: ReadonlyArray<Pick<memes, 'id' | 'notes' | 'size' | 'url' | 'created_at'>> } };
+type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
+      Pick<LastfmPlayback, 'date'>
+      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
+    )> } };
 
 type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7470,27 +7266,6 @@ type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ rea
         )> }
       ) }> } };
 
-type TalkBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-type TalkBySlugQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
-  )> };
-
-type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
-      Pick<LastfmPlayback, 'date'>
-      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
-    )> } };
-
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7500,6 +7275,19 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
     Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
     & { readonly frontmatter: Maybe<(
       Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
+  )> };
+
+type TalkBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+type TalkBySlugQuery = { readonly mdx: Maybe<(
+    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
