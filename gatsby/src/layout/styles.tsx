@@ -66,5 +66,13 @@ export const GlobalStyles = createGlobalStyle`
 `
 
 export const ContentWrapper = styled.main`
-  ${tw`w-full md:max-w-3xl mx-auto pt-20 mt-6`}
+  ${tw`
+    w-full 
+    md:max-w-3xl 
+    mx-auto 
+    pt-20 
+    mt-6 
+    print:mt-0
+    print:pt-0
+  `}
 `

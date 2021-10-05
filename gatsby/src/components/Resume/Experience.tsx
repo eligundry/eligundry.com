@@ -30,20 +30,22 @@ const StyledExperience = styled.section`
 
   & .name {
     ${tw`order-1`}
-    ${tw`font-bold`}
+    ${tw`font-bold text-xl`}
   }
 
   & .title {
     ${tw`order-3 print:order-3 xs:order-2 sm:order-2`}
-    ${tw`font-bold`}
+    ${tw`font-semibold font-sans text-lg`}
   }
 
   & .tenure {
     ${tw`order-2 print:order-2 xs:order-3 sm:order-3`}
+    ${tw`text-lg`}
   }
 
   & .location {
     ${tw`not-italic print:order-4 order-4`}
+    ${tw`text-lg`}
   }
 
   @media (min-width: ${theme`screens.md`}) {
@@ -146,7 +148,7 @@ const Experience: React.FC<Props> = ({
       <address
         itemProp="address"
         itemScope
-        itemType="http://schema.org/PostalAddress"
+        itemType="https://schema.org/PostalAddress"
         className="location"
       >
         {location.city && (

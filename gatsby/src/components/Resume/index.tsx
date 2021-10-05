@@ -10,10 +10,10 @@ import PaperArticle from '../Shared/Paper'
 import ResumeFooter from './Footer'
 
 const ResumeArticle = styled(PaperArticle)`
-  ${tw`print:mb-16`}
+  ${tw`print:mb-16 print:text-base`}
 
   & h2 {
-    ${tw`font-extrabold`}
+    ${tw`font-extrabold text-2xl`}
   }
 
   & header {

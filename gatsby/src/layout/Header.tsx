@@ -6,7 +6,16 @@ import useWindowSize from 'react-use/lib/useWindowSize'
 import Nav from './Nav'
 
 const HeaderElm = styled.header<{ transparent: boolean }>`
-  ${tw`fixed w-full z-10 top-0 bg-transparent transition-all duration-200`}
+  ${tw`
+    fixed 
+    print:relative
+    w-full 
+    z-10 
+    top-0 
+    bg-transparent 
+    transition-all 
+    duration-200
+  `}
 
   ${props => !props.transparent && tw`bg-white shadow`}
 
