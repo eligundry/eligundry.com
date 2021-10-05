@@ -12,7 +12,7 @@ interface Props {
 
 const Article = styled.article`
   & h1 {
-    ${tw`font-extrabold`}
+    ${tw`font-extrabold text-2xl`}
   }
 
   & .description {

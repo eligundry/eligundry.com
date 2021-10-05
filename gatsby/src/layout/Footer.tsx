@@ -1,10 +1,10 @@
 import React from 'react'
-import tw, { styled, css } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 
 import UserLinks from '../components/UserLinks/UserLinks'
 
 const FooterContainer = styled.footer`
-  ${tw`bg-white border-t border-gray-400 shadow print:hidden`}
+  ${tw`bg-white shadow print:hidden`}
 
   & .container {
     ${tw`max-w-4xl mx-auto flex py-8`}

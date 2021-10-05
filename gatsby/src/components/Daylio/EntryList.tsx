@@ -9,8 +9,6 @@ interface Props {
   entries: DaylioEntry[]
 }
 
-const bgColor = tw`text-pink-100`
-
 const EntryListWrapper = styled.section`
   position: relative;
 
@@ -20,7 +18,6 @@ const EntryListWrapper = styled.section`
     margin-left: calc(2rem - 4px);
     height: 100%;
     z-index: 8;
-    box-shadow: 0 0 0px 8px ${bgColor.color};
     margin-top: 5px;
 
     ${tw`border-4 border-primary border-solid`}

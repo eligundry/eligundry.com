@@ -10,7 +10,7 @@ const Paper = styled.div`
     pb-10
     md:px-6 
     text-xl 
-    text-gray-800 
+    text-typography
     leading-normal
   `}
 `

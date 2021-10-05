@@ -7,7 +7,7 @@ import './index.css'
 export const GlobalStyles = createGlobalStyle`
   body {
     ${tw`
-      bg-gray-100 
+      bg-siteBackground
       print:bg-transparent 
       font-serif 
       leading-normal 
@@ -65,10 +65,6 @@ export const GlobalStyles = createGlobalStyle`
   }
 `
 
-interface ContentWrapperProps {
-  wider: boolean
-}
-
-export const ContentWrapper = styled.main<ContentWrapperProps>`
-  ${tw`w-full md:max-w-3xl mx-auto pt-20`}
+export const ContentWrapper = styled.main`
+  ${tw`w-full md:max-w-3xl mx-auto pt-20 mt-6`}
 `

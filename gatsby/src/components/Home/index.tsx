@@ -62,7 +62,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
       align-items: center;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       column-gap: 1vw;
-      margin: 1vw;
+      margin: 0 1vw 1vw;
       margin-left: 0;
       text-align: center;
 
@@ -84,9 +84,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 `
 
 const Home: React.FC = () => {
-  // const { width } = useWindowSize()
-  // const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
-  const twitterTimelineHeight = 450
   const isMobile = useIsPhone()
 
   return (
@@ -102,27 +99,35 @@ const Home: React.FC = () => {
         />
         <p>I only really write in lists, so here's my deal.</p>
         <ul>
-          <li>I'm a full stack web engineer.</li>
           <li>
-            I love to plan and cook elaborate meals. It really activates the
-            engineering part of my brain!
-          </li>
-          <li>I have a non-traditional computer science education.</li>
-          <li>
-            Vim user but I actively encourage everyone to use something else.
-            Using Vim in {new Date().getFullYear()} is a cool bar trick.
+            I'm a <strong>full stack web engineer</strong>.
           </li>
           <li>
-            Die hard Cleveland Browns fan and am convinced that we will win a
-            Super Bowl one of these years.
+            I love to plan and <strong>cook elaborate meals</strong>. It really
+            activates the engineering part of my brain!
           </li>
           <li>
-            I currently live in Astoria, Queens. I didn't think I would settle
-            down in Queens and love it as much as I do, but life is like that
-            sometimes, I guess.
+            I have a <strong>non-traditional computer science education</strong>
+            . I attended a vocational school in high school, taught myself web
+            programming, bounced around colleges for computer science while
+            working the entire time before deciding to go pro!
           </li>
           <li>
-            I have a fat cat named Fonzie and I sorta have{' '}
+            <strong>Vim user</strong> but I actively encourage everyone to use
+            something else. Using Vim in {new Date().getFullYear()} is a cool
+            bar trick.
+          </li>
+          <li>
+            Die hard <strong>Cleveland Browns</strong> fan and am convinced that
+            we will win a Super Bowl one of these years.
+          </li>
+          <li>
+            I currently live in <strong>Astoria, Queens</strong>. I didn't think
+            I would settle down in Queens and love it as much as I do, but life
+            is like that sometimes, I guess.
+          </li>
+          <li>
+            I have a <strong>fat cat named Fonzie</strong> and I sorta have{' '}
             <a href="https://twitter.com/EliGundry/status/1055933062125703168">
               a tattoo of him on my arm
             </a>

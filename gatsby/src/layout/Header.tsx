@@ -6,9 +6,9 @@ import useWindowSize from 'react-use/lib/useWindowSize'
 import Nav from './Nav'
 
 const HeaderElm = styled.header<{ transparent: boolean }>`
-  ${tw`fixed w-full z-10 top-0`}
+  ${tw`fixed w-full z-10 top-0 bg-transparent transition-all duration-200`}
 
-  ${props => !props.transparent && tw`bg-white`}
+  ${props => !props.transparent && tw`bg-white shadow`}
 
   & .wrapper {
     ${tw`w-full md:max-w-4xl mx-auto flex flex-wrap items-center justify-between mt-0 py-3`}
@@ -21,7 +21,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
 
     & a {
       ${tw`
-        text-gray-900 
+        text-typographyDark
         hover:text-primary 
         text-base 
         no-underline 
@@ -34,7 +34,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
 `
 
 const ProgressBar = styled.progress`
-  ${tw`h-1 z-20 top-0`}
+  ${tw`h-1 z-20 top-0 print:hidden`}
 
   vertical-align: top;
   width: 100%;

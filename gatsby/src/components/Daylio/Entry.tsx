@@ -70,6 +70,10 @@ const EntryWrapper = styled.div<Partial<Props>>`
     padding-left: 0;
   }
 
+  & time {
+    ${tw`font-sans`}
+  }
+
   ${props =>
     props.variant === DaylioVariants.list &&
     css`

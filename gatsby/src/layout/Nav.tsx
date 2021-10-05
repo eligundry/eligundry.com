@@ -3,7 +3,6 @@ import tw, { styled, css } from 'twin.macro'
 import { Link } from 'gatsby'
 import useLocation from 'react-use/lib/useLocation'
 
-import UserLinks from '../components/UserLinks/UserLinks'
 import EmojiText from '../components/Shared/EmojiText'
 
 interface NavProps {
@@ -12,7 +11,20 @@ interface NavProps {
 }
 
 const NavContainer = styled.nav<NavProps>`
-  ${tw`w-full flex-grow lg:flex lg:items-center lg:w-auto lg:block mt-2 lg:mt-0 bg-gray-100 md:bg-transparent z-20 font-sans`}
+  ${tw`
+    w-full 
+    flex-grow 
+    lg:flex 
+    lg:items-center 
+    lg:w-auto 
+    lg:block 
+    mt-2 
+    lg:mt-0 
+    md:bg-transparent 
+    z-20 
+    font-sans
+    print:hidden
+  `}
 
   & .nav-links {
     ${tw`lg:flex justify-end flex-1 items-center`}
@@ -20,7 +32,7 @@ const NavContainer = styled.nav<NavProps>`
     & a {
       ${tw`
         inline-block 
-        text-gray-600 
+        text-typographyLite
         no-underline 
         hover:text-primary
         py-2 
@@ -49,6 +61,7 @@ const Hamburger = styled.button`
     items-center 
     appearance-none 
     focus:outline-none
+    print:hidden
   `}
 `
 
