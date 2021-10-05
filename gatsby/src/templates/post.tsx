@@ -13,7 +13,11 @@ import './prism-material-light.css'
 
 const Article = styled<React.FC>(Paper.article)`
   & header {
-    ${tw`mb-2`}
+    ${tw`font-sans text-sm md:text-base font-normal text-gray-600`}
+
+    & h1 {
+      ${tw`font-bold font-sans break-normal text-gray-900 pt-6 pb-2 text-3xl md:text-4xl`}
+    }
   }
 
   & .twitter-tweet {

@@ -103,7 +103,7 @@
     "build:gh-actions": "npm run build:pp",
     "deploy": "gatsby-plugin-s3 deploy",
     "clean": "gatsby clean",
-    "lint:js": "eslint --ext .js,.jsx .",
+    "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
     "lint:md": "remark content/",
     "write-good": "write-good $(glob 'content/*.md')",
     "format:js": "prettier '**/*.{js,jsx}' --write",

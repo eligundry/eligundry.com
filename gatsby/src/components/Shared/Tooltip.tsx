@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactTooltip from 'react-tooltip'
-import { styled } from 'twin.macro'
+import { styled, theme } from 'twin.macro'
 
 const Tooltip = styled(({ className }) => {
   return (
@@ -25,6 +25,7 @@ const Tooltip = styled(({ className }) => {
   }
 
   & strong {
+    font-family: ${theme`fontFamily.sans`};
     font-weight: 600;
   }
 `

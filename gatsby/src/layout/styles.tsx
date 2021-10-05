@@ -6,7 +6,13 @@ import './index.css'
 
 export const GlobalStyles = createGlobalStyle`
   body {
-    ${tw`bg-gray-100 print:bg-transparent font-serif leading-normal tracking-normal`}
+    ${tw`
+      bg-gray-100 
+      print:bg-transparent 
+      font-serif 
+      leading-normal 
+      tracking-normal
+    `}
   }
 
   #___gatsby #gatsby-focus-wrapper {
@@ -43,11 +49,11 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   blockquote {
-    ${tw`italic border-l-2 border-teal-400 pl-2`}
+    ${tw`italic border-l-2 border-primaryDark pl-2`}
   }
 
   a {
-    ${tw`text-teal-500 hover:underline focus:underline`}
+    ${tw`text-primary hover:underline focus:underline`}
   }
 
   p {
@@ -64,5 +70,5 @@ interface ContentWrapperProps {
 }
 
 export const ContentWrapper = styled.main<ContentWrapperProps>`
-  ${tw` w-full md:max-w-3xl mx-auto pt-20`}
+  ${tw`w-full md:max-w-3xl mx-auto pt-20`}
 `

@@ -9,6 +9,10 @@ module.exports = {
     colors: {
       ...colors,
       transparent: 'transparent',
+      primary: '#088CDE',
+      primaryLite: '#92c6e7',
+      primaryDark: '#4E7A94',
+      secondary: '#D67A27',
     },
     screens: {
       ...defaultTheme.screens,

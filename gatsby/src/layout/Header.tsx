@@ -17,7 +17,15 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     ${tw`pl-4`}
 
     & a {
-      ${tw`text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl`}
+      ${tw`
+        text-gray-900 
+        hover:text-primary 
+        text-base 
+        no-underline 
+        hover:no-underline 
+        font-extrabold 
+        text-xl
+      `}
     }
   }
 `

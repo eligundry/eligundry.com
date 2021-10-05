@@ -1,11 +1,18 @@
-import React from 'react'
 import tw, { styled } from 'twin.macro'
 
 export const PaperStyles = tw`
 `
 
 const Paper = styled.div`
-  ${tw`w-full px-4 md:px-6 text-xl text-gray-800 leading-normal`}
+  ${tw`
+    w-full 
+    px-4 
+    pb-10
+    md:px-6 
+    text-xl 
+    text-gray-800 
+    leading-normal
+  `}
 `
 
 Paper.article = Paper.withComponent('article')
