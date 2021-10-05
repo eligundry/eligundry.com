@@ -71,7 +71,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
   }
 
   & time {
-    ${tw`font-sans`}
+    ${tw`font-sans text-base`}
   }
 
   ${props =>

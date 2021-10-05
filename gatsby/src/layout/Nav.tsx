@@ -27,7 +27,12 @@ const NavContainer = styled.nav<NavProps>`
   `}
 
   & .nav-links {
-    ${tw`lg:flex justify-end flex-1 items-center`}
+    ${tw`
+      lg:flex 
+      justify-end 
+      flex-1 
+      items-center 
+    `}
 
     & a {
       ${tw`
@@ -126,7 +131,6 @@ const Nav: React.FC = () => {
               </Link>
             )
           )}
-          {/* <UserLinks /> */}
         </div>
       </NavContainer>
     </>

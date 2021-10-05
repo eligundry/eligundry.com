@@ -9,8 +9,12 @@ const FooterContainer = styled.footer`
   & .container {
     ${tw`max-w-4xl mx-auto flex py-8`}
 
-    & section {
-      ${tw`flex w-full md:w-1/2 flex-col`}
+    & .about {
+      ${tw`flex w-2/3 flex-col mr-2`}
+    }
+
+    & .social {
+      ${tw`flex w-1/3 flex-col`}
     }
   }
 `
@@ -19,7 +23,7 @@ const Footer: React.FC = () => {
   return (
     <FooterContainer>
       <div className="container">
-        <section>
+        <section className="about">
           <h3>About</h3>
           <p>
             I'm baby crucifix bespoke tote bag, mumblecore flannel chambray
@@ -30,7 +34,7 @@ const Footer: React.FC = () => {
             franzen.
           </p>
         </section>
-        <section>
+        <section className="social">
           <h3>Social</h3>
           <UserLinks />
         </section>

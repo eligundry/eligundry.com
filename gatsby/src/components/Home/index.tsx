@@ -8,7 +8,6 @@ import Daylio from '../Daylio/index'
 import Paper from '../Shared/Paper'
 import Reading from '../Reading'
 import Listening from '../Listening'
-import underConstructionGif from '../../../static/img/under-construction.gif'
 import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
@@ -21,7 +20,7 @@ interface SectionProps {
 }
 
 const Section = styled<React.FC<SectionProps>>(Paper.section)`
-  ${tw`sm:mx-2 md:mx-2`}
+  ${tw`sm:mx-2 md:mx-2 mb-4`}
 
   & h2 {
     ${tw`text-4xl text-primary font-extrabold`}
@@ -138,6 +137,7 @@ const Home: React.FC = () => {
             .
           </li>
         </ul>
+        {/*
         <p>
           I don't think I'll ever truly be happy with the layout of style of
           this site. I know what looks good but am uterly powerless to make
@@ -153,9 +153,10 @@ const Home: React.FC = () => {
             alt="90s style under construction gif"
           />
         </a>
+        */}
       </Section>
       <Section className="feeling">
-        <h2>Feeling</h2>
+        <h2>How I'm Feeling</h2>
         <p className="summary">
           A while ago, I decided to start journaling my feelings. Being a
           software engineer,{' '}
@@ -173,7 +174,7 @@ const Home: React.FC = () => {
         )}
       </Section>
       <Section className="coding">
-        <h2>Coding</h2>
+        <h2>Do You Code?</h2>
         <p className="summary">
           I make a living developing web applications. I jump all around the
           stack and will do whatever it takes to ship. Need me to do some devops
@@ -195,7 +196,7 @@ const Home: React.FC = () => {
         </GitHubCalendar>
       </Section>
       <Section className="reading">
-        <h2>Reading</h2>
+        <h2>What I'm Reading</h2>
         <p className="summary">
           I wish I read more, but there are only so many hours in the day. These
           are the books that I'm reading right now. You can find me on{' '}
@@ -212,7 +213,7 @@ const Home: React.FC = () => {
         </div>
       </Section>
       <Section className="listening">
-        <h2>Listening</h2>
+        <h2>What I'm Listening To</h2>
         <p className="summary">
           I listen to way too much music and I love to listen to full albums.
           Below is my current playlist of songs I have on repeat and the top

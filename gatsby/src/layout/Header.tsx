@@ -22,7 +22,17 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     tw`bg-white shadow print:shadow-none print:bg-transparent`}
 
   & .wrapper {
-    ${tw`w-full md:max-w-4xl mx-auto flex flex-wrap items-center justify-between mt-0 py-3`}
+    ${tw`
+      w-full 
+      md:max-w-4xl 
+      mx-auto 
+      flex 
+      flex-wrap 
+      items-center 
+      justify-between 
+      mt-0 
+      py-3
+    `}
 
     margin-top: -1.5rem;
   }

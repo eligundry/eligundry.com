@@ -56,7 +56,7 @@ const DaylioChart: React.FC = () => {
             data,
             backgroundColor: 'transparent',
             pointStyle: 'rect',
-            borderColor: theme`colors.primaryDark`,
+            borderColor: theme`colors.primaryLite`,
             pointBorderColor: theme`colors.primary`,
             pointBackgroundColor: theme`colors.primary`,
             radius: 5,
