@@ -35,6 +35,14 @@ const ResumeArticle = styled(PaperArticle)`
   & section {
     page-break-inside: avoid;
   }
+
+  & ul {
+    ${tw`m-0 pl-0 sm:list-inside print:list-outside`}
+
+    & ul, ol {
+      ${tw`pl-8`}
+    }
+  }
 `
 
 const Resume: React.FC = () => {

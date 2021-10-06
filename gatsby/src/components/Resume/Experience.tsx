@@ -92,7 +92,7 @@ const StyledExperience = styled.section`
   & .description,
   & .summary {
     margin: 0;
-    ${tw`m-0 sm:list-inside print:list-outside pl-0 order-5`}
+    ${tw`order-5`}
   }
 
   & .tenure,
