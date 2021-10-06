@@ -1,6 +1,7 @@
 import tw, { styled } from 'twin.macro'
 import { createGlobalStyle } from 'styled-components'
 
+import './fonts.css'
 import 'tailwindcss/dist/base.min.css'
 import './prism-material-light.css'
 
