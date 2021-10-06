@@ -60,7 +60,6 @@ const Hamburger = styled.button`
   ${tw`
     block 
     lg:hidden 
-    pr-4 
     flex 
     items-center 
     appearance-none 
