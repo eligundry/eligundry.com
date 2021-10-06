@@ -40,11 +40,11 @@ const Post: React.FC<Props> = ({
           <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
         )}
         {location && (
-          <p className="location">
+          <address>
             <EmojiText label="location of talk" emoji="📍">
               {location}
             </EmojiText>
-          </p>
+          </address>
         )}
       </header>
       {preBody}
@@ -69,6 +69,14 @@ const Article = styled<React.FC>(Paper.article)`
         md:text-4xl
       `}
     }
+
+    & > * {
+      ${tw`block`}
+    }
+
+    & time + address {
+      ${tw`mt-2`}
+    }
   }
 
   & .twitter-tweet {
@@ -84,6 +92,10 @@ const Article = styled<React.FC>(Paper.article)`
       font-style: italic;
       text-align: center;
     }
+  }
+
+  & .gatsby-resp-iframe-wrapper {
+    ${tw`my-4`}
   }
 `
 

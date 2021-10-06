@@ -11,8 +11,14 @@ interface Props {
 }
 
 const Article = styled.article`
+  ${tw`mb-4`}
+
   & h1 {
-    ${tw`font-extrabold text-2xl`}
+    ${tw`font-extrabold text-3xl leading-none`}
+  }
+
+  & > * {
+    ${tw`mb-2`}
   }
 
   & .description {
