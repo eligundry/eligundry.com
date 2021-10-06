@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import tw, { styled, css } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import { Link } from 'gatsby'
-import useLocation from 'react-use/lib/useLocation'
 
 import EmojiText from '../components/Shared/EmojiText'
 
 interface NavProps {
   expanded: boolean
-  activePath: string | undefined
 }
 
 const NavContainer = styled.nav<NavProps>`
@@ -20,7 +18,9 @@ const NavContainer = styled.nav<NavProps>`
     lg:block 
     mt-2 
     lg:mt-0 
-    md:bg-transparent 
+    sm:bg-white
+    md:bg-white
+    lg:bg-transparent
     z-20 
     font-sans
     print:hidden
@@ -28,10 +28,13 @@ const NavContainer = styled.nav<NavProps>`
 
   & .nav-links {
     ${tw`
-      lg:flex 
+      flex 
+      flex-row
+      sm:flex-col
       justify-end 
       flex-1 
       items-center 
+      sm:items-start
     `}
 
     & a {
@@ -44,13 +47,9 @@ const NavContainer = styled.nav<NavProps>`
         px-4
       `}
 
-      ${props =>
-        props.activePath &&
-        css`
-        &[href="${props.activePath}"] {
-          ${tw`font-bold text-primary`}
-        }
-      `}
+      &[aria-current="page"] {
+        ${tw`font-bold text-primary`}
+      }
     }
   }
 
@@ -67,7 +66,12 @@ const Hamburger = styled.button`
     appearance-none 
     focus:outline-none
     print:hidden
+    absolute
+    text-2xl
   `}
+
+  right: 1rem;
+  top: 1rem;
 `
 
 const navLinks = {
@@ -100,7 +104,6 @@ const navLinks = {
 
 const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
-  const { pathname } = useLocation()
 
   return (
     <>
@@ -113,7 +116,6 @@ const Nav: React.FC = () => {
       <NavContainer
         role="navigation"
         expanded={hamburgerExpanded}
-        activePath={pathname}
         onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
       >
         <div className="nav-links">

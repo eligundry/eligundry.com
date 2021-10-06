@@ -17,15 +17,16 @@ module.exports = {
       typographyLite: '#52525b',
       typographyDark: '#18181b',
       siteBackground: '#f4f4f5',
+      white: '#fff',
     },
     screens: {
       ...defaultTheme.screens,
       xs: {
         min: '0px',
-        max: '375px',
+        max: '767px',
       },
       sm: {
-        min: '376px',
+        min: '0px',
         max: '767px',
       },
       print: {

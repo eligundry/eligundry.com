@@ -20,22 +20,23 @@ interface Props extends DaylioEntry {
 }
 
 const EntryWrapper = styled.div<Partial<Props>>`
-  display: block;
+  ${tw`flex flex-row`}
 
   ${props =>
     props.variant === DaylioVariants.home &&
-    css`
-      @media (${styleVariables.breakPoints.mobile}) {
-        max-width: 100%;
-      }
-    `}
+    tw`flex-row-reverse`}
 
   & .emoji-column {
-    display: inline-block;
-    width: 4rem;
-    vertical-align: top;
-    line-height: 1;
-    margin-right: 1em;
+    ${props =>
+      props.variant === DaylioVariants.list
+        ? css`
+            display: inline-block;
+            width: 4rem;
+            vertical-align: top;
+            line-height: 1;
+            margin-right: 1em;
+          `
+        : tw`absolute`}
 
     & > * {
       display: block;
@@ -46,7 +47,11 @@ const EntryWrapper = styled.div<Partial<Props>>`
   & .text-column {
     display: inline-block;
     width: 100%;
-    max-width: calc(100% - 6rem);
+    ${props =>
+      props.variant === DaylioVariants.list &&
+      css`
+        max-width: calc(100% - 6rem);
+      `}
 
     & h3 {
       font-size: 1.5em;

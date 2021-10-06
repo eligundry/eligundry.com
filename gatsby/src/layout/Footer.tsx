@@ -7,14 +7,41 @@ const FooterContainer = styled.footer`
   ${tw`bg-white shadow print:hidden`}
 
   & .container {
-    ${tw`max-w-4xl mx-auto flex py-8`}
+    ${tw`
+        max-w-4xl 
+        mx-auto 
+        flex 
+        py-8
+        sm:flex-col-reverse
+        sm:px-8
+      `}
+
+    & > * {
+      ${tw`
+        flex 
+        flex-col
+      `}
+    }
 
     & .about {
-      ${tw`flex w-2/3 flex-col mr-2`}
+      ${tw`
+        w-2/3 
+        sm:w-full
+        mr-2
+        sm:mr-0
+      `}
+
+      & p {
+        ${tw`mt-0`}
+      }
     }
 
     & .social {
-      ${tw`flex w-1/3 flex-col`}
+      ${tw`
+        w-1/3 
+        sm:w-full
+        sm:mb-4
+      `}
     }
   }
 `

@@ -103,7 +103,7 @@ const Home: React.FC = () => {
         <p>I only really write in lists, so here's my deal.</p>
         <ul>
           <li>
-            I'm a <strong>full stack web engineer</strong>.
+            I am a <strong>full stack web engineer</strong>.
           </li>
           <li>
             I love to plan and <strong>cook elaborate meals</strong>. It really

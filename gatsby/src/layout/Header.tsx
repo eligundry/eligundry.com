@@ -12,14 +12,17 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     w-full 
     z-10 
     top-0 
-    bg-transparent 
+    bg-transparent
+    sm:bg-white
+    md:bg-white
     transition-all 
     duration-200
   `}
 
   ${props =>
-    !props.transparent &&
-    tw`bg-white shadow print:shadow-none print:bg-transparent`}
+    !props.transparent
+      ? tw`bg-white shadow print:shadow-none print:bg-transparent`
+      : tw`bg-transparent lg:bg-transparent`}
 
   & .wrapper {
     ${tw`
@@ -28,7 +31,10 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
       mx-auto 
       flex 
       flex-wrap 
+      flex-row
       items-center 
+      sm:flex-col
+      sm:items-start
       justify-between 
       mt-0 
       py-3
