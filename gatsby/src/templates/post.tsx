@@ -1,47 +1,11 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
-import tw, { styled } from 'twin.macro'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import Layout from '../layout/index'
-import Paper from '../components/Shared/Paper'
 import SEO from '../components/SEO'
 import Comments from '../components/Comments'
-import Time from '../components/Shared/Time'
-
-const Article = styled<React.FC>(Paper.article)`
-  & header {
-    ${tw`font-sans text-sm md:text-base font-normal text-typographyLite`}
-
-    & h1 {
-      ${tw`
-        font-bold 
-        font-sans 
-        break-normal 
-        text-typographyDark 
-        pb-2 
-        text-3xl 
-        md:text-4xl
-      `}
-    }
-  }
-
-  & .twitter-tweet {
-    margin: 0 auto;
-  }
-
-  & img[src*='.gif'] {
-    margin: 0 auto;
-  }
-
-  & figure {
-    figcaption {
-      font-style: italic;
-      text-align: center;
-    }
-  }
-`
+import Post from '../components/Post'
 
 const PostTemplate: React.FC<PageProps<
   GatsbyTypes.BlogPostBySlugQuery
@@ -60,35 +24,30 @@ const PostTemplate: React.FC<PageProps<
         <title>{post.title}</title>
       </Helmet>
       <SEO path={path} post={postNode} />
-      <Article itemScope itemType="https://schema.org/BlogPosting">
-        <link itemProp="author publisher" href="#eli-gundry" />
-        <meta itemProp="image" content={post.cover?.publicURL} />
-        {postNode?.fields?.latestCommitDate && (
-          <meta
-            itemProp="dateModified"
-            content={postNode.fields.latestCommitDate}
-          />
-        )}
-        <header>
-          <h1 itemProp="name headline">{post.title}</h1>
-          {post?.date && (
-            <Time itemProp="datePublished" dateTime={new Date(post.date)} />
-          )}
-        </header>
-        {post?.tags?.includes('icymi') && (
-          <blockquote>
-            <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
-            review and recommend old albums that you may have missed. I used to
-            write them in a #music Slack channel at a previous job, but now I
-            write them here.
-          </blockquote>
-        )}
-        {postNode?.body && (
-          <MDXRenderer itemProp="articleBody">{postNode.body}</MDXRenderer>
-        )}
-        <hr />
-        <Comments />
-      </Article>
+      <Post
+        title={post.title}
+        body={postNode?.body}
+        datePublished={post?.date}
+        dateModified={postNode?.fields?.latestCommitDate}
+        itemType="BlogPosting"
+        featuredImageURL={post.cover?.publicURL}
+        footer={
+          <>
+            <hr />
+            <Comments />
+          </>
+        }
+        preBody={
+          post?.tags?.includes('icymi') && (
+            <blockquote>
+              <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
+              review and recommend old albums that you may have missed. I used
+              to write them in a #music Slack channel at a previous job, but now
+              I write them here.
+            </blockquote>
+          )
+        }
+      />
     </Layout>
   )
 }
