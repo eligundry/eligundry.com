@@ -8,7 +8,8 @@ const FooterContainer = styled.footer`
 
   & .container {
     ${tw`
-        max-w-4xl 
+        max-w-3xl 
+        w-full
         mx-auto 
         flex 
         py-8

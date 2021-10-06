@@ -70,11 +70,6 @@ const EntryWrapper = styled.div<Partial<Props>>`
       `}
   }
 
-  & .notes {
-    margin-top: 0;
-    padding-left: 0;
-  }
-
   & time {
     ${tw`font-sans text-base`}
   }

@@ -20,7 +20,7 @@ interface SectionProps {
 }
 
 const Section = styled<React.FC<SectionProps>>(Paper.section)`
-  ${tw`sm:mx-2 md:mx-2 mb-4`}
+  ${tw`mb-4`}
 
   & h2 {
     ${tw`text-4xl text-primary font-extrabold`}
@@ -76,12 +76,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
       & img {
         min-width: 75px;
       }
-    }
-  }
-
-  &.tweets {
-    & .content {
-      ${tw`flex flex-row sm:flex-col`}
     }
   }
 `
