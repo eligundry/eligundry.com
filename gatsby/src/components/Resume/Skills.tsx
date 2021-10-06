@@ -76,7 +76,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
 
 const SkillsList = styled.ul`
   && {
-    ${tw`pl-0 mt-0`}
+    ${tw`pl-0 mt-0 mb-4`}
   }
 `
 
