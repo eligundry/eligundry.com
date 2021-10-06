@@ -14,7 +14,6 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     top-0 
     bg-transparent
     sm:bg-white
-    md:bg-white
     transition-all 
     duration-200
   `}
@@ -27,7 +26,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
   & .wrapper {
     ${tw`
       w-full 
-      md:max-w-4xl 
+      md:max-w-3xl 
       mx-auto 
       flex 
       flex-wrap 
@@ -38,14 +37,13 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
       justify-between 
       mt-0 
       py-3
+      sm:px-4
     `}
 
     margin-top: -1.5rem;
   }
 
   & h1 {
-    ${tw`pl-4`}
-
     & a {
       ${tw`
         text-typographyDark

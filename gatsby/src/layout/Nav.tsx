@@ -10,16 +10,12 @@ interface NavProps {
 
 const NavContainer = styled.nav<NavProps>`
   ${tw`
-    w-full 
+    w-auto 
     flex-grow 
     lg:flex 
     lg:items-center 
-    lg:w-auto 
     lg:block 
-    mt-2 
-    lg:mt-0 
     sm:bg-white
-    md:bg-white
     lg:bg-transparent
     z-20 
     font-sans
@@ -45,6 +41,7 @@ const NavContainer = styled.nav<NavProps>`
         hover:text-primary
         py-2 
         px-4
+        sm:px-0
       `}
 
       &[aria-current="page"] {
@@ -53,12 +50,13 @@ const NavContainer = styled.nav<NavProps>`
     }
   }
 
-  ${props => !props.expanded && tw`hidden`}
+  ${props => !props.expanded && tw`sm:hidden`}
 `
 
 const Hamburger = styled.button`
   ${tw`
     block 
+    md:hidden
     lg:hidden 
     flex 
     items-center 

@@ -6,9 +6,8 @@ export const PaperStyles = tw`
 const Paper = styled.div`
   ${tw`
     w-full 
-    px-4 
     pb-10
-    md:px-6 
+    sm:px-4
     text-xl 
     text-typography
     leading-normal

@@ -58,16 +58,6 @@ const EntryWrapper = styled.div<Partial<Props>>`
       margin-top: 0.2em;
       margin-bottom: 0.3em;
     }
-
-    ${props =>
-      props.variant === DaylioVariants.list &&
-      css`
-        @media (${styleVariables.breakPoints.mobile}) {
-          padding-left: 1.8rem;
-          z-index: 11;
-          position: relative;
-        }
-      `}
   }
 
   & time {

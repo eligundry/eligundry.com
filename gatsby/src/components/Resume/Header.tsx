@@ -8,11 +8,11 @@ const Header = styled.header`
 
   border: 0 !important;
 
-  h1 a {
+  & h1 a {
     ${tw`text-typographyDark text-2xl font-extrabold`}
   }
 
-  h2 {
+  && h2 {
     ${tw`text-primary text-sm`}
     margin-top: 10px;
 

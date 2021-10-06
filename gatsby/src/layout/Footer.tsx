@@ -14,7 +14,7 @@ const FooterContainer = styled.footer`
         flex 
         py-8
         sm:flex-col-reverse
-        sm:px-8
+        sm:px-4
       `}
 
     & > * {
@@ -28,7 +28,7 @@ const FooterContainer = styled.footer`
       ${tw`
         w-2/3 
         sm:w-full
-        mr-2
+        mr-4
         sm:mr-0
       `}
 
@@ -54,12 +54,14 @@ const Footer: React.FC = () => {
         <section className="about">
           <h3>About</h3>
           <p>
-            I'm baby crucifix bespoke tote bag, mumblecore flannel chambray
-            typewriter before they sold out. Tbh butcher iceland art party
-            pitchfork humblebrag wayfarers iPhone air plant. Taxidermy iceland
-            +1 dreamcatcher, tacos live-edge brunch raclette fam gastropub pok
-            pok bushwick. Scenester fanny pack retro single-origin coffee seitan
-            franzen.
+            <a href="https://hipsum.co/">
+              I'm baby crucifix bespoke tote bag, mumblecore flannel chambray
+              typewriter before they sold out
+            </a>
+            . Tbh butcher iceland art party pitchfork humblebrag wayfarers
+            iPhone air plant. Taxidermy iceland +1 dreamcatcher, tacos live-edge
+            brunch raclette fam gastropub pok pok bushwick. Scenester fanny pack
+            retro single-origin coffee seitan franzen.
           </p>
         </section>
         <section className="social">

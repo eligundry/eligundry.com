@@ -35,16 +35,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
     width: 200px;
     height: 250px;
 
-    ${tw`
-      float-right 
-      ml-8 
-      sm:float-none 
-      xs:float-none 
-      sm:ml-0 
-      sm:mt-4
-      xs:ml-0
-      xs:mt-4
-    `}
+    ${tw`float-right ml-8 sm:hidden`}
   }
 
   & .under-construction {
