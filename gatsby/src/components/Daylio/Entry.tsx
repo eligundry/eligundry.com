@@ -20,22 +20,23 @@ interface Props extends DaylioEntry {
 }
 
 const EntryWrapper = styled.div<Partial<Props>>`
-  display: block;
+  ${tw`flex flex-row`}
 
   ${props =>
     props.variant === DaylioVariants.home &&
-    css`
-      @media (${styleVariables.breakPoints.mobile}) {
-        max-width: 100%;
-      }
-    `}
+    tw`flex-row-reverse`}
 
   & .emoji-column {
-    display: inline-block;
-    width: 4rem;
-    vertical-align: top;
-    line-height: 1;
-    margin-right: 1em;
+    ${props =>
+      props.variant === DaylioVariants.list
+        ? css`
+            display: inline-block;
+            width: 4rem;
+            vertical-align: top;
+            line-height: 1;
+            margin-right: 1em;
+          `
+        : tw`absolute`}
 
     & > * {
       display: block;
@@ -46,28 +47,21 @@ const EntryWrapper = styled.div<Partial<Props>>`
   & .text-column {
     display: inline-block;
     width: 100%;
-    max-width: calc(100% - 6rem);
+    ${props =>
+      props.variant === DaylioVariants.list &&
+      css`
+        max-width: calc(100% - 6rem);
+      `}
 
     & h3 {
       font-size: 1.5em;
       margin-top: 0.2em;
       margin-bottom: 0.3em;
     }
-
-    ${props =>
-      props.variant === DaylioVariants.list &&
-      css`
-        @media (${styleVariables.breakPoints.mobile}) {
-          padding-left: 1.8rem;
-          z-index: 100;
-          position: relative;
-        }
-      `}
   }
 
-  & .notes {
-    margin-top: 0;
-    padding-left: 0;
+  & time {
+    ${tw`font-sans text-base`}
   }
 
   ${props =>
@@ -98,7 +92,7 @@ const bgColor = tw`text-pink-100`
 const Emoji = styled.span<ActivityEmojiProps>`
   font-size: 4rem;
   cursor: default;
-  z-index: 100;
+  z-index: 9;
   position: relative;
 
   ${props =>

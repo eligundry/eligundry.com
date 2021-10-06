@@ -161,8 +161,8 @@ function useOrder() {
 		- This can be used to prevent re-renders.
 		- By default, it uses reference equality (`===`), but Redux does provide a `shallowEqual` function that can be tossed in here easily.
 - Can easily be combined with `reselect` and `re-reselect`
-	- https://github.com/reduxjs/reselect
-	- https://github.com/toomuchdesign/re-reselect
+	- [reselect](https://github.com/reduxjs/reselect)
+	- [re-reselect](https://github.com/toomuchdesign/re-reselect)
 - Can return more than just objects
 
 ```javascript
@@ -172,7 +172,7 @@ const tweets = useSelector(store => store.tweets.byUserID[userID])
 
 ##### `useDispatch`
 
-- https://react-redux.js.org/next/api/hooks#usedispatch
+- [useDispatch](https://react-redux.js.org/next/api/hooks#usedispatch)
 - This is the hooks version of `mapDispatchToProps`
 - It just returns a `dispatch` function that you can pipe actions into.
 - If you are using this in a higher order component, you should wrap your callbacks with `useCallback` to prevent re-renders
@@ -184,9 +184,9 @@ const sendTweet = useCallback((tweet) => dispatch({ type: 'SEND_TWEET', tweet })
 
 ##### The Community
 
-- https://github.com/rehooks/awesome-react-hooks
+- [rehooks/awesome-react-hooks](https://github.com/rehooks/awesome-react-hooks)
 	- List of all the hooks ever
-- https://github.com/streamich/react-use
+- [react-use](https://github.com/streamich/react-use)
 	- So many good hooks, especially the ones that replicate the existing life cycle methods
 
 ### Hooks + Redux
@@ -204,7 +204,9 @@ const sendTweet = useCallback((tweet) => dispatch({ type: 'SEND_TWEET', tweet })
 	- You can take the provider approach and load all your widgets in to one context and then provide another context that will allow you to view a single widget in another context.
 	- But now you have to persist and update these widgets
 	- Do you think you can do this better than Redux? Furthermore, do you think you can cultivate an ecosystem of ready made middlewares that make you more efficient/reliable?
-	- https://twitter.com/0xca0a/status/1192420546912432128
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">local state, yes. but global, no. if you centralize it, it will either turn into a salad or tank performance b/c everything re-renders on every state change. i am seeing people do this recently as some kind of work around, which is pretty sad: <a href="https://t.co/ouhjisVsQ4">https://t.co/ouhjisVsQ4</a></p>&mdash; ☄︎ (@0xca0a) <a href="https://twitter.com/0xca0a/status/1192420546912432128?ref_src=twsrc%5Etfw">November 7, 2019</a></blockquote>
+
 - Another thing I am skeptical about with hooks is tracing and debugging
 	- Let's remember that hooks are just unnamed items in a global array
 	- You get a bug report from a user, how do you determine where the bug came from/how they got there?
@@ -213,7 +215,7 @@ const sendTweet = useCallback((tweet) => dispatch({ type: 'SEND_TWEET', tweet })
 	- I have not seen how you can do something similar with hooks in a built in fashion
 		- More to the point, I struggle to debug simple hooks in a local dev environment
 		- I've had a few bugs come up with hooks endlessly re-rendering a component from the "inside" (whyDidYouRender did not pick up on it because it only re-rendered the children) that I've had to manually put `console.log`s in all the hooks to determine which one was causing it.
-	- Maybe I should fix this up like I'd like https://github.com/troch/reinspect
+	- Maybe I should fix this up like I'd like [troch/reinspect](https://github.com/troch/reinspect)
 
 ```javascript
 function useTweets(userID) {

@@ -1,7 +1,7 @@
 {
   "name": "eligundry.com",
-  "description": "GatsbyJS starter that includes examples for advanced use cases.",
-  "version": "1.1.0",
+  "description": "Eli Gundry's personal website",
+  "version": "3.0.0",
   "author": "Eli Gundry <eligundry@gmail.com>",
   "repository": "https://github.com/eligundry/eligundry.com",
   "dependencies": {
@@ -46,7 +46,7 @@
     "react": "^17.0.2",
     "react-chartjs-2": "^3.0.3",
     "react-dom": "^17.0.2",
-    "react-github-calendar": "^2.0.2",
+    "react-github-calendar": "^3.1.2",
     "react-helmet": "^6.1.0",
     "react-icons": "^3.11.0",
     "react-image-lightbox": "^5.1.1",
@@ -103,7 +103,7 @@
     "build:gh-actions": "npm run build:pp",
     "deploy": "gatsby-plugin-s3 deploy",
     "clean": "gatsby clean",
-    "lint:js": "eslint --ext .js,.jsx .",
+    "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
     "lint:md": "remark content/",
     "write-good": "write-good $(glob 'content/*.md')",
     "format:js": "prettier '**/*.{js,jsx}' --write",

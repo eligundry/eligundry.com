@@ -57,11 +57,11 @@ export const links = Object.freeze([
 ])
 
 const Links = styled.div`
-  ${tw`flex flex-row text-2xl`}
+  ${tw`flex flex-row text-4xl`}
 
   & > a {
     ${tw`
-      hover:text-pink-300
+      hover:text-primaryLite
       transition 
       duration-200 
       ease-linear

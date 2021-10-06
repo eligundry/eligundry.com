@@ -1,149 +1,74 @@
 import React, { useState } from 'react'
-import tw, { styled, css, theme } from 'twin.macro'
-import { useMedia, useWindowScroll } from 'react-use'
+import tw, { styled } from 'twin.macro'
 import { Link } from 'gatsby'
 
-import UserLinks from '../components/UserLinks/UserLinks'
-import { PaperStyles } from '../components/Shared/Paper'
 import EmojiText from '../components/Shared/EmojiText'
 
 interface NavProps {
-  mobile?: boolean
-  expanded?: boolean
-  scrolledPastHeader?: boolean
-  wider?: boolean
+  expanded: boolean
 }
 
 const NavContainer = styled.nav<NavProps>`
-  position: fixed;
-  top: ${props => (props.scrolledPastHeader ? '.5em' : '3em')};
-  left: 80%;
-  align-self: center;
-  z-index: 99;
-
-  // On mobile, hide by default
-  ${tw`xs:hidden sm:hidden md:hidden lg:block xl:block 2xl:block`}
-
-  // But once expanded, show it
-  ${props => props.expanded && tw`xs:hidden sm:block md:block`}
-
-  @media (min-width: ${theme`screens.xl`}) {
-    left: 60%;
-  }
-
-  ${props =>
-    props.wider &&
-    css`
-      left: 80%;
-    `}
+  ${tw`
+    w-auto 
+    flex-grow 
+    lg:flex 
+    lg:items-center 
+    lg:block 
+    sm:bg-white
+    lg:bg-transparent
+    z-20 
+    font-sans
+    print:hidden
+  `}
 
   & .nav-links {
     ${tw`
-      flex
-      flex-col
+      flex 
+      flex-row
+      sm:flex-col
+      justify-end 
+      flex-1 
+      items-center 
+      sm:items-start
     `}
 
-    & > .user-links {
-      ${tw`mt-4`}
-    }
-  }
-
-  & .nav-page-link {
-    margin-right: 1em;
-
-    ${tw`
-      no-underline 
-      hover:no-underline 
-      focus:no-underline
-      text-teal-500
-    `}
-
-    & > .link-text {
-      ${tw`p-1`}
-    }
-
-    &:hover > .link-text,
-    &:focus > .link-text {
+    & a {
       ${tw`
-        bg-pink-300 
-        transition 
-        duration-200 
-        ease-linear
-        transition-colors
-        rounded
+        inline-block 
+        text-typographyLite
+        no-underline 
+        hover:text-primary
+        py-2 
+        px-4
+        sm:px-0
       `}
 
-      &:last-child {
-        ${tw`mb-4`}
+      &[aria-current="page"] {
+        ${tw`font-bold text-primary`}
       }
-    }
-
-    & > .emoji {
-      ${tw`mr-2`}
     }
   }
 
-  @media print {
-    display: none;
-  }
-
-  ${props =>
-    !props.mobile &&
-    css`
-      ${PaperStyles}
-    `}
-
-  ${props =>
-    props.mobile &&
-    !props.expanded &&
-    css`
-      & .nav-links {
-        display: none;
-      }
-    `}
-
-  ${props =>
-    props.mobile &&
-    props.expanded &&
-    css`
-      position: fixed;
-      z-index: 10000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.8);
-
-      & > .nav-links {
-        height: 60%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-      }
-
-      & .nav-page-link {
-        font-size: 2em;
-        margin-right: 0;
-      }
-    `}
+  ${props => !props.expanded && tw`sm:hidden`}
 `
 
 const Hamburger = styled.button`
-  position: fixed;
-  font-size: 2em;
-  text-decoration: none;
-  right: 0.75em;
-  top: 0;
-  z-index: 10001;
+  ${tw`
+    block 
+    md:hidden
+    lg:hidden 
+    flex 
+    items-center 
+    appearance-none 
+    focus:outline-none
+    print:hidden
+    absolute
+    text-2xl
+  `}
 
-  ${tw`xs:block sm:block md:block lg:hidden xl:hidden 2xl:hidden print:hidden`}
-
-  &:hover,
-  &:focus {
-    text-shadow: 0px 0px 5px #e172da;
-    ${tw`transition-all ease-linear duration-200`}
-  }
+  right: 1rem;
+  top: 1rem;
 `
 
 const navLinks = {
@@ -162,11 +87,6 @@ const navLinks = {
     emoji: '🥺',
     emojiLabel: 'emotional looking emoji face to denote my feelings',
   },
-  '/memes': {
-    title: 'Memes',
-    emoji: '😂',
-    emojiLabel: 'person cry laughing at the quality of my saved memes',
-  },
   '/talks': {
     title: 'Talks',
     emoji: '🗣',
@@ -179,10 +99,8 @@ const navLinks = {
   },
 }
 
-const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
+const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
-  const showHamburger = useMedia('(max-width: 1024px)', false)
-  const { y: scrollY } = useWindowScroll()
 
   return (
     <>
@@ -195,10 +113,7 @@ const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
       <NavContainer
         role="navigation"
         expanded={hamburgerExpanded}
-        mobile={showHamburger}
         onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
-        scrolledPastHeader={showHamburger || scrollY >= 32}
-        wider={wider}
       >
         <div className="nav-links">
           {Object.entries(navLinks).map(
@@ -215,7 +130,6 @@ const Nav: React.FC<Pick<NavProps, 'wider'>> = ({ wider = false }) => {
               </Link>
             )
           )}
-          <UserLinks />
         </div>
       </NavContainer>
     </>

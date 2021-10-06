@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro'
 
 const UtterancesContainer = styled.aside`
   & .utterances {
-    ${tw`m-0`}
+    ${tw`m-0 print:hidden`}
   }
 `
 

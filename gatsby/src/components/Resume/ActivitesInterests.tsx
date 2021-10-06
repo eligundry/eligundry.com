@@ -1,5 +1,4 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
 
 interface Props {
   activitesInterests: string[]
@@ -11,19 +10,13 @@ const ActivitiesInterests: React.FC<Props> = ({ activitesInterests }) => {
       <header>
         <h2>Activities & Interests</h2>
       </header>
-      <ActivitiesList>
+      <ul>
         {activitesInterests.map(ai => (
           <li key={ai} dangerouslySetInnerHTML={{ __html: ai }} />
         ))}
-      </ActivitiesList>
+      </ul>
     </section>
   )
 }
-
-const ActivitiesList = styled.ul`
-  && {
-    ${tw`pl-0 mt-0`}
-  }
-`
 
 export default ActivitiesInterests

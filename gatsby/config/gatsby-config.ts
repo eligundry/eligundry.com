@@ -81,23 +81,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
-      resolve: 'gatsby-source-custom-api',
-      options: {
-        url: 'https://api.eligundry.com/api/memes',
-        rootKey: 'memes',
-        imageKeys: [],
-        schemas: {
-          memes: `
-            url: String!
-            size: [Int]
-            notes: String!
-            created_at: String!
-            modified: String!
-          `,
-        },
-      },
-    },
-    {
       resolve: 'gatsby-source-lastfm',
       options: {
         api_key: process.env.LAST_FM_API_KEY,
@@ -297,9 +280,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             latestFeelingEntry: feelings {
               time
             }
-            latestMeme: memes {
-              created_at
-            }
           }
         `,
         resolveSiteUrl: () => 'https://eligundry.com',
@@ -373,16 +353,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 }
               }
 
-              if (path === '/memes') {
-                return {
-                  path,
-                  lastmodISO: dateMax([
-                    new Date(query.latestMeme.created_at),
-                    latestPageCommitDate,
-                  ]).toISOString(),
-                }
-              }
-
               return {
                 path,
                 lastmodISO: latestPageCommitDate?.toISOString(),
@@ -434,9 +404,6 @@ interface SitemapQuery {
   }
   latestFeelingEntry: {
     time: string
-  }
-  latestMeme: {
-    created_at: string
   }
 }
 

@@ -1,37 +1,26 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
-import { useEffectOnce } from 'react-use'
+import { PageProps } from 'gatsby'
 
 import Layout from '../layout'
 import Paper from '../components/Shared/Paper'
 
-const ErrorPage: React.FC = () => {
-  const [statusCode, setStatusCode] = useState<number | null>(null)
-
-  useEffectOnce(() => {
-    window
-      .fetch(window.location.href)
-      .then(resp => setStatusCode(resp.status === 200 ? 404 : resp.status))
-  })
-
+const ErrorPage: React.FC<PageProps> = ({ path }) => {
   return (
     <Layout>
       <Helmet>
         <title>Whoops!</title>
       </Helmet>
-      {statusCode && (
-        <Paper>
-          <h1>Whoops!</h1>
-          <p>
-            We couldn't find a page called{' '}
-            <code>{window.location.pathname}</code>!
-          </p>
-          <img
-            src={`https://http.cat/${statusCode}.jpg`}
-            alt={`HTTP Status Cat for ${statusCode} status code`}
-          />
-        </Paper>
-      )}
+      <Paper>
+        <h1>Whoops!</h1>
+        <p>
+          We couldn't find a page called <code>{path}</code>!
+        </p>
+        <img
+          src="https://http.cat/404.jpg"
+          alt="HTTP Status Cat for 404 status code"
+        />
+      </Paper>
     </Layout>
   )
 }

@@ -1,11 +1,10 @@
 import React from 'react'
 import useMedia from 'react-use/lib/useMedia'
 import tw, { styled } from 'twin.macro'
-import { FaGithubSquare } from 'react-icons/fa'
 import EmojiText from '../Shared/EmojiText'
 
 const Footer = styled.footer`
-  ${tw`fixed bottom-0 flex flex-row w-full border-t-2`}
+  ${tw`fixed bottom-0 flex flex-row w-full border-t-2 font-sans font-bold text-xs pt-2`}
 
   & > * {
     ${tw`mr-4`}

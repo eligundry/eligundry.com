@@ -349,7 +349,7 @@ const resume: Resume = {
         region: 'OH',
       },
       summary: `
-        High school vocational program in which I learned the basics of
+        High school vocational program where I learned the basics of
         <a href="https://en.wikipedia.org/wiki/HTML5">HTML</a>,
         <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>,
         <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a>,

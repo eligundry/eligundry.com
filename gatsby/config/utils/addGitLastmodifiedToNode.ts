@@ -5,7 +5,7 @@ import { CreateNodeArgs } from 'gatsby'
 import dateCompareDesc from 'date-fns/compareDesc'
 
 const git = simpleGit()
-const blacklistedTypes = ['memes', 'feelings', 'File', 'Directory']
+const blacklistedTypes = ['feelings', 'File', 'Directory']
 
 const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
   const {
@@ -56,10 +56,6 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
           path.join('src', 'components', 'Home'),
           path.join('src', 'components', 'Listening')
         )
-        break
-
-      case '/memes':
-        paths.push(path.join('src', 'components', 'Memes'))
         break
 
       case '/feelings':
