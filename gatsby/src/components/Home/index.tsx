@@ -84,7 +84,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Section className="introduction-hero">
-        <h2>Hello there!</h2>
+        <h2>Glad To Meet You!</h2>
         <StaticImage
           src="../../../static/img/eli-gundry-headshot.jpg"
           alt="Eli Gundry's Headshot"
@@ -92,7 +92,7 @@ const Home: React.FC = () => {
           width={200}
           height={250}
         />
-        <p>I only really write in lists, so here's my deal.</p>
+        <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>
           <li>
             I am a 🧑‍💻 <strong>full stack web engineer</strong>.
@@ -102,7 +102,7 @@ const Home: React.FC = () => {
             really activates the engineering part of my brain!
           </li>
           <li>
-            I have a 🤓{' '}
+            I have a 🤓{'  '}
             <strong>non-traditional computer science education</strong>. I
             attended a vocational school in high school, taught myself web
             programming, bounced around colleges for computer science while
