@@ -11,12 +11,13 @@ import Listening from '../Listening'
 import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
+import vimSVG from './assets/vim.svg'
+import brownsPNG from './assets/cleveland-browns.png'
 
 const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
 interface SectionProps {
   className?: string
-  fullWidth?: boolean
 }
 
 const Section = styled<React.FC<SectionProps>>(Paper.section)`
@@ -28,6 +29,13 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
   &.introduction-hero {
     display: block;
+
+    & .vim-icon,
+    & .browns-icon {
+      height: 20px;
+      width: 20px;
+      display: inline;
+    }
   }
 
   & .headshot {
@@ -88,57 +96,48 @@ const Home: React.FC = () => {
         <p>I only really write in lists, so here's my deal.</p>
         <ul>
           <li>
-            I am a <strong>full stack web engineer</strong>.
+            I am a 🧑‍💻 <strong>full stack web engineer</strong>.
           </li>
           <li>
-            I love to plan and <strong>cook elaborate meals</strong>. It really
-            activates the engineering part of my brain!
+            I love to plan and 👨‍🍳 <strong>cook elaborate meals</strong>. It
+            really activates the engineering part of my brain!
           </li>
           <li>
-            I have a <strong>non-traditional computer science education</strong>
-            . I attended a vocational school in high school, taught myself web
+            I have a 🤓{' '}
+            <strong>non-traditional computer science education</strong>. I
+            attended a vocational school in high school, taught myself web
             programming, bounced around colleges for computer science while
             working the entire time before deciding to go pro!
           </li>
           <li>
+            I am a <img src={vimSVG} className="vim-icon" alt="Vim logo" />{' '}
             <strong>Vim user</strong> but I actively encourage everyone to use
             something else. Using Vim in {new Date().getFullYear()} is a cool
             bar trick.
           </li>
           <li>
-            Die hard <strong>Cleveland Browns</strong> fan and am convinced that
-            we will win a Super Bowl one of these years.
+            Die hard{' '}
+            <img
+              src={brownsPNG}
+              className="browns-icon"
+              alt="Cleveland Browns logo"
+            />{' '}
+            <strong>Cleveland Browns</strong> fan and am convinced that we will
+            win a Super Bowl one of these years.
           </li>
           <li>
-            I currently live in <strong>Astoria, Queens</strong>. I didn't think
-            I would settle down in Queens and love it as much as I do, but life
-            is like that sometimes, I guess.
+            I currently live in 📍<strong>Astoria, Queens</strong>. I didn't
+            think I would settle down in Queens and love it as much as I do, but
+            life is like that sometimes, I guess.
           </li>
           <li>
-            I have a <strong>fat cat named Fonzie</strong> and I sorta have{' '}
+            I have a 😼 <strong>fat cat named Fonzie</strong> and I sorta have{' '}
             <a href="https://twitter.com/EliGundry/status/1055933062125703168">
               a tattoo of him on my arm
             </a>
             .
           </li>
         </ul>
-        {/*
-        <p>
-          I don't think I'll ever truly be happy with the layout of style of
-          this site. I know what looks good but am uterly powerless to make
-          something that looks good. Until I am happy, the 90s under
-          construction gif will stay up.
-        </p>
-        <a
-          href="http://textfiles.com/underconstruction/"
-          className="under-construction"
-        >
-          <img
-            src={underConstructionGif}
-            alt="90s style under construction gif"
-          />
-        </a>
-        */}
       </Section>
       <Section className="feeling">
         <h2>How I'm Feeling</h2>

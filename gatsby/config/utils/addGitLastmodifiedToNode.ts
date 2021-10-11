@@ -34,51 +34,58 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
     })
   }
 
-  if (node.internal.type === 'Mdx') {
-    const fileNode = getNode(node.parent)
-    const log = await git.log({
-      file: fileNode.absolutePath as string,
-    })
-    addCommitFieldsToNode(log.latest)
-    return
-  }
-
-  if (node.internal.type === 'SitePage') {
-    if (node.path.startsWith('/blog/') || node.path.startsWith('/talk/')) {
+  try {
+    if (node.internal.type === 'Mdx') {
+      const fileNode = getNode(node.parent)
+      const log = await git.log({
+        file: fileNode.absolutePath as string,
+      })
+      addCommitFieldsToNode(log.latest)
       return
     }
 
-    const paths: string[] = [node.component as string]
+    if (node.internal.type === 'SitePage') {
+      if (node.path.startsWith('/blog/') || node.path.startsWith('/talk/')) {
+        return
+      }
 
-    switch (node.path) {
-      case '/':
-        paths.push(
-          path.join('src', 'components', 'Home'),
-          path.join('src', 'components', 'Listening')
-        )
-        break
+      const paths: string[] = [node.component as string]
 
-      case '/feelings':
-        paths.push(path.join('src', 'components', 'Daylio'))
-        break
+      switch (node.path) {
+        case '/':
+          paths.push(
+            path.join('src', 'components', 'Home'),
+            path.join('src', 'components', 'Listening')
+          )
+          break
 
-      case '/resume':
-        paths.push(path.join('src', 'components', 'Resume'))
-        break
+        case '/feelings':
+          paths.push(path.join('src', 'components', 'Daylio'))
+          break
+
+        case '/resume':
+          paths.push(path.join('src', 'components', 'Resume'))
+          break
+      }
+
+      const latestCommit = (
+        await Promise.all(paths.map(file => git.log({ file })))
+      )
+        .map(log => log.latest)
+        .filter(commit => !!commit)
+        .sort((a, b) =>
+          dateCompareDesc(new Date(a.date), new Date(b.date))
+        )?.[0]
+
+      if (latestCommit) {
+        addCommitFieldsToNode(latestCommit)
+      }
+
+      return
     }
-
-    const latestCommit = (
-      await Promise.all(paths.map(file => git.log({ file })))
-    )
-      .map(log => log.latest)
-      .filter(commit => !!commit)
-      .sort((a, b) => dateCompareDesc(new Date(a.date), new Date(b.date)))?.[0]
-
-    if (latestCommit) {
-      addCommitFieldsToNode(latestCommit)
-    }
-
-    return
+  } catch (e) {
+    console.error('could not attach modified data from git for node', node)
+    throw e
   }
 }
 

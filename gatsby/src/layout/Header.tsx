@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import tw, { styled } from 'twin.macro'
 import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
@@ -14,6 +14,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     top-0 
     bg-transparent
     sm:bg-white
+    sm:shadow
     transition-all 
     duration-200
   `}
@@ -78,7 +79,7 @@ const Header: React.FC = () => {
   const { y } = useWindowScroll()
   const { height } = useWindowSize()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setScrollProgress(
       Math.round(
         Math.min((y / (document.body.clientHeight - height)) * 100, 100)
@@ -87,7 +88,7 @@ const Header: React.FC = () => {
   }, [y, height])
 
   return (
-    <HeaderElm transparent={y === 0}>
+    <HeaderElm transparent={scrollProgress === 0}>
       <ProgressBar
         max="100"
         value={scrollProgress}

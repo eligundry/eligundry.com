@@ -13,6 +13,11 @@ declare module '*.jpg' {
   export default url
 }
 
+declare module '*.svg' {
+  const url: string
+  export default url
+}
+
 declare module 'url-join' {
   const urljoin: (...paths: string[]) => string
   export default urljoin

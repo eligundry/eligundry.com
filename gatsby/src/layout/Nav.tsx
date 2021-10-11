@@ -44,7 +44,11 @@ const NavContainer = styled.nav<NavProps>`
         sm:px-0
       `}
 
-      &[aria-current="page"] {
+      &:last-child {
+        ${tw`pr-0`}
+      }
+
+      &[aria-current='page'] {
         ${tw`font-bold text-primary`}
       }
     }
@@ -71,7 +75,7 @@ const Hamburger = styled.button`
   top: 1rem;
 `
 
-const navLinks = {
+const navLinks = Object.freeze({
   '/': {
     title: 'Home',
     emoji: '🏠',
@@ -97,7 +101,7 @@ const navLinks = {
     emoji: '📄',
     emojiLabel: 'piece of paper representing my resume',
   },
-}
+})
 
 const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
