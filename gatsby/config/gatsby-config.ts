@@ -370,6 +370,16 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
+      resolve: 'gatsby-plugin-web-font-loader',
+      options: {
+        classes: true,
+        events: false,
+        custom: {
+          families: ['Fira Code', 'Source Serif Pro'],
+        },
+      },
+    },
+    {
       resolve: 'gatsby-plugin-typegen',
       options: {
         outputPath: './gatsby-types.d.ts',

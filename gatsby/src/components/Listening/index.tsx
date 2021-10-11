@@ -36,7 +36,7 @@ const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
           width="300"
           height={iframeHeight}
           frameBorder="0"
-          allowtransparency={true}
+          allowTransparency={true}
           allow="encrypted-media"
         />
       </LazyLoad>

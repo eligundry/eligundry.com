@@ -32,8 +32,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
     & .vim-icon,
     & .browns-icon {
-      height: 20px;
-      width: 20px;
+      height: ${theme`fontSize.xl`};
       display: inline;
     }
   }

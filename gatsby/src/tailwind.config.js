@@ -35,7 +35,7 @@ module.exports = {
     },
     fontFamily: {
       ...defaultTheme.fontFamily,
-      serif: ['Source Serif Pro', 'serif'],
+      serif: ['Source Serif Pro', 'Georgia', 'serif'],
       mono: ['Fira Code', 'monospace'],
     },
   },
