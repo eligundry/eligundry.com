@@ -87,19 +87,11 @@ interface ActivityEmojiProps {
   dropShadow?: boolean
 }
 
-const bgColor = tw`text-pink-100`
-
 const Emoji = styled.span<ActivityEmojiProps>`
   font-size: 4rem;
   cursor: default;
   z-index: 9;
   position: relative;
-
-  ${props =>
-    props.dropShadow &&
-    css`
-      text-shadow: 0px 8px 0px ${bgColor.color}, 0 -8px 0px ${bgColor.color};
-    `}
 `
 
 const ActivitiesList = styled.ul`

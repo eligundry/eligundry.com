@@ -1,4 +1,3 @@
-const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 /**
@@ -7,17 +6,16 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   theme: {
     colors: {
-      ...colors,
       transparent: 'transparent',
       primary: '#088CDE',
       primaryLite: '#92c6e7',
       primaryDark: '#4E7A94',
-      secondary: '#D67A27',
       typography: '#27272a',
       typographyLite: '#52525b',
       typographyDark: '#18181b',
       siteBackground: '#f4f4f5',
       white: '#fff',
+      liteGray: '#E5E7EB',
     },
     screens: {
       ...defaultTheme.screens,

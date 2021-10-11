@@ -66,7 +66,7 @@ const ProgressBar = styled.progress`
   width: 100%;
 
   &[value]::-webkit-progress-bar {
-    ${tw`bg-gray-200`}
+    ${tw`bg-liteGray`}
   }
 
   &[value]::-webkit-progress-value {
