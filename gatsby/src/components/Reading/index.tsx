@@ -37,8 +37,7 @@ const Book: React.FC<GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['b
   title,
   author,
   coverImage,
-}) => {
-  return (
+}) => (
     <a
       href={url}
       data-tip={`${title} - ${author}`}
@@ -51,6 +50,5 @@ const Book: React.FC<GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['b
       />
     </a>
   )
-}
 
 export default Reading

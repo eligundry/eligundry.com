@@ -7,8 +7,7 @@ interface EducationProps {
   education: Education[]
 }
 
-const EducationSection: React.FC<EducationProps> = ({ education }) => {
-  return (
+const EducationSection: React.FC<EducationProps> = ({ education }) => (
     <section>
       <header>
         <h2>Education</h2>
@@ -29,6 +28,5 @@ const EducationSection: React.FC<EducationProps> = ({ education }) => {
       ))}
     </section>
   )
-}
 
 export default EducationSection

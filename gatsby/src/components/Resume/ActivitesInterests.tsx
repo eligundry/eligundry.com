@@ -4,8 +4,7 @@ interface Props {
   activitesInterests: string[]
 }
 
-const ActivitiesInterests: React.FC<Props> = ({ activitesInterests }) => {
-  return (
+const ActivitiesInterests: React.FC<Props> = ({ activitesInterests }) => (
     <section>
       <header>
         <h2>Activities & Interests</h2>
@@ -17,6 +16,5 @@ const ActivitiesInterests: React.FC<Props> = ({ activitesInterests }) => {
       </ul>
     </section>
   )
-}
 
 export default ActivitiesInterests

@@ -2,8 +2,7 @@ import React from 'react'
 import ReactTooltip from 'react-tooltip'
 import { styled, theme } from 'twin.macro'
 
-const Tooltip = styled(({ className }) => {
-  return (
+const Tooltip = styled(({ className }) => (
     <ReactTooltip
       place="top"
       effect="solid"
@@ -11,11 +10,10 @@ const Tooltip = styled(({ className }) => {
       borderColor="rgb(226, 232, 240)"
       backgroundColor="white"
       textColor="black"
-      html={true}
+      html
       className={className}
     />
-  )
-})`
+  ))`
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: capitalize;

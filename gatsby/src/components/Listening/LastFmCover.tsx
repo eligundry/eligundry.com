@@ -43,6 +43,11 @@ const LastFmCover: React.FC<Props> = ({ width, height }) => {
   let mapY = 0
   const albumWidth = Math.round(width / 3)
   const albumHeight = Math.round(height / 3)
+  const altText = `My top 9 albums for the past 7 days. (${topAlbums
+    .map(
+      ({ album, artist, count }) => `${album} - ${artist} [${count} listens]`
+    )
+    .join(', ')})`
 
   return (
     <>
@@ -50,17 +55,13 @@ const LastFmCover: React.FC<Props> = ({ width, height }) => {
         image={getImage(query.cover.image)}
         useMap="#albums"
         className="listening-img"
-        alt={`My top 9 albums for the past 7 days. (${topAlbums
-          .map(
-            ({ album, artist, count }) =>
-              `${album} - ${artist} [${count} listens]`
-          )
-          .join(', ')})`}
+        alt={altText}
       />
-      <map name="albums">
+      <map name="albums" alt={altText}>
         {topAlbums.map(({ album, artist, count }, i) => {
           const topLeft = [mapX, mapY]
           const bottomRight = [(mapX += albumWidth), mapY + albumHeight]
+          const alt = `${album} - ${artist} [${count} listens]`
 
           if ((i + 1) % 3 === 0) {
             mapY += albumHeight
@@ -72,7 +73,8 @@ const LastFmCover: React.FC<Props> = ({ width, height }) => {
               key={`${album} - ${artist} [${count} listens]`}
               shape="rect"
               coords={[...topLeft, ...bottomRight].join(',')}
-              title={`${album} - ${artist} [${count} listens]`}
+              title={alt}
+              alt={alt}
             />
           )
         })}

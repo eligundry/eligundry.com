@@ -45,8 +45,7 @@ const ResumeArticle = styled(PaperArticle)`
   }
 `
 
-const Resume: React.FC = () => {
-  return (
+const Resume: React.FC = () => (
     <ResumeArticle>
       <ResumeHeader />
       <Work work={resumeData.work} />
@@ -56,6 +55,5 @@ const Resume: React.FC = () => {
       <ResumeFooter />
     </ResumeArticle>
   )
-}
 
 export default Resume

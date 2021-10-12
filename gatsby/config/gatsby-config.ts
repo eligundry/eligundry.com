@@ -359,14 +359,12 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               }
             })
         },
-        serialize: ({ path: url, lastmodISO }: SitemapSerialize) => {
-          return {
+        serialize: ({ path: url, lastmodISO }: SitemapSerialize) => ({
             url,
             lastmodISO,
             changefreq: 'daily',
             priority: 0.7,
-          }
-        },
+          }),
       },
     },
     {

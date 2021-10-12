@@ -70,8 +70,7 @@ const Links = styled.div`
   }
 `
 
-const UserLinks: React.FC = () => {
-  return (
+const UserLinks: React.FC = () => (
     <Links className="user-links">
       {links.map(link => (
         <React.Fragment key={link.url}>
@@ -91,6 +90,5 @@ const UserLinks: React.FC = () => {
       ))}
     </Links>
   )
-}
 
 export default UserLinks

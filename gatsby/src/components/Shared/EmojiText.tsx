@@ -10,8 +10,7 @@ const Emoji = styled.span`
   ${tw`pr-2`}
 `
 
-const EmojiText: React.FC<Props> = ({ children, emoji, label }) => {
-  return (
+const EmojiText: React.FC<Props> = ({ children, emoji, label }) => (
     <>
       <Emoji role="img" aria-label={label}>
         {emoji}
@@ -19,6 +18,5 @@ const EmojiText: React.FC<Props> = ({ children, emoji, label }) => {
       {children}
     </>
   )
-}
 
 export default EmojiText

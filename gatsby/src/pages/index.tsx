@@ -6,14 +6,12 @@ import Layout from '../layout'
 import Home from '../components/Home'
 import SEO from '../components/SEO'
 
-const HomePage: React.FC<PageProps> = () => {
-  return (
-    <Layout>
-      <Helmet title="Eli Gundry" titleTemplate="%s" />
-      <SEO path="" />
-      <Home />
-    </Layout>
-  )
-}
+const HomePage: React.FC<PageProps> = () => (
+  <Layout>
+    <Helmet title="Eli Gundry" titleTemplate="%s" />
+    <SEO path="" />
+    <Home />
+  </Layout>
+)
 
 export default HomePage

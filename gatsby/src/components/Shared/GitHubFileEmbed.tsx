@@ -38,7 +38,7 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   const scriptTarget = useRef<HTMLDivElement>()
 
   useEffect(() => {
-    ;(async function() {
+    (async function() {
       if (!scriptTarget.current || scriptTarget.current.innerHTML) {
         return
       }

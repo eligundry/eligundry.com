@@ -85,15 +85,11 @@ const DaylioChart: React.FC = () => {
             borderWidth: 1,
             borderColor: 'rgb(226, 232, 240)',
             callbacks: {
-              title: (item, _) => {
-                return `📅   ${formatISO(parseISO(item[0].raw.x))}`
-              },
+              title: (item, _) => `📅   ${formatISO(parseISO(item[0].raw.x))}`,
               // @ts-ignore
-              label: (item, _) => {
-                return `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
+              label: (item, _) => `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
                   Object.keys(MoodMapping)[item.raw.y]
-                }`
-              },
+                }`,
             },
           },
         },

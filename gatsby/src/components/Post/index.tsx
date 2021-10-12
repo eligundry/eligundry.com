@@ -28,8 +28,7 @@ const Post: React.FC<Props> = ({
   itemType,
   location,
   featuredImageURL,
-}) => {
-  return (
+}) => (
     <Article itemScope itemType={`https://schema.org/${itemType}`}>
       <link itemProp="author publisher" href="#eli-gundry" />
       {dateModified && <meta itemProp="dateModified" content={dateModified} />}
@@ -52,7 +51,6 @@ const Post: React.FC<Props> = ({
       {footer}
     </Article>
   )
-}
 
 const Article = styled<React.FC>(Paper.article)`
   & header {

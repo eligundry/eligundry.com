@@ -47,8 +47,7 @@ const FooterContainer = styled.footer`
   }
 `
 
-const Footer: React.FC = () => {
-  return (
+const Footer: React.FC = () => (
     <FooterContainer>
       <div className="container">
         <section className="about">
@@ -71,6 +70,5 @@ const Footer: React.FC = () => {
       </div>
     </FooterContainer>
   )
-}
 
 export default Footer

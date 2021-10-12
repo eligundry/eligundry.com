@@ -111,8 +111,7 @@ const Experience: React.FC<Props> = ({
   location,
   summary,
   highlights,
-}) => {
-  return (
+}) => (
     <StyledExperience
       itemType={`http://schema.org/${
         variant === 'work' ? 'Organization' : 'CollegeOrUniversity'
@@ -183,6 +182,5 @@ const Experience: React.FC<Props> = ({
       )}
     </StyledExperience>
   )
-}
 
 export default Experience

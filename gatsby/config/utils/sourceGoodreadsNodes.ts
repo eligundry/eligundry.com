@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import trim from 'lodash/trim'
 import { SourceNodesArgs } from 'gatsby'
 import { JSDOM } from 'jsdom'
@@ -18,8 +18,10 @@ const sourceGoodreadsNodes = async (
   const { createNode } = args.actions
 
   for (const shelf of query.shelves) {
+    let goodreadsHTML: AxiosResponse<string> | null
+
     try {
-      var goodreadsHTML = await axios.get<string>(
+      goodreadsHTML = await axios.get<string>(
         `https://www.goodreads.com/review/list/${query.userID}`,
         {
           params: {
