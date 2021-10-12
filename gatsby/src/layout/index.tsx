@@ -18,18 +18,23 @@ const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => (
   <IconContext.Provider value={{}}>
     <Head />
     <GlobalStyles />
-    <div itemScope itemType="https://schema.org/Person" itemID="#eli-gundry">
-      <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
-        <html lang="en" />
-        <title>{config.siteTitle}</title>
-        <meta name="description" content={config.siteDescription} />
-      </Helmet>
+    <Helmet
+      titleTemplate={`%s | ${config.siteTitle}`}
+      htmlAttributes={{
+        itemScope: true,
+        itemType: 'https://schema.org/Person',
+        itemID: '#eli-gundry',
+        lang: 'en',
+      }}
+    >
+      <title>{config.siteTitle}</title>
+      <meta name="description" content={config.siteDescription} />
       <meta itemProp="image" content={eliHeadshot} />
-      {!hideHeader && <Header />}
-      <ContentWrapper>{children}</ContentWrapper>
-      <Footer />
-      <Tooltip />
-    </div>
+    </Helmet>
+    {!hideHeader && <Header />}
+    <ContentWrapper>{children}</ContentWrapper>
+    <Footer />
+    <Tooltip />
   </IconContext.Provider>
 )
 

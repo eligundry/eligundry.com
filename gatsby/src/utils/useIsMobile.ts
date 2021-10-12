@@ -12,3 +12,7 @@ export function useIsPhone() {
 export function useHasTouch() {
   return useMedia('(hover: none)')
 }
+
+export function usePrefersDarkMode() {
+  return useMedia('(prefers-color-scheme: dark)')
+}

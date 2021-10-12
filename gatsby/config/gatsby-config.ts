@@ -38,6 +38,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-plugin-twitter',
     'gatsby-plugin-postcss',
     'gatsby-plugin-remove-trailing-slashes',
+    'gatsby-plugin-sass',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
@@ -360,11 +361,11 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             })
         },
         serialize: ({ path: url, lastmodISO }: SitemapSerialize) => ({
-            url,
-            lastmodISO,
-            changefreq: 'daily',
-            priority: 0.7,
-          }),
+          url,
+          lastmodISO,
+          changefreq: 'daily',
+          priority: 0.7,
+        }),
       },
     },
     {

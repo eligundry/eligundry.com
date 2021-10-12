@@ -7264,16 +7264,16 @@ type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly ch
       & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
     )> } };
 
-type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
+type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
-      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
-    )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
-      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
-    )> } };
+type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>>, readonly frontmatter: Maybe<(
+          Pick<MdxFrontmatter, 'title' | 'date' | 'description'>
+          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+        )> }
+      ) }> } };
 
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7288,24 +7288,16 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
 
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
-
-type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>>, readonly frontmatter: Maybe<(
-          Pick<MdxFrontmatter, 'title' | 'date' | 'description'>
-          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-        )> }
-      ) }> } };
+type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
+    )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
+    )> } };
 
 type TalkBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7319,6 +7311,14 @@ type TalkBySlugQuery = { readonly mdx: Maybe<(
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
+
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 

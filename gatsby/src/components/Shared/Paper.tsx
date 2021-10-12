@@ -7,6 +7,7 @@ const Paper = styled.div`
     sm:px-4
     text-xl 
     text-typography
+    dark:text-white
     leading-normal
   `}
 `

@@ -29,32 +29,39 @@ const Post: React.FC<Props> = ({
   location,
   featuredImageURL,
 }) => (
-    <Article itemScope itemType={`https://schema.org/${itemType}`}>
-      <link itemProp="author publisher" href="#eli-gundry" />
-      {dateModified && <meta itemProp="dateModified" content={dateModified} />}
-      {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
-      <header>
-        <h1 itemProp="name headline">{title}</h1>
-        {datePublished && (
-          <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
-        )}
-        {location && (
-          <address>
-            <EmojiText label="location of talk" emoji="📍">
-              {location}
-            </EmojiText>
-          </address>
-        )}
-      </header>
-      {preBody}
-      {body && <MDXRenderer itemProp="text">{body}</MDXRenderer>}
-      {footer}
-    </Article>
-  )
+  <Article itemScope itemType={`https://schema.org/${itemType}`}>
+    <link itemProp="author publisher" href="#eli-gundry" />
+    {dateModified && <meta itemProp="dateModified" content={dateModified} />}
+    {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
+    <header>
+      <h1 itemProp="name headline">{title}</h1>
+      {datePublished && (
+        <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
+      )}
+      {location && (
+        <address>
+          <EmojiText label="location of talk" emoji="📍">
+            {location}
+          </EmojiText>
+        </address>
+      )}
+    </header>
+    {preBody}
+    {body && <MDXRenderer itemProp="text">{body}</MDXRenderer>}
+    {footer}
+  </Article>
+)
 
 const Article = styled<React.FC>(Paper.article)`
   & header {
-    ${tw`font-sans text-sm md:text-base font-normal text-typographyLite`}
+    ${tw`
+      font-sans 
+      text-sm 
+      md:text-base 
+      font-normal 
+      text-typographyLite
+      dark:text-white
+    `}
 
     & h1 {
       ${tw`
@@ -62,6 +69,7 @@ const Article = styled<React.FC>(Paper.article)`
         font-sans 
         break-normal 
         text-typographyDark 
+        dark:text-white
         pb-2 
         text-3xl 
         md:text-4xl

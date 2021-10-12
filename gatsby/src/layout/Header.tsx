@@ -14,6 +14,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     top-0 
     bg-transparent
     sm:bg-white
+    sm:dark:bg-typographyDark
     sm:shadow
     transition-all 
     duration-200
@@ -21,7 +22,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
 
   ${props =>
     !props.transparent
-      ? tw`bg-white shadow print:shadow-none print:bg-transparent`
+      ? tw`bg-white dark:bg-typographyDark shadow print:shadow-none print:bg-transparent`
       : tw`bg-transparent lg:bg-transparent`}
 
   & .wrapper {
@@ -48,6 +49,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     & a {
       ${tw`
         text-typographyDark
+        dark:text-white
         hover:text-primary 
         text-base 
         no-underline 
@@ -66,7 +68,7 @@ const ProgressBar = styled.progress`
   width: 100%;
 
   &[value]::-webkit-progress-bar {
-    ${tw`bg-liteGray`}
+    ${tw`bg-liteGray dark:bg-typographyLite`}
   }
 
   &[value]::-webkit-progress-value {

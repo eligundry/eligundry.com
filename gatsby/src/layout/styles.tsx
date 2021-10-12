@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 
 import './fonts.css'
 import 'tailwindcss/dist/base.min.css'
-import './prism-material-light.css'
+import './prism-material-light.scss'
 
 export const GlobalStyles = createGlobalStyle`
   body {
@@ -13,6 +13,12 @@ export const GlobalStyles = createGlobalStyle`
       font-serif 
       leading-normal 
       tracking-normal
+    `}
+
+    // Dark mode specific overrides
+    ${tw`
+      dark:bg-black
+      dark:text-white
     `}
   }
 

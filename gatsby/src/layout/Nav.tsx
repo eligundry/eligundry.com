@@ -37,6 +37,7 @@ const NavContainer = styled.nav<NavProps>`
       ${tw`
         inline-block 
         text-typographyLite
+        dark:text-white
         no-underline 
         hover:text-primary
         py-2 

@@ -15,6 +15,7 @@ module.exports = {
       typographyDark: '#18181b',
       siteBackground: '#f4f4f5',
       white: '#fff',
+      black: '#000',
       liteGray: '#E5E7EB',
     },
     screens: {

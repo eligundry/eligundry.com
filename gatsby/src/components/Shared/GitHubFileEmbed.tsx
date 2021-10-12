@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react'
 import tw, { styled, css } from 'twin.macro'
 
+import { usePrefersDarkMode } from '../../utils/useIsMobile'
+
 interface Props {
   fileURL: string
 }
@@ -28,6 +30,8 @@ const ExpandButtonContainer = styled.div`
   display: flex;
   justify-content: center;
 
+  ${tw`dark:bg-none`}
+
   & button {
     ${tw`bg-primary hover:bg-primaryLite active:bg-primaryDark text-white px-4 py-2 rounded font-sans`}
   }
@@ -36,9 +40,10 @@ const ExpandButtonContainer = styled.div`
 const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   const [expanded, setExpanded] = useState(false)
   const scriptTarget = useRef<HTMLDivElement>()
+  const prefersDark = usePrefersDarkMode()
 
   useEffect(() => {
-    (async function() {
+    ;(async function() {
       if (!scriptTarget.current || scriptTarget.current.innerHTML) {
         return
       }
@@ -49,7 +54,7 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
       const postscribe = (await import('postscribe')).default
       const query = new URLSearchParams({
         target: fileURL,
-        style: 'github-gist',
+        style: prefersDark ? 'tomorrow-night' : 'github-gist',
         showBorder: 'on',
         showLineNumbers: 'on',
         showFileMeta: 'on',
@@ -60,7 +65,14 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
         `<script async cross-origin="anonymous" src="https://emgithub.com/embed.js?${query.toString()}"></script>`
       )
     })()
-  }, [scriptTarget.current, fileURL])
+
+    return function cleanup() {
+      if (scriptTarget.current) {
+        scriptTarget.current.innerHTML = ''
+        setExpanded(false)
+      }
+    }
+  }, [scriptTarget.current, fileURL, prefersDark])
 
   return (
     <>
