@@ -70,6 +70,10 @@ export const GlobalStyles = createGlobalStyle`
   code {
     ${tw`font-mono`}
   }
+
+  pre[class*="language-"] {
+    ${tw`text-base`}
+  }
 `
 
 export const ContentWrapper = styled.main`

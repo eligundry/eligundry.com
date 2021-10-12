@@ -4,8 +4,6 @@ import isEqual from 'lodash/isEqual'
 import tw, { styled, css } from 'twin.macro'
 import { Link } from 'gatsby'
 
-import styleVariables from '../../../data/styleConfig'
-import { PaperStyles } from '../Shared/Paper'
 import {
   DaylioEntry,
   DaylioVariants,
@@ -64,15 +62,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
     ${tw`font-sans text-base`}
   }
 
-  ${props =>
-    props.variant === DaylioVariants.list &&
-    css`
-      ${tw`my-4`}
-
-      & .text-column {
-        ${PaperStyles}
-      }
-    `}
+  ${props => props.variant === DaylioVariants.list && tw`my-4`}
 
   ${props =>
     props.selected &&

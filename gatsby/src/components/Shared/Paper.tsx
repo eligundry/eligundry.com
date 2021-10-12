@@ -1,8 +1,5 @@
 import tw, { styled } from 'twin.macro'
 
-export const PaperStyles = tw`
-`
-
 const Paper = styled.div`
   ${tw`
     w-full 

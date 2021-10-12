@@ -10,6 +10,8 @@ interface EmGitHubContainerProps {
 }
 
 const EmGitHubContainer = styled.div<EmGitHubContainerProps>`
+  ${tw`text-base`}
+
   ${props =>
     !props.expanded &&
     css`

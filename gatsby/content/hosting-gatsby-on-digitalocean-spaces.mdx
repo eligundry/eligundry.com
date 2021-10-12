@@ -171,7 +171,7 @@ I did a little bit of Googling to figure out what's happening here and found thi
 > Due to a known issue, file metadata headers like Content-Encoding are not passed through the CDN. Metadata headers are
 > correctly set when fetching content directly from the origin.
 >
-> https://docs.digitalocean.com/products/spaces/how-to/set-file-metadata/
+> [DigitalOcean Docs](https://docs.digitalocean.com/products/spaces/how-to/set-file-metadata/)
 
 From what I can tell, the browser is treating this like gzip because of legacy quirks and is doing a content scan of the
 file when it discovers it isn't actually a plain text `application/javascript` file. There is probably a trivial

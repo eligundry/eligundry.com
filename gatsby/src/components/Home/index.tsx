@@ -11,6 +11,7 @@ import Listening from '../Listening'
 import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
+import EmojiText from '../Shared/EmojiText'
 import vimSVG from './assets/vim.svg'
 import brownsPNG from './assets/cleveland-browns.png'
 
@@ -95,16 +96,25 @@ const Home: React.FC = () => {
         <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>
           <li>
-            I am a 🧑‍💻 <strong>full stack web engineer</strong>.
+            I am a{' '}
+            <EmojiText emoji="🧑‍💻" label="computer programmer emoji">
+              <strong>full stack web engineer</strong>
+            </EmojiText>
+            .
           </li>
           <li>
-            I love to plan and 👨‍🍳 <strong>cook elaborate meals</strong>. It
-            really activates the engineering part of my brain!
+            I love to plan and{' '}
+            <EmojiText emoji="👨‍🍳" label="chef emoji">
+              <strong>cook elaborate meals</strong>
+            </EmojiText>
+            . It really activates the engineering part of my brain!
           </li>
           <li>
-            I have a 🤓{'  '}
-            <strong>non-traditional computer science education</strong>. I
-            attended a vocational school in high school, taught myself web
+            I have a{' '}
+            <EmojiText emoji="🤓" label="geek emoji">
+              <strong>non-traditional computer science education</strong>
+            </EmojiText>
+            . I attended a vocational school in high school, taught myself web
             programming, bounced around colleges for computer science while
             working the entire time before deciding to go pro!
           </li>
@@ -125,12 +135,22 @@ const Home: React.FC = () => {
             win a Super Bowl one of these years.
           </li>
           <li>
-            I currently live in 📍<strong>Astoria, Queens</strong>. I didn't
-            think I would settle down in Queens and love it as much as I do, but
-            life is like that sometimes, I guess.
+            I currently live in{' '}
+            <EmojiText emoji="📍" label="pin emoji to denote location">
+              <strong>Astoria, Queens</strong>
+            </EmojiText>
+            . I didn't think I would settle down in Queens and love it as much
+            as I do, but life is like that sometimes.
           </li>
           <li>
-            I have a 😼 <strong>fat cat named Fonzie</strong> and I sorta have{' '}
+            I have a{' '}
+            <EmojiText
+              emoji="😼"
+              label="smirking cat emoji because Fonzie is a stinker"
+            >
+              <strong>fat cat named Fonzie</strong>
+            </EmojiText>{' '}
+            and I sorta have{' '}
             <a href="https://twitter.com/EliGundry/status/1055933062125703168">
               a tattoo of him on my arm
             </a>

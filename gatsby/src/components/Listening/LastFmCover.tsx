@@ -42,7 +42,7 @@ const LastFmCover: React.FC<Props> = ({ width, height }) => {
   let mapX = 0
   let mapY = 0
   const albumWidth = Math.round(width / 3)
-  const albumHeight = Math.round(width / 3)
+  const albumHeight = Math.round(height / 3)
 
   return (
     <>
@@ -86,11 +86,12 @@ const getTopAlbums = (
 ) => {
   const cutoffTimeStamp = Number(subDays(new Date(), 7)) / 1000
   const scopedScrobbles = scrobbles.filter(
-    scrobble => parseInt(scrobble.date) >= cutoffTimeStamp
+    scrobble => parseInt(scrobble.date ?? '0') >= cutoffTimeStamp
   )
   const groupedScrobbles = groupBy(
     scopedScrobbles,
-    scrobble => `${scrobble.track.album?.name} - ${scrobble.track.artist?.name}`
+    scrobble =>
+      `${scrobble.track?.album?.name} - ${scrobble.track?.artist?.name}`
   )
   const topAlbums = Object.values(groupedScrobbles)
     .map(group => ({
