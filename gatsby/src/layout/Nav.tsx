@@ -3,6 +3,7 @@ import tw, { styled } from 'twin.macro'
 import { Link } from 'gatsby'
 
 import EmojiText from '../components/Shared/EmojiText'
+import { useThemeMode } from './ThemeModeProvider'
 
 interface NavProps {
   expanded: boolean
@@ -14,9 +15,10 @@ const NavContainer = styled.nav<NavProps>`
     flex-grow 
     lg:flex 
     lg:items-center 
-    lg:block 
-    sm:bg-white
+    lg:flex 
     lg:bg-transparent
+    sm:text-lg
+    sm:w-full
     z-20 
     font-sans
     print:hidden
@@ -43,11 +45,8 @@ const NavContainer = styled.nav<NavProps>`
         py-2 
         px-4
         sm:px-0
+        sm:w-full
       `}
-
-      &:last-child {
-        ${tw`pr-0`}
-      }
 
       &[aria-current='page'] {
         ${tw`font-bold text-primary`}
@@ -74,6 +73,18 @@ const Hamburger = styled.button`
 
   right: 1rem;
   top: 1rem;
+`
+
+const ThemeToggle = styled.button`
+  ${tw`
+    focus:outline-none
+    sm:absolute
+    sm:top-4
+    sm:right-12
+    sm:text-2xl
+    print:hidden
+    lg:pl-2
+  `}
 `
 
 const navLinks = Object.freeze({
@@ -106,6 +117,7 @@ const navLinks = Object.freeze({
 
 const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
+  const { theme, toggleTheme } = useThemeMode()
 
   return (
     <>
@@ -137,6 +149,14 @@ const Nav: React.FC = () => {
           )}
         </div>
       </NavContainer>
+      <ThemeToggle
+        onClick={toggleTheme}
+        aria-label={`switch to the ${
+          theme === 'light' ? 'dark' : 'light'
+        } theme for the site`}
+      >
+        {theme === 'light' ? '🌚' : '🌞'}
+      </ThemeToggle>
     </>
   )
 }

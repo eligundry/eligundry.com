@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 
 import './fonts.css'
 import 'tailwindcss/dist/base.min.css'
-import './prism-material-light.scss'
+import './prism-material.scss'
 
 export const GlobalStyles = createGlobalStyle`
   body {
@@ -16,10 +16,9 @@ export const GlobalStyles = createGlobalStyle`
     `}
 
     // Dark mode specific overrides
-    ${tw`
-      dark:bg-black
-      dark:text-white
-    `}
+    &.dark {
+      ${tw`bg-black text-white`}
+    }
   }
 
   #___gatsby #gatsby-focus-wrapper {

@@ -1,6 +1,5 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { IconContext } from 'react-icons'
 
 import { ContentWrapper, GlobalStyles } from './styles'
 import Head from './Head'
@@ -15,7 +14,7 @@ interface Props {
 }
 
 const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => (
-  <IconContext.Provider value={{}}>
+  <>
     <Head />
     <GlobalStyles />
     <Helmet
@@ -35,7 +34,7 @@ const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => (
     <ContentWrapper>{children}</ContentWrapper>
     <Footer />
     <Tooltip />
-  </IconContext.Provider>
+  </>
 )
 
 export default MainLayout

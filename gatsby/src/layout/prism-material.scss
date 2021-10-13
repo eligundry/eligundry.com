@@ -205,7 +205,7 @@ pre[class*="language-"] {
 	color: #e53935;
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
 	code[class*="language-"],
 	pre[class*="language-"] {
 		text-align: left;

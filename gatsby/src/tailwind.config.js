@@ -4,6 +4,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
  * @type {import("@types/tailwindcss/tailwind-config").TailwindConfig}
  */
 module.exports = {
+  darkMode: 'class',
   theme: {
     colors: {
       transparent: 'transparent',
