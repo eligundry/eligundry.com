@@ -69,10 +69,9 @@ const Hamburger = styled.button`
     print:hidden
     absolute
     text-2xl
+    top-4
+    right-4
   `}
-
-  right: 1rem;
-  top: 1rem;
 `
 
 const ThemeToggle = styled.button`

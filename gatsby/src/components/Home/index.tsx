@@ -13,7 +13,7 @@ import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
 import EmojiText from '../Shared/EmojiText'
 import vimSVG from './assets/vim.svg'
-import brownsPNG from './assets/cleveland-browns.png'
+import brownsSVG from './assets/cleveland-browns.svg'
 
 const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
@@ -33,7 +33,8 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
     & .vim-icon,
     & .browns-icon {
-      height: ${theme`fontSize.xl`};
+      height: 1.5rem;
+      width: 1.5rem;
       display: inline;
     }
   }
@@ -119,7 +120,14 @@ const Home: React.FC = () => {
             working the entire time before deciding to go pro!
           </li>
           <li>
-            I am a <img src={vimSVG} className="vim-icon" alt="Vim logo" />{' '}
+            I am a{' '}
+            <img
+              src={vimSVG}
+              className="vim-icon"
+              alt="Vim logo"
+              width={544}
+              height={545}
+            />{' '}
             <strong>Vim user</strong> but I actively encourage everyone to use
             something else. Using Vim in {new Date().getFullYear()} is a cool
             bar trick.
@@ -127,9 +135,11 @@ const Home: React.FC = () => {
           <li>
             Die hard{' '}
             <img
-              src={brownsPNG}
+              src={brownsSVG}
               className="browns-icon"
               alt="Cleveland Browns logo"
+              width={286}
+              height={221}
             />{' '}
             <strong>Cleveland Browns</strong> fan and am convinced that we will
             win a Super Bowl one of these years.

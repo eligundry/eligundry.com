@@ -17,7 +17,7 @@ export default function useGoodreadsShelf() {
             started
             coverImage {
               childImageSharp {
-                gatsbyImageData(width: 250)
+                gatsbyImageData(width: 175)
               }
             }
           }
@@ -36,7 +36,7 @@ export default function useGoodreadsShelf() {
             started
             coverImage {
               childImageSharp {
-                gatsbyImageData(width: 250)
+                gatsbyImageData(width: 175)
               }
             }
           }
