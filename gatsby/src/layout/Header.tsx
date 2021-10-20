@@ -83,9 +83,7 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     setScrollProgress(
-      Math.round(
-        Math.min((y / (document.body.clientHeight - height)) * 100, 100)
-      )
+      Math.min((y / (document.body.clientHeight - height)) * 100, 100)
     )
   }, [y, height])
 

@@ -65,7 +65,7 @@ const Article = styled<React.FC>(Paper.article)`
 
     & h1 {
       ${tw`
-        font-bold 
+        font-extrabold 
         font-sans 
         break-normal 
         text-typographyDark 
