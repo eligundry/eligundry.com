@@ -153,6 +153,7 @@ const Nav: React.FC = () => {
         aria-label={`switch to the ${
           theme === 'light' ? 'dark' : 'light'
         } theme for the site`}
+        data-gtm="theme-toggle"
       >
         {theme === 'light' ? '🌚' : '🌞'}
       </ThemeToggle>
