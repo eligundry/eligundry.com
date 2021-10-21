@@ -54,14 +54,7 @@ const Post: React.FC<Props> = ({
 
 const Article = styled<React.FC>(Paper.article)`
   & header {
-    ${tw`
-      font-sans 
-      text-sm 
-      md:text-base 
-      font-normal 
-      text-typographyLite
-      dark:text-white
-    `}
+    ${tw`font-normal`}
 
     & h1 {
       ${tw`
@@ -81,7 +74,7 @@ const Article = styled<React.FC>(Paper.article)`
     }
 
     & time + address {
-      ${tw`mt-2`}
+      ${tw`mt-0`}
     }
   }
 
