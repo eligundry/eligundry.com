@@ -11,11 +11,13 @@ import { theme } from 'twin.macro'
 import useFeelingsChartData from './useFeelingsChartData'
 import { MoodMapping } from './types'
 import { useHasTouch } from '../../utils/useIsMobile'
+import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
 
 const DaylioChart: React.FC = () => {
   const timeWindow = subMonths(new Date(), 1)
   const data = useFeelingsChartData(timeWindow)
   const isTouchScreen = useHasTouch()
+  const prefersDark = usePrefersDarkMode()
 
   // Clicking on an entry will navigate to the entry on the feelings page
   const handlePointClick = useCallback<CoreChartOptions<ChartType>['onClick']>(
@@ -73,17 +75,18 @@ const DaylioChart: React.FC = () => {
           },
           tooltip: {
             displayColors: false,
-            backgroundColor: 'white',
             titleFont: {
               size: 14,
             },
-            titleColor: 'black',
             bodyFont: {
               size: 16,
             },
-            bodyColor: 'black',
+            backgroundColor: prefersDark ? theme`colors.typographyDark` : theme`colors.white`,
+            footerColor: prefersDark ? theme`colors.typographyDark` : theme`colors.white`,
+            bodyColor: prefersDark ? theme`colors.white` : theme`colors.black`,
+            titleColor: prefersDark ? theme`colors.white` : theme`colors.black`,
             borderWidth: 1,
-            borderColor: 'rgb(226, 232, 240)',
+            borderColor: prefersDark ? theme`colors.typographyLite` : 'rgb(226, 232, 240)',
             callbacks: {
               title: (item, _) => `📅   ${formatISO(parseISO(item[0].raw.x))}`,
               // @ts-ignore
@@ -102,6 +105,9 @@ const DaylioChart: React.FC = () => {
           },
           y: {
             min: 0,
+            grid: {
+              color: prefersDark ? theme`colors.typographyLite` : undefined,
+            },
             ticks: {
               // @ts-ignore
               callback: value => Object.values(MoodMapping)[value],

@@ -2,19 +2,29 @@ import React from 'react'
 import ReactTooltip from 'react-tooltip'
 import { styled, theme } from 'twin.macro'
 
-const Tooltip = styled(({ className, ...props }) => (
-  <ReactTooltip
-    place="top"
-    effect="solid"
-    border
-    borderColor="rgb(226, 232, 240)"
-    backgroundColor="white"
-    textColor="black"
-    html
-    className={className}
-    {...props}
-  />
-))`
+import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+
+const Tooltip = styled(({ className, ...props }) => {
+  const prefersDark = usePrefersDarkMode()
+
+  return (
+    <ReactTooltip
+      place="top"
+      effect="solid"
+      border
+      borderColor={
+        prefersDark ? theme`colors.typographyLite` : 'rgb(226, 232, 240)'
+      }
+      backgroundColor={
+        prefersDark ? theme`colors.typographyDark` : theme`colors.white`
+      }
+      textColor={prefersDark ? theme`colors.white` : theme`colors.typography`}
+      html
+      className={className}
+      {...props}
+    />
+  )
+})`
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: capitalize;
@@ -27,6 +37,11 @@ const Tooltip = styled(({ className, ...props }) => (
   & strong {
     font-family: ${theme`fontFamily.sans`};
     font-weight: 600;
+  }
+
+  .dark &::before,
+  .dark &::after {
+    background-color: ${theme`colors.typographyDark`};
   }
 `
 
