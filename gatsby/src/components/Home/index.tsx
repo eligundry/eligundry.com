@@ -36,6 +36,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
       height: 1.5rem;
       width: 1.5rem;
       display: inline;
+      vertical-align: top;
     }
   }
 
