@@ -7,7 +7,6 @@ import (
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/eligundry/eligundry.com/api/daylio"
 	"github.com/eligundry/eligundry.com/api/lastfm"
-	"github.com/eligundry/eligundry.com/api/memes"
 )
 
 func main() {
@@ -17,7 +16,6 @@ func main() {
 		auth.RegisterRoutes(api)
 		daylio.RegisterRoutes(api)
 		lastfm.RegisterRoutes(api)
-		memes.RegisterRoutes(api)
 	}
 
 	db := common.GetDB()

@@ -1,22 +1,5 @@
 version: '3'
 services:
-  proxy: 
-    container_name: eg-proxy
-    image: steveltn/https-portal:1
-    ports:
-      - '80:80'
-      - '443:443'
-    environment:
-      DOMAINS: 'eligundry.localhost -> http://docker-host:8000'
-      STAGE: 'local'
-      WEBSOCKET: 'true'
-      TEST_CDN: 'false'
-    networks:
-      backend: {}
-    volumes:
-      - data_https_portal:/var/lib/https-portal
-      - ./docker/eligundry.localhost.ssl.conf.erb:/var/lib/nginx-conf/eligundry.localhost.ssl.conf.erb
-
   api:
     container_name: eg-api
     image: eligundry/api.eligundry.com:latest
@@ -35,19 +18,6 @@ services:
     volumes:
       - ./api:/src
       - ./data:/opt/data
-
-  docker-host:
-    container_name: eg-dh
-    image: qoomon/docker-host
-    networks:
-      backend: {}
-    cap_add: 
-      - NET_ADMIN
-      - NET_RAW
-    restart: on-failure
-
-volumes:
-  data_https_portal: {}
 
 networks:
   backend:

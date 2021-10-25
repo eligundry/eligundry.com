@@ -87,37 +87,24 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 		return entries, err
 	}
 
-	entriesQs := make([]string, len(entries))
-	entriesVs := make([]interface{}, len(entries))
-	var activitiesQs []string
-	var activitesVs []interface{}
 	activitiesSet := set.New()
 
 	for i := range entries {
 		// time is the primary key
 		entries[i].DateTime, err = time.Parse(
-			"2006-01-02 15:04-0700",
-			fmt.Sprintf("%s %s-0500", entries[i].Date, entries[i].Time),
+			"2006-01-02 15:04",
+			fmt.Sprintf("%s %s", entries[i].Date, entries[i].Time),
 		)
 
 		if err != nil {
 			return entries, err
 		}
 
-		// Construct query helpers
-		entriesQs[i] = "(?)"
-		entriesVs[i] = &entries[i]
-
 		// Format activities just right
 		entries[i].Activities = strings.FieldsFunc(entries[i].RawActivities, activitySplitFn)
 
 		for ai := range entries[i].Activities {
 			entries[i].Activities[ai] = strings.TrimSpace(entries[i].Activities[ai])
-			activitiesQs = append(activitiesQs, "(?)")
-			activitesVs = append(activitesVs, []interface{}{
-				&entries[i].DateTime,
-				&entries[i].Activities[ai],
-			})
 			activitiesSet.Insert(entries[i].Activities[ai])
 		}
 
