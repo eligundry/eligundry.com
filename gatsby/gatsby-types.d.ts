@@ -7365,20 +7365,23 @@ type LastfmAlbumSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+
+type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
+      Pick<LastfmPlayback, 'date'>
+      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
+    )> } };
 
 type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
-
-type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
 
 type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7389,14 +7392,6 @@ type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: R
     )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
       Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
-    )> } };
-
-type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
-      Pick<LastfmPlayback, 'date'>
-      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
     )> } };
 
 type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
@@ -7423,18 +7418,13 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
 
-type TalkBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type TalkBySlugQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
-  )> };
+type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -7462,17 +7452,27 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+
+type TalkBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+type TalkBySlugQuery = { readonly mdx: Maybe<(
+    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
+  )> };
+
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
-
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
 
 }

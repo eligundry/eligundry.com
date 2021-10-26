@@ -69,7 +69,6 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
     return function cleanup() {
       if (scriptTarget.current) {
         scriptTarget.current.innerHTML = ''
-        setExpanded(false)
       }
     }
   }, [scriptTarget.current, fileURL, prefersDark])

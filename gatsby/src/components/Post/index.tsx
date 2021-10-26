@@ -50,7 +50,7 @@ const Post: React.FC<Props> = ({
     {preBody}
     {body && <MDXRenderer itemProp="text">{body}</MDXRenderer>}
     {footer && (
-      <LazyLoad once classNamePrefix="lazyload-footer">
+      <LazyLoad once offset={200} classNamePrefix="lazyload-footer">
         {footer}
       </LazyLoad>
     )}
