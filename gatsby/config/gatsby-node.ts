@@ -1,6 +1,5 @@
 /* eslint "no-console": "off" */
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
-import { createRemoteFileNode } from 'gatsby-source-filesystem'
 import { SourceNodesArgs } from 'gatsby'
 import path from 'path'
 import kebabCase from 'lodash/kebabCase'
@@ -8,15 +7,14 @@ import parseISO from 'date-fns/parseISO'
 import isValidDate from 'date-fns/isValid'
 
 import siteConfig from '../data/SiteConfig'
-import loadImage from './utils/loadImage'
 import sourceGoodreadsNodes from './utils/sourceGoodreadsNodes'
 import sourceSingleImage from './utils/sourceSingleImage'
 import addGitLastModifiedToNode from './utils/addGitLastmodifiedToNode'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
-  onCreateNode: async args => {
-    const { node, actions, getNode, createNodeId, store, cache } = args
-    const { createNodeField, createNode } = actions
+  onCreateNode: async (args) => {
+    const { node, actions, getNode } = args
+    const { createNodeField } = actions
 
     if (node.internal.type === 'Mdx') {
       let slug
@@ -59,37 +57,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         name: 'slug',
         value: slug,
       })
-    }
-
-    if (node.internal.type === 'GoodreadsBook' && node.cover) {
-      await loadImage({
-        cacheKey: `local-goodreads-cover-${node.isbn}`,
-        node,
-        createRemoteFileNode,
-        targetNodeKey: 'coverImage',
-        url: node.cover,
-        parentNodeId: node.id,
-        createNode,
-        createNodeId,
-        cache,
-        store,
-      })
-    }
-
-    if (node.internal.type === 'DownloadedImage' && node.url) {
-      const image = await loadImage({
-        node,
-        createRemoteFileNode,
-        targetNodeKey: 'image',
-        url: node.url,
-        parentNodeId: node.id,
-        createNode,
-        createNodeId,
-        cache,
-        store,
-        ext: '.jpg',
-      })
-      console.log(image)
     }
 
     await addGitLastModifiedToNode(args)
@@ -162,23 +129,13 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     })
 
     // Post and talk page creation
-    postsEdges.forEach((edge, index) => {
+    postsEdges.forEach((edge) => {
       if (edge.node.collection === 'posts') {
-        // Create post pages
-        const nextID = index + 1 < postsEdges.length ? index + 1 : 0
-        const prevID = index - 1 >= 0 ? index - 1 : postsEdges.length - 1
-        const nextEdge = postsEdges[nextID]
-        const prevEdge = postsEdges[prevID]
-
         createPage({
           path: `/blog/${edge.node.fields.slug}`,
           component: postPage,
           context: {
             slug: edge.node.fields.slug,
-            nexttitle: nextEdge.node.frontmatter.title,
-            nextslug: nextEdge.node.fields.slug,
-            prevtitle: prevEdge.node.frontmatter.title,
-            prevslug: prevEdge.node.fields.slug,
           },
         })
       } else if (edge.node.collection === 'talks') {
@@ -191,6 +148,34 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         })
       }
     })
+  },
+  createSchemaCustomization: ({ actions }) => {
+    actions.createTypes([
+      `
+      type GoodreadsBook implements Node {
+        title: String!
+        author: String!
+        isbn: String!
+        isbn13: String!
+        asin: String!
+        pages: Int!
+        published: Date
+        started: Date
+        finished: Date
+        conver: String!
+        coverImage: File @link
+        url: String!
+        shelf: String!
+      }
+      `,
+      `
+      type DownloadedImage implements Node {
+        url: String!
+        name: String!
+        image: File @link
+      }
+      `,
+    ])
   },
   sourceNodes: async (args: SourceNodesArgs) => {
     await sourceGoodreadsNodes(args, {

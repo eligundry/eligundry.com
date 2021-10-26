@@ -18,11 +18,11 @@ export default function useFeelingsChartData(timeWindow: Date) {
   `)
 
   return entries.allFeelings.data
-    .map(entry => ({
+    .map((entry) => ({
       x: parseISO(entry.time),
-      y: Object.keys(MoodMapping).findIndex(m => m === entry.mood),
+      y: Object.keys(MoodMapping).findIndex((m) => m === entry.mood),
     }))
-    .filter(entry => entry.x >= timeWindow)
+    .filter((entry) => entry.x >= timeWindow)
     .sort((a, b) => dateCompareAsc(a.x, b.x))
-    .map(entry => ({ ...entry, x: formatISO(entry.x) }))
+    .map((entry) => ({ ...entry, x: formatISO(entry.x) }))
 }

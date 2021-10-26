@@ -1,5 +1,5 @@
 import React from 'react'
-import { GatsbyImage } from 'gatsby-plugin-image'
+import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import useGoodreadsShelf from './useGoodreads'
 
@@ -15,7 +15,7 @@ const Reading: React.FC = () => {
       <div className="shelf">
         <h3>Currently Reading</h3>
         <div className="books">
-          {shelves.currentlyReading.books.map(book => (
+          {shelves.currentlyReading.books.map((book) => (
             <Book key={book.isbn} {...book} />
           ))}
         </div>
@@ -23,7 +23,7 @@ const Reading: React.FC = () => {
       <div className="shelf">
         <h3>Recently Finished</h3>
         <div className="books">
-          {shelves.recentlyFinished.books.map(book => (
+          {shelves.recentlyFinished.books.map((book) => (
             <Book key={book.isbn} {...book} />
           ))}
         </div>
@@ -32,23 +32,17 @@ const Reading: React.FC = () => {
   )
 }
 
-const Book: React.FC<GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['books'][0]> = ({
-  url,
-  title,
-  author,
-  coverImage,
-}) => (
-    <a
-      href={url}
-      data-tip={`${title} - ${author}`}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <GatsbyImage
-        image={coverImage.childImageSharp.gatsbyImageData}
-        alt={`${title} - ${author}`}
-      />
-    </a>
-  )
+const Book: React.FC<
+  GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['books'][0]
+> = ({ url, title, author, coverImage }) => (
+  <a
+    href={url}
+    data-tip={`${title} - ${author}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <GatsbyImage image={getImage(coverImage)} alt={`${title} - ${author}`} />
+  </a>
+)
 
 export default Reading

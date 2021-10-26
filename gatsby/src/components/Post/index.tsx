@@ -1,6 +1,7 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import LazyLoad from 'react-lazyload'
 
 import Paper from '../Shared/Paper'
 import Time from '../Shared/Time'
@@ -48,7 +49,11 @@ const Post: React.FC<Props> = ({
     </header>
     {preBody}
     {body && <MDXRenderer itemProp="text">{body}</MDXRenderer>}
-    {footer}
+    {footer && (
+      <LazyLoad once offset={200} classNamePrefix="lazyload-footer">
+        {footer}
+      </LazyLoad>
+    )}
   </Article>
 )
 
@@ -95,6 +100,10 @@ const Article = styled<React.FC>(Paper.article)`
 
   & .gatsby-resp-iframe-wrapper {
     ${tw`my-4`}
+  }
+
+  & .lazyload-footer-wrapper {
+    min-height: 270px;
   }
 `
 

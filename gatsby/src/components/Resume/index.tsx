@@ -46,14 +46,14 @@ const ResumeArticle = styled(PaperArticle)`
 `
 
 const Resume: React.FC = () => (
-    <ResumeArticle>
-      <ResumeHeader />
-      <Work work={resumeData.work} />
-      <Education education={resumeData.education} />
-      <Skills skills={resumeData.skills} />
-      <ActivitiesInterests activitesInterests={resumeData.activitesInterests} />
-      <ResumeFooter />
-    </ResumeArticle>
-  )
+  <ResumeArticle>
+    <ResumeHeader />
+    <Work work={resumeData.work} />
+    <Education education={resumeData.education} />
+    <Skills skills={resumeData.skills} />
+    <ActivitiesInterests activitesInterests={resumeData.activitesInterests} />
+    <ResumeFooter />
+  </ResumeArticle>
+)
 
 export default Resume

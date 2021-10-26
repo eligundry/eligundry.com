@@ -7,9 +7,9 @@ import SEO from '../components/SEO'
 import Comments from '../components/Comments'
 import Post from '../components/Post'
 
-const PostTemplate: React.FC<PageProps<
-  GatsbyTypes.BlogPostBySlugQuery
->> = props => {
+const PostTemplate: React.FC<PageProps<GatsbyTypes.BlogPostBySlugQuery>> = (
+  props
+) => {
   const { data, path } = props
   const postNode = data.mdx
   const post = postNode?.frontmatter

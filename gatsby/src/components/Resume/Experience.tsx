@@ -112,75 +112,70 @@ const Experience: React.FC<Props> = ({
   summary,
   highlights,
 }) => (
-    <StyledExperience
-      itemType={`http://schema.org/${
-        variant === 'work' ? 'Organization' : 'CollegeOrUniversity'
-      }`}
+  <StyledExperience
+    itemType={`http://schema.org/${
+      variant === 'work' ? 'Organization' : 'CollegeOrUniversity'
+    }`}
+    itemScope
+    itemProp={endDate ? 'alumniOf' : 'worksFor'}
+  >
+    <h3 className="name" itemProp="name">
+      <a href={url} itemProp="url">
+        {name}
+      </a>
+    </h3>
+    <span
+      className="tenure"
       itemScope
-      itemProp={endDate ? 'alumniOf' : 'worksFor'}
+      itemType="https://schema.org/OrganizationRole"
+      itemProp="member"
     >
-      <h3 className="name" itemProp="name">
-        <a href={url} itemProp="url">
-          {name}
-        </a>
-      </h3>
-      <span
-        className="tenure"
-        itemScope
-        itemType="https://schema.org/OrganizationRole"
-        itemProp="member"
+      <meta itemProp="roleName" content={position} />
+      <time
+        itemProp="startDate"
+        dateTime={formatISO(startDate, { representation: 'date' })}
       >
-        <meta itemProp="roleName" content={position} />
-        <time
-          itemProp="startDate"
-          dateTime={formatISO(startDate, { representation: 'date' })}
-        >
-          {format(startDate, 'MMMM yyyy')}
-        </time>{' '}
-        &mdash;{' '}
-        <time
-          itemProp="endDate"
-          dateTime={
-            endDate ? formatISO(endDate, { representation: 'date' }) : ''
-          }
-        >
-          {endDate ? format(endDate, 'MMMM yyyy') : 'Present'}
-        </time>
-      </span>
-      <h4 className="title">{position}</h4>
-      <address
-        itemProp="address"
-        itemScope
-        itemType="https://schema.org/PostalAddress"
-        className="location"
+        {format(startDate, 'MMMM yyyy')}
+      </time>{' '}
+      &mdash;{' '}
+      <time
+        itemProp="endDate"
+        dateTime={endDate ? formatISO(endDate, { representation: 'date' }) : ''}
       >
-        {location.city && (
-          <>
-            <span itemProp="addressLocality">{location.city}</span>,{' '}
-          </>
-        )}
-        {location.region && (
-          <span itemProp="addressRegion">{location.region}</span>
-        )}
-      </address>
-      {summary && (
-        <p
-          className="summary"
-          itemProp="description"
-          dangerouslySetInnerHTML={{ __html: summary }}
-        />
+        {endDate ? format(endDate, 'MMMM yyyy') : 'Present'}
+      </time>
+    </span>
+    <h4 className="title">{position}</h4>
+    <address
+      itemProp="address"
+      itemScope
+      itemType="https://schema.org/PostalAddress"
+      className="location"
+    >
+      {location.city && (
+        <>
+          <span itemProp="addressLocality">{location.city}</span>,{' '}
+        </>
       )}
-      {highlights.length > 0 && (
-        <ul className="description" itemProp="description">
-          {highlights.map(highlight => (
-            <li
-              key={highlight}
-              dangerouslySetInnerHTML={{ __html: highlight }}
-            />
-          ))}
-        </ul>
+      {location.region && (
+        <span itemProp="addressRegion">{location.region}</span>
       )}
-    </StyledExperience>
-  )
+    </address>
+    {summary && (
+      <p
+        className="summary"
+        itemProp="description"
+        dangerouslySetInnerHTML={{ __html: summary }}
+      />
+    )}
+    {highlights.length > 0 && (
+      <ul className="description" itemProp="description">
+        {highlights.map((highlight) => (
+          <li key={highlight} dangerouslySetInnerHTML={{ __html: highlight }} />
+        ))}
+      </ul>
+    )}
+  </StyledExperience>
+)
 
 export default Experience

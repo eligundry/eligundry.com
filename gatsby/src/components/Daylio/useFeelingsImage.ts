@@ -9,7 +9,7 @@ export default function useFeelingsImage(targetDate?: Date): string {
   let { mood } = entries[0]
 
   if (targetDate) {
-    const targetEntry = entries.find(entry =>
+    const targetEntry = entries.find((entry) =>
       datesAreEqual(entry.time, targetDate)
     )
 

@@ -36,10 +36,10 @@ const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
           width="300"
           height={iframeHeight}
           frameBorder="0"
-          allowTransparency
           allow="encrypted-media"
         />
       </LazyLoad>
+
       <a
         href="https://www.last.fm/user/eli_pwnd"
         ref={ref}

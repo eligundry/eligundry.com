@@ -21,12 +21,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       copyright: config.copyright,
     },
   },
-  flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    // DEV_SSR: true,
-    PARALLEL_SOURCING: true,
-    // PRESERVE_FILE_DOWNLOAD_CACHE: true,
-  },
   plugins: [
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
@@ -36,7 +30,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-transformer-sharp',
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
-    'gatsby-plugin-postcss',
     'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-sass',
     {
@@ -124,7 +117,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: 'gatsby-plugin-feed',
       options: {
-        setup: ref => {
+        setup: (ref) => {
           const ret = ref.query.site.siteMetadata.rssMetadata
           ret.allMdx = ref.query.allMdx
           ret.generator = 'GatsbyJS Advanced Starter'
@@ -174,11 +167,11 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               }
             }
           `,
-            serialize: ctx => {
+            serialize: (ctx) => {
               const { rssMetadata } = ctx.query.site.siteMetadata
               return ctx.query.allMdx.edges
-                .filter(edge => !edge.node.frontmatter.draft)
-                .map(edge => ({
+                .filter((edge) => !edge.node.frontmatter.draft)
+                .map((edge) => ({
                   categories: edge.node.frontmatter.tags,
                   date: edge.node.fields.date,
                   title: edge.node.frontmatter.title,
@@ -203,7 +196,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: 'gatsby-plugin-feed',
       options: {
-        setup: ref => ({
+        setup: (ref) => ({
           title: "Eli Gundry's Feelings",
           description: "A daily journal of how I'm feeling",
           managingEditor: 'eligundry@gmail.com (Eli Gundry)',
@@ -226,8 +219,8 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 }
               }
             `,
-            serialize: ctx =>
-              ctx.query.allFeelings.nodes.map(entry => ({
+            serialize: (ctx) =>
+              ctx.query.allFeelings.nodes.map((entry) => ({
                 date: entry.time,
                 author: 'Eli Gundry',
                 url: `https://eligundry.com/feelings#${entry.time}`,
@@ -235,8 +228,11 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 title: `I felt ${entry.mood}`,
                 description: `
                   <ul>
-                    ${entry.notes?.map(note => `<li>${note}</li>`).join('\n') ??
-                      `<li>No notes!</li>`}
+                    ${
+                      entry.notes
+                        ?.map((note) => `<li>${note}</li>`)
+                        .join('\n') ?? `<li>No notes!</li>`
+                    }
                   </ul>
                 `,
               })),
@@ -255,9 +251,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             ) {
               nodes {
                 path
-                fields {
-                  latestCommitDate
-                }
               }
             }
             site {
@@ -290,7 +283,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
           let latestPost = new Date(0)
           let latestTalk = new Date(0)
 
-          query.allMdx.nodes.forEach(post => {
+          query.allMdx.nodes.forEach((post) => {
             const postDate = new Date(post.fields.date)
             let path = `/${post.collection}/${post.fields.slug}`
 

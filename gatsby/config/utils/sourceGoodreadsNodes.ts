@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 import trim from 'lodash/trim'
 import { SourceNodesArgs } from 'gatsby'
 import { JSDOM } from 'jsdom'
+import loadImage from './loadImage'
 
 const trimChars = '\n *'
 
@@ -40,7 +41,7 @@ const sourceGoodreadsNodes = async (
 
     Array.from(
       goodreadsDocument.querySelectorAll('#booksBody .bookalike')
-    ).forEach(row => {
+    ).forEach(async (row) => {
       const book = {
         title: trim(
           row.querySelector('td.field.title a').getAttribute('title'),
@@ -82,6 +83,13 @@ const sourceGoodreadsNodes = async (
         shelf,
       }
 
+      const imageNode = await loadImage({
+        cacheKey: `local-goodreads-cover-${book.isbn}`,
+        url: book.cover,
+        createNode,
+        ...args,
+      })
+
       createNode({
         id: createNodeId(`goodreads-book-${book.isbn}`),
         parent: null,
@@ -91,6 +99,7 @@ const sourceGoodreadsNodes = async (
           content: JSON.stringify(book),
           contentDigest: createContentDigest(book),
         },
+        coverImage: imageNode.id,
         ...book,
       })
     })

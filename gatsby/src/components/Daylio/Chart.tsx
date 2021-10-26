@@ -33,7 +33,7 @@ const DaylioChart: React.FC = () => {
       }
 
       navigate(`/feelings#${targetEntry.x}`)
-    }, 
+    },
     [data]
   )
 
@@ -66,7 +66,9 @@ const DaylioChart: React.FC = () => {
         ],
       }}
       options={{
-        events: isTouchScreen ? [] : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+        events: isTouchScreen
+          ? []
+          : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
         onClick: handlePointClick,
         onHover: handlePointHover,
         plugins: {
@@ -81,16 +83,23 @@ const DaylioChart: React.FC = () => {
             bodyFont: {
               size: 16,
             },
-            backgroundColor: prefersDark ? theme`colors.typographyDark` : theme`colors.white`,
-            footerColor: prefersDark ? theme`colors.typographyDark` : theme`colors.white`,
+            backgroundColor: prefersDark
+              ? theme`colors.typographyDark`
+              : theme`colors.white`,
+            footerColor: prefersDark
+              ? theme`colors.typographyDark`
+              : theme`colors.white`,
             bodyColor: prefersDark ? theme`colors.white` : theme`colors.black`,
             titleColor: prefersDark ? theme`colors.white` : theme`colors.black`,
             borderWidth: 1,
-            borderColor: prefersDark ? theme`colors.typographyLite` : 'rgb(226, 232, 240)',
+            borderColor: prefersDark
+              ? theme`colors.typographyLite`
+              : 'rgb(226, 232, 240)',
             callbacks: {
               title: (item, _) => `📅   ${formatISO(parseISO(item[0].raw.x))}`,
               // @ts-ignore
-              label: (item, _) => `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
+              label: (item, _) =>
+                `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
                   Object.keys(MoodMapping)[item.raw.y]
                 }`,
             },
@@ -110,7 +119,7 @@ const DaylioChart: React.FC = () => {
             },
             ticks: {
               // @ts-ignore
-              callback: value => Object.values(MoodMapping)[value],
+              callback: (value) => Object.values(MoodMapping)[value],
               font: {
                 size: 20,
               },

@@ -14,7 +14,7 @@ interface EmGitHubContainerProps {
 const EmGitHubContainer = styled.div<EmGitHubContainerProps>`
   ${tw`text-base`}
 
-  ${props =>
+  ${(props) =>
     !props.expanded &&
     css`
       max-height: 200px;
@@ -43,7 +43,7 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   const prefersDark = usePrefersDarkMode()
 
   useEffect(() => {
-    ;(async function() {
+    ;(async function () {
       if (!scriptTarget.current || scriptTarget.current.innerHTML) {
         return
       }
@@ -69,7 +69,6 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
     return function cleanup() {
       if (scriptTarget.current) {
         scriptTarget.current.innerHTML = ''
-        setExpanded(false)
       }
     }
   }, [scriptTarget.current, fileURL, prefersDark])

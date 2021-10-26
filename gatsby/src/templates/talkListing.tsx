@@ -7,9 +7,9 @@ import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO'
 
-const TalkListing: React.FC<PageProps<
-  GatsbyTypes.TalkListingQuery
->> = props => {
+const TalkListing: React.FC<PageProps<GatsbyTypes.TalkListingQuery>> = (
+  props
+) => {
   const postEdges = props.data.allMdx.edges
 
   return (

@@ -6,9 +6,9 @@ import Layout from '../layout'
 import SEO from '../components/SEO'
 import Post from '../components/Post'
 
-const TalkTemplate: React.FC<PageProps<
-  GatsbyTypes.TalkBySlugQuery
->> = props => {
+const TalkTemplate: React.FC<PageProps<GatsbyTypes.TalkBySlugQuery>> = (
+  props
+) => {
   const { data, path } = props
   const talkNode = data.mdx
   const talk = talkNode?.frontmatter

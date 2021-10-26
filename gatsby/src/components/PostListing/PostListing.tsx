@@ -28,7 +28,7 @@ const Article = styled.article`
 
 const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
   const postList = postEdges
-    .map(postEdge => ({
+    .map((postEdge) => ({
       path: postEdge?.node?.fields?.slug,
       cover: postEdge?.node?.frontmatter?.cover?.publicURL,
       title: postEdge?.node?.frontmatter?.title,
@@ -38,11 +38,11 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix }) => {
       description: postEdge?.node?.frontmatter?.description,
       dateModified: postEdge?.node?.fields?.latestCommitDate,
     }))
-    .filter(post => !!post.title)
+    .filter((post) => !!post.title)
 
   return (
     <main>
-      {postList.map(post => (
+      {postList.map((post) => (
         <Article
           key={post.path}
           itemScope

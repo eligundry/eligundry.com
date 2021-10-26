@@ -7,7 +7,7 @@ import SEO from '../components/SEO'
 import { DaylioList } from '../components/Daylio'
 import useFeelingsImage from '../components/Daylio/useFeelingsImage'
 
-const FeelingsPage: React.FC<PageProps> = props => {
+const FeelingsPage: React.FC<PageProps> = (props) => {
   const feelingsImage = useFeelingsImage(
     props.location.hash
       ? parseISO(props.location.hash.replace('#', ''))

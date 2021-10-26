@@ -11,12 +11,12 @@ const Emoji = styled.span`
 `
 
 const EmojiText: React.FC<Props> = ({ children, emoji, label }) => (
-    <>
-      <Emoji role="img" aria-label={label}>
-        {emoji}
-      </Emoji>
-      {children}
-    </>
-  )
+  <>
+    <Emoji role="img" aria-label={label}>
+      {emoji}
+    </Emoji>
+    {children}
+  </>
+)
 
 export default EmojiText

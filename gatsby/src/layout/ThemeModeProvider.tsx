@@ -1,6 +1,11 @@
-import React, { useEffect, useContext, useCallback, useMemo } from 'react'
+import React, {
+  useEffect,
+  useContext,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react'
 import Helmet from 'react-helmet'
-import useLocalStorage from 'react-use/lib/useLocalStorage'
 import useMedia from 'react-use/lib/useMedia'
 
 type Theme = 'light' | 'dark'
@@ -14,16 +19,15 @@ const ThemeModeContext = React.createContext<IThemeModeContext>({
   toggleTheme: () => {},
 })
 
+ThemeModeContext.displayName = 'ThemeModeContext'
+
 const ThemeModeProvider: React.FC = ({ children }) => {
   const prefersDark = useMedia('(prefers-color-scheme: dark)')
-  const [theme, setTheme] = useLocalStorage<Theme>(
-    'theme',
-    prefersDark ? 'dark' : 'light'
-  )
+  const [theme, setTheme] = useState(prefersDark ? 'dark' : 'light')
 
   const toggleTheme = useCallback(
-    () => setTheme(t => (t === 'light' ? 'dark' : 'light')),
-    []
+    () => setTheme((t) => (t === 'light' ? 'dark' : 'light')),
+    [setTheme]
   )
 
   // Change the theme if the system changes what it prefers

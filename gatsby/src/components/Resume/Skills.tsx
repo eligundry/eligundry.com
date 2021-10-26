@@ -40,10 +40,10 @@ interface SkillsSectionProps {
 }
 
 const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
-  const languages = skills.find(s => s.name === 'Languages')
-  const frameworks = skills.find(s => s.name === 'Frameworks')
-  const tools = skills.find(s => s.name === 'Tools')
-  const loveHate = skills.find(s => s.name === 'Love Hate')
+  const languages = skills.find((s) => s.name === 'Languages')
+  const frameworks = skills.find((s) => s.name === 'Frameworks')
+  const tools = skills.find((s) => s.name === 'Tools')
+  const loveHate = skills.find((s) => s.name === 'Love Hate')
 
   return (
     <section>

@@ -233,7 +233,7 @@ const Home: React.FC = () => {
           Below is my current playlist of songs I have on repeat and the top
           albums I've listened to this week.
         </p>
-        <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/1cm6mo8oxk8axeEhQZff8Z" />
+        <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" />
       </Section>
     </>
   )
