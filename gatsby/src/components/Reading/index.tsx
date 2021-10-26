@@ -1,5 +1,5 @@
 import React from 'react'
-import { GatsbyImage } from 'gatsby-plugin-image'
+import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import useGoodreadsShelf from './useGoodreads'
 
@@ -38,17 +38,14 @@ const Book: React.FC<GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['b
   author,
   coverImage,
 }) => (
-    <a
-      href={url}
-      data-tip={`${title} - ${author}`}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <GatsbyImage
-        image={coverImage.childImageSharp.gatsbyImageData}
-        alt={`${title} - ${author}`}
-      />
-    </a>
-  )
+  <a
+    href={url}
+    data-tip={`${title} - ${author}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <GatsbyImage image={getImage(coverImage)} alt={`${title} - ${author}`} />
+  </a>
+)
 
 export default Reading

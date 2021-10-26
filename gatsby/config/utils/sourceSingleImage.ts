@@ -1,4 +1,5 @@
 import { SourceNodesArgs } from 'gatsby'
+import loadImage from './loadImage'
 
 const sourceSingleImage = async (
   args: SourceNodesArgs,
@@ -15,6 +16,14 @@ const sourceSingleImage = async (
     name,
   }
 
+  const imageNode = await loadImage({
+    cacheKey: `downloaded-image-${name}`,
+    url: imageURL,
+    ext: '.jpg',
+    createNode,
+    ...args,
+  })
+
   createNode({
     id: createNodeId(
       `downloaded-image-${Buffer.from(imageURL).toString('base64')}`
@@ -26,6 +35,7 @@ const sourceSingleImage = async (
       content: JSON.stringify(image),
       contentDigest: createContentDigest(image),
     },
+    image: imageNode.id,
     ...image,
   })
 }

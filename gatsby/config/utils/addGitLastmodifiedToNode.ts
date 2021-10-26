@@ -5,7 +5,6 @@ import { CreateNodeArgs } from 'gatsby'
 import dateCompareDesc from 'date-fns/compareDesc'
 
 const git = simpleGit()
-const blacklistedTypes = ['feelings', 'File', 'Directory']
 
 const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
   const {
@@ -84,6 +83,26 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
       return
     }
   } catch (e) {
+    if (node.internal.type === 'SitePage') {
+      createNodeField({
+        node,
+        name: 'latestCommitDate',
+        value: null,
+      })
+
+      createNodeField({
+        node,
+        name: 'latestCommitMessage',
+        value: null,
+      })
+
+      createNodeField({
+        node,
+        name: 'latestCommit',
+        value: null,
+      })
+    }
+
     console.error('could not attach modified data from git for node', node)
     throw e
   }

@@ -21,12 +21,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       copyright: config.copyright,
     },
   },
-  flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    // DEV_SSR: true,
-    PARALLEL_SOURCING: true,
-    // PRESERVE_FILE_DOWNLOAD_CACHE: true,
-  },
   plugins: [
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
@@ -255,9 +249,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             ) {
               nodes {
                 path
-                fields {
-                  latestCommitDate
-                }
               }
             }
             site {
