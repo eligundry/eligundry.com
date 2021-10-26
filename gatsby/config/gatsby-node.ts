@@ -12,7 +12,7 @@ import sourceSingleImage from './utils/sourceSingleImage'
 import addGitLastModifiedToNode from './utils/addGitLastmodifiedToNode'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
-  onCreateNode: async args => {
+  onCreateNode: async (args) => {
     const { node, actions, getNode } = args
     const { createNodeField } = actions
 
@@ -129,7 +129,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     })
 
     // Post and talk page creation
-    postsEdges.forEach(edge => {
+    postsEdges.forEach((edge) => {
       if (edge.node.collection === 'posts') {
         createPage({
           path: `/blog/${edge.node.fields.slug}`,

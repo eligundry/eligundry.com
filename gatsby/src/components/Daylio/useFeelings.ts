@@ -23,7 +23,7 @@ export default function useFeelings(): Feeling[] {
     }
   `)
 
-  return entries.allFeelings.feelings.map(entry => ({
+  return entries.allFeelings.feelings.map((entry) => ({
     ...entry,
     time: parseISO(entry.time),
   }))

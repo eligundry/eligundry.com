@@ -20,7 +20,7 @@ const HeaderElm = styled.header<{ transparent: boolean }>`
     duration-200
   `}
 
-  ${props =>
+  ${(props) =>
     !props.transparent
       ? tw`bg-white dark:bg-typographyDark shadow print:shadow-none print:bg-transparent`
       : tw`bg-transparent lg:bg-transparent`}

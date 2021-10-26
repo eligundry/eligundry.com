@@ -68,10 +68,10 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
       }
 
       const latestCommit = (
-        await Promise.all(paths.map(file => git.log({ file })))
+        await Promise.all(paths.map((file) => git.log({ file })))
       )
-        .map(log => log.latest)
-        .filter(commit => !!commit)
+        .map((log) => log.latest)
+        .filter((commit) => !!commit)
         .sort((a, b) =>
           dateCompareDesc(new Date(a.date), new Date(b.date))
         )?.[0]

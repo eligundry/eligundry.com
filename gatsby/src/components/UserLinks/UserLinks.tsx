@@ -71,24 +71,24 @@ const Links = styled.div`
 `
 
 const UserLinks: React.FC = () => (
-    <Links className="user-links">
-      {links.map(link => (
-        <React.Fragment key={link.url}>
-          <a
-            href={link.url}
-            title={link.label}
-            target="_blank"
-            rel="noopener noreferrer"
-            itemProp={link.itemProp}
-          >
-            {link.icon}
-          </a>
-          {link.name === 'email' && (
-            <meta itemProp="email" content={link.url.replace('mailto:', '')} />
-          )}
-        </React.Fragment>
-      ))}
-    </Links>
-  )
+  <Links className="user-links">
+    {links.map((link) => (
+      <React.Fragment key={link.url}>
+        <a
+          href={link.url}
+          title={link.label}
+          target="_blank"
+          rel="noopener noreferrer"
+          itemProp={link.itemProp}
+        >
+          {link.icon}
+        </a>
+        {link.name === 'email' && (
+          <meta itemProp="email" content={link.url.replace('mailto:', '')} />
+        )}
+      </React.Fragment>
+    ))}
+  </Links>
+)
 
 export default UserLinks

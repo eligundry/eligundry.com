@@ -20,12 +20,10 @@ interface Props extends DaylioEntry {
 const EntryWrapper = styled.div<Partial<Props>>`
   ${tw`flex flex-row`}
 
-  ${props =>
-    props.variant === DaylioVariants.home &&
-    tw`flex-row-reverse`}
+  ${(props) => props.variant === DaylioVariants.home && tw`flex-row-reverse`}
 
   & .emoji-column {
-    ${props =>
+    ${(props) =>
       props.variant === DaylioVariants.list
         ? css`
             display: inline-block;
@@ -45,7 +43,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
   & .text-column {
     display: inline-block;
     width: 100%;
-    ${props =>
+    ${(props) =>
       props.variant === DaylioVariants.list &&
       css`
         max-width: calc(100% - 6rem);
@@ -62,9 +60,9 @@ const EntryWrapper = styled.div<Partial<Props>>`
     ${tw`font-sans text-base`}
   }
 
-  ${props => props.variant === DaylioVariants.list && tw`my-4`}
+  ${(props) => props.variant === DaylioVariants.list && tw`my-4`}
 
-  ${props =>
+  ${(props) =>
     props.selected &&
     css`
       & .text-column {
@@ -103,7 +101,7 @@ const Entry: React.FC<Props> = ({
   selected = false,
 }) => {
   const feelingsImage = useFeelingsImage(time)
-  const filteredActivities = activities.filter(a => !!a && a.length > -1)
+  const filteredActivities = activities.filter((a) => !!a && a.length > -1)
   const isoTime = formatISO(time)
 
   return (
@@ -133,7 +131,7 @@ const Entry: React.FC<Props> = ({
         </time>
         {filteredActivities.length > 0 && (
           <ActivitiesList>
-            {filteredActivities.map(a => (
+            {filteredActivities.map((a) => (
               <ActivityEmoji
                 key={`${time}-${a}`}
                 data-tip={a}
@@ -149,7 +147,7 @@ const Entry: React.FC<Props> = ({
         {notes &&
           (notes.length > 0 ? (
             <ul className="notes" itemProp="articleBody">
-              {notes.map(note => (
+              {notes.map((note) => (
                 <li key={note}>{note}</li>
               ))}
             </ul>

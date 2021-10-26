@@ -38,8 +38,8 @@ const WorkSection: React.FC<WorkProps> = ({ work }) => {
         </header>
       )}
       {work
-        .filter(w => !isPrinting || !w.printHide)
-        .map(w => (
+        .filter((w) => !isPrinting || !w.printHide)
+        .map((w) => (
           <Experience
             key={w.company}
             variant="work"

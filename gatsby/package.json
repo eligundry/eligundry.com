@@ -74,7 +74,7 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
-    "prettier": "^1.17.0",
+    "prettier": "^2.4.1",
     "typescript-eslint-parser": "^22.0.0"
   },
   "keywords": [
@@ -89,7 +89,7 @@
     "build": "gatsby build",
     "clean": "gatsby clean",
     "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "format:js": "prettier '**/*.{js,jsx}' --write",
+    "format:js": "prettier '**/*.{js,jsx,ts,tsx}' --write",
     "format:styles": "prettier '**/*.{css,scss}' --write",
     "type-check": "tsc --noEmit"
   },

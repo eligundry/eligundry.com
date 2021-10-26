@@ -22,7 +22,7 @@ const ThemeModeProvider: React.FC = ({ children }) => {
   )
 
   const toggleTheme = useCallback(
-    () => setTheme(t => (t === 'light' ? 'dark' : 'light')),
+    () => setTheme((t) => (t === 'light' ? 'dark' : 'light')),
     []
   )
 

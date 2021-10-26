@@ -54,7 +54,7 @@ const NavContainer = styled.nav<NavProps>`
     }
   }
 
-  ${props => !props.expanded && tw`sm:hidden`}
+  ${(props) => !props.expanded && tw`sm:hidden`}
 `
 
 const Hamburger = styled.button`
@@ -122,7 +122,7 @@ const Nav: React.FC = () => {
     <>
       <Hamburger
         aria-label={`${hamburgerExpanded ? 'close' : 'open'} the nav menu`}
-        onClick={() => setHamburgerExpanded(exp => !exp)}
+        onClick={() => setHamburgerExpanded((exp) => !exp)}
       >
         {hamburgerExpanded ? '🙅' : '🍔'}
       </Hamburger>

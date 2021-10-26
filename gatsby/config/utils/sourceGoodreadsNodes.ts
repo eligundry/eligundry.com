@@ -41,7 +41,7 @@ const sourceGoodreadsNodes = async (
 
     Array.from(
       goodreadsDocument.querySelectorAll('#booksBody .bookalike')
-    ).forEach(async row => {
+    ).forEach(async (row) => {
       const book = {
         title: trim(
           row.querySelector('td.field.title a').getAttribute('title'),

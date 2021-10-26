@@ -15,7 +15,7 @@ const Reading: React.FC = () => {
       <div className="shelf">
         <h3>Currently Reading</h3>
         <div className="books">
-          {shelves.currentlyReading.books.map(book => (
+          {shelves.currentlyReading.books.map((book) => (
             <Book key={book.isbn} {...book} />
           ))}
         </div>
@@ -23,7 +23,7 @@ const Reading: React.FC = () => {
       <div className="shelf">
         <h3>Recently Finished</h3>
         <div className="books">
-          {shelves.recentlyFinished.books.map(book => (
+          {shelves.recentlyFinished.books.map((book) => (
             <Book key={book.isbn} {...book} />
           ))}
         </div>
@@ -32,12 +32,9 @@ const Reading: React.FC = () => {
   )
 }
 
-const Book: React.FC<GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['books'][0]> = ({
-  url,
-  title,
-  author,
-  coverImage,
-}) => (
+const Book: React.FC<
+  GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['books'][0]
+> = ({ url, title, author, coverImage }) => (
   <a
     href={url}
     data-tip={`${title} - ${author}`}

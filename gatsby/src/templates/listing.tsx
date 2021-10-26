@@ -7,7 +7,7 @@ import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO'
 import Paper from '../components/Shared/Paper'
 
-const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = props => {
+const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
   const postEdges = props.data.allMdx.edges
 
   return (
