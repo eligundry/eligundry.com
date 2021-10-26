@@ -30,7 +30,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-transformer-sharp',
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
-    'gatsby-plugin-postcss',
     'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-sass',
     {
