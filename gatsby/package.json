@@ -39,7 +39,7 @@
     "gatsby-source-filesystem": "^4.0.0",
     "gatsby-source-lastfm": "^0.1.2",
     "gatsby-transformer-sharp": "^4.0.0",
-    "jsdom": "^17.0.0",
+    "jsdom": "^18.0.0",
     "lodash": "^4.17.21",
     "postscribe": "^2.0.8",
     "prismjs": "^1.25.0",
