@@ -222,6 +222,13 @@ const Home: React.FC = () => {
           </a>
           .
         </p>
+        <p className="summary">
+          By the way,{' '}
+          <a href="https://www.npmjs.com/package/@eligundry/gatsby-source-goodreads">
+            I wrote the Gatsby source that is rendering these bookshelves
+          </a>
+          !
+        </p>
         <div className="bookshelf">
           <Reading />
         </div>
@@ -229,9 +236,13 @@ const Home: React.FC = () => {
       <Section className="listening">
         <h2>What I'm Listening To</h2>
         <p className="summary">
-          I listen to way too much music and I love to listen to full albums.
-          Below is my current playlist of songs I have on repeat and the top
-          albums I've listened to this week.
+          I listen to way too much music and I love to listen to full albums. I
+          mainly listen to hip hop, indie rock and{' '}
+          <abbr title="Ask me about the fun 5th wave emo bands I love">
+            emo
+          </abbr>{' '}
+          music. Below is my current playlist of songs I have on repeat and the
+          top albums I've listened to this week.
         </p>
         <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" />
       </Section>
