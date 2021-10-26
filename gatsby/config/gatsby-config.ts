@@ -83,6 +83,13 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
+      resolve: '@eligundry/gatsby-source-goodreads',
+      options: {
+        userID: config.goodreads.userID,
+        shelves: ['currently-reading', 'read'],
+      },
+    },
+    {
       resolve: 'gatsby-plugin-mdx',
       options: {
         gatsbyRemarkPlugins: [

@@ -624,6 +624,26 @@ type ImageSharpResize = {
   readonly originalName: Maybe<Scalars['String']>;
 };
 
+type GoodreadsBook = Node & {
+  readonly title: Maybe<Scalars['String']>;
+  readonly author: Maybe<Scalars['String']>;
+  readonly isbn: Maybe<Scalars['String']>;
+  readonly isbn13: Maybe<Scalars['String']>;
+  readonly asin: Maybe<Scalars['String']>;
+  readonly pages: Maybe<Scalars['Int']>;
+  readonly published: Maybe<Scalars['Date']>;
+  readonly started: Maybe<Scalars['Date']>;
+  readonly finished: Maybe<Scalars['Date']>;
+  readonly cover: Maybe<Scalars['String']>;
+  readonly coverImage: Maybe<File>;
+  readonly url: Maybe<Scalars['String']>;
+  readonly shelf: Maybe<Scalars['String']>;
+  readonly id: Scalars['ID'];
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+};
+
 type MdxFrontmatter = {
   readonly title: Scalars['String'];
   readonly date: Maybe<Scalars['Date']>;
@@ -721,27 +741,6 @@ type MdxFields_latestCommitDateArgs = {
   fromNow: Maybe<Scalars['Boolean']>;
   difference: Maybe<Scalars['String']>;
   locale: Maybe<Scalars['String']>;
-};
-
-type GoodreadsBook = Node & {
-  readonly title: Scalars['String'];
-  readonly author: Scalars['String'];
-  readonly isbn: Scalars['String'];
-  readonly isbn13: Scalars['String'];
-  readonly asin: Scalars['String'];
-  readonly pages: Scalars['Int'];
-  readonly published: Maybe<Scalars['Date']>;
-  readonly started: Maybe<Scalars['Date']>;
-  readonly finished: Maybe<Scalars['Date']>;
-  readonly conver: Scalars['String'];
-  readonly coverImage: Maybe<File>;
-  readonly url: Scalars['String'];
-  readonly shelf: Scalars['String'];
-  readonly cover: Maybe<Scalars['String']>;
-  readonly id: Scalars['ID'];
-  readonly parent: Maybe<Node>;
-  readonly children: ReadonlyArray<Node>;
-  readonly internal: Internal;
 };
 
 type DownloadedImage = Node & {
@@ -852,10 +851,10 @@ type Query = {
   readonly allSiteBuildMetadata: SiteBuildMetadataConnection;
   readonly imageSharp: Maybe<ImageSharp>;
   readonly allImageSharp: ImageSharpConnection;
-  readonly mdx: Maybe<Mdx>;
-  readonly allMdx: MdxConnection;
   readonly goodreadsBook: Maybe<GoodreadsBook>;
   readonly allGoodreadsBook: GoodreadsBookConnection;
+  readonly mdx: Maybe<Mdx>;
+  readonly allMdx: MdxConnection;
   readonly downloadedImage: Maybe<DownloadedImage>;
   readonly allDownloadedImage: DownloadedImageConnection;
   readonly feelings: Maybe<feelings>;
@@ -1107,6 +1106,35 @@ type Query_allImageSharpArgs = {
 };
 
 
+type Query_goodreadsBookArgs = {
+  title: Maybe<StringQueryOperatorInput>;
+  author: Maybe<StringQueryOperatorInput>;
+  isbn: Maybe<StringQueryOperatorInput>;
+  isbn13: Maybe<StringQueryOperatorInput>;
+  asin: Maybe<StringQueryOperatorInput>;
+  pages: Maybe<IntQueryOperatorInput>;
+  published: Maybe<DateQueryOperatorInput>;
+  started: Maybe<DateQueryOperatorInput>;
+  finished: Maybe<DateQueryOperatorInput>;
+  cover: Maybe<StringQueryOperatorInput>;
+  coverImage: Maybe<FileFilterInput>;
+  url: Maybe<StringQueryOperatorInput>;
+  shelf: Maybe<StringQueryOperatorInput>;
+  id: Maybe<StringQueryOperatorInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+};
+
+
+type Query_allGoodreadsBookArgs = {
+  filter: Maybe<GoodreadsBookFilterInput>;
+  sort: Maybe<GoodreadsBookSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
 type Query_mdxArgs = {
   rawBody: Maybe<StringQueryOperatorInput>;
   fileAbsolutePath: Maybe<StringQueryOperatorInput>;
@@ -1132,36 +1160,6 @@ type Query_mdxArgs = {
 type Query_allMdxArgs = {
   filter: Maybe<MdxFilterInput>;
   sort: Maybe<MdxSortInput>;
-  skip: Maybe<Scalars['Int']>;
-  limit: Maybe<Scalars['Int']>;
-};
-
-
-type Query_goodreadsBookArgs = {
-  title: Maybe<StringQueryOperatorInput>;
-  author: Maybe<StringQueryOperatorInput>;
-  isbn: Maybe<StringQueryOperatorInput>;
-  isbn13: Maybe<StringQueryOperatorInput>;
-  asin: Maybe<StringQueryOperatorInput>;
-  pages: Maybe<IntQueryOperatorInput>;
-  published: Maybe<DateQueryOperatorInput>;
-  started: Maybe<DateQueryOperatorInput>;
-  finished: Maybe<DateQueryOperatorInput>;
-  conver: Maybe<StringQueryOperatorInput>;
-  coverImage: Maybe<FileFilterInput>;
-  url: Maybe<StringQueryOperatorInput>;
-  shelf: Maybe<StringQueryOperatorInput>;
-  cover: Maybe<StringQueryOperatorInput>;
-  id: Maybe<StringQueryOperatorInput>;
-  parent: Maybe<NodeFilterInput>;
-  children: Maybe<NodeFilterListInput>;
-  internal: Maybe<InternalFilterInput>;
-};
-
-
-type Query_allGoodreadsBookArgs = {
-  filter: Maybe<GoodreadsBookFilterInput>;
-  sort: Maybe<GoodreadsBookSortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -3655,6 +3653,468 @@ type ImageSharpSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type GoodreadsBookConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<GoodreadsBookEdge>;
+  readonly nodes: ReadonlyArray<GoodreadsBook>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<GoodreadsBookGroupConnection>;
+};
+
+
+type GoodreadsBookConnection_distinctArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_maxArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_minArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_sumArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: GoodreadsBookFieldsEnum;
+};
+
+type GoodreadsBookEdge = {
+  readonly next: Maybe<GoodreadsBook>;
+  readonly node: GoodreadsBook;
+  readonly previous: Maybe<GoodreadsBook>;
+};
+
+type GoodreadsBookFieldsEnum =
+  | 'title'
+  | 'author'
+  | 'isbn'
+  | 'isbn13'
+  | 'asin'
+  | 'pages'
+  | 'published'
+  | 'started'
+  | 'finished'
+  | 'cover'
+  | 'coverImage.sourceInstanceName'
+  | 'coverImage.absolutePath'
+  | 'coverImage.relativePath'
+  | 'coverImage.extension'
+  | 'coverImage.size'
+  | 'coverImage.prettySize'
+  | 'coverImage.modifiedTime'
+  | 'coverImage.accessTime'
+  | 'coverImage.changeTime'
+  | 'coverImage.birthTime'
+  | 'coverImage.root'
+  | 'coverImage.dir'
+  | 'coverImage.base'
+  | 'coverImage.ext'
+  | 'coverImage.name'
+  | 'coverImage.relativeDirectory'
+  | 'coverImage.dev'
+  | 'coverImage.mode'
+  | 'coverImage.nlink'
+  | 'coverImage.uid'
+  | 'coverImage.gid'
+  | 'coverImage.rdev'
+  | 'coverImage.ino'
+  | 'coverImage.atimeMs'
+  | 'coverImage.mtimeMs'
+  | 'coverImage.ctimeMs'
+  | 'coverImage.atime'
+  | 'coverImage.mtime'
+  | 'coverImage.ctime'
+  | 'coverImage.birthtime'
+  | 'coverImage.birthtimeMs'
+  | 'coverImage.blksize'
+  | 'coverImage.blocks'
+  | 'coverImage.url'
+  | 'coverImage.publicURL'
+  | 'coverImage.childrenImageSharp'
+  | 'coverImage.childrenImageSharp.fixed.base64'
+  | 'coverImage.childrenImageSharp.fixed.tracedSVG'
+  | 'coverImage.childrenImageSharp.fixed.aspectRatio'
+  | 'coverImage.childrenImageSharp.fixed.width'
+  | 'coverImage.childrenImageSharp.fixed.height'
+  | 'coverImage.childrenImageSharp.fixed.src'
+  | 'coverImage.childrenImageSharp.fixed.srcSet'
+  | 'coverImage.childrenImageSharp.fixed.srcWebp'
+  | 'coverImage.childrenImageSharp.fixed.srcSetWebp'
+  | 'coverImage.childrenImageSharp.fixed.originalName'
+  | 'coverImage.childrenImageSharp.fluid.base64'
+  | 'coverImage.childrenImageSharp.fluid.tracedSVG'
+  | 'coverImage.childrenImageSharp.fluid.aspectRatio'
+  | 'coverImage.childrenImageSharp.fluid.src'
+  | 'coverImage.childrenImageSharp.fluid.srcSet'
+  | 'coverImage.childrenImageSharp.fluid.srcWebp'
+  | 'coverImage.childrenImageSharp.fluid.srcSetWebp'
+  | 'coverImage.childrenImageSharp.fluid.sizes'
+  | 'coverImage.childrenImageSharp.fluid.originalImg'
+  | 'coverImage.childrenImageSharp.fluid.originalName'
+  | 'coverImage.childrenImageSharp.fluid.presentationWidth'
+  | 'coverImage.childrenImageSharp.fluid.presentationHeight'
+  | 'coverImage.childrenImageSharp.gatsbyImageData'
+  | 'coverImage.childrenImageSharp.original.width'
+  | 'coverImage.childrenImageSharp.original.height'
+  | 'coverImage.childrenImageSharp.original.src'
+  | 'coverImage.childrenImageSharp.resize.src'
+  | 'coverImage.childrenImageSharp.resize.tracedSVG'
+  | 'coverImage.childrenImageSharp.resize.width'
+  | 'coverImage.childrenImageSharp.resize.height'
+  | 'coverImage.childrenImageSharp.resize.aspectRatio'
+  | 'coverImage.childrenImageSharp.resize.originalName'
+  | 'coverImage.childrenImageSharp.id'
+  | 'coverImage.childrenImageSharp.parent.id'
+  | 'coverImage.childrenImageSharp.parent.children'
+  | 'coverImage.childrenImageSharp.children'
+  | 'coverImage.childrenImageSharp.children.id'
+  | 'coverImage.childrenImageSharp.children.children'
+  | 'coverImage.childrenImageSharp.internal.content'
+  | 'coverImage.childrenImageSharp.internal.contentDigest'
+  | 'coverImage.childrenImageSharp.internal.description'
+  | 'coverImage.childrenImageSharp.internal.fieldOwners'
+  | 'coverImage.childrenImageSharp.internal.ignoreType'
+  | 'coverImage.childrenImageSharp.internal.mediaType'
+  | 'coverImage.childrenImageSharp.internal.owner'
+  | 'coverImage.childrenImageSharp.internal.type'
+  | 'coverImage.childImageSharp.fixed.base64'
+  | 'coverImage.childImageSharp.fixed.tracedSVG'
+  | 'coverImage.childImageSharp.fixed.aspectRatio'
+  | 'coverImage.childImageSharp.fixed.width'
+  | 'coverImage.childImageSharp.fixed.height'
+  | 'coverImage.childImageSharp.fixed.src'
+  | 'coverImage.childImageSharp.fixed.srcSet'
+  | 'coverImage.childImageSharp.fixed.srcWebp'
+  | 'coverImage.childImageSharp.fixed.srcSetWebp'
+  | 'coverImage.childImageSharp.fixed.originalName'
+  | 'coverImage.childImageSharp.fluid.base64'
+  | 'coverImage.childImageSharp.fluid.tracedSVG'
+  | 'coverImage.childImageSharp.fluid.aspectRatio'
+  | 'coverImage.childImageSharp.fluid.src'
+  | 'coverImage.childImageSharp.fluid.srcSet'
+  | 'coverImage.childImageSharp.fluid.srcWebp'
+  | 'coverImage.childImageSharp.fluid.srcSetWebp'
+  | 'coverImage.childImageSharp.fluid.sizes'
+  | 'coverImage.childImageSharp.fluid.originalImg'
+  | 'coverImage.childImageSharp.fluid.originalName'
+  | 'coverImage.childImageSharp.fluid.presentationWidth'
+  | 'coverImage.childImageSharp.fluid.presentationHeight'
+  | 'coverImage.childImageSharp.gatsbyImageData'
+  | 'coverImage.childImageSharp.original.width'
+  | 'coverImage.childImageSharp.original.height'
+  | 'coverImage.childImageSharp.original.src'
+  | 'coverImage.childImageSharp.resize.src'
+  | 'coverImage.childImageSharp.resize.tracedSVG'
+  | 'coverImage.childImageSharp.resize.width'
+  | 'coverImage.childImageSharp.resize.height'
+  | 'coverImage.childImageSharp.resize.aspectRatio'
+  | 'coverImage.childImageSharp.resize.originalName'
+  | 'coverImage.childImageSharp.id'
+  | 'coverImage.childImageSharp.parent.id'
+  | 'coverImage.childImageSharp.parent.children'
+  | 'coverImage.childImageSharp.children'
+  | 'coverImage.childImageSharp.children.id'
+  | 'coverImage.childImageSharp.children.children'
+  | 'coverImage.childImageSharp.internal.content'
+  | 'coverImage.childImageSharp.internal.contentDigest'
+  | 'coverImage.childImageSharp.internal.description'
+  | 'coverImage.childImageSharp.internal.fieldOwners'
+  | 'coverImage.childImageSharp.internal.ignoreType'
+  | 'coverImage.childImageSharp.internal.mediaType'
+  | 'coverImage.childImageSharp.internal.owner'
+  | 'coverImage.childImageSharp.internal.type'
+  | 'coverImage.childrenMdx'
+  | 'coverImage.childrenMdx.rawBody'
+  | 'coverImage.childrenMdx.fileAbsolutePath'
+  | 'coverImage.childrenMdx.frontmatter.title'
+  | 'coverImage.childrenMdx.frontmatter.date'
+  | 'coverImage.childrenMdx.frontmatter.description'
+  | 'coverImage.childrenMdx.frontmatter.tags'
+  | 'coverImage.childrenMdx.frontmatter.slug'
+  | 'coverImage.childrenMdx.frontmatter.location'
+  | 'coverImage.childrenMdx.frontmatter.draft'
+  | 'coverImage.childrenMdx.slug'
+  | 'coverImage.childrenMdx.body'
+  | 'coverImage.childrenMdx.excerpt'
+  | 'coverImage.childrenMdx.headings'
+  | 'coverImage.childrenMdx.headings.value'
+  | 'coverImage.childrenMdx.headings.depth'
+  | 'coverImage.childrenMdx.html'
+  | 'coverImage.childrenMdx.mdxAST'
+  | 'coverImage.childrenMdx.tableOfContents'
+  | 'coverImage.childrenMdx.timeToRead'
+  | 'coverImage.childrenMdx.wordCount.paragraphs'
+  | 'coverImage.childrenMdx.wordCount.sentences'
+  | 'coverImage.childrenMdx.wordCount.words'
+  | 'coverImage.childrenMdx.collection'
+  | 'coverImage.childrenMdx.fields.date'
+  | 'coverImage.childrenMdx.fields.slug'
+  | 'coverImage.childrenMdx.fields.latestCommitDate'
+  | 'coverImage.childrenMdx.fields.latestCommitMessage'
+  | 'coverImage.childrenMdx.fields.latestCommit'
+  | 'coverImage.childrenMdx.id'
+  | 'coverImage.childrenMdx.parent.id'
+  | 'coverImage.childrenMdx.parent.children'
+  | 'coverImage.childrenMdx.children'
+  | 'coverImage.childrenMdx.children.id'
+  | 'coverImage.childrenMdx.children.children'
+  | 'coverImage.childrenMdx.internal.content'
+  | 'coverImage.childrenMdx.internal.contentDigest'
+  | 'coverImage.childrenMdx.internal.description'
+  | 'coverImage.childrenMdx.internal.fieldOwners'
+  | 'coverImage.childrenMdx.internal.ignoreType'
+  | 'coverImage.childrenMdx.internal.mediaType'
+  | 'coverImage.childrenMdx.internal.owner'
+  | 'coverImage.childrenMdx.internal.type'
+  | 'coverImage.childMdx.rawBody'
+  | 'coverImage.childMdx.fileAbsolutePath'
+  | 'coverImage.childMdx.frontmatter.title'
+  | 'coverImage.childMdx.frontmatter.date'
+  | 'coverImage.childMdx.frontmatter.description'
+  | 'coverImage.childMdx.frontmatter.tags'
+  | 'coverImage.childMdx.frontmatter.slug'
+  | 'coverImage.childMdx.frontmatter.location'
+  | 'coverImage.childMdx.frontmatter.draft'
+  | 'coverImage.childMdx.slug'
+  | 'coverImage.childMdx.body'
+  | 'coverImage.childMdx.excerpt'
+  | 'coverImage.childMdx.headings'
+  | 'coverImage.childMdx.headings.value'
+  | 'coverImage.childMdx.headings.depth'
+  | 'coverImage.childMdx.html'
+  | 'coverImage.childMdx.mdxAST'
+  | 'coverImage.childMdx.tableOfContents'
+  | 'coverImage.childMdx.timeToRead'
+  | 'coverImage.childMdx.wordCount.paragraphs'
+  | 'coverImage.childMdx.wordCount.sentences'
+  | 'coverImage.childMdx.wordCount.words'
+  | 'coverImage.childMdx.collection'
+  | 'coverImage.childMdx.fields.date'
+  | 'coverImage.childMdx.fields.slug'
+  | 'coverImage.childMdx.fields.latestCommitDate'
+  | 'coverImage.childMdx.fields.latestCommitMessage'
+  | 'coverImage.childMdx.fields.latestCommit'
+  | 'coverImage.childMdx.id'
+  | 'coverImage.childMdx.parent.id'
+  | 'coverImage.childMdx.parent.children'
+  | 'coverImage.childMdx.children'
+  | 'coverImage.childMdx.children.id'
+  | 'coverImage.childMdx.children.children'
+  | 'coverImage.childMdx.internal.content'
+  | 'coverImage.childMdx.internal.contentDigest'
+  | 'coverImage.childMdx.internal.description'
+  | 'coverImage.childMdx.internal.fieldOwners'
+  | 'coverImage.childMdx.internal.ignoreType'
+  | 'coverImage.childMdx.internal.mediaType'
+  | 'coverImage.childMdx.internal.owner'
+  | 'coverImage.childMdx.internal.type'
+  | 'coverImage.id'
+  | 'coverImage.parent.id'
+  | 'coverImage.parent.parent.id'
+  | 'coverImage.parent.parent.children'
+  | 'coverImage.parent.children'
+  | 'coverImage.parent.children.id'
+  | 'coverImage.parent.children.children'
+  | 'coverImage.parent.internal.content'
+  | 'coverImage.parent.internal.contentDigest'
+  | 'coverImage.parent.internal.description'
+  | 'coverImage.parent.internal.fieldOwners'
+  | 'coverImage.parent.internal.ignoreType'
+  | 'coverImage.parent.internal.mediaType'
+  | 'coverImage.parent.internal.owner'
+  | 'coverImage.parent.internal.type'
+  | 'coverImage.children'
+  | 'coverImage.children.id'
+  | 'coverImage.children.parent.id'
+  | 'coverImage.children.parent.children'
+  | 'coverImage.children.children'
+  | 'coverImage.children.children.id'
+  | 'coverImage.children.children.children'
+  | 'coverImage.children.internal.content'
+  | 'coverImage.children.internal.contentDigest'
+  | 'coverImage.children.internal.description'
+  | 'coverImage.children.internal.fieldOwners'
+  | 'coverImage.children.internal.ignoreType'
+  | 'coverImage.children.internal.mediaType'
+  | 'coverImage.children.internal.owner'
+  | 'coverImage.children.internal.type'
+  | 'coverImage.internal.content'
+  | 'coverImage.internal.contentDigest'
+  | 'coverImage.internal.description'
+  | 'coverImage.internal.fieldOwners'
+  | 'coverImage.internal.ignoreType'
+  | 'coverImage.internal.mediaType'
+  | 'coverImage.internal.owner'
+  | 'coverImage.internal.type'
+  | 'url'
+  | 'shelf'
+  | 'id'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type';
+
+type GoodreadsBookGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<GoodreadsBookEdge>;
+  readonly nodes: ReadonlyArray<GoodreadsBook>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly max: Maybe<Scalars['Float']>;
+  readonly min: Maybe<Scalars['Float']>;
+  readonly sum: Maybe<Scalars['Float']>;
+  readonly group: ReadonlyArray<GoodreadsBookGroupConnection>;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+
+type GoodreadsBookGroupConnection_distinctArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookGroupConnection_maxArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookGroupConnection_minArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookGroupConnection_sumArgs = {
+  field: GoodreadsBookFieldsEnum;
+};
+
+
+type GoodreadsBookGroupConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: GoodreadsBookFieldsEnum;
+};
+
+type GoodreadsBookFilterInput = {
+  readonly title: Maybe<StringQueryOperatorInput>;
+  readonly author: Maybe<StringQueryOperatorInput>;
+  readonly isbn: Maybe<StringQueryOperatorInput>;
+  readonly isbn13: Maybe<StringQueryOperatorInput>;
+  readonly asin: Maybe<StringQueryOperatorInput>;
+  readonly pages: Maybe<IntQueryOperatorInput>;
+  readonly published: Maybe<DateQueryOperatorInput>;
+  readonly started: Maybe<DateQueryOperatorInput>;
+  readonly finished: Maybe<DateQueryOperatorInput>;
+  readonly cover: Maybe<StringQueryOperatorInput>;
+  readonly coverImage: Maybe<FileFilterInput>;
+  readonly url: Maybe<StringQueryOperatorInput>;
+  readonly shelf: Maybe<StringQueryOperatorInput>;
+  readonly id: Maybe<StringQueryOperatorInput>;
+  readonly parent: Maybe<NodeFilterInput>;
+  readonly children: Maybe<NodeFilterListInput>;
+  readonly internal: Maybe<InternalFilterInput>;
+};
+
+type GoodreadsBookSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<GoodreadsBookFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
 type MdxConnection = {
   readonly totalCount: Scalars['Int'];
   readonly edges: ReadonlyArray<MdxEdge>;
@@ -3942,470 +4402,6 @@ type MdxGroupConnection_groupArgs = {
 
 type MdxSortInput = {
   readonly fields: Maybe<ReadonlyArray<Maybe<MdxFieldsEnum>>>;
-  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
-};
-
-type GoodreadsBookConnection = {
-  readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<GoodreadsBookEdge>;
-  readonly nodes: ReadonlyArray<GoodreadsBook>;
-  readonly pageInfo: PageInfo;
-  readonly distinct: ReadonlyArray<Scalars['String']>;
-  readonly max: Maybe<Scalars['Float']>;
-  readonly min: Maybe<Scalars['Float']>;
-  readonly sum: Maybe<Scalars['Float']>;
-  readonly group: ReadonlyArray<GoodreadsBookGroupConnection>;
-};
-
-
-type GoodreadsBookConnection_distinctArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookConnection_maxArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookConnection_minArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookConnection_sumArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookConnection_groupArgs = {
-  skip: Maybe<Scalars['Int']>;
-  limit: Maybe<Scalars['Int']>;
-  field: GoodreadsBookFieldsEnum;
-};
-
-type GoodreadsBookEdge = {
-  readonly next: Maybe<GoodreadsBook>;
-  readonly node: GoodreadsBook;
-  readonly previous: Maybe<GoodreadsBook>;
-};
-
-type GoodreadsBookFieldsEnum =
-  | 'title'
-  | 'author'
-  | 'isbn'
-  | 'isbn13'
-  | 'asin'
-  | 'pages'
-  | 'published'
-  | 'started'
-  | 'finished'
-  | 'conver'
-  | 'coverImage.sourceInstanceName'
-  | 'coverImage.absolutePath'
-  | 'coverImage.relativePath'
-  | 'coverImage.extension'
-  | 'coverImage.size'
-  | 'coverImage.prettySize'
-  | 'coverImage.modifiedTime'
-  | 'coverImage.accessTime'
-  | 'coverImage.changeTime'
-  | 'coverImage.birthTime'
-  | 'coverImage.root'
-  | 'coverImage.dir'
-  | 'coverImage.base'
-  | 'coverImage.ext'
-  | 'coverImage.name'
-  | 'coverImage.relativeDirectory'
-  | 'coverImage.dev'
-  | 'coverImage.mode'
-  | 'coverImage.nlink'
-  | 'coverImage.uid'
-  | 'coverImage.gid'
-  | 'coverImage.rdev'
-  | 'coverImage.ino'
-  | 'coverImage.atimeMs'
-  | 'coverImage.mtimeMs'
-  | 'coverImage.ctimeMs'
-  | 'coverImage.atime'
-  | 'coverImage.mtime'
-  | 'coverImage.ctime'
-  | 'coverImage.birthtime'
-  | 'coverImage.birthtimeMs'
-  | 'coverImage.blksize'
-  | 'coverImage.blocks'
-  | 'coverImage.url'
-  | 'coverImage.publicURL'
-  | 'coverImage.childrenImageSharp'
-  | 'coverImage.childrenImageSharp.fixed.base64'
-  | 'coverImage.childrenImageSharp.fixed.tracedSVG'
-  | 'coverImage.childrenImageSharp.fixed.aspectRatio'
-  | 'coverImage.childrenImageSharp.fixed.width'
-  | 'coverImage.childrenImageSharp.fixed.height'
-  | 'coverImage.childrenImageSharp.fixed.src'
-  | 'coverImage.childrenImageSharp.fixed.srcSet'
-  | 'coverImage.childrenImageSharp.fixed.srcWebp'
-  | 'coverImage.childrenImageSharp.fixed.srcSetWebp'
-  | 'coverImage.childrenImageSharp.fixed.originalName'
-  | 'coverImage.childrenImageSharp.fluid.base64'
-  | 'coverImage.childrenImageSharp.fluid.tracedSVG'
-  | 'coverImage.childrenImageSharp.fluid.aspectRatio'
-  | 'coverImage.childrenImageSharp.fluid.src'
-  | 'coverImage.childrenImageSharp.fluid.srcSet'
-  | 'coverImage.childrenImageSharp.fluid.srcWebp'
-  | 'coverImage.childrenImageSharp.fluid.srcSetWebp'
-  | 'coverImage.childrenImageSharp.fluid.sizes'
-  | 'coverImage.childrenImageSharp.fluid.originalImg'
-  | 'coverImage.childrenImageSharp.fluid.originalName'
-  | 'coverImage.childrenImageSharp.fluid.presentationWidth'
-  | 'coverImage.childrenImageSharp.fluid.presentationHeight'
-  | 'coverImage.childrenImageSharp.gatsbyImageData'
-  | 'coverImage.childrenImageSharp.original.width'
-  | 'coverImage.childrenImageSharp.original.height'
-  | 'coverImage.childrenImageSharp.original.src'
-  | 'coverImage.childrenImageSharp.resize.src'
-  | 'coverImage.childrenImageSharp.resize.tracedSVG'
-  | 'coverImage.childrenImageSharp.resize.width'
-  | 'coverImage.childrenImageSharp.resize.height'
-  | 'coverImage.childrenImageSharp.resize.aspectRatio'
-  | 'coverImage.childrenImageSharp.resize.originalName'
-  | 'coverImage.childrenImageSharp.id'
-  | 'coverImage.childrenImageSharp.parent.id'
-  | 'coverImage.childrenImageSharp.parent.children'
-  | 'coverImage.childrenImageSharp.children'
-  | 'coverImage.childrenImageSharp.children.id'
-  | 'coverImage.childrenImageSharp.children.children'
-  | 'coverImage.childrenImageSharp.internal.content'
-  | 'coverImage.childrenImageSharp.internal.contentDigest'
-  | 'coverImage.childrenImageSharp.internal.description'
-  | 'coverImage.childrenImageSharp.internal.fieldOwners'
-  | 'coverImage.childrenImageSharp.internal.ignoreType'
-  | 'coverImage.childrenImageSharp.internal.mediaType'
-  | 'coverImage.childrenImageSharp.internal.owner'
-  | 'coverImage.childrenImageSharp.internal.type'
-  | 'coverImage.childImageSharp.fixed.base64'
-  | 'coverImage.childImageSharp.fixed.tracedSVG'
-  | 'coverImage.childImageSharp.fixed.aspectRatio'
-  | 'coverImage.childImageSharp.fixed.width'
-  | 'coverImage.childImageSharp.fixed.height'
-  | 'coverImage.childImageSharp.fixed.src'
-  | 'coverImage.childImageSharp.fixed.srcSet'
-  | 'coverImage.childImageSharp.fixed.srcWebp'
-  | 'coverImage.childImageSharp.fixed.srcSetWebp'
-  | 'coverImage.childImageSharp.fixed.originalName'
-  | 'coverImage.childImageSharp.fluid.base64'
-  | 'coverImage.childImageSharp.fluid.tracedSVG'
-  | 'coverImage.childImageSharp.fluid.aspectRatio'
-  | 'coverImage.childImageSharp.fluid.src'
-  | 'coverImage.childImageSharp.fluid.srcSet'
-  | 'coverImage.childImageSharp.fluid.srcWebp'
-  | 'coverImage.childImageSharp.fluid.srcSetWebp'
-  | 'coverImage.childImageSharp.fluid.sizes'
-  | 'coverImage.childImageSharp.fluid.originalImg'
-  | 'coverImage.childImageSharp.fluid.originalName'
-  | 'coverImage.childImageSharp.fluid.presentationWidth'
-  | 'coverImage.childImageSharp.fluid.presentationHeight'
-  | 'coverImage.childImageSharp.gatsbyImageData'
-  | 'coverImage.childImageSharp.original.width'
-  | 'coverImage.childImageSharp.original.height'
-  | 'coverImage.childImageSharp.original.src'
-  | 'coverImage.childImageSharp.resize.src'
-  | 'coverImage.childImageSharp.resize.tracedSVG'
-  | 'coverImage.childImageSharp.resize.width'
-  | 'coverImage.childImageSharp.resize.height'
-  | 'coverImage.childImageSharp.resize.aspectRatio'
-  | 'coverImage.childImageSharp.resize.originalName'
-  | 'coverImage.childImageSharp.id'
-  | 'coverImage.childImageSharp.parent.id'
-  | 'coverImage.childImageSharp.parent.children'
-  | 'coverImage.childImageSharp.children'
-  | 'coverImage.childImageSharp.children.id'
-  | 'coverImage.childImageSharp.children.children'
-  | 'coverImage.childImageSharp.internal.content'
-  | 'coverImage.childImageSharp.internal.contentDigest'
-  | 'coverImage.childImageSharp.internal.description'
-  | 'coverImage.childImageSharp.internal.fieldOwners'
-  | 'coverImage.childImageSharp.internal.ignoreType'
-  | 'coverImage.childImageSharp.internal.mediaType'
-  | 'coverImage.childImageSharp.internal.owner'
-  | 'coverImage.childImageSharp.internal.type'
-  | 'coverImage.childrenMdx'
-  | 'coverImage.childrenMdx.rawBody'
-  | 'coverImage.childrenMdx.fileAbsolutePath'
-  | 'coverImage.childrenMdx.frontmatter.title'
-  | 'coverImage.childrenMdx.frontmatter.date'
-  | 'coverImage.childrenMdx.frontmatter.description'
-  | 'coverImage.childrenMdx.frontmatter.tags'
-  | 'coverImage.childrenMdx.frontmatter.slug'
-  | 'coverImage.childrenMdx.frontmatter.location'
-  | 'coverImage.childrenMdx.frontmatter.draft'
-  | 'coverImage.childrenMdx.slug'
-  | 'coverImage.childrenMdx.body'
-  | 'coverImage.childrenMdx.excerpt'
-  | 'coverImage.childrenMdx.headings'
-  | 'coverImage.childrenMdx.headings.value'
-  | 'coverImage.childrenMdx.headings.depth'
-  | 'coverImage.childrenMdx.html'
-  | 'coverImage.childrenMdx.mdxAST'
-  | 'coverImage.childrenMdx.tableOfContents'
-  | 'coverImage.childrenMdx.timeToRead'
-  | 'coverImage.childrenMdx.wordCount.paragraphs'
-  | 'coverImage.childrenMdx.wordCount.sentences'
-  | 'coverImage.childrenMdx.wordCount.words'
-  | 'coverImage.childrenMdx.collection'
-  | 'coverImage.childrenMdx.fields.date'
-  | 'coverImage.childrenMdx.fields.slug'
-  | 'coverImage.childrenMdx.fields.latestCommitDate'
-  | 'coverImage.childrenMdx.fields.latestCommitMessage'
-  | 'coverImage.childrenMdx.fields.latestCommit'
-  | 'coverImage.childrenMdx.id'
-  | 'coverImage.childrenMdx.parent.id'
-  | 'coverImage.childrenMdx.parent.children'
-  | 'coverImage.childrenMdx.children'
-  | 'coverImage.childrenMdx.children.id'
-  | 'coverImage.childrenMdx.children.children'
-  | 'coverImage.childrenMdx.internal.content'
-  | 'coverImage.childrenMdx.internal.contentDigest'
-  | 'coverImage.childrenMdx.internal.description'
-  | 'coverImage.childrenMdx.internal.fieldOwners'
-  | 'coverImage.childrenMdx.internal.ignoreType'
-  | 'coverImage.childrenMdx.internal.mediaType'
-  | 'coverImage.childrenMdx.internal.owner'
-  | 'coverImage.childrenMdx.internal.type'
-  | 'coverImage.childMdx.rawBody'
-  | 'coverImage.childMdx.fileAbsolutePath'
-  | 'coverImage.childMdx.frontmatter.title'
-  | 'coverImage.childMdx.frontmatter.date'
-  | 'coverImage.childMdx.frontmatter.description'
-  | 'coverImage.childMdx.frontmatter.tags'
-  | 'coverImage.childMdx.frontmatter.slug'
-  | 'coverImage.childMdx.frontmatter.location'
-  | 'coverImage.childMdx.frontmatter.draft'
-  | 'coverImage.childMdx.slug'
-  | 'coverImage.childMdx.body'
-  | 'coverImage.childMdx.excerpt'
-  | 'coverImage.childMdx.headings'
-  | 'coverImage.childMdx.headings.value'
-  | 'coverImage.childMdx.headings.depth'
-  | 'coverImage.childMdx.html'
-  | 'coverImage.childMdx.mdxAST'
-  | 'coverImage.childMdx.tableOfContents'
-  | 'coverImage.childMdx.timeToRead'
-  | 'coverImage.childMdx.wordCount.paragraphs'
-  | 'coverImage.childMdx.wordCount.sentences'
-  | 'coverImage.childMdx.wordCount.words'
-  | 'coverImage.childMdx.collection'
-  | 'coverImage.childMdx.fields.date'
-  | 'coverImage.childMdx.fields.slug'
-  | 'coverImage.childMdx.fields.latestCommitDate'
-  | 'coverImage.childMdx.fields.latestCommitMessage'
-  | 'coverImage.childMdx.fields.latestCommit'
-  | 'coverImage.childMdx.id'
-  | 'coverImage.childMdx.parent.id'
-  | 'coverImage.childMdx.parent.children'
-  | 'coverImage.childMdx.children'
-  | 'coverImage.childMdx.children.id'
-  | 'coverImage.childMdx.children.children'
-  | 'coverImage.childMdx.internal.content'
-  | 'coverImage.childMdx.internal.contentDigest'
-  | 'coverImage.childMdx.internal.description'
-  | 'coverImage.childMdx.internal.fieldOwners'
-  | 'coverImage.childMdx.internal.ignoreType'
-  | 'coverImage.childMdx.internal.mediaType'
-  | 'coverImage.childMdx.internal.owner'
-  | 'coverImage.childMdx.internal.type'
-  | 'coverImage.id'
-  | 'coverImage.parent.id'
-  | 'coverImage.parent.parent.id'
-  | 'coverImage.parent.parent.children'
-  | 'coverImage.parent.children'
-  | 'coverImage.parent.children.id'
-  | 'coverImage.parent.children.children'
-  | 'coverImage.parent.internal.content'
-  | 'coverImage.parent.internal.contentDigest'
-  | 'coverImage.parent.internal.description'
-  | 'coverImage.parent.internal.fieldOwners'
-  | 'coverImage.parent.internal.ignoreType'
-  | 'coverImage.parent.internal.mediaType'
-  | 'coverImage.parent.internal.owner'
-  | 'coverImage.parent.internal.type'
-  | 'coverImage.children'
-  | 'coverImage.children.id'
-  | 'coverImage.children.parent.id'
-  | 'coverImage.children.parent.children'
-  | 'coverImage.children.children'
-  | 'coverImage.children.children.id'
-  | 'coverImage.children.children.children'
-  | 'coverImage.children.internal.content'
-  | 'coverImage.children.internal.contentDigest'
-  | 'coverImage.children.internal.description'
-  | 'coverImage.children.internal.fieldOwners'
-  | 'coverImage.children.internal.ignoreType'
-  | 'coverImage.children.internal.mediaType'
-  | 'coverImage.children.internal.owner'
-  | 'coverImage.children.internal.type'
-  | 'coverImage.internal.content'
-  | 'coverImage.internal.contentDigest'
-  | 'coverImage.internal.description'
-  | 'coverImage.internal.fieldOwners'
-  | 'coverImage.internal.ignoreType'
-  | 'coverImage.internal.mediaType'
-  | 'coverImage.internal.owner'
-  | 'coverImage.internal.type'
-  | 'url'
-  | 'shelf'
-  | 'cover'
-  | 'id'
-  | 'parent.id'
-  | 'parent.parent.id'
-  | 'parent.parent.parent.id'
-  | 'parent.parent.parent.children'
-  | 'parent.parent.children'
-  | 'parent.parent.children.id'
-  | 'parent.parent.children.children'
-  | 'parent.parent.internal.content'
-  | 'parent.parent.internal.contentDigest'
-  | 'parent.parent.internal.description'
-  | 'parent.parent.internal.fieldOwners'
-  | 'parent.parent.internal.ignoreType'
-  | 'parent.parent.internal.mediaType'
-  | 'parent.parent.internal.owner'
-  | 'parent.parent.internal.type'
-  | 'parent.children'
-  | 'parent.children.id'
-  | 'parent.children.parent.id'
-  | 'parent.children.parent.children'
-  | 'parent.children.children'
-  | 'parent.children.children.id'
-  | 'parent.children.children.children'
-  | 'parent.children.internal.content'
-  | 'parent.children.internal.contentDigest'
-  | 'parent.children.internal.description'
-  | 'parent.children.internal.fieldOwners'
-  | 'parent.children.internal.ignoreType'
-  | 'parent.children.internal.mediaType'
-  | 'parent.children.internal.owner'
-  | 'parent.children.internal.type'
-  | 'parent.internal.content'
-  | 'parent.internal.contentDigest'
-  | 'parent.internal.description'
-  | 'parent.internal.fieldOwners'
-  | 'parent.internal.ignoreType'
-  | 'parent.internal.mediaType'
-  | 'parent.internal.owner'
-  | 'parent.internal.type'
-  | 'children'
-  | 'children.id'
-  | 'children.parent.id'
-  | 'children.parent.parent.id'
-  | 'children.parent.parent.children'
-  | 'children.parent.children'
-  | 'children.parent.children.id'
-  | 'children.parent.children.children'
-  | 'children.parent.internal.content'
-  | 'children.parent.internal.contentDigest'
-  | 'children.parent.internal.description'
-  | 'children.parent.internal.fieldOwners'
-  | 'children.parent.internal.ignoreType'
-  | 'children.parent.internal.mediaType'
-  | 'children.parent.internal.owner'
-  | 'children.parent.internal.type'
-  | 'children.children'
-  | 'children.children.id'
-  | 'children.children.parent.id'
-  | 'children.children.parent.children'
-  | 'children.children.children'
-  | 'children.children.children.id'
-  | 'children.children.children.children'
-  | 'children.children.internal.content'
-  | 'children.children.internal.contentDigest'
-  | 'children.children.internal.description'
-  | 'children.children.internal.fieldOwners'
-  | 'children.children.internal.ignoreType'
-  | 'children.children.internal.mediaType'
-  | 'children.children.internal.owner'
-  | 'children.children.internal.type'
-  | 'children.internal.content'
-  | 'children.internal.contentDigest'
-  | 'children.internal.description'
-  | 'children.internal.fieldOwners'
-  | 'children.internal.ignoreType'
-  | 'children.internal.mediaType'
-  | 'children.internal.owner'
-  | 'children.internal.type'
-  | 'internal.content'
-  | 'internal.contentDigest'
-  | 'internal.description'
-  | 'internal.fieldOwners'
-  | 'internal.ignoreType'
-  | 'internal.mediaType'
-  | 'internal.owner'
-  | 'internal.type';
-
-type GoodreadsBookGroupConnection = {
-  readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<GoodreadsBookEdge>;
-  readonly nodes: ReadonlyArray<GoodreadsBook>;
-  readonly pageInfo: PageInfo;
-  readonly distinct: ReadonlyArray<Scalars['String']>;
-  readonly max: Maybe<Scalars['Float']>;
-  readonly min: Maybe<Scalars['Float']>;
-  readonly sum: Maybe<Scalars['Float']>;
-  readonly group: ReadonlyArray<GoodreadsBookGroupConnection>;
-  readonly field: Scalars['String'];
-  readonly fieldValue: Maybe<Scalars['String']>;
-};
-
-
-type GoodreadsBookGroupConnection_distinctArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookGroupConnection_maxArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookGroupConnection_minArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookGroupConnection_sumArgs = {
-  field: GoodreadsBookFieldsEnum;
-};
-
-
-type GoodreadsBookGroupConnection_groupArgs = {
-  skip: Maybe<Scalars['Int']>;
-  limit: Maybe<Scalars['Int']>;
-  field: GoodreadsBookFieldsEnum;
-};
-
-type GoodreadsBookFilterInput = {
-  readonly title: Maybe<StringQueryOperatorInput>;
-  readonly author: Maybe<StringQueryOperatorInput>;
-  readonly isbn: Maybe<StringQueryOperatorInput>;
-  readonly isbn13: Maybe<StringQueryOperatorInput>;
-  readonly asin: Maybe<StringQueryOperatorInput>;
-  readonly pages: Maybe<IntQueryOperatorInput>;
-  readonly published: Maybe<DateQueryOperatorInput>;
-  readonly started: Maybe<DateQueryOperatorInput>;
-  readonly finished: Maybe<DateQueryOperatorInput>;
-  readonly conver: Maybe<StringQueryOperatorInput>;
-  readonly coverImage: Maybe<FileFilterInput>;
-  readonly url: Maybe<StringQueryOperatorInput>;
-  readonly shelf: Maybe<StringQueryOperatorInput>;
-  readonly cover: Maybe<StringQueryOperatorInput>;
-  readonly id: Maybe<StringQueryOperatorInput>;
-  readonly parent: Maybe<NodeFilterInput>;
-  readonly children: Maybe<NodeFilterListInput>;
-  readonly internal: Maybe<InternalFilterInput>;
-};
-
-type GoodreadsBookSortInput = {
-  readonly fields: Maybe<ReadonlyArray<Maybe<GoodreadsBookFieldsEnum>>>;
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
@@ -7365,10 +7361,20 @@ type LastfmAlbumSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+
 type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+
+type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
 
 type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7376,22 +7382,6 @@ type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
       Pick<LastfmPlayback, 'date'>
       & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
-    )> } };
-
-type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
-
-type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
-      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
-    )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
-      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
 type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
@@ -7405,6 +7395,19 @@ type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ rea
         )> }
       ) }> } };
 
+type TalkBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+type TalkBySlugQuery = { readonly mdx: Maybe<(
+    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
+  )> };
+
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7417,6 +7420,17 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
+
+type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
+    )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
+    )> } };
 
 type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7451,24 +7465,6 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = Pick<ImageSharpFluid, 't
 type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'sizes'>;
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
-
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
-
-type TalkBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-type TalkBySlugQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
-  )> };
 
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 

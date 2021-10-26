@@ -150,38 +150,17 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     })
   },
   createSchemaCustomization: ({ actions }) => {
-    actions.createTypes([
-      `
-      type GoodreadsBook implements Node {
-        title: String!
-        author: String!
-        isbn: String!
-        isbn13: String!
-        asin: String!
-        pages: Int!
-        published: Date
-        started: Date
-        finished: Date
-        conver: String!
-        coverImage: File @link
-        url: String!
-        shelf: String!
-      }
-      `,
+    actions.createTypes(
       `
       type DownloadedImage implements Node {
         url: String!
         name: String!
         image: File @link
       }
-      `,
-    ])
+      `
+    )
   },
   sourceNodes: async (args: SourceNodesArgs) => {
-    await sourceGoodreadsNodes(args, {
-      userID: siteConfig.goodreads.userID,
-      shelves: ['currently-reading', 'read'],
-    })
     await sourceSingleImage(
       args,
       // ts is to cache bust as it should be downloaded for each build
