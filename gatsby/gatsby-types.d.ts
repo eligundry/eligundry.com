@@ -260,6 +260,8 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
+  readonly port: Maybe<Scalars['Int']>;
+  readonly host: Maybe<Scalars['String']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly assetPrefix: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
@@ -976,6 +978,8 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  port: Maybe<IntQueryOperatorInput>;
+  host: Maybe<StringQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   assetPrefix: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
@@ -2450,6 +2454,8 @@ type SiteFieldsEnum =
   | 'siteMetadata.rssMetadata.description'
   | 'siteMetadata.rssMetadata.image_url'
   | 'siteMetadata.rssMetadata.copyright'
+  | 'port'
+  | 'host'
   | 'pathPrefix'
   | 'assetPrefix'
   | 'polyfill'
@@ -2584,6 +2590,8 @@ type SiteGroupConnection_groupArgs = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  readonly port: Maybe<IntQueryOperatorInput>;
+  readonly host: Maybe<StringQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly assetPrefix: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
@@ -7367,11 +7375,6 @@ type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
-type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
-
 type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -7379,6 +7382,11 @@ type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly ch
       Pick<LastfmPlayback, 'date'>
       & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
     )> } };
+
+type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
 
 type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7417,6 +7425,17 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
 
+type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>>, readonly frontmatter: Maybe<(
+          Pick<MdxFrontmatter, 'title' | 'date' | 'description'>
+          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+        )> }
+      ) }> } };
+
 type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -7451,15 +7470,9 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
-type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>>, readonly frontmatter: Maybe<(
-          Pick<MdxFrontmatter, 'title' | 'date' | 'description'>
-          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-        )> }
-      ) }> } };
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }
