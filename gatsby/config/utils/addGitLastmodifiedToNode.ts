@@ -42,7 +42,10 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
         file: (node.internal?.fileAbsolutePath ??
           fileNode.absolutePath) as string,
       })
-      addCommitFieldsToNode(log.latest)
+
+      if (log.latest) {
+        addCommitFieldsToNode(log.latest)
+      }
       return
     }
 
