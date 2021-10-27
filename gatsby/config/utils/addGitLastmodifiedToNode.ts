@@ -36,16 +36,21 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
 
   try {
     if (node.internal.type === 'Mdx') {
-      const fileNode = getNode(node.parent)
+      var fileNode = getNode(node.parent)
       var log = await git.log({
-        file: fileNode.absolutePath as string,
+        // @ts-ignore
+        file: (node.internal?.fileAbsolutePath ??
+          fileNode.absolutePath) as string,
       })
       addCommitFieldsToNode(log.latest)
       return
     }
 
     if (node.internal.type === 'SitePage') {
-      if (node.path.startsWith('/blog/') || node.path.startsWith('/talk/')) {
+      if (
+        node.path?.startsWith?.('/blog/') ||
+        node.path?.startsWith?.('/talk/')
+      ) {
         return
       }
 
@@ -110,6 +115,7 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
           e,
           node,
           log,
+          fileNode,
         },
         { showHidden: false, depth: null }
       )
