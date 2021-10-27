@@ -3,6 +3,7 @@ import simpleGit from 'simple-git'
 import { LogResult } from 'simple-git/typings/response'
 import { CreateNodeArgs } from 'gatsby'
 import dateCompareDesc from 'date-fns/compareDesc'
+import util from 'util'
 
 const git = simpleGit()
 
@@ -36,7 +37,7 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
   try {
     if (node.internal.type === 'Mdx') {
       const fileNode = getNode(node.parent)
-      const log = await git.log({
+      var log = await git.log({
         file: fileNode.absolutePath as string,
       })
       addCommitFieldsToNode(log.latest)
@@ -67,9 +68,8 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
           break
       }
 
-      const latestCommit = (
-        await Promise.all(paths.map((file) => git.log({ file })))
-      )
+      var logs = await Promise.all(paths.map((file) => git.log({ file })))
+      const latestCommit = logs
         .map((log) => log.latest)
         .filter((commit) => !!commit)
         .sort((a, b) =>
@@ -103,7 +103,17 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
       })
     }
 
-    console.error('could not attach modified data from git for node', node)
+    console.error(
+      'could not attach modified data from git for node',
+      util.inspect(
+        {
+          e,
+          node,
+          log,
+        },
+        { showHidden: false, depth: null }
+      )
+    )
     throw e
   }
 }
