@@ -344,7 +344,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 }
               }
 
-              if (path === '/') {
+              if (path === '/' || path === '/feelings') {
                 return {
                   path,
                   lastmodISO: dateMax([

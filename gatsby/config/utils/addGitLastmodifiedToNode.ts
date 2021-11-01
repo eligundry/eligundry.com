@@ -123,7 +123,7 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
         { showHidden: false, depth: null }
       )
     )
-    throw e
+    return
   }
 }
 

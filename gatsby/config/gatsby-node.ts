@@ -6,8 +6,6 @@ import kebabCase from 'lodash/kebabCase'
 import parseISO from 'date-fns/parseISO'
 import isValidDate from 'date-fns/isValid'
 
-import siteConfig from '../data/SiteConfig'
-import sourceGoodreadsNodes from './utils/sourceGoodreadsNodes'
 import sourceSingleImage from './utils/sourceSingleImage'
 import addGitLastModifiedToNode from './utils/addGitLastmodifiedToNode'
 
