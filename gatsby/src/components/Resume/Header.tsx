@@ -1,9 +1,11 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
+import tw, { styled, css } from 'twin.macro'
 
 import useIsPrinting from '../Shared/useIsPrinting'
+import { useParseOptimizedFlag } from './hooks'
+import ResumeFooter from './Footer'
 
-const Header = styled.header`
+const Header = styled.header<{ parseOptimized?: boolean }>`
   ${tw`flex flex-row`}
 
   border: 0 !important;
@@ -14,7 +16,11 @@ const Header = styled.header`
 
   && h2 {
     ${tw`text-primary text-sm`}
-    margin-top: 10px;
+    ${(props) =>
+      !props.parseOptimized &&
+      css`
+        margin-top: 10px;
+      `}
 
     & .comment {
       ${tw`text-typographyLite`}
@@ -24,24 +30,28 @@ const Header = styled.header`
 
 const ResumeHeader: React.FC = () => {
   const isPrinting = useIsPrinting()
+  const parseOptimized = useParseOptimizedFlag()
 
   if (!isPrinting) {
     return null
   }
 
   return (
-    <Header>
+    <Header parseOptimized={parseOptimized}>
       <h1>
         <a href="/">Eli Gundry</a>
       </h1>
-      <h2>
-        <code>
-          Full Stack Web Engineer{' '}
-          <span className="token comment">
-            // ❤️ Javascript, Devops && Web Standards
-          </span>
-        </code>
-      </h2>
+      <div>
+        <h2>
+          <code>
+            Full Stack Web Engineer{' '}
+            <span className="token comment">
+              // {!parseOptimized && '❤️ '}Javascript, Devops && Web Standards
+            </span>
+          </code>
+        </h2>
+        {parseOptimized && <ResumeFooter />}
+      </div>
     </Header>
   )
 }

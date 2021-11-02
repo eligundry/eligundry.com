@@ -37,6 +37,10 @@ module.exports = {
       ...defaultTheme.fontFamily,
       serif: ['Source Serif Pro', 'Georgia', 'serif'],
       mono: ['Fira Code', 'monospace'],
+      // These are fallback fonts to make my resume smol and parseable by ATSs
+      parseSafeSans: ['Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
+      parseSafeSerif: ['Georgia', 'serif'],
+      parseSafeMono: ['monospace'],
     },
   },
   variants: {},

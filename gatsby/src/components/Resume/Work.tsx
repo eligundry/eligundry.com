@@ -1,10 +1,10 @@
 import React from 'react'
-import useSearchParam from 'react-use/lib/useSearchParam'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import Experience from './Experience'
 import { Work } from './data'
 import useIsPrinting from '../Shared/useIsPrinting'
+import { useParseOptimizedFlag, useJobSearchParams } from './hooks'
 
 interface WorkProps {
   work: Work[]
@@ -12,12 +12,8 @@ interface WorkProps {
 
 const WorkSection: React.FC<WorkProps> = ({ work }) => {
   const isPrinting = useIsPrinting()
-  const targetedEmployer = useSearchParam('employer')
-  const targeting = new URLSearchParams({
-    utm_source: 'resume',
-    utm_medium: 'view-full-resume',
-    utm_campaign: targetedEmployer || 'none',
-  })
+  const parseOptimized = useParseOptimizedFlag()
+  const targeting = useJobSearchParams({ content: 'view-full-resume' })
 
   return (
     <section>
@@ -32,7 +28,8 @@ const WorkSection: React.FC<WorkProps> = ({ work }) => {
           <span className="full-work-cta">
             Full resume at{' '}
             <a href={`/resume?${targeting.toString()}`}>
-              eligundry.com/resume <FaExternalLinkAlt fontSize=".75em" />
+              eligundry.com/resume{' '}
+              {!parseOptimized && <FaExternalLinkAlt fontSize=".75em" />}
             </a>
           </span>
         </header>

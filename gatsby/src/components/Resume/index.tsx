@@ -1,5 +1,5 @@
-import React from 'react'
-import tw, { styled } from 'twin.macro'
+import React, { useEffect } from 'react'
+import tw, { styled, css } from 'twin.macro'
 
 import resumeData from './data'
 import Work from './Work'
@@ -9,9 +9,11 @@ import ActivitiesInterests from './ActivitesInterests'
 import PaperArticle from '../Shared/Paper'
 import ResumeHeader from './Header'
 import ResumeFooter from './Footer'
+import { useParseOptimizedFlag } from './hooks'
 
-const ResumeArticle = styled(PaperArticle)`
+const ResumeArticle = styled(PaperArticle)<{ parseOptimized?: boolean }>`
   ${tw`print:mb-16 print:text-base print:ml-1`}
+  ${(props) => props.parseOptimized && tw`print:font-parseSafeSerif`}
 
   & h2 {
     ${tw`font-extrabold text-xl`}
@@ -30,10 +32,8 @@ const ResumeArticle = styled(PaperArticle)`
     ${tw`font-mono text-xs`}
     letter-spacing: -0.6px;
     margin-top: 9px;
-  }
 
-  & section {
-    page-break-inside: avoid;
+    ${(props) => props.parseOptimized && tw`print:font-parseSafeMono`}
   }
 
   & ul {
@@ -43,17 +43,54 @@ const ResumeArticle = styled(PaperArticle)`
       ${tw`pl-8`}
     }
   }
+
+  ${(props) =>
+    props.parseOptimized &&
+    css`
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        ${tw`font-parseSafeSans`}
+      }
+
+      code {
+        ${tw`font-parseSafeMono`}
+      }
+    `}
 `
 
-const Resume: React.FC = () => (
-  <ResumeArticle>
-    <ResumeHeader />
-    <Work work={resumeData.work} />
-    <Education education={resumeData.education} />
-    <Skills skills={resumeData.skills} />
-    <ActivitiesInterests activitesInterests={resumeData.activitesInterests} />
-    <ResumeFooter />
-  </ResumeArticle>
-)
+const Resume: React.FC = () => {
+  const parseOptimized = useParseOptimizedFlag()
+
+  useEffect(
+    () =>
+      console.log(`
+You can control how this resume prints with the following query parameters on
+the page.
+
+* parse-optimized: This will set all the fonts and imagery to be super basic so
+  that ATS parsers don't get confused by embedded fonts.
+* company / contact-name: Set this to the name of a company or recruiter so that you can
+  track click through rates from emailed resumes.
+  `),
+    []
+  )
+
+  console.log({ parseOptimized })
+
+  return (
+    <ResumeArticle parseOptimized={parseOptimized}>
+      <ResumeHeader />
+      <Work work={resumeData.work} />
+      <Education education={resumeData.education} />
+      <Skills skills={resumeData.skills} />
+      <ActivitiesInterests activitesInterests={resumeData.activitesInterests} />
+      {!parseOptimized && <ResumeFooter />}
+    </ResumeArticle>
+  )
+}
 
 export default Resume
