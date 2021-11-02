@@ -1,10 +1,10 @@
-import { ITSConfigFn } from 'gatsby-plugin-ts-config'
+import { TSConfigFn } from 'gatsby-plugin-ts-config'
 import urljoin from 'url-join'
 import dateMax from 'date-fns/max'
 
 import config from '../data/SiteConfig'
 
-const gatsbyConfig: ITSConfigFn<'config'> = () => ({
+const gatsbyConfig: TSConfigFn<'config'> = () => ({
   pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
   assetPrefix: config.assetPrefix,
   siteMetadata: {
