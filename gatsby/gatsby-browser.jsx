@@ -1,10 +1,12 @@
 import React from 'react'
-import { GatsbySSR } from 'gatsby'
 import { IconContext } from 'react-icons'
 
-import ThemeModeProvider from '../src/layout/ThemeModeProvider'
+import ThemeModeProvider from './src/layout/ThemeModeProvider'
 
-export const wrapRootElement: GatsbySSR['wrapRootElement'] = ({ element }) => (
+/**
+ * @type {import('gatsby').GatsbyBrowser['wrapRootElement']}
+ */
+export const wrapRootElement = ({ element }) => (
   <ThemeModeProvider>
     <IconContext.Provider value={{}}>{element}</IconContext.Provider>
   </ThemeModeProvider>

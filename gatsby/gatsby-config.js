@@ -1,17 +1,11 @@
-const { generateConfig } = require('gatsby-plugin-ts-config')
+const { useGatsbyConfig } = require('gatsby-plugin-ts-config')
 const urljoin = require('url-join')
 const config = require('./data/SiteConfig')
 
 require('dotenv').config()
 
-module.exports = generateConfig({
+module.exports = useGatsbyConfig(() => require('./config/gatsby-config'), {
   configDir: 'config',
-  flags: {
-    PRESERVE_WEBPACK_CACHE: true,
-    // DEV_SSR: true,
-    PARALLEL_SOURCING: true,
-    // PRESERVE_FILE_DOWNLOAD_CACHE: true,
-  },
   siteMetadata: {
     siteUrl: urljoin(config.siteUrl, config.pathPrefix),
     rssMetadata: {
