@@ -32,6 +32,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-plugin-twitter',
     'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-sass',
+    'gatsby-plugin-netlify',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
