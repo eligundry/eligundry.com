@@ -13,11 +13,16 @@ interface Props {
 const ListeningContainer = styled.div`
   ${tw`flex flex-row xs:flex-col sm:flex-col`}
 
-  & > .last-fm-image {
+  & > div {
+    height: 100%;
+  }
+
+  & .last-fm-image {
+    display: block;
     height: fit-content;
   }
 
-  & > .spotify-playlist-wrapper {
+  & .spotify-playlist-wrapper {
     ${tw`mr-4 xs:mb-4 sm:mb-4`}
     max-width: 100%;
   }
@@ -29,24 +34,30 @@ const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
 
   return (
     <ListeningContainer>
-      <LazyLoad once offset={300} classNamePrefix="spotify-playlist">
-        <iframe
-          title="Spotify playlist that I have on repeat"
-          src={spotifyEmbedURL}
-          width="300"
-          height={iframeHeight}
-          frameBorder="0"
-          allow="encrypted-media"
-        />
-      </LazyLoad>
+      <div>
+        <h3>Seasonal Playlist</h3>
+        <LazyLoad once offset={300} classNamePrefix="spotify-playlist">
+          <iframe
+            title="Spotify playlist that I have on repeat"
+            src={spotifyEmbedURL}
+            width="300"
+            height={iframeHeight}
+            frameBorder="0"
+            allow="encrypted-media"
+          />
+        </LazyLoad>
+      </div>
 
-      <a
-        href="https://www.last.fm/user/eli_pwnd"
-        ref={ref}
-        className="last-fm-image"
-      >
-        <LastFmCover width={width} height={height} />
-      </a>
+      <div>
+        <h3>On Repeat</h3>
+        <a
+          href="https://www.last.fm/user/eli_pwnd"
+          ref={ref}
+          className="last-fm-image"
+        >
+          <LastFmCover width={width} height={height} />
+        </a>
+      </div>
     </ListeningContainer>
   )
 }

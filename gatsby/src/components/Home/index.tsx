@@ -28,6 +28,10 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
     ${tw`text-4xl text-primary font-extrabold`}
   }
 
+  & h3 {
+    ${tw`font-semibold text-primary`}
+  }
+
   &.introduction-hero {
     display: block;
 
@@ -57,10 +61,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   }
 
   & .bookshelf {
-    h3 {
-      ${tw`font-semibold text-primary`}
-    }
-
     & .books {
       display: grid;
       align-items: center;
@@ -241,8 +241,7 @@ const Home: React.FC = () => {
           <abbr title="Ask me about the fun 5th wave emo bands I love">
             emo
           </abbr>{' '}
-          music. Below is my current playlist of songs I have on repeat and the
-          top albums I've listened to this week.
+          music.
         </p>
         <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" />
       </Section>
