@@ -1,0 +1,116 @@
+---
+title: Can I Brag About This Site For A Second?
+description: I have put a lot of work into the newest version of this site and I want to tell you about it.
+slug: website-overhaul
+cover: ./img/adhd/fight-thoughts.png
+date: 2021-11-02T05:00
+---
+
+import LastFmCover from '../src/components/Listening/LastFmCover'
+import Reading from '../src/components/Reading'
+import GitHubFileEmbed from '../src/components/Shared/GitHubFileEmbed'
+
+* This site is powered by Gatsby
+* I have put in so much work on it because I have been making a lot of Gatsby based sites at work
+* I learned the hard way from a previous employeer that you cannot show off work that you did for them on your
+  portfolio.
+* Also, by having this site in Gatsby and doing really intense stuff with it, I have been able to frontrun some features
+  at work by doing them here.
+
+# Guiding Principals
+
+1. My site must be dynamic enough to reflect my personality
+2. Fetching data at compile time > fetching data at run time
+3. Do a lot and do it fast
+
+# Feelings API v2
+
+* Still using the same API as before but now I'm pulling the data at compile time instead of at runtime with React
+  Query.
+
+# Goodreads Shelves
+
+<div style="margin: 1rem auto">
+  <Reading />
+</div>
+
+* I used to use an open source React component to render these shelves.
+  * https://www.npmjs.com/package/react-goodreads-shelf
+* It kept breaking so I eventually submitted a PR to scrape the data straight from Goodreads instead of the API
+* And that kept breaking becase CORS anywhere is super flaky
+* I took that logic and put it into a Gatsby Source so it's fetched at compile time and is super fast in the browser
+
+# Listening Homepage Widget
+
+<div style="width: 500px; height: 500px; margin: 1rem auto;">
+  <LastFmCover width={500} height={500} />
+</div>
+
+* It's very easy to pull a collage of covers from your last.fm listening
+* I just added it to my Gatsby source so that Gatsby Image can do optimizations
+* I also went the extra mile and added an image map over the covers with listening information of the artist's name, the
+  album name and how many times I've listened to it over the past week.
+  * Hover over an album, you can see the data!
+* This is not where I want it to be because:
+  1. There is a drift between the covers and what the API retruns
+  2. I cannot tell how the cover service's sort the albums. It doesn't appear to be by album or artist name.
+* I want to add a 3rd widget to this section showing the upcoming concerts I'm going to. I can pull this data from
+  Songkick, they just need to approve me for an API key. Maybe I'll make a Gatsby Source for that as well!
+
+# Dark Theme Toggle
+
+* Controllable at the OS and website level with the little toggle
+
+# Git Based Modified Timestamps
+
+> Google uses the `<lastmod>` value if it's consistently and verifiably (for example by comparing to the last
+> modification of the page) accurate.
+>
+> \- [Google's `sitemap.xml` documentation](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap)
+
+* At work, our SEO consultant stressed how important having a page's last modified timestamp in schema.org +
+  `sitemap.xml` is
+* With a traditional CMS, this is very easy to get as it's on a database entry that auto updates
+* When your blog is written in Markdown, this is a little more difficult
+* Luckily, Git has this information, so I added some Gatsby logic to pull the latest commit timestamp and add it to the
+  Gatsby node so it can be used in the sitemap and schema.org data
+
+# Github Integrations
+
+Github is super flexible so I embedded some features into this site that depend on it.
+
+## Utterances
+
+* I had comments in the previous version of my site, but they were a cruel joke. They were based upon around the core
+  ideas of [echo-chamber-js](https://github.com/tessalt/echo-chamber-js).
+  * This library just stores comments in the user's local storage so it seems like they never commented and I never need
+    to see them.
+* But, confusingly, even to me, I also decided to make a comments API endpoint that would store the comments so I could
+  look at them.
+* In my defense, the only comments I've ever gotten have been from spammers, so I didn't really see the value in this
+  besides it being funny to me
+* Well, someone tried to leave a very kind comment on my feelings API blog post and couldn't so they emailed me that my
+  comments were broken. Now my comments system is both broken and mean spirited, which isn't nice.
+* I could have added an email link to my posts but instead I decided to use Utterances, which uses Github's issues
+  features as a comments database. Super nifty and requires a Github auth so that should limit the amount of spam
+  I should expect.
+
+## Github File Embeds
+
+<GitHubFileEmbed fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/src/components/Shared/GitHubFileEmbed.tsx#L40-L86" />
+
+* I wanted to embed a file from a Git repo in a previous blog post. As it turns out Github does not provide a Gist like
+  embed for files in Github repos
+* Luckily, a service called [EmGithub][emgithub] that can do this.
+* Unfortunately, it uses `document.write` to embed these files, which is terrbile for performance AND does not work with
+  Gatsby/React.
+  * If you don't know about `document.write`, that's fine, I didn't until recently. It is an ancient browser function
+    that writes to the DOM as if it was a file/stream. This means that it is a sync and blocking operation that cannot
+    be run after `DOMContentLoaded` as that is when the DOM stream closes? It's a really wild function in 2021 that
+    Google/MDN strongly recommend to avoid.
+* Luckily, there is a library that ad tech companies use called [postscribe][postscribe] that patches `document.write`
+  into normal DOM operations that can run at anytime.
+
+
+[emgithub]: https://emgithub.com/
+[postscribe]: https://github.com/krux/postscribe

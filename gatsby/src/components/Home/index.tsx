@@ -59,26 +59,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   & .react-activity-calendar {
     ${tw`font-mono`}
   }
-
-  & .bookshelf {
-    & .books {
-      display: grid;
-      align-items: center;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      column-gap: 1vw;
-      margin: 0 1vw 1vw;
-      margin-left: 0;
-      text-align: center;
-
-      & a {
-        flex: 1;
-      }
-
-      & img {
-        min-width: 75px;
-      }
-    }
-  }
 `
 
 const Home: React.FC = () => {
