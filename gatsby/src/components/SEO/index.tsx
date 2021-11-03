@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { helmetJsonLdProp } from 'react-schemaorg'
 import { WebSite, BreadcrumbList } from 'schema-dts'
-import urljoin from 'url-join'
+import { urlJoin as urljoin } from 'url-join-ts'
 import startCase from 'lodash/startCase'
 
 import config from '../../../data/SiteConfig'

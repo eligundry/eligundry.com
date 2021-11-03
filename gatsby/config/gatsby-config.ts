@@ -1,5 +1,5 @@
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
-import urljoin from 'url-join'
+import { urlJoin as urljoin } from 'url-join-ts'
 import dateMax from 'date-fns/max'
 
 import config from '../data/SiteConfig'
@@ -30,7 +30,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-transformer-sharp',
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
-    'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-sass',
     'gatsby-plugin-netlify',
     {
@@ -114,12 +113,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       options: {
         id: config.googleTagManagerID,
         includeInDevelopment: false,
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-nprogress',
-      options: {
-        color: config.themeColor,
       },
     },
     {
