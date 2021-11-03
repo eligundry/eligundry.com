@@ -10,9 +10,10 @@ interface Feeling
 }
 
 export default function useFeelings(): Feeling[] {
+  // Fetch the last 6 months of feelings, let things disappear over time
   const entries = useStaticQuery<GatsbyTypes.UseFeelingsQuery>(graphql`
     query UseFeelings {
-      allFeelings {
+      allFeelings(limit: 183) {
         feelings: nodes {
           time
           mood
