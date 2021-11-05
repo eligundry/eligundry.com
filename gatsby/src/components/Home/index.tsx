@@ -69,11 +69,9 @@ const Home: React.FC = () => {
       <Section className="introduction-hero">
         <h2>Glad To Meet You!</h2>
         <StaticImage
-          src="../../../static/img/eli-gundry-headshot.jpg"
-          alt="Eli Gundry's Headshot"
+          src="../../../static/img/eli-thumbs-up-memoji.PNG"
+          alt="Eli Gundry's Memoji Headshot"
           className="headshot"
-          width={200}
-          height={250}
         />
         <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>
