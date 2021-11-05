@@ -1,6 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import useLocation from 'react-use/lib/useLocation'
 import tw, { styled } from 'twin.macro'
+import Helmet from 'react-helmet'
+
 import EmojiText from '../Shared/EmojiText'
 
 interface Props {
@@ -12,8 +14,6 @@ interface Props {
 export function useSelectedTag(): [string | undefined, (tag: string) => void] {
   const [tag, setTag] = useState<string | undefined>(undefined)
   const { hash } = useLocation()
-
-  console.log({ hash })
 
   useEffect(() => {
     if (hash?.substr(1)) {
@@ -64,6 +64,11 @@ const TagPicker: React.FC<Props> = ({ tags, selectedTag, onSelectTag }) => {
 
   return (
     <TagWrapper>
+      {selectedTag && (
+        <Helmet>
+          <title>#{selectedTag} | Blog</title>
+        </Helmet>
+      )}
       {[...tags].sort().map((tag) => (
         <Tag
           href={`#${tag}`}
@@ -72,7 +77,7 @@ const TagPicker: React.FC<Props> = ({ tags, selectedTag, onSelectTag }) => {
           key={tag}
         >
           <EmojiText emoji="🏷" label="tag emoji to denote filtering by tag">
-            {tag}
+            #{tag}
           </EmojiText>
         </Tag>
       ))}

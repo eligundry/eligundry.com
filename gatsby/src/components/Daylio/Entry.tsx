@@ -73,6 +73,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
 
 interface ActivityEmojiProps {
   dropShadow?: boolean
+  home?: boolean
 }
 
 const Emoji = styled.span<ActivityEmojiProps>`
@@ -80,6 +81,13 @@ const Emoji = styled.span<ActivityEmojiProps>`
   cursor: default;
   z-index: 9;
   position: relative;
+
+  ${(props) =>
+    props.home &&
+    css`
+      position: initial;
+      font-size: 8rem;
+    `}
 `
 
 const ActivitiesList = styled.ul`
@@ -118,6 +126,7 @@ const Entry: React.FC<Props> = ({
         <Emoji
           dropShadow={variant === DaylioVariants.list}
           title={`I felt ${mood}`}
+          home={variant === DaylioVariants.home}
         >
           {MoodMapping[mood]}
         </Emoji>
