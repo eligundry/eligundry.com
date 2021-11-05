@@ -6,6 +6,7 @@ import Head from './Head'
 import Header from './Header'
 import Footer from './Footer'
 import Tooltip from '../components/Shared/Tooltip'
+import FancyBackground from './FancyBackground'
 import config from '../../data/SiteConfig'
 import eliHeadshot from '../../static/img/eli-gundry-headshot.jpg'
 
@@ -30,6 +31,7 @@ const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => (
       <meta name="description" content={config.siteDescription} />
       <meta itemProp="image" content={eliHeadshot} />
     </Helmet>
+    <FancyBackground />
     {!hideHeader && <Header />}
     <ContentWrapper>{children}</ContentWrapper>
     <Footer />
