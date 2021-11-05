@@ -4,10 +4,10 @@ description: I have put a lot of work into the newest version of this site and I
 slug: website-overhaul
 cover: ./img/adhd/fight-thoughts.png
 date: 2021-11-02T05:00
+tags:
+  - code
 ---
 
-import LastFmCover from '../src/components/Listening/LastFmCover'
-import Reading from '../src/components/Reading'
 import GitHubFileEmbed from '../src/components/Shared/GitHubFileEmbed'
 
 * This site is powered by Gatsby
@@ -16,6 +16,8 @@ import GitHubFileEmbed from '../src/components/Shared/GitHubFileEmbed'
   portfolio.
 * Also, by having this site in Gatsby and doing really intense stuff with it, I have been able to frontrun some features
   at work by doing them here.
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">trying this analogy thing <a href="https://t.co/Q9889HOF3B">pic.twitter.com/Q9889HOF3B</a></p>&mdash; Jane &quot;Not A Twïtter Employee&quot; Manchun Wong (@wongmjane) <a href="https://twitter.com/wongmjane/status/1456360721084674098?ref_src=twsrc%5Etfw">November 4, 2021</a></blockquote>
 
 # Guiding Principals
 
@@ -30,10 +32,6 @@ import GitHubFileEmbed from '../src/components/Shared/GitHubFileEmbed'
 
 # Goodreads Shelves
 
-<div style="margin: 1rem auto">
-  <Reading />
-</div>
-
 * I used to use an open source React component to render these shelves.
   * https://www.npmjs.com/package/react-goodreads-shelf
 * It kept breaking so I eventually submitted a PR to scrape the data straight from Goodreads instead of the API
@@ -41,10 +39,6 @@ import GitHubFileEmbed from '../src/components/Shared/GitHubFileEmbed'
 * I took that logic and put it into a Gatsby Source so it's fetched at compile time and is super fast in the browser
 
 # Listening Homepage Widget
-
-<div style="width: 500px; height: 500px; margin: 1rem auto;">
-  <LastFmCover width={500} height={500} />
-</div>
 
 * It's very easy to pull a collage of covers from your last.fm listening
 * I just added it to my Gatsby source so that Gatsby Image can do optimizations
