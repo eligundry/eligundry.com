@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import useEffectOnce from 'react-use/lib/useEffectOnce'
 import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
+import Helmet from 'react-helmet'
 
 // Stolen from https://codepen.io/georgedoescode/pen/YzxrRZe
 
@@ -43,35 +44,37 @@ const RefreshButton = styled.button`
 `
 
 const generateSeed = () => Math.random() * 10000
+const workletURL = 'https://unpkg.com/@georgedoescode/fluid-pattern-worklet'
 
 const FancyBackground: React.FC = () => {
   const [seed, setSeed] = useState<number | undefined>(undefined)
 
   useEffectOnce(() => {
     if (CSS?.paintWorklet?.addModule) {
-      CSS?.paintWorklet?.addModule?.(
-        'https://unpkg.com/@georgedoescode/fluid-pattern-worklet'
-      )
+      CSS?.paintWorklet?.addModule?.(workletURL)
       setSeed(generateSeed())
     }
   })
 
-  if (!seed) {
-    return null
-  }
-
   return (
     <>
-      <Canvas seed={seed} />
-      <RefreshButton
-        onClick={() => setSeed(generateSeed())}
-        tabIndex={99999}
-        title="Regenerate the background pattern"
-        arial-label="Regenerate the background pattern"
-        className="gtm-background-refresh-button"
-      >
-        <FaSync />
-      </RefreshButton>
+      <Helmet>
+        <link rel="preload" href={workletURL} as="script" />
+      </Helmet>
+      {seed && (
+        <>
+          <Canvas seed={seed} />
+          <RefreshButton
+            onClick={() => setSeed(generateSeed())}
+            tabIndex={99999}
+            title="Regenerate the background pattern"
+            arial-label="Regenerate the background pattern"
+            className="gtm-background-refresh-button"
+          >
+            <FaSync />
+          </RefreshButton>
+        </>
+      )}
     </>
   )
 }
