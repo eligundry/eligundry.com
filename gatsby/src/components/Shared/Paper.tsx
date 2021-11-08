@@ -1,6 +1,6 @@
 import tw, { styled } from 'twin.macro'
 
-const Paper = styled.div`
+const Paper = styled.div<{ transparent?: boolean }>`
   ${tw`
     w-full 
     p-4
@@ -13,6 +13,8 @@ const Paper = styled.div`
     dark:bg-paperDark
     rounded-lg
   `}
+
+  ${(props) => props.transparent && tw`bg-transparent dark:bg-transparent`}
 `
 
 Paper.article = Paper.withComponent('article')
