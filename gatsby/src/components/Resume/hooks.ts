@@ -38,3 +38,7 @@ export function useJobSearchParams({
 
   return targetParams
 }
+
+export function useFullResumeToggle(): boolean {
+  return !!useSearchParam('full')
+}

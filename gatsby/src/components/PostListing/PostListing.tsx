@@ -51,7 +51,6 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix, itemType }) => {
       (post) =>
         !!post.title && (!selectedTag || post?.tags?.includes(selectedTag))
     )
-  console.log({ postEdges, tags, size: tags.size })
 
   return (
     <main>
