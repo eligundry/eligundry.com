@@ -81,13 +81,6 @@ const Emoji = styled.span<ActivityEmojiProps>`
   cursor: default;
   z-index: 9;
   position: relative;
-
-  ${(props) =>
-    props.home &&
-    css`
-      position: initial;
-      font-size: 8rem;
-    `}
 `
 
 const ActivitiesList = styled.ul`

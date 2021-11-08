@@ -28,6 +28,9 @@ const Canvas = styled.div<{ seed: number }>`
 `
 
 const RefreshButton = styled.button`
+  font-size: 2rem;
+  z-index: 10;
+
   ${tw`
     fixed 
     bottom-4 
@@ -37,10 +40,9 @@ const RefreshButton = styled.button`
     hover:bg-primaryLite
     text-white 
     p-4
+    sm:text-base
+    sm:p-2
   `}
-
-  font-size: 2rem;
-  z-index: 10;
 `
 
 const generateSeed = () => Math.random() * 10000
