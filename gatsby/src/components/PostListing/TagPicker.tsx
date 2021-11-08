@@ -52,6 +52,8 @@ const Tag = styled.a<{ active?: boolean }>`
     hover:text-white hover:bg-primaryLite
   `}
 
+  white-space: nowrap;
+
   ${(props) => props.active && tw`text-white bg-primary`}
 
   & span {
