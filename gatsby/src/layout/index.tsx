@@ -10,11 +10,7 @@ import FancyBackground from './FancyBackground'
 import config from '../../data/SiteConfig'
 import eliHeadshot from '../../static/img/eli-gundry-headshot.jpg'
 
-interface Props {
-  hideHeader?: boolean
-}
-
-const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => (
+const MainLayout: React.FC = ({ children }) => (
   <>
     <Head />
     <GlobalStyles />
@@ -31,11 +27,11 @@ const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => (
       <meta name="description" content={config.siteDescription} />
       <meta itemProp="image" content={eliHeadshot} />
     </Helmet>
-    <FancyBackground />
-    {!hideHeader && <Header />}
+    <Header />
     <ContentWrapper>{children}</ContentWrapper>
     <Footer />
     <Tooltip />
+    <FancyBackground />
   </>
 )
 

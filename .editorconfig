@@ -17,6 +17,6 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-[*.{ejs,html,json,jinja,lr,xml,md,yml}]
+[*.{ejs,html,json,jinja,lr,xml,md,mdx,yml}]
 indent_style = space
 indent_size = 2

@@ -34,6 +34,8 @@ I this would be a technology blog if I didn't nerd out about tools before descri
 
 ## Gatsby
 
+![Gatsby Logo](./img/website-update/gatsby-logo.png)
+
 I moved this site from [Lektor][lektor] to [Gatsby][gatsby] last year while procrastinating on writing a talk about
 [Redux][redux-talk]. At my last job, I was working almost exclusively in Python + Flask, so using a Python based
 generator made sense at the time. But now, at my current job, I'm working a lot more in JavaScript and I wanted my site
@@ -47,8 +49,6 @@ enable us to port many sites at once.
 
 While doing some of these more complex things in a private repo at work, I have been able to take aspects that I have
 learned there and ported them conceptually back to my personal site. I will make note of these learnings as I go.
-
-And finally, it 
 
 ### Is Gatsby Any Good?
 
@@ -98,6 +98,8 @@ Here's some quick hot takes on some other libraries used in this update:
 - [twin.macro][twin.macro]: This is the glue for Tailwind CSS to Styled Components and it's good! It allowed me to avoid
   putting Tailwind classes right on my components, which I just could not stomach. It also makes the dev build fail when
   you provide an invalid Tailwind class.
+- [mdx][mdx]: What cool little language! It's Markdown that you can import React components into! Such a simple concept
+  executed perfectly.
 
 # Feelings API v2
 
@@ -161,7 +163,7 @@ I threw up my hands and realized that I needed to make a custom Gatsby source to
 first, I had it living as a file inside my site, but then I started making custom Gatsby source packages at work and
 decided to extract it into my first NPM package!
 
-https://www.npmjs.com/package/@eligundry/gatsby-source-goodreads
+[npm: @eligundry/gatsby-source-goodreads](https://www.npmjs.com/package/@eligundry/gatsby-source-goodreads)
 
 One of the added benefits of moving this to compile time is that Gatsby is able to download the cover images and plug it
 into it's image plugin and resize the images to be small and load progressively as the page loads! It's a win win win!
@@ -183,12 +185,35 @@ into it's image plugin and resize the images to be small and load progressively 
 
 # Design
 
-* Dark Theme
-  * Controllable at the OS and website level with the little toggle
-  * Components react to color theme changes, even external ones
-* Fluid pattern background
-  * Shamelessly stolen from https://codepen.io/georgedoescode/pen/YzxrRZe
-  * Can be regenerated with the button on the bottom right corner of the page
+I am not a designer. I have tried to design things in the past and I'm just terrible at it. My brain just doesn't work
+that way. I tried to design the previous iteration of this site and it was bad. No contrast, terrible sizing & spacing
+and it was just lacking pizzaz.
+
+Going into this redesign, I was convinced that I was going to spend money on a template for this site. I really wanted
+to pay a premium for a good template. But, I couldn't find a paid one that was simple enough for all my pages or really
+felt like "me".
+
+That said, I did find a free [minimal blog theme][minimal-blog-theme] from [Tailwind Toolbox][tailwind-toolbox] by 
+[Amrit Nagi][amrit-nagi] that I fell in love with and adapted to have the best elements from my previous site shown off
+in the best possible light. Thanks Amrit, I made sure to buy you some coffees.
+
+## Fluid Background
+
+After cribbing the template for this site, I was feeling good about the design, but it still needed something more to
+really show off my personality. It took me a few weeks and some endless scrolling on Twitter before I came across this
+retweeted by CSS Tricks:
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">New Houdini stuff! ✨<br /><br />Magical generative patterns that rearrange themselves based on the browser window 🎨<br /><br />A kinda different approach for responsive design...<br /><br />Inspired by <a href="https://twitter.com/chriscoyier?ref_src=twsrc%5Etfw">@chriscoyier</a> &#39;s generative grids pen 💛<br /><br />CodePen (Desktop only + Chrome / Edge) <a href="https://t.co/WvYqXy3Yoq">https://t.co/WvYqXy3Yoq</a> <a href="https://t.co/6kJCifGdbB">pic.twitter.com/6kJCifGdbB</a></p>&mdash; George Francis (@georgedoescode) <a href="https://twitter.com/georgedoescode/status/1455150458352381963?ref_src=twsrc%5Etfw">November 1, 2021</a></blockquote>
+
+It's super dynamic, very cute and fits the theme of my site perfectly! I converted it into a React component with
+a button in the bottom right part of the screen that can regenerate the pattern.
+
+## Dark Theme
+
+You have to be sensitive to users that like dark color schemes! Luckily, [TailwindCSS makes it very easy to style your
+site for dark mode][tailwindcss-dark-mode]. With that approach, I made a React provider that provides the ability to the
+user to toggle light to dark mode with it's default value being the result of the media query `(prefers-color-scheme:
+dark)`.
 
 # Git Based Modified Timestamps
 
@@ -210,19 +235,25 @@ Github is super flexible so I embedded some features into this site that depend 
 
 ## Utterances
 
-* I had comments in the previous version of my site, but they were a cruel joke. They were based upon around the core
-  ideas of [echo-chamber-js](https://github.com/tessalt/echo-chamber-js).
-  * This library just stores comments in the user's local storage so it seems like they never commented and I never need
-    to see them.
-* But, confusingly, even to me, I also decided to make a comments API endpoint that would store the comments so I could
-  look at them.
-* In my defense, the only comments I've ever gotten have been from spammers, so I didn't really see the value in this
-  besides it being funny to me
-* Well, someone tried to leave a very kind comment on my feelings API blog post and couldn't so they emailed me that my
-  comments were broken. Now my comments system is both broken and mean spirited, which isn't nice.
-* I could have added an email link to my posts but instead I decided to use Utterances, which uses Github's issues
-  features as a comments database. Super nifty and requires a Github auth so that should limit the amount of spam
-  I should expect.
+Years ago, I saw a talk at Brooklyn.js where someone presented [echo-chamber-js][echo-chamber-js]. It's a joke
+JavaScript library that presents a comment form that just saves the comment to the commenter's local storage so that the
+comment just shows up for them. The thought behind it is that comments are mainly mean or spam, you really don't want to
+read them but you have to offer them, otherwise they will email you and you really don't want that. That talk has always
+stuck with me and when it came time to implement comments for my site, I decided to adapt it for React.
+
+But, confusingly, even to me, I decided to wire up the form to my personal API so I could capture the comments and read
+them if I wanted. It was a pretty cool endpoint that I did a good job writing, but it really served no purpose.
+
+Fast forward to earlier this year. I get an email from someone who read the [Feelings API blog post][feelings-api] and
+wanted to post kind words about it. Turns out, I had recently moved my API to a different domain but didn't update my
+code to post to it. This reader went out of their way to tell me that it was broken and that they liked my article.
+I felt bad and decided that needed to change!
+
+I decided to switch my commenting system to [utterances][utterances]. Utterances has a really cool design: It stores all
+it's comments as Github comments in the issues tab of repos. It will automatically create issues on each page a user
+leaves a comment on and thread all replies under that. This means that a user needs a Github account to comment, which
+narrows my audience to just developers BUT that also acts as an anti-spam mechanism and is much nicer for me to moderate
+than Disqus.
 
 ## Github File Embeds
 
@@ -260,3 +291,10 @@ Github is super flexible so I embedded some features into this site that depend 
 [tailwind]: https://tailwindcss.com/
 [styled-components]: https://styled-components.com/
 [twin.macro]: https://github.com/ben-rogerson/twin.macro
+[tailwind-toolbox]: https://www.tailwindtoolbox.com/
+[minimal-blog-theme]: https://www.tailwindtoolbox.com/templates/minimal-blog-demo.php
+[amrit-nagi]: https://www.buymeacoffee.com/tailwindtoolbox
+[tailwindcss-dark-mode]: https://tailwindcss.com/docs/dark-mode
+[mdx]: https://mdxjs.com/
+[echo-chamber-js]: https://github.com/tessalt/echo-chamber-js
+[utterances]: https://utteranc.es/
