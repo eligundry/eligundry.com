@@ -59,26 +59,6 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   & .react-activity-calendar {
     ${tw`font-mono`}
   }
-
-  & .bookshelf {
-    & .books {
-      display: grid;
-      align-items: center;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      column-gap: 1vw;
-      margin: 0 1vw 1vw;
-      margin-left: 0;
-      text-align: center;
-
-      & a {
-        flex: 1;
-      }
-
-      & img {
-        min-width: 75px;
-      }
-    }
-  }
 `
 
 const Home: React.FC = () => {
@@ -89,11 +69,9 @@ const Home: React.FC = () => {
       <Section className="introduction-hero">
         <h2>Glad To Meet You!</h2>
         <StaticImage
-          src="../../../static/img/eli-gundry-headshot.jpg"
-          alt="Eli Gundry's Headshot"
+          src="../../../static/img/eli-thumbs-up-memoji.PNG"
+          alt="Eli Gundry's Memoji Headshot"
           className="headshot"
-          width={200}
-          height={250}
         />
         <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>

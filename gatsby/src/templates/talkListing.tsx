@@ -17,7 +17,11 @@ const TalkListing: React.FC<PageProps<GatsbyTypes.TalkListingQuery>> = (
       <Paper className="listing-container">
         <Helmet title="Talks" />
         <SEO path={props.path} />
-        <PostListing postEdges={postEdges} pathPrefix="talks" />
+        <PostListing
+          postEdges={postEdges}
+          pathPrefix="talks"
+          itemType="CreativeWork"
+        />
       </Paper>
     </Layout>
   )

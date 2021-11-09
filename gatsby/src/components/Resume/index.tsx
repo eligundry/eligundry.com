@@ -75,11 +75,10 @@ the page.
   that ATS parsers don't get confused by embedded fonts.
 * company / contact-name: Set this to the name of a company or recruiter so that you can
   track click through rates from emailed resumes.
+* full: don't omit any experiences when printing
   `),
     []
   )
-
-  console.log({ parseOptimized })
 
   return (
     <ResumeArticle parseOptimized={parseOptimized}>

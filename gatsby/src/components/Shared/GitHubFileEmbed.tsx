@@ -43,35 +43,35 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   const prefersDark = usePrefersDarkMode()
 
   useEffect(() => {
-    ;(async function () {
-      if (!scriptTarget.current || scriptTarget.current.innerHTML) {
-        return
-      }
+    if (!scriptTarget.current || scriptTarget.current.innerHTML) {
+      return
+    }
 
-      // emgithub uses document.write, which doesn't work well with React post
-      // render. postscribe patches document.write to document.appendChild,
-      // which makes it work with this effect.
-      const postscribe = (await import('postscribe')).default
-      const query = new URLSearchParams({
-        target: fileURL,
-        style: prefersDark ? 'tomorrow-night' : 'github-gist',
-        showBorder: 'on',
-        showLineNumbers: 'on',
-        showFileMeta: 'on',
-      })
+    // emgithub uses document.write, which doesn't work well with React post
+    // render. postscribe patches document.write to document.appendChild,
+    // which makes it work with this effect.
+    const query = new URLSearchParams({
+      target: fileURL,
+      style: prefersDark ? 'tomorrow-night' : 'github-gist',
+      showBorder: 'on',
+      showLineNumbers: 'on',
+      showFileMeta: 'on',
+    })
 
+    // @ts-ignore
+    import('postscribe').then(({ default: postscribe }) =>
       postscribe(
         scriptTarget.current,
         `<script async cross-origin="anonymous" src="https://emgithub.com/embed.js?${query.toString()}"></script>`
       )
-    })()
+    )
 
     return function cleanup() {
       if (scriptTarget.current) {
         scriptTarget.current.innerHTML = ''
       }
     }
-  }, [scriptTarget.current, fileURL, prefersDark])
+  }, [!!scriptTarget.current, fileURL, prefersDark])
 
   return (
     <>

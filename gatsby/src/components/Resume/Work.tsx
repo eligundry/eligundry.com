@@ -4,7 +4,11 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 import Experience from './Experience'
 import { Work } from './data'
 import useIsPrinting from '../Shared/useIsPrinting'
-import { useParseOptimizedFlag, useJobSearchParams } from './hooks'
+import {
+  useParseOptimizedFlag,
+  useJobSearchParams,
+  useFullResumeToggle,
+} from './hooks'
 
 interface WorkProps {
   work: Work[]
@@ -13,6 +17,7 @@ interface WorkProps {
 const WorkSection: React.FC<WorkProps> = ({ work }) => {
   const isPrinting = useIsPrinting()
   const parseOptimized = useParseOptimizedFlag()
+  const printFullResume = useFullResumeToggle()
   const targeting = useJobSearchParams({ content: 'view-full-resume' })
 
   return (
@@ -35,7 +40,7 @@ const WorkSection: React.FC<WorkProps> = ({ work }) => {
         </header>
       )}
       {work
-        .filter((w) => !isPrinting || !w.printHide)
+        .filter((w) => !isPrinting || !w.printHide || printFullResume)
         .map((w) => (
           <Experience
             key={w.company}

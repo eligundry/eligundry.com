@@ -15,7 +15,11 @@ const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
       <Paper className="listing-container">
         <Helmet title="Blog" />
         <SEO path={props.path} />
-        <PostListing postEdges={postEdges} pathPrefix="blog" />
+        <PostListing
+          postEdges={postEdges}
+          pathPrefix="blog"
+          itemType="BlogPosting"
+        />
       </Paper>
     </Layout>
   )
@@ -46,6 +50,7 @@ export const listingQuery = graphql`
             title
             date
             description
+            tags
             cover {
               publicURL
             }

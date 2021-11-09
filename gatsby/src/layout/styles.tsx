@@ -92,4 +92,8 @@ export const ContentWrapper = styled.main`
     print:mt-0
     print:pt-0
   `}
+
+  @media (min-width: 768px) {
+    max-width: 50rem;
+  }
 `

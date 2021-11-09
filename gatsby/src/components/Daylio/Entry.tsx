@@ -11,6 +11,7 @@ import {
   ActivityMapping,
 } from './types'
 import useFeelingsImage from './useFeelingsImage'
+import Paper from '../Shared/Paper'
 
 interface Props extends DaylioEntry {
   variant: DaylioVariants
@@ -73,6 +74,7 @@ const EntryWrapper = styled.div<Partial<Props>>`
 
 interface ActivityEmojiProps {
   dropShadow?: boolean
+  home?: boolean
 }
 
 const Emoji = styled.span<ActivityEmojiProps>`
@@ -118,11 +120,15 @@ const Entry: React.FC<Props> = ({
         <Emoji
           dropShadow={variant === DaylioVariants.list}
           title={`I felt ${mood}`}
+          home={variant === DaylioVariants.home}
         >
           {MoodMapping[mood]}
         </Emoji>
       </div>
-      <div className="text-column">
+      <Paper
+        className="text-column"
+        transparent={variant === DaylioVariants.home}
+      >
         <h3 itemProp="name headline">I felt {mood}</h3>
         <time dateTime={isoTime} itemProp="datePublished dateModified">
           <Link to={`/feelings#${isoTime}`} itemProp="url">
@@ -156,7 +162,7 @@ const Entry: React.FC<Props> = ({
               {notes[0]}
             </p>
           ))}
-      </div>
+      </Paper>
     </EntryWrapper>
   )
 }
