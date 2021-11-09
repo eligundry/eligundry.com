@@ -77,8 +77,14 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
     <>
       <EmGitHubContainer ref={scriptTarget} expanded={expanded} />
       {!expanded && (
-        <ExpandButtonContainer data-gtm="emgithub-file-expaded">
-          <button onClick={() => setExpanded(true)}>Expand File</button>
+        <ExpandButtonContainer>
+          <button
+            onClick={() => setExpanded(true)}
+            data-gtm="emgithub-file-expaded"
+            data-gtm-emgithub-file-url={fileURL}
+          >
+            Expand File
+          </button>
         </ExpandButtonContainer>
       )}
     </>
