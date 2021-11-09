@@ -177,16 +177,28 @@ into it's image plugin and resize the images to be small and load progressively 
 
 ![Last.fm cover on my homepage](./img/website-update/last-fm-cover.png)
 
-* It's very easy to pull a collage of covers from your last.fm listening
-* I just added it to my Gatsby source so that Gatsby Image can do optimizations
-* I also went the extra mile and added an image map over the covers with listening information of the artist's name, the
-  album name and how many times I've listened to it over the past week.
-  * Hover over an album, you can see the data!
-* This is not where I want it to be because:
-  1. There is a drift between the covers and what the API retruns
-  2. I cannot tell how the cover service's sort the albums. It doesn't appear to be by album or artist name.
-* I want to add a 3rd widget to this section showing the upcoming concerts I'm going to. I can pull this data from
-  Songkick, they just need to approve me for an API key. Maybe I'll make a Gatsby Source for that as well!
+It's very easy to pull a Last.fm collage of your top albums. A bunch of services exist for this. Why bring this up?
+
+Well, I elevated it in 2 ways:
+
+1. I'm pulling the image at build time into Gatsby so that it's image component can optimize it
+2. I'm overlaying the artist name, album name and the number of scrobbles with an image map
+
+Number 2 is the thing I want to brag about. I used [gatsby-source-lastfm][gatsby-source-lastfm] to pull my last 1000
+scrobbles and then I whipped up a React component to overlay the info onto the image using an [HTML image map][html-image-map] 
+(in the year 2021, it's not often you get the chance to use an image map legitimately, so I was tickled pink to do so).
+
+The only downside to this approach is that it's not 100% accurate. I've noticed the following things:
+
+1. There is often lag between the data that the image provider is using and what the Last.fm API returns.
+2. If I have the same amount of scrobbles for a given album, the sorting in the image != the sorting in the API. I think
+   the cover providers might be sorting on an internal Last.fm ID and not the album name or artist. I do not want to
+   include the ID in this bundle so I'm fine with this being inaccurate.
+
+This homepage widget also has my current playlist of the season. Dynamic and updates without me having to do anything
+special. I want to add a third widget here of the shows that I'm going to that will come from [Songkick][songkick]'s
+API. I had this somewhat working using their ical exports, but the data wasn't clean enough for me to happy. I have
+applied for an API key, maybe I will make a Gatsby source for this as well.
 
 # Design
 
@@ -295,6 +307,32 @@ rules and is in no way open sourceable, but I really just want to tell people ab
 
 <GitHubFileEmbed fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/config/utils/addGitLastmodifiedToNode.ts" />
 
+# Performance
+
+I would be remiss if I blogged all about these features and my static site without bringing up performance. This blog
+post, if nothing else, is a marketing tool for my next employer to hire me on the basis of.
+
+The primary consumer of this site will be on desktop, on that I have a perfect 💯!
+
+![Google Page Speed Insights Desktop 100 score](./img/website-update/desktop-100.png)
+
+Sadly, on mobile, this is another story and all I have is a 71 😧
+
+![Google Page Speed Insights Mobile 71 score](./img/website-update/mobile-71.png)
+
+This is going to be hard to get up. The biggest issue is that I have a lot of JavaScript powering all the functionality
+on my site. I can try to lazy load some stuff, but because it's statically rendered and available on first paint, it's
+not a lot of help. The good news is that the content on my site shows up quickly and that extra JS loading doesn't
+impact the end user as much as it would if it wasn't statically rendered.
+
+My pet theory is that Google Page Speed Insights mobile is hard for everyone because Google's target device is
+a sub-$200 phone on an African 3G connection. This is obviously the future of the internet and the benchmark we should
+be targeting, but this is also an American's personal site tailored for other Americans, so I'm not going to lose too
+much sleep over this.
+
+# Conclusion
+
+TBD
 
 [lektor]: https://www.getlektor.com/
 [gatsby]: https://www.gatsbyjs.com/
@@ -324,3 +362,6 @@ rules and is in no way open sourceable, but I really just want to tell people ab
 [utterances]: https://utteranc.es/
 [gist]: https://gist.github.com/
 [document.write]: https://developer.mozilla.org/en-US/docs/Web/API/Document/write
+[gatsby-source-lastfm]: https://www.gatsbyjs.com/plugins/gatsby-source-lastfm/
+[html-image-map]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/map
+[songkick]: https://www.songkick.com/
