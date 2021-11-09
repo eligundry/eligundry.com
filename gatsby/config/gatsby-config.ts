@@ -31,7 +31,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
     'gatsby-plugin-sass',
-    'gatsby-plugin-netlify',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
@@ -252,6 +251,9 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             ) {
               nodes {
                 path
+                fields {
+                  latestCommitDate
+                }
               }
             }
             site {
