@@ -5,6 +5,7 @@ import path from 'path'
 import kebabCase from 'lodash/kebabCase'
 import parseISO from 'date-fns/parseISO'
 import isValidDate from 'date-fns/isValid'
+import util from 'util'
 
 import sourceSingleImage from './utils/sourceSingleImage'
 import addGitLastModifiedToNode from './utils/addGitLastmodifiedToNode'
@@ -165,6 +166,17 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       `https://lastfm-collage.herokuapp.com/collage?username=eli_pwnd&method=album&period=7day&column=3&row=3&caption=false&scrobble=false&ts=${new Date().toISOString()}`,
       'last-fm-cover.jpg'
     )
+  },
+  onCreateWebpackConfig: ({ actions, getConfig }) => {
+    const config = getConfig()
+
+    // This adds support importing CSS Paint Worklets from node_modules
+    config.module.rules.push({
+      test: /worklet.bundle.js$/,
+      type: 'asset/resource',
+    })
+
+    actions.replaceWebpackConfig(config)
   },
 })
 

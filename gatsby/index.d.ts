@@ -17,3 +17,8 @@ declare module '*.svg' {
   const url: string
   export default url
 }
+
+declare module '*worklet.bundle.js' {
+  const workletURL: string
+  export default workletURL
+}
