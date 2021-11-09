@@ -103,7 +103,12 @@ Here's some quick hot takes on some other libraries used in this update:
 
 # Feelings API v2
 
+<figure>
+
 ![Feelings widget on my homepage](./img/website-update/feelings-widget.png)
+
+  <figcaption>I just had to show off a little bit and add that chart</figcaption>
+</figure>
 
 Last year, [I made an API to submit diary entries from the Daylio app on my phone][feelings-api]. I am happy to announce
 that I am continuing to use this functionality and I think posting them on my site + Twitter has encouraged me to keep
@@ -205,8 +210,13 @@ retweeted by CSS Tricks:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">New Houdini stuff! ✨<br /><br />Magical generative patterns that rearrange themselves based on the browser window 🎨<br /><br />A kinda different approach for responsive design...<br /><br />Inspired by <a href="https://twitter.com/chriscoyier?ref_src=twsrc%5Etfw">@chriscoyier</a> &#39;s generative grids pen 💛<br /><br />CodePen (Desktop only + Chrome / Edge) <a href="https://t.co/WvYqXy3Yoq">https://t.co/WvYqXy3Yoq</a> <a href="https://t.co/6kJCifGdbB">pic.twitter.com/6kJCifGdbB</a></p>&mdash; George Francis (@georgedoescode) <a href="https://twitter.com/georgedoescode/status/1455150458352381963?ref_src=twsrc%5Etfw">November 1, 2021</a></blockquote>
 
+Sadly, this only works with Chrome + Edge, so even Safari & FireFox users don't get to see it 😭.
+
 It's super dynamic, very cute and fits the theme of my site perfectly! I converted it into a React component with
-a button in the bottom right part of the screen that can regenerate the pattern.
+a button in the bottom right part of the screen that can regenerate the pattern. It's even responsive to my dark mode
+toggle, speaking of which...
+
+<GitHubFileEmbed fileURL="https://github.com/eligundry/eligundry.com/blob/blog-bragging/gatsby/src/layout/FancyBackground.tsx" />
 
 ## Dark Theme
 
@@ -214,20 +224,6 @@ You have to be sensitive to users that like dark color schemes! Luckily, [Tailwi
 site for dark mode][tailwindcss-dark-mode]. With that approach, I made a React provider that provides the ability to the
 user to toggle light to dark mode with it's default value being the result of the media query `(prefers-color-scheme:
 dark)`.
-
-# Git Based Modified Timestamps
-
-> Google uses the `<lastmod>` value if it's consistently and verifiably (for example by comparing to the last
-> modification of the page) accurate.
->
-> \- [Google's `sitemap.xml` documentation](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap)
-
-* At work, our SEO consultant stressed how important having a page's last modified timestamp in schema.org +
-  `sitemap.xml` is
-* With a traditional CMS, this is very easy to get as it's on a database entry that auto updates
-* When your blog is written in Markdown, this is a little more difficult
-* Luckily, Git has this information, so I added some Gatsby logic to pull the latest commit timestamp and add it to the
-  Gatsby node so it can be used in the sitemap and schema.org data
 
 # Github Integrations
 
@@ -257,19 +253,47 @@ than Disqus.
 
 ## Github File Embeds
 
+In a previous blog post, I wanted to show a [Gist][gist] like file embed of a file from the Github main site.
+Unfortunately, Github does not provide this out of the box. Luckily, a service call [EmGithub][emgithub] provides
+exactly this. They don't have a React component for this so I made one:
+
 <GitHubFileEmbed fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/src/components/Shared/GitHubFileEmbed.tsx#L40-L86" />
 
-* I wanted to embed a file from a Git repo in a previous blog post. As it turns out Github does not provide a Gist like
-  embed for files in Github repos
-* Luckily, a service called [EmGithub][emgithub] that can do this.
-* Unfortunately, it uses `document.write` to embed these files, which is terrbile for performance AND does not work with
-  Gatsby/React.
-  * If you don't know about `document.write`, that's fine, I didn't until recently. It is an ancient browser function
-    that writes to the DOM as if it was a file/stream. This means that it is a sync and blocking operation that cannot
-    be run after `DOMContentLoaded` as that is when the DOM stream closes? It's a really wild function in 2021 that
-    Google/MDN strongly recommend to avoid.
-* Luckily, there is a library that ad tech companies use called [postscribe][postscribe] that patches `document.write`
-  into normal DOM operations that can run at anytime.
+Alright, time for me to 🤓 nerd out! EmGithub uses a JavaScript API called [`document.write`][document.write], which is
+something that I didn't know about until recently (for good reason). For those that don't know, `document.write` is an
+ancient JavaScript API that allows you to programatically write HTML to a document as if the document was a file like
+stream. Because of how the browser's rendering engine works, this file "closes" on `DOMContentLoaded` and any further
+writes will fail or clear the page. This is completely incompatible with how React works.
+
+Fortunately, lots of ads work this way and some ad tech developers created a library called [postscribe][postscribe],
+which patches `document.write` to operate using "normal" DOM operations that can be called anytime. I integrated that
+into this component and it works perfectly. It even responds to my dark theme toggle!
+
+# Git Based Last Modified Timestamps
+
+> Google uses the `<lastmod>` value if it's consistently and verifiably (for example by comparing to the last
+> modification of the page) accurate.
+>
+> \- [Google's `sitemap.xml` documentation](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap)
+
+This one is just for me and Google, I swear, but I really want to show it off.
+
+For customer facing sites where you are trying to have the best Google ranking for organic traffic, it's best practice
+for your pages to have a last modified timestamp in the `sitemap.xml` and schema.org data. This tells Google when it was
+last updated and more frequently updated content rises to the top of the search results (in theory). This has been a big
+focus for me at work this year as we transition from developer maintained sites to sites generated from a CMS + Gatsby.
+
+To pull a last modified timestamp from a CMS is very easy, as it's just a database record. For a static site generated
+from Markdown, that timestamp is harder to pull. I could have easily added a field to my blog posts frontmatter that
+I manually updated when a blog post was updated. But, that is error prone and only works for blog posts. No, I needed
+something better if I wanted this.
+
+Then, I cocked my head slightly to the side and looked at this a little differently and realized: Git is a database with
+last modified timestamps. So, I went about creating a super hacky script that hooks into Gatsby's `onCreateNode`
+lifecycle event to directly add the latest commit timestamp for any given node. This required a lot of hard coding path
+rules and is in no way open sourceable, but I really just want to tell people about it!
+
+<GitHubFileEmbed fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/config/utils/addGitLastmodifiedToNode.ts" />
 
 
 [lektor]: https://www.getlektor.com/
@@ -298,3 +322,5 @@ than Disqus.
 [mdx]: https://mdxjs.com/
 [echo-chamber-js]: https://github.com/tessalt/echo-chamber-js
 [utterances]: https://utteranc.es/
+[gist]: https://gist.github.com/
+[document.write]: https://developer.mozilla.org/en-US/docs/Web/API/Document/write
