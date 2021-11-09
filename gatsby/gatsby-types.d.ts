@@ -750,12 +750,12 @@ type GoodreadsBook = Node & {
 type MdxFrontmatter = {
   readonly title: Scalars['String'];
   readonly description: Maybe<Scalars['String']>;
+  readonly date: Maybe<Scalars['Date']>;
   readonly slug: Maybe<Scalars['String']>;
   readonly cover: Maybe<File>;
-  readonly date: Maybe<Scalars['Date']>;
   readonly tags: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
-  readonly draft: Maybe<Scalars['Boolean']>;
   readonly location: Maybe<Scalars['String']>;
+  readonly draft: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -1736,12 +1736,12 @@ type MdxFilterInput = {
 type MdxFrontmatterFilterInput = {
   readonly title: Maybe<StringQueryOperatorInput>;
   readonly description: Maybe<StringQueryOperatorInput>;
+  readonly date: Maybe<DateQueryOperatorInput>;
   readonly slug: Maybe<StringQueryOperatorInput>;
   readonly cover: Maybe<FileFilterInput>;
-  readonly date: Maybe<DateQueryOperatorInput>;
   readonly tags: Maybe<StringQueryOperatorInput>;
-  readonly draft: Maybe<BooleanQueryOperatorInput>;
   readonly location: Maybe<StringQueryOperatorInput>;
+  readonly draft: Maybe<BooleanQueryOperatorInput>;
 };
 
 type FileFilterInput = {
@@ -2050,6 +2050,7 @@ type FileFieldsEnum =
   | 'childrenMdx.fileAbsolutePath'
   | 'childrenMdx.frontmatter.title'
   | 'childrenMdx.frontmatter.description'
+  | 'childrenMdx.frontmatter.date'
   | 'childrenMdx.frontmatter.slug'
   | 'childrenMdx.frontmatter.cover.sourceInstanceName'
   | 'childrenMdx.frontmatter.cover.absolutePath'
@@ -2090,10 +2091,9 @@ type FileFieldsEnum =
   | 'childrenMdx.frontmatter.cover.childrenMdx'
   | 'childrenMdx.frontmatter.cover.id'
   | 'childrenMdx.frontmatter.cover.children'
-  | 'childrenMdx.frontmatter.date'
   | 'childrenMdx.frontmatter.tags'
-  | 'childrenMdx.frontmatter.draft'
   | 'childrenMdx.frontmatter.location'
+  | 'childrenMdx.frontmatter.draft'
   | 'childrenMdx.slug'
   | 'childrenMdx.body'
   | 'childrenMdx.excerpt'
@@ -2155,6 +2155,7 @@ type FileFieldsEnum =
   | 'childMdx.fileAbsolutePath'
   | 'childMdx.frontmatter.title'
   | 'childMdx.frontmatter.description'
+  | 'childMdx.frontmatter.date'
   | 'childMdx.frontmatter.slug'
   | 'childMdx.frontmatter.cover.sourceInstanceName'
   | 'childMdx.frontmatter.cover.absolutePath'
@@ -2195,10 +2196,9 @@ type FileFieldsEnum =
   | 'childMdx.frontmatter.cover.childrenMdx'
   | 'childMdx.frontmatter.cover.id'
   | 'childMdx.frontmatter.cover.children'
-  | 'childMdx.frontmatter.date'
   | 'childMdx.frontmatter.tags'
-  | 'childMdx.frontmatter.draft'
   | 'childMdx.frontmatter.location'
+  | 'childMdx.frontmatter.draft'
   | 'childMdx.slug'
   | 'childMdx.body'
   | 'childMdx.excerpt'
@@ -4349,11 +4349,11 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childrenMdx.fileAbsolutePath'
   | 'coverImage.childrenMdx.frontmatter.title'
   | 'coverImage.childrenMdx.frontmatter.description'
-  | 'coverImage.childrenMdx.frontmatter.slug'
   | 'coverImage.childrenMdx.frontmatter.date'
+  | 'coverImage.childrenMdx.frontmatter.slug'
   | 'coverImage.childrenMdx.frontmatter.tags'
-  | 'coverImage.childrenMdx.frontmatter.draft'
   | 'coverImage.childrenMdx.frontmatter.location'
+  | 'coverImage.childrenMdx.frontmatter.draft'
   | 'coverImage.childrenMdx.slug'
   | 'coverImage.childrenMdx.body'
   | 'coverImage.childrenMdx.excerpt'
@@ -4391,11 +4391,11 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childMdx.fileAbsolutePath'
   | 'coverImage.childMdx.frontmatter.title'
   | 'coverImage.childMdx.frontmatter.description'
-  | 'coverImage.childMdx.frontmatter.slug'
   | 'coverImage.childMdx.frontmatter.date'
+  | 'coverImage.childMdx.frontmatter.slug'
   | 'coverImage.childMdx.frontmatter.tags'
-  | 'coverImage.childMdx.frontmatter.draft'
   | 'coverImage.childMdx.frontmatter.location'
+  | 'coverImage.childMdx.frontmatter.draft'
   | 'coverImage.childMdx.slug'
   | 'coverImage.childMdx.body'
   | 'coverImage.childMdx.excerpt'
@@ -4672,6 +4672,7 @@ type MdxFieldsEnum =
   | 'fileAbsolutePath'
   | 'frontmatter.title'
   | 'frontmatter.description'
+  | 'frontmatter.date'
   | 'frontmatter.slug'
   | 'frontmatter.cover.sourceInstanceName'
   | 'frontmatter.cover.absolutePath'
@@ -4756,10 +4757,9 @@ type MdxFieldsEnum =
   | 'frontmatter.cover.internal.mediaType'
   | 'frontmatter.cover.internal.owner'
   | 'frontmatter.cover.internal.type'
-  | 'frontmatter.date'
   | 'frontmatter.tags'
-  | 'frontmatter.draft'
   | 'frontmatter.location'
+  | 'frontmatter.draft'
   | 'slug'
   | 'body'
   | 'excerpt'
@@ -5093,11 +5093,11 @@ type DownloadedImageFieldsEnum =
   | 'image.childrenMdx.fileAbsolutePath'
   | 'image.childrenMdx.frontmatter.title'
   | 'image.childrenMdx.frontmatter.description'
-  | 'image.childrenMdx.frontmatter.slug'
   | 'image.childrenMdx.frontmatter.date'
+  | 'image.childrenMdx.frontmatter.slug'
   | 'image.childrenMdx.frontmatter.tags'
-  | 'image.childrenMdx.frontmatter.draft'
   | 'image.childrenMdx.frontmatter.location'
+  | 'image.childrenMdx.frontmatter.draft'
   | 'image.childrenMdx.slug'
   | 'image.childrenMdx.body'
   | 'image.childrenMdx.excerpt'
@@ -5135,11 +5135,11 @@ type DownloadedImageFieldsEnum =
   | 'image.childMdx.fileAbsolutePath'
   | 'image.childMdx.frontmatter.title'
   | 'image.childMdx.frontmatter.description'
-  | 'image.childMdx.frontmatter.slug'
   | 'image.childMdx.frontmatter.date'
+  | 'image.childMdx.frontmatter.slug'
   | 'image.childMdx.frontmatter.tags'
-  | 'image.childMdx.frontmatter.draft'
   | 'image.childMdx.frontmatter.location'
+  | 'image.childMdx.frontmatter.draft'
   | 'image.childMdx.slug'
   | 'image.childMdx.body'
   | 'image.childMdx.excerpt'
