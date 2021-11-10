@@ -4,21 +4,18 @@ import { FaSync } from 'react-icons/fa'
 import 'css-paint-polyfill'
 import fluidPatternWorkletURL from '@georgedoescode/fluid-pattern-worklet/worklet.bundle.js'
 
-import { isBrowser } from '../utils/env'
-
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
 
 const FancyBackground: React.FC = () => {
   const [seed, setSeed] = useState<number | undefined>(undefined)
-  const addPaintWorklet = isBrowser ? CSS?.paintWorklet?.addModule : undefined
 
   useEffect(() => {
     if (CSS?.paintWorklet?.addModule) {
       CSS?.paintWorklet?.addModule?.(fluidPatternWorkletURL)
       setSeed(generateSeed())
     }
-  }, [addPaintWorklet])
+  }, [])
 
   return (
     <>
