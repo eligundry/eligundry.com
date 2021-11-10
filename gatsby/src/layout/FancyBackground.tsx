@@ -10,20 +10,17 @@ const workletURL =
 const FancyBackground: React.FC = () => {
   const [seed, setSeed] = useState<number | undefined>(undefined)
 
-  // Polyfill for Safari + Firefox
   useEffect(() => {
-    if (!CSS?.paintWorklet?.addModule) {
-      import('css-paint-polyfill').then(() => {
-        CSS?.paintWorklet?.addModule?.(workletURL)
-        setSeed(generateSeed())
-      })
-    }
-  }, [])
-
-  useEffect(() => {
-    if (CSS?.paintWorklet?.addModule) {
-      CSS?.paintWorklet?.addModule?.(workletURL)
+    const initBackground = () => {
+      CSS.paintWorklet.addModule(workletURL)
       setSeed(generateSeed())
+    }
+
+    if (!CSS?.paintWorklet?.addModule) {
+      // Polyfill for Safari + Firefox
+      import('css-paint-polyfill').then(() => initBackground())
+    } else {
+      initBackground()
     }
   }, [])
 
