@@ -2,7 +2,7 @@
 title: Can I Brag About This Site For A Second?
 description: I have put a lot of work into the newest version of this site and I want to tell you about it.
 slug: 2021-website-redesign
-cover: ./img/website-update/desktop-100.png
+cover: ./img/website-update/home-page.png
 date: 2021-11-09T05:00
 tags:
   - code
@@ -10,10 +10,12 @@ tags:
 
 import GitHubFileEmbed from '../src/components/Shared/GitHubFileEmbed'
 
+![Home page screenshot](./img/website-update/home-page.png)
+
 In the age of social media and hosted blogs, personal websites don't get the love they deserve. Sure, writing developer
-based content on a site like medium.com or dev.to will get more eyeballs on it than something you make on your own, but
-there is something extremely satisfying in owning every pixel on a site with your name on it. I saw this Tweet the other
-day and it seemed fitting to how I think about personal sites.
+based content on a site like [medium.com][medium] or [dev.to][dev.to] will get more eyeballs on it than something you
+make on your own, but there is something extremely satisfying in owning every pixel on a site with your name on it.
+I saw this Tweet the other day and it seemed fitting to how I think about personal sites.
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">trying this analogy thing <a href="https://t.co/Q9889HOF3B">pic.twitter.com/Q9889HOF3B</a></p>&mdash; Jane &quot;Not A Twïtter Employee&quot; Manchun Wong (@wongmjane) <a href="https://twitter.com/wongmjane/status/1456360721084674098?ref_src=twsrc%5Etfw">November 4, 2021</a></blockquote>
 
@@ -22,19 +24,20 @@ techno-optimisim and ownership of the Web 1.0 era, what better way to embody thi
 site? Also, I just really love Greek salad (I live in Astoria after all, you walk outside on Ditmars and they force
 Greek salad on you).
 
-(As an aside, I find all of Web3 and blockchain stuff disgusting. I have no money in any of that stuff because I object
-on environmental issues and that most of it reeks of pump and dump schemes. That said, I am happy for anything that
-pushes the web pendulum back in the direction of user's owning pixels attached to their name.)
+> As an aside, I find all of Web3 and blockchain stuff disgusting. I have no money in any of that stuff because I object
+> on environmental issues and that most of it reeks of pump and dump schemes. That said, I am happy for anything that
+> pushes the web pendulum back in the direction of user's owning pixels attached to their name.
 
 # Guiding Principals
 
-1. My site must be dynamic enough to reflect my personality
-2. Fetching data at compile time > fetching data at run time
+1. Dynamic enough to reflect me
+2. Fetch data at compile time
 3. Do a lot and do it fast
+4. Updates should be triggered by tools/apps I use instead of manual intervention
 
 # Technology
 
-I this would be a technology blog if I didn't nerd out about tools before describing the cool things I did.
+Would be a technology blog if I didn't nerd out about tools before describing the cool things I did?
 
 ## Gatsby
 
@@ -50,7 +53,9 @@ I had learned the basics of Gatsby months previous on a single site, I was able 
 enable us to port many sites at once.
 
 While doing some of these more complex things in a private repo at work, I have been able to take aspects that I have
-learned there and ported them conceptually back to my personal site. I will make note of these learnings as I go.
+learned there and ported them conceptually back to my personal site. I will make note of these learnings as I go. It has
+also given me a test bed to try out Gatsby upgrades before doing them at work. For example, I tried to update this site
+to Gatsby 4 and ran into a bunch of issues and will be holding off on pushing it at work until it's fixed for this site.
 
 ### Is Gatsby Any Good?
 
@@ -70,7 +75,7 @@ to be divorced from your application components. This is actually very similar t
 Hooks.
 
 **Furthermore, how these GraphQL queries are executed are very flawed.** Instead of running them when generating the HTML
-after the JS has compiled, they are instead extracted from queries as a Babel transformation and transpiled to a JSON
+after the JS has compiled, they are instead extracted with a Babel transformation and transpiled to a JSON
 file that is read when creating the HTML. This seems like a minor distinction but it means that your GraphQL queries are
 unable to take arguments outside of the template system AND cannot be shared between components because that makes them
 too hard to extract.
@@ -114,7 +119,7 @@ Here's some quick hot takes on some other libraries used in this update:
 
 Last year, [I made an API to submit diary entries from the Daylio app on my phone][feelings-api]. I am happy to announce
 that I am continuing to use this functionality and I think posting them on my site + Twitter has encouraged me to keep
-doing it.
+doing it (I'm at ~700 days in a row).
 
 In the original version of this, I was pulling [the data from the API][feelings-api-endpoint] at runtime using [React Query][react-query]. React
 Query is a fine library and I love using it, but this is a static site so pulling it at runtime is far slower than doing
@@ -148,7 +153,7 @@ This allows me to fetch my latest diary entry like so:
 Super easy! In order for this site to be built daily, I added a call to a Netlify build webhook to the API endpoint
 I upload the diary entries to. This build will also generate a dedicated RSS feed that I use IFTTT to post the entry to
 Twitter with. This, in turn, also updates all the other Gatsby sources, which allows things like my Goodreads shelves
-and Listening Widgets to update naturally.
+and Listening widgets to update naturally.
 
 Speaking of those widgets...
 
@@ -164,27 +169,29 @@ eventually adopted][rgrs-pr]. But even then, I ran into more issues:
 
 1. Pulling this data at runtime is very slow, even slower now that I'm pulling HTML instead of (relatively) compact XML
 2. Images were at max resolution, much larger than they needed to be given the size of them on the page
-3. The component uses a hosted instance [CORS Anywhere][cors-anywhere] on Heroku that would get rate limited frequently
+3. The component used a hosted instance of [CORS Anywhere][cors-anywhere] on Heroku that would get rate limited frequently
 
 I threw up my hands and realized that I needed to make a custom Gatsby source to pull this data at compile time. At
-first, I had it living as a file inside my site, but then I started making custom Gatsby source packages at work and
+first, I had it living as a script inside my site, but then I started making custom Gatsby source packages at work and
 decided to extract it into my first NPM package!
 
 [npm: @eligundry/gatsby-source-goodreads](https://www.npmjs.com/package/@eligundry/gatsby-source-goodreads)
 
 One of the added benefits of moving this to compile time is that Gatsby is able to download the cover images and plug it
 into it's image plugin and resize the images to be small and load progressively as the page loads! It's a win win win!
+Eventually, I might learn how to extract my progress reading these books and include them in this widget, but that is
+for another day.
 
 # Listening Homepage Widget
 
 ![Last.fm cover on my homepage](./img/website-update/last-fm-cover.png)
 
-It's very easy to pull a Last.fm collage of your top albums. A bunch of services exist for this. Why bring this up?
+It is very easy to pull a Last.fm collage of your top albums. A bunch of services exist for this. Why bring this up?
 
 Well, I elevated it in 2 ways:
 
 1. I'm pulling the image at build time into Gatsby so that it's image component can optimize it
-2. I'm overlaying the artist name, album name and the number of scrobbles with an image map
+2. I'm overlaying the artist name, album and the number of scrobbles with an image map
 
 Number 2 is the thing I want to brag about. I used [gatsby-source-lastfm][gatsby-source-lastfm] to pull my last 1000
 scrobbles and then I whipped up a React component to overlay the info onto the image using an [HTML image map][html-image-map] 
@@ -193,7 +200,7 @@ scrobbles and then I whipped up a React component to overlay the info onto the i
 The only downside to this approach is that it's not 100% accurate. I've noticed the following things:
 
 1. There is often lag between the data that the image provider is using and what the Last.fm API returns.
-2. If I have the same amount of scrobbles for a given album, the sorting in the image != the sorting in the API. I think
+2. If I have the same amount of scrobbles for a given album, the sorting in the image `!=` the sorting in the API. I think
    the cover providers might be sorting on an internal Last.fm ID and not the album name or artist. I do not want to
    include the ID in this bundle so I'm fine with this being inaccurate.
 
@@ -219,16 +226,16 @@ in the best possible light. Thanks Amrit, I made sure to buy you some coffees.
 ## Fluid Background
 
 After cribbing the template for this site, I was feeling good about the design, but it still needed something more to
-really show off my personality. It took me a few weeks and some endless scrolling on Twitter before I came across this
-retweeted by CSS Tricks:
+really show off my personality. It took me a few weeks and some endless scrolling on Twitter before I came across this:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">New Houdini stuff! ✨<br /><br />Magical generative patterns that rearrange themselves based on the browser window 🎨<br /><br />A kinda different approach for responsive design...<br /><br />Inspired by <a href="https://twitter.com/chriscoyier?ref_src=twsrc%5Etfw">@chriscoyier</a> &#39;s generative grids pen 💛<br /><br />CodePen (Desktop only + Chrome / Edge) <a href="https://t.co/WvYqXy3Yoq">https://t.co/WvYqXy3Yoq</a> <a href="https://t.co/6kJCifGdbB">pic.twitter.com/6kJCifGdbB</a></p>&mdash; George Francis (@georgedoescode) <a href="https://twitter.com/georgedoescode/status/1455150458352381963?ref_src=twsrc%5Etfw">November 1, 2021</a></blockquote>
 
-Sadly, this only works with Chrome + Edge, so even Safari & FireFox users don't get to see it 😭.
+This only works natively in Chrome + Edge, but I have been able to polyfill it so it works in Safari + Firefox, thought
+it's slightly more buggy than the Chrome version.
 
-It's super dynamic, very cute and fits the theme of my site perfectly! I converted it into a React component with
-a button in the bottom right part of the screen that can regenerate the pattern. It's even responsive to my dark mode
-toggle, speaking of which...
+I love that it's super dynamic, very cute and fits the theme of my site perfectly! I converted it into a React component
+with a button in the bottom right part of the screen that can regenerate the pattern. It's even responsive to my dark
+mode toggle, speaking of which...
 
 <GitHubFileEmbed fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/src/layout/FancyBackground.tsx" />
 
@@ -237,7 +244,7 @@ toggle, speaking of which...
 You have to be sensitive to users that like dark color schemes! Luckily, [TailwindCSS makes it very easy to style your
 site for dark mode][tailwindcss-dark-mode]. With that approach, I made a React provider that provides the ability to the
 user to toggle light to dark mode with it's default value being the result of the media query `(prefers-color-scheme:
-dark)`.
+dark)`, which the OS sets in MacOS and probably Windows.
 
 # Github Integrations
 
@@ -268,7 +275,7 @@ than Disqus.
 ## Github File Embeds
 
 In a previous blog post, I wanted to show a [Gist][gist] like file embed of a file from the Github main site.
-Unfortunately, Github does not provide this out of the box. Luckily, a service call [EmGithub][emgithub] provides
+Unfortunately, Github does not provide this out of the box. Luckily, a service called [EmGithub][emgithub] provides
 exactly this. They don't have a React component for this so I made one:
 
 <GitHubFileEmbed fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/src/components/Shared/GitHubFileEmbed.tsx#L40-L86" />
@@ -279,7 +286,7 @@ ancient JavaScript API that allows you to programatically write HTML to a docume
 stream. Because of how the browser's rendering engine works, this file "closes" on `DOMContentLoaded` and any further
 writes will fail or clear the page. This is completely incompatible with how React works.
 
-Fortunately, lots of ads work this way and some ad tech developers created a library called [postscribe][postscribe],
+Fortunately, lots of ads work this way and some ad tech developers created a nifty library called [postscribe][postscribe],
 which patches `document.write` to operate using "normal" DOM operations that can be called anytime. I integrated that
 into this component and it works perfectly. It even responds to my dark theme toggle!
 
@@ -358,7 +365,7 @@ gazing! In any case, I hope you like this site and thank you for reading this no
 [twin.macro]: https://github.com/ben-rogerson/twin.macro
 [tailwind-toolbox]: https://www.tailwindtoolbox.com/
 [minimal-blog-theme]: https://www.tailwindtoolbox.com/templates/minimal-blog-demo.php
-[amrit-nagi]: https://www.buymeacoffee.com/tailwindtoolbox
+[amrit-nagi]: https://twitter.com/amritnagi
 [tailwindcss-dark-mode]: https://tailwindcss.com/docs/dark-mode
 [mdx]: https://mdxjs.com/
 [echo-chamber-js]: https://github.com/tessalt/echo-chamber-js
@@ -368,3 +375,5 @@ gazing! In any case, I hope you like this site and thank you for reading this no
 [gatsby-source-lastfm]: https://www.gatsbyjs.com/plugins/gatsby-source-lastfm/
 [html-image-map]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/map
 [songkick]: https://www.songkick.com/
+[medium]: https://medium.com/
+[dev.to]: https://dev.to/

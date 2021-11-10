@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
 import 'css-paint-polyfill'
-import fluidPatternWorkletURL from '@georgedoescode/fluid-pattern-worklet/worklet.bundle.js'
 
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
+const workletURL =
+  'https://unpkg.com/@georgedoescode/fluid-pattern-worklet@1.0.1/worklet.bundle.js'
 
 const FancyBackground: React.FC = () => {
   const [seed, setSeed] = useState<number | undefined>(undefined)
 
   useEffect(() => {
     if (CSS?.paintWorklet?.addModule) {
-      CSS?.paintWorklet?.addModule?.(fluidPatternWorkletURL)
+      CSS?.paintWorklet?.addModule?.(workletURL)
       setSeed(generateSeed())
     }
   }, [])
