@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
-import 'css-paint-polyfill'
 
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
@@ -10,6 +9,16 @@ const workletURL =
 
 const FancyBackground: React.FC = () => {
   const [seed, setSeed] = useState<number | undefined>(undefined)
+
+  // Polyfill for Safari + Firefox
+  useEffect(() => {
+    if (!CSS?.paintWorklet?.addModule) {
+      import('css-paint-polyfill').then(() => {
+        CSS?.paintWorklet?.addModule?.(workletURL)
+        setSeed(generateSeed())
+      })
+    }
+  }, [])
 
   useEffect(() => {
     if (CSS?.paintWorklet?.addModule) {
