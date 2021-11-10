@@ -167,17 +167,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
       'last-fm-cover.jpg'
     )
   },
-  onCreateWebpackConfig: ({ actions, getConfig }) => {
-    const config = getConfig()
-
-    // This adds support importing CSS Paint Worklets from node_modules
-    config.module.rules.push({
-      test: /worklet.bundle.js$/,
-      type: 'asset/resource',
-    })
-
-    actions.replaceWebpackConfig(config)
-  },
 })
 
 export default gatsbyNode
