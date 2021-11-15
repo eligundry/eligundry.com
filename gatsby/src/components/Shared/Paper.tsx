@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro'
+import tw, { styled, theme } from 'twin.macro'
 
 const Paper = styled.div<{ transparent?: boolean }>`
   ${tw`
@@ -9,12 +9,16 @@ const Paper = styled.div<{ transparent?: boolean }>`
     text-typography
     dark:text-white
     leading-normal
+    rounded-lg
     bg-paper
     dark:bg-paperDark
-    rounded-lg
   `}
 
   ${(props) => props.transparent && tw`bg-transparent dark:bg-transparent`}
+
+  @media (prefers-reduced-transparency: reduce) {
+    ${tw`bg-siteBackground dark:bg-black`}
+  }
 `
 
 Paper.article = Paper.withComponent('article')
