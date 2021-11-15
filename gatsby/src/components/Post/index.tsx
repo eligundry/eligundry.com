@@ -105,6 +105,14 @@ const Article = styled<React.FC>(Paper.article)`
   & .lazyload-footer-wrapper {
     min-height: 270px;
   }
+
+  & .float-right {
+    ${tw`float-right ml-2`}
+  }
+
+  & .float-left {
+    ${tw`float-left mr-2`}
+  }
 `
 
 export default Post
