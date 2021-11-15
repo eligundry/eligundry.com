@@ -3,3 +3,6 @@
 gatsby/node_modules/
 data/*
 !data/.gitkeep
+.env
+api/vendor
+!api/migrations/*.sql

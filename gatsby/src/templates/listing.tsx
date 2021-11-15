@@ -1,28 +1,26 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import { graphql, PageProps } from 'gatsby'
 
-import { ListingQueryQuery } from '../../graphql-types'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
-import SEO from '../components/SEO/SEO'
+import SEO from '../components/SEO'
+import Paper from '../components/Shared/Paper'
 
-interface Props {
-  data: ListingQueryQuery
-}
-
-const Listing: React.FC<Props> = props => {
-  const postEdges = props.data.allMarkdownRemark.edges
+const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
+  const postEdges = props.data.allMdx.edges
 
   return (
     <Layout>
-      <div className="listing-container">
-        <div className="posts-container">
-          <Helmet title="Blog" />
-          <SEO />
-          <PostListing postEdges={postEdges} />
-        </div>
-      </div>
+      <Paper className="listing-container">
+        <Helmet title="Blog" />
+        <SEO path={props.path} />
+        <PostListing
+          postEdges={postEdges}
+          pathPrefix="blog"
+          itemType="BlogPosting"
+        />
+      </Paper>
     </Layout>
   )
 }
@@ -31,11 +29,9 @@ export default Listing
 
 /* eslint no-undef: "off" */
 export const listingQuery = graphql`
-  query ListingQuery($skip: Int!, $limit: Int!) {
-    allMarkdownRemark(
-      sort: { fields: [fields___date], order: DESC }
-      limit: $limit
-      skip: $skip
+  query BlogListing {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
       filter: {
         collection: { eq: "posts" }
         frontmatter: { draft: { ne: true } }
@@ -46,15 +42,18 @@ export const listingQuery = graphql`
           fields {
             slug
             date
+            latestCommitDate
           }
           excerpt
           timeToRead
           frontmatter {
             title
-            tags
-            cover
             date
             description
+            tags
+            cover {
+              publicURL
+            }
           }
         }
       }

@@ -1,4 +1,5 @@
 import React from 'react'
+import tw, { styled } from 'twin.macro'
 
 import { Skills } from './data'
 
@@ -16,12 +17,15 @@ const SkillsItem: React.FC<SkillsItemProps> = ({ prefix, keywords }) => {
       {entries.map(([keyword, url], idx) => {
         const isLastKeyword = idx + 1 === entries.length
         const isSecondToLastKeyWord = idx + 2 === entries.length
+        const insertComma = !isLastKeyword && !isSecondToLastKeyWord
 
         return (
           <React.Fragment key={url}>
             {isLastKeyword && '& '}
-            <a href={url}>{keyword}</a>
-            {!isSecondToLastKeyWord && ','}
+            <a href={url} itemProp="knowsAbout">
+              {keyword}
+            </a>
+            {insertComma && ','}
             {!isLastKeyword && ' '}
           </React.Fragment>
         )
@@ -36,28 +40,44 @@ interface SkillsSectionProps {
 }
 
 const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
-  const languages = skills.find(s => s.name === 'Languages')
-  const frameworks = skills.find(s => s.name === 'Frameworks')
-  const tools = skills.find(s => s.name === 'Tools')
-  const loveHate = skills.find(s => s.name === 'Love Hate')
+  const languages = skills.find((s) => s.name === 'Languages')
+  const frameworks = skills.find((s) => s.name === 'Frameworks')
+  const tools = skills.find((s) => s.name === 'Tools')
+  const loveHate = skills.find((s) => s.name === 'Love Hate')
 
   return (
     <section>
-      <h2>Skills</h2>
-      <ul>
-        <SkillsItem prefix="Fluent in" keywords={languages.keywords} />
-        <SkillsItem
-          prefix="Built web applications using"
-          keywords={frameworks.keywords}
-        />
-        <SkillsItem prefix="Loves using" keywords={tools.keywords} />
-        <SkillsItem
-          prefix="Has a love hate relationship (that I will happily explain) with"
-          keywords={loveHate.keywords}
-        />
-      </ul>
+      <header>
+        <h2>Skills</h2>
+      </header>
+      <SkillsList>
+        {languages?.keywords && (
+          <SkillsItem prefix="Fluent in" keywords={languages.keywords} />
+        )}
+        {frameworks?.keywords && (
+          <SkillsItem
+            prefix="Built web applications using"
+            keywords={frameworks.keywords}
+          />
+        )}
+        {tools?.keywords && (
+          <SkillsItem prefix="Loves using" keywords={tools.keywords} />
+        )}
+        {loveHate?.keywords && (
+          <SkillsItem
+            prefix="Has a love hate relationship (that I will happily explain) with"
+            keywords={loveHate.keywords}
+          />
+        )}
+      </SkillsList>
     </section>
   )
 }
+
+const SkillsList = styled.ul`
+  && {
+    ${tw`pl-0 mt-0 mb-4`}
+  }
+`
 
 export default SkillsSection

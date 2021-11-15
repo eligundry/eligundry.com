@@ -50,6 +50,7 @@ export interface Education {
   startDate: Date
   endDate: Date
   completed: boolean
+  website: string
   gpa?: number
   location: Partial<Location>
   summary: string
@@ -78,7 +79,7 @@ const resume: Resume = {
     phone: '3308286147',
     website: 'https://eligundry.com',
     location: {
-      city: 'Long Island City',
+      city: 'Astoria',
       countryCode: 'US',
       region: 'NY',
     },
@@ -97,15 +98,24 @@ const resume: Resume = {
       endDate: null,
       summary: '',
       highlights: [
-        'Completely rebuilt fulfillment platform using <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>.',
-        'Implemented single sign on through OpenID Connect across all internal applications company wide.',
-        'Architected dynamic payment inititiaves that decreased cost of fulfillment by $10 and time to delivery by a day.',
+        `
+        Completely rebuilt fulfillment platform using <a href="https://reactjs.org/">React</a> 
+        & <a href="https://golang.org/">Go</a>, increasing network efficiency by 5%.
+        `,
+        `
+        Architected dynamic payment inititiaves that decreased cost of order 
+        fulfillment by $10 and time to delivery by a day.
+        `,
+        `
+        Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a> 
+        across all internal applications company wide.
+        `,
       ],
     },
     {
       company: 'Croscon',
       position: 'Principal Engineer',
-      website: 'http://croscon.com',
+      website: 'https://croscon.com',
       location: {
         city: 'New York',
         countryCode: 'US',
@@ -139,7 +149,7 @@ const resume: Resume = {
     {
       company: 'Davey Tree',
       position: 'Web Development Consultant',
-      website: 'http://www.davey.com',
+      website: 'https://www.davey.com',
       location: {
         city: 'Kent',
         countryCode: 'US',
@@ -173,12 +183,12 @@ const resume: Resume = {
         and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
-      printHide: true,
+      // printHide: true,
     },
     {
       company: 'Kent State University',
       position: 'Student IT Worker',
-      website: 'http://www.kent.edu',
+      website: 'https://www.kent.edu',
       location: {
         city: 'Kent',
         countryCode: 'US',
@@ -196,7 +206,7 @@ const resume: Resume = {
     {
       company: 'Mindbox Studios',
       position: 'Web Developer',
-      website: 'http://mindboxstudios.com',
+      website: 'https://mindboxstudios.com',
       location: {
         city: 'Cincinnati',
         countryCode: 'US',
@@ -222,7 +232,7 @@ const resume: Resume = {
     {
       company: 'Go Media',
       position: 'Web Developer',
-      website: 'http://gomedia.us',
+      website: 'https://gomedia.us',
       location: {
         city: 'Cleveland',
         countryCode: 'US',
@@ -249,7 +259,7 @@ const resume: Resume = {
     {
       company: 'Great Lakes Publishing',
       position: 'Web Development Intern',
-      website: 'http://www.glpublishing.com',
+      website: 'https://www.glpublishing.com',
       location: {
         city: 'Cleveland',
         countryCode: 'US',
@@ -286,6 +296,7 @@ const resume: Resume = {
       Provided IT support for customers in their homes and setup various internet cafés around Ohio.
       `,
       highlights: [],
+      printHide: true,
     },
     {
       company: 'RadioShack',
@@ -301,6 +312,7 @@ const resume: Resume = {
       summary:
         'Sold consumer electronics and cell phones in a retail environment.',
       highlights: [],
+      printHide: true,
     },
   ],
   education: [
@@ -311,6 +323,7 @@ const resume: Resume = {
       startDate: new Date('2009-08-01'),
       endDate: new Date('2015-05-01'),
       completed: false,
+      website: 'https://www.kent.edu/',
       location: {
         city: 'Kent',
         countryCode: 'US',
@@ -329,13 +342,14 @@ const resume: Resume = {
       endDate: new Date('2009-05-01'),
       completed: true,
       gpa: 3.3,
+      website: 'http://www.wayne-jvs.k12.oh.us/',
       location: {
         city: 'Smithville',
         countryCode: 'US',
         region: 'OH',
       },
       summary: `
-        High school vocational program in which I learned the basics of
+        High school vocational program where I learned the basics of
         <a href="https://en.wikipedia.org/wiki/HTML5">HTML</a>,
         <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>,
         <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a>,
@@ -343,7 +357,7 @@ const resume: Resume = {
         <a href="http://wordpress.org/">WordPress</a>,
         <a href="https://en.wikipedia.org/wiki/Adobe_Photoshop">Photoshop</a>,
         <a href="https://en.wikipedia.org/wiki/Adobe_Illustrator">Illustrator</a>,
-        <a href="https://en.wikipedia.org/wiki/Adobe_Premiere_Pro">Premiere Pro</a>,
+        <a href="https://en.wikipedia.org/wiki/Adobe_Premiere_Pro">Premiere Pro</a>
         &amp;
         <a href="https://en.wikipedia.org/wiki/Adobe_Flash">Flash</a>.
         Using these skills, I created websites used by classes and external clients.
@@ -361,7 +375,8 @@ const resume: Resume = {
         PHP: 'https://www.php.net/',
         Go: 'https://golang.org/',
         SQL: 'https://en.wikipedia.org/wiki/SQL',
-        HTML5: 'https://en.wikipedia.org/wiki/HTML5',
+        HTML: 'https://en.wikipedia.org/wiki/HTML5',
+        CSS: 'https://www.w3.org/Style/CSS/Overview.en.html',
       },
     },
     {
@@ -415,7 +430,7 @@ const resume: Resume = {
       <li>Fashion/Tech 2015</li>
     </ul>
     `,
-    `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout">Eagle Scout</a> in 2006.`,
+    `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout" itemprop="award">Eagle Scout</a> in 2006.`,
   ],
 }
 

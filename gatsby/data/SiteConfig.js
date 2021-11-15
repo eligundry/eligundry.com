@@ -5,10 +5,12 @@ const config = {
   siteLogo: '/logos/logo-1024.png', // Logo used for SEO and manifest.
   siteUrl: 'https://eligundry.com', // Domain of your website without pathPrefix.
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-advanced-starter/.
+  assetPrefix: 'https://cdn.eligundry.com/site', // The CDN URL for the compiled build
   siteDescription: 'Personal website of Eli Gundry', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '1825356251115265', // FB Application ID for using app insights
   googleAnalyticsID: 'UA-41741300-1', // GA tracking ID.
+  googleTagManagerID: 'GTM-W7KHFLM',
   postDefaultCategoryID: 'Tech', // Default category for posts.
   dateFromFormat: 'YYYY-MM-DD', // Date format used in the frontmatter.
   dateFormat: 'YYYY-MM-DD', // Date format for display.

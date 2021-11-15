@@ -1,6 +1,7 @@
 # [eligundry.com](https://eligundry.com)
 
-![](https://github.com/eligundry/eligundry.com/workflows/.github/workflows/docker-build.yml/badge.svg)
+![Github Actions Status](https://github.com/eligundry/eligundry.com/workflows/.github/workflows/docker-build.yml/badge.svg)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/24c00fcd-034e-4d8d-8fa3-73cf8343966a/deploy-status)](https://app.netlify.com/sites/eligundry/deploys)
 
 My personal website.
 

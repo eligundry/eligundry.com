@@ -1,21 +1,28 @@
 import React from 'react'
-import Helmet from 'react-helmet'
+import { PageProps } from 'gatsby'
+import parseISO from 'date-fns/parseISO'
 
 import Layout from '../layout'
-import Daylio from '../components/Daylio'
+import SEO from '../components/SEO'
+import { DaylioList } from '../components/Daylio'
+import useFeelingsImage from '../components/Daylio/useFeelingsImage'
 
-const FeelingsPage: React.FC = () => {
+const FeelingsPage: React.FC<PageProps> = (props) => {
+  const feelingsImage = useFeelingsImage(
+    props.location.hash
+      ? parseISO(props.location.hash.replace('#', ''))
+      : undefined
+  )
+
   return (
     <Layout>
-      <Helmet>
-        <title>Feelings</title>
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          href="/api/feelings/feed.rss"
-        />
-      </Helmet>
-      <Daylio variant="list" />
+      <SEO
+        path="feelings"
+        title="Feelings"
+        description="A log of my feelings"
+        image={feelingsImage}
+      />
+      <DaylioList />
     </Layout>
   )
 }

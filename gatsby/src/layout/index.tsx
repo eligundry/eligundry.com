@@ -1,51 +1,38 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import styled from 'styled-components'
 
+import { ContentWrapper, GlobalStyles } from './styles'
+import Head from './Head'
 import Header from './Header'
 import Footer from './Footer'
+import Tooltip from '../components/Shared/Tooltip'
+import FancyBackground from './FancyBackground'
 import config from '../../data/SiteConfig'
-import style from '../../data/styleConfig'
-import './index.css'
+import eliHeadshot from '../../static/img/eli-gundry-headshot.jpg'
 
-const LayoutWrapper = styled.div`
-  font-family: ${style.font.family};
-  font-size: ${style.font.size};
-  width: 60%;
-  margin: 0 auto;
-
-  @media (${style.breakPoints.tablet}) {
-    width: 90%;
-  }
-
-  & img {
-    max-width: 100%;
-  }
-`
-
-interface Props {
-  showHeader?: boolean
-  showFooter?: boolean
-  children: React.ReactNode[] | React.ReactNode
-}
-
-const MainLayout: React.FC<Props> = ({
-  children,
-  showHeader = true,
-  showFooter = true,
-}) => {
-  return (
-    <LayoutWrapper className="layout-container">
-      <Helmet titleTemplate={`%s | ${config.siteTitle}`}>
-        <title>{config.siteTitle}</title>
-        <meta name="description" content={config.siteDescription} />
-        <html lang="en" />
-      </Helmet>
-      {showHeader && <Header />}
-      {children}
-      {showFooter && <Footer />}
-    </LayoutWrapper>
-  )
-}
+const MainLayout: React.FC = ({ children }) => (
+  <>
+    <Head />
+    <GlobalStyles />
+    <Helmet
+      titleTemplate={`%s | ${config.siteTitle}`}
+      htmlAttributes={{
+        itemScope: true,
+        itemType: 'https://schema.org/Person',
+        itemID: '#eli-gundry',
+        lang: 'en',
+      }}
+    >
+      <title>{config.siteTitle}</title>
+      <meta name="description" content={config.siteDescription} />
+      <meta itemProp="image" content={eliHeadshot} />
+    </Helmet>
+    <Header />
+    <ContentWrapper>{children}</ContentWrapper>
+    <Footer />
+    <Tooltip />
+    <FancyBackground />
+  </>
+)
 
 export default MainLayout

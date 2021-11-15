@@ -1,39 +1,38 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import { graphql, PageProps } from 'gatsby'
 
-import { TalkListingQueryQuery } from '../../graphql-types'
+import Paper from '../components/Shared/Paper'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
-import SEO from '../components/SEO/SEO'
+import SEO from '../components/SEO'
 
-interface Props {
-  data: TalkListingQueryQuery
-}
-
-const TalkListing: React.FC<Props> = props => {
-  const postEdges = props.data.allMarkdownRemark.edges
+const TalkListing: React.FC<PageProps<GatsbyTypes.TalkListingQuery>> = (
+  props
+) => {
+  const postEdges = props.data.allMdx.edges
 
   return (
     <Layout>
-      <div className="listing-container">
-        <div className="posts-container">
-          <Helmet title="Talks" />
-          <SEO />
-          <PostListing postEdges={postEdges} pathPrefix="talks" />
-        </div>
-      </div>
+      <Paper className="listing-container">
+        <Helmet title="Talks" />
+        <SEO path={props.path} />
+        <PostListing
+          postEdges={postEdges}
+          pathPrefix="talks"
+          itemType="CreativeWork"
+        />
+      </Paper>
     </Layout>
   )
 }
 
 export default TalkListing
 
-/* eslint no-undef: "off" */
 export const talkListingQuery = graphql`
-  query TalkListingQuery {
-    allMarkdownRemark(
-      sort: { fields: [fields___date], order: DESC }
+  query TalkListing {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
       filter: {
         collection: { eq: "talks" }
         frontmatter: { draft: { ne: true } }
@@ -50,7 +49,6 @@ export const talkListingQuery = graphql`
           frontmatter {
             title
             tags
-            cover
             date
             description
           }

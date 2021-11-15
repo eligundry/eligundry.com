@@ -1,52 +1,108 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useState, useEffect } from 'react'
+import tw, { styled } from 'twin.macro'
+import useWindowScroll from 'react-use/lib/useWindowScroll'
+import useWindowSize from 'react-use/lib/useWindowSize'
 
-const HeaderElm = styled.header`
+import Nav from './Nav'
+
+const HeaderElm = styled.header<{ transparent: boolean }>`
+  ${tw`
+    fixed 
+    print:relative
+    w-full 
+    z-10 
+    top-0 
+    bg-transparent
+    sm:bg-white
+    sm:dark:bg-typographyDark
+    sm:shadow
+    transition-all 
+    duration-200
+  `}
+
+  ${(props) =>
+    !props.transparent
+      ? tw`bg-white dark:bg-typographyDark shadow print:shadow-none print:bg-transparent`
+      : tw`bg-transparent lg:bg-transparent`}
+
+  & .wrapper {
+    ${tw`
+      w-full 
+      md:max-w-3xl 
+      mx-auto 
+      flex 
+      flex-wrap 
+      flex-row
+      items-center 
+      sm:flex-col
+      sm:items-start
+      justify-between 
+      mt-0 
+      py-3
+      sm:px-4
+    `}
+
+    margin-top: -1.5rem;
+  }
+
   & h1 {
-    margin: 0.25em 0;
+    & a {
+      ${tw`
+        text-typographyDark
+        dark:text-white
+        hover:text-primary 
+        text-base 
+        no-underline 
+        hover:no-underline 
+        font-extrabold 
+        text-xl
+      `}
+    }
   }
 `
 
-const Nav = styled.nav`
-  & > a {
-    margin-right: 1em;
+const ProgressBar = styled.progress`
+  ${tw`h-1 z-20 top-0 print:hidden`}
+
+  vertical-align: top;
+  width: 100%;
+
+  &[value]::-webkit-progress-bar {
+    ${tw`bg-liteGray dark:bg-typographyLite`}
   }
 
-  @media print {
-    display: none;
+  &[value]::-webkit-progress-value {
+    ${tw`bg-primary`}
   }
 `
-
-const BetaBanner = styled.h6`
-  margin-bottom: 0.25em;
-`
-
-const navLinks = {
-  '/': 'Home',
-  '/blog': 'Blog',
-  '/feelings': 'Feelings',
-  '/talks': 'Talks',
-  '/resume': 'Resume',
-}
 
 const Header: React.FC = () => {
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const { y } = useWindowScroll()
+  const { height } = useWindowSize()
+
+  useEffect(() => {
+    setScrollProgress(
+      Math.min((y / (document.body.clientHeight - height)) * 100, 100)
+    )
+  }, [y, height])
+
   return (
-    <>
-      <BetaBanner>
-        <strong>Beta:</strong> I am developing this site in the open. Please
-        excuse my mess while I figure out styles.
-      </BetaBanner>
-      <HeaderElm>
-        <h1>Eli Gundry</h1>
-        <Nav role="navigation">
-          {Object.entries(navLinks).map(([path, title]) => (
-            <a href={path} key={path}>
-              {title}
-            </a>
-          ))}
-        </Nav>
-      </HeaderElm>
-    </>
+    <HeaderElm transparent={scrollProgress === 0}>
+      <ProgressBar
+        max="100"
+        value={scrollProgress}
+        aria-label="your scroll progress through the page"
+      />
+      <div className="wrapper">
+        <h1 itemProp="name">
+          <a rel="root" href="/" itemProp="sameAs">
+            Eli Gundry
+          </a>
+        </h1>
+        <Nav />
+      </div>
+    </HeaderElm>
   )
 }
 

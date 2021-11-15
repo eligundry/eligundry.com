@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { useLocation } from 'react-use'
-import styled from 'styled-components'
+import tw, { styled } from 'twin.macro'
 
 import Entry from './Entry'
 import { DaylioEntry, DaylioVariants } from './types'
@@ -9,17 +9,18 @@ interface Props {
   entries: DaylioEntry[]
 }
 
-const EntryListWrapper = styled.main`
+const EntryListWrapper = styled.section`
   position: relative;
 
   &::before {
     content: ' ';
-    border-left: 5px solid black;
     position: absolute;
-    margin-left: calc(2rem - 3px);
+    margin-left: calc(2rem - 4px);
     height: 100%;
-    z-index: 10;
-    box-shadow: 0 0 0px 8px white;
+    z-index: 8;
+    margin-top: 5px;
+
+    ${tw`border-4 border-primary border-solid`}
   }
 `
 
@@ -45,11 +46,11 @@ const EntryList: React.FC<Props> = ({ entries }) => {
 
   return (
     <EntryListWrapper>
-      {entries.map(entry => (
+      {entries.map((entry) => (
         <Entry
-          key={entry.time}
+          key={entry.time.toISOString()}
           variant={DaylioVariants.list}
-          selected={entry.time === selectedEntryTime}
+          selected={entry.time.toISOString() === selectedEntryTime}
           {...entry}
         />
       ))}

@@ -1,153 +1,229 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
-import { GoodreadsBookshelf } from 'react-goodreads-shelf'
-import { TwitterTimelineEmbed } from 'react-twitter-embed'
-import { useWindowSize } from 'react-use'
-import LazyLoad from 'react-lazyload'
+import { Link } from 'gatsby'
+import { StaticImage } from 'gatsby-plugin-image'
 
-import config from '../../../data/SiteConfig'
-import style from '../../../data/styleConfig'
 import Daylio from '../Daylio/index'
-import { DaylioVariants } from '../Daylio/types'
+import Paper from '../Shared/Paper'
+import Reading from '../Reading'
+import Listening from '../Listening'
+import useIsPhone from '../../utils/useIsMobile'
+import GatsbySuspense from '../Shared/GatsbySuspense'
+import Tooltip from '../Shared/Tooltip'
+import EmojiText from '../Shared/EmojiText'
+import vimSVG from './assets/vim.svg'
+import brownsSVG from './assets/cleveland-browns.svg'
 
-const Wrapper = styled.main`
-  display: flex;
-  flex-flow: row wrap;
-`
+const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
 interface SectionProps {
-  fullWidth?: boolean
+  className?: string
 }
 
-const Section = styled.section<SectionProps>`
-  width: 50%;
-  padding-right: 1em;
+const Section = styled<React.FC<SectionProps>>(Paper.section)`
+  ${tw`mb-4`}
 
-  & .listening-img {
-    width: 100%;
+  & h2 {
+    ${tw`text-4xl text-primary font-extrabold`}
+  }
+
+  & h3 {
+    ${tw`font-semibold text-primary`}
+  }
+
+  &.introduction-hero {
+    display: block;
+
+    & .vim-icon,
+    & .browns-icon {
+      height: 1.5rem;
+      width: 1.5rem;
+      display: inline;
+      vertical-align: top;
+    }
   }
 
   & .headshot {
-    width: 150px;
+    min-width: 200px;
+    width: 200px;
+    height: 250px;
+
+    ${tw`float-right ml-8 sm:hidden`}
   }
 
-  & .bookshelf > div > div {
-    grid-template-columns: repeat(auto-fit, minmax(80px, 100px)) !important;
+  & .under-construction {
+    ${tw`inline-block`}
   }
 
-  @media (${style.breakPoints.tablet}) {
-    padding-right: 0;
-    width: 100%;
+  & .react-activity-calendar {
+    ${tw`font-mono`}
   }
-
-  ${props =>
-    props.fullWidth &&
-    css`
-      width: 100%;
-    `}
 `
 
 const Home: React.FC = () => {
-  const { width } = useWindowSize()
-  const twitterTimelineHeight = width >= style.breakPoints.tabletPx ? 600 : 375
+  const isMobile = useIsPhone()
 
   return (
-    <Wrapper className="about">
-      <Section className="introduction-hero" fullWidth>
-        <h2>Hello there!</h2>
-        <img
-          src="/img/eli-gundry-headshot.jpg"
-          alt="Eli Gundry's Headshot"
+    <>
+      <Section className="introduction-hero">
+        <h2>Glad To Meet You!</h2>
+        <StaticImage
+          src="../../../static/img/eli-thumbs-up-memoji.PNG"
+          alt="Eli Gundry's Memoji Headshot"
           className="headshot"
         />
+        <p>My name is Eli I only really write in lists, so here's my deal.</p>
+        <ul>
+          <li>
+            I am a{' '}
+            <EmojiText emoji="🧑‍💻" label="computer programmer emoji">
+              <strong>full stack web engineer</strong>
+            </EmojiText>
+            .
+          </li>
+          <li>
+            I love to plan and{' '}
+            <EmojiText emoji="👨‍🍳" label="chef emoji">
+              <strong>cook elaborate meals</strong>
+            </EmojiText>
+            . It really activates the engineering part of my brain!
+          </li>
+          <li>
+            I have a{' '}
+            <EmojiText emoji="🤓" label="geek emoji">
+              <strong>non-traditional computer science education</strong>
+            </EmojiText>
+            . I attended a vocational school in high school, taught myself web
+            programming, bounced around colleges for computer science while
+            working the entire time before deciding to go pro!
+          </li>
+          <li>
+            I am a{' '}
+            <img
+              src={vimSVG}
+              className="vim-icon"
+              alt="Vim logo"
+              width={544}
+              height={545}
+            />{' '}
+            <strong>Vim user</strong> but I actively encourage everyone to use
+            something else. Using Vim in {new Date().getFullYear()} is a cool
+            bar trick.
+          </li>
+          <li>
+            Die hard{' '}
+            <img
+              src={brownsSVG}
+              className="browns-icon"
+              alt="Cleveland Browns logo"
+              width={286}
+              height={221}
+            />{' '}
+            <strong>Cleveland Browns</strong> fan and am convinced that we will
+            win a Super Bowl one of these years.
+          </li>
+          <li>
+            I currently live in{' '}
+            <EmojiText emoji="📍" label="pin emoji to denote location">
+              <strong>Astoria, Queens</strong>
+            </EmojiText>
+            . I didn't think I would settle down in Queens and love it as much
+            as I do, but life is like that sometimes.
+          </li>
+          <li>
+            I have a{' '}
+            <EmojiText
+              emoji="😼"
+              label="smirking cat emoji because Fonzie is a stinker"
+            >
+              <strong>fat cat named Fonzie</strong>
+            </EmojiText>{' '}
+            and I sorta have{' '}
+            <a href="https://twitter.com/EliGundry/status/1055933062125703168">
+              a tattoo of him on my arm
+            </a>
+            .
+          </li>
+        </ul>
       </Section>
       <Section className="feeling">
-        <h2>Feeling</h2>
+        <h2>How I'm Feeling</h2>
         <p className="summary">
-          Recently, I decided to start journaling my feelings. Being a software
-          engineer, I made an API out of it and put it on my website. You can
-          read more about this project <a href="/blog/feelings-api">here</a>.
+          A while ago, I decided to start journaling my feelings. Being a
+          software engineer,{' '}
+          <Link to="/blog/feelings-api">
+            I made an API out of it and put it on my website
+          </Link>
+          . The favicon for the site the emoji for my latest entry.
         </p>
-        <Daylio variant={DaylioVariants.home} />
+        <Daylio />
+        {/* Don't show the chart on mobile because it looks terrible, functions poorly and impacts performance on an outsized basis */}
+        {!isMobile && (
+          <GatsbySuspense fallback={null}>
+            <DaylioChart />
+          </GatsbySuspense>
+        )}
       </Section>
       <Section className="coding">
-        <h2>Coding</h2>
+        <h2>Do You Code?</h2>
         <p className="summary">
           I make a living developing web applications. I jump all around the
           stack and will do whatever it takes to ship. Need me to do some devops
           to get this feature out? I gotcha. Some CSS is making a button look
           bad? I'll do my best. A query running to slow? Stop, I can't deal with
-          all this excitment.
+          all this excitement.
         </p>
-        <GitHubCalendar username="eligundry" dateFormat="YYYY-MM-DD" />
+        <p>
+          GitHub contribution calendars are not a good indicator of whether or
+          not someone is a good developer, but they are very pretty.
+        </p>
+        <GitHubCalendar
+          username="eligundry"
+          dateFormat="yyyy-MM-dd"
+          color={theme`colors.primary`}
+          hideColorLegend
+        >
+          <Tooltip html />
+        </GitHubCalendar>
       </Section>
       <Section className="reading">
-        <h2>Reading</h2>
+        <h2>What I'm Reading</h2>
         <p className="summary">
           I wish I read more, but there are only so many hours in the day. These
-          are the books that I'm reading right now.
+          are the books that I'm reading right now. You can find me on{' '}
+          <a
+            href="https://www.goodreads.com/user/show/29665939-eli-gundry"
+            itemProp="sameAs"
+          >
+            Goodreads
+          </a>
+          .
+        </p>
+        <p className="summary">
+          By the way,{' '}
+          <a href="https://www.npmjs.com/package/@eligundry/gatsby-source-goodreads">
+            I wrote the Gatsby source that is rendering these bookshelves
+          </a>
+          !
         </p>
         <div className="bookshelf">
-          <GoodreadsBookshelf
-            userId={config.goodreads.userID}
-            apiKey={config.goodreads.apiKey}
-            shelf="currently-reading"
-          />
+          <Reading />
         </div>
       </Section>
-      <Section className="triva">
-        <h2>Trivia</h2>
-        <ul>
-          <li>
-            Vim user but I actively encourage everyone to use something else.
-            Using Vim in {new Date().getFullYear()} is a cool bar trick.
-          </li>
-          <li>
-            Die hard Cleveland Browns fan and am convinced that we will win a
-            Super Bowl one of these years.
-          </li>
-          <li>
-            I have a fat cat named Fonzie and I sorta have a tattoo of him on my
-            arm.
-          </li>
-        </ul>
-      </Section>
       <Section className="listening">
-        <h2>Listening</h2>
+        <h2>What I'm Listening To</h2>
         <p className="summary">
-          I listen to way too much music and I love to listen to full albums.
-          Here are the albums I've had on repeat this week.
+          I listen to way too much music and I love to listen to full albums. I
+          mainly listen to hip hop, indie rock and{' '}
+          <abbr title="Ask me about the fun 5th wave emo bands I love">
+            emo
+          </abbr>{' '}
+          music.
         </p>
-        <a href="https://www.last.fm/user/eli_pwnd">
-          <LazyLoad>
-            <img
-              className="listening-img"
-              src="/img/last.fm.jpg"
-              alt="My top 9 albums for the past 7 days"
-            />
-          </LazyLoad>
-        </a>
+        <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" />
       </Section>
-      <Section className="tweets">
-        <h2>Twitter</h2>
-        <p className="summary">
-          Twitter is my <del>vice</del> social network of choice. It's been
-          instrumental in developing my career. I started following other
-          developers years ago, read their blog posts, followed the people they
-          retweeted, and stayed up to date with the latest technologies. It also
-          has funny memes, which are equally important to keeping up to date
-          with tech.
-        </p>
-        <LazyLoad height={twitterTimelineHeight}>
-          <TwitterTimelineEmbed
-            sourceType="profile"
-            screenName={config.userTwitter}
-            options={{ height: twitterTimelineHeight }}
-          />
-        </LazyLoad>
-      </Section>
-    </Wrapper>
+    </>
   )
 }
 

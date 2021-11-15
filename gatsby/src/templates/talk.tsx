@@ -1,48 +1,36 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
-import formatISO from 'date-fns/formatISO'
+import { graphql, PageProps } from 'gatsby'
 
 import Layout from '../layout'
-import SEO from '../components/SEO/SEO'
-import { TalkBySlugQuery, SitePageContext } from '../../graphql-types'
-import './talk.css'
+import SEO from '../components/SEO'
+import Post from '../components/Post'
 
-interface Props {
-  data: TalkBySlugQuery
-  pageContext: SitePageContext
-}
+const TalkTemplate: React.FC<PageProps<GatsbyTypes.TalkBySlugQuery>> = (
+  props
+) => {
+  const { data, path } = props
+  const talkNode = data.mdx
+  const talk = talkNode?.frontmatter
 
-const TalkTemplate: React.FC<Props> = props => {
-  const { data, pageContext } = props
-  const { slug } = pageContext
-  const talkNode = data.markdownRemark
-  const talk = talkNode.frontmatter
+  if (!talk?.title) {
+    return null
+  }
 
   return (
     <Layout>
       <Helmet>
         <title>{talk.title}</title>
       </Helmet>
-      <SEO postPath={slug} postNode={talkNode} postSEO />
-      <article className="talk">
-        <header>
-          <h1>{talk.title}</h1>
-          <time dateTime={talk.date}>
-            <span role="img" aria-labelledby="date of talk">
-              🗓
-            </span>
-            {formatISO(new Date(talk.date), { representation: 'date' })}
-          </time>
-          <p className="location">
-            <span role="img" aria-labelledby="location of talk">
-              📍
-            </span>
-            {talk.location}
-          </p>
-        </header>
-        <section dangerouslySetInnerHTML={{ __html: talkNode.html }} />
-      </article>
+      <SEO path={path} post={talkNode} />
+      <Post
+        title={talk.title}
+        body={talkNode?.body}
+        itemType="CreativeWork"
+        dateModified={talkNode?.fields?.latestCommitDate}
+        datePublished={talk.date}
+        location={talk.location}
+      />
     </Layout>
   )
 }
@@ -52,15 +40,16 @@ export default TalkTemplate
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query TalkBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
+    mdx(fields: { slug: { eq: $slug } }) {
       timeToRead
       excerpt
+      collection
       frontmatter {
         title
-        cover
+        cover {
+          publicURL
+        }
         date
-        category
         tags
         description
         location
@@ -68,7 +57,9 @@ export const pageQuery = graphql`
       fields {
         slug
         date
+        latestCommitDate
       }
+      body
     }
   }
 `
