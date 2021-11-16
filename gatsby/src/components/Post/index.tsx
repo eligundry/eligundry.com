@@ -107,11 +107,11 @@ const Article = styled<React.FC>(Paper.article)`
   }
 
   & .float-right {
-    ${tw`float-right ml-2`}
+    ${tw`float-right ml-2 sm:float-none sm:mx-auto`}
   }
 
   & .float-left {
-    ${tw`float-left mr-2`}
+    ${tw`float-left mr-2 sm:float-none sm:mx-auto`}
   }
 `
 
