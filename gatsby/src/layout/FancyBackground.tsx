@@ -62,6 +62,8 @@ const Canvas = styled.div<{ seed: number }>`
   height: 100%;
   background-image: paint(fluidPattern);
   z-index: -100000;
+
+  ${tw`print:hidden`}
 `
 
 const RefreshButton = styled.button`
@@ -79,6 +81,7 @@ const RefreshButton = styled.button`
     p-4
     sm:text-base
     sm:p-2
+    print:hidden
   `}
 `
 

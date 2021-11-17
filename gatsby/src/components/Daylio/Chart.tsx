@@ -13,8 +13,12 @@ import { MoodMapping } from './types'
 import { useHasTouch } from '../../utils/useIsMobile'
 import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
 
-const DaylioChart: React.FC = () => {
-  const timeWindow = subMonths(new Date(), 1)
+interface Props {
+  months?: number
+}
+
+const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
+  const timeWindow = subMonths(new Date(), months)
   const data = useFeelingsChartData(timeWindow)
   const isTouchScreen = useHasTouch()
   const prefersDark = usePrefersDarkMode()

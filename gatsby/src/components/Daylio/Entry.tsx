@@ -128,6 +128,7 @@ const Entry: React.FC<Props> = ({
       <Paper
         className="text-column"
         transparent={variant === DaylioVariants.home}
+        noPadding={variant === DaylioVariants.home}
       >
         <h3 itemProp="name headline">I felt {mood}</h3>
         <time dateTime={isoTime} itemProp="datePublished dateModified">

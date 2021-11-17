@@ -216,10 +216,17 @@ const Home: React.FC = () => {
         <p className="summary">
           I listen to way too much music and I love to listen to full albums. I
           mainly listen to hip hop, indie rock and{' '}
-          <abbr title="Ask me about the fun 5th wave emo bands I love">
-            emo
-          </abbr>{' '}
-          music.
+          <Link to="/blog/icymi-glocca-morra-just-married">
+            <abbr title="Ask me about the fun 5th wave emo bands I love">
+              emo
+            </abbr>
+          </Link>{' '}
+          music. I occasionally write reviews of old albums that I love but aren't well known in a
+          series called{' '}
+          <Link to="/blog#icymi">
+            <abbr title="I See You Missed It">ICYMI</abbr>
+          </Link>
+          .
         </p>
         <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" />
       </Section>

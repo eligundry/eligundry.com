@@ -1,6 +1,11 @@
-import tw, { styled, theme } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 
-const Paper = styled.div<{ transparent?: boolean }>`
+interface PaperProps {
+  transparent?: boolean
+  noPadding?: boolean
+}
+
+const Paper = styled.div<PaperProps>`
   ${tw`
     w-full 
     p-4
@@ -15,6 +20,8 @@ const Paper = styled.div<{ transparent?: boolean }>`
   `}
 
   ${(props) => props.transparent && tw`bg-transparent dark:bg-transparent`}
+
+  ${(props) => props.noPadding && tw`p-0`}
 
   @media (prefers-reduced-transparency: reduce) {
     ${tw`bg-siteBackground dark:bg-black`}

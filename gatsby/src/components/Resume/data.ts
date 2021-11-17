@@ -76,7 +76,7 @@ const resume: Resume = {
     name: 'Eli Gundry',
     label: 'Software Engineer',
     email: 'eligundry@gmail.com',
-    phone: '3308286147',
+    phone: '347.523.2652',
     website: 'https://eligundry.com',
     location: {
       city: 'Astoria',
@@ -369,11 +369,11 @@ const resume: Resume = {
       name: 'Languages',
       level: 'Master',
       keywords: {
-        Python: 'https://www.python.org/',
-        Typescript: 'https://www.typescriptlang.org/',
+        TypeScript: 'https://www.typescriptlang.org/',
         JavaScript: 'https://en.wikipedia.org/wiki/JavaScript',
-        PHP: 'https://www.php.net/',
         Go: 'https://golang.org/',
+        PHP: 'https://www.php.net/',
+        Python: 'https://www.python.org/',
         SQL: 'https://en.wikipedia.org/wiki/SQL',
         HTML: 'https://en.wikipedia.org/wiki/HTML5',
         CSS: 'https://www.w3.org/Style/CSS/Overview.en.html',
@@ -412,13 +412,14 @@ const resume: Resume = {
         jQuery: 'https://jquery.com/',
         Okta: 'https://www.okta.com/',
         Jenkins: 'https://jenkins.io/',
+        'Google Tag Manager': 'https://tagmanager.google.com/',
       },
     },
   ],
   activitesInterests: [
     `
-    Presented <a href="/talks">talks</a> at <a href="https://www.meetup.com/The-New-York-Vim-Meetup/">The New York City Vim Meetup</a> 
-    and <a href="https://www.meetup.com/queensjs/">QueensJS</a>.`,
+    Presented <a href="/talks">talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a> 
+    and <a href="/talks/redux-hooks">QueensJS</a>.`,
     `
     Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and 
     <a href="https://devpost.com/eligundry">competed in numerous hackathons</a> including:
