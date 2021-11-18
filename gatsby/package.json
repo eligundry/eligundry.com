@@ -48,6 +48,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^3.11.0",
     "react-lazyload": "^3.2.0",
+    "react-loading-skeleton": "^3.0.1",
     "react-schemaorg": "^2.0.0",
     "react-tooltip": "^4.2.21",
     "react-use": "^17.3.1",
@@ -61,7 +62,7 @@
     "url-join-ts": "^1.0.5"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.170",
+    "@types/lodash": "^4.14.177",
     "@types/react-helmet": "^6.1.2",
     "@types/react-lazyload": "^3.1.1",
     "@types/styled-components": "^5.1.9",
