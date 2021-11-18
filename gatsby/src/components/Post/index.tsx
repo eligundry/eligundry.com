@@ -2,6 +2,7 @@ import React from 'react'
 import tw, { styled } from 'twin.macro'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import LazyLoad from 'react-lazyload'
+import Skeleton from 'react-loading-skeleton'
 
 import Paper from '../Shared/Paper'
 import Time from '../Shared/Time'
@@ -50,7 +51,12 @@ const Post: React.FC<Props> = ({
     {preBody}
     {body && <MDXRenderer itemProp="text">{body}</MDXRenderer>}
     {footer && (
-      <LazyLoad once offset={200} classNamePrefix="lazyload-footer">
+      <LazyLoad
+        once
+        offset={200}
+        classNamePrefix="lazyload-footer"
+        placeholder={<Skeleton height={270} width="100%" />}
+      >
         {footer}
       </LazyLoad>
     )}

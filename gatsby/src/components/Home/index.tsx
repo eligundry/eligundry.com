@@ -3,6 +3,7 @@ import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
+import Skeleton from 'react-loading-skeleton'
 
 import Daylio from '../Daylio/index'
 import Paper from '../Shared/Paper'
@@ -160,7 +161,7 @@ const Home: React.FC = () => {
         <Daylio />
         {/* Don't show the chart on mobile because it looks terrible, functions poorly and impacts performance on an outsized basis */}
         {!isMobile && (
-          <GatsbySuspense fallback={null}>
+          <GatsbySuspense fallback={<Skeleton height={153} width="100%" />}>
             <DaylioChart />
           </GatsbySuspense>
         )}
@@ -221,8 +222,8 @@ const Home: React.FC = () => {
               emo
             </abbr>
           </Link>{' '}
-          music. I occasionally write reviews of old albums that I love but aren't well known in a
-          series called{' '}
+          music. I occasionally write reviews of old albums that I love but
+          aren't well known in a series called{' '}
           <Link to="/blog#icymi">
             <abbr title="I See You Missed It">ICYMI</abbr>
           </Link>

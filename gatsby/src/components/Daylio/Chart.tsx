@@ -52,86 +52,93 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
   )
 
   return (
-    <Line
-      type="line"
-      height={60}
-      data={{
-        labels: Object.values(MoodMapping).map((_, i) => i),
-        datasets: [
-          {
-            data,
-            backgroundColor: 'transparent',
-            pointStyle: 'rect',
-            borderColor: theme`colors.primaryLite`,
-            pointBorderColor: theme`colors.primary`,
-            pointBackgroundColor: theme`colors.primary`,
-            radius: 5,
-          },
-        ],
-      }}
-      options={{
-        events: isTouchScreen
-          ? []
-          : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-        onClick: handlePointClick,
-        onHover: handlePointHover,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            displayColors: false,
-            titleFont: {
-              size: 14,
+    <div style={{ minHeight: '153px' }}>
+      <Line
+        type="line"
+        height={60}
+        data={{
+          labels: Object.values(MoodMapping).map((_, i) => i),
+          datasets: [
+            {
+              data,
+              backgroundColor: 'transparent',
+              pointStyle: 'rect',
+              borderColor: theme`colors.primaryLite`,
+              pointBorderColor: theme`colors.primary`,
+              pointBackgroundColor: theme`colors.primary`,
+              radius: 5,
             },
-            bodyFont: {
-              size: 16,
+          ],
+        }}
+        options={{
+          events: isTouchScreen
+            ? []
+            : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+          onClick: handlePointClick,
+          onHover: handlePointHover,
+          plugins: {
+            legend: {
+              display: false,
             },
-            backgroundColor: prefersDark
-              ? theme`colors.typographyDark`
-              : theme`colors.white`,
-            footerColor: prefersDark
-              ? theme`colors.typographyDark`
-              : theme`colors.white`,
-            bodyColor: prefersDark ? theme`colors.white` : theme`colors.black`,
-            titleColor: prefersDark ? theme`colors.white` : theme`colors.black`,
-            borderWidth: 1,
-            borderColor: prefersDark
-              ? theme`colors.typographyLite`
-              : 'rgb(226, 232, 240)',
-            callbacks: {
-              title: (item, _) => `📅   ${formatISO(parseISO(item[0].raw.x))}`,
-              // @ts-ignore
-              label: (item, _) =>
-                `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
-                  Object.keys(MoodMapping)[item.raw.y]
-                }`,
-            },
-          },
-        },
-        scales: {
-          x: {
-            min: timeWindow,
-            ticks: {
-              callback: () => null,
-            },
-          },
-          y: {
-            min: 0,
-            grid: {
-              color: prefersDark ? theme`colors.typographyLite` : undefined,
-            },
-            ticks: {
-              // @ts-ignore
-              callback: (value) => Object.values(MoodMapping)[value],
-              font: {
-                size: 20,
+            tooltip: {
+              displayColors: false,
+              titleFont: {
+                size: 14,
+              },
+              bodyFont: {
+                size: 16,
+              },
+              backgroundColor: prefersDark
+                ? theme`colors.typographyDark`
+                : theme`colors.white`,
+              footerColor: prefersDark
+                ? theme`colors.typographyDark`
+                : theme`colors.white`,
+              bodyColor: prefersDark
+                ? theme`colors.white`
+                : theme`colors.black`,
+              titleColor: prefersDark
+                ? theme`colors.white`
+                : theme`colors.black`,
+              borderWidth: 1,
+              borderColor: prefersDark
+                ? theme`colors.typographyLite`
+                : 'rgb(226, 232, 240)',
+              callbacks: {
+                title: (item, _) =>
+                  `📅   ${formatISO(parseISO(item[0].raw.x))}`,
+                // @ts-ignore
+                label: (item, _) =>
+                  `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
+                    Object.keys(MoodMapping)[item.raw.y]
+                  }`,
               },
             },
           },
-        },
-      }}
-    />
+          scales: {
+            x: {
+              min: timeWindow,
+              ticks: {
+                callback: () => null,
+              },
+            },
+            y: {
+              min: 0,
+              grid: {
+                color: prefersDark ? theme`colors.typographyLite` : undefined,
+              },
+              ticks: {
+                // @ts-ignore
+                callback: (value) => Object.values(MoodMapping)[value],
+                font: {
+                  size: 20,
+                },
+              },
+            },
+          },
+        }}
+      />
+    </div>
   )
 }
 

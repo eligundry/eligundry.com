@@ -750,9 +750,9 @@ type GoodreadsBook = Node & {
 type MdxFrontmatter = {
   readonly title: Scalars['String'];
   readonly description: Maybe<Scalars['String']>;
+  readonly date: Maybe<Scalars['Date']>;
   readonly slug: Maybe<Scalars['String']>;
   readonly cover: Maybe<File>;
-  readonly date: Maybe<Scalars['Date']>;
   readonly tags: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly draft: Maybe<Scalars['Boolean']>;
   readonly location: Maybe<Scalars['String']>;
@@ -1583,9 +1583,9 @@ type MdxFilterInput = {
 type MdxFrontmatterFilterInput = {
   readonly title: Maybe<StringQueryOperatorInput>;
   readonly description: Maybe<StringQueryOperatorInput>;
+  readonly date: Maybe<DateQueryOperatorInput>;
   readonly slug: Maybe<StringQueryOperatorInput>;
   readonly cover: Maybe<FileFilterInput>;
-  readonly date: Maybe<DateQueryOperatorInput>;
   readonly tags: Maybe<StringQueryOperatorInput>;
   readonly draft: Maybe<BooleanQueryOperatorInput>;
   readonly location: Maybe<StringQueryOperatorInput>;
@@ -1897,6 +1897,7 @@ type FileFieldsEnum =
   | 'childrenMdx.fileAbsolutePath'
   | 'childrenMdx.frontmatter.title'
   | 'childrenMdx.frontmatter.description'
+  | 'childrenMdx.frontmatter.date'
   | 'childrenMdx.frontmatter.slug'
   | 'childrenMdx.frontmatter.cover.sourceInstanceName'
   | 'childrenMdx.frontmatter.cover.absolutePath'
@@ -1937,7 +1938,6 @@ type FileFieldsEnum =
   | 'childrenMdx.frontmatter.cover.childrenMdx'
   | 'childrenMdx.frontmatter.cover.id'
   | 'childrenMdx.frontmatter.cover.children'
-  | 'childrenMdx.frontmatter.date'
   | 'childrenMdx.frontmatter.tags'
   | 'childrenMdx.frontmatter.draft'
   | 'childrenMdx.frontmatter.location'
@@ -2002,6 +2002,7 @@ type FileFieldsEnum =
   | 'childMdx.fileAbsolutePath'
   | 'childMdx.frontmatter.title'
   | 'childMdx.frontmatter.description'
+  | 'childMdx.frontmatter.date'
   | 'childMdx.frontmatter.slug'
   | 'childMdx.frontmatter.cover.sourceInstanceName'
   | 'childMdx.frontmatter.cover.absolutePath'
@@ -2042,7 +2043,6 @@ type FileFieldsEnum =
   | 'childMdx.frontmatter.cover.childrenMdx'
   | 'childMdx.frontmatter.cover.id'
   | 'childMdx.frontmatter.cover.children'
-  | 'childMdx.frontmatter.date'
   | 'childMdx.frontmatter.tags'
   | 'childMdx.frontmatter.draft'
   | 'childMdx.frontmatter.location'
@@ -4196,8 +4196,8 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childrenMdx.fileAbsolutePath'
   | 'coverImage.childrenMdx.frontmatter.title'
   | 'coverImage.childrenMdx.frontmatter.description'
-  | 'coverImage.childrenMdx.frontmatter.slug'
   | 'coverImage.childrenMdx.frontmatter.date'
+  | 'coverImage.childrenMdx.frontmatter.slug'
   | 'coverImage.childrenMdx.frontmatter.tags'
   | 'coverImage.childrenMdx.frontmatter.draft'
   | 'coverImage.childrenMdx.frontmatter.location'
@@ -4238,8 +4238,8 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childMdx.fileAbsolutePath'
   | 'coverImage.childMdx.frontmatter.title'
   | 'coverImage.childMdx.frontmatter.description'
-  | 'coverImage.childMdx.frontmatter.slug'
   | 'coverImage.childMdx.frontmatter.date'
+  | 'coverImage.childMdx.frontmatter.slug'
   | 'coverImage.childMdx.frontmatter.tags'
   | 'coverImage.childMdx.frontmatter.draft'
   | 'coverImage.childMdx.frontmatter.location'
@@ -4519,6 +4519,7 @@ type MdxFieldsEnum =
   | 'fileAbsolutePath'
   | 'frontmatter.title'
   | 'frontmatter.description'
+  | 'frontmatter.date'
   | 'frontmatter.slug'
   | 'frontmatter.cover.sourceInstanceName'
   | 'frontmatter.cover.absolutePath'
@@ -4603,7 +4604,6 @@ type MdxFieldsEnum =
   | 'frontmatter.cover.internal.mediaType'
   | 'frontmatter.cover.internal.owner'
   | 'frontmatter.cover.internal.type'
-  | 'frontmatter.date'
   | 'frontmatter.tags'
   | 'frontmatter.draft'
   | 'frontmatter.location'
@@ -4940,8 +4940,8 @@ type DownloadedImageFieldsEnum =
   | 'image.childrenMdx.fileAbsolutePath'
   | 'image.childrenMdx.frontmatter.title'
   | 'image.childrenMdx.frontmatter.description'
-  | 'image.childrenMdx.frontmatter.slug'
   | 'image.childrenMdx.frontmatter.date'
+  | 'image.childrenMdx.frontmatter.slug'
   | 'image.childrenMdx.frontmatter.tags'
   | 'image.childrenMdx.frontmatter.draft'
   | 'image.childrenMdx.frontmatter.location'
@@ -4982,8 +4982,8 @@ type DownloadedImageFieldsEnum =
   | 'image.childMdx.fileAbsolutePath'
   | 'image.childMdx.frontmatter.title'
   | 'image.childMdx.frontmatter.description'
-  | 'image.childMdx.frontmatter.slug'
   | 'image.childMdx.frontmatter.date'
+  | 'image.childMdx.frontmatter.slug'
   | 'image.childMdx.frontmatter.tags'
   | 'image.childMdx.frontmatter.draft'
   | 'image.childMdx.frontmatter.location'
@@ -7715,11 +7715,6 @@ type LastfmAlbumSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
-
 type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -7729,6 +7724,11 @@ type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
 type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7773,6 +7773,14 @@ type TalkBySlugQuery = { readonly mdx: Maybe<(
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
 
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
+
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7785,14 +7793,6 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
     )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
   )> };
-
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 

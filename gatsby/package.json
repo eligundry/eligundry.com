@@ -48,6 +48,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^3.11.0",
     "react-lazyload": "^3.2.0",
+    "react-loading-skeleton": "^3.0.1",
     "react-schemaorg": "^2.0.0",
     "react-tooltip": "^4.2.21",
     "react-use": "^17.3.1",

@@ -2,6 +2,7 @@ import React from 'react'
 import tw, { styled } from 'twin.macro'
 import LazyLoad from 'react-lazyload'
 import useMeasure from 'react-use/lib/useMeasure'
+import Skeleton from 'react-loading-skeleton'
 
 import LastFmCover from './LastFmCover'
 import useIsMobile from '../../utils/useIsMobile'
@@ -36,7 +37,11 @@ const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
     <ListeningContainer>
       <div>
         <h3>Seasonal Playlist</h3>
-        <LazyLoad once offset={300} classNamePrefix="spotify-playlist">
+        <LazyLoad
+          once
+          classNamePrefix="spotify-playlist"
+          placeholder={<Skeleton height={iframeHeight} width={300} />}
+        >
           <iframe
             title="Spotify playlist that I have on repeat"
             src={spotifyEmbedURL}

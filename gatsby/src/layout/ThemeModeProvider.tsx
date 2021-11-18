@@ -6,7 +6,9 @@ import React, {
   useState,
 } from 'react'
 import Helmet from 'react-helmet'
+import { SkeletonTheme } from 'react-loading-skeleton'
 import useMedia from 'react-use/lib/useMedia'
+import { theme as siteTheme } from 'twin.macro'
 
 type Theme = 'light' | 'dark'
 interface IThemeModeContext {
@@ -23,7 +25,7 @@ ThemeModeContext.displayName = 'ThemeModeContext'
 
 const ThemeModeProvider: React.FC = ({ children }) => {
   const prefersDark = useMedia('(prefers-color-scheme: dark)')
-  const [theme, setTheme] = useState(prefersDark ? 'dark' : 'light')
+  const [theme, setTheme] = useState<Theme>(prefersDark ? 'dark' : 'light')
 
   const toggleTheme = useCallback(
     () => setTheme((t) => (t === 'light' ? 'dark' : 'light')),
@@ -33,7 +35,7 @@ const ThemeModeProvider: React.FC = ({ children }) => {
   // Change the theme if the system changes what it prefers
   useEffect(() => setTheme(prefersDark ? 'dark' : 'light'), [prefersDark])
 
-  const value = useMemo(
+  const value = useMemo<IThemeModeContext>(
     () => ({
       theme,
       toggleTheme,
@@ -43,8 +45,13 @@ const ThemeModeProvider: React.FC = ({ children }) => {
 
   return (
     <ThemeModeContext.Provider value={value}>
-      <Helmet bodyAttributes={{ class: theme }} />
-      {children}
+      <SkeletonTheme
+        baseColor={theme === 'dark' ? '#000' : undefined}
+        highlightColor={theme === 'dark' ? '#3e3e3e' : undefined}
+      >
+        <Helmet bodyAttributes={{ class: theme }} />
+        {children}
+      </SkeletonTheme>
     </ThemeModeContext.Provider>
   )
 }

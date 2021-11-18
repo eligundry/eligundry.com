@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components'
 import './fonts.css'
 import 'tailwindcss/dist/base.min.css'
 import './prism-material.scss'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const GlobalStyles = createGlobalStyle`
   body {
