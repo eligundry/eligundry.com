@@ -6,7 +6,6 @@ import sitemapPlugin from './utils/sitemapPlugin'
 
 const gatsbyConfig: ITSConfigFn<'config'> = () => ({
   pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
-  assetPrefix: config.assetPrefix,
   siteMetadata: {
     siteUrl: urljoin(config.siteUrl, config.pathPrefix),
     rssMetadata: {
@@ -14,11 +13,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       feed_url: urljoin(config.siteUrl, config.pathPrefix, config.siteRss),
       title: config.siteTitle,
       description: config.siteDescription,
-      image_url: `${urljoin(
-        config.siteUrl,
-        config.pathPrefix
-      )}/logos/logo-512.png`,
-      copyright: config.copyright,
     },
   },
   plugins: [
