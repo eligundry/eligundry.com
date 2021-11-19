@@ -260,8 +260,6 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
-  readonly port: Maybe<Scalars['Int']>;
-  readonly host: Maybe<Scalars['String']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly assetPrefix: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
@@ -318,6 +316,7 @@ type SitePage = Node & {
   readonly matchPath: Maybe<Scalars['String']>;
   readonly pageContext: Maybe<Scalars['JSON']>;
   readonly pluginCreator: Maybe<SitePlugin>;
+  readonly fields: Maybe<SitePageFields>;
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
   readonly children: ReadonlyArray<Node>;
@@ -723,9 +722,7 @@ type Mdx_tableOfContentsArgs = {
 type MdxFields = {
   readonly date: Maybe<Scalars['Date']>;
   readonly slug: Maybe<Scalars['String']>;
-  readonly latestCommitDate: Maybe<Scalars['Date']>;
-  readonly latestCommitMessage: Maybe<Scalars['String']>;
-  readonly latestCommit: Maybe<Scalars['String']>;
+  readonly latestCommit: Maybe<MdxFieldsLatestCommit>;
 };
 
 
@@ -736,8 +733,14 @@ type MdxFields_dateArgs = {
   locale: Maybe<Scalars['String']>;
 };
 
+type MdxFieldsLatestCommit = {
+  readonly date: Maybe<Scalars['Date']>;
+  readonly message: Maybe<Scalars['String']>;
+  readonly hash: Maybe<Scalars['String']>;
+};
 
-type MdxFields_latestCommitDateArgs = {
+
+type MdxFieldsLatestCommit_dateArgs = {
   formatString: Maybe<Scalars['String']>;
   fromNow: Maybe<Scalars['Boolean']>;
   difference: Maybe<Scalars['String']>;
@@ -752,6 +755,16 @@ type DownloadedImage = Node & {
   readonly parent: Maybe<Node>;
   readonly children: ReadonlyArray<Node>;
   readonly internal: Internal;
+};
+
+type GitCommit = {
+  readonly date: Maybe<Scalars['Date']>;
+  readonly message: Maybe<Scalars['String']>;
+  readonly hash: Maybe<Scalars['String']>;
+};
+
+type SitePageFields = {
+  readonly latestCommit: Maybe<GitCommit>;
 };
 
 type feelings = Node & {
@@ -978,8 +991,6 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  port: Maybe<IntQueryOperatorInput>;
-  host: Maybe<StringQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   assetPrefix: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
@@ -1030,6 +1041,7 @@ type Query_sitePageArgs = {
   matchPath: Maybe<StringQueryOperatorInput>;
   pageContext: Maybe<JSONQueryOperatorInput>;
   pluginCreator: Maybe<SitePluginFilterInput>;
+  fields: Maybe<SitePageFieldsFilterInput>;
   id: Maybe<StringQueryOperatorInput>;
   parent: Maybe<NodeFilterInput>;
   children: Maybe<NodeFilterListInput>;
@@ -1549,9 +1561,13 @@ type MdxWordCountFilterInput = {
 type MdxFieldsFilterInput = {
   readonly date: Maybe<DateQueryOperatorInput>;
   readonly slug: Maybe<StringQueryOperatorInput>;
-  readonly latestCommitDate: Maybe<DateQueryOperatorInput>;
-  readonly latestCommitMessage: Maybe<StringQueryOperatorInput>;
-  readonly latestCommit: Maybe<StringQueryOperatorInput>;
+  readonly latestCommit: Maybe<MdxFieldsLatestCommitFilterInput>;
+};
+
+type MdxFieldsLatestCommitFilterInput = {
+  readonly date: Maybe<DateQueryOperatorInput>;
+  readonly message: Maybe<StringQueryOperatorInput>;
+  readonly hash: Maybe<StringQueryOperatorInput>;
 };
 
 type FileConnection = {
@@ -1851,9 +1867,9 @@ type FileFieldsEnum =
   | 'childrenMdx.collection'
   | 'childrenMdx.fields.date'
   | 'childrenMdx.fields.slug'
-  | 'childrenMdx.fields.latestCommitDate'
-  | 'childrenMdx.fields.latestCommitMessage'
-  | 'childrenMdx.fields.latestCommit'
+  | 'childrenMdx.fields.latestCommit.date'
+  | 'childrenMdx.fields.latestCommit.message'
+  | 'childrenMdx.fields.latestCommit.hash'
   | 'childrenMdx.id'
   | 'childrenMdx.parent.id'
   | 'childrenMdx.parent.parent.id'
@@ -1956,9 +1972,9 @@ type FileFieldsEnum =
   | 'childMdx.collection'
   | 'childMdx.fields.date'
   | 'childMdx.fields.slug'
-  | 'childMdx.fields.latestCommitDate'
-  | 'childMdx.fields.latestCommitMessage'
-  | 'childMdx.fields.latestCommit'
+  | 'childMdx.fields.latestCommit.date'
+  | 'childMdx.fields.latestCommit.message'
+  | 'childMdx.fields.latestCommit.hash'
   | 'childMdx.id'
   | 'childMdx.parent.id'
   | 'childMdx.parent.parent.id'
@@ -2454,8 +2470,6 @@ type SiteFieldsEnum =
   | 'siteMetadata.rssMetadata.description'
   | 'siteMetadata.rssMetadata.image_url'
   | 'siteMetadata.rssMetadata.copyright'
-  | 'port'
-  | 'host'
   | 'pathPrefix'
   | 'assetPrefix'
   | 'polyfill'
@@ -2591,8 +2605,6 @@ type SiteGroupConnection_groupArgs = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  readonly port: Maybe<IntQueryOperatorInput>;
-  readonly host: Maybe<StringQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly assetPrefix: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
@@ -2824,6 +2836,16 @@ type SitePluginFilterInput = {
   readonly internal: Maybe<InternalFilterInput>;
 };
 
+type SitePageFieldsFilterInput = {
+  readonly latestCommit: Maybe<GitCommitFilterInput>;
+};
+
+type GitCommitFilterInput = {
+  readonly date: Maybe<DateQueryOperatorInput>;
+  readonly message: Maybe<StringQueryOperatorInput>;
+  readonly hash: Maybe<StringQueryOperatorInput>;
+};
+
 type SitePageConnection = {
   readonly totalCount: Scalars['Int'];
   readonly edges: ReadonlyArray<SitePageEdge>;
@@ -2923,6 +2945,9 @@ type SitePageFieldsEnum =
   | 'pluginCreator.internal.mediaType'
   | 'pluginCreator.internal.owner'
   | 'pluginCreator.internal.type'
+  | 'fields.latestCommit.date'
+  | 'fields.latestCommit.message'
+  | 'fields.latestCommit.hash'
   | 'id'
   | 'parent.id'
   | 'parent.parent.id'
@@ -3059,6 +3084,7 @@ type SitePageFilterInput = {
   readonly matchPath: Maybe<StringQueryOperatorInput>;
   readonly pageContext: Maybe<JSONQueryOperatorInput>;
   readonly pluginCreator: Maybe<SitePluginFilterInput>;
+  readonly fields: Maybe<SitePageFieldsFilterInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
   readonly children: Maybe<NodeFilterListInput>;
@@ -3867,9 +3893,6 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childrenMdx.collection'
   | 'coverImage.childrenMdx.fields.date'
   | 'coverImage.childrenMdx.fields.slug'
-  | 'coverImage.childrenMdx.fields.latestCommitDate'
-  | 'coverImage.childrenMdx.fields.latestCommitMessage'
-  | 'coverImage.childrenMdx.fields.latestCommit'
   | 'coverImage.childrenMdx.id'
   | 'coverImage.childrenMdx.parent.id'
   | 'coverImage.childrenMdx.parent.children'
@@ -3909,9 +3932,6 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childMdx.collection'
   | 'coverImage.childMdx.fields.date'
   | 'coverImage.childMdx.fields.slug'
-  | 'coverImage.childMdx.fields.latestCommitDate'
-  | 'coverImage.childMdx.fields.latestCommitMessage'
-  | 'coverImage.childMdx.fields.latestCommit'
   | 'coverImage.childMdx.id'
   | 'coverImage.childMdx.parent.id'
   | 'coverImage.childMdx.parent.children'
@@ -4273,9 +4293,9 @@ type MdxFieldsEnum =
   | 'collection'
   | 'fields.date'
   | 'fields.slug'
-  | 'fields.latestCommitDate'
-  | 'fields.latestCommitMessage'
-  | 'fields.latestCommit'
+  | 'fields.latestCommit.date'
+  | 'fields.latestCommit.message'
+  | 'fields.latestCommit.hash'
   | 'id'
   | 'parent.id'
   | 'parent.parent.id'
@@ -4611,9 +4631,6 @@ type DownloadedImageFieldsEnum =
   | 'image.childrenMdx.collection'
   | 'image.childrenMdx.fields.date'
   | 'image.childrenMdx.fields.slug'
-  | 'image.childrenMdx.fields.latestCommitDate'
-  | 'image.childrenMdx.fields.latestCommitMessage'
-  | 'image.childrenMdx.fields.latestCommit'
   | 'image.childrenMdx.id'
   | 'image.childrenMdx.parent.id'
   | 'image.childrenMdx.parent.children'
@@ -4653,9 +4670,6 @@ type DownloadedImageFieldsEnum =
   | 'image.childMdx.collection'
   | 'image.childMdx.fields.date'
   | 'image.childMdx.fields.slug'
-  | 'image.childMdx.fields.latestCommitDate'
-  | 'image.childMdx.fields.latestCommitMessage'
-  | 'image.childMdx.fields.latestCommit'
   | 'image.childMdx.id'
   | 'image.childMdx.parent.id'
   | 'image.childMdx.parent.children'
@@ -7365,6 +7379,24 @@ type LastfmAlbumSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+
+type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+
+type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
+      Pick<LastfmPlayback, 'date'>
+      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
+    )> } };
+
 type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -7381,24 +7413,6 @@ type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: R
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
-type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
-      Pick<LastfmPlayback, 'date'>
-      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
-    )> } };
-
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
-
-type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
-
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7409,7 +7423,10 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
     & { readonly frontmatter: Maybe<(
       Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description'>
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
+    )>, readonly fields: Maybe<(
+      Pick<MdxFields, 'slug' | 'date'>
+      & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+    )> }
   )> };
 
 type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
@@ -7417,7 +7434,10 @@ type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
         Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>>, readonly frontmatter: Maybe<(
+        & { readonly fields: Maybe<(
+          Pick<MdxFields, 'slug' | 'date'>
+          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+        )>, readonly frontmatter: Maybe<(
           Pick<MdxFrontmatter, 'title' | 'date' | 'description' | 'tags'>
           & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
         )> }
@@ -7433,7 +7453,10 @@ type TalkBySlugQuery = { readonly mdx: Maybe<(
     & { readonly frontmatter: Maybe<(
       Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date' | 'latestCommitDate'>> }
+    )>, readonly fields: Maybe<(
+      Pick<MdxFields, 'slug' | 'date'>
+      & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+    )> }
   )> };
 
 type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
@@ -7441,7 +7464,10 @@ type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
         Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<Pick<MdxFields, 'slug' | 'date'>>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+        & { readonly fields: Maybe<(
+          Pick<MdxFields, 'slug' | 'date'>
+          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
       ) }> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
@@ -7469,10 +7495,5 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = Pick<ImageSharpFluid, 't
 type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'sizes'>;
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

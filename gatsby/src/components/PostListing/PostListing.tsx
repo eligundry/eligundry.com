@@ -7,7 +7,9 @@ import EmojiText from '../Shared/EmojiText'
 import TagPicker, { useSelectedTag } from './TagPicker'
 
 interface Props {
-  postEdges: GatsbyTypes.BlogListingQuery['allMdx']['edges']
+  postEdges:
+    | GatsbyTypes.BlogListingQuery['allMdx']['edges']
+    | GatsbyTypes.TalkListingQuery['allMdx']['edges']
   pathPrefix: string
   itemType: 'CreativeWork' | 'BlogPosting'
 }
@@ -33,17 +35,25 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix, itemType }) => {
   const [selectedTag, selectTag] = useSelectedTag()
   const postList = postEdges
     .map((postEdge) => {
-      postEdge.node.frontmatter?.tags?.forEach((tag) => tags.add(tag))
+      postEdge.node.frontmatter?.tags
+        ?.filter((tag): tag is string => !!tag)
+        .forEach((tag) => tags.add(tag))
+
+      let cover: string | undefined
+
+      if (postEdge?.node?.frontmatter && 'cover' in postEdge.node.frontmatter) {
+        cover = postEdge.node.frontmatter.cover?.publicURL
+      }
 
       return {
         path: postEdge?.node?.fields?.slug,
-        cover: postEdge?.node?.frontmatter?.cover?.publicURL,
+        cover,
         title: postEdge?.node?.frontmatter?.title,
         date: postEdge?.node?.fields?.date,
         excerpt: postEdge.node.excerpt,
         timeToRead: postEdge.node.timeToRead,
         description: postEdge?.node?.frontmatter?.description,
-        dateModified: postEdge?.node?.fields?.latestCommitDate,
+        dateModified: postEdge?.node?.fields?.latestCommit?.date,
         tags: postEdge?.node?.frontmatter?.tags,
       }
     })

@@ -42,7 +42,9 @@ export const listingQuery = graphql`
           fields {
             slug
             date
-            latestCommitDate
+            latestCommit {
+              date
+            }
           }
           excerpt
           timeToRead

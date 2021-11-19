@@ -149,15 +149,39 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     })
   },
   createSchemaCustomization: ({ actions }) => {
-    actions.createTypes(
+    actions.createTypes([
       `
       type DownloadedImage implements Node {
         url: String!
         name: String!
         image: File @link
       }
+      `,
       `
-    )
+      type GitCommit {
+        date: Date
+        message: String
+        hash: String
+      }
+      `,
+      `
+      type SitePageFields {
+        latestCommit: GitCommit
+      }
+      `,
+      `
+      type SitePage implements Node @dontInfer { 
+        path: String! 
+        component: String! 
+        internalComponentName: String! 
+        componentChunkName: String! 
+        matchPath: String 
+        pageContext: JSON @proxy(from: "context") 
+        pluginCreator: SitePlugin @link(from: "pluginCreatorId") 
+        fields: SitePageFields
+      }
+      `,
+    ])
   },
   sourceNodes: async (args: SourceNodesArgs) => {
     await sourceSingleImage(
