@@ -5,7 +5,6 @@ import config from '../data/SiteConfig'
 import sitemapPlugin from './utils/sitemapPlugin'
 
 const gatsbyConfig: ITSConfigFn<'config'> = () => ({
-  pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
   siteMetadata: {
     siteUrl: urljoin(config.siteUrl, config.pathPrefix),
     rssMetadata: {
@@ -13,6 +12,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       feed_url: urljoin(config.siteUrl, config.pathPrefix, config.siteRss),
       title: config.siteTitle,
       description: config.siteDescription,
+      copyright: config.copyright,
     },
   },
   plugins: [
@@ -80,7 +80,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: '@eligundry/gatsby-source-goodreads',
       options: {
-        userID: config.goodreads.userID,
+        userID: config.goodreadsUserID,
         shelves: ['currently-reading', 'read'],
       },
     },
@@ -128,7 +128,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 feed_url
                 title
                 description
-                image_url
                 copyright
               }
             }
