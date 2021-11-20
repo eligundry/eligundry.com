@@ -27,7 +27,7 @@ const TalkTemplate: React.FC<PageProps<GatsbyTypes.TalkBySlugQuery>> = (
         title={talk.title}
         body={talkNode?.body}
         itemType="CreativeWork"
-        dateModified={talkNode?.fields?.latestCommitDate}
+        dateModified={talkNode?.fields?.latestCommit?.date}
         datePublished={talk.date}
         location={talk.location}
       />
@@ -57,7 +57,9 @@ export const pageQuery = graphql`
       fields {
         slug
         date
-        latestCommitDate
+        latestCommit {
+          date
+        }
       }
       body
     }

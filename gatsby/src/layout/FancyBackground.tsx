@@ -11,16 +11,9 @@ const FancyBackground: React.FC = () => {
   const [seed, setSeed] = useState<number | undefined>(undefined)
 
   useEffect(() => {
-    const initBackground = () => {
+    if (CSS?.paintWorklet) {
       CSS.paintWorklet.addModule(workletURL)
       setSeed(generateSeed())
-    }
-
-    if (!CSS?.paintWorklet?.addModule) {
-      // Polyfill for Safari + Firefox
-      import('css-paint-polyfill').then(() => initBackground())
-    } else {
-      initBackground()
     }
   }, [])
 

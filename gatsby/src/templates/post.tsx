@@ -28,7 +28,7 @@ const PostTemplate: React.FC<PageProps<GatsbyTypes.BlogPostBySlugQuery>> = (
         title={post.title}
         body={postNode?.body}
         datePublished={post?.date}
-        dateModified={postNode?.fields?.latestCommitDate}
+        dateModified={postNode?.fields?.latestCommit?.date}
         itemType="BlogPosting"
         featuredImageURL={post.cover?.publicURL}
         footer={
@@ -73,7 +73,9 @@ export const pageQuery = graphql`
       fields {
         slug
         date
-        latestCommitDate
+        latestCommit {
+          date
+        }
       }
       body
     }

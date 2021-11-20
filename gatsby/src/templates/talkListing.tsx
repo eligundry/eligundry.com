@@ -43,6 +43,9 @@ export const talkListingQuery = graphql`
           fields {
             slug
             date
+            latestCommit {
+              date
+            }
           }
           excerpt
           timeToRead

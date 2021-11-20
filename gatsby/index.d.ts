@@ -18,7 +18,11 @@ declare module '*.svg' {
   export default url
 }
 
-declare module '*worklet.bundle.js' {
-  const workletURL: string
-  export default workletURL
+declare namespace CSS {
+  interface Houdini {
+    addModule: (url: string) => void
+  }
+
+  // This is not defined in Firefox, Safari and IE
+  let paintWorklet: Houdini | undefined
 }

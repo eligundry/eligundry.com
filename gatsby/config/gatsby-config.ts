@@ -1,12 +1,10 @@
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
 import { urlJoin as urljoin } from 'url-join-ts'
-import dateMax from 'date-fns/max'
 
 import config from '../data/SiteConfig'
+import sitemapPlugin from './utils/sitemapPlugin'
 
 const gatsbyConfig: ITSConfigFn<'config'> = () => ({
-  pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
-  assetPrefix: config.assetPrefix,
   siteMetadata: {
     siteUrl: urljoin(config.siteUrl, config.pathPrefix),
     rssMetadata: {
@@ -14,14 +12,11 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       feed_url: urljoin(config.siteUrl, config.pathPrefix, config.siteRss),
       title: config.siteTitle,
       description: config.siteDescription,
-      image_url: `${urljoin(
-        config.siteUrl,
-        config.pathPrefix
-      )}/logos/logo-512.png`,
       copyright: config.copyright,
     },
   },
   plugins: [
+    sitemapPlugin,
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-lodash',
@@ -31,6 +26,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
     'gatsby-plugin-sass',
+    'gatsby-plugin-netlify',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
@@ -84,7 +80,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: '@eligundry/gatsby-source-goodreads',
       options: {
-        userID: config.goodreads.userID,
+        userID: config.goodreadsUserID,
         shelves: ['currently-reading', 'read'],
       },
     },
@@ -132,7 +128,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
                 feed_url
                 title
                 description
-                image_url
                 copyright
               }
             }
@@ -241,130 +236,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
-      resolve: 'gatsby-plugin-sitemap',
-      options: {
-        query: `
-          {
-            allSitePage(
-              filter: {path: {regex: "/^((?!(404)).)*$/"}}
-              sort: {fields: path, order: ASC}
-            ) {
-              nodes {
-                path
-                fields {
-                  latestCommitDate
-                }
-              }
-            }
-            site {
-              siteMetadata {
-                siteUrl
-              }
-            }
-            allMdx(
-              sort: {fields: frontmatter___slug, order: ASC}
-              filter: {frontmatter: {draft: {ne: true}}}
-            ) {
-              nodes {
-                collection
-                fields {
-                  date
-                  slug
-                  latestCommitDate
-                }
-              }
-            }
-            latestFeelingEntry: feelings {
-              time
-            }
-          }
-        `,
-        resolveSiteUrl: () => 'https://eligundry.com',
-        filterPages: () => true,
-        resolvePages: (query: SitemapQuery): SitemapSerialize[] => {
-          const posts: Record<string, Date> = {}
-          let latestPost = new Date(0)
-          let latestTalk = new Date(0)
-
-          query.allMdx.nodes.forEach((post) => {
-            const postDate = new Date(post.fields.date)
-            let path = `/${post.collection}/${post.fields.slug}`
-
-            if (post.collection === 'posts') {
-              path = `/blog/${post.fields.slug}`
-              latestPost = dateMax([latestPost, postDate])
-            } else {
-              latestTalk = dateMax([latestTalk, postDate])
-            }
-
-            posts[path] = dateMax([
-              postDate,
-              new Date(post.fields.latestCommitDate),
-            ])
-          })
-
-          return query.allSitePage.nodes
-            .filter(({ path }) => path === '/' || !path.endsWith('/'))
-            .map(({ path, fields }) => {
-              const latestPageCommitDate = fields?.latestCommitDate
-                ? new Date(fields.latestCommitDate)
-                : new Date(0)
-
-              if (posts[path]) {
-                return {
-                  path,
-                  lastmodISO: dateMax([
-                    posts[path],
-                    latestPageCommitDate,
-                  ]).toISOString(),
-                }
-              }
-
-              if (path === '/blog') {
-                return {
-                  path,
-                  lastmodISO: dateMax([
-                    latestPost,
-                    latestPageCommitDate,
-                  ]).toISOString(),
-                }
-              }
-
-              if (path === '/talks') {
-                return {
-                  path,
-                  lastmodISO: dateMax([
-                    latestTalk,
-                    latestPageCommitDate,
-                  ]).toISOString(),
-                }
-              }
-
-              if (path === '/' || path === '/feelings') {
-                return {
-                  path,
-                  lastmodISO: dateMax([
-                    new Date(query.latestFeelingEntry.time),
-                    latestPageCommitDate,
-                  ]).toISOString(),
-                }
-              }
-
-              return {
-                path,
-                lastmodISO: latestPageCommitDate?.toISOString(),
-              }
-            })
-        },
-        serialize: ({ path: url, lastmodISO }: SitemapSerialize) => ({
-          url,
-          lastmodISO,
-          changefreq: 'daily',
-          priority: 0.7,
-        }),
-      },
-    },
-    {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
         classes: true,
@@ -392,8 +263,10 @@ interface SitemapQuery {
   allSitePage: {
     nodes: {
       path: string
-      fields: {
-        latestCommitDate: string | null
+      fields: null | {
+        latestCommit: {
+          date: string | null
+        }
       }
     }[]
   }
@@ -403,7 +276,9 @@ interface SitemapQuery {
       fields: {
         date: string
         slug: string
-        latestCommitDate: string
+        latestCommit: null | {
+          date: string | null
+        }
       }
     }[]
   }

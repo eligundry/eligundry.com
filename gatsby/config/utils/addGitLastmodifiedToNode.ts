@@ -17,20 +17,12 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
   const addCommitFieldsToNode = (commit: LogResult['latest']) => {
     createNodeField({
       node,
-      name: 'latestCommitDate',
-      value: commit.date,
-    })
-
-    createNodeField({
-      node,
-      name: 'latestCommitMessage',
-      value: commit.message,
-    })
-
-    createNodeField({
-      node,
       name: 'latestCommit',
-      value: commit.hash,
+      value: {
+        date: commit.date,
+        message: commit.message,
+        hash: commit.hash,
+      },
     })
   }
 
