@@ -112,6 +112,10 @@ const Article = styled<React.FC>(Paper.article)`
     min-height: 270px;
   }
 
+  & .center {
+    margin: 1em auto;
+  }
+
   & .float-right {
     ${tw`float-right ml-2 sm:float-none sm:mx-auto`}
   }
