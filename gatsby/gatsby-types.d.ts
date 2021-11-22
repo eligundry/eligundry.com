@@ -7783,6 +7783,11 @@ type StaticImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+
 type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -7811,11 +7816,6 @@ type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: R
       Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
-
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
 type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7847,17 +7847,6 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
     )> }
   )> };
 
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<(
-          Pick<MdxFields, 'slug' | 'date'>
-          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
-
 type TalkBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7873,6 +7862,17 @@ type TalkBySlugQuery = { readonly mdx: Maybe<(
       & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
     )> }
   )> };
+
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<(
+          Pick<MdxFields, 'slug' | 'date'>
+          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
