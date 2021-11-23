@@ -74,6 +74,8 @@ const BandcampAlbumEmbed: React.FC<BandcampProps & LoadingProps> = ({
 const AlbumEmbed: React.FC<BandcampProps | SpotifyProps> = (props) => {
   const [loading, setLoading] = useState(true)
 
+  // Unfortunately, if I add the skeleton to the Bandcamp embed, the album art
+  // does not load.
   return (
     <>
       {'spotifyID' in props && (

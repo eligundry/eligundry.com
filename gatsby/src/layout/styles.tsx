@@ -7,6 +7,10 @@ import './prism-material.scss'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export const GlobalStyles = createGlobalStyle`
+  :root {
+    color-scheme: dark light;
+  }
+
   body {
     ${tw`
       bg-siteBackground
