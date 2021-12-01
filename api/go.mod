@@ -8,7 +8,7 @@ require (
 	github.com/gocarina/gocsv v0.0.0-20210408192840-02d7211d929d
 	github.com/golang-collections/collections v0.0.0-20130729185459-604e922904d3
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/jinzhu/now v1.1.2
+	github.com/jinzhu/now v1.1.3
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
