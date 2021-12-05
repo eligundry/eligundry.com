@@ -99,12 +99,25 @@ const resume: Resume = {
       summary: '',
       highlights: [
         `
-        Completely rebuilt fulfillment platform using <a href="https://reactjs.org/">React</a> 
-        & <a href="https://golang.org/">Go</a>, increasing network efficiency by 5%.
+        Tech lead for moving <a href="https://www.zipjob.com">ZipJob</a>
+        to a statically compiled <a href="https://www.gatsbyjs.com/">Gatsby</a> 
+        site backed by <a href="https://www.contentful.com/">Contentful CMS</a>, increasing the 
+        <a href="https://developers.google.com/web/tools/lighthouse">Lighthouse</a> 
+        score from 30 to 85 & enabling our marketing team to control all copy on the website.
         `,
         `
-        Architected dynamic payment inititiaves that decreased cost of order 
-        fulfillment by $10 and time to delivery by a day.
+        Frontend tech lead for a Customer Portal that raised 
+        <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a> 
+        25 points & average customer revenue by $8.
+        `,
+        `
+        Frontend tech lead for our rewritten Expert Hub, decreasing our average 
+        time to order completion by 36 hours.
+        `,
+        `
+        Tech lead for a dynamic payment & order offering system for contractors 
+        which decreased our average cost to fulfill an order by $10 & increased 
+        our average payout to contractors by $7.
         `,
         `
         Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a> 
