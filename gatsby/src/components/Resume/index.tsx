@@ -37,7 +37,7 @@ const ResumeArticle = styled(PaperArticle)<{ parseOptimized?: boolean }>`
   }
 
   & ul {
-    ${tw`m-0 pl-0 sm:list-inside print:list-outside`}
+    ${tw`m-0 pl-0 list-inside print:list-outside`}
 
     & ul, ol {
       ${tw`pl-8`}
@@ -60,6 +60,10 @@ const ResumeArticle = styled(PaperArticle)<{ parseOptimized?: boolean }>`
         ${tw`font-parseSafeMono`}
       }
     `}
+
+  & .hackathons {
+    columns: 2;
+  }
 `
 
 const Resume: React.FC = () => {
@@ -68,13 +72,10 @@ const Resume: React.FC = () => {
   useEffect(
     () =>
       console.log(`
-You can control how this resume prints with the following query parameters on
-the page.
+You can control how this resume prints with the following query parameters on the page.
 
-* parse-optimized: This will set all the fonts and imagery to be super basic so
-  that ATS parsers don't get confused by embedded fonts.
-* company / contact-name: Set this to the name of a company or recruiter so that you can
-  track click through rates from emailed resumes.
+* parse-optimized: This will set all the fonts and imagery to be super basic so that ATS parsers don't get confused by embedded fonts.
+* company / contact-name: Set this to the name of a company or recruiter so that you can track click through rates from emailed resumes.
 * full: don't omit any experiences when printing
   `),
     []
