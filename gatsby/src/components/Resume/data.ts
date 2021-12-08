@@ -112,7 +112,7 @@ const resume: Resume = {
         `,
         `
         Frontend tech lead for our rewritten Expert Hub, decreasing our average 
-        time to order completion by 36 hours.
+        time to order completion by 12 hours.
         `,
         `
         Tech lead for a dynamic payment & order offering system for contractors 
