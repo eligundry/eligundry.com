@@ -17,9 +17,11 @@ const Paper = styled.div<PaperProps>`
     rounded-lg
     bg-paper
     dark:bg-paperDark
+    shadow
   `}
 
-  ${(props) => props.transparent && tw`bg-transparent dark:bg-transparent`}
+  ${(props) =>
+    props.transparent && tw`bg-transparent dark:bg-transparent shadow-none`}
 
   ${(props) => props.noPadding && tw`p-0`}
 
