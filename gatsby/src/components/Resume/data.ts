@@ -94,8 +94,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'NY',
       },
-      startDate: new Date('2018-01-03'),
-      endDate: null,
+      startDate: new Date('2018-01-03T05:00'),
+      endDate: new Date('2021-12-17T05:00'),
       summary: '',
       highlights: [
         `
@@ -112,7 +112,7 @@ const resume: Resume = {
         `,
         `
         Frontend tech lead for our rewritten Expert Hub, decreasing our average 
-        time to order completion by 36 hours.
+        time to order completion by 12 hours.
         `,
         `
         Tech lead for a dynamic payment & order offering system for contractors 
@@ -134,8 +134,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'NY',
       },
-      startDate: new Date('2015-04-01'),
-      endDate: new Date('2017-10-26'),
+      startDate: new Date('2015-04-01T05:00'),
+      endDate: new Date('2017-10-26T05:00'),
       summary: '',
       highlights: [
         `
@@ -168,8 +168,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2014-11-01'),
-      endDate: new Date('2015-04-01'),
+      startDate: new Date('2014-11-01T05:00'),
+      endDate: new Date('2015-04-01T05:00'),
       summary: `
         Architected <a href="https://landscape.itreetools.org">iTree Landscape</a>
         using <a href="https://www.djangoproject.com">Django</a> and
@@ -188,8 +188,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2013-10-01'),
-      endDate: new Date('2014-12-01'),
+      startDate: new Date('2013-10-01T05:00'),
+      endDate: new Date('2014-12-01T05:00'),
       summary: `
         Repaired computers in a retail environment and provided support for
         customers' networks using <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>
@@ -207,8 +207,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2013-05-01'),
-      endDate: new Date('2013-08-01'),
+      startDate: new Date('2013-05-01T05:00'),
+      endDate: new Date('2013-08-01T05:00'),
       summary: `
         Helped provide help desk support for
         <a href="http://www.kent.edu/CAS/">Kent State's College of Arts and Sciences</a>.
@@ -225,8 +225,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2012-08-01'),
-      endDate: new Date('2013-01-01'),
+      startDate: new Date('2012-08-01T05:00'),
+      endDate: new Date('2013-01-01T05:00'),
       summary: '',
       highlights: [
         `
@@ -251,8 +251,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2011-05-01'),
-      endDate: new Date('2012-06-01'),
+      startDate: new Date('2011-05-01T05:00'),
+      endDate: new Date('2012-06-01T05:00'),
       summary: '',
       highlights: [
         `
@@ -278,8 +278,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2010-09-01'),
-      endDate: new Date('2011-05-01'),
+      startDate: new Date('2010-09-01T05:00'),
+      endDate: new Date('2011-05-01T05:00'),
       summary: '',
       highlights: [
         `
@@ -303,8 +303,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2010-03-01'),
-      endDate: new Date('2010-09-01'),
+      startDate: new Date('2010-03-01T05:00'),
+      endDate: new Date('2010-09-01T05:00'),
       summary: `
       Provided IT support for customers in their homes and setup various internet cafés around Ohio.
       `,
@@ -320,8 +320,8 @@ const resume: Resume = {
         countryCode: 'US',
         region: 'OH',
       },
-      startDate: new Date('2009-06-01'),
-      endDate: new Date('2010-03-01'),
+      startDate: new Date('2009-06-01T05:00'),
+      endDate: new Date('2010-03-01T05:00'),
       summary:
         'Sold consumer electronics and cell phones in a retail environment.',
       highlights: [],
@@ -333,8 +333,8 @@ const resume: Resume = {
       institution: 'Kent State University',
       area: 'Computer Science',
       studyType: 'Bachelor of Science',
-      startDate: new Date('2009-08-01'),
-      endDate: new Date('2015-05-01'),
+      startDate: new Date('2009-08-01T05:00'),
+      endDate: new Date('2015-05-01T05:00'),
       completed: false,
       website: 'https://www.kent.edu/',
       location: {
@@ -351,8 +351,8 @@ const resume: Resume = {
     {
       institution: 'Wayne County Schools Career Center',
       area: 'Interactive Media Cohort',
-      startDate: new Date('2007-08-01'),
-      endDate: new Date('2009-05-01'),
+      startDate: new Date('2007-08-01T05:00'),
+      endDate: new Date('2009-05-01T05:00'),
       completed: true,
       gpa: 3.3,
       website: 'http://www.wayne-jvs.k12.oh.us/',
