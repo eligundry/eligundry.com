@@ -6,3 +6,4 @@ data/*
 .env
 api/vendor
 !api/migrations/*.sql
+api/bin
