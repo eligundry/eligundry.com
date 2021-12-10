@@ -99,8 +99,7 @@ const Article = styled<React.FC>(Paper.article)`
 
   & figure {
     figcaption {
-      font-style: italic;
-      text-align: center;
+      ${tw`italic text-center py-4 font-serif`}
     }
   }
 
