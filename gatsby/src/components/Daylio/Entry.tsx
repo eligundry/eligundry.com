@@ -21,6 +21,10 @@ interface Props extends DaylioEntry {
 const EntryWrapper = styled.div<Partial<Props>>`
   ${tw`flex flex-row`}
 
+  & a {
+    scroll-margin-top: -200px;
+  }
+
   ${(props) => props.variant === DaylioVariants.home && tw`flex-row-reverse`}
 
   & .emoji-column {
