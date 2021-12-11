@@ -1,4 +1,4 @@
-name: Build & Deploy To Lambda
+name: Docker Build & Push
 on:
   push:
     branches:
