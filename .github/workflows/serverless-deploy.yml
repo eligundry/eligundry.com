@@ -6,6 +6,9 @@ on:
       - fix-serverless-deploy
     paths:
       - 'api/**'
+      - '.github/**'
+  workflow_dispatch:
+    inputs: {}
 
 jobs:
   api:
