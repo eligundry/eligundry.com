@@ -1,6 +1,6 @@
 # [eligundry.com](https://eligundry.com)
 
-![Github Actions Status](https://github.com/eligundry/eligundry.com/workflows/.github/workflows/docker-build.yml/badge.svg)
+![Github Actions Status](https://github.com/eligundry/eligundry.com/workflows/.github/workflows/serverless-deploy.yml/badge.svg)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/24c00fcd-034e-4d8d-8fa3-73cf8343966a/deploy-status)](https://app.netlify.com/sites/eligundry/deploys)
 
 My personal website.
@@ -10,15 +10,19 @@ My personal website.
 * [Gatsby.js](https://www.gatsbyjs.org/)
 * [React](https://reactjs.org/)
 
-## Development
+## Frontend Development
 
-1. `docker-compose up`
-2. Open a new terminal window
-3. `cd gatsby`
-4. `npm ci`
-5. `npm start`
+1. `cd gatsby`
+2. `npm ci`
+3. `npm start`
+
+## Backend Development
+
+1. `cd api`
+2. `make static-build`
+3 `./bin/api`
 
 ## Deployment
 
-All pushes to master will trigger a Docker build through Github Actions and then a push to production through
-SaltStack's REST API.
+All pushes to main will trigger build on Netlify. Pushes to main with changes in `api/` will cause Github Actions to
+trigger a deploy to AWS Lambda.
