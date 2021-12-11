@@ -1,4 +1,4 @@
-name: Docker Build & Push
+name: Build & Deploy To Lambda
 on:
   push:
     branches:
@@ -28,6 +28,7 @@ jobs:
           make static-build-api 
 
       - name: Deploy to AWS Lambda
+        working-directory: api
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
