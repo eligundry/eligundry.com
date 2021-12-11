@@ -1,5 +1,7 @@
 GO=$(shell which go)
-GO_BUILD=$(GO) build --tags "json1" -installsuffix 'static'
+GOOS ?= linux
+GOARCH ?= amd64
+GO_BUILD=GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build --tags "json1" -installsuffix 'static'
 OUTPUT_DIR ?= ./bin
 
 static-build-api:

@@ -7,3 +7,5 @@ data/*
 api/vendor
 !api/migrations/*.sql
 api/bin
+api/.serverless
+api/node_modules
