@@ -21,6 +21,16 @@ jobs:
         with:
           go-version: 1.17
 
+      - name: actions/cache@v2 (Go Modules)
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: api
@@ -30,8 +40,9 @@ jobs:
         env:
           CGO_ENABLED: 1
         run: |
+          which gcc
           echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
-          make static-build-api 
+          CGO_ENABLED=1 make static-build-api 
 
       - name: Deploy to AWS Lambda
         working-directory: api
