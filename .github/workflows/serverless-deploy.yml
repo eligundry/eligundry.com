@@ -1,9 +1,9 @@
-name: Docker Build & Push
+name: Serverless Deploy
 on:
   push:
     branches:
       - master
-      - api-gateway-4-api
+      - fix-serverless-deploy
     paths:
       - 'api/**'
 
