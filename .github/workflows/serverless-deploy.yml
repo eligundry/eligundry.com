@@ -7,6 +7,7 @@ on:
     paths:
       - 'api/**'
       - '.github/**'
+
   workflow_dispatch:
     inputs: {}
 
@@ -26,6 +27,8 @@ jobs:
 
       - name: Build the API and setup for serverless deploy
         working-directory: api
+        env:
+          CGO_ENABLED: 1
         run: |
           echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
           make static-build-api 
