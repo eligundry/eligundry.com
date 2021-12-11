@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - api-gateway-4-api
     paths:
       - 'api/**'
 
@@ -11,33 +12,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: azure/docker-login@v1
+
+      - uses: actions/setup-go@v2
         with:
-          username: eligundry
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - uses: satackey/action-docker-layer-caching@v0.0.8
-        continue-on-error: true
-      - name: Docker Build
-        run: docker build -t eligundry/api.eligundry.com -f Dockerfile.api .
-      - name: Docker Push
-        run: docker push eligundry/api.eligundry.com
+          go-version: 1.17
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs:
-      - api
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v1
+      - uses: bahmutov/npm-install@v1
         with:
-          python-version: 3.8
+          working-directory: api
 
-      - name: Install dependencies
-        run: pip install requests
+      - name: Build the API and setup for serverless deploy
+        working-directory: api
+        run: |
+          echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
+          make static-build-api 
 
-      - name: Deploy to production
+      - name: Deploy to AWS Lambda
+        working-directory: api
         env:
-          SALT_PASSWORD: ${{ secrets.SALT_PASSWORD }}
-        run: python scripts/deploy.py
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AUTH_USER: ${{ secrets.AUTH_USER }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: serverless deploy

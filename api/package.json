@@ -1,0 +1,14 @@
+{
+  "name": "@eligundry/api.eligundry.com",
+  "version": "1.0.0",
+  "description": "The serverless setup for api.eligundry.com",
+  "main": "''",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eli Gundry",
+  "license": "MIT",
+  "dependencies": {
+    "serverless": "^2.68.0"
+  }
+}
