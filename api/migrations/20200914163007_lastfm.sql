@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS lastfm_tracks (
 );
 
 CREATE TABLE IF NOT EXISTS lastfm_scrobbles (
-    time DATETIME NOT NULL,
+    time TIMESTAMP NOT NULL,
     track_id TEXT NOT NULL,
     PRIMARY KEY (time, track_id),
     FOREIGN KEY (track_id) REFERENCES lastfm_tracks (id)
