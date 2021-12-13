@@ -92,7 +92,8 @@
     "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
     "format:js": "prettier '**/*.{js,jsx,ts,tsx}' --write",
     "format:styles": "prettier '**/*.{css,scss}' --write",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "generate-tracking-link": "ts-node scripts/generate-tracking-link.ts"
   },
   "prettier": {
     "trailingComma": "es5",
