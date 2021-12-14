@@ -7,11 +7,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
 	"github.com/gocarina/gocsv"
 	"github.com/pkg/errors"
-
-	"github.com/eligundry/eligundry.com/api/common"
+	"golang.org/x/sync/errgroup"
 )
 
 type Data struct {
@@ -160,27 +160,40 @@ func (d *Data) ProcessDaylioExport(export multipart.File) ([]DaylioExport, error
 		return entries, errors.Wrap(err, "preparing daylio_entry_activities")
 	}
 
+	entriesErrGroup, ctx := errgroup.WithContext(d.Ctx)
+
 	for i := range entries {
+		entry := entries[i]
 		entryValues, err := entries[i].Value()
 
 		if err != nil {
 			return entries, err
 		}
 
-		if _, err = entriesStmt.ExecContext(d.Ctx, entryValues...); err != nil {
-			return entries, errors.Wrap(err, "inserting daylio_entries")
-		}
-
-		for ai := range entries[i].Activities {
-			_, err := entryActivitiesStmt.Exec(
-				&entries[i].DateTime,
-				&entries[i].Activities[ai],
-			)
-
-			if err != nil {
-				return entries, errors.Wrap(err, "inserting daylio_entry_activities")
+		entriesErrGroup.Go(func() error {
+			if _, err = entriesStmt.ExecContext(ctx, entryValues...); err != nil {
+				return errors.Wrap(err, "inserting daylio_entries")
 			}
-		}
+
+			for ai := range entry.Activities {
+				_, err := entryActivitiesStmt.ExecContext(
+					d.Ctx,
+					&entry.DateTime,
+					&entry.Activities[ai],
+				)
+
+				if err != nil {
+					return errors.Wrap(err, "inserting daylio_entry_activities")
+				}
+			}
+
+			return nil
+		})
+
+	}
+
+	if err := entriesErrGroup.Wait(); err != nil {
+		return entries, errors.Wrap(err, "entriesErrGroup")
 	}
 
 	// Insert all the activities so that I can tweak visibility
