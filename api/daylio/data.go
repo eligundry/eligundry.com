@@ -1,17 +1,28 @@
 package daylio
 
 import (
+	"context"
 	"fmt"
 	"mime/multipart"
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gocarina/gocsv"
-	"github.com/golang-collections/collections/set"
 	"github.com/pkg/errors"
 
 	"github.com/eligundry/eligundry.com/api/common"
 )
+
+type Data struct {
+	Ctx context.Context
+}
+
+func NewDataFromGinContext(c *gin.Context) *Data {
+	return &Data{
+		Ctx: c.Request.Context(),
+	}
+}
 
 const jsonQuery = `
 SELECT
@@ -34,12 +45,12 @@ GROUP BY daylio_entries.time
 ORDER BY daylio_entries.time DESC
 `
 
-func GetDaylioEntries() ([]DaylioEntry, error) {
+func (d *Data) GetDaylioEntries() ([]DaylioEntry, error) {
 	var entries []DaylioEntry
 	db := common.GetDB()
 	whereClause := "AND 1 = 1"
 
-	err := db.Select(&entries, fmt.Sprintf(jsonQuery, whereClause))
+	err := db.SelectContext(d.Ctx, &entries, fmt.Sprintf(jsonQuery, whereClause))
 
 	if err != nil {
 		return entries, err
@@ -52,7 +63,7 @@ func GetDaylioEntries() ([]DaylioEntry, error) {
 	return entries, nil
 }
 
-func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
+func (d *Data) GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
 	db := common.GetDB()
 	var entries []DaylioEntry
 
@@ -66,7 +77,7 @@ func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
         )
     `
 
-	err := db.Select(&entries, fmt.Sprintf(jsonQuery, whereClause), t)
+	err := db.SelectContext(d.Ctx, &entries, fmt.Sprintf(jsonQuery, whereClause), t)
 
 	if err != nil {
 		return entries, err
@@ -79,7 +90,7 @@ func GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
 	return entries, nil
 }
 
-func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
+func (d *Data) ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 	var entries []DaylioExport
 	var err error
 
@@ -87,7 +98,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 		return entries, err
 	}
 
-	activitiesSet := set.New()
+	activitiesSet := map[string]bool{}
 
 	for i := range entries {
 		// time is the primary key
@@ -105,7 +116,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 
 		for ai := range entries[i].Activities {
 			entries[i].Activities[ai] = strings.TrimSpace(entries[i].Activities[ai])
-			activitiesSet.Insert(entries[i].Activities[ai])
+			activitiesSet[entries[i].Activities[ai]] = true
 		}
 
 		entries[i].Notes = strings.FieldsFunc(entries[i].Note, noteSplitFn)
@@ -125,7 +136,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 
 	defer tx.Rollback()
 
-	entriesStmt, err := tx.Prepare(`
+	entriesStmt, err := tx.PrepareContext(d.Ctx, `
         INSERT INTO daylio_entries (time, mood, notes)
         VALUES (?, ?, ?)
         ON CONFLICT(time) 
@@ -141,14 +152,14 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 
 	defer entriesStmt.Close()
 
-	entryActivitiesStmt, err := tx.Prepare(`
+	entryActivitiesStmt, err := tx.PrepareContext(d.Ctx, `
         INSERT INTO daylio_entry_activities (time, activity)
         VALUES (?, ?)
         ON CONFLICT DO NOTHING
     `)
 
 	if err != nil {
-		return entries, err
+		return entries, errors.Wrap(err, "preparing daylio_entry_activities")
 	}
 
 	for i := range entries {
@@ -158,14 +169,15 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 			return entries, err
 		}
 
-		_, err = entriesStmt.Exec(entryValues...)
+		_, err = entriesStmt.ExecContext(d.Ctx, entryValues...)
 
 		if err != nil {
 			return entries, errors.Wrap(err, "inserting daylio_entries")
 		}
 
 		for ai := range entries[i].Activities {
-			_, err := entryActivitiesStmt.Exec(
+			_, err := entryActivitiesStmt.ExecContext(
+				d.Ctx,
 				&entries[i].DateTime,
 				&entries[i].Activities[ai],
 			)
@@ -177,7 +189,7 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 	}
 
 	// Insert all the activities so that I can tweak visibility
-	activitiesStmt, err := tx.Prepare(`
+	activitiesStmt, err := tx.PrepareContext(d.Ctx, `
         INSERT INTO daylio_activities (activity)
         VALUES (?)
         ON CONFLICT DO NOTHING
@@ -189,9 +201,11 @@ func ProcessDaylioExport(export multipart.File) ([]DaylioExport, error) {
 
 	defer activitiesStmt.Close()
 
-	activitiesSet.Do(func(activity interface{}) {
-		activitiesStmt.Exec(activity)
-	})
+	for activity := range activitiesSet {
+		if _, err := activitiesStmt.ExecContext(d.Ctx, activity); err != nil {
+			return entries, errors.Wrap(err, "inserting daylio_activities")
+		}
+	}
 
 	if err := tx.Commit(); err != nil {
 		return entries, err

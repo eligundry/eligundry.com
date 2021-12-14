@@ -20,7 +20,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 }
 
 func GetAllEntries(c *gin.Context) {
-	entries, err := GetDaylioEntries()
+	d := NewDataFromGinContext(c)
+	entries, err := d.GetDaylioEntries()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -40,7 +41,8 @@ func GetClosestEntry(c *gin.Context) {
 		return
 	}
 
-	entry, err := GetDaylioEntriesForTime(targetTime)
+	d := NewDataFromGinContext(c)
+	entry, err := d.GetDaylioEntriesForTime(targetTime)
 
 	if err != nil && err != sql.ErrNoRows {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -71,7 +73,8 @@ func SubmitDaylioExport(c *gin.Context) {
 		return
 	}
 
-	data, err := ProcessDaylioExport(file)
+	d := NewDataFromGinContext(c)
+	data, err := d.ProcessDaylioExport(file)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
