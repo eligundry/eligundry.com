@@ -54,4 +54,4 @@ jobs:
           NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
         run: |
           echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
-          serverless deploy
+          ./node_modules/.bin/serverless deploy
