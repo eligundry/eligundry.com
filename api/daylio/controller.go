@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/eligundry/eligundry.com/api/auth"
-	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 )
@@ -20,7 +19,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 }
 
 func GetAllEntries(c *gin.Context) {
-	entries, err := GetDaylioEntries()
+	d := NewDataWithGinContext(c)
+	entries, err := d.GetDaylioEntries()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -40,7 +40,8 @@ func GetClosestEntry(c *gin.Context) {
 		return
 	}
 
-	entry, err := GetDaylioEntriesForTime(targetTime)
+	d := NewDataWithGinContext(c)
+	entry, err := d.GetDaylioEntriesForTime(targetTime)
 
 	if err != nil && err != sql.ErrNoRows {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -71,7 +72,8 @@ func SubmitDaylioExport(c *gin.Context) {
 		return
 	}
 
-	data, err := ProcessDaylioExport(file)
+	d := NewDataWithGinContext(c)
+	data, err := d.ProcessDaylioExport(file)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -81,12 +83,12 @@ func SubmitDaylioExport(c *gin.Context) {
 	}
 
 	// Trigger a rebuild of the static site when I submit a new feelings CSV
-	if err := common.TriggerNetlifyDeployOfSite("Triggered by Daylio upload to API"); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
+	// if err := common.TriggerNetlifyDeployOfSite("Triggered by Daylio upload to API"); err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{
+	// 		"error": err.Error(),
+	// 	})
+	// 	return
+	// }
 
 	c.JSON(http.StatusCreated, data)
 }

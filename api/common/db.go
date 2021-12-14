@@ -1,10 +1,11 @@
 package common
 
 import (
+	"log"
 	"os"
 
 	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 var _db *sqlx.DB
@@ -12,14 +13,16 @@ var _db *sqlx.DB
 const defaultDatabasePath = "/opt/data/api.db"
 
 func GetDB() *sqlx.DB {
-	databasePath := os.Getenv("DATABASE_PATH")
+	dbConnString := os.Getenv("DB")
 
-	if len(databasePath) == 0 {
-		databasePath = defaultDatabasePath
+	if len(dbConnString) == 0 {
+		log.Panic("DB connection string must be defined as an environment variable")
 	}
 
 	if _db == nil {
-		_db = sqlx.MustConnect("sqlite3", databasePath)
+		log.Printf("connecting to the database")
+		_db = sqlx.MustConnect("postgres", dbConnString)
+		log.Printf("successfully connected to the database")
 	}
 
 	return _db
