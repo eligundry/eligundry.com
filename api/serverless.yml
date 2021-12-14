@@ -11,6 +11,10 @@ provider:
   region: us-east-2
   memorySize: 128
   timeout: 30
+  ecr:
+    images:
+      api.eligundry.com:
+        path: ./
   iamManagedPolicies:
     - arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess
   vpc:
@@ -21,23 +25,16 @@ provider:
       - subnet-026cddc40fb470bbc
       - subnet-0e4ce11da300407ad
 
-layers:
-  sqlite:
-    package:
-      artifact: sqliteLayer.zip
-
 functions:
   api:
-    handler: bin/api
     name: eliGundryApi
+    image: api.eligundry.com
     description: My personal API
     environment:
       AUTH_USER: ${env:AUTH_USER}
       AUTH_PASSWORD: ${env:AUTH_PASSWORD}
       NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
       DATABASE_PATH: "/mnt/database/api.db"
-    layers:
-      - { Ref: SqliteLambdaLayer }
     events:
       - http:
           path: '/{proxy+}'
