@@ -52,4 +52,6 @@ jobs:
           AUTH_USER: ${{ secrets.AUTH_USER }}
           AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
           NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
-        run: serverless deploy
+        run: |
+          echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
+          serverless deploy
