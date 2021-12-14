@@ -15,7 +15,6 @@ provider:
     images:
       api-eligundry-com:
         path: ./
-        name: api-eligundry-com
   iamManagedPolicies:
     - arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess
   vpc:
@@ -29,7 +28,8 @@ provider:
 functions:
   api:
     name: eliGundryApi
-    image: api-eligundry-com
+    image: 
+      name: api-eligundry-com
     description: My personal API
     environment:
       AUTH_USER: ${env:AUTH_USER}
