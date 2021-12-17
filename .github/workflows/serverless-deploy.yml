@@ -1,0 +1,38 @@
+name: Serverless Deploy
+on:
+  push:
+    branches:
+      - master
+      - fix-serverless-deploy
+    paths:
+      - 'api/**'
+
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: api
+
+      - name: Build the API and setup for serverless deploy
+        working-directory: api
+        run: |
+          echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
+          make static-build-api 
+
+      - name: Deploy to AWS Lambda
+        working-directory: api
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AUTH_USER: ${{ secrets.AUTH_USER }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: serverless deploy
