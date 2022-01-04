@@ -122,6 +122,10 @@ const Article = styled<React.FC>(Paper.article)`
   & .float-left {
     ${tw`float-left mr-2 sm:float-none sm:mx-auto`}
   }
+
+  & h1 + h2 {
+    ${tw`mt-4`}
+  }
 `
 
 export default Post
