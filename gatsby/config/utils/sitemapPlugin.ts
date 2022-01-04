@@ -38,6 +38,12 @@ const plugin = {
             }
           }
         }
+        staticHTMLFiles: allFile(filter: {extension: {eq: "html"}}) {
+          nodes {
+            relativePath
+            modifiedTime
+          }
+        }
         latestFeelingEntry: feelings {
           time
         }
@@ -67,7 +73,7 @@ const plugin = {
         ])
       })
 
-      return query.allSitePage.nodes
+      const sitemapEntries = query.allSitePage.nodes
         .filter(({ path }) => path === '/' || !path.endsWith('/'))
         .map(({ path, fields }) => {
           const latestPageCommitDate = fields?.latestCommit?.date
@@ -119,6 +125,15 @@ const plugin = {
             lastmodISO: latestPageCommitDate?.toISOString(),
           }
         })
+
+      sitemapEntries.push(
+        ...query.staticHTMLFiles.nodes.map((node) => ({
+          path: `/${node.relativePath}`,
+          lastmodISO: new Date(node.modifiedTime).toISOString(),
+        }))
+      )
+
+      return sitemapEntries
     },
     serialize: ({ path: url, lastmodISO }: SitemapSerialize) => ({
       url,
@@ -155,6 +170,12 @@ interface SitemapQuery {
           date: string | null
         }
       }
+    }[]
+  }
+  staticHTMLFiles: {
+    nodes: {
+      relativePath: string
+      modifiedTime: string
     }[]
   }
   latestFeelingEntry: {

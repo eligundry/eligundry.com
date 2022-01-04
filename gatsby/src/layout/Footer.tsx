@@ -1,7 +1,9 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
+import { Link } from 'gatsby'
 
 import UserLinks from '../components/UserLinks/UserLinks'
+import EmojiText from '../components/Shared/EmojiText'
 
 const FooterContainer = styled.footer`
   ${tw`bg-white dark:bg-typographyDark shadow print:hidden`}
@@ -53,14 +55,34 @@ const Footer: React.FC = () => (
       <section className="about">
         <h3>About</h3>
         <p>
-          <a href="https://hipsum.co/">
-            I'm baby crucifix bespoke tote bag, mumblecore flannel chambray
-            typewriter before they sold out
-          </a>
-          . Tbh butcher iceland art party pitchfork humblebrag wayfarers iPhone
-          air plant. Taxidermy iceland +1 dreamcatcher, tacos live-edge brunch
-          raclette fam gastropub pok pok bushwick. Scenester fanny pack retro
-          single-origin coffee seitan franzen.
+          Eli Gundry is a full stack web developer that loves JavaScript, devops
+          and web standards. When he isn't coding, he's{' '}
+          <Link to="/blog#cooking">
+            <EmojiText emoji="👨‍🍳" label="chef cause I'm cooking">
+              cooking up something mean in the kitchen
+            </EmojiText>
+          </Link>{' '}
+          ,{' '}
+          <EmojiText
+            emoji="🎾"
+            label="tennis ball because that's what I'm playing"
+          >
+            playing tennis
+          </EmojiText>{' '}
+          or{' '}
+          <EmojiText emoji="🐈🐈‍⬛" label="it's my cats!">
+            annoying his cats
+          </EmojiText>
+          . He is also a{' '}
+          <a href="/web0.html">
+            <EmojiText
+              emoji="✳️"
+              label="green asterisk emoji for that pure html energy"
+            >
+              web0 evangelist
+            </EmojiText>
+          </a>{' '}
+          and thinks everyone can benefit from writing some HTML.
         </p>
       </section>
       <section className="social">
