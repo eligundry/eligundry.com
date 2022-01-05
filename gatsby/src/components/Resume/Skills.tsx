@@ -4,7 +4,7 @@ import tw, { styled } from 'twin.macro'
 import { Skills } from './data'
 
 interface SkillsItemProps {
-  prefix: string
+  prefix: string | React.ReactNode
   keywords: { [keyword: string]: string }
 }
 
@@ -48,7 +48,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
   return (
     <section>
       <header>
-        <h2>Skills</h2>
+        <h2>Skills & Technologies</h2>
       </header>
       <SkillsList>
         {languages?.keywords && (
@@ -56,7 +56,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
         )}
         {frameworks?.keywords && (
           <SkillsItem
-            prefix="Built web applications using"
+            prefix="Built complex web applications using"
             keywords={frameworks.keywords}
           />
         )}
@@ -65,7 +65,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
         )}
         {loveHate?.keywords && (
           <SkillsItem
-            prefix="Has a love hate relationship (that I will happily explain) with"
+            prefix="Has a love-hate relationship (that I will happily explain) with"
             keywords={loveHate.keywords}
           />
         )}
