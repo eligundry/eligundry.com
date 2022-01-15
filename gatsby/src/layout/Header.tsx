@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import tw, { styled } from 'twin.macro'
 import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
   return (
     <HeaderElm transparent={y === 0}>
       <ProgressBar
-        max={(document?.body?.clientHeight ?? 0) - height}
+        max={Math.max(document?.body?.clientHeight ?? 0, height + 1) - height}
         value={y}
         aria-label="your scroll progress through the page"
       />

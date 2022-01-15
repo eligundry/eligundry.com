@@ -17,6 +17,10 @@ interface Props {
 const Article = styled.article`
   ${tw`mb-8`}
 
+  &:last-child {
+    ${tw`mb-0`}
+  }
+
   & h1 {
     ${tw`font-extrabold text-3xl leading-none`}
   }
@@ -63,7 +67,7 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix, itemType }) => {
     )
 
   return (
-    <main>
+    <>
       {tags.size > 0 && (
         <TagPicker
           tags={tags}
@@ -98,7 +102,7 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix, itemType }) => {
           )}
         </Article>
       ))}
-    </main>
+    </>
   )
 }
 
