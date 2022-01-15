@@ -98,8 +98,16 @@ const Article = styled<React.FC>(Paper.article)`
   }
 
   & figure {
+    & > p {
+      ${tw`mb-0`}
+    }
+
     figcaption {
       ${tw`italic text-center py-4 font-serif`}
+    }
+
+    & + p {
+      ${tw`mt-0`}
     }
   }
 

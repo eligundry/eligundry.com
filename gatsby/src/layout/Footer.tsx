@@ -61,7 +61,7 @@ const Footer: React.FC = () => (
             <EmojiText emoji="👨‍🍳" label="chef cause I'm cooking">
               cooking up something mean in the kitchen
             </EmojiText>
-          </Link>{' '}
+          </Link>
           ,{' '}
           <EmojiText
             emoji="🎾"

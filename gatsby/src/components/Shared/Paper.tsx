@@ -19,6 +19,8 @@ const Paper = styled.div<PaperProps>`
     dark:bg-paperDark
     shadow
     print:shadow-none
+    mb-4
+    print:mb-0
   `}
 
   ${(props) =>

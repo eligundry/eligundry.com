@@ -18,7 +18,7 @@ module.exports = {
       white: '#fff',
       black: '#000',
       liteGray: '#E5E7EB',
-      paper: 'rgba(244, 244, 245, 0.9)',
+      paper: 'rgba(244, 244, 245, 0.95)',
       paperDark: 'rgba(0, 0, 0, 0.75)',
     },
     screens: {
