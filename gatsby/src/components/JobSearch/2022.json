@@ -1,0 +1,327 @@
+[
+  {
+    "Company": "Stripe",
+    "Date": "2021-12-06",
+    "Applied?": "Link ✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": ""
+  },
+  {
+    "Company": "Netlify",
+    "Date": "2021-12-08",
+    "Applied?": "Link ✅\nCover Letter",
+    "Callback?": "❌",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Care/Of",
+    "Date": "2021-12-08",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Saturn",
+    "Date": "2021-12-10",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Wonolo",
+    "Date": "2021-12-13",
+    "Applied?": "✅",
+    "Callback?": "❌",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Rokt",
+    "Date": "2021-12-14",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "Canidate Labs",
+    "Date": "2021-12-14",
+    "Applied?": "✅",
+    "Callback?": "🙅‍♂️",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "Gusto",
+    "Date": "2021-12-14",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": ""
+  },
+  {
+    "Company": "Collective",
+    "Date": "2021-12-14",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": ""
+  },
+  {
+    "Company": "Betterment",
+    "Date": "2021-12-14",
+    "Applied?": "❌",
+    "Callback?": "❌",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Blameless",
+    "Date": "2021-12-15",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "Guide",
+    "Date": "2021-12-15",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "Shopify",
+    "Date": "2021-12-17",
+    "Applied?": "✅",
+    "Callback?": "❌",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Grow Therapy",
+    "Date": "2021-12-17",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "Github",
+    "Date": "2021-12-20",
+    "Applied?": "✅",
+    "Callback?": "❌",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Chartmetric",
+    "Date": "2021-12-20",
+    "Applied?": "❌",
+    "Callback?": "❌",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Justworks",
+    "Date": "2021-12-20",
+    "Applied?": "✅",
+    "Callback?": "❌",
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Hoodie Analytics",
+    "Date": "2021-12-22",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": "✅"
+  },
+  {
+    "Company": "Arcadia",
+    "Date": "2021-12-27",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "Sigma",
+    "Date": "2021-12-27",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "AllStripes",
+    "Date": "2021-12-27",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅✅",
+    "Offer?": ""
+  },
+  {
+    "Company": "Slang",
+    "Date": "2021-12-27",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": ""
+  },
+  {
+    "Company": "Chord",
+    "Date": "2021-12-28",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": ""
+  },
+  {
+    "Company": "Abnormal Security",
+    "Date": "2021-12-28",
+    "Applied?": "✅",
+    "Callback?": "✅✅",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "edX\n(Acquired by 2U)",
+    "Date": "2021-12-22",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "❌",
+    "Offer?": "❌"
+  },
+  {
+    "Company": "Rho",
+    "Date": "2021-12-28",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": "✅"
+  },
+  {
+    "Company": "Google",
+    "Date": "2022-01-04",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "Contentful",
+    "Date": "2022-01-05",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "TaskRabbit",
+    "Date": "2022-01-05",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "Affirm",
+    "Date": "2022-01-06",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "Universal Tennis",
+    "Contact(s)": "Chole Tull",
+    "Date": "2022-01-06",
+    "Applied?": "🙅‍♂️",
+    "Callback?": "🙅‍♂️",
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
+  },
+  {
+    "Company": "Squarespace",
+    "Date": "2022-01-06",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "NuRX",
+    "Date": "2022-01-07",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "Amplitude",
+    "Date": "2022-01-08",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "Lido",
+    "Date": "2022-01-10",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "",
+    "Offer?": ""
+  },
+  {
+    "Company": "Seatgeek",
+    "Date": "2022-01-10",
+    "Applied?": "✅",
+    "Callback?": "✅",
+    "Code Test?": "✅",
+    "On Site?": "✅",
+    "Offer?": ""
+  }
+]

@@ -26,3 +26,19 @@ declare namespace CSS {
   // This is not defined in Firefox, Safari and IE
   let paintWorklet: Houdini | undefined
 }
+
+declare module './src/components/JobSearch/*.json' {
+  type StatusEmoji = string | "✅" | "❌" | "🙅‍♂️" | ""
+
+  export interface JobSearchItem {
+    Company: string
+    Date: string
+    "Applied?": StatusEmoji
+    "Callback?": StatusEmoji
+    "Code Test?": StatusEmoji
+    "On Site?": StatusEmoji
+    "Offer?": StatusEmoji
+  }
+
+  export default JobSearchItem[]
+}
