@@ -646,21 +646,13 @@ type GoodreadsBook = Node & {
 
 type MdxFrontmatter = {
   readonly title: Scalars['String'];
-  readonly date: Maybe<Scalars['Date']>;
+  readonly date: Maybe<Scalars['String']>;
   readonly description: Maybe<Scalars['String']>;
   readonly cover: Maybe<File>;
   readonly tags: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly slug: Maybe<Scalars['String']>;
   readonly location: Maybe<Scalars['String']>;
   readonly draft: Maybe<Scalars['Boolean']>;
-};
-
-
-type MdxFrontmatter_dateArgs = {
-  formatString: Maybe<Scalars['String']>;
-  fromNow: Maybe<Scalars['Boolean']>;
-  difference: Maybe<Scalars['String']>;
-  locale: Maybe<Scalars['String']>;
 };
 
 type MdxHeadingMdx = {
@@ -1642,7 +1634,7 @@ type MdxFilterInput = {
 
 type MdxFrontmatterFilterInput = {
   readonly title: Maybe<StringQueryOperatorInput>;
-  readonly date: Maybe<DateQueryOperatorInput>;
+  readonly date: Maybe<StringQueryOperatorInput>;
   readonly description: Maybe<StringQueryOperatorInput>;
   readonly cover: Maybe<FileFilterInput>;
   readonly tags: Maybe<StringQueryOperatorInput>;
