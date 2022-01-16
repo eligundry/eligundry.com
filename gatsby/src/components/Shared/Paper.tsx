@@ -17,11 +17,13 @@ const Paper = styled.div<PaperProps>`
     rounded-lg
     bg-paper
     dark:bg-paperDark
-    shadow
-    print:shadow-none
     mb-4
     print:mb-0
   `}
+
+  body[data-fancy-background] & {
+    ${tw`shadow print:shadow-none`}
+  }
 
   ${(props) =>
     props.transparent && tw`bg-transparent dark:bg-transparent shadow-none`}

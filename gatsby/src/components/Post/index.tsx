@@ -111,6 +111,10 @@ const Article = styled<React.FC>(Paper.article)`
     }
   }
 
+  & *:not(p) + h1 {
+    ${tw`mt-4`}
+  }
+
   & .gatsby-resp-iframe-wrapper {
     ${tw`my-4`}
   }

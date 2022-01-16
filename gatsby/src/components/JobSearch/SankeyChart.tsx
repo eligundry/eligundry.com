@@ -3,6 +3,8 @@ import GenericChart from 'react-chartjs-2'
 import { Chart, SankeyDataPoint } from 'chart.js'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
 
+import { toolTipTheme } from '../../utils/charts'
+import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
 import jobSearch2022 from './2022.json'
 
 Chart.register(SankeyController, Flow)
@@ -23,11 +25,6 @@ const jobSearchDataToSankeyPoints = (
   items: JobSearchItem[]
 ): SankeyDataPoint[] => {
   // Handle all the happy paths
-  const applied = {
-    from: 'Found',
-    to: 'Applied',
-    flow: items.length,
-  }
   const callbacks = {
     from: 'Applied',
     to: 'Callback',
@@ -103,7 +100,6 @@ const jobSearchDataToSankeyPoints = (
   }
 
   return [
-    applied,
     callbacks,
     codeTests,
     onSites,
@@ -121,6 +117,8 @@ const jobSearchDataToSankeyPoints = (
 const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
   data,
 }) => {
+  const prefersDark = usePrefersDarkMode()
+
   return (
     <GenericChart
       type="sankey"
@@ -131,6 +129,13 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
             data,
           },
         ],
+      }}
+      options={{
+        plugins: {
+          tooltip: {
+            ...toolTipTheme(prefersDark),
+          },
+        },
       }}
     />
   )

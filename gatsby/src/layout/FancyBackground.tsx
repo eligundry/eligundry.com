@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
+import Helmet from 'react-helmet'
 
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
@@ -21,6 +22,7 @@ const FancyBackground: React.FC = () => {
     <>
       {seed && (
         <>
+          <Helmet bodyAttributes={{ 'data-fancy-background': true }} />
           <Canvas seed={seed} />
           <RefreshButton
             onClick={() => setSeed(generateSeed())}
