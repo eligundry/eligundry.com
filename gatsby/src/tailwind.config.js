@@ -20,6 +20,9 @@ module.exports = {
       liteGray: '#E5E7EB',
       paper: 'rgba(244, 244, 245, 0.95)',
       paperDark: 'rgba(0, 0, 0, 0.75)',
+      yellow: '#ffd53d',
+      red: '#f25c54',
+      green: '#48cb8a',
     },
     screens: {
       ...defaultTheme.screens,

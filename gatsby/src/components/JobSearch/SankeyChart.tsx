@@ -1,7 +1,12 @@
 import React from 'react'
 import GenericChart from 'react-chartjs-2'
-import { Chart, SankeyDataPoint } from 'chart.js'
+import {
+  Chart,
+  SankeyDataPoint,
+  SankeyControllerDatasetOptions,
+} from 'chart.js'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
+import { theme } from 'twin.macro'
 
 import { toolTipTheme } from '../../utils/charts'
 import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
@@ -60,7 +65,7 @@ const jobSearchDataToSankeyPoints = (
     ).length,
   }
   const rejectionOnSite = {
-    from: 'Code Test',
+    from: 'On Site',
     to: 'Rejection',
     flow: items.filter(
       (item) =>
@@ -68,7 +73,7 @@ const jobSearchDataToSankeyPoints = (
     ).length,
   }
   const rejectionOffer = {
-    from: 'On Site',
+    from: 'Offer',
     to: 'Rejection',
     flow: items.filter(
       (item) => item['On Site?'].includes('✅') && item['Offer?'].includes('❌')
@@ -114,6 +119,27 @@ const jobSearchDataToSankeyPoints = (
   ]
 }
 
+const chartPallete = (value: string) => {
+  switch (value) {
+    case 'Applied':
+      return theme`colors.primary`
+    case 'Callback':
+      return theme`colors.primary`
+    case 'Code Test':
+      return theme`colors.green`
+    case 'On Site':
+      return theme`colors.green`
+    case 'Drop Out':
+      return theme`colors.yellow`
+    case 'Rejection':
+      return theme`colors.red`
+    case 'Offer':
+      return theme`colors.green`
+    default:
+      return theme`colors.primary`
+  }
+}
+
 const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
   data,
 }) => {
@@ -131,6 +157,9 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
         ],
       }}
       options={{
+        colorFrom: (c) => chartPallete(c.raw.from),
+        colorTo: (c) => chartPallete(c.raw.to),
+        colorMode: 'to',
         plugins: {
           tooltip: {
             ...toolTipTheme(prefersDark),

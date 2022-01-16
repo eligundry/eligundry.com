@@ -1,3 +1,4 @@
+import { Chart } from 'chart.js'
 import { theme } from 'twin.macro'
 
 export const toolTipTheme = (prefersDark: boolean) => ({
@@ -19,3 +20,5 @@ export const toolTipTheme = (prefersDark: boolean) => ({
     ? theme`colors.typographyLite`
     : 'rgb(226, 232, 240)',
 })
+
+Chart.defaults.font.family = theme`fontFamily.sans`

@@ -41,10 +41,10 @@ const FancyBackground: React.FC = () => {
 const Canvas = styled.div<{ seed: number }>`
   --fluid-pattern-seed: ${(props) => props.seed};
   --fluid-pattern-bg-color: ${theme`colors.siteBackground`};
-  --fluid-pattern-color-1: #ffd53d;
+  --fluid-pattern-color-1: ${theme`colors.yellow`};
   --fluid-pattern-color-2: ${theme`colors.primary`};
-  --fluid-pattern-color-3: #f25c54;
-  --fluid-pattern-color-4: #48cb8a;
+  --fluid-pattern-color-3: ${theme`colors.red`};
+  --fluid-pattern-color-4: ${theme`colors.green`};
 
   .dark & {
     --fluid-pattern-bg-color: ${theme`colors.black`};
