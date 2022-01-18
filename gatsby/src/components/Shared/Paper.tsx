@@ -21,8 +21,8 @@ const Paper = styled.div<PaperProps>`
     print:mb-0
   `}
 
-  body[data-fancy-background] & {
-    ${tw`shadow print:shadow-none`}
+  body[data-fancy-background=true] & {
+    ${(props) => !props.transparent && tw`shadow print:shadow-none`}
   }
 
   ${(props) =>

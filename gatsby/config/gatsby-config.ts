@@ -251,6 +251,14 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
         outputPath: './gatsby-types.d.ts',
       },
     },
+    {
+      resolve: 'gatsby-plugin-use-dark-mode',
+      options: {
+        classNameDark: 'dark',
+        classNameLight: 'light',
+        minify: process.env.NODE_ENV === 'production',
+      },
+    },
   ].filter(Boolean),
 })
 
