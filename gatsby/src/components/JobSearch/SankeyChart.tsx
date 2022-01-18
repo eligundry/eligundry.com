@@ -50,6 +50,11 @@ const jobSearchDataToSankeyPoints = (
     to: 'Offer',
     flow: items.filter((item) => item['Offer?'].includes('✅')).length,
   }
+  const acceptedOffers = {
+    from: 'Offer',
+    to: 'Accepted',
+    flow: 1,
+  }
   // Handle company rejections
   const rejectionCallbacks = {
     from: 'Applied',
@@ -103,12 +108,18 @@ const jobSearchDataToSankeyPoints = (
       (item) => item['On Site?'].includes('✅') && item['Offer?'].includes('🙅‍♂️')
     ).length,
   }
+  const dropoutOffers = {
+    from: 'Offer',
+    to: 'Drop Out',
+    flow: items.filter((item) => item['Offer?'].includes('✅')).length - 1,
+  }
 
   return [
     callbacks,
     codeTests,
     onSites,
     offers,
+    acceptedOffers,
     rejectionCallbacks,
     rejectionCodeTests,
     rejectionOnSite,
@@ -116,6 +127,7 @@ const jobSearchDataToSankeyPoints = (
     dropoutCallback,
     dropoutCodeTest,
     dropoutOnSite,
+    dropoutOffers,
   ]
 }
 
@@ -126,15 +138,14 @@ const chartPallete = (value: string) => {
     case 'Callback':
       return theme`colors.primary`
     case 'Code Test':
-      return theme`colors.green`
     case 'On Site':
+    case 'Offer':
+    case 'Accepted':
       return theme`colors.green`
     case 'Drop Out':
       return theme`colors.yellow`
     case 'Rejection':
       return theme`colors.red`
-    case 'Offer':
-      return theme`colors.green`
     default:
       return theme`colors.primary`
   }
@@ -160,6 +171,11 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
         colorFrom: (c) => chartPallete(c.raw.from),
         colorTo: (c) => chartPallete(c.raw.to),
         colorMode: 'to',
+        legend: {
+          labels: {
+            fontColor: 'white',
+          },
+        },
         plugins: {
           tooltip: {
             ...toolTipTheme(prefersDark),
