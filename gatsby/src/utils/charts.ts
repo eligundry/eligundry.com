@@ -21,4 +21,7 @@ export const toolTipTheme = (prefersDark: boolean) => ({
     : 'rgb(226, 232, 240)',
 })
 
+export const textColor = (prefersDark: boolean) =>
+  prefersDark ? theme`colors.white` : theme`colors.typography`
+
 Chart.defaults.font.family = theme`fontFamily.sans`

@@ -1,14 +1,10 @@
 import React from 'react'
 import GenericChart from 'react-chartjs-2'
-import {
-  Chart,
-  SankeyDataPoint,
-  SankeyControllerDatasetOptions,
-} from 'chart.js'
+import { Chart, SankeyDataPoint } from 'chart.js'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
 import { theme } from 'twin.macro'
 
-import { toolTipTheme } from '../../utils/charts'
+import { toolTipTheme, textColor } from '../../utils/charts'
 import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
 import jobSearch2022 from './2022.json'
 
@@ -157,39 +153,61 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
   const prefersDark = usePrefersDarkMode()
 
   return (
-    <GenericChart
-      type="sankey"
-      data={{
-        datasets: [
-          {
-            label: 'Job Search',
-            data,
+    <>
+      <GenericChart
+        aria-label="Sankey chart of my job search"
+        type="sankey"
+        data={{
+          datasets: [
+            {
+              label: 'Job Search',
+              data,
+              color: textColor(prefersDark),
+            },
+          ],
+        }}
+        options={{
+          colorFrom: (c) => chartPallete(c.raw.from),
+          colorTo: (c) => chartPallete(c.raw.to),
+          colorMode: 'to',
+          legend: {
+            labels: {
+              fontColor: 'white',
+            },
           },
-        ],
-      }}
-      options={{
-        colorFrom: (c) => chartPallete(c.raw.from),
-        colorTo: (c) => chartPallete(c.raw.to),
-        colorMode: 'to',
-        legend: {
-          labels: {
-            fontColor: 'white',
+          plugins: {
+            tooltip: {
+              ...toolTipTheme(prefersDark),
+            },
           },
-        },
-        plugins: {
-          tooltip: {
-            ...toolTipTheme(prefersDark),
-          },
-        },
-      }}
-    />
+        }}
+      />
+      <noscript>
+        <table>
+          <thead>
+            <tr>
+              <th>Progress Step</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((row) => (
+              <tr key={`${row.from} -> ${row.to}`}>
+                <td>
+                  {row.from} → {row.to}
+                </td>
+                <td>{row.flow}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </noscript>
+    </>
   )
 }
 
-export const JobSearch2k22SankeyChart: React.FC = () => {
-  return (
-    <JobSearchSankeyChart data={jobSearchDataToSankeyPoints(jobSearch2022)} />
-  )
-}
+export const JobSearch2k22SankeyChart: React.FC = () => (
+  <JobSearchSankeyChart data={jobSearchDataToSankeyPoints(jobSearch2022)} />
+)
 
 export default JobSearchSankeyChart

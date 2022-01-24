@@ -262,37 +262,4 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
   ].filter(Boolean),
 })
 
-interface SitemapSerialize {
-  path: string
-  lastmodISO?: string
-}
-
-interface SitemapQuery {
-  allSitePage: {
-    nodes: {
-      path: string
-      fields: null | {
-        latestCommit: {
-          date: string | null
-        }
-      }
-    }[]
-  }
-  allMdx: {
-    nodes: {
-      collection: 'talks' | 'posts'
-      fields: {
-        date: string
-        slug: string
-        latestCommit: null | {
-          date: string | null
-        }
-      }
-    }[]
-  }
-  latestFeelingEntry: {
-    time: string
-  }
-}
-
 export default gatsbyConfig

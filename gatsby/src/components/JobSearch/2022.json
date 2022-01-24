@@ -2,17 +2,17 @@
   {
     "Company": "Stripe",
     "Date": "2021-12-06",
-    "Applied?": "Link ✅",
+    "Applied?": "✅",
     "Callback?": "✅",
     "Code Test?": "✅",
     "On Site?": "✅",
-    "Offer?": ""
+    "Offer?": "❌"
   },
   {
     "Company": "Netlify",
     "Date": "2021-12-08",
-    "Applied?": "Link ✅\nCover Letter",
-    "Callback?": "❌",
+    "Applied?": "✅",
+    "Callback?": "✅",
     "Code Test?": "❌",
     "On Site?": "❌",
     "Offer?": "❌"
@@ -69,7 +69,7 @@
     "Callback?": "✅",
     "Code Test?": "✅",
     "On Site?": "✅",
-    "Offer?": ""
+    "Offer?": "❌"
   },
   {
     "Company": "Collective",
@@ -121,9 +121,9 @@
     "Date": "2021-12-17",
     "Applied?": "✅",
     "Callback?": "✅",
-    "Code Test?": "",
-    "On Site?": "",
-    "Offer?": ""
+    "Code Test?": "❌",
+    "On Site?": "❌",
+    "Offer?": "❌"
   },
   {
     "Company": "Github",
@@ -186,7 +186,7 @@
     "Callback?": "✅",
     "Code Test?": "✅",
     "On Site?": "✅✅",
-    "Offer?": ""
+    "Offer?": "✅"
   },
   {
     "Company": "Slang",
@@ -195,7 +195,7 @@
     "Callback?": "✅",
     "Code Test?": "✅",
     "On Site?": "✅",
-    "Offer?": ""
+    "Offer?": "✅"
   },
   {
     "Company": "Chord",
@@ -204,7 +204,7 @@
     "Callback?": "✅",
     "Code Test?": "✅",
     "On Site?": "✅",
-    "Offer?": ""
+    "Offer?": "✅"
   },
   {
     "Company": "Abnormal Security",
@@ -226,6 +226,7 @@
   },
   {
     "Company": "Rho",
+    "Contact(s)": "Kim Phifer (VP of Eng)",
     "Date": "2021-12-28",
     "Applied?": "✅",
     "Callback?": "✅",
@@ -238,18 +239,18 @@
     "Date": "2022-01-04",
     "Applied?": "✅",
     "Callback?": "✅",
-    "Code Test?": "",
-    "On Site?": "",
-    "Offer?": ""
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
   },
   {
     "Company": "Contentful",
     "Date": "2022-01-05",
     "Applied?": "✅",
     "Callback?": "✅",
-    "Code Test?": "",
-    "On Site?": "",
-    "Offer?": ""
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
   },
   {
     "Company": "TaskRabbit",
@@ -265,13 +266,12 @@
     "Date": "2022-01-06",
     "Applied?": "✅",
     "Callback?": "✅",
-    "Code Test?": "",
-    "On Site?": "",
-    "Offer?": ""
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
   },
   {
     "Company": "Universal Tennis",
-    "Contact(s)": "Chole Tull",
     "Date": "2022-01-06",
     "Applied?": "🙅‍♂️",
     "Callback?": "🙅‍♂️",
@@ -285,17 +285,17 @@
     "Applied?": "✅",
     "Callback?": "✅",
     "Code Test?": "✅",
-    "On Site?": "",
-    "Offer?": ""
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
   },
   {
     "Company": "NuRX",
     "Date": "2022-01-07",
     "Applied?": "✅",
     "Callback?": "✅",
-    "Code Test?": "",
-    "On Site?": "",
-    "Offer?": ""
+    "Code Test?": "🙅‍♂️",
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
   },
   {
     "Company": "Amplitude",
@@ -303,8 +303,8 @@
     "Applied?": "✅",
     "Callback?": "✅",
     "Code Test?": "✅",
-    "On Site?": "",
-    "Offer?": ""
+    "On Site?": "✅",
+    "Offer?": "❌"
   },
   {
     "Company": "Lido",
@@ -312,8 +312,8 @@
     "Applied?": "✅",
     "Callback?": "✅",
     "Code Test?": "✅",
-    "On Site?": "",
-    "Offer?": ""
+    "On Site?": "🙅‍♂️",
+    "Offer?": "🙅‍♂️"
   },
   {
     "Company": "Seatgeek",
@@ -322,6 +322,6 @@
     "Callback?": "✅",
     "Code Test?": "✅",
     "On Site?": "✅",
-    "Offer?": ""
+    "Offer?": "✅"
   }
 ]
