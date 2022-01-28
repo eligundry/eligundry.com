@@ -251,40 +251,15 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
         outputPath: './gatsby-types.d.ts',
       },
     },
+    {
+      resolve: 'gatsby-plugin-use-dark-mode',
+      options: {
+        classNameDark: 'dark',
+        classNameLight: 'light',
+        minify: process.env.NODE_ENV === 'production',
+      },
+    },
   ].filter(Boolean),
 })
-
-interface SitemapSerialize {
-  path: string
-  lastmodISO?: string
-}
-
-interface SitemapQuery {
-  allSitePage: {
-    nodes: {
-      path: string
-      fields: null | {
-        latestCommit: {
-          date: string | null
-        }
-      }
-    }[]
-  }
-  allMdx: {
-    nodes: {
-      collection: 'talks' | 'posts'
-      fields: {
-        date: string
-        slug: string
-        latestCommit: null | {
-          date: string | null
-        }
-      }
-    }[]
-  }
-  latestFeelingEntry: {
-    time: string
-  }
-}
 
 export default gatsbyConfig

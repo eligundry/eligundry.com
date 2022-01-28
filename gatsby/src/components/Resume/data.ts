@@ -86,6 +86,20 @@ const resume: Resume = {
   },
   work: [
     {
+      company: 'Chord',
+      position: 'Staff Engineer',
+      website: 'https://chord.co/',
+      location: {
+        city: 'New York',
+        countryCode: 'US',
+        region: 'NY',
+      },
+      startDate: new Date('2022-02-07T05:00'),
+      endDate: null,
+      summary: 'TBA',
+      highlights: [],
+    },
+    {
       company: 'Talent Inc.',
       position: 'Senior Software Engineer',
       website: 'https://www.talentinc.com/',
@@ -332,7 +346,7 @@ const resume: Resume = {
     {
       institution: 'Kent State University',
       area: 'Computer Science',
-      studyType: 'Bachelor of Science',
+      studyType: 'Coursework Towards BS',
       startDate: new Date('2009-08-01T05:00'),
       endDate: new Date('2015-05-01T05:00'),
       completed: false,
