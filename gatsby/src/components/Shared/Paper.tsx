@@ -21,12 +21,14 @@ const Paper = styled.div<PaperProps>`
     print:mb-0
   `}
 
-  body[data-fancy-background="true"] & {
-    ${({ transparent = false }) => {
-      return !transparent
-        ? tw`shadow print:shadow-none`
-        : tw`bg-transparent dark:bg-transparent shadow-none`
-    }}
+  ${({ transparent = false }) => {
+    return !transparent
+      ? tw`shadow print:shadow-none`
+      : tw`bg-transparent dark:bg-transparent shadow-none`
+  }}
+
+  body[data-fancy-background=""] & {
+    ${tw`shadow-none`}
   }
 
   ${({ noPadding = false }) => noPadding && tw`p-0`}

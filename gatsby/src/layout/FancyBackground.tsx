@@ -20,9 +20,9 @@ const FancyBackground: React.FC = () => {
 
   return (
     <>
+      <Helmet bodyAttributes={{ 'data-fancy-background': !!seed }} />
       {seed && (
         <>
-          <Helmet bodyAttributes={{ 'data-fancy-background': true }} />
           <Canvas seed={seed} />
           <RefreshButton
             onClick={() => setSeed(generateSeed())}
