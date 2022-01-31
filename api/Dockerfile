@@ -6,9 +6,7 @@ RUN apt-get update \
     && echo "PRAGMA compile_options;" | sqlite3 | grep JSON1
 
 # Install goose for database migrations
-RUN go get github.com/canthefason/go-watcher \
-    && go install github.com/canthefason/go-watcher/cmd/watcher@latest \
-    && go get github.com/pressly/goose/cmd/goose
+RUN go get github.com/pressly/goose/cmd/goose
 
 # Install go dependencies
 WORKDIR /src
@@ -26,4 +24,5 @@ ENTRYPOINT ["/bin/api"]
 FROM public.ecr.aws/lambda/go:1 AS lambda
 
 COPY --from=development /bin/api ${LAMBDA_TASK_ROOT}/api
+RUN yum install -y sqlite sqlite-devel
 CMD ["api"]
