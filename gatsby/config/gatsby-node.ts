@@ -33,7 +33,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
 
       if (node?.frontmatter) {
         if (node.frontmatter?.slug) {
-          slug = `${kebabCase(node.frontmatter.slug)}`
+          slug = node.frontmatter.slug
         }
 
         if (node.frontmatter?.date) {

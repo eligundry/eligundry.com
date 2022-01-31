@@ -86,6 +86,20 @@ const resume: Resume = {
   },
   work: [
     {
+      company: 'Chord',
+      position: 'Staff Engineer',
+      website: 'https://chord.co/',
+      location: {
+        city: 'New York',
+        countryCode: 'US',
+        region: 'NY',
+      },
+      startDate: new Date('2022-02-07T05:00'),
+      endDate: null,
+      summary: 'TBA',
+      highlights: [],
+    },
+    {
       company: 'Talent Inc.',
       position: 'Senior Software Engineer',
       website: 'https://www.talentinc.com/',
@@ -100,19 +114,19 @@ const resume: Resume = {
       highlights: [
         `
         Tech lead for moving <a href="https://www.zipjob.com">ZipJob</a>
-        to a statically compiled <a href="https://www.gatsbyjs.com/">Gatsby</a> 
+        to a statically compiled <a href="https://www.gatsbyjs.com/">Gatsby</a>/<a href="https://reactjs.org/">React</a>
         site backed by <a href="https://www.contentful.com/">Contentful CMS</a>, increasing the 
         <a href="https://developers.google.com/web/tools/lighthouse">Lighthouse</a> 
-        score from 30 to 85 & enabling our marketing team to control all copy on the website.
+        score 55 points & enabling our marketing team to control all copy on the website.
         `,
         `
-        Frontend tech lead for a Customer Portal that raised 
-        <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a> 
+        Frontend tech lead for a Customer Portal, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>, 
+        that raised <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a> 
         25 points & average customer revenue by $8.
         `,
         `
-        Frontend tech lead for our rewritten Expert Hub, decreasing our average 
-        time to order completion by 12 hours.
+        Frontend tech lead for our rewritten Expert Hub, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>, 
+        that decreased our average time to order completion by 12 hours.
         `,
         `
         Tech lead for a dynamic payment & order offering system for contractors 
@@ -121,7 +135,7 @@ const resume: Resume = {
         `,
         `
         Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a> 
-        across all internal applications company wide.
+        across all applications company wide using <a href="https://www.okta.com/">Okta</a> & <a href="https://auth0.com/">Auth0</a>.
         `,
       ],
     },
@@ -196,7 +210,7 @@ const resume: Resume = {
         and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
-      printHide: true,
+      printHide: false,
     },
     {
       company: 'Kent State University',
@@ -332,7 +346,7 @@ const resume: Resume = {
     {
       institution: 'Kent State University',
       area: 'Computer Science',
-      studyType: 'Bachelor of Science',
+      studyType: 'Coursework Towards BS',
       startDate: new Date('2009-08-01T05:00'),
       endDate: new Date('2015-05-01T05:00'),
       completed: false,

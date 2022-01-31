@@ -17,22 +17,32 @@ const Paper = styled.div<PaperProps>`
     rounded-lg
     bg-paper
     dark:bg-paperDark
-    shadow
-    print:shadow-none
+    mb-4
+    print:mb-0
   `}
 
-  ${(props) =>
-    props.transparent && tw`bg-transparent dark:bg-transparent shadow-none`}
+  ${({ transparent = false }) => {
+    return !transparent
+      ? tw`shadow print:shadow-none`
+      : tw`bg-transparent dark:bg-transparent shadow-none`
+  }}
 
-  ${(props) => props.noPadding && tw`p-0`}
+  body[data-fancy-background=""] & {
+    ${tw`shadow-none`}
+  }
+
+  ${({ noPadding = false }) => noPadding && tw`p-0`}
 
   @media (prefers-reduced-transparency: reduce) {
     ${tw`bg-siteBackground dark:bg-black`}
   }
 `
 
+// @ts-ignore
 Paper.article = Paper.withComponent('article')
+// @ts-ignore
 Paper.section = Paper.withComponent('section')
+// @ts-ignore
 Paper.figure = Paper.withComponent('figure')
 
 export default Paper

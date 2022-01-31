@@ -12,6 +12,7 @@ import useFeelingsChartData from './useFeelingsChartData'
 import { MoodMapping } from './types'
 import { useHasTouch } from '../../utils/useIsMobile'
 import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+import { toolTipTheme } from '../../utils/charts'
 
 interface Props {
   months?: number
@@ -81,29 +82,7 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
               display: false,
             },
             tooltip: {
-              displayColors: false,
-              titleFont: {
-                size: 14,
-              },
-              bodyFont: {
-                size: 16,
-              },
-              backgroundColor: prefersDark
-                ? theme`colors.typographyDark`
-                : theme`colors.white`,
-              footerColor: prefersDark
-                ? theme`colors.typographyDark`
-                : theme`colors.white`,
-              bodyColor: prefersDark
-                ? theme`colors.white`
-                : theme`colors.black`,
-              titleColor: prefersDark
-                ? theme`colors.white`
-                : theme`colors.black`,
-              borderWidth: 1,
-              borderColor: prefersDark
-                ? theme`colors.typographyLite`
-                : 'rgb(226, 232, 240)',
+              ...toolTipTheme(prefersDark),
               callbacks: {
                 title: (item, _) =>
                   `📅   ${formatISO(parseISO(item[0].raw.x))}`,
