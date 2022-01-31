@@ -1,7 +1,12 @@
-FROM public.ecr.aws/lambda/go:1 AS development
+FROM golang:1.17 AS development
 
-RUN yum install -y sqlite sqlite-devel golang \
-    && go get github.com/pressly/goose/cmd/goose
+# Install deps to install packages
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y sqlite3 \
+    && echo "PRAGMA compile_options;" | sqlite3 | grep JSON1
+
+# Install goose for database migrations
+RUN go get github.com/pressly/goose/cmd/goose
 
 # Install go dependencies
 WORKDIR /src
@@ -10,9 +15,8 @@ RUN go mod download
 
 # Build the app
 ADD . /src
-RUN OUTPUT_DIR="${LAMBDA_TASK_ROOT}" make static-build
+RUN OUTPUT_DIR=/bin CGO_ENABLED=1  make static-build
 
 EXPOSE 8080
-WORKDIR ${LAMBDA_TASK_ROOT}
-ENTRYPOINT ["api"]
-CMD ["api"]
+WORKDIR /src
+ENTRYPOINT ["/bin/api"]
