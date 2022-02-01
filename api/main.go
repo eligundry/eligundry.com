@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -12,14 +13,18 @@ import (
 	"github.com/eligundry/eligundry.com/api/auth"
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/eligundry/eligundry.com/api/daylio"
+	"github.com/eligundry/eligundry.com/api/ginzap"
 	"github.com/eligundry/eligundry.com/api/lastfm"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 var ginLambda *ginadapter.GinLambda
+var logger *zap.Logger
 
 func Router() *gin.Engine {
 	router := gin.Default()
+	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
 	api := router.Group("api")
 	{
 		auth.RegisterRoutes(api)
@@ -44,6 +49,10 @@ func Router() *gin.Engine {
 
 func LambdaHandler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	return ginLambda.ProxyWithContext(ctx, req)
+}
+
+func init() {
+	logger, _ = zap.NewProduction()
 }
 
 func main() {
