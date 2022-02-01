@@ -18,7 +18,7 @@ func GetDB() *sqlx.DB {
 		databasePath = defaultDatabasePath
 	}
 
-	db := sqlx.MustConnect("sqlite3", databasePath+"?_mutex=no")
+	db := sqlx.MustConnect("sqlite3", databasePath+"?_mutex=no&mode=rw&nolock=1")
 
 	info, err := os.Stat(databasePath)
 
