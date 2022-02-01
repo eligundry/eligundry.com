@@ -31,7 +31,6 @@ functions:
     image: 
       name: api-eligundry-com
     description: My personal API
-    reservedConcurrency: 1
     environment:
       AUTH_USER: ${env:AUTH_USER}
       AUTH_PASSWORD: ${env:AUTH_PASSWORD}
