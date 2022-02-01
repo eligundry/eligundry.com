@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -18,16 +20,24 @@ var ginLambda *ginadapter.GinLambda
 
 func Router() *gin.Engine {
 	router := gin.Default()
-	prefixes := []string{"/", "dev/"}
-
-	for _, prefix := range prefixes {
-		api := router.Group(prefix + "api")
-		{
-			auth.RegisterRoutes(api)
-			daylio.RegisterRoutes(api)
-			lastfm.RegisterRoutes(api)
-		}
+	api := router.Group("api")
+	{
+		auth.RegisterRoutes(api)
+		daylio.RegisterRoutes(api)
+		lastfm.RegisterRoutes(api)
 	}
+
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "404 Page Not Found, bro",
+		})
+	})
+
+	router.NoMethod(func(c *gin.Context) {
+		c.JSON(http.StatusMethodNotAllowed, gin.H{
+			"error": fmt.Sprintf("%s Method Not Allowed, bro", c.Request.Method),
+		})
+	})
 
 	return router
 }
