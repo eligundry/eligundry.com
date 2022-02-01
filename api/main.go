@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/awslabs/aws-lambda-go-api-proxy/gin"
+	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/eligundry/eligundry.com/api/auth"
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/eligundry/eligundry.com/api/daylio"
@@ -18,11 +18,15 @@ var ginLambda *ginadapter.GinLambda
 
 func Router() *gin.Engine {
 	router := gin.Default()
-	api := router.Group("api")
-	{
-		auth.RegisterRoutes(api)
-		daylio.RegisterRoutes(api)
-		lastfm.RegisterRoutes(api)
+	prefixes := []string{"/", "dev/"}
+
+	for _, prefix := range prefixes {
+		api := router.Group(prefix + "api")
+		{
+			auth.RegisterRoutes(api)
+			daylio.RegisterRoutes(api)
+			lastfm.RegisterRoutes(api)
+		}
 	}
 
 	return router
