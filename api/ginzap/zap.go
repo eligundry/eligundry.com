@@ -70,7 +70,7 @@ func GinzapWithConfig(logger *zap.Logger, conf *Config) gin.HandlerFunc {
 			if len(c.Errors) > 0 {
 				// Append error field if this is an erroneous request.
 				for _, e := range c.Errors.Errors() {
-					logger.Error(e)
+					contextScopedLogger.Error(e)
 				}
 			} else {
 				fields := []zapcore.Field{
@@ -85,7 +85,7 @@ func GinzapWithConfig(logger *zap.Logger, conf *Config) gin.HandlerFunc {
 				if conf.TimeFormat != "" {
 					fields = append(fields, zap.String("time", end.Format(conf.TimeFormat)))
 				}
-				logger.Info(path, fields...)
+				contextScopedLogger.Info(path, fields...)
 			}
 		}
 	}

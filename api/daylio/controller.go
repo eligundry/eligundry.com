@@ -8,6 +8,7 @@ import (
 	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 func RegisterRoutes(router *gin.RouterGroup) {
@@ -58,6 +59,7 @@ func SubmitDaylioExport(c *gin.Context) {
 	formFile, err := c.FormFile("file")
 
 	if err != nil {
+		c.Error(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -67,6 +69,7 @@ func SubmitDaylioExport(c *gin.Context) {
 	file, err := formFile.Open()
 
 	if err != nil {
+		c.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -77,18 +80,24 @@ func SubmitDaylioExport(c *gin.Context) {
 	data, err := d.ProcessDaylioExport(file)
 
 	if err != nil {
+		c.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
+	d.Logger.Info("successfully submitted daylio upload", zap.Int("entries", len(data)))
+
 	// Trigger a rebuild of the static site when I submit a new feelings CSV
 	if err := common.TriggerNetlifyDeployOfSite("Triggered by Daylio upload to API"); err != nil {
+		c.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
 		return
+	} else {
+		d.Logger.Info("successfully triggered Netlify build")
 	}
 
 	c.JSON(http.StatusCreated, data)

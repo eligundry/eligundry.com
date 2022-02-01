@@ -10,17 +10,21 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gocarina/gocsv"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/eligundry/eligundry.com/api/common"
+	"github.com/eligundry/eligundry.com/api/ginzap"
 )
 
 type Data struct {
-	Ctx context.Context
+	Ctx    context.Context
+	Logger *zap.Logger
 }
 
 func NewDataFromGinContext(c *gin.Context) *Data {
 	return &Data{
-		Ctx: c.Request.Context(),
+		Ctx:    c.Request.Context(),
+		Logger: ginzap.GetLogger(c),
 	}
 }
 
