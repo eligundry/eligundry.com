@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gocarina/gocsv"
+	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -19,12 +20,14 @@ import (
 type Data struct {
 	Ctx    context.Context
 	Logger *zap.Logger
+	DB     *sqlx.DB
 }
 
 func NewDataFromGinContext(c *gin.Context) *Data {
 	return &Data{
 		Ctx:    c.Request.Context(),
 		Logger: ginzap.GetLogger(c),
+		DB:     common.GetDB(),
 	}
 }
 
@@ -51,10 +54,9 @@ ORDER BY daylio_entries.time DESC
 
 func (d *Data) GetDaylioEntries() ([]DaylioEntry, error) {
 	var entries []DaylioEntry
-	db := common.GetDB()
 	whereClause := "AND 1 = 1"
 
-	err := db.SelectContext(d.Ctx, &entries, fmt.Sprintf(jsonQuery, whereClause))
+	err := d.DB.SelectContext(d.Ctx, &entries, fmt.Sprintf(jsonQuery, whereClause))
 
 	if err != nil {
 		return entries, err
@@ -68,7 +70,6 @@ func (d *Data) GetDaylioEntries() ([]DaylioEntry, error) {
 }
 
 func (d *Data) GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
-	db := common.GetDB()
 	var entries []DaylioEntry
 
 	whereClause := `
@@ -81,7 +82,7 @@ func (d *Data) GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
         )
     `
 
-	err := db.SelectContext(d.Ctx, &entries, fmt.Sprintf(jsonQuery, whereClause), t)
+	err := d.DB.SelectContext(d.Ctx, &entries, fmt.Sprintf(jsonQuery, whereClause), t)
 
 	if err != nil {
 		return entries, err
@@ -131,8 +132,7 @@ func (d *Data) ProcessDaylioExport(export multipart.File) ([]DaylioExport, error
 	}
 
 	// Submit all the entries
-	db := common.GetDB()
-	tx, err := db.Begin()
+	tx, err := d.DB.Begin()
 
 	if err != nil {
 		return entries, err

@@ -9,8 +9,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var _db *sqlx.DB
-
 const defaultDatabasePath = "/opt/data/api.db"
 
 func GetDB() *sqlx.DB {
@@ -20,9 +18,7 @@ func GetDB() *sqlx.DB {
 		databasePath = defaultDatabasePath
 	}
 
-	if _db == nil {
-		_db = sqlx.MustConnect("sqlite3", databasePath)
-	}
+	db := sqlx.MustConnect("sqlite3", databasePath)
 
 	info, err := os.Stat(databasePath)
 
@@ -40,5 +36,5 @@ func GetDB() *sqlx.DB {
 
 	log.Printf("process is running as user %s with gid %s", user.Name, user.Gid)
 
-	return _db
+	return db
 }

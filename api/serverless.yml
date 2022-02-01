@@ -36,6 +36,7 @@ functions:
       AUTH_PASSWORD: ${env:AUTH_PASSWORD}
       NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
       DATABASE_PATH: "/mnt/database/api.db"
+      GIN_MODE: "release"
     events:
       - http:
           path: '/{proxy+}'
