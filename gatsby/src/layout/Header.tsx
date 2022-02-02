@@ -6,25 +6,22 @@ import useWindowSize from 'react-use/lib/useWindowSize'
 import Nav from './Nav'
 import useDocument from '../components/Shared/useDocument'
 
-const HeaderElm = styled.header<{ transparent: boolean }>`
+const HeaderElm = styled.header`
   ${tw`
     fixed 
     print:relative
     w-full 
     z-10 
     top-0 
-    bg-transparent
     sm:bg-white
     sm:dark:bg-typographyDark
     sm:shadow
-    transition-all 
-    duration-200
+    bg-white 
+    dark:bg-typographyDark 
+    shadow 
+    print:shadow-none 
+    print:bg-transparent
   `}
-
-  ${(props) =>
-    !props.transparent
-      ? tw`bg-white dark:bg-typographyDark shadow print:shadow-none print:bg-transparent`
-      : tw`bg-transparent lg:bg-transparent`}
 
   & .wrapper {
     ${tw`
@@ -83,7 +80,7 @@ const Header: React.FC = () => {
   const document = useDocument()
 
   return (
-    <HeaderElm transparent={y === 0}>
+    <HeaderElm>
       <ProgressBar
         max={Math.max(document?.body?.clientHeight ?? 0, height + 1) - height}
         value={y}
@@ -91,7 +88,7 @@ const Header: React.FC = () => {
       />
       <div className="wrapper">
         <h1 itemProp="name">
-          <a rel="root" href="/" itemProp="sameAs">
+          <a href="/" itemProp="sameAs">
             Eli Gundry
           </a>
         </h1>

@@ -169,8 +169,8 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
           ],
         }}
         options={{
-          colorFrom: (c) => chartPallete(c.raw.from),
-          colorTo: (c) => chartPallete(c.raw.to),
+          colorFrom: (c: any) => chartPallete(c.raw.from),
+          colorTo: (c: any) => chartPallete(c.raw.to),
           colorMode: 'to',
           plugins: {
             tooltip: {

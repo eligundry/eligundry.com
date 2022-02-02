@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import radPNG from '../../../static/img/feelings/rad.png'
 import goodPNG from '../../../static/img/feelings/good.png'
 import mehPNG from '../../../static/img/feelings/meh.png'

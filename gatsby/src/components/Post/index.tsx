@@ -31,7 +31,11 @@ const Post: React.FC<Props> = ({
   location,
   featuredImageURL,
 }) => (
-  <Article itemScope itemType={`https://schema.org/${itemType}`}>
+  <Article
+    // @ts-ignore
+    itemScope
+    itemType={`https://schema.org/${itemType}`}
+  >
     <link itemProp="author publisher" href="#eli-gundry" />
     {dateModified && <meta itemProp="dateModified" content={dateModified} />}
     {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}

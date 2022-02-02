@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export, react/jsx-no-constructed-context-values */
 import React from 'react'
 import { GatsbySSR } from 'gatsby'
 import { IconContext } from 'react-icons'
