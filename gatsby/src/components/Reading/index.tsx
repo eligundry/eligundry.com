@@ -1,6 +1,6 @@
 import React from 'react'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
-import tw, { styled, theme } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 
 import useGoodreadsShelf from './useGoodreads'
 
@@ -59,15 +59,24 @@ const Shelf = styled.div`
 
 const Book: React.FC<
   GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['books'][0]
-> = ({ url, title, author, coverImage }) => (
-  <a
-    href={url}
-    data-tip={`${title} - ${author}`}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <GatsbyImage image={getImage(coverImage)} alt={`${title} - ${author}`} />
-  </a>
-)
+> = ({ url, title, author, coverImage }) => {
+  // @ts-ignore
+  const image = getImage(coverImage)
+
+  if (!image) {
+    return null
+  }
+
+  return (
+    <a
+      href={url}
+      data-tip={`${title} - ${author}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <GatsbyImage image={image} alt={`${title} - ${author}`} />
+    </a>
+  )
+}
 
 export default Reading

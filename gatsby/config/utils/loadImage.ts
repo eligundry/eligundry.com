@@ -8,7 +8,7 @@ interface LoadImageArgs extends CreateRemoteFileNodeArgs {
 }
 
 const loadImage = async (args: LoadImageArgs) => {
-  const { cacheKey, cache, ...createRemoteFileNodeArgs } = args
+  const { cache, ...createRemoteFileNodeArgs } = args
 
   // if (cacheKey) {
   //   const cachedImage = await cache.get(cacheKey)

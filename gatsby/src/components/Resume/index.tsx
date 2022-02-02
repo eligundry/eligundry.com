@@ -71,6 +71,7 @@ const Resume: React.FC = () => {
 
   useEffect(
     () =>
+      /* eslint-disable-next-line no-console */
       console.log(`
 You can control how this resume prints with the following query parameters on the page.
 

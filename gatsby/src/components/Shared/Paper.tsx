@@ -21,11 +21,10 @@ const Paper = styled.div<PaperProps>`
     print:mb-0
   `}
 
-  ${({ transparent = false }) => {
-    return !transparent
+  ${({ transparent = false }) =>
+    !transparent
       ? tw`shadow print:shadow-none`
-      : tw`bg-transparent dark:bg-transparent shadow-none`
-  }}
+      : tw`bg-transparent dark:bg-transparent shadow-none`}
 
   body[data-fancy-background=""] & {
     ${tw`shadow-none`}
