@@ -53,12 +53,13 @@ const LastFmCover: React.FC<Props> = ({ width, height }) => {
   return (
     <>
       <GatsbyImage
+        // @ts-ignore
         image={getImage(query.cover.image)}
         useMap="#albums"
         className="listening-img"
         alt={altText}
       />
-      <map name="albums" alt={altText}>
+      <map name="albums">
         {topAlbums.map(({ album, artist, count }, i) => {
           const topLeft = [mapX, mapY]
           const bottomRight = [(mapX += albumWidth), mapY + albumHeight]
@@ -98,13 +99,13 @@ const getTopAlbums = (
   )
   const topAlbums = Object.values(groupedScrobbles)
     .map((group) => ({
-      album: group[0].track.album.name,
-      artist: group[0].track.artist.name,
+      album: group?.[0]?.track?.album?.name,
+      artist: group?.[0]?.track?.artist?.name,
       count: group.length,
     }))
     .sort((a, b) => {
       if (b.count === a.count) {
-        return b.album > a.album ? -1 : 1
+        return (b?.album ?? '') > (a?.album ?? '') ? -1 : 1
       }
 
       return b.count - a.count

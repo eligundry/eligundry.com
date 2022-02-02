@@ -5,7 +5,6 @@ import path from 'path'
 import kebabCase from 'lodash/kebabCase'
 import parseISO from 'date-fns/parseISO'
 import isValidDate from 'date-fns/isValid'
-import util from 'util'
 
 import sourceSingleImage from './utils/sourceSingleImage'
 import addGitLastModifiedToNode from './utils/addGitLastmodifiedToNode'
@@ -16,7 +15,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     const { createNodeField } = actions
 
     if (node.internal.type === 'Mdx') {
-      let slug
+      let slug: string | undefined
       node.collection = getNode(node.parent).sourceInstanceName
       const fileNode = getNode(node.parent)
       const parsedFilePath = path.parse(fileNode.relativePath)

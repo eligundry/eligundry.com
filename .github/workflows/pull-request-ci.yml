@@ -24,7 +24,7 @@ jobs:
           eslint_dir: gatsby
 
   type-check:
-    name: Run linters
+    name: Check types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -35,4 +35,5 @@ jobs:
         with:
           working-directory: gatsby
       - name: Check types
+        working-directory: gatsby
         run: npm run type-check

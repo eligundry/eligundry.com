@@ -66,6 +66,7 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
       )
     )
 
+    /* eslint-disable-next-line consistent-return */
     return function cleanup() {
       if (scriptTarget.current) {
         scriptTarget.current.innerHTML = ''
@@ -75,13 +76,17 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
 
   return (
     <>
-      <EmGitHubContainer ref={scriptTarget} expanded={expanded} />
+      <EmGitHubContainer
+        ref={scriptTarget as React.MutableRefObject<HTMLDivElement>}
+        expanded={expanded}
+      />
       {!expanded && (
         <ExpandButtonContainer>
           <button
             onClick={() => setExpanded(true)}
             data-gtm="emgithub-file-expaded"
             data-gtm-emgithub-file-url={fileURL}
+            type="button"
           >
             Expand File
           </button>

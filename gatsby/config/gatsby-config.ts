@@ -191,7 +191,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: 'gatsby-plugin-feed',
       options: {
-        setup: (ref) => ({
+        setup: () => ({
           title: "Eli Gundry's Feelings",
           description: "A daily journal of how I'm feeling",
           managingEditor: 'eligundry@gmail.com (Eli Gundry)',
@@ -248,7 +248,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
     {
       resolve: 'gatsby-plugin-typegen',
       options: {
-        outputPath: './gatsby-types.d.ts',
+        outputPath: './types/gatsby-types.d.ts',
       },
     },
     {

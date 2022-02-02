@@ -11,17 +11,23 @@ const Emoji = styled.span`
   ${tw`pr-2`}
 `
 
-const EmojiText: React.FC<Props> = ({ children, emoji, label, fallback }) => (
-  <>
-    {fallback ? (
-      fallback
-    ) : (
+const EmojiText: React.FC<Props> = ({ children, emoji, label, fallback }) => {
+  if (fallback) {
+    return (
+      <>
+        {fallback} {children}
+      </>
+    )
+  }
+
+  return (
+    <>
       <Emoji role="img" aria-label={label}>
         {emoji}
       </Emoji>
-    )}
-    {children}
-  </>
-)
+      {children}
+    </>
+  )
+}
 
 export default EmojiText

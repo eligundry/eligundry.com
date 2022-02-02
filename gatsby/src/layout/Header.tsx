@@ -88,7 +88,7 @@ const Header: React.FC = () => {
       />
       <div className="wrapper">
         <h1 itemProp="name">
-          <a rel="root" href="/" itemProp="sameAs">
+          <a href="/" itemProp="sameAs">
             Eli Gundry
           </a>
         </h1>
