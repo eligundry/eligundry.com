@@ -86,10 +86,10 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
             tooltip: {
               ...toolTipTheme(prefersDark),
               callbacks: {
-                title: (item) => `📅   ${formatISO(parseISO(item[0].raw.x))}`,
+                title: (item) => `📅   ${formatISO(parseISO(item[0].label))}`,
                 label: (item) =>
-                  `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
-                    Object.keys(MoodMapping)[item.raw.y]
+                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${
+                    Object.keys(MoodMapping)[item.parsed.y]
                   }`,
               },
             },
