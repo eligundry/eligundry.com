@@ -30,7 +30,7 @@ const ListeningContainer = styled.div`
 `
 
 const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
-  const [ref, { width, height }] = useMeasure()
+  const [ref, { width, height }] = useMeasure<HTMLAnchorElement>()
   const iframeHeight = useIsMobile() ? 380 : height
 
   return (

@@ -46,7 +46,9 @@ const ResumeHeader: React.FC = () => {
           <code>
             Full Stack Web Engineer{' '}
             <span className="token comment">
-              // {!parseOptimized && '❤️ '}Javascript, Devops && Web Standards
+              {`// ${
+                !parseOptimized && '❤️ '
+              }Javascript, Devops && Web Standards`}
             </span>
           </code>
         </h2>

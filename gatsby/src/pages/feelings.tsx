@@ -1,7 +1,6 @@
 import React from 'react'
-import { PageProps } from 'gatsby'
 import parseISO from 'date-fns/parseISO'
-import { Link } from 'gatsby'
+import { Link, PageProps } from 'gatsby'
 
 import Layout from '../layout'
 import SEO from '../components/SEO'

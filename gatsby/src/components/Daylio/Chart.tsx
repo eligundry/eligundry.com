@@ -45,7 +45,9 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
   // Hovering on a point will change cursor to denote that it is a link
   const handlePointHover = useCallback<CoreChartOptions<ChartType>['onHover']>(
     (event, points) => {
+      // @ts-ignore
       if (event.native?.target?.style) {
+        // @ts-ignore
         event.native.target.style.cursor = points.length ? 'pointer' : 'default'
       }
     },
@@ -67,7 +69,7 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
               borderColor: theme`colors.primaryLite`,
               pointBorderColor: theme`colors.primary`,
               pointBackgroundColor: theme`colors.primary`,
-              radius: 5,
+              pointRadius: 5,
             },
           ],
         }}
@@ -84,10 +86,8 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
             tooltip: {
               ...toolTipTheme(prefersDark),
               callbacks: {
-                title: (item, _) =>
-                  `📅   ${formatISO(parseISO(item[0].raw.x))}`,
-                // @ts-ignore
-                label: (item, _) =>
+                title: (item) => `📅   ${formatISO(parseISO(item[0].raw.x))}`,
+                label: (item) =>
                   `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
                     Object.keys(MoodMapping)[item.raw.y]
                   }`,
@@ -96,6 +96,7 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
           },
           scales: {
             x: {
+              // @ts-ignore
               min: timeWindow,
               ticks: {
                 callback: () => null,

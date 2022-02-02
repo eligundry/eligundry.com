@@ -129,7 +129,8 @@
       "public",
       "static",
       ".cache",
-      "content"
+      "content",
+      "*.d.ts"
     ],
     "rules": {
       "react/prefer-stateless-function": "off",
@@ -182,6 +183,14 @@
           "jsx": "never",
           "ts": "never",
           "tsx": "never"
+        }
+      ],
+      "react/function-component-definition": [
+        2,
+        {
+          "namedComponents": [
+            "arrow-function"
+          ]
         }
       ]
     },

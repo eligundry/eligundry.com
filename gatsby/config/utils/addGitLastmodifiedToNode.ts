@@ -1,6 +1,7 @@
+/* eslint-disable no-console, vars-on-top, no-var, no-shadow, block-scoped-var */
 import path from 'path'
 import simpleGit from 'simple-git'
-import { LogResult } from 'simple-git/typings/response'
+import type { LogResult } from 'simple-git/typings/response'
 import { CreateNodeArgs } from 'gatsby'
 import dateCompareDesc from 'date-fns/compareDesc'
 import util from 'util'
@@ -66,6 +67,8 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
         case '/resume':
           paths.push(path.join('src', 'components', 'Resume'))
           break
+        default:
+          break
       }
 
       var logs = await Promise.all(paths.map((file) => git.log({ file })))
@@ -115,7 +118,6 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
         { showHidden: false, depth: null }
       )
     )
-    return
   }
 }
 
