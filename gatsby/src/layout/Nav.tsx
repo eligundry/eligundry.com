@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { Link } from 'gatsby'
+import useDarkMode from 'use-dark-mode'
 
 import EmojiText from '../components/Shared/EmojiText'
-import { useThemeMode } from './ThemeModeProvider'
 
 interface NavProps {
   expanded: boolean
@@ -116,7 +116,7 @@ const navLinks = Object.freeze({
 
 const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
-  const { theme, toggleTheme } = useThemeMode()
+  const { value: darkMode, toggle: toggleDarkMode } = useDarkMode()
 
   return (
     <>
@@ -149,13 +149,13 @@ const Nav: React.FC = () => {
         </div>
       </NavContainer>
       <ThemeToggle
-        onClick={toggleTheme}
+        onClick={toggleDarkMode}
         aria-label={`switch to the ${
-          theme === 'light' ? 'dark' : 'light'
+          darkMode ? 'dark' : 'light'
         } theme for the site`}
         data-gtm="theme-toggle"
       >
-        {theme === 'light' ? '🌚' : '🌞'}
+        {darkMode ? '🌚' : '🌞'}
       </ThemeToggle>
     </>
   )

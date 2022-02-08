@@ -147,7 +147,6 @@ const Entry: React.FC<Props> = ({
                 key={`${time}-${a}`}
                 data-tip={a}
                 itemProp="keywords"
-                content={`${ActivityMapping[a] ?? a} ${a}`}
                 aria-label={a}
               >
                 {ActivityMapping[a] || a}

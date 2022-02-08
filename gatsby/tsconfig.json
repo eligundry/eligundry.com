@@ -16,12 +16,5 @@
     "jsx": "react",
     "downlevelIteration": true
   },
-  "include": [
-    "gatsby-types.d.ts",
-    "src",
-    "static",
-    "index.d.ts",
-    "twin.d.ts",
-    "scripts"
-  ]
+  "include": ["src", "static", "scripts", "types"]
 }

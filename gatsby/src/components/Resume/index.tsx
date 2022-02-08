@@ -71,6 +71,7 @@ const Resume: React.FC = () => {
 
   useEffect(
     () =>
+      /* eslint-disable-next-line no-console */
       console.log(`
 You can control how this resume prints with the following query parameters on the page.
 
@@ -84,9 +85,9 @@ You can control how this resume prints with the following query parameters on th
   return (
     <ResumeArticle parseOptimized={parseOptimized}>
       <ResumeHeader />
+      <Skills skills={resumeData.skills} />
       <Work work={resumeData.work} />
       <Education education={resumeData.education} />
-      <Skills skills={resumeData.skills} />
       <ActivitiesInterests activitesInterests={resumeData.activitesInterests} />
       {!parseOptimized && <ResumeFooter />}
     </ResumeArticle>

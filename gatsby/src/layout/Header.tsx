@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import tw, { styled } from 'twin.macro'
 import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
 
 import Nav from './Nav'
+import useDocument from '../components/Shared/useDocument'
 
-const HeaderElm = styled.header<{ transparent: boolean }>`
+const HeaderElm = styled.header`
   ${tw`
     fixed 
     print:relative
     w-full 
     z-10 
     top-0 
-    bg-transparent
     sm:bg-white
     sm:dark:bg-typographyDark
     sm:shadow
-    transition-all 
-    duration-200
+    bg-white 
+    dark:bg-typographyDark 
+    shadow 
+    print:shadow-none 
+    print:bg-transparent
   `}
-
-  ${(props) =>
-    !props.transparent
-      ? tw`bg-white dark:bg-typographyDark shadow print:shadow-none print:bg-transparent`
-      : tw`bg-transparent lg:bg-transparent`}
 
   & .wrapper {
     ${tw`
@@ -77,26 +75,20 @@ const ProgressBar = styled.progress`
 `
 
 const Header: React.FC = () => {
-  const [scrollProgress, setScrollProgress] = useState(0)
   const { y } = useWindowScroll()
   const { height } = useWindowSize()
-
-  useEffect(() => {
-    setScrollProgress(
-      Math.min((y / (document.body.clientHeight - height)) * 100, 100)
-    )
-  }, [y, height])
+  const document = useDocument()
 
   return (
-    <HeaderElm transparent={scrollProgress === 0}>
+    <HeaderElm>
       <ProgressBar
-        max="100"
-        value={scrollProgress}
+        max={Math.max(document?.body?.clientHeight ?? 0, height + 1) - height}
+        value={y}
         aria-label="your scroll progress through the page"
       />
       <div className="wrapper">
         <h1 itemProp="name">
-          <a rel="root" href="/" itemProp="sameAs">
+          <a href="/" itemProp="sameAs">
             Eli Gundry
           </a>
         </h1>

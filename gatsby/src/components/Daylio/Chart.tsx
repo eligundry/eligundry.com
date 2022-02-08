@@ -12,6 +12,7 @@ import useFeelingsChartData from './useFeelingsChartData'
 import { MoodMapping } from './types'
 import { useHasTouch } from '../../utils/useIsMobile'
 import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+import { toolTipTheme } from '../../utils/charts'
 
 interface Props {
   months?: number
@@ -44,7 +45,9 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
   // Hovering on a point will change cursor to denote that it is a link
   const handlePointHover = useCallback<CoreChartOptions<ChartType>['onHover']>(
     (event, points) => {
+      // @ts-ignore
       if (event.native?.target?.style) {
+        // @ts-ignore
         event.native.target.style.cursor = points.length ? 'pointer' : 'default'
       }
     },
@@ -66,7 +69,7 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
               borderColor: theme`colors.primaryLite`,
               pointBorderColor: theme`colors.primary`,
               pointBackgroundColor: theme`colors.primary`,
-              radius: 5,
+              pointRadius: 5,
             },
           ],
         }}
@@ -81,42 +84,19 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
               display: false,
             },
             tooltip: {
-              displayColors: false,
-              titleFont: {
-                size: 14,
-              },
-              bodyFont: {
-                size: 16,
-              },
-              backgroundColor: prefersDark
-                ? theme`colors.typographyDark`
-                : theme`colors.white`,
-              footerColor: prefersDark
-                ? theme`colors.typographyDark`
-                : theme`colors.white`,
-              bodyColor: prefersDark
-                ? theme`colors.white`
-                : theme`colors.black`,
-              titleColor: prefersDark
-                ? theme`colors.white`
-                : theme`colors.black`,
-              borderWidth: 1,
-              borderColor: prefersDark
-                ? theme`colors.typographyLite`
-                : 'rgb(226, 232, 240)',
+              ...toolTipTheme(prefersDark),
               callbacks: {
-                title: (item, _) =>
-                  `📅   ${formatISO(parseISO(item[0].raw.x))}`,
-                // @ts-ignore
-                label: (item, _) =>
-                  `${Object.values(MoodMapping)[item.raw.y]}  I felt ${
-                    Object.keys(MoodMapping)[item.raw.y]
+                title: (item) => `📅   ${formatISO(parseISO(item[0].label))}`,
+                label: (item) =>
+                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${
+                    Object.keys(MoodMapping)[item.parsed.y]
                   }`,
               },
             },
           },
           scales: {
             x: {
+              // @ts-ignore
               min: timeWindow,
               ticks: {
                 callback: () => null,

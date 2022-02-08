@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -8,6 +9,7 @@ const main = async () => {
     company: { type: 'string' },
     contactName: { type: 'string' },
     content: { type: 'string', default: 'signature-link' },
+    path: { type: 'string', default: '/' },
   }).argv
 
   const p = new URLSearchParams({
@@ -23,7 +25,7 @@ const main = async () => {
     p.set('utm_term', 'person')
   }
 
-  console.log(`https://eligundry.com/?${p.toString()}`)
+  console.log(`https://eligundry.com${argv.path}?${p.toString()}`)
 }
 
 main()

@@ -31,7 +31,11 @@ const Post: React.FC<Props> = ({
   location,
   featuredImageURL,
 }) => (
-  <Article itemScope itemType={`https://schema.org/${itemType}`}>
+  <Article
+    // @ts-ignore
+    itemScope
+    itemType={`https://schema.org/${itemType}`}
+  >
     <link itemProp="author publisher" href="#eli-gundry" />
     {dateModified && <meta itemProp="dateModified" content={dateModified} />}
     {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
@@ -49,7 +53,11 @@ const Post: React.FC<Props> = ({
       )}
     </header>
     {preBody}
-    {body && <MDXRenderer itemProp="text">{body}</MDXRenderer>}
+    {body && (
+      <main className="body">
+        <MDXRenderer itemProp="text">{body}</MDXRenderer>
+      </main>
+    )}
     {footer && (
       <LazyLoad
         once
@@ -89,42 +97,56 @@ const Article = styled<React.FC>(Paper.article)`
     }
   }
 
-  & .twitter-tweet {
-    margin: 0 auto;
-  }
-
-  & img[src*='.gif'] {
-    margin: 0 auto;
-  }
-
-  & figure {
-    figcaption {
-      ${tw`italic text-center py-4 font-serif`}
+  & .body {
+    & .twitter-tweet {
+      margin: 0 auto;
     }
-  }
 
-  & .gatsby-resp-iframe-wrapper {
-    ${tw`my-4`}
+    & img[src*='.gif'] {
+      margin: 0 auto;
+    }
+
+    & figure {
+      & > p {
+        ${tw`mb-0`}
+      }
+
+      figcaption {
+        ${tw`italic text-center py-4 font-serif`}
+      }
+
+      & + p {
+        ${tw`mt-0`}
+      }
+    }
+
+    & *:not(p, ul, ol) + h1 {
+      ${tw`mt-4`}
+    }
+
+    & h1 + *:not(p, ul, ol) {
+      ${tw`mt-4`}
+    }
+
+    & .gatsby-resp-iframe-wrapper {
+      ${tw`my-4`}
+    }
+
+    & .float-right {
+      ${tw`float-right ml-2 sm:float-none sm:mx-auto`}
+    }
+
+    & .float-left {
+      ${tw`float-left mr-2 sm:float-none sm:mx-auto`}
+    }
+
+    & .center {
+      margin: 1em auto;
+    }
   }
 
   & .lazyload-footer-wrapper {
     min-height: 270px;
-  }
-
-  & .center {
-    margin: 1em auto;
-  }
-
-  & .float-right {
-    ${tw`float-right ml-2 sm:float-none sm:mx-auto`}
-  }
-
-  & .float-left {
-    ${tw`float-left mr-2 sm:float-none sm:mx-auto`}
-  }
-
-  & h1 + h2 {
-    ${tw`mt-4`}
   }
 `
 

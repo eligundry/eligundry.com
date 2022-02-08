@@ -1,0 +1,45 @@
+service: eligundryAPI
+
+package:
+  patterns:
+    - '!**'
+    - 'bin/api'
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: us-east-2
+  memorySize: 128
+  timeout: 30
+  iamManagedPolicies:
+    - arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess
+  vpc:
+    securityGroupIds:
+      - sg-0e3bfc2b96d5cc044
+    subnetIds:
+      - subnet-051997fc3d1383284
+      - subnet-026cddc40fb470bbc
+      - subnet-0e4ce11da300407ad
+
+functions:
+  api:
+    handler: bin/api
+    name: eliGundryApi
+    description: My personal API
+    environment:
+      AUTH_USER: ${env:AUTH_USER}
+      AUTH_PASSWORD: ${env:AUTH_PASSWORD}
+      NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
+      DATABASE_PATH: "/mnt/database/api.db"
+    events:
+      - http:
+          path: '/{proxy+}'
+          method: ANY
+
+resources:
+  extensions:
+    ApiLambdaFunction:
+      Properties:
+        FileSystemConfigs:
+          - Arn: 'arn:aws:elasticfilesystem:${aws:region}:${aws:accountId}:access-point/fsap-0f352c67f01d4f10b'
+            LocalMountPath: '/mnt/database'
