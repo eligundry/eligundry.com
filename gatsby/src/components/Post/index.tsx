@@ -132,10 +132,6 @@ const Article = styled<React.FC>(Paper.article)`
       ${tw`my-4`}
     }
 
-    & .lazyload-footer-wrapper {
-      min-height: 270px;
-    }
-
     & .float-right {
       ${tw`float-right ml-2 sm:float-none sm:mx-auto`}
     }
@@ -143,6 +139,14 @@ const Article = styled<React.FC>(Paper.article)`
     & .float-left {
       ${tw`float-left mr-2 sm:float-none sm:mx-auto`}
     }
+
+    & .center {
+      margin: 1em auto;
+    }
+  }
+
+  & .lazyload-footer-wrapper {
+    min-height: 270px;
   }
 `
 
