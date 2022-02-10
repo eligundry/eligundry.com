@@ -15,6 +15,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       copyright: config.copyright,
     },
   },
+  trailingSlash: 'never',
   plugins: [
     sitemapPlugin,
     'gatsby-plugin-typescript',
