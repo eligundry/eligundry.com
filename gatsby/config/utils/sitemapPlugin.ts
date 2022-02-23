@@ -44,7 +44,7 @@ const plugin = {
             modifiedTime
           }
         }
-        latestFeelingEntry: feelings {
+        latestFeelingEntry: feeling {
           time
         }
       }

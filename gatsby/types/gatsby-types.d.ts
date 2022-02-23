@@ -260,8 +260,6 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
-  readonly port: Maybe<Scalars['Int']>;
-  readonly host: Maybe<Scalars['String']>;
   readonly trailingSlash: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
@@ -992,8 +990,6 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  port: Maybe<IntQueryOperatorInput>;
-  host: Maybe<StringQueryOperatorInput>;
   trailingSlash: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
@@ -2471,8 +2467,6 @@ type SiteFieldsEnum =
   | 'siteMetadata.rssMetadata.title'
   | 'siteMetadata.rssMetadata.description'
   | 'siteMetadata.rssMetadata.copyright'
-  | 'port'
-  | 'host'
   | 'trailingSlash'
   | 'polyfill'
   | 'pathPrefix'
@@ -2608,8 +2602,6 @@ type SiteGroupConnection_groupArgs = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  readonly port: Maybe<IntQueryOperatorInput>;
-  readonly host: Maybe<StringQueryOperatorInput>;
   readonly trailingSlash: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
@@ -7384,11 +7376,6 @@ type LastfmAlbumSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsChartDataQuery = { readonly allFeeling: { readonly data: ReadonlyArray<Pick<Feeling, 'time' | 'mood'>> } };
-
 type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -7396,6 +7383,21 @@ type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly ch
       Pick<LastfmPlayback, 'date'>
       & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
     )> } };
+
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeeling: { readonly feelings: ReadonlyArray<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> } };
+
+type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseLatestFeelingsQuery = { readonly feeling: Maybe<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> };
+
+type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsChartDataQuery = { readonly allFeeling: { readonly data: ReadonlyArray<Pick<Feeling, 'time' | 'mood'>> } };
 
 type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7422,21 +7424,16 @@ type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ rea
         )> }
       ) }> } };
 
-type BlogPostBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type BlogPostBySlugQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<(
-      Pick<MdxFields, 'slug' | 'date'>
-      & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-    )> }
-  )> };
+type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<(
+          Pick<MdxFields, 'slug' | 'date'>
+          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
 
 type TalkBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7480,30 +7477,20 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+type BlogPostBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
 
 
-type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<(
-          Pick<MdxFields, 'slug' | 'date'>
-          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
-
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeeling: { readonly feelings: ReadonlyArray<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> } };
-
-type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseLatestFeelingsQuery = { readonly feeling: Maybe<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> };
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+type BlogPostBySlugQuery = { readonly mdx: Maybe<(
+    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<(
+      Pick<MdxFields, 'slug' | 'date'>
+      & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+    )> }
+  )> };
 
 }

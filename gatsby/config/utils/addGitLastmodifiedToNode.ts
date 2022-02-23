@@ -1,7 +1,6 @@
 /* eslint-disable no-console, vars-on-top, no-var, no-shadow, block-scoped-var */
 import path from 'path'
-import simpleGit from 'simple-git'
-import type { LogResult } from 'simple-git/typings/response'
+import simpleGit, { LogResult } from 'simple-git'
 import { CreateNodeArgs } from 'gatsby'
 import dateCompareDesc from 'date-fns/compareDesc'
 import util from 'util'

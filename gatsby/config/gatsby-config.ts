@@ -191,7 +191,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             output: '/feelings.rss',
             query: `
               {
-                allFeelings {
+                allFeeling {
                   nodes {
                     time
                     mood
@@ -201,7 +201,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               }
             `,
             serialize: (ctx) =>
-              ctx.query.allFeelings.nodes.map((entry) => ({
+              ctx.query.allFeeling.nodes.map((entry) => ({
                 date: entry.time,
                 author: 'Eli Gundry',
                 url: `https://eligundry.com/feelings#${entry.time}`,
