@@ -86,7 +86,6 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
     }
 
     if (node.internal.type === 'File') {
-      console.log(node.absolutePath)
       const log = await git.log({ file: node.absolutePath as string })
 
       if (log && log.latest) {
