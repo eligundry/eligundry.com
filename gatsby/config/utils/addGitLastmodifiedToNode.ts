@@ -84,8 +84,17 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
 
       return
     }
+
+    if (node.internal.type === 'File') {
+      console.log(node.absolutePath)
+      const log = await git.log({ file: node.absolutePath as string })
+
+      if (log && log.latest) {
+        addCommitFieldsToNode(log.latest)
+      }
+    }
   } catch (e) {
-    if (node.internal.type === 'SitePage') {
+    if (node.internal.type === 'SitePage' || node.internal.type === 'File') {
       createNodeField({
         node,
         name: 'latestCommitDate',
