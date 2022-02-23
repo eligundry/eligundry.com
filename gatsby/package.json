@@ -36,7 +36,6 @@
     "gatsby-remark-images": "^6.7.0",
     "gatsby-remark-prismjs": "^6.7.0",
     "gatsby-remark-responsive-iframe": "^5.7.0",
-    "gatsby-source-custom-api": "^2.3.2",
     "gatsby-source-filesystem": "^4.7.0",
     "gatsby-source-lastfm": "^0.1.2",
     "gatsby-transformer-sharp": "^4.7.0",

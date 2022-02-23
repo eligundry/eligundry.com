@@ -1,6 +1,5 @@
 /* eslint "no-console": "off" */
 import { ITSConfigFn } from 'gatsby-plugin-ts-config'
-import { SourceNodesArgs } from 'gatsby'
 import path from 'path'
 import kebabCase from 'lodash/kebabCase'
 import parseISO from 'date-fns/parseISO'
@@ -8,6 +7,7 @@ import isValidDate from 'date-fns/isValid'
 
 import sourceSingleImage from './utils/sourceSingleImage'
 import addGitLastModifiedToNode from './utils/addGitLastmodifiedToNode'
+import loadFeelings from './utils/loadFeelings'
 
 const gatsbyNode: ITSConfigFn<'node'> = () => ({
   onCreateNode: async (args) => {
@@ -180,15 +180,26 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
         fields: SitePageFields
       }
       `,
+      `
+      type Feeling implements Node @dontInfer {
+        time: Date!
+        mood: String!
+        activities: [String]
+        notes: [String!]
+      }
+      `,
     ])
   },
-  sourceNodes: async (args: SourceNodesArgs) => {
-    await sourceSingleImage(
-      args,
-      // ts is to cache bust as it should be downloaded for each build
-      `https://lastfm-collage.herokuapp.com/collage?username=eli_pwnd&method=album&period=7day&column=3&row=3&caption=false&scrobble=false&ts=${new Date().toISOString()}`,
-      'last-fm-cover.jpg'
-    )
+  sourceNodes: async (args, options) => {
+    await Promise.all([
+      sourceSingleImage(
+        args,
+        // ts is to cache bust as it should be downloaded for each build
+        `https://lastfm-collage.herokuapp.com/collage?username=eli_pwnd&method=album&period=7day&column=3&row=3&caption=false&scrobble=false&ts=${new Date().toISOString()}`,
+        'last-fm-cover.jpg'
+      ),
+      loadFeelings(args, options, () => {}),
+    ])
   },
 })
 

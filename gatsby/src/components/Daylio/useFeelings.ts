@@ -6,7 +6,7 @@ export default function useFeelings(): DaylioEntry[] {
   // Fetch the last 6 months of feelings, let things disappear over time
   const entries = useStaticQuery<GatsbyTypes.UseFeelingsQuery>(graphql`
     query UseFeelings {
-      allFeelings(limit: 183) {
+      allFeeling(limit: 183) {
         feelings: nodes {
           time
           mood
@@ -17,7 +17,7 @@ export default function useFeelings(): DaylioEntry[] {
     }
   `)
 
-  return entries.allFeelings.feelings.map((entry) => ({
+  return entries.allFeeling.feelings.map((entry) => ({
     ...entry,
     time: parseISO(entry.time),
   })) as DaylioEntry[]

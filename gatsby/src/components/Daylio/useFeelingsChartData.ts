@@ -8,7 +8,7 @@ import { MoodMapping } from './types'
 export default function useFeelingsChartData(timeWindow: Date) {
   const entries = useStaticQuery<GatsbyTypes.UseFeelingsChartDataQuery>(graphql`
     query UseFeelingsChartData {
-      allFeelings(limit: 100) {
+      allFeeling(limit: 100) {
         data: nodes {
           time
           mood
@@ -17,7 +17,7 @@ export default function useFeelingsChartData(timeWindow: Date) {
     }
   `)
 
-  return entries.allFeelings.data
+  return entries.allFeeling.data
     .map((entry) => ({
       x: parseISO(entry.time),
       y: Object.keys(MoodMapping).findIndex((m) => m === entry.mood),

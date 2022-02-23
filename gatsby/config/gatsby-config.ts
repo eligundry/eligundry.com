@@ -56,21 +56,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
-      resolve: 'gatsby-source-custom-api',
-      options: {
-        url: 'https://api.eligundry.com/api/feelings',
-        rootKey: 'feelings',
-        schemas: {
-          feelings: `
-            time: String!
-            mood: String!
-            activities: [String]
-            notes: [String!]
-          `,
-        },
-      },
-    },
-    {
       resolve: 'gatsby-source-lastfm',
       options: {
         api_key: process.env.LAST_FM_API_KEY,
