@@ -56,21 +56,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
     {
-      resolve: 'gatsby-source-custom-api',
-      options: {
-        url: 'https://api.eligundry.com/api/feelings',
-        rootKey: 'feelings',
-        schemas: {
-          feelings: `
-            time: String!
-            mood: String!
-            activities: [String]
-            notes: [String!]
-          `,
-        },
-      },
-    },
-    {
       resolve: 'gatsby-source-lastfm',
       options: {
         api_key: process.env.LAST_FM_API_KEY,
@@ -206,7 +191,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
             output: '/feelings.rss',
             query: `
               {
-                allFeelings {
+                allFeeling {
                   nodes {
                     time
                     mood
@@ -216,7 +201,7 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
               }
             `,
             serialize: (ctx) =>
-              ctx.query.allFeelings.nodes.map((entry) => ({
+              ctx.query.allFeeling.nodes.map((entry) => ({
                 date: entry.time,
                 author: 'Eli Gundry',
                 url: `https://eligundry.com/feelings#${entry.time}`,

@@ -66,6 +66,7 @@ type File = Node & {
   readonly birthtime: Maybe<Scalars['Date']>;
   /** @deprecated Use `birthTime` instead */
   readonly birthtimeMs: Maybe<Scalars['Float']>;
+  readonly fields: Maybe<SitePageFields>;
   readonly blksize: Maybe<Scalars['Int']>;
   readonly blocks: Maybe<Scalars['Int']>;
   readonly url: Maybe<Scalars['String']>;
@@ -260,6 +261,8 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
+  readonly port: Maybe<Scalars['Int']>;
+  readonly host: Maybe<Scalars['String']>;
   readonly trailingSlash: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
@@ -766,8 +769,8 @@ type SitePageFields = {
   readonly latestCommit: Maybe<GitCommit>;
 };
 
-type feelings = Node & {
-  readonly time: Scalars['String'];
+type Feeling = Node & {
+  readonly time: Scalars['Date'];
   readonly mood: Scalars['String'];
   readonly activities: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly notes: Maybe<ReadonlyArray<Scalars['String']>>;
@@ -870,8 +873,8 @@ type Query = {
   readonly allMdx: MdxConnection;
   readonly downloadedImage: Maybe<DownloadedImage>;
   readonly allDownloadedImage: DownloadedImageConnection;
-  readonly feelings: Maybe<feelings>;
-  readonly allFeelings: feelingsConnection;
+  readonly feeling: Maybe<Feeling>;
+  readonly allFeeling: FeelingConnection;
   readonly lastfmTrack: Maybe<LastfmTrack>;
   readonly allLastfmTrack: LastfmTrackConnection;
   readonly lastfmPlayback: Maybe<LastfmPlayback>;
@@ -917,6 +920,7 @@ type Query_fileArgs = {
   ctime: Maybe<DateQueryOperatorInput>;
   birthtime: Maybe<DateQueryOperatorInput>;
   birthtimeMs: Maybe<FloatQueryOperatorInput>;
+  fields: Maybe<SitePageFieldsFilterInput>;
   blksize: Maybe<IntQueryOperatorInput>;
   blocks: Maybe<IntQueryOperatorInput>;
   url: Maybe<StringQueryOperatorInput>;
@@ -990,6 +994,8 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  port: Maybe<IntQueryOperatorInput>;
+  host: Maybe<StringQueryOperatorInput>;
   trailingSlash: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
@@ -1197,8 +1203,8 @@ type Query_allDownloadedImageArgs = {
 };
 
 
-type Query_feelingsArgs = {
-  time: Maybe<StringQueryOperatorInput>;
+type Query_feelingArgs = {
+  time: Maybe<DateQueryOperatorInput>;
   mood: Maybe<StringQueryOperatorInput>;
   activities: Maybe<StringQueryOperatorInput>;
   notes: Maybe<StringQueryOperatorInput>;
@@ -1209,9 +1215,9 @@ type Query_feelingsArgs = {
 };
 
 
-type Query_allFeelingsArgs = {
-  filter: Maybe<feelingsFilterInput>;
-  sort: Maybe<feelingsSortInput>;
+type Query_allFeelingArgs = {
+  filter: Maybe<FeelingFilterInput>;
+  sort: Maybe<FeelingSortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -1361,6 +1367,16 @@ type FloatQueryOperatorInput = {
   readonly lte: Maybe<Scalars['Float']>;
   readonly in: Maybe<ReadonlyArray<Maybe<Scalars['Float']>>>;
   readonly nin: Maybe<ReadonlyArray<Maybe<Scalars['Float']>>>;
+};
+
+type SitePageFieldsFilterInput = {
+  readonly latestCommit: Maybe<GitCommitFilterInput>;
+};
+
+type GitCommitFilterInput = {
+  readonly date: Maybe<DateQueryOperatorInput>;
+  readonly message: Maybe<StringQueryOperatorInput>;
+  readonly hash: Maybe<StringQueryOperatorInput>;
 };
 
 type ImageSharpFilterListInput = {
@@ -1528,6 +1544,7 @@ type FileFilterInput = {
   readonly ctime: Maybe<DateQueryOperatorInput>;
   readonly birthtime: Maybe<DateQueryOperatorInput>;
   readonly birthtimeMs: Maybe<FloatQueryOperatorInput>;
+  readonly fields: Maybe<SitePageFieldsFilterInput>;
   readonly blksize: Maybe<IntQueryOperatorInput>;
   readonly blocks: Maybe<IntQueryOperatorInput>;
   readonly url: Maybe<StringQueryOperatorInput>;
@@ -1656,6 +1673,9 @@ type FileFieldsEnum =
   | 'ctime'
   | 'birthtime'
   | 'birthtimeMs'
+  | 'fields.latestCommit.date'
+  | 'fields.latestCommit.message'
+  | 'fields.latestCommit.hash'
   | 'blksize'
   | 'blocks'
   | 'url'
@@ -2467,6 +2487,8 @@ type SiteFieldsEnum =
   | 'siteMetadata.rssMetadata.title'
   | 'siteMetadata.rssMetadata.description'
   | 'siteMetadata.rssMetadata.copyright'
+  | 'port'
+  | 'host'
   | 'trailingSlash'
   | 'polyfill'
   | 'pathPrefix'
@@ -2602,6 +2624,8 @@ type SiteGroupConnection_groupArgs = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  readonly port: Maybe<IntQueryOperatorInput>;
+  readonly host: Maybe<StringQueryOperatorInput>;
   readonly trailingSlash: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
@@ -2831,16 +2855,6 @@ type SitePluginFilterInput = {
   readonly parent: Maybe<NodeFilterInput>;
   readonly children: Maybe<NodeFilterListInput>;
   readonly internal: Maybe<InternalFilterInput>;
-};
-
-type SitePageFieldsFilterInput = {
-  readonly latestCommit: Maybe<GitCommitFilterInput>;
-};
-
-type GitCommitFilterInput = {
-  readonly date: Maybe<DateQueryOperatorInput>;
-  readonly message: Maybe<StringQueryOperatorInput>;
-  readonly hash: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePageConnection = {
@@ -3767,6 +3781,9 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.ctime'
   | 'coverImage.birthtime'
   | 'coverImage.birthtimeMs'
+  | 'coverImage.fields.latestCommit.date'
+  | 'coverImage.fields.latestCommit.message'
+  | 'coverImage.fields.latestCommit.hash'
   | 'coverImage.blksize'
   | 'coverImage.blocks'
   | 'coverImage.url'
@@ -4505,6 +4522,9 @@ type DownloadedImageFieldsEnum =
   | 'image.ctime'
   | 'image.birthtime'
   | 'image.birthtimeMs'
+  | 'image.fields.latestCommit.date'
+  | 'image.fields.latestCommit.message'
+  | 'image.fields.latestCommit.hash'
   | 'image.blksize'
   | 'image.blocks'
   | 'image.url'
@@ -4862,52 +4882,52 @@ type DownloadedImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type feelingsConnection = {
+type FeelingConnection = {
   readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<feelingsEdge>;
-  readonly nodes: ReadonlyArray<feelings>;
+  readonly edges: ReadonlyArray<FeelingEdge>;
+  readonly nodes: ReadonlyArray<Feeling>;
   readonly pageInfo: PageInfo;
   readonly distinct: ReadonlyArray<Scalars['String']>;
   readonly max: Maybe<Scalars['Float']>;
   readonly min: Maybe<Scalars['Float']>;
   readonly sum: Maybe<Scalars['Float']>;
-  readonly group: ReadonlyArray<feelingsGroupConnection>;
+  readonly group: ReadonlyArray<FeelingGroupConnection>;
 };
 
 
-type feelingsConnection_distinctArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_distinctArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_maxArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_maxArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_minArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_minArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_sumArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_sumArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_groupArgs = {
+type FeelingConnection_groupArgs = {
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
-  field: feelingsFieldsEnum;
+  field: FeelingFieldsEnum;
 };
 
-type feelingsEdge = {
-  readonly next: Maybe<feelings>;
-  readonly node: feelings;
-  readonly previous: Maybe<feelings>;
+type FeelingEdge = {
+  readonly next: Maybe<Feeling>;
+  readonly node: Feeling;
+  readonly previous: Maybe<Feeling>;
 };
 
-type feelingsFieldsEnum =
+type FeelingFieldsEnum =
   | 'time'
   | 'mood'
   | 'activities'
@@ -4999,49 +5019,49 @@ type feelingsFieldsEnum =
   | 'internal.owner'
   | 'internal.type';
 
-type feelingsGroupConnection = {
+type FeelingGroupConnection = {
   readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<feelingsEdge>;
-  readonly nodes: ReadonlyArray<feelings>;
+  readonly edges: ReadonlyArray<FeelingEdge>;
+  readonly nodes: ReadonlyArray<Feeling>;
   readonly pageInfo: PageInfo;
   readonly distinct: ReadonlyArray<Scalars['String']>;
   readonly max: Maybe<Scalars['Float']>;
   readonly min: Maybe<Scalars['Float']>;
   readonly sum: Maybe<Scalars['Float']>;
-  readonly group: ReadonlyArray<feelingsGroupConnection>;
+  readonly group: ReadonlyArray<FeelingGroupConnection>;
   readonly field: Scalars['String'];
   readonly fieldValue: Maybe<Scalars['String']>;
 };
 
 
-type feelingsGroupConnection_distinctArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_distinctArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_maxArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_maxArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_minArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_minArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_sumArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_sumArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_groupArgs = {
+type FeelingGroupConnection_groupArgs = {
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
-  field: feelingsFieldsEnum;
+  field: FeelingFieldsEnum;
 };
 
-type feelingsFilterInput = {
-  readonly time: Maybe<StringQueryOperatorInput>;
+type FeelingFilterInput = {
+  readonly time: Maybe<DateQueryOperatorInput>;
   readonly mood: Maybe<StringQueryOperatorInput>;
   readonly activities: Maybe<StringQueryOperatorInput>;
   readonly notes: Maybe<StringQueryOperatorInput>;
@@ -5051,8 +5071,8 @@ type feelingsFilterInput = {
   readonly internal: Maybe<InternalFilterInput>;
 };
 
-type feelingsSortInput = {
-  readonly fields: Maybe<ReadonlyArray<Maybe<feelingsFieldsEnum>>>;
+type FeelingSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<FeelingFieldsEnum>>>;
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
@@ -7376,20 +7396,42 @@ type LastfmAlbumSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
+type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+type UseLatestFeelingsQuery = { readonly feeling: Maybe<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> };
 
 type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
+type UseFeelingsQuery = { readonly allFeeling: { readonly feelings: ReadonlyArray<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
-type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
+      Pick<LastfmPlayback, 'date'>
+      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
+    )> } };
+
+type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsChartDataQuery = { readonly allFeeling: { readonly data: ReadonlyArray<Pick<Feeling, 'time' | 'mood'>> } };
+
+type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<(
+          Pick<MdxFields, 'slug' | 'date'>
+          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+        )>, readonly frontmatter: Maybe<(
+          Pick<MdxFrontmatter, 'title' | 'date' | 'description' | 'tags'>
+          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+        )> }
+      ) }> } };
 
 type BlogPostBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -7407,26 +7449,15 @@ type BlogPostBySlugQuery = { readonly mdx: Maybe<(
     )> }
   )> };
 
-type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
+type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<(
-          Pick<MdxFields, 'slug' | 'date'>
-          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-        )>, readonly frontmatter: Maybe<(
-          Pick<MdxFrontmatter, 'title' | 'date' | 'description' | 'tags'>
-          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-        )> }
-      ) }> } };
-
-type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }>, readonly playback: { readonly scrobbles: ReadonlyArray<(
-      Pick<LastfmPlayback, 'date'>
-      & { readonly track: Maybe<{ readonly album: Maybe<Pick<LastfmAlbum, 'name'>>, readonly artist: Maybe<Pick<LastfmArtist, 'name'>> }> }
+type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
+    )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
+      Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
+      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
@@ -7455,28 +7486,6 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
-type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<(
-          Pick<MdxFields, 'slug' | 'date'>
-          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
-      ) }> } };
-
-type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'title' | 'author' | 'isbn' | 'url' | 'started'>
-      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
-    )> }, readonly recentlyFinished: { readonly books: ReadonlyArray<(
-      Pick<GoodreadsBook, 'finished' | 'title' | 'author' | 'isbn' | 'url' | 'started'>
-      & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
-    )> } };
-
 type TalkBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7492,5 +7501,21 @@ type TalkBySlugQuery = { readonly mdx: Maybe<(
       & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
     )> }
   )> };
+
+type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<(
+          Pick<MdxFields, 'slug' | 'date'>
+          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
+        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+      ) }> } };
+
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

@@ -1,7 +1,6 @@
 /* eslint-disable no-console, vars-on-top, no-var, no-shadow, block-scoped-var */
 import path from 'path'
-import simpleGit from 'simple-git'
-import type { LogResult } from 'simple-git/typings/response'
+import simpleGit, { LogResult } from 'simple-git'
 import { CreateNodeArgs } from 'gatsby'
 import dateCompareDesc from 'date-fns/compareDesc'
 import util from 'util'
@@ -85,8 +84,16 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
 
       return
     }
+
+    if (node.internal.type === 'File') {
+      const log = await git.log({ file: node.absolutePath as string })
+
+      if (log && log.latest) {
+        addCommitFieldsToNode(log.latest)
+      }
+    }
   } catch (e) {
-    if (node.internal.type === 'SitePage') {
+    if (node.internal.type === 'SitePage' || node.internal.type === 'File') {
       createNodeField({
         node,
         name: 'latestCommitDate',

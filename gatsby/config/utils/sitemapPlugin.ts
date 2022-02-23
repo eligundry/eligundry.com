@@ -41,10 +41,14 @@ const plugin = {
         staticHTMLFiles: allFile(filter: {extension: {eq: "html"}}) {
           nodes {
             relativePath
-            modifiedTime
+            fields {
+              latestCommit {
+                date
+              }
+            }
           }
         }
-        latestFeelingEntry: feelings {
+        latestFeelingEntry: feeling {
           time
         }
       }
@@ -129,7 +133,9 @@ const plugin = {
       sitemapEntries.push(
         ...query.staticHTMLFiles.nodes.map((node) => ({
           path: `/${node.relativePath}`,
-          lastmodISO: new Date(node.modifiedTime).toISOString(),
+          lastmodISO: node.fields?.latestCommit?.date
+            ? new Date(node.fields.latestCommit.date).toISOString()
+            : null,
         }))
       )
 
@@ -146,7 +152,7 @@ const plugin = {
 
 interface SitemapSerialize {
   path: string
-  lastmodISO?: string
+  lastmodISO?: string | null
 }
 
 interface SitemapQuery {
@@ -175,7 +181,11 @@ interface SitemapQuery {
   staticHTMLFiles: {
     nodes: {
       relativePath: string
-      modifiedTime: string
+      fields: null | {
+        latestCommit: null | {
+          date: string | null
+        }
+      }
     }[]
   }
   latestFeelingEntry: {
