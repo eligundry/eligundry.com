@@ -2,38 +2,37 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
 
+import Paper from '../components/Shared/Paper'
 import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO'
-import Paper from '../components/Shared/Paper'
 
-const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
+const Talks: React.FC<PageProps<GatsbyTypes.TalkListingQuery>> = (props) => {
   const postEdges = props.data.allMdx.edges
 
   return (
     <Layout>
       <Paper className="listing-container">
-        <Helmet title="Blog" />
+        <Helmet title="Talks" />
         <SEO path={props.path} />
         <PostListing
           postEdges={postEdges}
-          pathPrefix="blog"
-          itemType="BlogPosting"
+          pathPrefix="talks"
+          itemType="CreativeWork"
         />
       </Paper>
     </Layout>
   )
 }
 
-export default Listing
+export default Talks
 
-/* eslint no-undef: "off" */
-export const listingQuery = graphql`
-  query BlogListing {
+export const talkListingQuery = graphql`
+  query TalkListing {
     allMdx(
       sort: { fields: [frontmatter___date], order: DESC }
       filter: {
-        collection: { eq: "posts" }
+        collection: { eq: "talks" }
         frontmatter: { draft: { ne: true } }
       }
     ) {
@@ -50,12 +49,9 @@ export const listingQuery = graphql`
           timeToRead
           frontmatter {
             title
+            tags
             date
             description
-            tags
-            cover {
-              publicURL
-            }
           }
         }
       }

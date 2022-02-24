@@ -62,9 +62,7 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
   createPages: async ({ graphql, actions }) => {
     const { createPage } = actions
     const postPage = path.resolve('src/templates/post.tsx')
-    const listingPage = path.resolve('src/templates/listing.tsx')
     const talkPage = path.resolve('src/templates/talk.tsx')
-    const talkListingPage = path.resolve('src/templates/talkListing.tsx')
 
     interface MarkdownQuery {
       allMdx: {
@@ -111,20 +109,6 @@ const gatsbyNode: ITSConfigFn<'node'> = () => ({
     }
 
     const postsEdges = markdownQueryResult.data.allMdx.edges
-
-    // Blog post listing
-    createPage({
-      path: '/blog',
-      component: listingPage,
-      context: {},
-    })
-
-    // Talk post listing
-    createPage({
-      path: '/talks',
-      component: talkListingPage,
-      context: {},
-    })
 
     // Post and talk page creation
     postsEdges.forEach((edge) => {
