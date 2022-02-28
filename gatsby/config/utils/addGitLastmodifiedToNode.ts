@@ -14,14 +14,14 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
     actions: { createNodeField },
   } = args
 
-  const addCommitFieldsToNode = (commit: LogResult['latest']) => {
+  const addCommitFieldsToNode = (commit: null | LogResult['latest']) => {
     createNodeField({
       node,
       name: 'latestCommit',
       value: {
-        date: commit.date,
-        message: commit.message,
-        hash: commit.hash,
+        date: commit?.date ?? null,
+        message: commit?.message ?? null,
+        hash: commit?.hash ?? null,
       },
     })
   }
@@ -94,23 +94,7 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
     }
   } catch (e) {
     if (node.internal.type === 'SitePage' || node.internal.type === 'File') {
-      createNodeField({
-        node,
-        name: 'latestCommitDate',
-        value: null,
-      })
-
-      createNodeField({
-        node,
-        name: 'latestCommitMessage',
-        value: null,
-      })
-
-      createNodeField({
-        node,
-        name: 'latestCommit',
-        value: null,
-      })
+      addCommitFieldsToNode(null)
     }
 
     console.error(

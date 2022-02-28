@@ -21,7 +21,7 @@ const FeelingsPage: React.FC<PageProps> = (props) => {
       <SEO
         path="feelings"
         title="Feelings"
-        description="A log of my feelings"
+        description="A log of my feelings. This really more of public diary. It's wild how long I've kept this going."
         image={feelingsImage}
       />
       <Paper>

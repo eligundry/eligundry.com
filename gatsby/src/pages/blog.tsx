@@ -1,5 +1,4 @@
 import React from 'react'
-import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
 
 import Layout from '../layout'
@@ -12,9 +11,12 @@ const Blog: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
 
   return (
     <Layout>
+      <SEO
+        title="Blog"
+        description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+        path={props.path}
+      />
       <Paper className="listing-container">
-        <Helmet title="Blog" />
-        <SEO path={props.path} />
         <PostListing
           postEdges={postEdges}
           pathPrefix="blog"
