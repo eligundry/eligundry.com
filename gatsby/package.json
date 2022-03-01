@@ -17,7 +17,7 @@
     "gatsby-plugin-catch-links": "^4.8.0",
     "gatsby-plugin-feed": "^4.8.0",
     "gatsby-plugin-google-tagmanager": "^4.8.0",
-    "gatsby-plugin-image": "^2.8.0",
+    "gatsby-plugin-image": "^2.8.1",
     "gatsby-plugin-lodash": "^5.8.0",
     "gatsby-plugin-mdx": "^3.8.0",
     "gatsby-plugin-netlify": "^4.1.0",
