@@ -26,7 +26,6 @@
     "gatsby-plugin-sharp": "^4.9.0",
     "gatsby-plugin-sitemap": "^5.9.0",
     "gatsby-plugin-styled-components": "^5.9.0",
-    "gatsby-plugin-ts-config": "^1.1.5",
     "gatsby-plugin-twitter": "^4.9.0",
     "gatsby-plugin-typegen": "^2.2.4",
     "gatsby-plugin-typescript": "^4.9.0",
@@ -83,7 +82,6 @@
     "gatsby"
   ],
   "license": "MIT",
-  "main": "n/a",
   "scripts": {
     "start": "gatsby develop",
     "develop": "gatsby develop",

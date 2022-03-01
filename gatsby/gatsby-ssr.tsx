@@ -3,8 +3,8 @@ import React from 'react'
 import { GatsbySSR } from 'gatsby'
 import { IconContext } from 'react-icons'
 
-import ThemeModeProvider from '../src/layout/ThemeModeProvider'
-import { FancyBackgroundPaintWorkletRegistration } from '../src/layout/FancyBackground'
+import ThemeModeProvider from './src/layout/ThemeModeProvider'
+import { FancyBackgroundPaintWorkletRegistration } from './src/layout/FancyBackground'
 
 export const wrapRootElement: GatsbySSR['wrapRootElement'] = ({ element }) => (
   <ThemeModeProvider>

@@ -1,4 +1,4 @@
-# eligundry.com
+# [eligundry.com](https://eligundry.com)
 
 My personal site powered by Gatsby.
 

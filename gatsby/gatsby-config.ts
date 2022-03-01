@@ -1,10 +1,13 @@
-import { ITSConfigFn } from 'gatsby-plugin-ts-config'
+import dotenv from 'dotenv'
+import { GatsbyConfig } from 'gatsby'
 import { urlJoin as urljoin } from 'url-join-ts'
 
-import config from '../data/SiteConfig'
-import sitemapPlugin from './utils/sitemapPlugin'
+import config from './data/SiteConfig'
+import sitemapPlugin from './config/utils/sitemapPlugin'
 
-const gatsbyConfig: ITSConfigFn<'config'> = () => ({
+dotenv.config()
+
+const gatsbyConfig: GatsbyConfig = {
   siteMetadata: {
     siteUrl: urljoin(config.siteUrl, config.pathPrefix),
     rssMetadata: {
@@ -246,6 +249,6 @@ const gatsbyConfig: ITSConfigFn<'config'> = () => ({
       },
     },
   ].filter(Boolean),
-})
+}
 
 export default gatsbyConfig
