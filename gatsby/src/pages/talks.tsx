@@ -1,5 +1,4 @@
 import React from 'react'
-import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
 
 import Paper from '../components/Shared/Paper'
@@ -7,16 +6,17 @@ import Layout from '../layout'
 import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO'
 
-const TalkListing: React.FC<PageProps<GatsbyTypes.TalkListingQuery>> = (
-  props
-) => {
+const Talks: React.FC<PageProps<GatsbyTypes.TalkListingQuery>> = (props) => {
   const postEdges = props.data.allMdx.edges
 
   return (
     <Layout>
+      <SEO
+        title="Talks"
+        description="Talks that I have given at meetups and conferences."
+        path={props.path}
+      />
       <Paper className="listing-container">
-        <Helmet title="Talks" />
-        <SEO path={props.path} />
         <PostListing
           postEdges={postEdges}
           pathPrefix="talks"
@@ -27,7 +27,7 @@ const TalkListing: React.FC<PageProps<GatsbyTypes.TalkListingQuery>> = (
   )
 }
 
-export default TalkListing
+export default Talks
 
 export const talkListingQuery = graphql`
   query TalkListing {
@@ -40,9 +40,8 @@ export const talkListingQuery = graphql`
     ) {
       edges {
         node {
+          slug
           fields {
-            slug
-            date
             latestCommit {
               date
             }
@@ -51,6 +50,7 @@ export const talkListingQuery = graphql`
           timeToRead
           frontmatter {
             title
+            date
             tags
             date
             description

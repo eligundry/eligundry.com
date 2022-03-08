@@ -1,5 +1,4 @@
 import React from 'react'
-import Helmet from 'react-helmet'
 import { graphql, PageProps } from 'gatsby'
 
 import Layout from '../layout'
@@ -7,14 +6,17 @@ import PostListing from '../components/PostListing/PostListing'
 import SEO from '../components/SEO'
 import Paper from '../components/Shared/Paper'
 
-const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
+const Blog: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
   const postEdges = props.data.allMdx.edges
 
   return (
     <Layout>
+      <SEO
+        title="Blog"
+        description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+        path={props.path}
+      />
       <Paper className="listing-container">
-        <Helmet title="Blog" />
-        <SEO path={props.path} />
         <PostListing
           postEdges={postEdges}
           pathPrefix="blog"
@@ -25,7 +27,7 @@ const Listing: React.FC<PageProps<GatsbyTypes.BlogListingQuery>> = (props) => {
   )
 }
 
-export default Listing
+export default Blog
 
 /* eslint no-undef: "off" */
 export const listingQuery = graphql`
@@ -39,9 +41,8 @@ export const listingQuery = graphql`
     ) {
       edges {
         node {
+          slug
           fields {
-            slug
-            date
             latestCommit {
               date
             }

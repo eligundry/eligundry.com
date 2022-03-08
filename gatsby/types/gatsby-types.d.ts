@@ -66,6 +66,7 @@ type File = Node & {
   readonly birthtime: Maybe<Scalars['Date']>;
   /** @deprecated Use `birthTime` instead */
   readonly birthtimeMs: Maybe<Scalars['Float']>;
+  readonly fields: Maybe<SitePageFields>;
   readonly blksize: Maybe<Scalars['Int']>;
   readonly blocks: Maybe<Scalars['Int']>;
   readonly url: Maybe<Scalars['String']>;
@@ -260,8 +261,7 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
-  readonly port: Maybe<Scalars['Int']>;
-  readonly host: Maybe<Scalars['String']>;
+  readonly trailingSlash: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly jsxRuntime: Maybe<Scalars['String']>;
@@ -646,11 +646,11 @@ type GoodreadsBook = Node & {
 
 type MdxFrontmatter = {
   readonly title: Scalars['String'];
-  readonly date: Maybe<Scalars['Date']>;
   readonly description: Maybe<Scalars['String']>;
+  readonly date: Maybe<Scalars['Date']>;
+  readonly slug: Maybe<Scalars['String']>;
   readonly cover: Maybe<File>;
   readonly tags: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
-  readonly slug: Maybe<Scalars['String']>;
   readonly location: Maybe<Scalars['String']>;
   readonly draft: Maybe<Scalars['Boolean']>;
 };
@@ -720,17 +720,7 @@ type Mdx_tableOfContentsArgs = {
 };
 
 type MdxFields = {
-  readonly date: Maybe<Scalars['Date']>;
-  readonly slug: Maybe<Scalars['String']>;
   readonly latestCommit: Maybe<MdxFieldsLatestCommit>;
-};
-
-
-type MdxFields_dateArgs = {
-  formatString: Maybe<Scalars['String']>;
-  fromNow: Maybe<Scalars['Boolean']>;
-  difference: Maybe<Scalars['String']>;
-  locale: Maybe<Scalars['String']>;
 };
 
 type MdxFieldsLatestCommit = {
@@ -767,8 +757,8 @@ type SitePageFields = {
   readonly latestCommit: Maybe<GitCommit>;
 };
 
-type feelings = Node & {
-  readonly time: Scalars['String'];
+type Feeling = Node & {
+  readonly time: Scalars['Date'];
   readonly mood: Scalars['String'];
   readonly activities: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly notes: Maybe<ReadonlyArray<Scalars['String']>>;
@@ -871,8 +861,8 @@ type Query = {
   readonly allMdx: MdxConnection;
   readonly downloadedImage: Maybe<DownloadedImage>;
   readonly allDownloadedImage: DownloadedImageConnection;
-  readonly feelings: Maybe<feelings>;
-  readonly allFeelings: feelingsConnection;
+  readonly feeling: Maybe<Feeling>;
+  readonly allFeeling: FeelingConnection;
   readonly lastfmTrack: Maybe<LastfmTrack>;
   readonly allLastfmTrack: LastfmTrackConnection;
   readonly lastfmPlayback: Maybe<LastfmPlayback>;
@@ -918,6 +908,7 @@ type Query_fileArgs = {
   ctime: Maybe<DateQueryOperatorInput>;
   birthtime: Maybe<DateQueryOperatorInput>;
   birthtimeMs: Maybe<FloatQueryOperatorInput>;
+  fields: Maybe<SitePageFieldsFilterInput>;
   blksize: Maybe<IntQueryOperatorInput>;
   blocks: Maybe<IntQueryOperatorInput>;
   url: Maybe<StringQueryOperatorInput>;
@@ -991,8 +982,7 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  port: Maybe<IntQueryOperatorInput>;
-  host: Maybe<StringQueryOperatorInput>;
+  trailingSlash: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   jsxRuntime: Maybe<StringQueryOperatorInput>;
@@ -1199,8 +1189,8 @@ type Query_allDownloadedImageArgs = {
 };
 
 
-type Query_feelingsArgs = {
-  time: Maybe<StringQueryOperatorInput>;
+type Query_feelingArgs = {
+  time: Maybe<DateQueryOperatorInput>;
   mood: Maybe<StringQueryOperatorInput>;
   activities: Maybe<StringQueryOperatorInput>;
   notes: Maybe<StringQueryOperatorInput>;
@@ -1211,9 +1201,9 @@ type Query_feelingsArgs = {
 };
 
 
-type Query_allFeelingsArgs = {
-  filter: Maybe<feelingsFilterInput>;
-  sort: Maybe<feelingsSortInput>;
+type Query_allFeelingArgs = {
+  filter: Maybe<FeelingFilterInput>;
+  sort: Maybe<FeelingSortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -1365,6 +1355,16 @@ type FloatQueryOperatorInput = {
   readonly nin: Maybe<ReadonlyArray<Maybe<Scalars['Float']>>>;
 };
 
+type SitePageFieldsFilterInput = {
+  readonly latestCommit: Maybe<GitCommitFilterInput>;
+};
+
+type GitCommitFilterInput = {
+  readonly date: Maybe<DateQueryOperatorInput>;
+  readonly message: Maybe<StringQueryOperatorInput>;
+  readonly hash: Maybe<StringQueryOperatorInput>;
+};
+
 type ImageSharpFilterListInput = {
   readonly elemMatch: Maybe<ImageSharpFilterInput>;
 };
@@ -1489,11 +1489,11 @@ type MdxFilterInput = {
 
 type MdxFrontmatterFilterInput = {
   readonly title: Maybe<StringQueryOperatorInput>;
-  readonly date: Maybe<DateQueryOperatorInput>;
   readonly description: Maybe<StringQueryOperatorInput>;
+  readonly date: Maybe<DateQueryOperatorInput>;
+  readonly slug: Maybe<StringQueryOperatorInput>;
   readonly cover: Maybe<FileFilterInput>;
   readonly tags: Maybe<StringQueryOperatorInput>;
-  readonly slug: Maybe<StringQueryOperatorInput>;
   readonly location: Maybe<StringQueryOperatorInput>;
   readonly draft: Maybe<BooleanQueryOperatorInput>;
 };
@@ -1530,6 +1530,7 @@ type FileFilterInput = {
   readonly ctime: Maybe<DateQueryOperatorInput>;
   readonly birthtime: Maybe<DateQueryOperatorInput>;
   readonly birthtimeMs: Maybe<FloatQueryOperatorInput>;
+  readonly fields: Maybe<SitePageFieldsFilterInput>;
   readonly blksize: Maybe<IntQueryOperatorInput>;
   readonly blocks: Maybe<IntQueryOperatorInput>;
   readonly url: Maybe<StringQueryOperatorInput>;
@@ -1560,8 +1561,6 @@ type MdxWordCountFilterInput = {
 };
 
 type MdxFieldsFilterInput = {
-  readonly date: Maybe<DateQueryOperatorInput>;
-  readonly slug: Maybe<StringQueryOperatorInput>;
   readonly latestCommit: Maybe<MdxFieldsLatestCommitFilterInput>;
 };
 
@@ -1658,6 +1657,9 @@ type FileFieldsEnum =
   | 'ctime'
   | 'birthtime'
   | 'birthtimeMs'
+  | 'fields.latestCommit.date'
+  | 'fields.latestCommit.message'
+  | 'fields.latestCommit.hash'
   | 'blksize'
   | 'blocks'
   | 'url'
@@ -1807,8 +1809,9 @@ type FileFieldsEnum =
   | 'childrenMdx.rawBody'
   | 'childrenMdx.fileAbsolutePath'
   | 'childrenMdx.frontmatter.title'
-  | 'childrenMdx.frontmatter.date'
   | 'childrenMdx.frontmatter.description'
+  | 'childrenMdx.frontmatter.date'
+  | 'childrenMdx.frontmatter.slug'
   | 'childrenMdx.frontmatter.cover.sourceInstanceName'
   | 'childrenMdx.frontmatter.cover.absolutePath'
   | 'childrenMdx.frontmatter.cover.relativePath'
@@ -1849,7 +1852,6 @@ type FileFieldsEnum =
   | 'childrenMdx.frontmatter.cover.id'
   | 'childrenMdx.frontmatter.cover.children'
   | 'childrenMdx.frontmatter.tags'
-  | 'childrenMdx.frontmatter.slug'
   | 'childrenMdx.frontmatter.location'
   | 'childrenMdx.frontmatter.draft'
   | 'childrenMdx.slug'
@@ -1866,8 +1868,6 @@ type FileFieldsEnum =
   | 'childrenMdx.wordCount.sentences'
   | 'childrenMdx.wordCount.words'
   | 'childrenMdx.collection'
-  | 'childrenMdx.fields.date'
-  | 'childrenMdx.fields.slug'
   | 'childrenMdx.fields.latestCommit.date'
   | 'childrenMdx.fields.latestCommit.message'
   | 'childrenMdx.fields.latestCommit.hash'
@@ -1912,8 +1912,9 @@ type FileFieldsEnum =
   | 'childMdx.rawBody'
   | 'childMdx.fileAbsolutePath'
   | 'childMdx.frontmatter.title'
-  | 'childMdx.frontmatter.date'
   | 'childMdx.frontmatter.description'
+  | 'childMdx.frontmatter.date'
+  | 'childMdx.frontmatter.slug'
   | 'childMdx.frontmatter.cover.sourceInstanceName'
   | 'childMdx.frontmatter.cover.absolutePath'
   | 'childMdx.frontmatter.cover.relativePath'
@@ -1954,7 +1955,6 @@ type FileFieldsEnum =
   | 'childMdx.frontmatter.cover.id'
   | 'childMdx.frontmatter.cover.children'
   | 'childMdx.frontmatter.tags'
-  | 'childMdx.frontmatter.slug'
   | 'childMdx.frontmatter.location'
   | 'childMdx.frontmatter.draft'
   | 'childMdx.slug'
@@ -1971,8 +1971,6 @@ type FileFieldsEnum =
   | 'childMdx.wordCount.sentences'
   | 'childMdx.wordCount.words'
   | 'childMdx.collection'
-  | 'childMdx.fields.date'
-  | 'childMdx.fields.slug'
   | 'childMdx.fields.latestCommit.date'
   | 'childMdx.fields.latestCommit.message'
   | 'childMdx.fields.latestCommit.hash'
@@ -2469,8 +2467,7 @@ type SiteFieldsEnum =
   | 'siteMetadata.rssMetadata.title'
   | 'siteMetadata.rssMetadata.description'
   | 'siteMetadata.rssMetadata.copyright'
-  | 'port'
-  | 'host'
+  | 'trailingSlash'
   | 'polyfill'
   | 'pathPrefix'
   | 'jsxRuntime'
@@ -2605,8 +2602,7 @@ type SiteGroupConnection_groupArgs = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  readonly port: Maybe<IntQueryOperatorInput>;
-  readonly host: Maybe<StringQueryOperatorInput>;
+  readonly trailingSlash: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly jsxRuntime: Maybe<StringQueryOperatorInput>;
@@ -2835,16 +2831,6 @@ type SitePluginFilterInput = {
   readonly parent: Maybe<NodeFilterInput>;
   readonly children: Maybe<NodeFilterListInput>;
   readonly internal: Maybe<InternalFilterInput>;
-};
-
-type SitePageFieldsFilterInput = {
-  readonly latestCommit: Maybe<GitCommitFilterInput>;
-};
-
-type GitCommitFilterInput = {
-  readonly date: Maybe<DateQueryOperatorInput>;
-  readonly message: Maybe<StringQueryOperatorInput>;
-  readonly hash: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePageConnection = {
@@ -3771,6 +3757,9 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.ctime'
   | 'coverImage.birthtime'
   | 'coverImage.birthtimeMs'
+  | 'coverImage.fields.latestCommit.date'
+  | 'coverImage.fields.latestCommit.message'
+  | 'coverImage.fields.latestCommit.hash'
   | 'coverImage.blksize'
   | 'coverImage.blocks'
   | 'coverImage.url'
@@ -3872,10 +3861,10 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childrenMdx.rawBody'
   | 'coverImage.childrenMdx.fileAbsolutePath'
   | 'coverImage.childrenMdx.frontmatter.title'
-  | 'coverImage.childrenMdx.frontmatter.date'
   | 'coverImage.childrenMdx.frontmatter.description'
-  | 'coverImage.childrenMdx.frontmatter.tags'
+  | 'coverImage.childrenMdx.frontmatter.date'
   | 'coverImage.childrenMdx.frontmatter.slug'
+  | 'coverImage.childrenMdx.frontmatter.tags'
   | 'coverImage.childrenMdx.frontmatter.location'
   | 'coverImage.childrenMdx.frontmatter.draft'
   | 'coverImage.childrenMdx.slug'
@@ -3892,8 +3881,6 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childrenMdx.wordCount.sentences'
   | 'coverImage.childrenMdx.wordCount.words'
   | 'coverImage.childrenMdx.collection'
-  | 'coverImage.childrenMdx.fields.date'
-  | 'coverImage.childrenMdx.fields.slug'
   | 'coverImage.childrenMdx.id'
   | 'coverImage.childrenMdx.parent.id'
   | 'coverImage.childrenMdx.parent.children'
@@ -3911,10 +3898,10 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childMdx.rawBody'
   | 'coverImage.childMdx.fileAbsolutePath'
   | 'coverImage.childMdx.frontmatter.title'
-  | 'coverImage.childMdx.frontmatter.date'
   | 'coverImage.childMdx.frontmatter.description'
-  | 'coverImage.childMdx.frontmatter.tags'
+  | 'coverImage.childMdx.frontmatter.date'
   | 'coverImage.childMdx.frontmatter.slug'
+  | 'coverImage.childMdx.frontmatter.tags'
   | 'coverImage.childMdx.frontmatter.location'
   | 'coverImage.childMdx.frontmatter.draft'
   | 'coverImage.childMdx.slug'
@@ -3931,8 +3918,6 @@ type GoodreadsBookFieldsEnum =
   | 'coverImage.childMdx.wordCount.sentences'
   | 'coverImage.childMdx.wordCount.words'
   | 'coverImage.childMdx.collection'
-  | 'coverImage.childMdx.fields.date'
-  | 'coverImage.childMdx.fields.slug'
   | 'coverImage.childMdx.id'
   | 'coverImage.childMdx.parent.id'
   | 'coverImage.childMdx.parent.children'
@@ -4189,8 +4174,9 @@ type MdxFieldsEnum =
   | 'rawBody'
   | 'fileAbsolutePath'
   | 'frontmatter.title'
-  | 'frontmatter.date'
   | 'frontmatter.description'
+  | 'frontmatter.date'
+  | 'frontmatter.slug'
   | 'frontmatter.cover.sourceInstanceName'
   | 'frontmatter.cover.absolutePath'
   | 'frontmatter.cover.relativePath'
@@ -4275,7 +4261,6 @@ type MdxFieldsEnum =
   | 'frontmatter.cover.internal.owner'
   | 'frontmatter.cover.internal.type'
   | 'frontmatter.tags'
-  | 'frontmatter.slug'
   | 'frontmatter.location'
   | 'frontmatter.draft'
   | 'slug'
@@ -4292,8 +4277,6 @@ type MdxFieldsEnum =
   | 'wordCount.sentences'
   | 'wordCount.words'
   | 'collection'
-  | 'fields.date'
-  | 'fields.slug'
   | 'fields.latestCommit.date'
   | 'fields.latestCommit.message'
   | 'fields.latestCommit.hash'
@@ -4509,6 +4492,9 @@ type DownloadedImageFieldsEnum =
   | 'image.ctime'
   | 'image.birthtime'
   | 'image.birthtimeMs'
+  | 'image.fields.latestCommit.date'
+  | 'image.fields.latestCommit.message'
+  | 'image.fields.latestCommit.hash'
   | 'image.blksize'
   | 'image.blocks'
   | 'image.url'
@@ -4610,10 +4596,10 @@ type DownloadedImageFieldsEnum =
   | 'image.childrenMdx.rawBody'
   | 'image.childrenMdx.fileAbsolutePath'
   | 'image.childrenMdx.frontmatter.title'
-  | 'image.childrenMdx.frontmatter.date'
   | 'image.childrenMdx.frontmatter.description'
-  | 'image.childrenMdx.frontmatter.tags'
+  | 'image.childrenMdx.frontmatter.date'
   | 'image.childrenMdx.frontmatter.slug'
+  | 'image.childrenMdx.frontmatter.tags'
   | 'image.childrenMdx.frontmatter.location'
   | 'image.childrenMdx.frontmatter.draft'
   | 'image.childrenMdx.slug'
@@ -4630,8 +4616,6 @@ type DownloadedImageFieldsEnum =
   | 'image.childrenMdx.wordCount.sentences'
   | 'image.childrenMdx.wordCount.words'
   | 'image.childrenMdx.collection'
-  | 'image.childrenMdx.fields.date'
-  | 'image.childrenMdx.fields.slug'
   | 'image.childrenMdx.id'
   | 'image.childrenMdx.parent.id'
   | 'image.childrenMdx.parent.children'
@@ -4649,10 +4633,10 @@ type DownloadedImageFieldsEnum =
   | 'image.childMdx.rawBody'
   | 'image.childMdx.fileAbsolutePath'
   | 'image.childMdx.frontmatter.title'
-  | 'image.childMdx.frontmatter.date'
   | 'image.childMdx.frontmatter.description'
-  | 'image.childMdx.frontmatter.tags'
+  | 'image.childMdx.frontmatter.date'
   | 'image.childMdx.frontmatter.slug'
+  | 'image.childMdx.frontmatter.tags'
   | 'image.childMdx.frontmatter.location'
   | 'image.childMdx.frontmatter.draft'
   | 'image.childMdx.slug'
@@ -4669,8 +4653,6 @@ type DownloadedImageFieldsEnum =
   | 'image.childMdx.wordCount.sentences'
   | 'image.childMdx.wordCount.words'
   | 'image.childMdx.collection'
-  | 'image.childMdx.fields.date'
-  | 'image.childMdx.fields.slug'
   | 'image.childMdx.id'
   | 'image.childMdx.parent.id'
   | 'image.childMdx.parent.children'
@@ -4866,52 +4848,52 @@ type DownloadedImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type feelingsConnection = {
+type FeelingConnection = {
   readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<feelingsEdge>;
-  readonly nodes: ReadonlyArray<feelings>;
+  readonly edges: ReadonlyArray<FeelingEdge>;
+  readonly nodes: ReadonlyArray<Feeling>;
   readonly pageInfo: PageInfo;
   readonly distinct: ReadonlyArray<Scalars['String']>;
   readonly max: Maybe<Scalars['Float']>;
   readonly min: Maybe<Scalars['Float']>;
   readonly sum: Maybe<Scalars['Float']>;
-  readonly group: ReadonlyArray<feelingsGroupConnection>;
+  readonly group: ReadonlyArray<FeelingGroupConnection>;
 };
 
 
-type feelingsConnection_distinctArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_distinctArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_maxArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_maxArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_minArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_minArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_sumArgs = {
-  field: feelingsFieldsEnum;
+type FeelingConnection_sumArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsConnection_groupArgs = {
+type FeelingConnection_groupArgs = {
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
-  field: feelingsFieldsEnum;
+  field: FeelingFieldsEnum;
 };
 
-type feelingsEdge = {
-  readonly next: Maybe<feelings>;
-  readonly node: feelings;
-  readonly previous: Maybe<feelings>;
+type FeelingEdge = {
+  readonly next: Maybe<Feeling>;
+  readonly node: Feeling;
+  readonly previous: Maybe<Feeling>;
 };
 
-type feelingsFieldsEnum =
+type FeelingFieldsEnum =
   | 'time'
   | 'mood'
   | 'activities'
@@ -5003,49 +4985,49 @@ type feelingsFieldsEnum =
   | 'internal.owner'
   | 'internal.type';
 
-type feelingsGroupConnection = {
+type FeelingGroupConnection = {
   readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<feelingsEdge>;
-  readonly nodes: ReadonlyArray<feelings>;
+  readonly edges: ReadonlyArray<FeelingEdge>;
+  readonly nodes: ReadonlyArray<Feeling>;
   readonly pageInfo: PageInfo;
   readonly distinct: ReadonlyArray<Scalars['String']>;
   readonly max: Maybe<Scalars['Float']>;
   readonly min: Maybe<Scalars['Float']>;
   readonly sum: Maybe<Scalars['Float']>;
-  readonly group: ReadonlyArray<feelingsGroupConnection>;
+  readonly group: ReadonlyArray<FeelingGroupConnection>;
   readonly field: Scalars['String'];
   readonly fieldValue: Maybe<Scalars['String']>;
 };
 
 
-type feelingsGroupConnection_distinctArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_distinctArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_maxArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_maxArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_minArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_minArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_sumArgs = {
-  field: feelingsFieldsEnum;
+type FeelingGroupConnection_sumArgs = {
+  field: FeelingFieldsEnum;
 };
 
 
-type feelingsGroupConnection_groupArgs = {
+type FeelingGroupConnection_groupArgs = {
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
-  field: feelingsFieldsEnum;
+  field: FeelingFieldsEnum;
 };
 
-type feelingsFilterInput = {
-  readonly time: Maybe<StringQueryOperatorInput>;
+type FeelingFilterInput = {
+  readonly time: Maybe<DateQueryOperatorInput>;
   readonly mood: Maybe<StringQueryOperatorInput>;
   readonly activities: Maybe<StringQueryOperatorInput>;
   readonly notes: Maybe<StringQueryOperatorInput>;
@@ -5055,8 +5037,8 @@ type feelingsFilterInput = {
   readonly internal: Maybe<InternalFilterInput>;
 };
 
-type feelingsSortInput = {
-  readonly fields: Maybe<ReadonlyArray<Maybe<feelingsFieldsEnum>>>;
+type FeelingSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<FeelingFieldsEnum>>>;
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
@@ -7383,7 +7365,12 @@ type LastfmAlbumSortInput = {
 type UseFeelingsChartDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseFeelingsChartDataQuery = { readonly allFeelings: { readonly data: ReadonlyArray<Pick<feelings, 'time' | 'mood'>> } };
+type UseFeelingsChartDataQuery = { readonly allFeeling: { readonly data: ReadonlyArray<Pick<Feeling, 'time' | 'mood'>> } };
+
+type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type UseFeelingsQuery = { readonly allFeeling: { readonly feelings: ReadonlyArray<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> } };
 
 type LastFmQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7396,7 +7383,7 @@ type LastFmQuery = { readonly cover: Maybe<{ readonly image: Maybe<{ readonly ch
 type UseLatestFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type UseLatestFeelingsQuery = { readonly feelings: Maybe<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> };
+type UseLatestFeelingsQuery = { readonly feeling: Maybe<Pick<Feeling, 'time' | 'mood' | 'activities' | 'notes'>> };
 
 type UseGoodreadsShelvesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7409,56 +7396,29 @@ type UseGoodreadsShelvesQuery = { readonly currentlyReading: { readonly books: R
       & { readonly coverImage: Maybe<{ readonly childImageSharp: Maybe<Pick<ImageSharp, 'gatsbyImageData'>> }> }
     )> } };
 
-type UseFeelingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type UseFeelingsQuery = { readonly allFeelings: { readonly feelings: ReadonlyArray<Pick<feelings, 'time' | 'mood' | 'activities' | 'notes'>> } };
-
-type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<(
-          Pick<MdxFields, 'slug' | 'date'>
-          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-        )>, readonly frontmatter: Maybe<(
-          Pick<MdxFrontmatter, 'title' | 'date' | 'description' | 'tags'>
-          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-        )> }
-      ) }> } };
-
 type TalkBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
 type TalkBySlugQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
+    Pick<Mdx, 'slug' | 'timeToRead' | 'excerpt' | 'collection' | 'body'>
     & { readonly frontmatter: Maybe<(
       Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description' | 'location'>
       & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<(
-      Pick<MdxFields, 'slug' | 'date'>
-      & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-    )> }
+    )>, readonly fields: Maybe<{ readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }> }
   )> };
 
-type BlogPostBySlugQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
+type BlogListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type BlogPostBySlugQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'timeToRead' | 'excerpt' | 'collection' | 'body'>
-    & { readonly frontmatter: Maybe<(
-      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description'>
-      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
-    )>, readonly fields: Maybe<(
-      Pick<MdxFields, 'slug' | 'date'>
-      & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-    )> }
-  )> };
+type BlogListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
+        Pick<Mdx, 'slug' | 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<{ readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }>, readonly frontmatter: Maybe<(
+          Pick<MdxFrontmatter, 'title' | 'date' | 'description' | 'tags'>
+          & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+        )> }
+      ) }> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
@@ -7486,20 +7446,25 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
+type BlogPostBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+type BlogPostBySlugQuery = { readonly mdx: Maybe<(
+    Pick<Mdx, 'slug' | 'timeToRead' | 'excerpt' | 'collection' | 'body'>
+    & { readonly frontmatter: Maybe<(
+      Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description'>
+      & { readonly cover: Maybe<Pick<File, 'publicURL'>> }
+    )>, readonly fields: Maybe<{ readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }> }
+  )> };
+
 type TalkListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type TalkListingQuery = { readonly allMdx: { readonly edges: ReadonlyArray<{ readonly node: (
-        Pick<Mdx, 'excerpt' | 'timeToRead'>
-        & { readonly fields: Maybe<(
-          Pick<MdxFields, 'slug' | 'date'>
-          & { readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }
-        )>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'tags' | 'date' | 'description'>> }
+        Pick<Mdx, 'slug' | 'excerpt' | 'timeToRead'>
+        & { readonly fields: Maybe<{ readonly latestCommit: Maybe<Pick<MdxFieldsLatestCommit, 'date'>> }>, readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'tags' | 'description'>> }
       ) }> } };
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

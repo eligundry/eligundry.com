@@ -8,8 +8,6 @@ tags:
   - code
 ---
 
-import GitHubFileEmbed from '../src/components/Shared/GitHubFileEmbed'
-
 As a software engineer, it's rare to have an idea for a personal project and actually finish it. We have ideas all the
 time, buy domains for them, and then never finish them. For me, I've had a brain block for coding that isn't work for
 like 5 years. *Well, maybe* that isn't completely true, but for the purposes of this post, let's just roll with it.
@@ -64,7 +62,7 @@ outlined 😭.
 Even though this is an impossible project to get working as I envisioned, I'm really happy with how it turned out! The
 [code][repo] is pretty "clean" (though that is subjective and I cringed saying that).
 
-<GitHubFileEmbed fileURL="https://github.com/eligundry/page-speed-shield/blob/main/api/main.go" />
+<GitHubFile fileURL="https://github.com/eligundry/page-speed-shield/blob/main/api/main.go" />
 
 One really cool thing I found while building this was this [server timing Gin middleware][gin-server-timing] for writing
 [`Server-Timing` headers][server-timing] to a response. This allowed me to see how long Page Speed Insights was taking

@@ -40,7 +40,8 @@ export default TalkTemplate
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query TalkBySlug($slug: String!) {
-    mdx(fields: { slug: { eq: $slug } }) {
+    mdx(slug: { eq: $slug }) {
+      slug
       timeToRead
       excerpt
       collection
@@ -55,8 +56,6 @@ export const pageQuery = graphql`
         location
       }
       fields {
-        slug
-        date
         latestCommit {
           date
         }

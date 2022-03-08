@@ -57,7 +57,8 @@ export default PostTemplate
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
-    mdx(fields: { slug: { eq: $slug } }) {
+    mdx(slug: { eq: $slug }) {
+      slug
       timeToRead
       excerpt
       collection
@@ -71,8 +72,6 @@ export const pageQuery = graphql`
         description
       }
       fields {
-        slug
-        date
         latestCommit {
           date
         }

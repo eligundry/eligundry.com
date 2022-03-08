@@ -10,7 +10,11 @@ const ResumePage: React.FC = () => {
 
   return (
     <Layout hideHeader={isPrinting}>
-      <SEO path="resume" title="Resume" description="My resume in HTML form" />
+      <SEO
+        path="resume"
+        title="Resume"
+        description="My resume in HTML form. Dang, I have worked at a lot of places, so many accomplishments. What a storied career I've had."
+      />
       <Resume />
     </Layout>
   )

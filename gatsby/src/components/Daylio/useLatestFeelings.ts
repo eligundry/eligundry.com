@@ -6,7 +6,7 @@ export default function useLatestFeelings(): DaylioEntry {
   const entry = useStaticQuery<GatsbyTypes.UseLatestFeelingsQuery>(
     graphql`
       query UseLatestFeelings {
-        feelings {
+        feeling {
           time
           mood
           activities
@@ -17,8 +17,8 @@ export default function useLatestFeelings(): DaylioEntry {
   )
 
   return {
-    ...entry.feelings,
+    ...entry.feeling,
     // @ts-ignore
-    time: parseISO(entry.feelings.time),
+    time: parseISO(entry.feeling.time),
   } as DaylioEntry
 }

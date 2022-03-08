@@ -1,7 +1,6 @@
 /* eslint-disable no-console, vars-on-top, no-var, no-shadow, block-scoped-var */
 import path from 'path'
-import simpleGit from 'simple-git'
-import type { LogResult } from 'simple-git/typings/response'
+import simpleGit, { LogResult } from 'simple-git'
 import { CreateNodeArgs } from 'gatsby'
 import dateCompareDesc from 'date-fns/compareDesc'
 import util from 'util'
@@ -15,14 +14,14 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
     actions: { createNodeField },
   } = args
 
-  const addCommitFieldsToNode = (commit: LogResult['latest']) => {
+  const addCommitFieldsToNode = (commit: null | LogResult['latest']) => {
     createNodeField({
       node,
       name: 'latestCommit',
       value: {
-        date: commit.date,
-        message: commit.message,
-        hash: commit.hash,
+        date: commit?.date ?? null,
+        message: commit?.message ?? null,
+        hash: commit?.hash ?? null,
       },
     })
   }
@@ -85,25 +84,17 @@ const addGitLastModifiedToNode = async (args: CreateNodeArgs) => {
 
       return
     }
+
+    if (node.internal.type === 'File') {
+      const log = await git.log({ file: node.absolutePath as string })
+
+      if (log && log.latest) {
+        addCommitFieldsToNode(log.latest)
+      }
+    }
   } catch (e) {
-    if (node.internal.type === 'SitePage') {
-      createNodeField({
-        node,
-        name: 'latestCommitDate',
-        value: null,
-      })
-
-      createNodeField({
-        node,
-        name: 'latestCommitMessage',
-        value: null,
-      })
-
-      createNodeField({
-        node,
-        name: 'latestCommit',
-        value: null,
-      })
+    if (node.internal.type === 'SitePage' || node.internal.type === 'File') {
+      addCommitFieldsToNode(null)
     }
 
     console.error(

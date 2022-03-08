@@ -1,12 +1,14 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { MDXProvider } from '@mdx-js/react'
 import LazyLoad from 'react-lazyload'
 import Skeleton from 'react-loading-skeleton'
 
 import Paper from '../Shared/Paper'
 import Time from '../Shared/Time'
 import EmojiText from '../Shared/EmojiText'
+import MDXShortcodes from './shortcodes'
 
 interface Props {
   title: string
@@ -31,44 +33,46 @@ const Post: React.FC<Props> = ({
   location,
   featuredImageURL,
 }) => (
-  <Article
-    // @ts-ignore
-    itemScope
-    itemType={`https://schema.org/${itemType}`}
-  >
-    <link itemProp="author publisher" href="#eli-gundry" />
-    {dateModified && <meta itemProp="dateModified" content={dateModified} />}
-    {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
-    <header>
-      <h1 itemProp="name headline">{title}</h1>
-      {datePublished && (
-        <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
+  <MDXProvider components={MDXShortcodes}>
+    <Article
+      // @ts-ignore
+      itemScope
+      itemType={`https://schema.org/${itemType}`}
+    >
+      <link itemProp="author publisher" href="#eli-gundry" />
+      {dateModified && <meta itemProp="dateModified" content={dateModified} />}
+      {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
+      <header>
+        <h1 itemProp="name headline">{title}</h1>
+        {datePublished && (
+          <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
+        )}
+        {location && (
+          <address>
+            <EmojiText label="location of talk" emoji="📍">
+              {location}
+            </EmojiText>
+          </address>
+        )}
+      </header>
+      {preBody}
+      {body && (
+        <main className="body">
+          <MDXRenderer itemProp="text">{body}</MDXRenderer>
+        </main>
       )}
-      {location && (
-        <address>
-          <EmojiText label="location of talk" emoji="📍">
-            {location}
-          </EmojiText>
-        </address>
+      {footer && (
+        <LazyLoad
+          once
+          offset={200}
+          classNamePrefix="lazyload-footer"
+          placeholder={<Skeleton height={270} width="100%" />}
+        >
+          {footer}
+        </LazyLoad>
       )}
-    </header>
-    {preBody}
-    {body && (
-      <main className="body">
-        <MDXRenderer itemProp="text">{body}</MDXRenderer>
-      </main>
-    )}
-    {footer && (
-      <LazyLoad
-        once
-        offset={200}
-        classNamePrefix="lazyload-footer"
-        placeholder={<Skeleton height={270} width="100%" />}
-      >
-        {footer}
-      </LazyLoad>
-    )}
-  </Article>
+    </Article>
+  </MDXProvider>
 )
 
 const Article = styled<React.FC>(Paper.article)`
@@ -132,10 +136,6 @@ const Article = styled<React.FC>(Paper.article)`
       ${tw`my-4`}
     }
 
-    & .lazyload-footer-wrapper {
-      min-height: 270px;
-    }
-
     & .float-right {
       ${tw`float-right ml-2 sm:float-none sm:mx-auto`}
     }
@@ -143,6 +143,14 @@ const Article = styled<React.FC>(Paper.article)`
     & .float-left {
       ${tw`float-left mr-2 sm:float-none sm:mx-auto`}
     }
+
+    & .center {
+      margin: 1em auto;
+    }
+  }
+
+  & .lazyload-footer-wrapper {
+    min-height: 270px;
   }
 `
 

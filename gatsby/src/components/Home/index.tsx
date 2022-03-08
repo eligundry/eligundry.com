@@ -73,6 +73,8 @@ const Home: React.FC = () => {
           src="../../../static/img/eli-thumbs-up-memoji.PNG"
           alt="Eli Gundry's Memoji Headshot"
           className="headshot"
+          backgroundColor="transparent"
+          placeholder="none"
         />
         <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>

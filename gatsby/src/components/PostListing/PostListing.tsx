@@ -50,10 +50,10 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix, itemType }) => {
       }
 
       return {
-        path: postEdge?.node?.fields?.slug,
+        path: postEdge?.node?.slug,
         cover,
         title: postEdge?.node?.frontmatter?.title,
-        date: postEdge?.node?.fields?.date,
+        date: postEdge?.node?.frontmatter?.date,
         excerpt: postEdge.node.excerpt,
         timeToRead: postEdge.node.timeToRead,
         description: postEdge?.node?.frontmatter?.description,
