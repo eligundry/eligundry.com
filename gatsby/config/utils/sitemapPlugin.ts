@@ -28,10 +28,12 @@ const plugin = {
           filter: {frontmatter: {draft: {ne: true}}}
         ) {
           nodes {
+            slug
             collection
-            fields {
+            frontmatter {
               date
-              slug
+            }
+            fields {
               latestCommit {
                 date
               }
@@ -61,11 +63,11 @@ const plugin = {
       let latestTalk = new Date(0)
 
       query.allMdx.nodes.forEach((post) => {
-        const postDate = new Date(post.fields.date)
-        let path = `/${post.collection}/${post.fields.slug}`
+        const postDate = new Date(post.frontmatter.date)
+        let path = `/${post.collection}/${post.slug}`
 
         if (post.collection === 'posts') {
-          path = `/blog/${post.fields.slug}`
+          path = `/blog/${post.slug}`
           latestPost = dateMax([latestPost, postDate])
         } else {
           latestTalk = dateMax([latestTalk, postDate])
@@ -168,10 +170,12 @@ interface SitemapQuery {
   }
   allMdx: {
     nodes: {
+      slug: string
       collection: 'talks' | 'posts'
-      fields: {
+      frontmatter: {
         date: string
-        slug: string
+      }
+      fields: {
         latestCommit: null | {
           date: string | null
         }

@@ -4,6 +4,7 @@ import { urlJoin as urljoin } from 'url-join-ts'
 
 import config from './data/SiteConfig'
 import sitemapPlugin from './config/utils/sitemapPlugin'
+import feedPlugins from './config/utils/feedPlugin'
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ const gatsbyConfig: GatsbyConfig = {
   trailingSlash: 'never',
   plugins: [
     sitemapPlugin,
+    ...feedPlugins,
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-lodash',
@@ -98,131 +100,6 @@ const gatsbyConfig: GatsbyConfig = {
       options: {
         id: config.googleTagManagerID,
         includeInDevelopment: false,
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-feed',
-      options: {
-        setup: (ref) => {
-          const ret = ref.query.site.siteMetadata.rssMetadata
-          ret.allMdx = ref.query.allMdx
-          ret.generator = 'GatsbyJS Advanced Starter'
-          return ret
-        },
-        query: `
-        {
-          site {
-            siteMetadata {
-              rssMetadata {
-                site_url
-                feed_url
-                title
-                description
-                copyright
-              }
-            }
-          }
-        }
-      `,
-        feeds: [
-          {
-            output: config.siteRss,
-            title: "Eli Gundry's Blog",
-            query: `
-            {
-              allMdx(
-                sort: { order: DESC, fields: [frontmatter___date] },
-              ) {
-                edges {
-                  node {
-                    collection
-                    excerpt
-                    html
-                    fields {
-                      slug
-                    }
-                    frontmatter {
-                      title
-                      date
-                      tags
-                      description
-                    }
-                  }
-                }
-              }
-            }
-          `,
-            serialize: (ctx) => {
-              const { rssMetadata } = ctx.query.site.siteMetadata
-              return ctx.query.allMdx.edges
-                .filter((edge) => !edge.node.frontmatter.draft)
-                .map((edge) => ({
-                  categories: edge.node.frontmatter.tags,
-                  date: edge.node.fields.date,
-                  title: edge.node.frontmatter.title,
-                  description:
-                    edge.node?.description?.frontmatter ?? edge.node.excerpt,
-                  url: `${rssMetadata.site_url}/${
-                    edge.node.collection === 'posts' ? 'blog' : 'talks'
-                  }/${edge.node.fields.slug}`,
-                  guid: `${rssMetadata.site_url}/${
-                    edge.node.collection === 'posts' ? 'blog' : 'talks'
-                  }/${edge.node.fields.slug}`,
-                  custom_elements: [
-                    { 'content:encoded': edge.node.html },
-                    { author: config.userEmail },
-                  ],
-                }))
-            },
-          },
-        ],
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-feed',
-      options: {
-        setup: () => ({
-          title: "Eli Gundry's Feelings",
-          description: "A daily journal of how I'm feeling",
-          managingEditor: 'eligundry@gmail.com (Eli Gundry)',
-          site_url: 'https://eligundry.com/feelings',
-          language: 'en-US',
-          copyright: `${new Date().getFullYear()} Eli Gundry`,
-        }),
-        feeds: [
-          {
-            title: "Eli Gundry's Feelings",
-            output: '/feelings.rss',
-            query: `
-              {
-                allFeeling {
-                  nodes {
-                    time
-                    mood
-                    notes
-                  }
-                }
-              }
-            `,
-            serialize: (ctx) =>
-              ctx.query.allFeeling.nodes.map((entry) => ({
-                date: entry.time,
-                author: 'Eli Gundry',
-                url: `https://eligundry.com/feelings#${entry.time}`,
-                guid: `https://eligundry.com/feelings#${entry.time}`,
-                title: `I felt ${entry.mood}`,
-                description: `
-                  <ul>
-                    ${
-                      entry.notes
-                        ?.map((note) => `<li>${note}</li>`)
-                        .join('\n') ?? `<li>No notes!</li>`
-                    }
-                  </ul>
-                `,
-              })),
-          },
-        ],
       },
     },
     {
