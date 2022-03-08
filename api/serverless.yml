@@ -23,11 +23,11 @@ functions:
       name: api-eligundry-com
     description: My personal API
     environment:
-      auth_user: ${env:auth_user}
-      auth_password: ${env:auth_password}
-      netlify_build_hook: ${env:netlify_build_hook}
-      database_path: "/mnt/database/api.db"
-      gin_mode: "release"
+      AUTH_USER: ${env:AUTH_USER}
+      AUTH_PASSWORD: ${env:AUTH_PASSWORD}
+      NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
+      DATABASE_PATH: "/mnt/database/api.db"
+      GIN_MODE: "release"
     events:
       - http:
           path: '/{proxy+}'
@@ -46,9 +46,10 @@ functions:
     name: staticSiteBuildTrigger
     image:
       name: api-eligundry-com
-    description: My personal API
+      entrypoint:
+        - '/bin/static-site-build-trigger'
     environment:
-      netlify_build_hook: ${env:netlify_build_hook}
+      NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
 
 resources:
   extensions:
