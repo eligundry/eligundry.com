@@ -5,6 +5,10 @@ package:
     - '!**'
     - 'bin/api'
 
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-dotenv-plugin
+
 provider:
   name: aws
   runtime: go1.x
@@ -47,7 +51,7 @@ functions:
     description: "Triggers a Netlify build of my site. Fuck NAT Gateways"
     image:
       name: api-eligundry-com
-      entrypoint:
+      entryPoint:
         - '/bin/static-site-build-trigger'
     environment:
       NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
