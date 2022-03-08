@@ -13,7 +13,10 @@ static-build-api:
 static-build-lastfm-downloader:
 	$(GO_BUILD) -o $(OUTPUT_DIR)/lastfm-downloader cmd/lastfm-downloader/main.go
 
-static-build: static-build-api static-build-lastfm-downloader
+static-build-static-site-build-trigger:
+	$(GO_BUILD) -o $(OUTPUT_DIR)/static-site-build-trigger cmd/static-site-build-trigger/main.go
+
+static-build: static-build-api static-build-lastfm-downloader static-build-static-site-build-trigger
 
 docker-build:
 	$(DOCKER) build -t $(DOCKER_TAG) .
