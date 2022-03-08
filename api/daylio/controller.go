@@ -22,7 +22,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 
 func GetAllEntries(c *gin.Context) {
 	d := NewDataFromGinContext(c)
-	defer d.DB.Close()
 	entries, err := d.GetDaylioEntries()
 
 	if err != nil {
@@ -44,7 +43,6 @@ func GetClosestEntry(c *gin.Context) {
 	}
 
 	d := NewDataFromGinContext(c)
-	defer d.DB.Close()
 	entry, err := d.GetDaylioEntriesForTime(targetTime)
 
 	if err != nil && err != sql.ErrNoRows {
@@ -79,7 +77,6 @@ func SubmitDaylioExport(c *gin.Context) {
 	}
 
 	d := NewDataFromGinContext(c)
-	defer d.DB.Close()
 	data, err := d.ProcessDaylioExport(file)
 
 	if err != nil {
