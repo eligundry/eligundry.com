@@ -31,6 +31,7 @@ const gatsbyConfig: GatsbyConfig = {
     'gatsby-plugin-twitter',
     'gatsby-plugin-sass',
     'gatsby-plugin-netlify',
+    'gatsby-plugin-loadable-components-ssr',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {

@@ -6,6 +6,7 @@
   "repository": "https://github.com/eligundry/eligundry.com",
   "dependencies": {
     "@eligundry/gatsby-source-goodreads": "^1.0.4",
+    "@loadable/component": "^5.15.2",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "chart.js": "^3.7.1",
@@ -19,6 +20,7 @@
     "gatsby-plugin-feed": "^4.9.0",
     "gatsby-plugin-google-tagmanager": "^4.9.0",
     "gatsby-plugin-image": "^2.9.0",
+    "gatsby-plugin-loadable-components-ssr": "^4.2.0",
     "gatsby-plugin-lodash": "^5.9.0",
     "gatsby-plugin-mdx": "^3.9.0",
     "gatsby-plugin-netlify": "^4.1.0",
@@ -49,6 +51,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
     "react-lazyload": "^3.2.0",
+    "react-lite-yt-embed": "^1.2.7",
     "react-loading-skeleton": "^3.0.1",
     "react-schemaorg": "^2.0.0",
     "react-tooltip": "^4.2.21",
@@ -65,7 +68,9 @@
     "yargs": "^17.3.0"
   },
   "devDependencies": {
+    "@types/loadable__component": "^5.13.4",
     "@types/lodash": "^4.14.177",
+    "@types/mdx-js__react": "^1.5.5",
     "@types/react-helmet": "^6.1.4",
     "@types/react-lazyload": "^3.1.1",
     "@types/styled-components": "^5.1.15",
