@@ -24,7 +24,7 @@ const loadFeelings: GatsbyNode['sourceNodes'] = async ({
   fetchTimer.start()
 
   const resp = await axios.get<Feeling[]>(
-    'https://api.eligundry.com/api/feelings'
+    'https://8rlviipruj.execute-api.us-east-2.amazonaws.com/dev/api/feelings'
   )
 
   fetchTimer.end()
