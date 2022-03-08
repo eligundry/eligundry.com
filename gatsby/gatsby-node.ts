@@ -23,26 +23,18 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (args, options) => {
 
 export const createPages: GatsbyNode['createPages'] = async ({
   graphql,
-  actions,
+  actions: { createPage },
 }) => {
-  const { createPage } = actions
-  const postPage = path.resolve('src/templates/post.tsx')
-  const talkPage = path.resolve('src/templates/talk.tsx')
+  const collectionTemplate = {
+    posts: path.resolve('src/templates/post.tsx'),
+    talks: path.resolve('src/templates/talk.tsx'),
+  }
 
   interface MarkdownQuery {
     allMdx: {
-      edges: {
-        node: {
-          collection: 'talks' | 'posts'
-          fields: {
-            slug: string
-          }
-          frontmatter: {
-            title: string
-            date: string
-            tags: string[] | null
-          }
-        }
+      nodes: {
+        collection: 'talks' | 'posts'
+        slug: string
       }[]
     }
   }
@@ -51,18 +43,9 @@ export const createPages: GatsbyNode['createPages'] = async ({
   const markdownQueryResult = await graphql<MarkdownQuery>(`
     {
       allMdx(sort: { fields: frontmatter___date, order: DESC }) {
-        edges {
-          node {
-            collection
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-              tags
-              date
-            }
-          }
+        nodes {
+          collection
+          slug
         }
       }
     }
@@ -73,75 +56,23 @@ export const createPages: GatsbyNode['createPages'] = async ({
     throw markdownQueryResult.errors
   }
 
-  const postsEdges = markdownQueryResult.data.allMdx.edges
-
   // Post and talk page creation
-  postsEdges.forEach((edge) => {
-    if (edge.node.collection === 'posts') {
-      createPage({
-        path: `/blog/${edge.node.fields.slug}`,
-        component: postPage,
-        context: {
-          slug: edge.node.fields.slug,
-        },
-      })
-    } else if (edge.node.collection === 'talks') {
-      createPage({
-        path: `/talks/${edge.node.fields.slug}`,
-        component: talkPage,
-        context: {
-          slug: edge.node.fields.slug,
-        },
-      })
-    }
-  })
+  markdownQueryResult?.data?.allMdx?.nodes.forEach(({ collection, slug }) =>
+    createPage({
+      path: `/${collection === 'posts' ? 'blog' : collection}/${slug}`,
+      component: collectionTemplate[collection],
+      context: {
+        slug,
+      },
+    })
+  )
 }
 
 export const onCreateNode: GatsbyNode['onCreateNode'] = async (args) => {
-  const { node, actions, getNode } = args
-  const { createNodeField } = actions
+  const { node, getNode } = args
 
   if (node.internal.type === 'Mdx') {
-    let slug: string | undefined
     node.collection = getNode(node.parent).sourceInstanceName
-    const fileNode = getNode(node.parent)
-    const parsedFilePath = path.parse(fileNode.relativePath)
-
-    if (node?.frontmatter?.title) {
-      slug = `${kebabCase(node.frontmatter.title)}`
-    } else if (parsedFilePath.name !== 'index' && parsedFilePath.dir !== '') {
-      slug = `${parsedFilePath.dir}/${parsedFilePath.name}`
-    } else if (parsedFilePath.dir === '') {
-      slug = `${parsedFilePath.name}`
-    } else {
-      slug = `/{parsedFilePath.dir}`
-    }
-
-    if (node?.frontmatter) {
-      if (node.frontmatter?.slug) {
-        slug = node.frontmatter.slug
-      }
-
-      if (node.frontmatter?.date) {
-        const date = parseISO(node.frontmatter.date)
-
-        if (!isValidDate(date)) {
-          console.warn(`WARNING: Invalid date.`, node.frontmatter)
-        }
-
-        createNodeField({
-          node,
-          name: 'date',
-          value: date.toISOString(),
-        })
-      }
-    }
-
-    createNodeField({
-      node,
-      name: 'slug',
-      value: slug,
-    })
   }
 
   await addGitLastModifiedToNode(args)

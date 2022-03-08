@@ -40,9 +40,8 @@ export const talkListingQuery = graphql`
     ) {
       edges {
         node {
+          slug
           fields {
-            slug
-            date
             latestCommit {
               date
             }
@@ -51,6 +50,7 @@ export const talkListingQuery = graphql`
           timeToRead
           frontmatter {
             title
+            date
             tags
             date
             description

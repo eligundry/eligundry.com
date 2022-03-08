@@ -41,9 +41,8 @@ export const listingQuery = graphql`
     ) {
       edges {
         node {
+          slug
           fields {
-            slug
-            date
             latestCommit {
               date
             }
