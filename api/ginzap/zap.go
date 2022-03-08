@@ -50,10 +50,15 @@ func GinzapWithConfig(logger *zap.Logger, conf *Config) gin.HandlerFunc {
 
 		contextScopedLogger := logger
 
-		if requestID := c.Request.Header.Get("x-amzn-RequestId"); len(requestID) > 0 {
+		requestID := c.Request.Header.Get("x-amzn-RequestId")
+
+		if len(requestID) > 0 {
+			contextScopedLogger.Info("we have a request id")
 			contextScopedLogger = contextScopedLogger.With(
 				zap.String("request-id", requestID),
 			)
+		} else {
+			contextScopedLogger.Info("no request id 😭")
 		}
 
 		storeLogger(c, contextScopedLogger)
@@ -82,6 +87,7 @@ func GinzapWithConfig(logger *zap.Logger, conf *Config) gin.HandlerFunc {
 					zap.String("user-agent", c.Request.UserAgent()),
 					zap.Duration("latency", latency),
 				}
+
 				if conf.TimeFormat != "" {
 					fields = append(fields, zap.String("time", end.Format(conf.TimeFormat)))
 				}
