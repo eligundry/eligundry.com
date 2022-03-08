@@ -41,7 +41,7 @@
     "gatsby-transformer-sharp": "^4.9.0",
     "lodash": "^4.17.21",
     "postscribe": "^2.0.8",
-    "prismjs": "^1.26.0",
+    "prismjs": "^1.27.0",
     "react": "^17.0.2",
     "react-chartjs-2": "^3.3.0",
     "react-dom": "^17.0.2",
