@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/eligundry/eligundry.com/api/auth"
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/eligundry/eligundry.com/api/daylio"
 	"github.com/eligundry/eligundry.com/api/ginzap"
 	"github.com/eligundry/eligundry.com/api/lastfm"
@@ -58,7 +58,7 @@ func main() {
 	router := Router()
 
 	// If running in lambda, set this up for API Gateway
-	if len(os.Getenv("AWS_LAMBDA_FUNCTION_NAME")) > 0 {
+	if common.IsInLambda() {
 		ginLambda = ginadapter.New(router)
 		lambda.Start(LambdaHandler)
 	} else {

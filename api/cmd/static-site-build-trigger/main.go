@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/eligundry/eligundry.com/api/netlify"
 )
 
@@ -12,5 +13,9 @@ func Handler(ctx context.Context) error {
 }
 
 func main() {
-	lambda.Start(Handler)
+	if common.IsInLambda() {
+		lambda.Start(Handler)
+	} else {
+		Handler(context.Background())
+	}
 }
