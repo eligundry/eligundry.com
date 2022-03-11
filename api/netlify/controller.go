@@ -4,7 +4,9 @@ import (
 	"net/http"
 
 	"github.com/eligundry/eligundry.com/api/auth"
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 func RegisterRoutes(router *gin.RouterGroup) {
@@ -25,16 +27,12 @@ func TriggerBuild(c *gin.Context) {
 	}
 
 	if err := c.Bind(&payload); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		common.CaptureError(c, errors.Wrap(err, common.BadRequestPrefix))
 		return
 	}
 
 	if err := TriggerDeploy(c.Request.Context(), payload.Title); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		common.CaptureError(c, err)
 		return
 	}
 

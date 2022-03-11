@@ -50,15 +50,23 @@ func GinzapWithConfig(logger *zap.Logger, conf *Config) gin.HandlerFunc {
 
 		contextScopedLogger := logger
 
-		requestID := c.Request.Header.Get("x-amzn-RequestId")
+		requestID := c.Request.Header.Get("X-Amzn-Trace-Id")
 
 		if len(requestID) > 0 {
 			contextScopedLogger.Info("we have a request id")
 			contextScopedLogger = contextScopedLogger.With(
 				zap.String("request-id", requestID),
 			)
-		} else {
-			contextScopedLogger.Info("no request id 😭", zap.Any("headers", c.Request.Header))
+		}
+
+		ip := c.ClientIP()
+
+		if len(ip) == 0 {
+			forwardedIP := c.Request.Header.Get("X-Forwarded-For")
+
+			if len(forwardedIP) > 0 {
+				ip = forwardedIP
+			}
 		}
 
 		storeLogger(c, contextScopedLogger)
@@ -72,27 +80,28 @@ func GinzapWithConfig(logger *zap.Logger, conf *Config) gin.HandlerFunc {
 				end = end.UTC()
 			}
 
-			if len(c.Errors) > 0 {
-				// Append error field if this is an erroneous request.
-				for _, e := range c.Errors.Errors() {
-					contextScopedLogger.Error(e)
-				}
-			} else {
-				fields := []zapcore.Field{
-					zap.Int("status", c.Writer.Status()),
-					zap.String("method", c.Request.Method),
-					zap.String("path", path),
-					zap.String("query", query),
-					zap.String("ip", c.ClientIP()),
-					zap.String("user-agent", c.Request.UserAgent()),
-					zap.Duration("latency", latency),
-				}
-
-				if conf.TimeFormat != "" {
-					fields = append(fields, zap.String("time", end.Format(conf.TimeFormat)))
-				}
-				contextScopedLogger.Info(path, fields...)
+			fields := []zapcore.Field{
+				zap.Int("status", c.Writer.Status()),
+				zap.String("method", c.Request.Method),
+				zap.String("path", path),
+				zap.String("ip", c.ClientIP()),
+				zap.String("user-agent", c.Request.UserAgent()),
+				zap.Duration("latency", latency),
 			}
+
+			if conf.TimeFormat != "" {
+				fields = append(fields, zap.String("time", end.Format(conf.TimeFormat)))
+			}
+
+			if len(ip) > 0 {
+				fields = append(fields, zap.String("ip", ip))
+			}
+
+			if len(query) > 0 {
+				fields = append(fields, zap.String("query", query))
+			}
+
+			contextScopedLogger.Info(path, fields...)
 		}
 	}
 }
@@ -106,6 +115,12 @@ func RecoveryWithZap(logger *zap.Logger, stack bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
+				contextScopedLogger := GetLogger(c)
+
+				if contextScopedLogger != nil {
+					logger = contextScopedLogger
+				}
+
 				// Check for a broken connection, as it is not really a
 				// condition that warrants a panic stack trace.
 				var brokenPipe bool

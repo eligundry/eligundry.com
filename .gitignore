@@ -9,3 +9,6 @@ api/vendor
 api/bin
 api/.serverless
 api/node_modules
+
+# Local Netlify folder
+.netlify

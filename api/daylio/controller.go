@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/eligundry/eligundry.com/api/auth"
+	"github.com/eligundry/eligundry.com/api/common"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
@@ -24,7 +25,7 @@ func GetAllEntries(c *gin.Context) {
 	entries, err := d.GetDaylioEntries()
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		common.CaptureError(c, err)
 		return
 	}
 
@@ -35,9 +36,7 @@ func GetClosestEntry(c *gin.Context) {
 	targetTime, err := parseTimestringToTime(c.Param("time"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": errors.Wrap(err, "could not parse time into something queryable").Error(),
-		})
+		common.CaptureError(c, errors.Wrap(err, common.BadRequestPrefix))
 		return
 	}
 
@@ -45,9 +44,7 @@ func GetClosestEntry(c *gin.Context) {
 	entry, err := d.GetDaylioEntriesForTime(targetTime)
 
 	if err != nil && err != sql.ErrNoRows {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		common.CaptureError(c, err)
 		return
 	}
 
@@ -58,31 +55,24 @@ func SubmitDaylioExport(c *gin.Context) {
 	formFile, err := c.FormFile("file")
 
 	if err != nil {
-		c.Error(err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		common.CaptureError(c, errors.Wrap(err, common.BadRequestPrefix))
 		return
 	}
 
 	file, err := formFile.Open()
 
 	if err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		common.CaptureError(c, err)
 		return
 	}
+
+	defer file.Close()
 
 	d := NewDataFromGinContext(c)
 	data, err := d.ProcessDaylioExport(file)
 
 	if err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		common.CaptureError(c, err)
 		return
 	}
 

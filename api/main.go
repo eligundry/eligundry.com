@@ -22,7 +22,10 @@ var logger *zap.Logger
 
 func Router() *gin.Engine {
 	router := gin.Default()
-	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
+	router.Use(
+		common.ErrorHandlerMiddleware,
+		ginzap.Ginzap(logger, time.RFC3339, true),
+	)
 	router.NoRoute(common.GinNoRoute)
 	router.NoMethod(common.GinNoMethod)
 	api := router.Group("api")
