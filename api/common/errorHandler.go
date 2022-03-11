@@ -24,7 +24,7 @@ func CaptureError(c *gin.Context, err error) {
 	}
 
 	switch {
-	case strings.HasPrefix(BadRequestPrefix, err.Error()), strings.HasPrefix(NotFoundPrefix, err.Error()):
+	case strings.HasPrefix(err.Error(), BadRequestPrefix), strings.HasPrefix(err.Error(), NotFoundPrefix):
 		logger.Warn("Captured Warning", zap.Error(err))
 	default:
 		logger.Error("Captured Error", zap.Error(err))
@@ -41,7 +41,7 @@ func ErrorHandlerMiddleware(c *gin.Context) {
 		return
 	case 1:
 		errBody = gin.H{
-			"error": c.Errors.Last().Err,
+			"error": c.Errors.Errors()[0],
 		}
 	default:
 		errBody = gin.H{
@@ -52,10 +52,10 @@ func ErrorHandlerMiddleware(c *gin.Context) {
 	// If any errors have a matching prefix, return a better status code
 	for _, err := range c.Errors.Errors() {
 		switch {
-		case strings.HasPrefix(BadRequestPrefix, err):
+		case strings.HasPrefix(err, BadRequestPrefix):
 			c.JSON(http.StatusBadRequest, errBody)
 			return
-		case strings.HasPrefix(NotFoundPrefix, err):
+		case strings.HasPrefix(err, NotFoundPrefix):
 			c.JSON(http.StatusNotFound, errBody)
 			return
 		}
