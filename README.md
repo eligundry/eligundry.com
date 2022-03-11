@@ -1,6 +1,6 @@
 # [eligundry.com](https://eligundry.com)
 
-![Github Actions Status](https://github.com/eligundry/eligundry.com/workflows/.github/workflows/serverless-deploy.yml/badge.svg)
+![Github Actions Status](https://github.com/eligundry/eligundry.com/actions/workflows/.github/workflows/serverless-deploy.yml/badge.svg)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/24c00fcd-034e-4d8d-8fa3-73cf8343966a/deploy-status)](https://app.netlify.com/sites/eligundry/deploys)
 
 My personal website.
@@ -20,7 +20,7 @@ My personal website.
 
 1. `cd api`
 2. `make static-build`
-3 `./bin/api`
+3. `./bin/api`
 
 ## Deployment
 
