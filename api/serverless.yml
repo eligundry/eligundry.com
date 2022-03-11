@@ -31,7 +31,6 @@ functions:
     environment:
       AUTH_USER: ${env:AUTH_USER}
       AUTH_PASSWORD: ${env:AUTH_PASSWORD}
-      NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
       DATABASE_PATH: "/mnt/database/api.db"
       GIN_MODE: "release"
     events:
@@ -45,12 +44,6 @@ functions:
         - subnet-051997fc3d1383284
         - subnet-026cddc40fb470bbc
         - subnet-0e4ce11da300407ad
-    iamRoleStatements:
-      - Effect: 'Allow'
-        Action:
-          - "lambda:InvokeFunction"
-        Resource:
-          - 'arn:aws:lambda:${aws:region}:${aws:accountId}:function:staticSiteBuildTrigger'
 
   staticSiteBuildTrigger:
     name: staticSiteBuildTrigger
@@ -59,7 +52,13 @@ functions:
       name: api-eligundry-com
       entryPoint:
         - '/bin/static-site-build-trigger'
+    events:
+      - http:
+          path: '/netlify/build'
+          method: POST
     environment:
+      AUTH_USER: ${env:AUTH_USER}
+      AUTH_PASSWORD: ${env:AUTH_PASSWORD}
       NETLIFY_BUILD_HOOK: ${env:NETLIFY_BUILD_HOOK}
 
 resources:

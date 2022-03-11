@@ -58,7 +58,7 @@ func GinzapWithConfig(logger *zap.Logger, conf *Config) gin.HandlerFunc {
 				zap.String("request-id", requestID),
 			)
 		} else {
-			contextScopedLogger.Info("no request id 😭")
+			contextScopedLogger.Info("no request id 😭", zap.Any("headers", c.Request.Header))
 		}
 
 		storeLogger(c, contextScopedLogger)

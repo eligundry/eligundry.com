@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/eligundry/eligundry.com/api/auth"
-	"github.com/eligundry/eligundry.com/api/netlify"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
@@ -88,17 +87,6 @@ func SubmitDaylioExport(c *gin.Context) {
 	}
 
 	d.Logger.Info("successfully submitted daylio upload", zap.Int("entries", len(data)))
-
-	// Trigger a rebuild of the static site when I submit a new feelings CSV
-	if err := netlify.InvokeBuildLambda(c.Request.Context(), "Triggered by Daylio upload to API"); err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	} else {
-		d.Logger.Info("successfully triggered Netlify build")
-	}
 
 	c.JSON(http.StatusCreated, data)
 }

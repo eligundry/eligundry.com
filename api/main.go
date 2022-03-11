@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -14,6 +12,7 @@ import (
 	"github.com/eligundry/eligundry.com/api/daylio"
 	"github.com/eligundry/eligundry.com/api/ginzap"
 	"github.com/eligundry/eligundry.com/api/lastfm"
+	"github.com/eligundry/eligundry.com/api/netlify"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -24,24 +23,15 @@ var logger *zap.Logger
 func Router() *gin.Engine {
 	router := gin.Default()
 	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
+	router.NoRoute(common.GinNoRoute)
+	router.NoMethod(common.GinNoMethod)
 	api := router.Group("api")
 	{
 		auth.RegisterRoutes(api)
 		daylio.RegisterRoutes(api)
 		lastfm.RegisterRoutes(api)
+		netlify.RegisterRoutes(api)
 	}
-
-	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "404 Page Not Found, bro",
-		})
-	})
-
-	router.NoMethod(func(c *gin.Context) {
-		c.JSON(http.StatusMethodNotAllowed, gin.H{
-			"error": fmt.Sprintf("%s Method Not Allowed, bro", c.Request.Method),
-		})
-	})
 
 	return router
 }

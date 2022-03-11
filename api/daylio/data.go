@@ -53,7 +53,7 @@ ORDER BY daylio_entries.time DESC
 `
 
 func (d *Data) GetDaylioEntries() ([]DaylioEntry, error) {
-	var entries []DaylioEntry
+	entries := []DaylioEntry{}
 	whereClause := "AND 1 = 1"
 
 	err := d.DB.SelectContext(d.Ctx, &entries, fmt.Sprintf(jsonQuery, whereClause))
@@ -70,7 +70,7 @@ func (d *Data) GetDaylioEntries() ([]DaylioEntry, error) {
 }
 
 func (d *Data) GetDaylioEntriesForTime(t time.Time) ([]DaylioEntry, error) {
-	var entries []DaylioEntry
+	entries := []DaylioEntry{}
 
 	whereClause := `
         AND DATE(daylio_entries.time) = (
