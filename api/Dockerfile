@@ -25,6 +25,6 @@ FROM scratch
 EXPOSE 8080
 COPY --from=development /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=development /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=development /opt /opt
-COPY --from=development /go/bin/goose /opt/goose
-ENTRYPOINT ["/opt/api"]
+COPY --from=development /opt /bin
+COPY --from=development /go/bin/goose /bin/goose
+ENTRYPOINT ["/bin/api"]
