@@ -25,7 +25,7 @@ type errorMiddlewareTestCase struct {
 }
 
 type nestedError struct {
-	Error *string `json:"error"`
+	Error string `json:"error"`
 }
 
 type errorBody struct {
@@ -71,6 +71,19 @@ func TestErrorHandlerMiddleware(t *testing.T) {
 				StatusCode: "should be 404 because at least one error has the NotFoundPrefix",
 			},
 		},
+		{
+			Errors: []error{
+				errors.New("1 generic error bro"),
+				errors.New("2 generic error bro"),
+				errors.New("3 generic error bro"),
+				errors.New("4 generic error bro"),
+			},
+			ExpectedKey: "errors",
+			StatusCode:  http.StatusInternalServerError,
+			Messages: messages{
+				StatusCode: "should be a 500 because no errors have a prefix",
+			},
+		},
 	}
 
 	for _, testCase := range testCases {
@@ -97,8 +110,13 @@ func TestErrorHandlerMiddleware(t *testing.T) {
 
 		if len(testCase.Errors) == 1 {
 			assert.NotNil(responseBody.Error, "should have the error key filled in because there was one error")
+			assert.Equal(testCase.Errors[0].Error(), *responseBody.Error)
 		} else {
 			assert.Len(responseBody.Errors, len(testCase.Errors))
+
+			for i := range responseBody.Errors {
+				assert.Equal(testCase.Errors[i].Error(), responseBody.Errors[i].Error)
+			}
 		}
 	}
 
