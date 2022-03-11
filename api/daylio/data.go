@@ -103,13 +103,20 @@ func (d *Data) ProcessDaylioExport(export multipart.File) ([]DaylioExport, error
 		return entries, err
 	}
 
+	nyc, err := time.LoadLocation("America/New_York")
+
+	if err != nil {
+		return entries, errors.Wrap(err, "could not load timezone")
+	}
+
 	activitiesSet := map[string]bool{}
 
 	for i := range entries {
 		// time is the primary key
-		entries[i].DateTime, err = time.Parse(
+		entries[i].DateTime, err = time.ParseInLocation(
 			"2006-01-02 15:04",
 			fmt.Sprintf("%s %s", entries[i].Date, entries[i].Time),
+			nyc,
 		)
 
 		if err != nil {
