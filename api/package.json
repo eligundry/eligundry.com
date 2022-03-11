@@ -9,6 +9,8 @@
   "author": "Eli Gundry",
   "license": "MIT",
   "dependencies": {
-    "serverless": "^2.68.0"
+    "serverless": "^3.7.1",
+    "serverless-dotenv-plugin": "^3.12.2",
+    "serverless-iam-roles-per-function": "^3.2.0"
   }
 }

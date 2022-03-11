@@ -1,7 +1,8 @@
-package common
+package netlify
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -16,7 +17,7 @@ var client = http.Client{
 	Timeout: time.Second * 30,
 }
 
-func TriggerNetlifyDeployOfSite(triggerTitle string) error {
+func TriggerDeploy(ctx context.Context, triggerTitle string) error {
 	rawBuildHookURL := os.Getenv("NETLIFY_BUILD_HOOK")
 
 	if len(rawBuildHookURL) == 0 {
@@ -33,7 +34,12 @@ func TriggerNetlifyDeployOfSite(triggerTitle string) error {
 	query.Add("trigger_title", triggerTitle)
 	buildHookURL.RawQuery = query.Encode()
 
-	req, err := http.NewRequest("POST", buildHookURL.String(), bytes.NewBuffer([]byte("{}")))
+	req, err := http.NewRequestWithContext(
+		ctx,
+		"POST",
+		buildHookURL.String(),
+		bytes.NewBuffer([]byte("{}")),
+	)
 
 	if err != nil {
 		return err

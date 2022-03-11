@@ -7,18 +7,18 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var _db *sqlx.DB
-
 const defaultDatabasePath = "/opt/data/api.db"
 
+var _db *sqlx.DB
+
 func GetDB() *sqlx.DB {
-	databasePath := os.Getenv("DATABASE_PATH")
-
-	if len(databasePath) == 0 {
-		databasePath = defaultDatabasePath
-	}
-
 	if _db == nil {
+		databasePath := os.Getenv("DATABASE_PATH")
+
+		if len(databasePath) == 0 {
+			databasePath = defaultDatabasePath
+		}
+
 		_db = sqlx.MustConnect("sqlite3", databasePath)
 	}
 

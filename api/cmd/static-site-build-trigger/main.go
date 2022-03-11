@@ -7,11 +7,8 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
-	"github.com/eligundry/eligundry.com/api/auth"
 	"github.com/eligundry/eligundry.com/api/common"
-	"github.com/eligundry/eligundry.com/api/daylio"
 	"github.com/eligundry/eligundry.com/api/ginzap"
-	"github.com/eligundry/eligundry.com/api/lastfm"
 	"github.com/eligundry/eligundry.com/api/netlify"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -20,6 +17,10 @@ import (
 var ginLambda *ginadapter.GinLambda
 var logger *zap.Logger
 
+func LambdaHandler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return ginLambda.ProxyWithContext(ctx, req)
+}
+
 func Router() *gin.Engine {
 	router := gin.Default()
 	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
@@ -27,17 +28,10 @@ func Router() *gin.Engine {
 	router.NoMethod(common.GinNoMethod)
 	api := router.Group("api")
 	{
-		auth.RegisterRoutes(api)
-		daylio.RegisterRoutes(api)
-		lastfm.RegisterRoutes(api)
 		netlify.RegisterRoutes(api)
 	}
 
 	return router
-}
-
-func LambdaHandler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	return ginLambda.ProxyWithContext(ctx, req)
 }
 
 func init() {

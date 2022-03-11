@@ -1,9 +1,6 @@
 /* eslint "no-console": "off" */
 import { GatsbyNode } from 'gatsby'
 import path from 'path'
-import kebabCase from 'lodash/kebabCase'
-import parseISO from 'date-fns/parseISO'
-import isValidDate from 'date-fns/isValid'
 
 import sourceSingleImage from './config/utils/sourceSingleImage'
 import addGitLastModifiedToNode from './config/utils/addGitLastmodifiedToNode'
