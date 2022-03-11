@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/aws/aws-lambda-go v1.27.1
 	github.com/awslabs/aws-lambda-go-api-proxy v0.12.0
-	github.com/gin-gonic/gin v1.7.4
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/gocarina/gocsv v0.0.0-20210408192840-02d7211d929d
 	github.com/golang/protobuf v1.5.2 // indirect
