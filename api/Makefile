@@ -2,7 +2,7 @@ GO=$(shell which go)
 GOOS ?= linux
 GOARCH ?= amd64
 CGO_ENABLED ?= 0
-GO_BUILD=GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=$(CGO_ENABLED) $(GO) build --tags "json1"
+GO_BUILD=GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=$(CGO_ENABLED) $(GO) build --tags "json1" -ldflags="-w -s"
 OUTPUT_DIR ?= ./bin
 DOCKER=$(shell which docker)
 DOCKER_TAG=eligundry/api.eligundry.com

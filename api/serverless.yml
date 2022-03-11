@@ -51,7 +51,7 @@ functions:
     image:
       name: api-eligundry-com
       entryPoint:
-        - '/bin/static-site-build-trigger'
+        - '/opt/static-site-build-trigger'
     events:
       - http:
           path: '/api/netlify/build'
