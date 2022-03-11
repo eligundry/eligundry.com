@@ -8,8 +8,17 @@ import (
 	"github.com/eligundry/eligundry.com/api/netlify"
 )
 
-func Handler(ctx context.Context) error {
-	return netlify.TriggerDeploy(ctx, "Blah")
+func Handler(ctx context.Context) (map[string]interface{}, error) {
+	if err := netlify.TriggerDeploy(ctx, "Blah"); err != nil {
+		return map[string]interface{}{
+			"success": false,
+			"error":   err.Error(),
+		}, err
+	}
+
+	return map[string]interface{}{
+		"success": true,
+	}, nil
 }
 
 func main() {

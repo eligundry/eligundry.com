@@ -45,6 +45,12 @@ functions:
         - subnet-051997fc3d1383284
         - subnet-026cddc40fb470bbc
         - subnet-0e4ce11da300407ad
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - "lambda:InvokeFunction"
+        Resource:
+          - 'arn:aws:lambda:${aws:region}:${aws:accountId}:function:staticSiteBuildTrigger'
 
   staticSiteBuildTrigger:
     name: staticSiteBuildTrigger
