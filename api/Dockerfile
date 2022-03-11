@@ -1,13 +1,11 @@
 FROM golang:1.17 AS development
 
 # Install deps to install packages
+# Install goose for database migrations
 RUN apt-get update \
     && apt-get install --no-install-recommends -y sqlite3 \
-    && echo "PRAGMA compile_options;" | sqlite3 | grep JSON1
-
-# Install goose for database migrations
-RUN go get github.com/pressly/goose/cmd/goose
-RUN which goose
+    && echo "PRAGMA compile_options;" | sqlite3 | grep JSON1 \
+    && go get github.com/pressly/goose/cmd/goose
 
 # Install go dependencies
 WORKDIR /src
@@ -24,7 +22,8 @@ ENTRYPOINT ["/opt/api"]
 
 FROM scratch
 EXPOSE 8080
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=development /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=development /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=development /go/bin/goose /opt/goose
 COPY --from=development /opt/* /opt/
 ENTRYPOINT ["/opt/api"]
