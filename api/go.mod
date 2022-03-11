@@ -3,7 +3,7 @@ module github.com/eligundry/eligundry.com/api
 go 1.13
 
 require (
-	github.com/aws/aws-lambda-go v1.27.1
+	github.com/aws/aws-lambda-go v1.28.0
 	github.com/awslabs/aws-lambda-go-api-proxy v0.12.0
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
