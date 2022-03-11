@@ -203,8 +203,20 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
   )
 }
 
-export const JobSearch2k22SankeyChart: React.FC = () => (
-  <JobSearchSankeyChart data={jobSearchDataToSankeyPoints(jobSearch2022)} />
-)
+export const JobSearchSankeyChartByYear: React.FC<{ year: number }> = ({
+  year,
+}) => {
+  switch (year) {
+    case 2022:
+      return (
+        <JobSearchSankeyChart
+          data={jobSearchDataToSankeyPoints(jobSearch2022)}
+        />
+      )
+    default:
+      console.error(`Job Search Sankey chart does not exist for year ${year}`)
+      return null
+  }
+}
 
 export default JobSearchSankeyChart

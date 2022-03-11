@@ -6,6 +6,10 @@ const MDXShortcodes = {
   YouTube: loadable(() => import('react-lite-yt-embed'), {
     resolveComponent: ({ LiteYoutubeEmbed }) => LiteYoutubeEmbed,
   }),
+  JobSearchSankeyChart: loadable(() => import('../JobSearch/SankeyChart'), {
+    resolveComponent: ({ JobSearchSankeyChartByYear }) =>
+      JobSearchSankeyChartByYear,
+  }),
 }
 
 export default MDXShortcodes
