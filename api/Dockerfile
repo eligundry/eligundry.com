@@ -21,10 +21,7 @@ EXPOSE 8080
 WORKDIR /src
 ENTRYPOINT ["/opt/api"]
 
-FROM scratch
-EXPOSE 8080
-COPY --from=development /usr/share/zoneinfo /usr/share/zoneinfo
-COPY --from=development /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=development /opt /bin
-COPY --from=development /go/bin/goose /bin/goose
+FROM public.ecr.aws/lambda/go:1.x
+COPY --from=development /opt ${LAMBDA_TASK_ROOT}
+COPY --from=development /go/bin/goose ${LAMBDA_TASK_ROOT}/goose
 ENTRYPOINT ["/bin/api"]
