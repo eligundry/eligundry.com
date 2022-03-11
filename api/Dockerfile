@@ -24,4 +24,4 @@ ENTRYPOINT ["/opt/api"]
 FROM public.ecr.aws/lambda/go:1.x
 COPY --from=development /opt ${LAMBDA_TASK_ROOT}
 COPY --from=development /go/bin/goose ${LAMBDA_TASK_ROOT}/goose
-ENTRYPOINT ["/bin/api"]
+ENTRYPOINT ["api"]
