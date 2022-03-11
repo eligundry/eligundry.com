@@ -14,7 +14,8 @@ RUN go mod download
 
 # Build the app
 ADD . /src
-RUN OUTPUT_DIR=/opt CGO_ENABLED=1  make static-build
+RUN OUTPUT_DIR=/opt CGO_ENABLED=1  make static-build \
+    && ls -l /opt
 
 EXPOSE 8080
 WORKDIR /src
@@ -24,6 +25,6 @@ FROM scratch
 EXPOSE 8080
 COPY --from=development /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=development /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=development /opt /opt
 COPY --from=development /go/bin/goose /opt/goose
-COPY --from=development /opt/* /opt/
 ENTRYPOINT ["/opt/api"]
