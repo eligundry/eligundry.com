@@ -58,7 +58,7 @@
     "react-use": "^17.3.2",
     "sass": "^1.49.7",
     "schema-dts": "^1.0.0",
-    "simple-git": "^3.2.6",
+    "simple-git": "^3.3.0",
     "styled-components": "^5.3.3",
     "tailwindcss": "^2.2.19",
     "twin.macro": "^2.8.2",
