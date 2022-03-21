@@ -115,18 +115,6 @@ const Home: React.FC = () => {
             bar trick.
           </li>
           <li>
-            Die hard{' '}
-            <img
-              src={brownsSVG}
-              className="browns-icon"
-              alt="Cleveland Browns logo"
-              width={286}
-              height={221}
-            />{' '}
-            <strong>Cleveland Browns</strong> fan and am convinced that we will
-            win a Super Bowl one of these years.
-          </li>
-          <li>
             I currently live in{' '}
             <EmojiText emoji="📍" label="pin emoji to denote location">
               <strong>Astoria, Queens</strong>
