@@ -114,7 +114,7 @@ func (d *Data) ProcessDaylioExport(export multipart.File) ([]DaylioExport, error
 	for i := range entries {
 		// time is the primary key
 		entries[i].DateTime, err = time.ParseInLocation(
-			"2006-01-02 15:04",
+			"2006-01-02 03:04 PM",
 			fmt.Sprintf("%s %s", entries[i].Date, entries[i].Time),
 			nyc,
 		)
