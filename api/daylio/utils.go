@@ -8,6 +8,8 @@ import (
 	"github.com/jinzhu/now"
 )
 
+const DaylioCsvDateTimeFormat = "2006-01-02 3:04 PM"
+
 func parseTimestringToTime(ts string) (time.Time, error) {
 	if ts == "now" || ts == "today" {
 		return time.Now(), nil
