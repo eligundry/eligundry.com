@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
-import radPNG from '../../../static/img/feelings/rad.png'
-import goodPNG from '../../../static/img/feelings/good.png'
-import mehPNG from '../../../static/img/feelings/meh.png'
-import badPNG from '../../../static/img/feelings/bad.png'
-import awfulPNG from '../../../static/img/feelings/awful.png'
+// import radPNG from '@/img/feelings/rad.png'
+// import goodPNG from '@/img/feelings/good.png'
+// import mehPNG from '@/img/feelings/meh.png'
+// import badPNG from '@/img/feelings/bad.png'
+// import awfulPNG from '@/img/feelings/awful.png'
 
 export enum DaylioVariants {
   home = 'home',
@@ -19,11 +19,16 @@ export enum MoodMapping {
 }
 
 export const MoodImageMapping = Object.freeze({
-  awful: awfulPNG,
-  bad: badPNG,
-  meh: mehPNG,
-  good: goodPNG,
-  rad: radPNG,
+  // awful: awfulPNG,
+  // bad: badPNG,
+  // meh: mehPNG,
+  // good: goodPNG,
+  // rad: radPNG,
+  awful: '',
+  bad: '',
+  meh: '',
+  good: '',
+  rad: '',
 })
 
 export enum ActivityMapping {

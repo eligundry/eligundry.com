@@ -14,4 +14,12 @@ export const getAll = async () =>
 
 export const getLatest = async () => getAll().then((feelings) => feelings[0])
 
+export const getCount = async (count: number) =>
+  getAll().then((feelings) => feelings.slice(0, count))
+
+export const getChartData = async () =>
+  getAll().then((feelings) =>
+    feelings.slice(0, 100).map(({ time, mood }) => ({ time, mood }))
+  )
+
 export default { getAll, getLatest }

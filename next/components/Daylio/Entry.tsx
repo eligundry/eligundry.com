@@ -2,7 +2,7 @@ import React from 'react'
 import formatISO from 'date-fns/formatISO'
 import isEqual from 'lodash/isEqual'
 import tw, { styled, css } from 'twin.macro'
-import { Link } from 'gatsby'
+import Link from 'next/link'
 
 import {
   DaylioEntry,
@@ -107,8 +107,9 @@ const Entry: React.FC<Props> = ({
   selected = false,
 }) => {
   const feelingsImage = useFeelingsImage(time)
-  const filteredActivities = activities.filter((a) => !!a && a.length > -1)
-  const isoTime = formatISO(time)
+  const filteredActivities =
+    activities?.filter((a) => !!a && a.length > -1) ?? []
+  const isoTime = formatISO(time ?? new Date())
 
   return (
     <EntryWrapper
@@ -136,8 +137,8 @@ const Entry: React.FC<Props> = ({
       >
         <h3 itemProp="name headline">I felt {mood}</h3>
         <time dateTime={isoTime} itemProp="datePublished dateModified">
-          <Link to={`/feelings#${isoTime}`} itemProp="url">
-            {isoTime}
+          <Link href={`/feelings#${isoTime}`} itemProp="url">
+            <a>{isoTime}</a>
           </Link>
         </time>
         {filteredActivities.length > 0 && (

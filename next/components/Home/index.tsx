@@ -1,14 +1,14 @@
 import React from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
-import { Link } from 'gatsby'
-import { StaticImage } from 'gatsby-plugin-image'
+import Link from 'next/link'
+import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 
 import Daylio from '../Daylio/index'
 import Paper from '../Shared/Paper'
-import Reading from '../Reading'
-import Listening from '../Listening'
+// import Reading from '../Reading'
+// import Listening from '../Listening'
 import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
 import Tooltip from '../Shared/Tooltip'
@@ -68,12 +68,11 @@ const Home: React.FC = () => {
     <>
       <Section className="introduction-hero">
         <h2>Glad To Meet You!</h2>
-        <StaticImage
-          src="../../../static/img/eli-thumbs-up-memoji.PNG"
+        <Image
+          src="/img/eli-thumbs-up-memoji.PNG"
           alt="Eli Gundry's Memoji Headshot"
           className="headshot"
-          backgroundColor="transparent"
-          placeholder="none"
+          layout="fill"
         />
         <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>
@@ -142,8 +141,8 @@ const Home: React.FC = () => {
         <p className="summary">
           A while ago, I decided to start journaling my feelings. Being a
           software engineer,{' '}
-          <Link to="/blog/feelings-api">
-            I made an API out of it and put it on my website
+          <Link href="/blog/feelings-api">
+            <a>I made an API out of it and put it on my website</a>
           </Link>
           . The favicon for the site the emoji for my latest entry.
         </p>
@@ -177,6 +176,7 @@ const Home: React.FC = () => {
           <Tooltip html />
         </GitHubCalendar>
       </Section>
+      {/*
       <Section className="reading">
         <h2>What I'm Reading</h2>
         <p className="summary">
@@ -201,24 +201,29 @@ const Home: React.FC = () => {
           <Reading />
         </div>
       </Section>
+      */}
       <Section className="listening">
         <h2>What I'm Listening To</h2>
         <p className="summary">
           I listen to way too much music and I love to listen to full albums. I
           mainly listen to hip hop, indie rock and{' '}
-          <Link to="/blog/icymi-glocca-morra-just-married">
-            <abbr title="Ask me about the fun 5th wave emo bands I love">
-              emo
-            </abbr>
+          <Link href="/blog/icymi-glocca-morra-just-married">
+            <a>
+              <abbr title="Ask me about the fun 5th wave emo bands I love">
+                emo
+              </abbr>
+            </a>
           </Link>{' '}
           music. I occasionally write reviews of old albums that I love but
           aren't well known in a series called{' '}
-          <Link to="/blog#icymi">
-            <abbr title="I See You Missed It">ICYMI</abbr>
+          <Link href="/blog#icymi">
+            <a>
+              <abbr title="I See You Missed It">ICYMI</abbr>
+            </a>
           </Link>
           .
         </p>
-        <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" />
+        {/* <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" /> */}
       </Section>
     </>
   )

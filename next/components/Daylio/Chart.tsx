@@ -5,13 +5,13 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import type { CoreChartOptions, ChartType } from 'chart.js/types/index.esm'
 import 'chartjs-adapter-date-fns'
-import { navigate } from 'gatsby'
+// import { navigate } from 'gatsby'
 import { theme } from 'twin.macro'
 
 import useFeelingsChartData from './useFeelingsChartData'
 import { MoodMapping } from './types'
 import { useHasTouch } from '../../utils/useIsMobile'
-import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 import { toolTipTheme } from '../../utils/charts'
 
 interface Props {
@@ -37,7 +37,7 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
         return
       }
 
-      navigate(`/feelings#${targetEntry.x}`)
+      // navigate(`/feelings#${targetEntry.x}`)
     },
     [data]
   )
