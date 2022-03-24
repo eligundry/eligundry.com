@@ -1,0 +1,144 @@
+{
+  "name": "next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "12.1.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.23",
+    "@types/react": "17.0.42",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.16.0",
+    "eslint": "8.11.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-next": "12.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.6.0",
+    "typescript": "4.6.2"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": true
+  },
+  "babelMacros": {
+    "twin": {
+      "config": "src/tailwind.config.js",
+      "preset": "styled-components",
+      "debugPlugins": false,
+      "debug": false
+    }
+  },
+  "browserslist": [
+    "last 2 versions",
+    ">1%",
+    "not IE 11",
+    "not ie_mob 11"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "airbnb",
+      "next",
+      "next/core-web-vitals",
+      "prettier",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": [
+      "public",
+      "static",
+      ".cache",
+      "content",
+      "*.d.ts"
+    ],
+    "rules": {
+      "react/prefer-stateless-function": "off",
+      "react/prop-types": "off",
+      "react/no-danger": "off",
+      "react/destructuring-assignment": "off",
+      "react/no-unescaped-entities": "off",
+      "react/jsx-one-expression-per-line": "off",
+      "react/jsx-props-no-spreading": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "no-use-before-define": "off",
+      "react/require-default-props": "off",
+      "no-param-reassign": "off",
+      "radix": "off",
+      "jsx-a11y/anchor-is-valid": [
+        "error",
+        {
+          "components": [
+            "Link"
+          ],
+          "specialLink": [
+            "hrefLeft",
+            "hrefRight",
+            "to"
+          ],
+          "aspects": [
+            "noHref",
+            "invalidHref",
+            "preferButton"
+          ]
+        }
+      ],
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".tsx",
+            ".jsx"
+          ]
+        }
+      ],
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "never",
+          "mjs": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+        }
+      ],
+      "react/function-component-definition": [
+        2,
+        {
+          "namedComponents": [
+            "arrow-function"
+          ]
+        }
+      ]
+    },
+    "settings": {
+      "import/core-modules": [],
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
+        }
+      }
+    },
+    "env": {
+      "browser": true
+    }
+  }
+}
