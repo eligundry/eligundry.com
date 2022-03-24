@@ -2,23 +2,22 @@ import React from 'react'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 import { styled } from 'twin.macro'
 
-import useGoodreadsShelf from './useGoodreads'
+import type { GoodReadsBook } from '@/lib/goodreads'
 
-const Reading: React.FC = () => {
-  const shelves = useGoodreadsShelf()
+export interface ReadingProps {
+  current: GoodReadsBook[]
+  read: GoodReadsBook[]
+}
 
-  if (!shelves.currentlyReading || !shelves.recentlyFinished) {
-    return null
-  }
-
+const Reading: React.FC<ReadingProps> = ({ current, read }) => {
   return (
     <div className="shelves">
       <Shelf>
-        {shelves.currentlyReading.books.map((book) => (
-          <Book key={book.isbn} shelf="currently-reading" {...book} />
+        {current.map((book) => (
+          <Book key={book.isbn} shelf="current" {...book} />
         ))}
-        {shelves.recentlyFinished.books.map((book) => (
-          <Book key={book.isbn} shelf="recently-finished" {...book} />
+        {read.map((book) => (
+          <Book key={book.isbn} shelf="read" {...book} />
         ))}
       </Shelf>
     </div>
@@ -43,16 +42,16 @@ const Shelf = styled.div`
   }
 `
 
-const Book: React.FC<
-  GatsbyTypes.UseGoodreadsShelvesQuery['currentlyReading']['books'][0] & {
-    shelf: 'currently-reading' | 'recently-finished'
-  }
-> = ({ url, title, author, coverImage, shelf }) => {
-  // @ts-ignore
-  const image = getImage(coverImage)
+const Book: React.FC<GoodReadsBook & { shelf: 'current' | 'read' }> = ({
+  url,
+  title,
+  author,
+  cover,
+  shelf,
+}) => {
   let correctAuthor = ''
 
-  if (!image) {
+  if (!cover) {
     return null
   }
 
@@ -64,12 +63,12 @@ const Book: React.FC<
     <a
       href={url}
       data-tip={`${
-        shelf === 'currently-reading' ? 'Currently Reading: ' : ''
+        shelf === 'current' ? 'Currently Reading: ' : ''
       }${title} - ${correctAuthor}`}
       target="_blank"
       rel="noopener noreferrer"
     >
-      <GatsbyImage image={image} alt={`${title} - ${correctAuthor}`} />
+      <img src={cover} alt={`${title} - ${correctAuthor}`} />
     </a>
   )
 }

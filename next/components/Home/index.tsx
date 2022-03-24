@@ -7,7 +7,7 @@ import Skeleton from 'react-loading-skeleton'
 
 import Daylio from '../Daylio/index'
 import Paper from '../Shared/Paper'
-// import Reading from '../Reading'
+import Reading, { ReadingProps } from '../Reading'
 // import Listening from '../Listening'
 import useIsPhone from '../../utils/useIsMobile'
 import GatsbySuspense from '../Shared/GatsbySuspense'
@@ -61,18 +61,21 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   }
 `
 
-const Home: React.FC = () => {
+export interface HomeDataProps {
+  reading: ReadingProps
+}
+
+const Home: React.FC<HomeDataProps> = ({ reading }) => {
   const isMobile = useIsPhone()
 
   return (
     <>
       <Section className="introduction-hero">
         <h2>Glad To Meet You!</h2>
-        <Image
+        <img
           src="/img/eli-thumbs-up-memoji.PNG"
           alt="Eli Gundry's Memoji Headshot"
           className="headshot"
-          layout="fill"
         />
         <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>
@@ -176,7 +179,6 @@ const Home: React.FC = () => {
           <Tooltip html />
         </GitHubCalendar>
       </Section>
-      {/*
       <Section className="reading">
         <h2>What I'm Reading</h2>
         <p className="summary">
@@ -198,10 +200,9 @@ const Home: React.FC = () => {
           !
         </p>
         <div className="bookshelf">
-          <Reading />
+          <Reading current={reading.current} read={reading.read} />
         </div>
       </Section>
-      */}
       <Section className="listening">
         <h2>What I'm Listening To</h2>
         <p className="summary">

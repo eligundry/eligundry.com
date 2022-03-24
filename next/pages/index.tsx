@@ -1,9 +1,25 @@
-import type { NextPage } from 'next'
+import type { NextPage, GetStaticProps } from 'next'
 
-import Home from '@/components/Home'
+import Home, { HomeDataProps } from '@/components/Home'
+import goodreads from '@/lib/goodreads'
+import daylio from '@/lib/daylio'
 
-const HomePage: NextPage = () => {
-  return <Home />
+const HomePage: NextPage<HomeDataProps> = ({ reading }) => {
+  console.log({ reading })
+  return <Home reading={reading} />
+}
+
+export const getStaticProps: GetStaticProps<HomeDataProps> = async () => {
+  const reading = {
+    current: await goodreads.getShelf('29665939', 'currently-reading', 1),
+    read: await goodreads.getShelf('29665939', 'read', 11),
+  }
+
+  return {
+    props: {
+      reading,
+    },
+  }
 }
 
 export default HomePage
