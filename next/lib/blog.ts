@@ -130,3 +130,5 @@ export const getAll = async (postType: PostType, fields?: Fields) => {
 
   return posts
 }
+
+export default { getAll, getByFilename, getBySlug }

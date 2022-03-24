@@ -4,7 +4,7 @@ import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
 
 import Nav from './Nav'
-import useDocument from '../components/Shared/useDocument'
+import useDocument from '@/components/Shared/useDocument'
 
 const HeaderElm = styled.header`
   ${tw`

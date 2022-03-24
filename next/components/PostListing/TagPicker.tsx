@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useLocation from 'react-use/lib/useLocation'
 import tw, { styled } from 'twin.macro'
-import Helmet from 'react-helmet'
+import Head from 'next/head'
 
 import EmojiText from '../Shared/EmojiText'
 
@@ -67,9 +67,9 @@ const TagPicker: React.FC<Props> = ({ tags, selectedTag, onSelectTag }) => {
   return (
     <TagWrapper>
       {selectedTag && (
-        <Helmet>
+        <Head>
           <title>#{selectedTag} | Blog</title>
-        </Helmet>
+        </Head>
       )}
       {[...tags].sort().map((tag) => (
         <Tag

@@ -1,16 +1,14 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import Link from 'next/link'
 import tw, { styled } from 'twin.macro'
 
-import Time from '../Shared/Time'
-import EmojiText from '../Shared/EmojiText'
+import Time from '@/components/Shared/Time'
+import EmojiText from '@/components/Shared/EmojiText'
 import TagPicker, { useSelectedTag } from './TagPicker'
+import { Post } from '@/lib/blog'
 
 interface Props {
-  postEdges:
-    | GatsbyTypes.BlogListingQuery['allMdx']['edges']
-    | GatsbyTypes.TalkListingQuery['allMdx']['edges']
-  pathPrefix: string
+  posts: Post[]
   itemType: 'CreativeWork' | 'BlogPosting'
 }
 
@@ -34,31 +32,30 @@ const Article = styled.article`
   }
 `
 
-const PostListing: React.FC<Props> = ({ postEdges, pathPrefix, itemType }) => {
+const PostListing: React.FC<Props> = ({ posts, itemType }) => {
   const tags = new Set<string>()
   const [selectedTag, selectTag] = useSelectedTag()
-  const postList = postEdges
-    .map((postEdge) => {
-      postEdge.node.frontmatter?.tags
+  const postList = posts
+    .map((post) => {
+      post.frontmatter?.tags
         ?.filter((tag): tag is string => !!tag)
         .forEach((tag) => tags.add(tag))
 
       let cover: string | undefined
 
-      if (postEdge?.node?.frontmatter && 'cover' in postEdge.node.frontmatter) {
-        cover = postEdge.node.frontmatter.cover?.publicURL
-      }
+      // if (post?.frontmatter && 'cover' in postEdge.node.frontmatter) {
+      //   cover = post.frontmatter.cover?.publicURL
+      // }
 
       return {
-        path: postEdge?.node?.slug,
+        path: post.path,
         cover,
-        title: postEdge?.node?.frontmatter?.title,
-        date: postEdge?.node?.frontmatter?.date,
-        excerpt: postEdge.node.excerpt,
-        timeToRead: postEdge.node.timeToRead,
-        description: postEdge?.node?.frontmatter?.description,
-        dateModified: postEdge?.node?.fields?.latestCommit?.date,
-        tags: postEdge?.node?.frontmatter?.tags,
+        title: post?.frontmatter?.title,
+        date: post?.frontmatter?.date,
+        timeToRead: undefined,
+        description: post?.frontmatter?.description,
+        dateModified: undefined,
+        tags: post?.frontmatter?.tags,
       }
     })
     .filter(
@@ -86,7 +83,7 @@ const PostListing: React.FC<Props> = ({ postEdges, pathPrefix, itemType }) => {
           <meta itemProp="image" content={post.cover} />
           <meta itemProp="dateModified" content={post.dateModified} />
           <h1 itemProp="name headline">
-            <Link to={`/${pathPrefix}/${post.path}`} itemProp="url">
+            <Link href={`/${post.path}`} itemProp="url">
               {post.title}
             </Link>
           </h1>

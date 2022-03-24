@@ -2,7 +2,7 @@ import React from 'react'
 import ReactTooltip from 'react-tooltip'
 import { styled, theme } from 'twin.macro'
 
-import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 
 const Tooltip = styled(({ className, ...props }) => {
   const prefersDark = usePrefersDarkMode()

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import tw, { styled } from 'twin.macro'
-import { Link } from 'gatsby'
+import Link from 'next/link'
 import useDarkMode from 'use-dark-mode'
 
-import EmojiText from '../components/Shared/EmojiText'
+import EmojiText from '@/components/Shared/EmojiText'
 
 interface NavProps {
   expanded: boolean
@@ -135,7 +135,7 @@ const Nav: React.FC = () => {
           {Object.entries(navLinks).map(
             ([path, { title, emoji, emojiLabel }]) => (
               <Link
-                to={path}
+                href={path}
                 key={path}
                 onClick={() => setHamburgerExpanded(false)}
                 className="nav-page-link"

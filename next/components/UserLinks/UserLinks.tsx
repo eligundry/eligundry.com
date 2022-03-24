@@ -9,8 +9,6 @@ import {
   FaLastfmSquare,
 } from 'react-icons/fa'
 
-import config from '../../../data/SiteConfig'
-
 export const links = Object.freeze([
   {
     name: 'github',
@@ -50,7 +48,7 @@ export const links = Object.freeze([
   {
     name: 'rss',
     label: 'Add my blog to your Google Reader via RSS',
-    url: config.siteRss,
+    url: '/feed.rss',
     icon: <FaRssSquare />,
     itemProp: undefined,
   },

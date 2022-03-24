@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
-import Helmet from 'react-helmet'
-import { isSSR } from '../utils/env'
+// import Helmet from 'react-helmet'
+import { isSSR } from '@/utils/env'
 
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
@@ -16,7 +16,7 @@ const FancyBackground: React.FC = () => {
 
   return (
     <>
-      <Helmet bodyAttributes={{ 'data-fancy-background': !!seed }} />
+      {/* <Helmet bodyAttributes={{ 'data-fancy-background': !!seed }} /> */}
       {seed && (
         <>
           <Canvas seed={seed} />

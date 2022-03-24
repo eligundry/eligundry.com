@@ -1,9 +1,9 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
-import { Link } from 'gatsby'
+import Link from 'next/link'
 
-import UserLinks from '../components/UserLinks/UserLinks'
-import EmojiText from '../components/Shared/EmojiText'
+import UserLinks from '@/components/UserLinks/UserLinks'
+import EmojiText from '@/components/Shared/EmojiText'
 
 const FooterContainer = styled.footer`
   ${tw`bg-white dark:bg-typographyDark shadow print:hidden`}
@@ -57,7 +57,7 @@ const Footer: React.FC = () => (
         <p>
           Eli Gundry is a full stack web developer that loves JavaScript, devops
           and web standards. When he isn't coding, he's{' '}
-          <Link to="/blog#cooking">
+          <Link href="/blog#cooking">
             <EmojiText emoji="👨‍🍳" label="chef cause I'm cooking">
               cooking up something mean in the kitchen
             </EmojiText>
