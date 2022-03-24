@@ -1,0 +1,377 @@
+---
+title: Can I Brag About This Site For A Second?
+description: I have put a lot of work into the newest version of this site and I want to tell you about it.
+slug: 2021-website-redesign
+cover: ./img/website-update/home-page.png
+date: 2021-11-09T05:00
+tags:
+  - code
+---
+
+![Home page screenshot](./img/website-update/home-page.png)
+
+In the age of social media and hosted blogs, personal websites don't get the love they deserve. Sure, writing developer
+based content on a site like [medium.com][medium] or [dev.to][dev.to] will get more eyeballs on it than something you
+make on your own, but there is something extremely satisfying in owning every pixel on a site with your name on it.
+I saw this Tweet the other day and it seemed fitting to how I think about personal sites.
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">trying this analogy thing <a href="https://t.co/Q9889HOF3B">pic.twitter.com/Q9889HOF3B</a></p>&mdash; Jane &quot;Not A Twïtter Employee&quot; Manchun Wong (@wongmjane) <a href="https://twitter.com/wongmjane/status/1456360721084674098?ref_src=twsrc%5Etfw">November 4, 2021</a></blockquote>
+
+If we are entering the era of Web3 (which is Soylent in this Tweet, ewww) and it's ethos is trying to revive the
+techno-optimisim and ownership of the Web 1.0 era, what better way to embody this than with an over-engineered personal
+site? Also, I just really love Greek salad (I live in Astoria after all, you walk outside on Ditmars and they force
+Greek salad on you).
+
+> As an aside, I find all of Web3 and blockchain stuff disgusting. I have no money in any of that stuff because I object
+> on environmental issues and that most of it reeks of pump and dump schemes. That said, I am happy for anything that
+> pushes the web pendulum back in the direction of user's owning pixels attached to their name.
+
+# Guiding Principals
+
+1. Dynamic enough to reflect me
+2. Fetch data at compile time
+3. Do a lot and do it fast
+4. Updates should be triggered by tools/apps I use instead of manual intervention
+
+# Technology
+
+Would be a technology blog if I didn't nerd out about tools before describing the cool things I did?
+
+## Gatsby
+
+I moved this site from [Lektor][lektor] to [Gatsby][gatsby] last year while procrastinating on writing a talk about
+[Redux][redux-talk]. At my last job, I was working almost exclusively in Python + Flask, so using a Python based
+generator made sense at the time. But now, at my current job, I'm working a lot more in JavaScript and I wanted my site
+to be more dynamic. I also knew that we were planning on migrating our customer facing sites to a static site generator
+in the near future and Gatsby was high up on the list of possibilities for us to use. By picking it up for my personal
+site, I could learn how to use it beforehand and know exactly what we needed to do.
+
+Turns out that this was a fantastic bet on the future. We are porting around 10 sites at work to Gatsby and because
+I had learned the basics of Gatsby months previous on a single site, I was able to dive into the more complex topics to
+enable us to port many sites at once.
+
+While doing some of these more complex things in a private repo at work, I have been able to take aspects that I have
+learned there and ported them conceptually back to my personal site. I will make note of these learnings as I go. It has
+also given me a test bed to try out Gatsby upgrades before doing them at work. For example, I tried to update this site
+to Gatsby 4 and ran into a bunch of issues and will be holding off on pushing it at work until it's fixed for this site.
+
+### Is Gatsby Any Good?
+
+Oh I have complicated feelings about this! Like all frameworks, Gatsby has made a lot of trade offs to accomplish it's
+goal. **I would say that Gatsby's core goal is to be the Django/Wordpress of static site generators that is capable of
+magical incremental builds.** Let's look at how they accomplish that goal.
+
+1. Your data store for all data while building the site is coming from GraphQL
+2. They have a very through [lifecycle API model][gatsby-lifecycle-apis] that allows for a massive amount of plugins to be added to your site with
+   minimal configuration.
+3. The data in this GraphQL store is used to intelligently determine what pages are needed to be rebuilt when building
+   a page with an established cache.
+
+These three points are all fine on their own but, as they say, the devil is in the details. All of your data that you
+use must be in the GraphQL store, so you must hook into the lifecycle APIs to do this, which forces this data fetching
+to be divorced from your application components. This is actually very similar to the comparison of Redux vs React
+Hooks.
+
+**Furthermore, how these GraphQL queries are executed are very flawed.** Instead of running them when generating the HTML
+after the JS has compiled, they are instead extracted with a Babel transformation and transpiled to a JSON
+file that is read when creating the HTML. This seems like a minor distinction but it means that your GraphQL queries are
+unable to take arguments outside of the template system AND cannot be shared between components because that makes them
+too hard to extract.
+
+Compare this to [Next.js][nextjs], which does all of it's data querying as plain JavaScript functions that can be shared
+freely. It doesn't provide a shared data store that all data needs to go into BUT it is able to do the same incremental
+building that Gatsby does all the same. If I were to do this over, I would probably use Next.js, but I'm fine with
+Gatsby for now.
+
+That said, there are a lot of things that Gatsby does right:
+
+* It's plugin ecosystem is massive and will save you a lot of time from the jump
+* The [image component][gatsby-plugin-image] is extremely good, far better than Next.js's
+* The documentation is fantastic
+
+## Other Technologies
+
+Here's some quick hot takes on some other libraries used in this update:
+
+- [Tailwind CSS][tailwind]: I think it's a little barebones compared to other CSS frameworks. That said, it's theming
+  system and naming conventions made it easy to have consistent spacing, colors, fonts, etc. I do fear that updating
+  styles in the future will be annoying because I will have forgotten it's naming conventions, but that's Future Eli's
+  problem!
+- [Styled Components][styled-components]: I love Styled Components! It has a very intuitive API and I have become
+  a complete CSS in JS fan boi. My personal site does not have a lot of reusable components so I didn't get to use some
+  of it's more complex features, but I would be excited to in a future job!
+- [twin.macro][twin.macro]: This is the glue for Tailwind CSS to Styled Components and it's good! It allowed me to avoid
+  putting Tailwind classes right on my components, which I just could not stomach. It also makes the dev build fail when
+  you provide an invalid Tailwind class.
+- [mdx][mdx]: What cool little language! It's Markdown that you can import React components into! Such a simple concept
+  executed perfectly.
+
+# Feelings API v2
+
+<figure>
+
+![Feelings widget on my homepage](./img/website-update/feelings-widget.png)
+
+  <figcaption>I just had to show off a little bit and add that chart</figcaption>
+</figure>
+
+Last year, [I made an API to submit diary entries from the Daylio app on my phone][feelings-api]. I am happy to announce
+that I am continuing to use this functionality and I think posting them on my site + Twitter has encouraged me to keep
+doing it (I'm at ~700 days in a row).
+
+In the original version of this, I was pulling [the data from the API][feelings-api-endpoint] at runtime using [React Query][react-query]. React
+Query is a fine library and I love using it, but this is a static site so pulling it at runtime is far slower than doing
+it at compile time.
+
+As it turns out, moving this data into Gatsby was very easy using [gatsby-source-custom-api][gatsby-source-custom-api].
+All I needed was the following in my `gatsby-config.js`.
+
+```javascript
+{
+  resolve: 'gatsby-source-custom-api',
+  options: {
+    url: 'https://api.eligundry.com/api/feelings',
+    rootKey: 'feelings',
+    schemas: {
+      feelings: `
+        time: String!
+        mood: String!
+        activities: [String]
+        notes: [String!]
+      `,
+    },
+  },
+},
+```
+
+This allows me to fetch my latest diary entry like so:
+
+<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/f9aa93ddf5e384e621ebd549b87e4e72defb00e0/gatsby/src/components/Daylio/useLatestFeelings.ts" />
+
+Super easy! In order for this site to be built daily, I added a call to a Netlify build webhook to the API endpoint
+I upload the diary entries to. This build will also generate a dedicated RSS feed that I use IFTTT to post the entry to
+Twitter with. This, in turn, also updates all the other Gatsby sources, which allows things like my Goodreads shelves
+and Listening widgets to update naturally.
+
+Speaking of those widgets...
+
+# Goodreads Shelves
+
+![Goodreads bookshelves on my home page](./img/website-update/bookshelves.png)
+
+Similar to the feelings widget, I had a Goodreads widget of what I was reading on the previous version of my website. It
+was using a [React component to pull the data from the Goodreads API][react-goodreads-shelf]. And this was fine until
+[Goodreads announced it was sunsetting it's API][goodbye-goodreads-api]. Not to worry, I realized it was pretty easy to
+pull this data from their HTML and submitted a [suggestion to this component to pull data from the HTML that was
+eventually adopted][rgrs-pr]. But even then, I ran into more issues:
+
+1. Pulling this data at runtime is very slow, even slower now that I'm pulling HTML instead of (relatively) compact XML
+2. Images were at max resolution, much larger than they needed to be given the size of them on the page
+3. The component used a hosted instance of [CORS Anywhere][cors-anywhere] on Heroku that would get rate limited frequently
+
+I threw up my hands and realized that I needed to make a custom Gatsby source to pull this data at compile time. At
+first, I had it living as a script inside my site, but then I started making custom Gatsby source packages at work and
+decided to extract it into my first NPM package!
+
+[npm: @eligundry/gatsby-source-goodreads](https://www.npmjs.com/package/@eligundry/gatsby-source-goodreads)
+
+One of the added benefits of moving this to compile time is that Gatsby is able to download the cover images and plug it
+into it's image plugin and resize the images to be small and load progressively as the page loads! It's a win win win!
+Eventually, I might learn how to extract my progress reading these books and include them in this widget, but that is
+for another day.
+
+# Listening Homepage Widget
+
+![Last.fm cover on my homepage](./img/website-update/last-fm-cover.png)
+
+It is very easy to pull a Last.fm collage of your top albums. A bunch of services exist for this. Why bring this up?
+
+Well, I elevated it in 2 ways:
+
+1. I'm pulling the image at build time into Gatsby so that it's image component can optimize it
+2. I'm overlaying the artist name, album and the number of scrobbles with an image map
+
+Number 2 is the thing I want to brag about. I used [gatsby-source-lastfm][gatsby-source-lastfm] to pull my last 1000
+scrobbles and then I whipped up a React component to overlay the info onto the image using an [HTML image map][html-image-map] 
+(in the year 2021, it's not often you get the chance to use an image map legitimately, so I was tickled pink to do so).
+
+The only downside to this approach is that it's not 100% accurate. I've noticed the following things:
+
+1. There is often lag between the data that the image provider is using and what the Last.fm API returns.
+2. If I have the same amount of scrobbles for a given album, the sorting in the image `!=` the sorting in the API. I think
+   the cover providers might be sorting on an internal Last.fm ID and not the album name or artist. I do not want to
+   include the ID in this bundle so I'm fine with this being inaccurate.
+
+This homepage widget also has my current playlist of the season. Dynamic and updates without me having to do anything
+special. I want to add a third widget here of the shows that I'm going to that will come from [Songkick][songkick]'s
+API. I had this somewhat working using their ical exports, but the data wasn't clean enough for me to happy. I have
+applied for an API key, maybe I will make a Gatsby source for this as well.
+
+# Design
+
+I am not a designer. I have tried to design things in the past and I'm just terrible at it. My brain just doesn't work
+that way. I tried to design the previous iteration of this site and it was bad. No contrast, terrible sizing & spacing
+and it was just lacking pizzaz.
+
+Going into this redesign, I was convinced that I was going to spend money on a template for this site. I really wanted
+to pay a premium for a good template. But, I couldn't find a paid one that was simple enough for all my pages or really
+felt like "me".
+
+That said, I did find a free [minimal blog theme][minimal-blog-theme] from [Tailwind Toolbox][tailwind-toolbox] by 
+[Amrit Nagi][amrit-nagi] that I fell in love with and adapted to have the best elements from my previous site shown off
+in the best possible light. Thanks Amrit, I made sure to buy you some coffees.
+
+## Fluid Background
+
+After cribbing the template for this site, I was feeling good about the design, but it still needed something more to
+really show off my personality. It took me a few weeks and some endless scrolling on Twitter before I came across this:
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">New Houdini stuff! ✨<br /><br />Magical generative patterns that rearrange themselves based on the browser window 🎨<br /><br />A kinda different approach for responsive design...<br /><br />Inspired by <a href="https://twitter.com/chriscoyier?ref_src=twsrc%5Etfw">@chriscoyier</a> &#39;s generative grids pen 💛<br /><br />CodePen (Desktop only + Chrome / Edge) <a href="https://t.co/WvYqXy3Yoq">https://t.co/WvYqXy3Yoq</a> <a href="https://t.co/6kJCifGdbB">pic.twitter.com/6kJCifGdbB</a></p>&mdash; George Francis (@georgedoescode) <a href="https://twitter.com/georgedoescode/status/1455150458352381963?ref_src=twsrc%5Etfw">November 1, 2021</a></blockquote>
+
+This only works natively in Chrome + Edge, but I have been able to polyfill it so it works in Safari + Firefox, thought
+it's slightly more buggy than the Chrome version.
+
+I love that it's super dynamic, very cute and fits the theme of my site perfectly! I converted it into a React component
+with a button in the bottom right part of the screen that can regenerate the pattern. It's even responsive to my dark
+mode toggle, speaking of which...
+
+<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/src/layout/FancyBackground.tsx" />
+
+## Dark Theme
+
+You have to be sensitive to users that like dark color schemes! Luckily, [TailwindCSS makes it very easy to style your
+site for dark mode][tailwindcss-dark-mode]. With that approach, I made a React provider that provides the ability to the
+user to toggle light to dark mode with it's default value being the result of the media query `(prefers-color-scheme:
+dark)`, which the OS sets in MacOS and probably Windows.
+
+# Github Integrations
+
+Github is super flexible so I embedded some features into this site that depend on it.
+
+## Utterances
+
+Years ago, I saw a talk at Brooklyn.js where someone presented [echo-chamber-js][echo-chamber-js]. It's a joke
+JavaScript library that presents a comment form that just saves the comment to the commenter's local storage so that the
+comment just shows up for them. The thought behind it is that comments are mainly mean or spam, you really don't want to
+read them but you have to offer them, otherwise they will email you and you really don't want that. That talk has always
+stuck with me and when it came time to implement comments for my site, I decided to adapt it for React.
+
+But, confusingly, even to me, I decided to wire up the form to my personal API so I could capture the comments and read
+them if I wanted. It was a pretty cool endpoint that I did a good job writing, but it really served no purpose.
+
+Fast forward to earlier this year. I get an email from someone who read the [Feelings API blog post][feelings-api] and
+wanted to post kind words about it. Turns out, I had recently moved my API to a different domain but didn't update my
+code to post to it. This reader went out of their way to tell me that it was broken and that they liked my article.
+I felt bad and decided that needed to change!
+
+I decided to switch my commenting system to [utterances][utterances]. Utterances has a really cool design: It stores all
+it's comments as Github comments in the issues tab of repos. It will automatically create issues on each page a user
+leaves a comment on and thread all replies under that. This means that a user needs a Github account to comment, which
+narrows my audience to just developers BUT that also acts as an anti-spam mechanism and is much nicer for me to moderate
+than Disqus.
+
+## Github File Embeds
+
+In a previous blog post, I wanted to show a [Gist][gist] like file embed of a file from the Github main site.
+Unfortunately, Github does not provide this out of the box. Luckily, a service called [EmGithub][emgithub] provides
+exactly this. They don't have a React component for this so I made one:
+
+<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/src/components/Shared/GitHubFile.tsx#L40-L86" />
+
+Alright, time for me to 🤓 nerd out! EmGithub uses a JavaScript API called [`document.write`][document.write], which is
+something that I didn't know about until recently (for good reason). For those that don't know, `document.write` is an
+ancient JavaScript API that allows you to programatically write HTML to a document as if the document was a file like
+stream. Because of how the browser's rendering engine works, this file "closes" on `DOMContentLoaded` and any further
+writes will fail or clear the page. This is completely incompatible with how React works.
+
+Fortunately, lots of ads work this way and some ad tech developers created a nifty library called [postscribe][postscribe],
+which patches `document.write` to operate using "normal" DOM operations that can be called anytime. I integrated that
+into this component and it works perfectly. It even responds to my dark theme toggle!
+
+# Git Based Last Modified Timestamps
+
+> Google uses the `<lastmod>` value if it's consistently and verifiably (for example by comparing to the last
+> modification of the page) accurate.
+>
+> \- [Google's `sitemap.xml` documentation](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap)
+
+This one is just for me and Google, I swear, but I really want to show it off.
+
+For customer facing sites where you are trying to have the best Google ranking for organic traffic, it's best practice
+for your pages to have a last modified timestamp in the `sitemap.xml` and schema.org data. This tells Google when it was
+last updated and more frequently updated content rises to the top of the search results (in theory). This has been a big
+focus for me at work this year as we transition from developer maintained sites to sites generated from a CMS + Gatsby.
+
+To pull a last modified timestamp from a CMS is very easy, as it's just a database record. For a static site generated
+from Markdown, that timestamp is harder to pull. I could have easily added a field to my blog posts frontmatter that
+I manually updated when a blog post was updated. But, that is error prone and only works for blog posts. No, I needed
+something better if I wanted this.
+
+Then, I cocked my head slightly to the side and looked at this a little differently and realized: Git is a database with
+last modified timestamps. So, I went about creating a super hacky script that hooks into Gatsby's `onCreateNode`
+lifecycle event to directly add the latest commit timestamp for any given node. This required a lot of hard coding path
+rules and is in no way open sourceable, but I really just want to tell people about it!
+
+<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/master/gatsby/config/utils/addGitLastmodifiedToNode.ts" />
+
+# Performance
+
+I would be remiss if I blogged all about these features and my static site without bringing up performance. This blog
+post, if nothing else, is a marketing tool for my next employer to hire me on the basis of.
+
+The primary consumer of this site will be on desktop, on that I have a perfect 💯!
+
+![Google Page Speed Insights Desktop 100 score](./img/website-update/desktop-100.png)
+
+Sadly, on mobile, this is another story and all I have is a 71 😧
+
+![Google Page Speed Insights Mobile 71 score](./img/website-update/mobile-71.png)
+
+This is going to be hard to get up. The biggest issue is that I have a lot of JavaScript powering all the functionality
+on my site. I can try to lazy load some stuff, but because it's statically rendered and available on first paint, it's
+not a lot of help. The good news is that the content on my site shows up quickly and that extra JS loading doesn't
+impact the end user as much as it would if it wasn't statically rendered.
+
+My pet theory is that Google Page Speed Insights mobile is hard for everyone because Google's target device is
+a sub-$200 phone on an African 3G connection. This is obviously the future of the internet and the benchmark we should
+be targeting, but this is also an American's personal site tailored for other Americans, so I'm not going to lose too
+much sleep over this.
+
+# Conclusion
+
+I have a whole other blog post/talk to write about the resume on this site. So much content from such useless navel
+gazing! In any case, I hope you like this site and thank you for reading this novel!
+
+[lektor]: https://www.getlektor.com/
+[gatsby]: https://www.gatsbyjs.com/
+[redux-talk]: /talks/redux-hooks
+[gatsby-lifecycle-apis]: https://www.gatsbyjs.com/docs/conceptual/gatsby-lifecycle-apis/
+[nextjs]: https://nextjs.org/
+[gatsby-plugin-image]: https://www.gatsbyjs.com/plugins/gatsby-plugin-image/
+[emgithub]: https://emgithub.com/
+[postscribe]: https://github.com/krux/postscribe
+[feelings-api]: /blog/feelings-api
+[react-query]: https://react-query.tanstack.com/
+[feelings-api-endpoint]: https://api.eligundry.com/api/feelings
+[gatsby-source-custom-api]: https://www.gatsbyjs.com/plugins/gatsby-source-custom-api/
+[react-goodreads-shelf]: https://www.npmjs.com/package/react-goodreads-shelf
+[goodbye-goodreads-api]: https://www.goodreads.com/topic/show/21788520-api-deprecation
+[rgrs-pr]: https://github.com/kylekarpack/react-goodreads-shelf/issues/13#issuecomment-756871730
+[cors-anywhere]: https://github.com/Rob--W/cors-anywhere
+[tailwind]: https://tailwindcss.com/
+[styled-components]: https://styled-components.com/
+[twin.macro]: https://github.com/ben-rogerson/twin.macro
+[tailwind-toolbox]: https://www.tailwindtoolbox.com/
+[minimal-blog-theme]: https://www.tailwindtoolbox.com/templates/minimal-blog-demo.php
+[amrit-nagi]: https://twitter.com/amritnagi
+[tailwindcss-dark-mode]: https://tailwindcss.com/docs/dark-mode
+[mdx]: https://mdxjs.com/
+[echo-chamber-js]: https://github.com/tessalt/echo-chamber-js
+[utterances]: https://utteranc.es/
+[gist]: https://gist.github.com/
+[document.write]: https://developer.mozilla.org/en-US/docs/Web/API/Document/write
+[gatsby-source-lastfm]: https://www.gatsbyjs.com/plugins/gatsby-source-lastfm/
+[html-image-map]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/map
+[songkick]: https://www.songkick.com/
+[medium]: https://medium.com/
+[dev.to]: https://dev.to/
