@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import tw, { styled, css } from 'twin.macro'
 
-import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 
 interface Props {
   fileURL: string

@@ -83,8 +83,8 @@ const PostListing: React.FC<Props> = ({ posts, itemType }) => {
           <meta itemProp="image" content={post.cover} />
           <meta itemProp="dateModified" content={post.dateModified} />
           <h1 itemProp="name headline">
-            <Link href={`/${post.path}`} itemProp="url">
-              {post.title}
+            <Link href={post.path}>
+              <a itemProp="url">{post.title}</a>
             </Link>
           </h1>
           {post.date && (

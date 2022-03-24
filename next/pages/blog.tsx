@@ -9,11 +9,12 @@ const Blog: NextPage<{ posts: Post[] }> = (props) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = await blog.getAll('posts', [
+  const posts = await blog.getAll('blog', [
     'title',
     'path',
     'date',
     'description',
+    'tags',
   ])
   const latestFeeling = await daylio.getLatest()
 

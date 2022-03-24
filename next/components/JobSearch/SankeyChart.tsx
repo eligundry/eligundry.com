@@ -4,8 +4,8 @@ import { Chart, SankeyDataPoint } from 'chart.js'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
 import { theme } from 'twin.macro'
 
-import { toolTipTheme, textColor } from '../../utils/charts'
-import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+import { toolTipTheme, textColor } from '@/utils/charts'
+import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 import jobSearch2022 from './2022.json'
 
 Chart.register(SankeyController, Flow)

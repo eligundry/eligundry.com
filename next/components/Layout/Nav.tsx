@@ -134,15 +134,15 @@ const Nav: React.FC = () => {
         <div className="nav-links">
           {Object.entries(navLinks).map(
             ([path, { title, emoji, emojiLabel }]) => (
-              <Link
-                href={path}
-                key={path}
-                onClick={() => setHamburgerExpanded(false)}
-                className="nav-page-link"
-              >
-                <EmojiText label={emojiLabel} emoji={emoji}>
-                  <span className="link-text">{title}</span>
-                </EmojiText>
+              <Link href={path} key={path}>
+                <a
+                  onClick={() => setHamburgerExpanded(false)}
+                  className="nav-page-link"
+                >
+                  <EmojiText label={emojiLabel} emoji={emoji}>
+                    <span className="link-text">{title}</span>
+                  </EmojiText>
+                </a>
               </Link>
             )
           )}

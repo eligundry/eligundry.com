@@ -3,8 +3,10 @@ import fs from 'fs'
 import matter from 'gray-matter'
 import parseISO from 'date-fns/parseISO'
 import dateCompareDesc from 'date-fns/compareDesc'
+import { serialize as mdxSerialize } from 'next-mdx-remote/serialize'
+import imageSize from 'rehype-img-size'
 
-export type PostType = 'posts' | 'talks'
+export type PostType = 'blog' | 'talks'
 
 export interface Frontmatter {
   title: string
@@ -20,9 +22,10 @@ export interface Post {
   frontmatter: Frontmatter
   path: string
   content: string
+  markdown: any
 }
 
-export type Field = keyof Frontmatter | keyof Omit<Post, 'frontmatter'> | 'path'
+export type Field = keyof Frontmatter | keyof Omit<Post, 'frontmatter'>
 
 export type Fields = Field[]
 
@@ -30,19 +33,32 @@ export const getPath = (postType: PostType, filename?: string) =>
   path.join(process.cwd(), 'content', postType, filename ?? '')
 
 export const getFilenames = (postType: PostType) =>
-  fs.readdirSync(getPath(postType))
+  fs
+    .readdirSync(getPath(postType))
+    .filter((filename) => path.extname(filename) === '.mdx')
 
-export const getBySlug = (
+export const getBySlug = async (
   postType: PostType,
   slug: string,
   fields?: Fields
-) => {}
+) => (await getAll(postType, fields)).find((p) => p.frontmatter.slug === slug)
 
-export const getByFilename = async (
+export function getByFilename<F = undefined, RP = Post>(
+  postType: PostType,
+  filename: string
+): Promise<RP | null>
+
+export function getByFilename<F extends Field[], RP extends Post>(
   postType: PostType,
   filename: string,
-  fields?: Fields
-) => {
+  fields: F
+): Promise<RP | null>
+
+export async function getByFilename<F, ReturnedPost>(
+  postType: PostType,
+  filename: string,
+  fields?: F
+): Promise<ReturnedPost | null> {
   const fileContent = await fs.promises
     .readFile(getPath(postType, filename))
     .catch((e) => {})
@@ -54,60 +70,69 @@ export const getByFilename = async (
   const { content, data } = matter(fileContent)
 
   if (!fields) {
+    // @ts-ignore
     return {
       frontmatter: data,
       content,
-    } as Post
+      markdown: await renderMarkdownToHTML(content),
+      path: data.slug
+        ? `/${postType}/${data.slug}`
+        : `/${postType}/${path.parse(filename).name}`,
+    } as ReturnedPost
   }
 
-  return fields.reduce(
-    (acc, key) => {
-      if (!data.frontmatter && key !== 'content') {
-        data.frontmatter = {}
-      }
+  const post = { frontmatter: {} } as Post
 
-      switch (key) {
-        case 'date':
-          acc.frontmatter.date = data[key] ?? new Date().toISOString()
-          break
+  for (let key of fields) {
+    if (!data.frontmatter && key !== 'content') {
+      data.frontmatter = {}
+    }
 
-        case 'content':
-          acc.content = content
-          break
+    switch (key) {
+      case 'date':
+        post.frontmatter.date = data[key] ?? new Date().toISOString()
+        break
 
-        case 'draft':
-          if (typeof data[key] !== undefined) {
-            acc.frontmatter.draft = !!data[key]
-          } else {
-            acc.frontmatter.draft = false
-          }
-          break
+      case 'content':
+        post.content = content
+        break
 
-        case 'tags':
-          if (Array.isArray(data[key])) {
-            acc.frontmatter.tags = data[key]
-          } else {
-            acc.frontmatter.tags = []
-          }
-          break
+      case 'markdown':
+        post.markdown = await renderMarkdownToHTML(content)
+        break
 
-        case 'path':
-          if (data.slug) {
-            acc.path = `/${postType}/${data.slug}`
-          } else {
-            acc.path = `/${postType}/${path.parse(filename).name}`
-          }
-          break
+      case 'draft':
+        if (typeof data[key] !== undefined) {
+          post.frontmatter.draft = !!data[key]
+        } else {
+          post.frontmatter.draft = false
+        }
+        break
 
-        default:
-          // @ts-ignore
-          acc.frontmatter[key] = data?.[key] ?? ''
-      }
+      case 'tags':
+        if (Array.isArray(data[key])) {
+          post.frontmatter.tags = data[key]
+        } else {
+          post.frontmatter.tags = []
+        }
+        break
 
-      return acc
-    },
-    { frontmatter: {} } as Post
-  )
+      case 'path':
+        if (data.slug) {
+          post.path = `/${postType}/${data.slug}`
+        } else {
+          post.path = `/${postType}/${path.parse(filename).name}`
+        }
+        break
+
+      default:
+        // @ts-ignore
+        post.frontmatter[key] = data?.[key] ?? ''
+    }
+  }
+
+  // @ts-ignore
+  return post
 }
 
 export const getAll = async (postType: PostType, fields?: Fields) => {
@@ -130,5 +155,12 @@ export const getAll = async (postType: PostType, fields?: Fields) => {
 
   return posts
 }
+
+export const renderMarkdownToHTML = async (markdown: string) =>
+  mdxSerialize(markdown, {
+    mdxOptions: {
+      rehypePlugins: [[imageSize, { dir: 'public' }]],
+    },
+  })
 
 export default { getAll, getByFilename, getBySlug }
