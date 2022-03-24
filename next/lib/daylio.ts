@@ -17,9 +17,9 @@ export const getLatest = async () => getAll().then((feelings) => feelings[0])
 export const getCount = async (count: number) =>
   getAll().then((feelings) => feelings.slice(0, count))
 
-export const getChartData = async () =>
+export const getChartData = async (timeWindow: Date) =>
   getAll().then((feelings) =>
-    feelings.slice(0, 100).map(({ time, mood }) => ({ time, mood }))
+    feelings.slice(0, 100).map(({ time, mood }) => ({ x: time, y: mood }))
   )
 
 export default { getAll, getLatest }

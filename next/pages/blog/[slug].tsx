@@ -1,10 +1,20 @@
 import type { NextPage, GetStaticPaths, GetStaticProps } from 'next'
 
-import blog, { Post } from '@/lib/blog'
 import PostTemplate from '@/components/Post'
+import SEO from '@/components/SEO'
+import blog, { Post } from '@/lib/blog'
 
 const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
-  return <PostTemplate title={post.frontmatter.title} body={post.markdown} />
+  return (
+    <>
+      <SEO path={post.path} post={post} />
+      <PostTemplate
+        title={post.frontmatter.title}
+        body={post.markdown}
+        itemType="BlogPosting"
+      />
+    </>
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

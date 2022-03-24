@@ -1,11 +1,21 @@
 import type { NextPage, GetStaticProps } from 'next'
 
 import PostListing from '@/components/PostListing'
+import SEO from '@/components/SEO'
 import blog, { Post } from '@/lib/blog'
 import daylio from '@/lib/daylio'
 
 const Blog: NextPage<{ posts: Post[] }> = (props) => {
-  return <PostListing itemType="BlogPosting" posts={props.posts} />
+  return (
+    <>
+      <SEO
+        title="Blog"
+        description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+        path="/blog"
+      />
+      <PostListing itemType="BlogPosting" posts={props.posts} />
+    </>
+  )
 }
 
 export const getStaticProps: GetStaticProps = async () => {

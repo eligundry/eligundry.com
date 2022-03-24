@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import tw, { styled } from 'twin.macro'
 
-import { usePrefersDarkMode } from '../../layout/ThemeModeProvider'
+import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 
 const UtterancesContainer = styled.aside`
   & .utterances {

@@ -1,21 +1,20 @@
 import React from 'react'
-import Helmet from 'react-helmet'
-import { helmetJsonLdProp } from 'react-schemaorg'
+import Head from 'next/head'
+import { jsonLdScriptProps } from 'react-schemaorg'
 import { WebSite, BreadcrumbList } from 'schema-dts'
 import { urlJoin as urljoin } from 'url-join-ts'
 import startCase from 'lodash/startCase'
 
-import config from '../../../data/SiteConfig'
-import { useLatestFeelingsImage } from '../Daylio/useFeelingsImage'
+import config from '@/utils/config'
+import type { Post } from '@/lib/blog'
+import { useLatestFeelingsImage } from '@/components/Daylio/useFeelingsImage'
 
 interface Props {
   path: string
   title?: string
   description?: string
   image?: string
-  post?:
-    | GatsbyTypes.BlogPostBySlugQuery['mdx']
-    | GatsbyTypes.TalkBySlugQuery['mdx']
+  post?: Post
 }
 
 const SEO: React.FC<Props> = ({
@@ -26,7 +25,7 @@ const SEO: React.FC<Props> = ({
   image,
   children,
 }) => {
-  const schemaOrg: ReturnType<typeof helmetJsonLdProp>[] = []
+  const schemaOrg: ReturnType<typeof jsonLdScriptProps>[] = []
   const url = urljoin(config.siteUrl, path)
   const faviconURL = useLatestFeelingsImage()
 
@@ -41,12 +40,12 @@ const SEO: React.FC<Props> = ({
       description = post.excerpt
     }
 
-    if (post.frontmatter?.cover?.publicURL) {
-      image = urljoin(config.siteUrl, post.frontmatter.cover.publicURL)
+    if (post.frontmatter?.cover) {
+      image = urljoin(config.siteUrl, post.frontmatter.cover)
     }
 
     schemaOrg.push(
-      helmetJsonLdProp<BreadcrumbList>({
+      jsonLdScriptProps<BreadcrumbList>({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -62,14 +61,8 @@ const SEO: React.FC<Props> = ({
             '@type': 'ListItem',
             position: 2,
             item: {
-              '@id': urljoin(
-                config.siteUrl,
-                post.collection === 'posts' ? 'blog' : post.collection ?? 'blog'
-              ),
-              name:
-                post.collection === 'posts'
-                  ? 'Blog'
-                  : startCase(post.collection ?? 'Blog'),
+              '@id': urljoin(config.siteUrl, post.collection),
+              name: startCase(post.collection ?? 'Blog'),
             },
           },
           {
@@ -90,19 +83,13 @@ const SEO: React.FC<Props> = ({
   }
 
   return (
-    <Helmet
-      script={[
-        helmetJsonLdProp<WebSite>({
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          url: config.siteUrl,
-          name: config.siteTitle,
-        }),
-        ...schemaOrg,
-      ]}
-    >
+    <Head>
       {/* General tags */}
-      {title && <title>{title}</title>}
+      {
+        <title>
+          {title ? `${title} | ${config.siteTitle}` : config.siteTitle}
+        </title>
+      }
       {description && <meta name="description" content={description} />}
       <link rel="canonical" href={url} />
       <link rel="icon" href={faviconURL} />
@@ -121,8 +108,22 @@ const SEO: React.FC<Props> = ({
       <meta name="twitter:description" content={description} />
       {image && <meta name="twitter:image" content={image} />}
 
+      <script
+        {...jsonLdScriptProps<WebSite>({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          url: config.siteUrl,
+          name: config.siteTitle,
+        })}
+      />
+
+      {schemaOrg.length > 0 &&
+        schemaOrg.map((schema, i) => (
+          <script key={'schema-' + i} {...schema} />
+        ))}
+
       {children}
-    </Helmet>
+    </Head>
   )
 }
 

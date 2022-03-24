@@ -23,6 +23,7 @@ export interface Post {
   path: string
   content: string
   markdown: any
+  collection: PostType
 }
 
 export type Field = keyof Frontmatter | keyof Omit<Post, 'frontmatter'>
@@ -43,22 +44,11 @@ export const getBySlug = async (
   fields?: Fields
 ) => (await getAll(postType, fields)).find((p) => p.frontmatter.slug === slug)
 
-export function getByFilename<F = undefined, RP = Post>(
-  postType: PostType,
-  filename: string
-): Promise<RP | null>
-
-export function getByFilename<F extends Field[], RP extends Post>(
+export async function getByFilename(
   postType: PostType,
   filename: string,
-  fields: F
-): Promise<RP | null>
-
-export async function getByFilename<F, ReturnedPost>(
-  postType: PostType,
-  filename: string,
-  fields?: F
-): Promise<ReturnedPost | null> {
+  fields?: Field[]
+): Promise<Post | null> {
   const fileContent = await fs.promises
     .readFile(getPath(postType, filename))
     .catch((e) => {})
@@ -70,35 +60,51 @@ export async function getByFilename<F, ReturnedPost>(
   const { content, data } = matter(fileContent)
 
   if (!fields) {
-    // @ts-ignore
     return {
+      // @ts-ignore
       frontmatter: data,
       content,
       markdown: await renderMarkdownToHTML(content),
+      collection: postType,
       path: data.slug
         ? `/${postType}/${data.slug}`
         : `/${postType}/${path.parse(filename).name}`,
-    } as ReturnedPost
+    }
   }
 
   const post = { frontmatter: {} } as Post
 
   for (let key of fields) {
-    if (!data.frontmatter && key !== 'content') {
+    if (
+      !data.frontmatter &&
+      !['content', 'markdown', 'collection', 'path'].includes(key)
+    ) {
       data.frontmatter = {}
     }
 
     switch (key) {
-      case 'date':
-        post.frontmatter.date = data[key] ?? new Date().toISOString()
-        break
-
       case 'content':
         post.content = content
         break
 
       case 'markdown':
         post.markdown = await renderMarkdownToHTML(content)
+        break
+
+      case 'collection':
+        post.collection = postType
+        break
+
+      case 'path':
+        if (data.slug) {
+          post.path = `/${postType}/${data.slug}`
+        } else {
+          post.path = `/${postType}/${path.parse(filename).name}`
+        }
+        break
+
+      case 'date':
+        post.frontmatter.date = data[key] ?? new Date().toISOString()
         break
 
       case 'draft':
@@ -117,21 +123,12 @@ export async function getByFilename<F, ReturnedPost>(
         }
         break
 
-      case 'path':
-        if (data.slug) {
-          post.path = `/${postType}/${data.slug}`
-        } else {
-          post.path = `/${postType}/${path.parse(filename).name}`
-        }
-        break
-
       default:
         // @ts-ignore
         post.frontmatter[key] = data?.[key] ?? ''
     }
   }
 
-  // @ts-ignore
   return post
 }
 

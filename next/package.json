@@ -33,12 +33,15 @@
     "react-lazyload": "^3.2.0",
     "react-lite-yt-embed": "^1.2.7",
     "react-loading-skeleton": "^3.0.3",
+    "react-schemaorg": "^2.0.0",
     "react-tooltip": "^4.2.21",
     "react-use": "^17.3.2",
     "rehype-img-size": "^1.0.1",
+    "schema-dts": "^1.1.0",
     "styled-components": "^5.3.3",
     "tailwindcss": "^2.2.19",
     "twin.macro": "^2.8.2",
+    "url-join-ts": "^1.0.5",
     "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {

@@ -1,12 +1,17 @@
 import type { NextPage, GetStaticProps } from 'next'
 
 import Home, { HomeDataProps } from '@/components/Home'
+import SEO from '@/components/SEO'
 import goodreads from '@/lib/goodreads'
 import daylio from '@/lib/daylio'
 
 const HomePage: NextPage<HomeDataProps> = ({ reading }) => {
-  console.log({ reading })
-  return <Home reading={reading} />
+  return (
+    <>
+      <SEO path="/" />
+      <Home reading={reading} />
+    </>
+  )
 }
 
 export const getStaticProps: GetStaticProps<HomeDataProps> = async () => {
