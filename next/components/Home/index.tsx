@@ -8,11 +8,12 @@ import Skeleton from 'react-loading-skeleton'
 import Daylio from '@/components/Daylio'
 import Paper from '@/components/Shared/Paper'
 import Reading, { ReadingProps } from '@/components/Reading'
-// import Listening from '@/components/Listening'
+import Listening from '@/components/Listening'
 import useIsPhone from '@/utils/useIsMobile'
 import GatsbySuspense from '@/components/Shared/GatsbySuspense'
 import Tooltip from '@/components/Shared/Tooltip'
 import EmojiText from '@/components/Shared/EmojiText'
+import type { LastFMCoverItem } from '@/lib/lastfm'
 import vimSVG from './assets/vim.svg'
 
 const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
@@ -63,9 +64,18 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 
 export interface HomeDataProps {
   reading: ReadingProps
+  lastfmCover: LastFMCoverItem[]
+  daylioChartData: {
+    x: string
+    y: string
+  }[]
 }
 
-const Home: React.FC<HomeDataProps> = ({ reading }) => {
+const Home: React.FC<HomeDataProps> = ({
+  reading,
+  lastfmCover,
+  daylioChartData,
+}) => {
   const isMobile = useIsPhone()
 
   return (
@@ -153,7 +163,7 @@ const Home: React.FC<HomeDataProps> = ({ reading }) => {
         {/* Don't show the chart on mobile because it looks terrible, functions poorly and impacts performance on an outsized basis */}
         {!isMobile && (
           <GatsbySuspense fallback={<Skeleton height={153} width="100%" />}>
-            <DaylioChart />
+            <DaylioChart data={daylioChartData} />
           </GatsbySuspense>
         )}
       </Section>
@@ -224,7 +234,10 @@ const Home: React.FC<HomeDataProps> = ({ reading }) => {
           </Link>
           .
         </p>
-        {/* <Listening spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj" /> */}
+        <Listening
+          spotifyEmbedURL="https://open.spotify.com/embed/playlist/0hIUs71p6xdZfQEZZmEHtj"
+          lastfmCover={lastfmCover}
+        />
       </Section>
     </>
   )

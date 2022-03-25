@@ -1,6 +1,6 @@
 import React from 'react'
-import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 import { styled } from 'twin.macro'
+import Image from 'next/image'
 
 import type { GoodReadsBook } from '@/lib/goodreads'
 
@@ -68,7 +68,13 @@ const Book: React.FC<GoodReadsBook & { shelf: 'current' | 'read' }> = ({
       target="_blank"
       rel="noopener noreferrer"
     >
-      <img src={cover} alt={`${title} - ${correctAuthor}`} />
+      <Image
+        src={cover}
+        alt={`${title} - ${correctAuthor}`}
+        width={128}
+        height={194}
+        quality={90}
+      />
     </a>
   )
 }

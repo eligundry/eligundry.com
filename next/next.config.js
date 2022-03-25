@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const withMDX = require('@next/mdx')({
   extension: /\.mdx?$/,
   options: {
@@ -13,6 +15,9 @@ const withPlugins = require('next-compose-plugins')
 const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+  images: {
+    domains: ['i.gr-assets.com', 'lastfm.freetls.fastly.net'],
+  },
 }
 
 module.exports = withPlugins([withTM, withMDX], nextConfig)

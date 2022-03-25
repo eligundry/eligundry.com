@@ -1,6 +1,8 @@
-import axios, { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 import { JSDOM } from 'jsdom'
 import trim from 'lodash/trim'
+
+import { cacheAxios } from './axios'
 
 export interface GoodReadsBook {
   title: string | null
@@ -24,7 +26,7 @@ export const getShelf = async (
   let goodreadsHTML: AxiosResponse<string> | null
 
   try {
-    goodreadsHTML = await axios.get<string>(
+    goodreadsHTML = await cacheAxios.get<string>(
       `https://www.goodreads.com/review/list/${userID}`,
       {
         params: {

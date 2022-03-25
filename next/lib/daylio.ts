@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { cacheAxios } from './axios'
 
 export interface Feeling {
   time: string
@@ -8,7 +8,7 @@ export interface Feeling {
 }
 
 export const getAll = async () =>
-  axios
+  cacheAxios
     .get<Feeling[]>('https://api.eligundry.com/api/feelings')
     .then((resp) => resp.data)
 
@@ -19,7 +19,7 @@ export const getCount = async (count: number) =>
 
 export const getChartData = async (timeWindow: Date) =>
   getAll().then((feelings) =>
-    feelings.slice(0, 100).map(({ time, mood }) => ({ x: time, y: mood }))
+    feelings.map(({ time, mood }) => ({ x: time, y: mood }))
   )
 
-export default { getAll, getLatest }
+export default { getAll, getLatest, getChartData }

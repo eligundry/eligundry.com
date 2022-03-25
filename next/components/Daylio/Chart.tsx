@@ -1,14 +1,12 @@
 import React, { useCallback } from 'react'
 import { Line } from 'react-chartjs-2'
-import subMonths from 'date-fns/subMonths'
 import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import type { CoreChartOptions, ChartType } from 'chart.js/types/index.esm'
 import 'chartjs-adapter-date-fns'
-// import { navigate } from 'gatsby'
 import { theme } from 'twin.macro'
+import { useRouter } from 'next/router'
 
-import useFeelingsChartData from './useFeelingsChartData'
 import { MoodMapping } from './types'
 import { useHasTouch } from '../../utils/useIsMobile'
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
@@ -16,13 +14,17 @@ import { toolTipTheme } from '../../utils/charts'
 
 interface Props {
   months?: number
+  data: {
+    x: string
+    y: string
+  }[]
 }
 
-const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
-  const timeWindow = subMonths(new Date(), months)
-  const data = useFeelingsChartData(timeWindow)
+const DaylioChart: React.FC<Props> = ({ data: rawData }) => {
+  const data = rawData.map(({ x, y }) => ({ x: new Date(x), y }))
   const isTouchScreen = useHasTouch()
   const prefersDark = usePrefersDarkMode()
+  const router = useRouter()
 
   // Clicking on an entry will navigate to the entry on the feelings page
   const handlePointClick = useCallback<CoreChartOptions<ChartType>['onClick']>(
@@ -37,7 +39,7 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
         return
       }
 
-      // navigate(`/feelings#${targetEntry.x}`)
+      router.push(`/feelings#${targetEntry.x}`)
     },
     [data]
   )
@@ -97,7 +99,7 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
           scales: {
             x: {
               // @ts-ignore
-              min: timeWindow,
+              min: new Date('2022-01-01'),
               ticks: {
                 callback: () => null,
               },

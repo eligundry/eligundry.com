@@ -4,11 +4,13 @@ import LazyLoad from 'react-lazyload'
 import useMeasure from 'react-use/lib/useMeasure'
 import Skeleton from 'react-loading-skeleton'
 
+import type { LastFMCoverItem } from '@/lib/lastfm'
 import LastFmCover from './LastFmCover'
 import useIsMobile from '../../utils/useIsMobile'
 
 interface Props {
   spotifyEmbedURL: string
+  lastfmCover: LastFMCoverItem[]
 }
 
 const ListeningContainer = styled.div`
@@ -19,18 +21,18 @@ const ListeningContainer = styled.div`
   }
 
   & .last-fm-image {
-    display: block;
     height: fit-content;
   }
 
   & .spotify-playlist-wrapper {
     ${tw`mr-4 xs:mb-4 sm:mb-4`}
     max-width: 100%;
+    height: fit-content;
   }
 `
 
-const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
-  const [ref, { width, height }] = useMeasure<HTMLAnchorElement>()
+const Listening: React.FC<Props> = ({ spotifyEmbedURL, lastfmCover }) => {
+  const [ref, { height }] = useMeasure<HTMLAnchorElement>()
   const iframeHeight = useIsMobile() ? 380 : height
 
   return (
@@ -55,13 +57,7 @@ const Listening: React.FC<Props> = ({ spotifyEmbedURL }) => {
 
       <div>
         <h3>On Repeat</h3>
-        <a
-          href="https://www.last.fm/user/eli_pwnd"
-          ref={ref}
-          className="last-fm-image"
-        >
-          <LastFmCover width={width} height={height} />
-        </a>
+        <LastFmCover data={lastfmCover} ref={ref} />
       </div>
     </ListeningContainer>
   )
