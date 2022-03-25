@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import tw, { styled } from 'twin.macro'
+import { styled } from 'twin.macro'
 
 import type { LastFMCoverItem } from '@/lib/lastfm'
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Script from 'next/script'
 import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
-// import Helmet from 'react-helmet'
 import { isSSR } from '@/utils/env'
+import useDocument from '@/components/Shared/useDocument'
 
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
@@ -10,13 +11,28 @@ const workletURL =
   'https://unpkg.com/@georgedoescode/fluid-pattern-worklet@1.0.1/worklet.bundle.js'
 
 const FancyBackground: React.FC = () => {
+  const document = useDocument()
   const [seed, setSeed] = useState(
     !isSSR && window?.CSS?.paintWorklet ? generateSeed() : undefined
   )
 
+  useEffect(() => {
+    if (document) {
+      document.body.setAttribute('data-fancy-background', seed ? 'true' : '')
+    }
+  }, [document, seed])
+
   return (
     <>
-      {/* <Helmet bodyAttributes={{ 'data-fancy-background': !!seed }} /> */}
+      <Script
+        dangerouslySetInnerHTML={{
+          __html: `
+          if (CSS && CSS.paintWorklet && CSS.paintWorklet.addModule) {
+            CSS.paintWorklet.addModule('${workletURL}')
+          }
+        `,
+        }}
+      />
       {seed && (
         <>
           <Canvas seed={seed} />
