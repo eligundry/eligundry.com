@@ -9,8 +9,8 @@ import {
   DaylioVariants,
   MoodMapping,
   ActivityMapping,
+  MoodImageMapping,
 } from './types'
-import useFeelingsImage from './useFeelingsImage'
 import Paper from '../Shared/Paper'
 
 interface Props extends DaylioEntry {
@@ -106,7 +106,7 @@ const Entry: React.FC<Props> = ({
   variant,
   selected = false,
 }) => {
-  const feelingsImage = useFeelingsImage(time)
+  const feelingsImage = MoodImageMapping[mood]
   const filteredActivities =
     activities?.filter((a) => !!a && a.length > -1) ?? []
   const isoTime = formatISO(time ?? new Date())
@@ -137,8 +137,8 @@ const Entry: React.FC<Props> = ({
       >
         <h3 itemProp="name headline">I felt {mood}</h3>
         <time dateTime={isoTime} itemProp="datePublished dateModified">
-          <Link href={`/feelings#${isoTime}`} itemProp="url">
-            <a>{isoTime}</a>
+          <Link href={`/feelings#${isoTime}`}>
+            <a itemProp="url">{isoTime}</a>
           </Link>
         </time>
         {filteredActivities.length > 0 && (

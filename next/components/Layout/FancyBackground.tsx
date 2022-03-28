@@ -25,12 +25,13 @@ const FancyBackground: React.FC = () => {
   return (
     <>
       <Script
+        id="fancy-background-paintWorklet"
         dangerouslySetInnerHTML={{
           __html: `
           if (CSS && CSS.paintWorklet && CSS.paintWorklet.addModule) {
             CSS.paintWorklet.addModule('${workletURL}')
           }
-        `,
+          `,
         }}
       />
       {seed && (
@@ -47,20 +48,6 @@ const FancyBackground: React.FC = () => {
         </>
       )}
     </>
-  )
-}
-
-export const FancyBackgroundPaintWorkletRegistration: React.FC = () => {
-  return (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `
-          if (CSS && CSS.paintWorklet && CSS.paintWorklet.addModule) {
-            CSS.paintWorklet.addModule('${workletURL}')
-          }
-        `,
-      }}
-    />
   )
 }
 

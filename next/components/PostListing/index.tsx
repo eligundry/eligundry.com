@@ -4,8 +4,8 @@ import tw, { styled } from 'twin.macro'
 
 import Time from '@/components/Shared/Time'
 import EmojiText from '@/components/Shared/EmojiText'
-import TagPicker, { useSelectedTag } from './TagPicker'
 import { Post } from '@/lib/blog'
+import TagPicker, { useSelectedTag } from './TagPicker'
 
 interface Props {
   posts: Post[]

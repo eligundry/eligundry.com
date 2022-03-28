@@ -3,29 +3,27 @@ import subMonths from 'date-fns/subMonths'
 
 import Home, { HomeDataProps } from '@/components/Home'
 import SEO from '@/components/SEO'
+import DaylioProvider, { DaylioState } from '@/components/Daylio/Provider'
 import goodreads from '@/lib/goodreads'
 import daylio from '@/lib/daylio'
 import lastfm from '@/lib/lastfm'
 
-const HomePage: NextPage<HomeDataProps> = ({
+const HomePage: NextPage<HomeDataProps & { daylio: DaylioState<string> }> = ({
   reading,
   lastfmCover,
-  daylioChartData,
+  daylio,
 }) => {
   return (
-    <>
+    <DaylioProvider {...daylio}>
       <SEO path="/" />
-      <Home
-        reading={reading}
-        lastfmCover={lastfmCover}
-        daylioChartData={daylioChartData}
-      />
-    </>
+      <Home reading={reading} lastfmCover={lastfmCover} />
+    </DaylioProvider>
   )
 }
 
 export const getStaticProps: GetStaticProps<HomeDataProps> = async () => {
   const daylioChartData = await daylio.getChartData(subMonths(new Date(), 1))
+  const latestDaylioEntry = await daylio.getLatest()
   const lastfmCover = await lastfm.getTopAlbumsCover('eli_pwnd')
   const reading = {
     current: await goodreads.getShelf('29665939', 'currently-reading', 1),
@@ -36,7 +34,10 @@ export const getStaticProps: GetStaticProps<HomeDataProps> = async () => {
     props: {
       reading,
       lastfmCover,
-      daylioChartData,
+      daylio: {
+        entries: [latestDaylioEntry],
+        chartData: daylioChartData,
+      },
     },
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import tw, { styled, css } from 'twin.macro'
+import Link from 'next/link'
 
 import useIsPrinting from '../Shared/useIsPrinting'
 import { useParseOptimizedFlag } from './hooks'
@@ -39,7 +40,9 @@ const ResumeHeader: React.FC = () => {
   return (
     <Header parseOptimized={parseOptimized}>
       <h1>
-        <a href="/">Eli Gundry</a>
+        <Link href="/">
+          <a>Eli Gundry</a>
+        </Link>
       </h1>
       <div>
         <h2>

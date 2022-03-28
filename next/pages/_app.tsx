@@ -8,7 +8,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import '@/components/Layout/fonts.css'
 import '@/components/Layout/prism-material.scss'
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <Layout>
       <Component {...pageProps} />

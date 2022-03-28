@@ -10,7 +10,11 @@ export interface LastFMCoverItem {
   album: string
   artist: string
   count: number
-  cover: string | undefined
+  cover: string
+}
+
+if (!process.env.LAST_FM_API_KEY) {
+  throw new Error('LAST_FM_API_KEY must be defined for the site to run')
 }
 
 const lastfm = new LastFM(process.env.LAST_FM_API_KEY)
@@ -33,22 +37,28 @@ export const getScrobblesForWindow = async (
 
   const scrobbles: RecentTrack[] = []
 
-  let page = await lastfm.user.getRecentTracks(username, {
+  const page = await lastfm.user.getRecentTracks(username, {
     from: getUnixTime(start).toString(),
     to: getUnixTime(end).toString(),
   })
 
   scrobbles.push(...page.tracks.filter((scrobble) => !scrobble.nowplaying))
 
-  for (let i = 1, { totalPages } = page.meta; i < totalPages; i++) {
-    page = await lastfm.user.getRecentTracks(username, {
-      from: getUnixTime(start).toString(),
-      to: getUnixTime(end).toString(),
-      page: i + 1,
-    })
+  const promises: Promise<RecentTrack[]>[] = []
 
-    scrobbles.push(...page.tracks.filter((scrobble) => !scrobble.nowplaying))
+  for (let i = 1, { totalPages } = page.meta; i < totalPages; i++) {
+    promises.push(
+      lastfm.user
+        .getRecentTracks(username, {
+          from: getUnixTime(start).toString(),
+          to: getUnixTime(end).toString(),
+          page: i + 1,
+        })
+        .then((resp) => resp.tracks.filter(({ nowplaying }) => !nowplaying))
+    )
   }
+
+  scrobbles.push(...(await Promise.all(promises)).flatMap((tracks) => tracks))
 
   cache.set<RecentTrack[]>(`lastfm-scrobbles-${username}`, scrobbles)
 
@@ -69,19 +79,21 @@ export const getTopAlbumsCover = async (
         album: group[0].album.name,
         artist: group[0].artist.name,
         count: group.length,
-        cover: group[0].image.at(-1)?.url,
+        cover: group[0].image.at(-1)?.url ?? '',
       })
     )
     .sort((a, b) => {
       if (b.count === a.count) {
-        return (b?.album ?? '') > (a?.album ?? '') ? -1 : 1
+        return (b?.album ?? '') > (a?.album ?? '') ? 1 : -1
       }
 
       return b.count - a.count
     })
-    .slice(0, 9)
+    .slice(1, 10)
 
   return topAlbums
 }
 
-export default { getScrobblesForWindow, getTopAlbumsCover }
+const api = { getScrobblesForWindow, getTopAlbumsCover }
+
+export default api

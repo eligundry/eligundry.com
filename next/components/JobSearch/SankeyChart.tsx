@@ -8,7 +8,10 @@ import { toolTipTheme, textColor } from '@/utils/charts'
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 import jobSearch2022 from './2022.json'
 
-Chart.register(SankeyController, Flow)
+try {
+  Chart?.register(SankeyController, Flow)
+  /* eslint-disable-next-line no-empty */
+} catch (e) {}
 
 type StatusEmoji = string | '✅' | '❌' | '🙅‍♂️' | ''
 
@@ -169,8 +172,10 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
           ],
         }}
         options={{
-          colorFrom: (c: any) => chartPallete(c.raw.from),
-          colorTo: (c: any) => chartPallete(c.raw.to),
+          // @ts-ignore
+          colorFrom: (c) => chartPallete(c.raw.from),
+          // @ts-ignore
+          colorTo: (c) => chartPallete(c.raw.to),
           colorMode: 'to',
           plugins: {
             tooltip: {

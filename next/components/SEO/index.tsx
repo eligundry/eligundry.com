@@ -7,7 +7,6 @@ import startCase from 'lodash/startCase'
 
 import config from '@/utils/config'
 import type { Post } from '@/lib/blog'
-import { useLatestFeelingsImage } from '@/components/Daylio/useFeelingsImage'
 
 interface Props {
   path: string
@@ -27,7 +26,6 @@ const SEO: React.FC<Props> = ({
 }) => {
   const schemaOrg: ReturnType<typeof jsonLdScriptProps>[] = []
   const url = urljoin(config.siteUrl, path)
-  const faviconURL = useLatestFeelingsImage()
 
   if (post) {
     if (post.frontmatter?.title) {
@@ -36,8 +34,6 @@ const SEO: React.FC<Props> = ({
 
     if (post.frontmatter?.description) {
       description = post.frontmatter.description
-    } else if (post.excerpt) {
-      description = post.excerpt
     }
 
     if (post.frontmatter?.cover) {
@@ -85,14 +81,12 @@ const SEO: React.FC<Props> = ({
   return (
     <Head>
       {/* General tags */}
-      {
-        <title>
-          {title ? `${title} | ${config.siteTitle}` : config.siteTitle}
-        </title>
-      }
+      <title>
+        {title ? `${title} | ${config.siteTitle}` : config.siteTitle}
+      </title>
       {description && <meta name="description" content={description} />}
       <link rel="canonical" href={url} />
-      <link rel="icon" href={faviconURL} />
+      {/* <link rel="icon" href={faviconURL} /> */}
 
       {/* OpenGraph tags */}
       <meta property="og:url" content={url} />
@@ -118,8 +112,8 @@ const SEO: React.FC<Props> = ({
       />
 
       {schemaOrg.length > 0 &&
-        schemaOrg.map((schema, i) => (
-          <script key={'schema-' + i} {...schema} />
+        schemaOrg.map((schema) => (
+          <script key={JSON.stringify(schema)} {...schema} />
         ))}
 
       {children}

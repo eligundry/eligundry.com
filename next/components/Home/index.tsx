@@ -2,14 +2,14 @@ import React from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import Link from 'next/link'
-import Image from 'next/image'
+// import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 
 import Daylio from '@/components/Daylio'
 import Paper from '@/components/Shared/Paper'
 import Reading, { ReadingProps } from '@/components/Reading'
 import Listening from '@/components/Listening'
-import useIsPhone from '@/utils/useIsMobile'
+import useIsMobile from '@/utils/useIsMobile'
 import GatsbySuspense from '@/components/Shared/GatsbySuspense'
 import Tooltip from '@/components/Shared/Tooltip'
 import EmojiText from '@/components/Shared/EmojiText'
@@ -65,18 +65,10 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 export interface HomeDataProps {
   reading: ReadingProps
   lastfmCover: LastFMCoverItem[]
-  daylioChartData: {
-    x: string
-    y: string
-  }[]
 }
 
-const Home: React.FC<HomeDataProps> = ({
-  reading,
-  lastfmCover,
-  daylioChartData,
-}) => {
-  const isMobile = useIsPhone()
+const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover }) => {
+  const isMobile = useIsMobile()
 
   return (
     <>
@@ -163,7 +155,7 @@ const Home: React.FC<HomeDataProps> = ({
         {/* Don't show the chart on mobile because it looks terrible, functions poorly and impacts performance on an outsized basis */}
         {!isMobile && (
           <GatsbySuspense fallback={<Skeleton height={153} width="100%" />}>
-            <DaylioChart data={daylioChartData} />
+            <DaylioChart />
           </GatsbySuspense>
         )}
       </Section>

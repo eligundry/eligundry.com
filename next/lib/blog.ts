@@ -3,8 +3,10 @@ import fs from 'fs'
 import matter from 'gray-matter'
 import parseISO from 'date-fns/parseISO'
 import dateCompareDesc from 'date-fns/compareDesc'
+import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize as mdxSerialize } from 'next-mdx-remote/serialize'
 import imageSize from 'rehype-img-size'
+import rehypePrism from 'rehype-prism-plus'
 
 export type PostType = 'blog' | 'talks'
 
@@ -22,36 +24,38 @@ export interface Post {
   frontmatter: Frontmatter
   path: string
   content: string
-  markdown: any
+  markdown: MDXRemoteSerializeResult<Record<string, unknown>>
   collection: PostType
+}
+
+interface Filters {
+  draft?: boolean
 }
 
 export type Field = keyof Frontmatter | keyof Omit<Post, 'frontmatter'>
 
 export type Fields = Field[]
 
-export const getPath = (postType: PostType, filename?: string) =>
+const getPath = (postType: PostType, filename?: string) =>
   path.join(process.cwd(), 'content', postType, filename ?? '')
 
-export const getFilenames = (postType: PostType) =>
+const getFilenames = (postType: PostType) =>
   fs
     .readdirSync(getPath(postType))
     .filter((filename) => path.extname(filename) === '.mdx')
 
-export const getBySlug = async (
-  postType: PostType,
-  slug: string,
-  fields?: Fields
-) => (await getAll(postType, fields)).find((p) => p.frontmatter.slug === slug)
+const getBySlug = async (postType: PostType, slug: string, fields?: Fields) =>
+  (await getAll(postType, fields)).find((p) => p.frontmatter.slug === slug)
 
-export async function getByFilename(
+async function getByFilename(
   postType: PostType,
   filename: string,
   fields?: Field[]
 ): Promise<Post | null> {
   const fileContent = await fs.promises
     .readFile(getPath(postType, filename))
-    .catch((e) => {})
+    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+    .catch(() => {})
 
   if (!fileContent) {
     return null
@@ -74,7 +78,7 @@ export async function getByFilename(
 
   const post = { frontmatter: {} } as Post
 
-  for (let key of fields) {
+  for (const key of fields) {
     if (
       !data.frontmatter &&
       !['content', 'markdown', 'collection', 'path'].includes(key)
@@ -88,6 +92,7 @@ export async function getByFilename(
         break
 
       case 'markdown':
+        /* eslint-disable-next-line no-await-in-loop */
         post.markdown = await renderMarkdownToHTML(content)
         break
 
@@ -105,6 +110,14 @@ export async function getByFilename(
 
       case 'date':
         post.frontmatter.date = data[key] ?? new Date().toISOString()
+        break
+
+      case 'slug':
+        if (!data[key]) {
+          post.frontmatter.slug = path.parse(filename).name
+        } else {
+          post.frontmatter.slug = data[key]
+        }
         break
 
       case 'draft':
@@ -132,14 +145,22 @@ export async function getByFilename(
   return post
 }
 
-export const getAll = async (postType: PostType, fields?: Fields) => {
-  const posts = (
+const getAll = async (
+  postType: PostType,
+  fields?: Fields,
+  filters?: Filters
+) => {
+  let posts = (
     await Promise.all(
       getFilenames(postType).map((filename) =>
         getByFilename(postType, filename, fields)
       )
     )
   ).filter((post): post is Post => !!post)
+
+  if (filters?.draft === false) {
+    posts = posts.filter((post) => post.frontmatter.draft !== true)
+  }
 
   if (fields && fields.includes('date')) {
     posts.sort((a, b) =>
@@ -156,8 +177,14 @@ export const getAll = async (postType: PostType, fields?: Fields) => {
 export const renderMarkdownToHTML = async (markdown: string) =>
   mdxSerialize(markdown, {
     mdxOptions: {
-      rehypePlugins: [[imageSize, { dir: 'public' }]],
+      rehypePlugins: [
+        // @ts-ignore
+        [imageSize, { dir: 'public' }],
+        [rehypePrism],
+      ],
     },
   })
 
-export default { getAll, getByFilename, getBySlug }
+const api = { getAll, getByFilename, getBySlug }
+
+export default api

@@ -58,9 +58,11 @@ const Footer: React.FC = () => (
           Eli Gundry is a full stack web developer that loves JavaScript, devops
           and web standards. When he isn't coding, he's{' '}
           <Link href="/blog#cooking">
-            <EmojiText emoji="👨‍🍳" label="chef cause I'm cooking">
-              cooking up something mean in the kitchen
-            </EmojiText>
+            <a>
+              <EmojiText emoji="👨‍🍳" label="chef cause I'm cooking">
+                cooking up something mean in the kitchen
+              </EmojiText>
+            </a>
           </Link>
           ,{' '}
           <EmojiText

@@ -9,20 +9,18 @@ export interface ReadingProps {
   read: GoodReadsBook[]
 }
 
-const Reading: React.FC<ReadingProps> = ({ current, read }) => {
-  return (
-    <div className="shelves">
-      <Shelf>
-        {current.map((book) => (
-          <Book key={book.isbn} shelf="current" {...book} />
-        ))}
-        {read.map((book) => (
-          <Book key={book.isbn} shelf="read" {...book} />
-        ))}
-      </Shelf>
-    </div>
-  )
-}
+const Reading: React.FC<ReadingProps> = ({ current, read }) => (
+  <div className="shelves">
+    <Shelf>
+      {current.map((book) => (
+        <Book key={book.isbn} shelf="current" {...book} />
+      ))}
+      {read.map((book) => (
+        <Book key={book.isbn} shelf="read" {...book} />
+      ))}
+    </Shelf>
+  </div>
+)
 
 const Shelf = styled.div`
   display: grid;
@@ -61,7 +59,7 @@ const Book: React.FC<GoodReadsBook & { shelf: 'current' | 'read' }> = ({
 
   return (
     <a
-      href={url}
+      href={url ?? '#'}
       data-tip={`${
         shelf === 'current' ? 'Currently Reading: ' : ''
       }${title} - ${correctAuthor}`}

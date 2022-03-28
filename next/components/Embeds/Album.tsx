@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton'
 import tw, { styled, css } from 'twin.macro'
 
 interface LoadingProps extends React.IframeHTMLAttributes<HTMLIFrameElement> {
-  loading: boolean
+  isLoading: boolean
   hideOnLoading: boolean
 }
 
@@ -13,6 +13,7 @@ interface BandcampProps extends React.IframeHTMLAttributes<HTMLIFrameElement> {
   name: string
   artist: string
   url: string
+  hideOnLoading?: false
 }
 
 interface SpotifyProps extends React.IframeHTMLAttributes<HTMLIFrameElement> {
@@ -27,7 +28,7 @@ const AlbumEmbedIframe = styled.iframe<LoadingProps>`
       height: ${height}px};
     `}
 
-  ${(props) => props.hideOnLoading === props.loading && tw`hidden`}
+  ${(props) => props.hideOnLoading === props.isLoading && tw`hidden`}
 `
 
 const AlbumEmbedLoadingSkeleton = AlbumEmbedIframe.withComponent(Skeleton)
@@ -36,18 +37,16 @@ const SpotifyAlbumEmbed: React.FC<SpotifyProps & LoadingProps> = ({
   spotifyID,
   className,
   ...props
-}) => {
-  return (
-    <AlbumEmbedIframe
-      className={className}
-      src={`https://open.spotify.com/embed/album/${spotifyID}`}
-      height="380"
-      frameBorder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      {...props}
-    />
-  )
-}
+}) => (
+  <AlbumEmbedIframe
+    className={className}
+    src={`https://open.spotify.com/embed/album/${spotifyID}`}
+    height="380"
+    frameBorder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    {...props}
+  />
+)
 
 const BandcampAlbumEmbed: React.FC<BandcampProps & LoadingProps> = ({
   name,
@@ -56,20 +55,18 @@ const BandcampAlbumEmbed: React.FC<BandcampProps & LoadingProps> = ({
   bandcampID,
   className,
   ...props
-}) => {
-  return (
-    <AlbumEmbedIframe
-      src={`https://bandcamp.com/EmbeddedPlayer/album=${bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
-      seamless
-      className={className}
-      {...props}
-    >
-      <a href={url}>
-        {name} by {artist}
-      </a>
-    </AlbumEmbedIframe>
-  )
-}
+}) => (
+  <AlbumEmbedIframe
+    src={`https://bandcamp.com/EmbeddedPlayer/album=${bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
+    seamless
+    className={className}
+    {...props}
+  >
+    <a href={url}>
+      {name} by {artist}
+    </a>
+  </AlbumEmbedIframe>
+)
 
 const AlbumEmbed: React.FC<BandcampProps | SpotifyProps> = (props) => {
   const [loading, setLoading] = useState(true)
@@ -82,7 +79,7 @@ const AlbumEmbed: React.FC<BandcampProps | SpotifyProps> = (props) => {
         <AlbumEmbedLoadingSkeleton
           height={'spotifyID' in props ? 380 : undefined}
           hideOnLoading={false}
-          loading={loading}
+          isLoading={loading}
           {...props}
         />
       )}
@@ -90,14 +87,14 @@ const AlbumEmbed: React.FC<BandcampProps | SpotifyProps> = (props) => {
         {'spotifyID' in props ? (
           <SpotifyAlbumEmbed
             onLoad={() => setLoading(false)}
-            loading={loading}
+            isLoading={loading}
             hideOnLoading={true}
             {...props}
           />
         ) : (
           <BandcampAlbumEmbed
             onLoad={() => setLoading(false)}
-            loading={true}
+            isLoading={true}
             hideOnLoading={false}
             {...props}
           />

@@ -3,8 +3,7 @@ import React from 'react'
 import Entry from './Entry'
 import EntryList from './EntryList'
 import { DaylioVariants } from './types'
-import useFeelings from './useFeelings'
-import useLatestFeelings from './useLatestFeelings'
+import { useFeelings, useLatestFeelings } from './hooks'
 
 const Daylio: React.FC = () => {
   const entry = useLatestFeelings()

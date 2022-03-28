@@ -3,8 +3,8 @@ import tw, { styled } from 'twin.macro'
 import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
 
-import Nav from './Nav'
 import useDocument from '@/components/Shared/useDocument'
+import Nav from './Nav'
 
 const HeaderElm = styled.header`
   ${tw`

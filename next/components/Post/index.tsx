@@ -4,14 +4,15 @@ import { MDXRemote } from 'next-mdx-remote'
 import LazyLoad from 'react-lazyload'
 import Skeleton from 'react-loading-skeleton'
 
-import Paper from '../Shared/Paper'
-import Time from '../Shared/Time'
-import EmojiText from '../Shared/EmojiText'
+import Paper from '@/components/Shared/Paper'
+import Time from '@/components/Shared/Time'
+import EmojiText from '@/components/Shared/EmojiText'
+import { Post as PostType } from '@/lib/blog'
 import MDXShortcodes from './shortcodes'
 
 interface Props {
   title: string
-  body?: string
+  body: PostType['markdown']
   datePublished?: string
   dateModified?: string
   footer?: React.ReactNode

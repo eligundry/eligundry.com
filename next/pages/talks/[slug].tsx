@@ -4,7 +4,11 @@ import PostTemplate from '@/components/Post'
 import SEO from '@/components/SEO'
 import blog, { Post } from '@/lib/blog'
 
-const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
+interface Props {
+  post: Post
+}
+
+const Talk: NextPage<Props> = ({ post }) => {
   return (
     <>
       <SEO path={post.path} post={post} />
@@ -26,12 +30,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const post = await blog.getBySlug('talks', params.slug as string)
+export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
+  params,
+}) => {
+  if (!params?.slug) {
+    throw new Error('this route requires a slug')
+  }
+
+  const post = await blog.getBySlug('talks', params.slug)
+
+  if (!post) {
+    throw new Error(`could not find talk with slug ${params.slug}`)
+  }
 
   return {
     props: { post },
   }
 }
 
-export default BlogPost
+export default Talk

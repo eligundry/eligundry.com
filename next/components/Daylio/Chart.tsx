@@ -11,17 +11,14 @@ import { MoodMapping } from './types'
 import { useHasTouch } from '../../utils/useIsMobile'
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 import { toolTipTheme } from '../../utils/charts'
+import { useFeelingsChartData } from './hooks'
 
 interface Props {
   months?: number
-  data: {
-    x: string
-    y: string
-  }[]
 }
 
-const DaylioChart: React.FC<Props> = ({ data: rawData }) => {
-  const data = rawData.map(({ x, y }) => ({ x: new Date(x), y }))
+const DaylioChart: React.FC<Props> = () => {
+  const data = useFeelingsChartData()
   const isTouchScreen = useHasTouch()
   const prefersDark = usePrefersDarkMode()
   const router = useRouter()

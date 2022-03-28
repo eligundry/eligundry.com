@@ -18,11 +18,7 @@ export interface GoodReadsBook {
   url: string | null
 }
 
-export const getShelf = async (
-  userID: string,
-  shelf: string,
-  limit?: number
-) => {
+const getShelf = async (userID: string, shelf: string, limit?: number) => {
   let goodreadsHTML: AxiosResponse<string> | null
 
   try {
@@ -106,4 +102,6 @@ const getDateField = (row: Element, selector: string): string | null => {
 const customTrim = (value: string | undefined | null): string | null =>
   value ? trim(value, trimChars) : null
 
-export default { getShelf }
+const api = { getShelf }
+
+export default api
