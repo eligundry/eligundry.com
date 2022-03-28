@@ -20,6 +20,7 @@
     "chartjs-chart-sankey": "^0.8.1",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
+    "feed": "^4.2.2",
     "gray-matter": "^4.0.3",
     "jsdom": "^19.0.0",
     "lastfm-typed": "^2.0.1",

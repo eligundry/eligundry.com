@@ -7,6 +7,7 @@ import DaylioProvider, { DaylioState } from '@/components/Daylio/Provider'
 import DaylioChart from '@/components/Daylio/Chart'
 import Paper from '@/components/Shared/Paper'
 import daylio from '@/lib/daylio'
+import { generateDaylioFeed } from '@/lib/feed'
 
 const FeelingsPage: NextPage<{ daylio: DaylioState<string> }> = ({
   daylio,
@@ -36,6 +37,8 @@ export const getStaticProps: GetStaticProps<{
 }> = async () => {
   const entries = await daylio.getRange(subMonths(new Date(), 6))
   const chartData = await daylio.getChartData(subMonths(new Date(), 1))
+
+  await generateDaylioFeed()
 
   return {
     props: {

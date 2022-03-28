@@ -53,7 +53,7 @@ async function getByFilename(
   fields?: Field[]
 ): Promise<Post | null> {
   const fileContent = await fs.promises
-    .readFile(getPath(postType, filename))
+    .readFile(getPath(postType, filename), { encoding: 'utf8' })
     /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     .catch(() => {})
 

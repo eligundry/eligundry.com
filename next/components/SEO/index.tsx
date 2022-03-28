@@ -87,6 +87,18 @@ const SEO: React.FC<Props> = ({
       {description && <meta name="description" content={description} />}
       <link rel="canonical" href={url} />
       {/* <link rel="icon" href={faviconURL} /> */}
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="Eli Gundry's Blog"
+        href="/blog.rss"
+      />
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="Eli Gundry's Feelings"
+        href="/feelings.rss"
+      />
 
       {/* OpenGraph tags */}
       <meta property="og:url" content={url} />

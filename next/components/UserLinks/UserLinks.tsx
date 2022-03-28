@@ -48,7 +48,7 @@ export const links = Object.freeze([
   {
     name: 'rss',
     label: 'Add my blog to your Google Reader via RSS',
-    url: '/feed.rss',
+    url: '/blog.rss',
     icon: <FaRssSquare />,
     itemProp: undefined,
   },

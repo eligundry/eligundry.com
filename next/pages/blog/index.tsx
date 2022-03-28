@@ -4,6 +4,7 @@ import PostListing from '@/components/PostListing'
 import Paper from '@/components/Shared/Paper'
 import SEO from '@/components/SEO'
 import blog, { Post } from '@/lib/blog'
+import { generateBlogFeed } from '@/lib/feed'
 
 const Blog: NextPage<{ posts: Post[] }> = (props) => {
   return (
@@ -26,6 +27,7 @@ export const getStaticProps: GetStaticProps = async () => {
     ['title', 'path', 'date', 'description', 'tags', 'draft'],
     { draft: false }
   )
+  await generateBlogFeed()
 
   return {
     props: {
