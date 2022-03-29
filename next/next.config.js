@@ -8,6 +8,7 @@ const withMDX = require('@next/mdx')({
     providerImportSource: '@mdx-js/react',
   },
 })
+const withImages = require('next-images')
 const withTM = require('next-transpile-modules')(['react-lite-yt-embed'])
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -26,4 +27,7 @@ const nextConfig = {
   },
 }
 
-module.exports = withPlugins([withTM, withMDX, withBundleAnalyzer], nextConfig)
+module.exports = withPlugins(
+  [withTM, withMDX, withBundleAnalyzer, withImages],
+  nextConfig
+)

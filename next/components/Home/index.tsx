@@ -2,7 +2,7 @@ import React from 'react'
 import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import Link from 'next/link'
-// import Image from 'next/image'
+import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 
 import Daylio from '@/components/Daylio'
@@ -36,8 +36,7 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   &.introduction-hero {
     display: block;
 
-    & .vim-icon,
-    & .browns-icon {
+    & .vim-icon {
       height: 1.5rem;
       width: 1.5rem;
       display: inline;
@@ -46,8 +45,8 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
   }
 
   & .headshot {
-    min-width: 200px;
-    width: 200px;
+    min-width: 250px;
+    width: 250px;
     height: 250px;
 
     ${tw`float-right ml-8 sm:hidden`}
@@ -74,11 +73,14 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover }) => {
     <>
       <Section className="introduction-hero">
         <h2>Glad To Meet You!</h2>
-        <img
-          src="/img/eli-thumbs-up-memoji.PNG"
-          alt="Eli Gundry's Memoji Headshot"
-          className="headshot"
-        />
+        <figure className="headshot">
+          <Image
+            src="/img/eli-thumbs-up-memoji.PNG"
+            alt="Eli Gundry's Memoji Headshot"
+            width={421}
+            height={421}
+          />
+        </figure>
         <p>My name is Eli I only really write in lists, so here's my deal.</p>
         <ul>
           <li>
