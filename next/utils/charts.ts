@@ -1,5 +1,6 @@
 import { Chart } from 'chart.js'
 import { theme } from 'twin.macro'
+import 'chartjs-adapter-date-fns'
 
 export const toolTipTheme = (prefersDark: boolean) => ({
   displayColors: false,

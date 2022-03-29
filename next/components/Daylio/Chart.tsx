@@ -3,15 +3,14 @@ import { Line } from 'react-chartjs-2'
 import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import type { CoreChartOptions, ChartType } from 'chart.js/types/index.esm'
-import 'chartjs-adapter-date-fns'
 import { theme } from 'twin.macro'
 import { useRouter } from 'next/router'
 
-import { MoodMapping } from './types'
-import { useHasTouch } from '../../utils/useIsMobile'
+import { useHasTouch } from '@/utils/useIsMobile'
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
-import { toolTipTheme } from '../../utils/charts'
+import { toolTipTheme } from '@/utils/charts'
 import { useFeelingsChartData } from './hooks'
+import { MoodMapping } from './types'
 
 interface Props {
   months?: number
@@ -53,6 +52,8 @@ const DaylioChart: React.FC<Props> = () => {
     []
   )
 
+  console.log(data)
+
   return (
     <div style={{ minHeight: '153px' }}>
       <Line
@@ -86,17 +87,18 @@ const DaylioChart: React.FC<Props> = () => {
               ...toolTipTheme(prefersDark),
               callbacks: {
                 title: (item) => `📅   ${formatISO(parseISO(item[0].label))}`,
-                label: (item) =>
-                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${
-                    Object.keys(MoodMapping)[item.parsed.y]
-                  }`,
+                label: (item) => {
+                  return `${
+                    Object.values(MoodMapping)[item.parsed.y]
+                  }  I felt ${Object.keys(MoodMapping)[item.parsed.y]}`
+                },
               },
             },
           },
           scales: {
             x: {
               // @ts-ignore
-              min: new Date('2022-01-01'),
+              min: data[0].x,
               ticks: {
                 callback: () => null,
               },

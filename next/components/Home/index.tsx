@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import tw, { styled, theme } from 'twin.macro'
 import GitHubCalendar from 'react-github-calendar'
 import Link from 'next/link'
@@ -174,6 +175,15 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover }) => {
           GitHub contribution calendars are not a good indicator of whether or
           not someone is a good developer, but they are very pretty.
         </p>
+        <Head>
+          <link
+            rel="preload"
+            as="fetch"
+            href="https://github-contributions-api.jogruber.de/v4/eligundry?y=last"
+            crossOrigin="true"
+            media="application/json"
+          />
+        </Head>
         <GitHubCalendar
           username="eligundry"
           dateFormat="yyyy-MM-dd"
