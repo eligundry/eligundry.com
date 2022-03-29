@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Script from 'next/script'
+import Head from 'next/head'
 import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
 import { isSSR } from '@/utils/env'
@@ -24,6 +25,13 @@ const FancyBackground: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <link
+          rel="preconnect"
+          href={new URL(workletURL).origin}
+          crossOrigin="true"
+        />
+      </Head>
       <Script
         id="fancy-background-paintWorklet"
         dangerouslySetInnerHTML={{
