@@ -1,10 +1,4 @@
 /* eslint-disable no-shadow */
-// import radPNG from '@/img/feelings/rad.png'
-// import goodPNG from '@/img/feelings/good.png'
-// import mehPNG from '@/img/feelings/meh.png'
-// import badPNG from '@/img/feelings/bad.png'
-// import awfulPNG from '@/img/feelings/awful.png'
-
 export enum DaylioVariants {
   home = 'home',
   list = 'list',

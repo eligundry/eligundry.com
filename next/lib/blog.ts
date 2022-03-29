@@ -7,6 +7,8 @@ import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize as mdxSerialize } from 'next-mdx-remote/serialize'
 import imageSize from 'rehype-img-size'
 import rehypePrism from 'rehype-prism-plus'
+import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
+import rehypeSlug from 'rehype-slug'
 
 export type PostType = 'blog' | 'talks'
 
@@ -187,6 +189,8 @@ export const renderMarkdownToHTML = async (markdown: string) =>
         // @ts-ignore
         [imageSize, { dir: 'public' }],
         [rehypePrism],
+        [rehypeAccessibleEmojis],
+        [rehypeSlug],
       ],
     },
   })

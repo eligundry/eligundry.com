@@ -3,6 +3,9 @@ import { Feed } from 'feed'
 import compareDatesDesc from 'date-fns/compareDesc'
 import parseISO from 'date-fns/parseISO'
 import config from '@/utils/config'
+import ReactDOMServer from 'react-dom/server'
+import { MDXRemote } from 'next-mdx-remote'
+import MDXShortcodes from '@/components/Post/shortcodes'
 import daylio from './daylio'
 import blog from './blog'
 
@@ -36,8 +39,9 @@ export const generateBlogFeed = async () => {
         date: new Date(post.frontmatter.date),
         link: config.siteUrl + post.path,
         description: post.frontmatter.description,
-        // @TODO Fix this up so it's HTML
-        content: post.content,
+        content: ReactDOMServer.renderToStaticMarkup(
+          <MDXRemote {...post.markdown} components={MDXShortcodes} />
+        ),
         category:
           post.frontmatter.tags?.map((category) => ({
             name: category,
