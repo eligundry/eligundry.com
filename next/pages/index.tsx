@@ -3,12 +3,15 @@ import subMonths from 'date-fns/subMonths'
 
 import Home, { HomeDataProps } from '@/components/Home'
 import SEO from '@/components/SEO'
-import DaylioProvider, { DaylioState } from '@/components/Daylio/Provider'
+import DaylioProvider, {
+  FullDaylioPageProps,
+} from '@/components/Daylio/Provider'
 import goodreads from '@/lib/goodreads'
 import daylio from '@/lib/daylio'
 import lastfm from '@/lib/lastfm'
+import config from '@/utils/config'
 
-const HomePage: NextPage<HomeDataProps & { daylio: DaylioState<string> }> = ({
+const HomePage: NextPage<HomeDataProps & FullDaylioPageProps> = ({
   reading,
   lastfmCover,
   daylio,
@@ -21,13 +24,19 @@ const HomePage: NextPage<HomeDataProps & { daylio: DaylioState<string> }> = ({
   )
 }
 
-export const getStaticProps: GetStaticProps<HomeDataProps> = async () => {
+export const getStaticProps: GetStaticProps<
+  HomeDataProps & FullDaylioPageProps
+> = async () => {
   const daylioChartData = await daylio.getChartData(subMonths(new Date(), 1))
   const latestDaylioEntry = await daylio.getLatest()
   const lastfmCover = await lastfm.getTopAlbumsCover('eli_pwnd')
   const reading = {
-    current: await goodreads.getShelf('29665939', 'currently-reading', 1),
-    read: await goodreads.getShelf('29665939', 'read', 11),
+    current: await goodreads.getShelf(
+      config.goodreadsUserID,
+      'currently-reading',
+      1
+    ),
+    read: await goodreads.getShelf(config.goodreadsUserID, 'read', 11),
   }
 
   return {

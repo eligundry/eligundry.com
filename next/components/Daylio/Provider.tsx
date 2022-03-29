@@ -10,6 +10,14 @@ export interface DaylioState<TimeType extends string | Date = Date> {
   }[]
 }
 
+export interface LimitedDaylioPageProps {
+  daylio: Pick<DaylioState<string>, 'entries'>
+}
+
+export interface FullDaylioPageProps {
+  daylio: DaylioState<string>
+}
+
 const defaultState = Object.freeze<DaylioState>({
   entries: [],
   chartData: [],

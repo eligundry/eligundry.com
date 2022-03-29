@@ -4,14 +4,18 @@ import PostTemplate from '@/components/Post'
 import SEO from '@/components/SEO'
 import Comments from '@/components/Comments'
 import blog, { Post } from '@/lib/blog'
+import daylio from '@/lib/daylio'
+import DaylioProvider, {
+  LimitedDaylioPageProps,
+} from '@/components/Daylio/Provider'
 
-interface Props {
+interface Props extends LimitedDaylioPageProps {
   post: Post
 }
 
 const BlogPost: NextPage<Props> = ({ post }) => {
   return (
-    <>
+    <DaylioProvider>
       <SEO path={post.path} post={post} />
       <PostTemplate
         title={post.frontmatter.title}
@@ -24,7 +28,7 @@ const BlogPost: NextPage<Props> = ({ post }) => {
           </>
         }
       />
-    </>
+    </DaylioProvider>
   )
 }
 
@@ -51,7 +55,12 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
   }
 
   return {
-    props: { post },
+    props: {
+      post,
+      daylio: {
+        entries: [await daylio.getLatest()],
+      },
+    },
   }
 }
 

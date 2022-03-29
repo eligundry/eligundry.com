@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import tw, { styled } from 'twin.macro'
 import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
@@ -88,9 +89,9 @@ const Header: React.FC = () => {
       />
       <div className="wrapper">
         <h1 itemProp="name">
-          <a href="/" itemProp="sameAs">
-            Eli Gundry
-          </a>
+          <Link href="/">
+            <a itemProp="sameAs">Eli Gundry</a>
+          </Link>
         </h1>
         <Nav />
       </div>

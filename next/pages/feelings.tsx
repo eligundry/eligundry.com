@@ -3,15 +3,15 @@ import subMonths from 'date-fns/subMonths'
 import Link from 'next/link'
 
 import { DaylioList } from '@/components/Daylio'
-import DaylioProvider, { DaylioState } from '@/components/Daylio/Provider'
+import DaylioProvider, {
+  FullDaylioPageProps,
+} from '@/components/Daylio/Provider'
 import DaylioChart from '@/components/Daylio/Chart'
 import Paper from '@/components/Shared/Paper'
 import daylio from '@/lib/daylio'
 import { generateDaylioFeed } from '@/lib/feed'
 
-const FeelingsPage: NextPage<{ daylio: DaylioState<string> }> = ({
-  daylio,
-}) => {
+const FeelingsPage: NextPage<FullDaylioPageProps> = ({ daylio }) => {
   return (
     <DaylioProvider {...daylio}>
       <Paper>
@@ -32,9 +32,7 @@ const FeelingsPage: NextPage<{ daylio: DaylioState<string> }> = ({
   )
 }
 
-export const getStaticProps: GetStaticProps<{
-  daylio: DaylioState<string>
-}> = async () => {
+export const getStaticProps: GetStaticProps<FullDaylioPageProps> = async () => {
   const entries = await daylio.getRange(subMonths(new Date(), 6))
   const chartData = await daylio.getChartData(subMonths(new Date(), 1))
 
