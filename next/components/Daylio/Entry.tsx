@@ -3,14 +3,13 @@ import formatISO from 'date-fns/formatISO'
 import tw, { styled, css } from 'twin.macro'
 import Link from 'next/link'
 
+import Paper from '@/components/Shared/Paper'
 import {
   DaylioEntry,
   DaylioVariants,
   MoodMapping,
   ActivityMapping,
-  MoodImageMapping,
 } from './types'
-import Paper from '../Shared/Paper'
 
 interface Props extends DaylioEntry {
   variant: DaylioVariants
@@ -105,7 +104,6 @@ const Entry: React.FC<Props> = ({
   variant,
   selected = false,
 }) => {
-  const feelingsImage = MoodImageMapping[mood]
   const filteredActivities =
     activities?.filter((a) => !!a && a.length > -1) ?? []
   const isoTime = formatISO(time ?? new Date())
@@ -118,7 +116,10 @@ const Entry: React.FC<Props> = ({
       itemScope
       itemType="https://schema.org/BlogPosting"
     >
-      <meta content={feelingsImage} itemProp="image" />
+      <meta
+        content={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${MoodMapping[mood]}</text></svg>`}
+        itemProp="image"
+      />
       <link itemProp="author publisher" href="#eli-gundry" />
       <div className="emoji-column">
         <Emoji

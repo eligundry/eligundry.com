@@ -18,19 +18,6 @@ export enum MoodMapping {
   rad = '🥳',
 }
 
-export const MoodImageMapping = Object.freeze({
-  // awful: awfulPNG,
-  // bad: badPNG,
-  // meh: mehPNG,
-  // good: goodPNG,
-  // rad: radPNG,
-  awful: '',
-  bad: '',
-  meh: '',
-  good: '',
-  rad: '',
-})
-
 export enum ActivityMapping {
   cook = '🧑‍🍳',
   movies = '🍿',
