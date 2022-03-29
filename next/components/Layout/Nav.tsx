@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import Link from 'next/link'
 import useDarkMode from 'use-dark-mode'
+import { useRouter } from 'next/router'
 
 import EmojiText from '@/components/Shared/EmojiText'
 
@@ -117,6 +118,7 @@ const navLinks = Object.freeze({
 const Nav: React.FC = () => {
   const [hamburgerExpanded, setHamburgerExpanded] = useState(false)
   const { value: darkMode, toggle: toggleDarkMode } = useDarkMode()
+  const { pathname: currentPath } = useRouter()
 
   return (
     <>
@@ -138,6 +140,7 @@ const Nav: React.FC = () => {
                 <a
                   onClick={() => setHamburgerExpanded(false)}
                   className="nav-page-link"
+                  aria-current={currentPath === path ? 'page' : undefined}
                 >
                   <EmojiText label={emojiLabel} emoji={emoji}>
                     <span className="link-text">{title}</span>
