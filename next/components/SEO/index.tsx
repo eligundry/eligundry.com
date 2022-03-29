@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { jsonLdScriptProps } from 'react-schemaorg'
 import { WebSite, BreadcrumbList } from 'schema-dts'
 import { urlJoin as urljoin } from 'url-join-ts'
-import startCase from 'lodash/startCase'
 
 import config from '@/utils/config'
 import type { Post } from '@/lib/blog'
@@ -60,7 +59,9 @@ const SEO: React.FC<Props> = ({
             position: 2,
             item: {
               '@id': urljoin(config.siteUrl, post.collection),
-              name: startCase(post.collection ?? 'Blog'),
+              name:
+                post.collection.charAt(0).toUpperCase() +
+                post.collection.slice(1),
             },
           },
           {

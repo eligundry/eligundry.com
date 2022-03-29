@@ -1,6 +1,5 @@
 import React from 'react'
 import formatISO from 'date-fns/formatISO'
-import isEqual from 'lodash/isEqual'
 import tw, { styled, css } from 'twin.macro'
 import Link from 'next/link'
 
@@ -172,4 +171,4 @@ const Entry: React.FC<Props> = ({
   )
 }
 
-export default React.memo(Entry, isEqual)
+export default Entry
