@@ -26,6 +26,7 @@ export interface Post {
   content: string
   markdown: MDXRemoteSerializeResult<Record<string, unknown>>
   collection: PostType
+  filepath: string
 }
 
 interface Filters {
@@ -73,6 +74,7 @@ async function getByFilename(
       path: data.slug
         ? `/${postType}/${data.slug}`
         : `/${postType}/${path.parse(filename).name}`,
+      filepath: getPath(postType, filename),
     }
   }
 
@@ -134,6 +136,10 @@ async function getByFilename(
         } else {
           post.frontmatter.tags = []
         }
+        break
+
+      case 'filepath':
+        post.filepath = getPath(postType, filename)
         break
 
       default:

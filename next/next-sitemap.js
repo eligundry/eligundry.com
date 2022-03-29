@@ -2,6 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const git = require('simple-git').default()
 const dateFns = require('date-fns')
+const matter = require('gray-matter')
+const axios = require('axios')
+const NodeCache = require('node-cache')
+const cache = new NodeCache()
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
@@ -17,6 +21,8 @@ module.exports = {
       publicHtmlFiles.map(async (file) => ({
         loc: `/${file}`,
         lastmod: (await getLastModFromGit(file))?.toISOString(),
+        changefreq: 'monthly',
+        priority: 0.7,
       }))
     )
   },
@@ -30,7 +36,7 @@ module.exports = {
 
 /**
  * @param p {string}
- * @return Promise<Date>
+ * @return {Promise<Date | undefined>}
  */
 const getLastModFromGit = async (p) => {
   const pathComponentMapping = {
@@ -44,12 +50,26 @@ const getLastModFromGit = async (p) => {
   }
 
   if (pathComponentMapping[p]) {
-    return getLatestCommitDateForPaths(pathComponentMapping[p])
+    const extraDates = []
+
+    if (p === '/' || p === '/feelings') {
+      extraDates.push(await getLatestDaylioEntryDate())
+    }
+
+    return getLatestCommitDateForPaths(pathComponentMapping[p], extraDates)
   }
 
   if (p.startsWith('/blog/')) {
     return getLatestCommitDateForPaths([
       ...pathComponentMapping['/blog/[slug]'],
+      pathToMarkdownFile[p],
+    ])
+  }
+
+  if (p.startsWith('/talks/')) {
+    return getLatestCommitDateForPaths([
+      ...pathComponentMapping['/talks/[slug]'],
+      pathToMarkdownFile[p],
     ])
   }
 
@@ -62,9 +82,40 @@ const getLastModFromGit = async (p) => {
   return undefined
 }
 
-const getLatestCommitDateForPaths = async (paths) =>
+const getLatestCommitDateForPaths = async (paths, extraDates = []) =>
   dateFns.max(
     (await Promise.all(paths.map((file) => git.log({ file })))).map((log) =>
       log?.latest?.date ? dateFns.parseISO(log.latest.date) : undefined
-    )
+    ),
+    ...extraDates
   )
+
+const pathToMarkdownFile = ['talks', 'blog']
+  .flatMap((prefix) =>
+    fs
+      .readdirSync(path.join(process.cwd(), 'content', prefix))
+      .map((filename) => path.join('content', prefix, filename))
+  )
+  .reduce((acc, filepath) => {
+    const fileContents = fs.readFileSync(filepath, { encoding: 'utf8' })
+    const { data } = matter(fileContents)
+    acc[`/${filepath.includes('blog') ? 'blog' : 'talks'}/${data.slug}`] =
+      filepath
+    return acc
+  }, {})
+
+const getLatestDaylioEntryDate = async () => {
+  let latestFeelingsDate = cache.get('latestFeelingsDate')
+
+  if (latestFeelingsDate) {
+    return dateFns.parseISO(latestFeelingsDate)
+  }
+
+  latestFeelingsDate = await axios
+    .get('https://api.eligundry.com/api/feelings')
+    .then((resp) => resp.data?.[0].time)
+
+  cache.set('latestFeelingsDate', latestFeelingsDate)
+
+  return dateFns.parseISO(latestFeelingsDate)
+}
