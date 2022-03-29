@@ -130,7 +130,8 @@ const Article = styled<React.FC>(Paper.article)`
       ${tw`mt-4`}
     }
 
-    & .gatsby-resp-iframe-wrapper {
+    & iframe {
+      max-width: 100%;
       ${tw`my-4`}
     }
 

@@ -20,7 +20,12 @@ const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   images: {
-    domains: ['i.gr-assets.com', 'lastfm.freetls.fastly.net', 'c.tenor.com'],
+    domains: [
+      'i.gr-assets.com',
+      'lastfm.freetls.fastly.net',
+      'c.tenor.com',
+      'http.cat',
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true,
