@@ -2,8 +2,7 @@ name: Serverless Deploy
 on:
   push:
     branches:
-      - master
-      - fix-serverless-deploy
+      - main
     paths:
       - 'api/**'
       - '.github/**'
