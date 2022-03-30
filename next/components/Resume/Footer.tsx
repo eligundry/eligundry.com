@@ -1,8 +1,8 @@
 import React from 'react'
-import useMedia from 'react-use/lib/useMedia'
 import tw, { styled } from 'twin.macro'
 
-import EmojiText from '../Shared/EmojiText'
+import EmojiText from '@/components/Shared/EmojiText'
+import useIsPrinting from '@/components/Shared/useIsPrinting'
 import { useParseOptimizedFlag, useJobSearchParams } from './hooks'
 
 const Footer = styled.footer<{ parseOptimized?: boolean }>`
@@ -27,7 +27,7 @@ const Footer = styled.footer<{ parseOptimized?: boolean }>`
 `
 
 const ResumeFooter: React.FC = () => {
-  const isPrinting = useMedia('print')
+  const isPrinting = useIsPrinting()
   const parseOptimized = useParseOptimizedFlag()
   const targeting = useJobSearchParams({
     content: `${parseOptimized ? 'header' : 'footer'}-website-link`,

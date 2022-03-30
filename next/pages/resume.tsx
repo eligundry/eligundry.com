@@ -1,11 +1,9 @@
-import type { NextPage, GetStaticProps } from 'next'
+import type { NextPage } from 'next'
 
 import Resume from '@/components/Resume'
 import SEO from '@/components/SEO'
-import DaylioProvider, {
-  LimitedDaylioPageProps,
-} from '@/components/Daylio/Provider'
-import daylio from '@/lib/daylio'
+import DaylioProvider from '@/components/Daylio/Provider'
+import daylio, { LimitedDaylioPageProps } from '@/lib/daylio'
 
 // @TODO Gotta hide the header when I'm printing?
 
@@ -22,18 +20,6 @@ const ResumePage: NextPage<LimitedDaylioPageProps> = ({ daylio }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps<
-  LimitedDaylioPageProps
-> = async () => {
-  const latestDaylioEntry = await daylio.getLatest()
-
-  return {
-    props: {
-      daylio: {
-        entries: [latestDaylioEntry],
-      },
-    },
-  }
-}
+export const getStaticProps = daylio.getLimitedPageProps
 
 export default ResumePage

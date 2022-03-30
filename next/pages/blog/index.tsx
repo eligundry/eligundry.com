@@ -3,11 +3,9 @@ import type { NextPage, GetStaticProps } from 'next'
 import PostListing from '@/components/PostListing'
 import Paper from '@/components/Shared/Paper'
 import SEO from '@/components/SEO'
-import DaylioProvider, {
-  LimitedDaylioPageProps,
-} from '@/components/Daylio/Provider'
+import DaylioProvider from '@/components/Daylio/Provider'
 import blog, { Post } from '@/lib/blog'
-import daylio from '@/lib/daylio'
+import daylio, { LimitedDaylioPageProps } from '@/lib/daylio'
 import { generateBlogFeed } from '@/lib/feed'
 
 interface PageProps extends LimitedDaylioPageProps {
@@ -40,9 +38,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
   return {
     props: {
       posts,
-      daylio: {
-        entries: [await daylio.getLatest()],
-      },
+      ...(await daylio.getLimitedProps()),
     },
   }
 }

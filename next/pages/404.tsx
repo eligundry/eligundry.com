@@ -1,13 +1,11 @@
-import type { NextPage, GetStaticProps } from 'next'
+import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import daylio from '@/lib/daylio'
 
 import SEO from '@/components/SEO'
 import Paper from '@/components/Shared/Paper'
-import DaylioProvider, {
-  LimitedDaylioPageProps,
-} from '@/components/Daylio/Provider'
+import daylio, { LimitedDaylioPageProps } from '@/lib/daylio'
+import DaylioProvider from '@/components/Daylio/Provider'
 
 const ErrorPage: NextPage<LimitedDaylioPageProps> = ({ daylio }) => {
   const { asPath } = useRouter()
@@ -31,14 +29,6 @@ const ErrorPage: NextPage<LimitedDaylioPageProps> = ({ daylio }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps<
-  LimitedDaylioPageProps
-> = async () => ({
-  props: {
-    daylio: {
-      entries: [await daylio.getLatest()],
-    },
-  },
-})
+export const getStaticProps = daylio.getLimitedPageProps
 
 export default ErrorPage

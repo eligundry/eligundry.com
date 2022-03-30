@@ -1,6 +1,11 @@
+import type { GetStaticProps } from 'next'
 import isAfter from 'date-fns/isAfter'
 import parseISO from 'date-fns/parseISO'
 import { DaylioEntry } from '@/components/Daylio/types'
+import {
+  LimitedDaylioPageProps,
+  FullDaylioPageProps,
+} from '@/components/Daylio/Provider'
 import { cacheAxios } from './axios'
 
 export const getAll = async () =>
@@ -25,6 +30,27 @@ export const getChartData = async (timeWindow: Date) =>
       .filter(({ x }) => isAfter(parseISO(x), timeWindow))
   )
 
-const api = { getAll, getLatest, getChartData, getRange }
+export const getLimitedProps = async (): Promise<LimitedDaylioPageProps> => ({
+  daylio: {
+    entries: [await getLatest()],
+  },
+})
+
+export const getLimitedPageProps: GetStaticProps<
+  LimitedDaylioPageProps
+> = async () => ({
+  props: await getLimitedProps(),
+})
+
+export type { FullDaylioPageProps, LimitedDaylioPageProps }
+
+const api = {
+  getAll,
+  getLatest,
+  getChartData,
+  getRange,
+  getLimitedPageProps,
+  getLimitedProps,
+}
 
 export default api
