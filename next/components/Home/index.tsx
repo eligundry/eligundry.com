@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import tw, { styled, theme } from 'twin.macro'
-import GitHubCalendar from 'react-github-calendar'
+import tw, { styled } from 'twin.macro'
 import Link from 'next/link'
 import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
@@ -10,11 +9,12 @@ import Daylio from '@/components/Daylio'
 import Paper from '@/components/Shared/Paper'
 import Reading, { ReadingProps } from '@/components/Reading'
 import Listening from '@/components/Listening'
+import GitHubCalendar from '@/components/GitHubCalendar'
 import useIsMobile from '@/utils/useIsMobile'
 import Suspense from '@/components/Shared/Suspense'
-import Tooltip from '@/components/Shared/Tooltip'
 import EmojiText from '@/components/Shared/EmojiText'
 import type { LastFMCoverItem } from '@/lib/lastfm'
+import type { GitHubApiResponse } from '@/lib/github'
 import vimSVG from './assets/vim.svg'
 
 const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
@@ -65,9 +65,10 @@ const Section = styled<React.FC<SectionProps>>(Paper.section)`
 export interface HomeDataProps {
   reading: ReadingProps
   lastfmCover: LastFMCoverItem[]
+  github: GitHubApiResponse
 }
 
-const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover }) => {
+const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
   const isMobile = useIsMobile()
 
   return (
@@ -77,6 +78,8 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover }) => {
         <figure className="headshot">
           <Image
             src="/img/eli-thumbs-up-memoji.PNG"
+            blurDataURL="/img/eli-thumbs-up-memoji.PNG"
+            placeholder="blur"
             alt="Eli Gundry's Memoji Headshot"
             width={421}
             height={421}
@@ -184,14 +187,7 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover }) => {
             media="application/json"
           />
         </Head>
-        <GitHubCalendar
-          username="eligundry"
-          dateFormat="yyyy-MM-dd"
-          color={theme`colors.primary`}
-          hideColorLegend
-        >
-          <Tooltip html />
-        </GitHubCalendar>
+        <GitHubCalendar data={github} />
       </Section>
       <Section className="reading">
         <h2>What I'm Reading</h2>

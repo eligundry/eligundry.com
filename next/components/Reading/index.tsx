@@ -68,6 +68,8 @@ const Book: React.FC<GoodReadsBook & { shelf: 'current' | 'read' }> = ({
     >
       <Image
         src={cover}
+        blurDataURL={cover}
+        placeholder="blur"
         alt={`${title} - ${correctAuthor}`}
         width={128}
         height={194}

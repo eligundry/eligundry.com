@@ -10,17 +10,19 @@ import DaylioProvider, {
 import goodreads from '@/lib/goodreads'
 import daylio from '@/lib/daylio'
 import lastfm from '@/lib/lastfm'
+import github from '@/lib/github'
 import config from '@/utils/config'
 
 const HomePage: NextPage<HomeDataProps & FullDaylioPageProps> = ({
   reading,
   lastfmCover,
   daylio,
+  github,
 }) => {
   return (
     <DaylioProvider {...daylio}>
       <SEO path="/" />
-      <Home reading={reading} lastfmCover={lastfmCover} />
+      <Home reading={reading} lastfmCover={lastfmCover} github={github} />
     </DaylioProvider>
   )
 }
@@ -38,6 +40,7 @@ export const getStaticProps: GetStaticProps<
       read: goodreads.getShelf(config.goodreadsUserID, 'read', 11),
     }),
     lastfmCover: lastfm.getTopAlbumsCover('eli_pwnd'),
+    github: github.fetchData('eligundry'),
     daylio: daylio.getHomeProps(),
   }),
 })

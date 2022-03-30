@@ -19,6 +19,8 @@ const LastFmCover = React.forwardRef<HTMLAnchorElement, Props>(
         <Image
           key={`${artist} ${album}`}
           src={cover}
+          blurDataURL={cover}
+          placeholder="blur"
           width={300}
           height={300}
           alt={`${album} - ${artist} [${count} scrobbles]`}

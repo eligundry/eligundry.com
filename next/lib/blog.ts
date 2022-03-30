@@ -12,7 +12,7 @@ import rehypeSlug from 'rehype-slug'
 import NodeCache from 'node-cache'
 
 const cache = new NodeCache({
-  stdTTL: 30 * 1000,
+  stdTTL: process.env.NODE_ENV === 'production' ? 60 * 60 * 1000 : 30 * 1000,
 })
 
 export type PostType = 'blog' | 'talks'
