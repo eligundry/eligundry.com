@@ -1,5 +1,6 @@
 import type { NextPage, GetStaticProps } from 'next'
 import subMonths from 'date-fns/subMonths'
+import promiseHash from 'promise-hash'
 
 import Home, { HomeDataProps } from '@/components/Home'
 import SEO from '@/components/SEO'
@@ -26,29 +27,19 @@ const HomePage: NextPage<HomeDataProps & FullDaylioPageProps> = ({
 
 export const getStaticProps: GetStaticProps<
   HomeDataProps & FullDaylioPageProps
-> = async () => {
-  const daylioChartData = await daylio.getChartData(subMonths(new Date(), 1))
-  const latestDaylioEntry = await daylio.getLatest()
-  const lastfmCover = await lastfm.getTopAlbumsCover('eli_pwnd')
-  const reading = {
-    current: await goodreads.getShelf(
-      config.goodreadsUserID,
-      'currently-reading',
-      1
-    ),
-    read: await goodreads.getShelf(config.goodreadsUserID, 'read', 11),
-  }
-
-  return {
-    props: {
-      reading,
-      lastfmCover,
-      daylio: {
-        entries: [latestDaylioEntry],
-        chartData: daylioChartData,
-      },
-    },
-  }
-}
+> = async () => ({
+  props: await promiseHash({
+    reading: promiseHash({
+      current: goodreads.getShelf(
+        config.goodreadsUserID,
+        'currently-reading',
+        1
+      ),
+      read: goodreads.getShelf(config.goodreadsUserID, 'read', 11),
+    }),
+    lastfmCover: lastfm.getTopAlbumsCover('eli_pwnd'),
+    daylio: daylio.getHomeProps(),
+  }),
+})
 
 export default HomePage

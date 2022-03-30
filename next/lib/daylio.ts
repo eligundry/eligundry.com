@@ -1,12 +1,14 @@
 import type { GetStaticProps } from 'next'
 import isAfter from 'date-fns/isAfter'
 import parseISO from 'date-fns/parseISO'
+import subMonths from 'date-fns/subMonths'
 import { DaylioEntry, MoodMapping } from '@/components/Daylio/types'
 import {
   LimitedDaylioPageProps,
   FullDaylioPageProps,
 } from '@/components/Daylio/Provider'
 import { cacheAxios } from './axios'
+import promiseHash from 'promise-hash'
 
 export const getAll = async () =>
   cacheAxios
@@ -45,6 +47,17 @@ export const getLimitedPageProps: GetStaticProps<
   props: await getLimitedProps(),
 })
 
+export const getHomeProps = async () => ({
+  entries: [await getLatest()],
+  chartData: await getChartData(subMonths(new Date(), 1)),
+})
+
+export const getFeelingsPageProps = async () =>
+  promiseHash({
+    entries: getRange(subMonths(new Date(), 6)),
+    chartData: getChartData(subMonths(new Date(), 1)),
+  })
+
 export type { FullDaylioPageProps, LimitedDaylioPageProps }
 
 const api = {
@@ -54,6 +67,8 @@ const api = {
   getRange,
   getLimitedPageProps,
   getLimitedProps,
+  getHomeProps,
+  getFeelingsPageProps,
 }
 
 export default api

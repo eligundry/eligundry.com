@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useLocation from 'react-use/lib/useLocation'
 import tw, { styled } from 'twin.macro'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import EmojiText from '../Shared/EmojiText'
 
@@ -72,23 +73,22 @@ const TagPicker: React.FC<Props> = ({ tags, selectedTag, onSelectTag }) => {
         </Head>
       )}
       {[...tags].sort().map((tag) => (
-        <Tag
-          href={`#${tag}`}
-          onClick={() => onSelectTag(tag)}
-          active={tag === selectedTag}
-          key={tag}
-        >
-          <EmojiText emoji="🏷" label="tag emoji to denote filtering by tag">
-            #{tag}
-          </EmojiText>
-        </Tag>
+        <Link href={`#${tag}`} key={tag} passHref>
+          <Tag active={tag === selectedTag}>
+            <EmojiText emoji="🏷" label="tag emoji to denote filtering by tag">
+              #{tag}
+            </EmojiText>
+          </Tag>
+        </Link>
       ))}
       {selectedTag && (
-        <Tag href={pathname}>
-          <EmojiText label="red x emoji to clear the filters" emoji="❌">
-            clear
-          </EmojiText>
-        </Tag>
+        <Link href={pathname ?? ''} passHref>
+          <Tag>
+            <EmojiText label="red x emoji to clear the filters" emoji="❌">
+              clear
+            </EmojiText>
+          </Tag>
+        </Link>
       )}
     </TagWrapper>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 
 const isSSR = typeof window === 'undefined'
 
-const GatsbySuspense: React.FC<React.SuspenseProps> = (props) => {
+const Suspense: React.FC<React.SuspenseProps> = (props) => {
   if (isSSR) {
     return null
   }
@@ -10,4 +10,4 @@ const GatsbySuspense: React.FC<React.SuspenseProps> = (props) => {
   return <React.Suspense {...props} />
 }
 
-export default GatsbySuspense
+export default Suspense

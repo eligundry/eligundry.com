@@ -41,15 +41,9 @@ const PostListing: React.FC<Props> = ({ posts, itemType }) => {
         ?.filter((tag): tag is string => !!tag)
         .forEach((tag) => tags.add(tag))
 
-      let cover: string | undefined
-
-      // if (post?.frontmatter && 'cover' in postEdge.node.frontmatter) {
-      //   cover = post.frontmatter.cover?.publicURL
-      // }
-
       return {
         path: post.path,
-        cover,
+        cover: post?.frontmatter?.cover,
         title: post?.frontmatter?.title,
         date: post?.frontmatter?.date,
         timeToRead: undefined,

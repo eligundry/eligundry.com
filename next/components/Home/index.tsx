@@ -11,7 +11,7 @@ import Paper from '@/components/Shared/Paper'
 import Reading, { ReadingProps } from '@/components/Reading'
 import Listening from '@/components/Listening'
 import useIsMobile from '@/utils/useIsMobile'
-import GatsbySuspense from '@/components/Shared/GatsbySuspense'
+import Suspense from '@/components/Shared/Suspense'
 import Tooltip from '@/components/Shared/Tooltip'
 import EmojiText from '@/components/Shared/EmojiText'
 import type { LastFMCoverItem } from '@/lib/lastfm'
@@ -157,9 +157,9 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover }) => {
         <Daylio />
         {/* Don't show the chart on mobile because it looks terrible, functions poorly and impacts performance on an outsized basis */}
         {!isMobile && (
-          <GatsbySuspense fallback={<Skeleton height={153} width="100%" />}>
+          <Suspense fallback={<Skeleton height={153} width="100%" />}>
             <DaylioChart />
-          </GatsbySuspense>
+          </Suspense>
         )}
       </Section>
       <Section className="coding">

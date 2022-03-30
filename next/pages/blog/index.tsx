@@ -1,4 +1,5 @@
 import type { NextPage, GetStaticProps } from 'next'
+import promiseHash from 'promise-hash'
 
 import PostListing from '@/components/PostListing'
 import Paper from '@/components/Shared/Paper'
@@ -28,18 +29,17 @@ const Blog: NextPage<PageProps> = ({ posts, daylio }) => {
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const posts = await blog.getAll(
-    'blog',
-    ['title', 'path', 'date', 'description', 'tags', 'draft'],
-    { draft: false }
-  )
-  await generateBlogFeed()
+  generateBlogFeed()
 
   return {
-    props: {
-      posts,
-      ...(await daylio.getLimitedProps()),
-    },
+    props: await promiseHash({
+      posts: blog.getAll(
+        'blog',
+        ['title', 'path', 'date', 'description', 'tags', 'draft'],
+        { draft: false }
+      ),
+      daylio: daylio.getLimitedProps().then((r) => r.daylio),
+    }),
   }
 }
 

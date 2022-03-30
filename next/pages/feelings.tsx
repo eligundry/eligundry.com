@@ -37,17 +37,11 @@ const FeelingsPage: NextPage<FullDaylioPageProps> = ({ daylio }) => {
 }
 
 export const getStaticProps: GetStaticProps<FullDaylioPageProps> = async () => {
-  const entries = await daylio.getRange(subMonths(new Date(), 6))
-  const chartData = await daylio.getChartData(subMonths(new Date(), 1))
-
-  await generateDaylioFeed()
+  generateDaylioFeed()
 
   return {
     props: {
-      daylio: {
-        entries,
-        chartData,
-      },
+      daylio: await daylio.getFeelingsPageProps(),
     },
   }
 }

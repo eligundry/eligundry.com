@@ -18,12 +18,24 @@ const BlogPost: NextPage<Props> = ({ post }) => {
       <PostTemplate
         title={post.frontmatter.title}
         body={post.markdown}
+        datePublished={post?.frontmatter?.date}
         itemType="BlogPosting"
+        featuredImageURL={post.frontmatter.cover}
         footer={
           <>
             <hr />
             <Comments />
           </>
+        }
+        preBody={
+          post?.frontmatter?.tags?.includes('icymi') && (
+            <blockquote>
+              <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
+              review and recommend old albums that you may have missed. I used
+              to write them in a #music Slack channel at a previous job, but now
+              I write them here.
+            </blockquote>
+          )
         }
       />
     </DaylioProvider>

@@ -18,6 +18,9 @@ const Talk: NextPage<Props> = ({ post, daylio }) => {
         title={post.frontmatter.title}
         body={post.markdown}
         itemType="CreativeWork"
+        datePublished={post?.frontmatter?.date}
+        // @ts-ignore
+        location={post?.frontmatter?.location}
       />
     </DaylioProvider>
   )

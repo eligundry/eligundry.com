@@ -9,6 +9,11 @@ import imageSize from 'rehype-img-size'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
+import NodeCache from 'node-cache'
+
+const cache = new NodeCache({
+  stdTTL: 30 * 1000,
+})
 
 export type PostType = 'blog' | 'talks'
 
@@ -55,16 +60,24 @@ async function getByFilename(
   filename: string,
   fields?: Field[]
 ): Promise<Post | null> {
-  const fileContent = await fs.promises
-    .readFile(getPath(postType, filename), { encoding: 'utf8' })
-    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-    .catch(() => {})
+  const cacheKey = generateCacheKey(postType, filename)
+  let matterData = cache.get<ReturnType<typeof matter>>(cacheKey)
 
-  if (!fileContent) {
-    return null
+  if (!matterData) {
+    const fileContent = await fs.promises
+      .readFile(getPath(postType, filename), { encoding: 'utf8' })
+      /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+      .catch(() => {})
+
+    if (!fileContent) {
+      return null
+    }
+
+    matterData = matter(fileContent)
+    cache.set(cacheKey, matterData)
   }
 
-  const { content, data } = matter(fileContent)
+  const { content, data } = matterData
 
   if (!fields) {
     return {
@@ -181,6 +194,9 @@ const getAll = async (
 
   return posts
 }
+
+const generateCacheKey = (postType: PostType, filename: string) =>
+  `${postType}-${filename}`
 
 export const renderMarkdownToHTML = async (markdown: string) =>
   mdxSerialize(markdown, {
