@@ -1,7 +1,14 @@
 {
   "name": "eligundry.com",
+  "description": "Eli Gundry's personal website",
   "version": "4.0.0",
   "license": "MIT",
+  "author": "Eli Gundry <eligundry@gmail.com>",
+  "repository": {
+    "type": "https",
+    "directory": "next",
+    "url": "https://github.com/eligundry/eligundry.com"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -35,7 +42,7 @@
     "node-cache": "^5.1.2",
     "postscribe": "^2.0.8",
     "react": "17.0.2",
-    "react-chartjs-2": "^3.3.0",
+    "react-chartjs-2": "^4.0.1",
     "react-dom": "17.0.2",
     "react-github-calendar": "^3.3.1",
     "react-icons": "^4.3.1",

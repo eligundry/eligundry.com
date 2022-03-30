@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-use'
 import tw, { styled } from 'twin.macro'
 
@@ -29,7 +29,7 @@ const EntryList: React.FC<Props> = ({ entries }) => {
   const selectedEntryTime = hash ? hash.replace('#', '') : null
   const [hasScrolled, setHasScrolled] = useState(false)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!hasScrolled && selectedEntryTime) {
       const targetEntry = document.getElementById(selectedEntryTime)
 

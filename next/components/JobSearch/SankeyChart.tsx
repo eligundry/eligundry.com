@@ -1,6 +1,6 @@
 import React from 'react'
-import GenericChart from 'react-chartjs-2'
-import { Chart, SankeyDataPoint } from 'chart.js'
+import { Chart } from 'react-chartjs-2'
+import { Chart as ChartJS, SankeyDataPoint } from 'chart.js'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
 import { theme } from 'twin.macro'
 
@@ -9,8 +9,7 @@ import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 import jobSearch2022 from './2022.json'
 
 try {
-  Chart?.register(SankeyController, Flow)
-  /* eslint-disable-next-line no-empty */
+  ChartJS.register(SankeyController, Flow)
 } catch (e) {}
 
 type StatusEmoji = string | '✅' | '❌' | '🙅‍♂️' | ''
@@ -159,7 +158,7 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
 
   return (
     <>
-      <GenericChart
+      <Chart
         aria-label="Sankey chart of my job search"
         type="sankey"
         data={{

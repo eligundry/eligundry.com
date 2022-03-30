@@ -2,18 +2,22 @@ import type { NextPage, GetStaticProps } from 'next'
 import subMonths from 'date-fns/subMonths'
 import Link from 'next/link'
 
+import SEO from '@/components/SEO'
 import { DaylioList } from '@/components/Daylio'
-import DaylioProvider, {
-  FullDaylioPageProps,
-} from '@/components/Daylio/Provider'
+import DaylioProvider from '@/components/Daylio/Provider'
 import DaylioChart from '@/components/Daylio/Chart'
 import Paper from '@/components/Shared/Paper'
-import daylio from '@/lib/daylio'
+import daylio, { FullDaylioPageProps } from '@/lib/daylio'
 import { generateDaylioFeed } from '@/lib/feed'
 
 const FeelingsPage: NextPage<FullDaylioPageProps> = ({ daylio }) => {
   return (
     <DaylioProvider {...daylio}>
+      <SEO
+        path="/feelings"
+        title="Feelings"
+        description="A log of my feelings. This really more of public diary. It's wild how long I've kept this going."
+      />
       <Paper>
         <h1>Feelings</h1>
         <p>

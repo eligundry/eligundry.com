@@ -18,7 +18,7 @@ interface Props {
 
 const DaylioChart: React.FC<Props> = () => {
   const data = useFeelingsChartData()
-  const isTouchScreen = useHasTouch()
+  const isTouchScreen = useHasTouch(true)
   const prefersDark = usePrefersDarkMode()
   const router = useRouter()
 
@@ -52,12 +52,9 @@ const DaylioChart: React.FC<Props> = () => {
     []
   )
 
-  console.log(data)
-
   return (
     <div style={{ minHeight: '153px' }}>
       <Line
-        type="line"
         height={60}
         data={{
           labels: Object.values(MoodMapping).map((_, i) => i),
@@ -87,11 +84,10 @@ const DaylioChart: React.FC<Props> = () => {
               ...toolTipTheme(prefersDark),
               callbacks: {
                 title: (item) => `📅   ${formatISO(parseISO(item[0].label))}`,
-                label: (item) => {
-                  return `${
-                    Object.values(MoodMapping)[item.parsed.y]
-                  }  I felt ${Object.keys(MoodMapping)[item.parsed.y]}`
-                },
+                label: (item) =>
+                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${
+                    Object.keys(MoodMapping)[item.parsed.y]
+                  }`,
               },
             },
           },

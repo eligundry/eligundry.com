@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 import parseISO from 'date-fns/parseISO'
-import type { DaylioEntry } from './types'
+import { DaylioEntry } from './types'
 
 export interface DaylioState<TimeType extends string | Date = Date> {
   entries: DaylioEntry<TimeType>[]
   chartData: {
-    x: DaylioEntry<TimeType>['time']
-    y: DaylioEntry<TimeType>['mood']
+    x: string
+    y: number
   }[]
 }
 
@@ -38,7 +38,7 @@ export const DaylioProvider: React.FC<Partial<DaylioState<string>>> = ({
         })) ?? [],
       chartData:
         props?.chartData?.map(({ x, y }) => ({
-          x: parseISO(x),
+          x,
           y,
         })) ?? [],
     }),

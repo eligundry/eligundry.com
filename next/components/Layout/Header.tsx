@@ -83,7 +83,11 @@ const Header: React.FC = () => {
   return (
     <HeaderElm>
       <ProgressBar
-        max={Math.max(document?.body?.clientHeight ?? 0, height + 1) - height}
+        max={
+          height !== Infinity
+            ? Math.max(document?.body?.clientHeight ?? 0, height + 1) - height
+            : undefined
+        }
         value={y}
         aria-label="your scroll progress through the page"
       />

@@ -1,6 +1,23 @@
-import { Chart } from 'chart.js'
 import { theme } from 'twin.macro'
 import 'chartjs-adapter-date-fns'
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  TimeSeriesScale,
+} from 'chart.js'
+
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  TimeSeriesScale
+)
 
 export const toolTipTheme = (prefersDark: boolean) => ({
   displayColors: false,
@@ -25,5 +42,4 @@ export const toolTipTheme = (prefersDark: boolean) => ({
 export const textColor = (prefersDark: boolean) =>
   prefersDark ? theme`colors.white` : theme`colors.typography`
 
-// @ts-ignore
-Chart.defaults.font.family = theme`fontFamily.sans`
+ChartJS.defaults.font.family = theme`fontFamily.sans`

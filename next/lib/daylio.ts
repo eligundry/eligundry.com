@@ -1,7 +1,7 @@
 import type { GetStaticProps } from 'next'
 import isAfter from 'date-fns/isAfter'
 import parseISO from 'date-fns/parseISO'
-import { DaylioEntry } from '@/components/Daylio/types'
+import { DaylioEntry, MoodMapping } from '@/components/Daylio/types'
 import {
   LimitedDaylioPageProps,
   FullDaylioPageProps,
@@ -26,7 +26,10 @@ export const getCount = async (count: number) =>
 export const getChartData = async (timeWindow: Date) =>
   getAll().then((feelings) =>
     feelings
-      .map(({ time, mood }) => ({ x: time, y: mood }))
+      .map(({ time, mood }) => ({
+        x: time,
+        y: Object.keys(MoodMapping).findIndex((m) => m === mood),
+      }))
       .filter(({ x }) => isAfter(parseISO(x), timeWindow))
   )
 
