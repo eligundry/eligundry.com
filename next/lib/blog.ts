@@ -4,13 +4,16 @@ import matter from 'gray-matter'
 import * as dateFns from 'date-fns'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize as mdxSerialize } from 'next-mdx-remote/serialize'
-import imageSize from 'rehype-img-size'
+import rehypeImageSize from 'rehype-img-size'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
+import remarkReadingType from 'remark-reading-time/mdx'
 import NodeCache from 'node-cache'
 import pick from 'lodash/pick'
+import SimpleGit from 'simple-git'
 
+const git = SimpleGit()
 const cache = new NodeCache({
   stdTTL: 60 * 60 * 1000 * 3,
 })
@@ -35,6 +38,7 @@ export interface Post {
   markdown: MDXRemoteSerializeResult<Record<string, unknown>>
   collection: PostType
   filepath: string
+  modified?: string
 }
 
 interface Filters {
@@ -129,6 +133,7 @@ const getFullPostFromPath = async (
       ? `/${postType}/${data.slug}`
       : `/${postType}/${path.parse(filename).name}`,
     filepath,
+    modified: await git.log({ file: filepath }).then((log) => log.latest?.date),
   }
 
   frontmatterFields.forEach((key) => {
@@ -214,11 +219,12 @@ export const renderMarkdownToHTML = async (markdown: string) =>
     mdxOptions: {
       rehypePlugins: [
         // @ts-ignore
-        [imageSize, { dir: 'public' }],
+        [rehypeImageSize, { dir: 'public' }],
         [rehypePrism],
         [rehypeAccessibleEmojis],
         [rehypeSlug],
       ],
+      remarkPlugins: [[remarkReadingType]],
     },
   })
 

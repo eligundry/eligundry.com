@@ -12,14 +12,15 @@ interface Props extends LimitedDaylioPageProps {
   post: Post
 }
 
-const BlogPost: NextPage<Props> = ({ post }) => {
+const BlogPost: NextPage<Props> = ({ post, daylio }) => {
   return (
-    <DaylioProvider>
+    <DaylioProvider {...daylio}>
       <SEO path={post.path} post={post} />
       <PostTemplate
         title={post.frontmatter.title}
         body={post.markdown}
         datePublished={post?.frontmatter?.date}
+        dateModified={post.modified}
         itemType="BlogPosting"
         featuredImageURL={post.frontmatter.cover}
         footer={
@@ -71,6 +72,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
           'markdown',
           'collection',
           'date',
+          'modified',
         ])
         .then((post) => {
           if (!post) {

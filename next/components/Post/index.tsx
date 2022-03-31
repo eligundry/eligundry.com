@@ -56,7 +56,7 @@ const Post: React.FC<Props> = ({
     </header>
     {preBody}
     {body && (
-      <main className="body">
+      <main className="body" itemProp="text">
         <MDXRemote {...body} components={MDXShortcodes} />
       </main>
     )}

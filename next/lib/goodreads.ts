@@ -1,8 +1,13 @@
 import type { AxiosResponse } from 'axios'
 import { JSDOM } from 'jsdom'
 import trim from 'lodash/trim'
+import NodeCache from 'node-cache'
 
 import { cacheAxios } from './axios'
+
+const cache = new NodeCache({
+  stdTTL: 60 * 60 * 24 * 1000,
+})
 
 export interface GoodReadsBook {
   title: string | null
@@ -19,6 +24,15 @@ export interface GoodReadsBook {
 }
 
 const getShelf = async (userID: string, shelf: string, limit?: number) => {
+  const cacheKey = `goodreads-user[${userID}]-shelf[${shelf}]-limit[${
+    limit ?? 'all'
+  }]`
+  let books = cache.get<GoodReadsBook[]>(cacheKey)
+
+  if (books) {
+    return books
+  }
+
   let goodreadsHTML: AxiosResponse<string> | null
 
   try {
@@ -39,7 +53,9 @@ const getShelf = async (userID: string, shelf: string, limit?: number) => {
 
   const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
 
-  return Array.from(goodreadsDocument.querySelectorAll('#booksBody .bookalike'))
+  books = Array.from(
+    goodreadsDocument.querySelectorAll('#booksBody .bookalike')
+  )
     .map((row): GoodReadsBook | null => {
       const cover = row
         ?.querySelector('td.field.cover img')
@@ -85,6 +101,10 @@ const getShelf = async (userID: string, shelf: string, limit?: number) => {
     })
     .filter((book): book is GoodReadsBook => !!book)
     .slice(0, limit)
+
+  cache.set(cacheKey, books)
+
+  return books
 }
 
 const trimChars = '\n *'

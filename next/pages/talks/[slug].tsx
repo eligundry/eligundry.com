@@ -20,6 +20,7 @@ const Talk: NextPage<Props> = ({ post, daylio }) => {
         body={post.markdown}
         itemType="CreativeWork"
         datePublished={post?.frontmatter?.date}
+        dateModified={post.modified}
         location={post?.frontmatter?.location}
       />
     </DaylioProvider>
@@ -55,6 +56,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
           'collection',
           'location',
           'date',
+          'modified',
         ])
         .then((post) => {
           if (!post) {
