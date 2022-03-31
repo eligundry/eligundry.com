@@ -15,7 +15,8 @@
     "postbuild": "next-sitemap",
     "build:sitemap": "next-sitemap",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@mdx-js/loader": "^2.1.0",
