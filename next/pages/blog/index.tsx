@@ -6,27 +6,25 @@ import Paper from '@/components/Shared/Paper'
 import SEO from '@/components/SEO'
 import DaylioProvider from '@/components/Daylio/Provider'
 import blog, { Post } from '@/lib/blog'
-import daylio, { LimitedDaylioPageProps } from '@/lib/daylio'
+import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 import { generateBlogFeed } from '@/lib/feed'
 
 interface PageProps extends LimitedDaylioPageProps {
   posts: Post[]
 }
 
-const Blog: NextPage<PageProps> = ({ posts, daylio }) => {
-  return (
-    <DaylioProvider {...daylio}>
-      <SEO
-        title="Blog"
-        description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
-        path="/blog"
-      />
-      <Paper className="listing-container">
-        <PostListing itemType="BlogPosting" posts={posts} />
-      </Paper>
-    </DaylioProvider>
-  )
-}
+const Blog: NextPage<PageProps> = ({ posts, daylio }) => (
+  <DaylioProvider {...daylio}>
+    <SEO
+      title="Blog"
+      description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+      path="/blog"
+    />
+    <Paper className="listing-container">
+      <PostListing itemType="BlogPosting" posts={posts} />
+    </Paper>
+  </DaylioProvider>
+)
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
   generateBlogFeed()
@@ -38,7 +36,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
         ['title', 'path', 'date', 'description', 'tags', 'draft'],
         { draft: false }
       ),
-      daylio: daylio.getLimitedProps().then((r) => r.daylio),
+      daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),
     }),
   }
 }

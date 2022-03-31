@@ -4,28 +4,26 @@ import promiseHash from 'promise-hash'
 import PostTemplate from '@/components/Post'
 import SEO from '@/components/SEO'
 import blog, { Post } from '@/lib/blog'
-import daylio, { LimitedDaylioPageProps } from '@/lib/daylio'
+import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 import DaylioProvider from '@/components/Daylio/Provider'
 
 interface Props extends LimitedDaylioPageProps {
   post: Post
 }
 
-const Talk: NextPage<Props> = ({ post, daylio }) => {
-  return (
-    <DaylioProvider {...daylio}>
-      <SEO path={post.path} post={post} />
-      <PostTemplate
-        title={post.frontmatter.title}
-        body={post.markdown}
-        itemType="CreativeWork"
-        datePublished={post?.frontmatter?.date}
-        dateModified={post.modified}
-        location={post?.frontmatter?.location}
-      />
-    </DaylioProvider>
-  )
-}
+const Talk: NextPage<Props> = ({ post, daylio }) => (
+  <DaylioProvider {...daylio}>
+    <SEO path={post.path} post={post} />
+    <PostTemplate
+      title={post.frontmatter.title}
+      body={post.markdown}
+      itemType="CreativeWork"
+      datePublished={post?.frontmatter?.date}
+      dateModified={post.modified}
+      location={post?.frontmatter?.location}
+    />
+  </DaylioProvider>
+)
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await blog.getAll('talks', ['slug'])
@@ -65,7 +63,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
 
           return post
         }),
-      daylio: daylio.getLimitedProps().then((r) => r.daylio),
+      daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),
     }),
   }
 }

@@ -8,17 +8,16 @@ import EmojiText from '../Shared/EmojiText'
 
 interface Props {
   selectedTag: string | undefined
-  onSelectTag: (tag: string) => void
   tags: Set<string>
 }
 
-export function useSelectedTag(): [string | undefined, (tag: string) => void] {
+export function useSelectedTag(): string | undefined {
   const [tag, setTag] = useState<string | undefined>(undefined)
   const { hash } = useLocation()
 
   useEffect(() => {
-    if (hash?.substr(1)) {
-      setTag(hash.substr(1))
+    if (hash?.slice(1)) {
+      setTag(hash.slice(1))
     }
 
     if (!hash) {
@@ -26,7 +25,7 @@ export function useSelectedTag(): [string | undefined, (tag: string) => void] {
     }
   }, [hash])
 
-  return [tag, setTag]
+  return tag
 }
 
 const TagWrapper = styled.nav`
@@ -62,7 +61,7 @@ const Tag = styled.a<{ active?: boolean }>`
   }
 `
 
-const TagPicker: React.FC<Props> = ({ tags, selectedTag, onSelectTag }) => {
+const TagPicker: React.FC<Props> = ({ tags, selectedTag }) => {
   const { pathname } = useLocation()
 
   return (

@@ -14,6 +14,11 @@ const Comments: React.FC = () => {
   const prefersDark = usePrefersDarkMode()
 
   useEffect(() => {
+    if (!utterancesRef.current) {
+      return
+    }
+
+    const utterancesElm = utterancesRef.current
     const scriptElem = document.createElement('script')
     scriptElem.src = 'https://utteranc.es/client.js'
     scriptElem.async = true
@@ -22,14 +27,13 @@ const Comments: React.FC = () => {
     scriptElem.setAttribute('issue-term', 'pathname')
     scriptElem.setAttribute('label', '✨💬✨  Blog')
     scriptElem.setAttribute('theme', `github-${prefersDark ? 'dark' : 'light'}`)
-    utterancesRef.current?.appendChild(scriptElem)
+    utterancesElm.appendChild(scriptElem)
 
+    /* eslint-disable-next-line consistent-return */
     return function cleanup() {
-      if (utterancesRef.current) {
-        utterancesRef.current.innerHTML = ''
-      }
+      utterancesElm.innerHTML = ''
     }
-  }, [utterancesRef.current, prefersDark])
+  }, [prefersDark])
 
   return <UtterancesContainer ref={utterancesRef} />
 }

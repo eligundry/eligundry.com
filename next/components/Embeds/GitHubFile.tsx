@@ -41,11 +41,14 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   const [expanded, setExpanded] = useState(false)
   const scriptTarget = useRef<HTMLDivElement>()
   const prefersDark = usePrefersDarkMode()
+  const rendered = !!scriptTarget
 
   useEffect(() => {
     if (!scriptTarget.current || scriptTarget.current.innerHTML) {
       return
     }
+
+    const script = scriptTarget.current
 
     // emgithub uses document.write, which doesn't work well with React post
     // render. postscribe patches document.write to document.appendChild,
@@ -68,11 +71,9 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
 
     /* eslint-disable-next-line consistent-return */
     return function cleanup() {
-      if (scriptTarget.current) {
-        scriptTarget.current.innerHTML = ''
-      }
+      script.innerHTML = ''
     }
-  }, [!!scriptTarget.current, fileURL, prefersDark])
+  }, [rendered, fileURL, prefersDark])
 
   return (
     <div>

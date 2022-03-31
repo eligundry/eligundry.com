@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import SEO from '@/components/SEO'
 import Paper from '@/components/Shared/Paper'
-import daylio, { LimitedDaylioPageProps } from '@/lib/daylio'
+import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 import DaylioProvider from '@/components/Daylio/Provider'
 
 const ErrorPage: NextPage<LimitedDaylioPageProps> = ({ daylio }) => {
@@ -29,6 +29,6 @@ const ErrorPage: NextPage<LimitedDaylioPageProps> = ({ daylio }) => {
   )
 }
 
-export const getStaticProps = daylio.getLimitedPageProps
+export const getStaticProps = daylioAPI.getLimitedPageProps
 
 export default ErrorPage

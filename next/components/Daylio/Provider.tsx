@@ -25,7 +25,7 @@ const defaultState = Object.freeze<DaylioState>({
 
 export const DaylioContext = React.createContext<DaylioState>(defaultState)
 
-export const DaylioProvider: React.FC<Partial<DaylioState<string>>> = ({
+const DaylioProvider: React.FC<Partial<DaylioState<string>>> = ({
   children,
   ...props
 }) => {

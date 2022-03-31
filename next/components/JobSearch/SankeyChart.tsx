@@ -10,6 +10,7 @@ import jobSearch2022 from './2022.json'
 
 try {
   ChartJS.register(SankeyController, Flow)
+  /* eslint-disable-next-line no-empty */
 } catch (e) {}
 
 type StatusEmoji = string | '✅' | '❌' | '🙅‍♂️' | ''

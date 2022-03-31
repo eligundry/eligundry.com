@@ -1,5 +1,4 @@
 import React from 'react'
-import Head from 'next/head'
 import tw, { styled } from 'twin.macro'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -111,7 +110,7 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
             working the entire time before deciding to go pro!
           </li>
           <li>
-            I am a{' '}
+            I am a {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={vimSVG}
               className="vim-icon"
@@ -178,15 +177,6 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
           GitHub contribution calendars are not a good indicator of whether or
           not someone is a good developer, but they are very pretty.
         </p>
-        <Head>
-          <link
-            rel="preload"
-            as="fetch"
-            href="https://github-contributions-api.jogruber.de/v4/eligundry?y=last"
-            crossOrigin="true"
-            media="application/json"
-          />
-        </Head>
         <GitHubCalendar data={github} />
       </Section>
       <Section className="reading">

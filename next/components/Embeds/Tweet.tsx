@@ -16,6 +16,7 @@ const Tweet: React.FC<Props> = ({ id, children }) => {
       options={{
         theme: darkMode ? 'dark' : undefined,
       }}
+      /* eslint-disable-next-line react/jsx-no-useless-fragment */
       placeholder={<>{children}</>}
     />
   )

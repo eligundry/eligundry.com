@@ -22,7 +22,7 @@ const cache = new NodeCache({
   stdTTL: 60 * 60 * 1000,
 })
 
-export const getScrobblesForWindow = async (
+const getScrobblesForWindow = async (
   username: string,
   start: Date,
   end: Date = new Date()
@@ -65,7 +65,7 @@ export const getScrobblesForWindow = async (
   return scrobbles
 }
 
-export const getTopAlbumsCover = async (
+const getTopAlbumsCover = async (
   username: string
 ): Promise<LastFMCoverItem[]> => {
   const scrobbles = await getScrobblesForWindow(

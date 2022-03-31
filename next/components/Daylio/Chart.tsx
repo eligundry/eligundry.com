@@ -38,7 +38,7 @@ const DaylioChart: React.FC<Props> = () => {
 
       router.push(`/feelings#${targetEntry.x}`)
     },
-    [data]
+    [data, router]
   )
 
   // Hovering on a point will change cursor to denote that it is a link

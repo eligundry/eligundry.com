@@ -28,14 +28,8 @@ module.exports = {
     radix: 'off',
     'no-plusplus': 'off',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
-    'jsx-a11y/anchor-is-valid': [
-      'error',
-      {
-        components: ['Link'],
-        specialLink: ['hrefLeft', 'hrefRight', 'to'],
-        aspects: ['noHref', 'invalidHref', 'preferButton'],
-      },
-    ],
+    'jsx-a11y/anchor-is-valid': 'off',
+    'react/jsx-boolean-value': 'off',
     'react/jsx-filename-extension': [
       1,
       {
@@ -62,7 +56,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['./lib/*'],
+      files: ['./lib/*', 'next-sitemap.js', 'next.config.js'],
       rules: {
         'no-console': 'off',
         'no-restricted-syntax': 'off',

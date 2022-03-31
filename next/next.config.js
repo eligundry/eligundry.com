@@ -28,7 +28,10 @@ const nextConfig = {
     ],
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: process.env.NETLIFY === 'true',
+  },
+  typescript: {
+    ignoreBuildErrors: process.env.NETLIFY === 'true',
   },
 }
 

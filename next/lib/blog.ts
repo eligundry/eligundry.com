@@ -74,7 +74,7 @@ async function getByFilename(
   let post = cache.get<Post>(cacheKey)
 
   if (post) {
-    if (!!fields) {
+    if (fields) {
       // @ts-ignore
       return filterPostFields(post, fields)
     }

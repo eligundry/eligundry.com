@@ -1,5 +1,4 @@
 import type { NextPage, GetStaticProps } from 'next'
-import subMonths from 'date-fns/subMonths'
 import promiseHash from 'promise-hash'
 
 import Home, { HomeDataProps } from '@/components/Home'
@@ -7,10 +6,10 @@ import SEO from '@/components/SEO'
 import DaylioProvider, {
   FullDaylioPageProps,
 } from '@/components/Daylio/Provider'
-import goodreads from '@/lib/goodreads'
-import daylio from '@/lib/daylio'
-import lastfm from '@/lib/lastfm'
-import github from '@/lib/github'
+import goodreadsAPI from '@/lib/goodreads'
+import daylioAPI from '@/lib/daylio'
+import lastfmAPI from '@/lib/lastfm'
+import githubAPI from '@/lib/github'
 import config from '@/utils/config'
 
 const HomePage: NextPage<HomeDataProps & FullDaylioPageProps> = ({
@@ -18,30 +17,28 @@ const HomePage: NextPage<HomeDataProps & FullDaylioPageProps> = ({
   lastfmCover,
   daylio,
   github,
-}) => {
-  return (
-    <DaylioProvider {...daylio}>
-      <SEO path="/" />
-      <Home reading={reading} lastfmCover={lastfmCover} github={github} />
-    </DaylioProvider>
-  )
-}
+}) => (
+  <DaylioProvider {...daylio}>
+    <SEO path="/" />
+    <Home reading={reading} lastfmCover={lastfmCover} github={github} />
+  </DaylioProvider>
+)
 
 export const getStaticProps: GetStaticProps<
   HomeDataProps & FullDaylioPageProps
 > = async () => ({
   props: await promiseHash({
     reading: promiseHash({
-      current: goodreads.getShelf(
+      current: goodreadsAPI.getShelf(
         config.goodreadsUserID,
         'currently-reading',
         1
       ),
-      read: goodreads.getShelf(config.goodreadsUserID, 'read', 11),
+      read: goodreadsAPI.getShelf(config.goodreadsUserID, 'read', 11),
     }),
-    lastfmCover: lastfm.getTopAlbumsCover('eli_pwnd'),
-    github: github.fetchData('eligundry'),
-    daylio: daylio.getHomeProps(),
+    lastfmCover: lastfmAPI.getTopAlbumsCover('eli_pwnd'),
+    github: githubAPI.fetchData('eligundry'),
+    daylio: daylioAPI.getHomeProps(),
   }),
 })
 

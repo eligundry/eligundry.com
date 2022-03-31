@@ -34,7 +34,7 @@ const Article = styled.article`
 
 const PostListing: React.FC<Props> = ({ posts, itemType }) => {
   const tags = new Set<string>()
-  const [selectedTag, selectTag] = useSelectedTag()
+  const selectedTag = useSelectedTag()
   const postList = posts
     .map((post) => {
       post.frontmatter?.tags
@@ -59,13 +59,7 @@ const PostListing: React.FC<Props> = ({ posts, itemType }) => {
 
   return (
     <>
-      {tags.size > 0 && (
-        <TagPicker
-          tags={tags}
-          selectedTag={selectedTag}
-          onSelectTag={selectTag}
-        />
-      )}
+      {tags.size > 0 && <TagPicker tags={tags} selectedTag={selectedTag} />}
       {postList.map((post) => (
         <Article
           key={post.path}

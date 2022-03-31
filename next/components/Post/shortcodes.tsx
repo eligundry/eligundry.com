@@ -30,15 +30,15 @@ const MDXShortcodes: MDXRemoteProps['components'] = {
 
 export const MDXShortcodesForFeed: MDXRemoteProps['components'] = {
   // @ts-ignore
-  JobSearchSankeyChart: (props) => null,
+  JobSearchSankeyChart: () => null,
   // @ts-ignore
   Tweet: dynamic(() => import('@/components/Embeds/Tweet')),
   // @ts-ignore
-  GitHubFile: (props) => null,
+  GitHubFile: () => null,
   // @ts-ignore
-  YouTube: (props) => null,
+  YouTube: () => null,
   // @ts-ignore
-  StreamingAlbum: (props) => null,
+  StreamingAlbum: () => null,
 }
 
 export default MDXShortcodes

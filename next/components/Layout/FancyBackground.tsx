@@ -32,16 +32,13 @@ const FancyBackground: React.FC = () => {
           crossOrigin="true"
         />
       </Head>
-      <Script
-        id="fancy-background-paintWorklet"
-        dangerouslySetInnerHTML={{
-          __html: `
+      <Script id="fancy-background-paintWorklet">
+        {`
           if (CSS && CSS.paintWorklet && CSS.paintWorklet.addModule) {
             CSS.paintWorklet.addModule('${workletURL}')
           }
-          `,
-        }}
-      />
+        `}
+      </Script>
       {seed && (
         <>
           <Canvas seed={seed} />
