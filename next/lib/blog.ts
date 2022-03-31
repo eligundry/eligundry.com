@@ -4,11 +4,12 @@ import matter from 'gray-matter'
 import * as dateFns from 'date-fns'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize as mdxSerialize } from 'next-mdx-remote/serialize'
-import rehypeImageSize from 'rehype-img-size'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
 import remarkReadingType from 'remark-reading-time/mdx'
+// @ts-ignore
+import rehypeImagePlaceholder from 'rehype-image-placeholder'
 import NodeCache from 'node-cache'
 import pick from 'lodash/pick'
 import SimpleGit from 'simple-git'
@@ -218,11 +219,10 @@ export const renderMarkdownToHTML = async (markdown: string) =>
   mdxSerialize(markdown, {
     mdxOptions: {
       rehypePlugins: [
-        // @ts-ignore
-        [rehypeImageSize, { dir: 'public' }],
         [rehypePrism],
         [rehypeAccessibleEmojis],
         [rehypeSlug],
+        [rehypeImagePlaceholder, { dir: 'public' }],
       ],
       remarkPlugins: [[remarkReadingType]],
     },

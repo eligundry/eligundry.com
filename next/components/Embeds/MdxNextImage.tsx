@@ -20,7 +20,7 @@ const MdxNextImage: React.FC<Props> = (props) => {
   return (
     <Wrapper className="next-mdx-image" {...props}>
       {/* eslint-disable-next-line jsx-a11y/alt-text */}
-      <Image placeholder="blur" blurDataURL={props.src} {...props} />
+      <Image placeholder="blur" {...props} />
     </Wrapper>
   )
 }

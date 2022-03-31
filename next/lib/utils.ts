@@ -10,7 +10,7 @@ const getPlaceholderForImage = async (imageURL: string): Promise<string> => {
   ctx.fillStyle = dominantColor
   ctx.fillRect(0, 0, 1, 1)
 
-  return 'data:image/png;base64,' + can.toBuffer('image/png').toString('base64')
+  return `data:image/png;base64,${can.toBuffer('image/png').toString('base64')}`
 }
 
 const api = { getPlaceholderForImage }
