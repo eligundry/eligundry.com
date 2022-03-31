@@ -34,5 +34,5 @@ jobs:
         with:
           working-directory: next
       - name: Check types
-        working-directory: gatsby
+        working-directory: next
         run: npm run typecheck
