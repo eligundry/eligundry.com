@@ -5,12 +5,15 @@ import getUnixTime from 'date-fns/getUnixTime'
 import subWeeks from 'date-fns/subWeeks'
 import groupBy from 'lodash/groupBy'
 
+import utils from './utils'
+
 export type RecentTrack = getRecentTracks['tracks'][number]
 export interface LastFMCoverItem {
   album: string
   artist: string
   count: number
   cover: string
+  placeholder: string
 }
 
 if (!process.env.LAST_FM_API_KEY) {
@@ -68,20 +71,32 @@ const getScrobblesForWindow = async (
 const getTopAlbumsCover = async (
   username: string
 ): Promise<LastFMCoverItem[]> => {
+  let topAlbums = cache.get<LastFMCoverItem[]>('lastfm-cover')
+
+  if (topAlbums) {
+    return topAlbums
+  }
+
   const scrobbles = await getScrobblesForWindow(
     username,
     subWeeks(new Date(), 1)
   )
   const groupedScrobbles = groupBy(scrobbles, (scrobble) => scrobble.album.mbid)
-  const topAlbums = Object.values(groupedScrobbles)
-    .map(
-      (group): LastFMCoverItem => ({
-        album: group[0].album.name,
-        artist: group[0].artist.name,
-        count: group.length,
-        cover: group[0].image.at(-1)?.url ?? '',
-      })
+  topAlbums = (
+    await Promise.all(
+      Object.values(groupedScrobbles).map(
+        async (group): Promise<LastFMCoverItem> => ({
+          album: group[0].album.name,
+          artist: group[0].artist.name,
+          count: group.length,
+          cover: group[0].image.at(-1)?.url ?? '',
+          placeholder: await utils.getPlaceholderForImage(
+            group[0].image[0].url
+          ),
+        })
+      )
     )
+  )
     .sort((a, b) => {
       if (b.count === a.count) {
         return (b?.album ?? '') > (a?.album ?? '') ? 1 : -1
@@ -90,6 +105,8 @@ const getTopAlbumsCover = async (
       return b.count - a.count
     })
     .slice(1, 10)
+
+  cache.set('lastfm-cover', topAlbums)
 
   return topAlbums
 }
