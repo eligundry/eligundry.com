@@ -2,7 +2,13 @@
 // on load. Without it, the styles are only added once
 // react loads on the frontend
 
-import Document, { DocumentContext } from 'next/document'
+import Document, {
+  DocumentContext,
+  Html,
+  Head,
+  Main,
+  NextScript,
+} from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document {
@@ -29,5 +35,24 @@ export default class MyDocument extends Document {
     } finally {
       sheet.seal()
     }
+  }
+
+  render() {
+    return (
+      <Html
+        lang="en"
+        itemScope
+        itemType="https://schema.org/Person"
+        itemID="#eli-gundry"
+      >
+        <Head>
+          <meta itemProp="image" content="/img/eli-gundry-headshot.jpg" />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
   }
 }
