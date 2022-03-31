@@ -53,6 +53,7 @@
     "react-schemaorg": "^2.0.0",
     "react-tooltip": "^4.2.21",
     "react-tweet-embed": "^2.0.0",
+    "react-twitter-embed": "^4.0.4",
     "react-use": "^17.3.2",
     "rehype-accessible-emojis": "^0.3.2",
     "rehype-img-size": "^1.0.1",

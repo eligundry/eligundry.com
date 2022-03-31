@@ -1,8 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import matter from 'gray-matter'
-import parseISO from 'date-fns/parseISO'
-import dateCompareDesc from 'date-fns/compareDesc'
+import * as dateFns from 'date-fns'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize as mdxSerialize } from 'next-mdx-remote/serialize'
 import imageSize from 'rehype-img-size'
@@ -10,9 +9,10 @@ import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
 import NodeCache from 'node-cache'
+import pick from 'lodash/pick'
 
 const cache = new NodeCache({
-  stdTTL: process.env.NODE_ENV === 'production' ? 60 * 60 * 1000 : 30 * 1000,
+  stdTTL: 60 * 60 * 1000 * 3,
 })
 
 export type PostType = 'blog' | 'talks'
@@ -59,72 +59,73 @@ async function getByFilename(
   postType: PostType,
   filename: string,
   fields?: Field[]
-): Promise<Post | null> {
-  const cacheKey = generateCacheKey(postType, filename)
-  let matterData = cache.get<ReturnType<typeof matter>>(cacheKey)
+): Promise<Post> {
+  const postPath = getPath(postType, filename)
+  const mtime = await fs.promises
+    .stat(postPath)
+    .then((stat) => dateFns.getUnixTime(stat.mtime))
 
-  if (!matterData) {
-    const fileContent = await fs.promises
-      .readFile(getPath(postType, filename), { encoding: 'utf8' })
-      /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-      .catch(() => {})
+  const cacheKey = generateCacheKey(postType, filename, mtime)
+  let post = cache.get<Post>(cacheKey)
 
-    if (!fileContent) {
-      return null
-    }
-
-    matterData = matter(fileContent)
-    cache.set(cacheKey, matterData)
+  if (post) {
+    return post
   }
 
-  const { content, data } = matterData
+  post = await getFullPostFromPath(postType, filename)
+  cache.set(cacheKey, post)
 
-  if (!fields) {
-    return {
-      // @ts-ignore
-      frontmatter: data,
-      content,
-      markdown: await renderMarkdownToHTML(content),
-      collection: postType,
-      path: data.slug
-        ? `/${postType}/${data.slug}`
-        : `/${postType}/${path.parse(filename).name}`,
-      filepath: getPath(postType, filename),
-    }
+  if (fields) {
+    // @ts-ignore
+    return pick(
+      post,
+      fields.map((key) =>
+        // @ts-ignore
+        frontmatterFields.includes(key) ? `frontmatter.${key}` : key
+      )
+    )
   }
 
-  const post = { frontmatter: {} } as Post
+  return post
+}
 
-  for (const key of fields) {
-    if (
-      !data.frontmatter &&
-      !['content', 'markdown', 'collection', 'path'].includes(key)
-    ) {
-      data.frontmatter = {}
+const frontmatterFields: (keyof Frontmatter)[] = [
+  'title',
+  'description',
+  'slug',
+  'cover',
+  'draft',
+  'date',
+  'tags',
+]
+
+const getFullPostFromPath = async (
+  postType: PostType,
+  filename: string
+): Promise<Post> => {
+  const filepath = getPath(postType, filename)
+  const fileContents = await fs.promises.readFile(getPath(postType, filename), {
+    encoding: 'utf8',
+  })
+  const { content, data } = matter(fileContents)
+  const post: Post = {
+    // @ts-ignore
+    frontmatter: {},
+    content,
+    markdown: await renderMarkdownToHTML(content),
+    collection: postType,
+    path: data.slug
+      ? `/${postType}/${data.slug}`
+      : `/${postType}/${path.parse(filename).name}`,
+    filepath,
+  }
+
+  frontmatterFields.forEach((key) => {
+    if (!data[key]) {
+      return
     }
 
     switch (key) {
-      case 'content':
-        post.content = content
-        break
-
-      case 'markdown':
-        /* eslint-disable-next-line no-await-in-loop */
-        post.markdown = await renderMarkdownToHTML(content)
-        break
-
-      case 'collection':
-        post.collection = postType
-        break
-
-      case 'path':
-        if (data.slug) {
-          post.path = `/${postType}/${data.slug}`
-        } else {
-          post.path = `/${postType}/${path.parse(filename).name}`
-        }
-        break
-
       case 'date':
         post.frontmatter.date = data[key] ?? new Date().toISOString()
         break
@@ -153,15 +154,11 @@ async function getByFilename(
         }
         break
 
-      case 'filepath':
-        post.filepath = getPath(postType, filename)
-        break
-
       default:
         // @ts-ignore
         post.frontmatter[key] = data?.[key] ?? ''
     }
-  }
+  })
 
   return post
 }
@@ -185,9 +182,9 @@ const getAll = async (
 
   if (fields && fields.includes('date')) {
     posts.sort((a, b) =>
-      dateCompareDesc(
-        parseISO(a.frontmatter.date),
-        parseISO(b.frontmatter.date)
+      dateFns.compareDesc(
+        dateFns.parseISO(a.frontmatter.date),
+        dateFns.parseISO(b.frontmatter.date)
       )
     )
   }
@@ -195,8 +192,11 @@ const getAll = async (
   return posts
 }
 
-const generateCacheKey = (postType: PostType, filename: string) =>
-  `${postType}-${filename}`
+const generateCacheKey = (
+  postType: PostType,
+  filename: string,
+  mtime: number
+) => `${postType}-${filename}-${mtime}`
 
 export const renderMarkdownToHTML = async (markdown: string) =>
   mdxSerialize(markdown, {

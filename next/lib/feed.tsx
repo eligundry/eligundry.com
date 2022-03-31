@@ -5,7 +5,7 @@ import parseISO from 'date-fns/parseISO'
 import config from '@/utils/config'
 import ReactDOMServer from 'react-dom/server'
 import { MDXRemote } from 'next-mdx-remote'
-import MDXShortcodes from '@/components/Post/shortcodes'
+import { MDXShortcodesForFeed } from '@/components/Post/shortcodes'
 import daylio from './daylio'
 import blog from './blog'
 
@@ -23,6 +23,7 @@ export const generateBlogFeed = async () => {
     link: 'https://eligundry.com/blog',
     language: 'en-US',
     copyright: `${new Date().getFullYear()} Eli Gundry`,
+    feedLinks: 'https://eligundry.com/blog.rss',
     author,
   })
 
@@ -40,12 +41,11 @@ export const generateBlogFeed = async () => {
         link: config.siteUrl + post.path,
         description: post.frontmatter.description,
         content: ReactDOMServer.renderToStaticMarkup(
-          <MDXRemote {...post.markdown} components={MDXShortcodes} />
+          <MDXRemote {...post.markdown} components={MDXShortcodesForFeed} />
         ),
-        category:
-          post.frontmatter.tags?.map((category) => ({
-            name: category,
-          })) ?? undefined,
+        category: post.frontmatter.tags?.map((category) => ({
+          name: category,
+        })),
       })
     })
 
@@ -65,6 +65,7 @@ export const generateDaylioFeed = async () => {
     title: "Eli Gundry's Feelings",
     description: "A daily journal of how I'm feeling",
     id: 'https://eligundry.com/feelings',
+    link: 'https://eligundry.com/feelings',
     language: 'en-US',
     copyright: `${new Date().getFullYear()} Eli Gundry`,
     author,

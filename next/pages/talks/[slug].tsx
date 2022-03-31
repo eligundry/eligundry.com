@@ -1,4 +1,5 @@
 import type { NextPage, GetStaticPaths, GetStaticProps } from 'next'
+import promiseHash from 'promise-hash'
 
 import PostTemplate from '@/components/Post'
 import SEO from '@/components/SEO'
@@ -42,17 +43,17 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
     throw new Error('this route requires a slug')
   }
 
-  const post = await blog.getBySlug('talks', params.slug)
-
-  if (!post) {
-    throw new Error(`could not find talk with slug ${params.slug}`)
-  }
-
   return {
-    props: {
-      post,
-      ...(await daylio.getLimitedProps()),
-    },
+    props: await promiseHash({
+      post: blog.getBySlug('talks', params.slug).then((post) => {
+        if (!post) {
+          throw new Error(`could not find talk with slug ${params.slug}`)
+        }
+
+        return post
+      }),
+      daylio: daylio.getLimitedProps().then((r) => r.daylio),
+    }),
   }
 }
 

@@ -75,7 +75,7 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   }, [!!scriptTarget.current, fileURL, prefersDark])
 
   return (
-    <>
+    <div>
       <EmGitHubContainer
         ref={scriptTarget as React.MutableRefObject<HTMLDivElement>}
         expanded={expanded}
@@ -92,7 +92,7 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
           </button>
         </ExpandButtonContainer>
       )}
-    </>
+    </div>
   )
 }
 

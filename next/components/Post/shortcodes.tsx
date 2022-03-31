@@ -9,11 +9,13 @@ const MDXShortcodes: MDXRemoteProps['components'] = {
     <MdxNextImage {...props} layout="responsive" loading="lazy" />
   ),
   // @ts-ignore
-  StreamingAlbum: dynamic(() => import('../Embeds/Album')),
+  StreamingAlbum: dynamic(() => import('@/components/Embeds/Album')),
   // @ts-ignore
-  Tweet: dynamic(() => import('@/components/Embeds/Tweet')),
+  Tweet: dynamic(() =>
+    import('@/components/Embeds/Tweet').then((mod) => mod.LazyLoadTweet)
+  ),
   // @ts-ignore
-  GitHubFile: dynamic(() => import('../Embeds/GitHubFile')),
+  GitHubFile: dynamic(() => import('@/components/Embeds/GitHubFile')),
   // @ts-ignore
   YouTube: dynamic(() =>
     import('react-lite-yt-embed').then((mod) => mod.LiteYoutubeEmbed)
@@ -24,6 +26,14 @@ const MDXShortcodes: MDXRemoteProps['components'] = {
       (mod) => mod.JobSearchSankeyChartByYear
     )
   ),
+}
+
+export const MDXShortcodesForFeed: MDXRemoteProps['components'] = {
+  JobSearchSankeyChart: (props) => null,
+  Tweet: dynamic(() => import('@/components/Embeds/Tweet')),
+  GitHubFile: (props) => null,
+  YouTube: (props) => null,
+  StreamingAlbum: (props) => null,
 }
 
 export default MDXShortcodes
