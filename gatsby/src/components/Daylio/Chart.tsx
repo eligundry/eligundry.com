@@ -54,8 +54,6 @@ const DaylioChart: React.FC<Props> = ({ months = 1 }) => {
     []
   )
 
-  console.log(data)
-
   return (
     <div style={{ minHeight: '153px' }}>
       <Line

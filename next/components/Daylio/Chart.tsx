@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { Line } from 'react-chartjs-2'
 import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
+import dateSubDays from 'date-fns/subDays'
 import type { CoreChartOptions, ChartType } from 'chart.js/types/index.esm'
 import { theme } from 'twin.macro'
 import { useRouter } from 'next/router'
@@ -94,7 +95,7 @@ const DaylioChart: React.FC<Props> = () => {
           scales: {
             x: {
               // @ts-ignore
-              min: data[0].x,
+              min: dateSubDays(parseISO(data[0].x), 1).toISOString(),
               ticks: {
                 callback: () => null,
               },
