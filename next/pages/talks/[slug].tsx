@@ -20,7 +20,6 @@ const Talk: NextPage<Props> = ({ post, daylio }) => {
         body={post.markdown}
         itemType="CreativeWork"
         datePublished={post?.frontmatter?.date}
-        // @ts-ignore
         location={post?.frontmatter?.location}
       />
     </DaylioProvider>
@@ -45,13 +44,25 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
 
   return {
     props: await promiseHash({
-      post: blog.getBySlug('talks', params.slug).then((post) => {
-        if (!post) {
-          throw new Error(`could not find talk with slug ${params.slug}`)
-        }
+      post: blog
+        .getBySlug('talks', params.slug, [
+          'title',
+          'description',
+          'slug',
+          'path',
+          'tags',
+          'markdown',
+          'collection',
+          'location',
+          'date',
+        ])
+        .then((post) => {
+          if (!post) {
+            throw new Error(`could not find talk with slug ${params.slug}`)
+          }
 
-        return post
-      }),
+          return post
+        }),
       daylio: daylio.getLimitedProps().then((r) => r.daylio),
     }),
   }

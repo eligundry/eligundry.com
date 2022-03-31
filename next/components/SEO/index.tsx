@@ -105,6 +105,7 @@ const SEO: React.FC<Props> = ({
         title="Eli Gundry's Feelings"
         href="/feelings.rss"
       />
+      <meta name="generator" content="Next.js (https://nextjs.org)" />
 
       {/* OpenGraph tags */}
       <meta property="og:url" content={url} />

@@ -8,6 +8,7 @@ import {
   Title,
   CategoryScale,
   TimeSeriesScale,
+  Tooltip,
 } from 'chart.js'
 
 ChartJS.register(
@@ -16,7 +17,8 @@ ChartJS.register(
   LinearScale,
   Title,
   CategoryScale,
-  TimeSeriesScale
+  TimeSeriesScale,
+  Tooltip
 )
 
 export const toolTipTheme = (prefersDark: boolean) => ({

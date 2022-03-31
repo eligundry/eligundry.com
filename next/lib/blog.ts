@@ -25,6 +25,7 @@ export interface Frontmatter {
   draft?: boolean
   date: string
   tags: string[]
+  location?: string
 }
 
 export interface Post {
@@ -69,6 +70,11 @@ async function getByFilename(
   let post = cache.get<Post>(cacheKey)
 
   if (post) {
+    if (!!fields) {
+      // @ts-ignore
+      return filterPostFields(post, fields)
+    }
+
     return post
   }
 
@@ -77,17 +83,20 @@ async function getByFilename(
 
   if (fields) {
     // @ts-ignore
-    return pick(
-      post,
-      fields.map((key) =>
-        // @ts-ignore
-        frontmatterFields.includes(key) ? `frontmatter.${key}` : key
-      )
-    )
+    return filterPostFields(post, fields)
   }
 
   return post
 }
+
+const filterPostFields = (post: Post, fields: Field[]) =>
+  pick(
+    post,
+    fields.map((key) =>
+      // @ts-ignore
+      frontmatterFields.includes(key) ? `frontmatter.${key}` : key
+    )
+  )
 
 const frontmatterFields: (keyof Frontmatter)[] = [
   'title',
@@ -97,6 +106,8 @@ const frontmatterFields: (keyof Frontmatter)[] = [
   'draft',
   'date',
   'tags',
+  'location',
+  'date',
 ]
 
 const getFullPostFromPath = async (

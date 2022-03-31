@@ -61,13 +61,24 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
 
   return {
     props: await promiseHash({
-      post: blog.getBySlug('blog', params.slug).then((post) => {
-        if (!post) {
-          throw new Error(`could not find talk with slug ${params.slug}`)
-        }
+      post: blog
+        .getBySlug('blog', params.slug, [
+          'title',
+          'description',
+          'slug',
+          'path',
+          'tags',
+          'markdown',
+          'collection',
+          'date',
+        ])
+        .then((post) => {
+          if (!post) {
+            throw new Error(`could not find talk with slug ${params.slug}`)
+          }
 
-        return post
-      }),
+          return post
+        }),
       daylio: daylio.getLimitedProps().then((r) => r.daylio),
     }),
   }
