@@ -3,7 +3,6 @@ on:
   pull_request:
     branches:
       - main
-      - master
 
 jobs:
   lint:
@@ -16,12 +15,10 @@ jobs:
           node-version: 16
       - uses: bahmutov/npm-install@v1
         with:
-          working-directory: gatsby
+          working-directory: next
       - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          eslint_dir: gatsby
+        working-directory: next
+        run: npm run lint
 
   type-check:
     name: Check types
@@ -33,7 +30,7 @@ jobs:
           node-version: 16
       - uses: bahmutov/npm-install@v1
         with:
-          working-directory: gatsby
+          working-directory: next
       - name: Check types
-        working-directory: gatsby
-        run: npm run type-check
+        working-directory: next
+        run: npm run typecheck
