@@ -2,7 +2,7 @@ version: 2
 
 updates:
   - package-ecosystem: npm
-    directory: "/gatsby"
+    directory: "/next"
     schedule:
       interval: monthly
     open-pull-requests-limit: 5

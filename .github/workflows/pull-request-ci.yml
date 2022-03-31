@@ -17,10 +17,8 @@ jobs:
         with:
           working-directory: next
       - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          eslint_dir: next
+        working-directory: next
+        run: npm run lint
 
   type-check:
     name: Check types
