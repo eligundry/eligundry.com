@@ -33,6 +33,20 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: process.env.NETLIFY === 'true',
   },
+  headers: async () => [
+    {
+      source: '/(blog|feelings).rss',
+      headers: [
+        {
+          key: 'Content-Type',
+          value: 'application/rss+xml; charset=utf-8',
+        },
+      ],
+    },
+  ],
+  devIndicators: {
+    buildActivityPosition: 'bottom-left',
+  },
 }
 
 module.exports = withPlugins(
