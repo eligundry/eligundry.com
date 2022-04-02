@@ -73,14 +73,14 @@ async function getByFilename(
   const cacheKey = generateCacheKey(postType, filename, mtime)
   let post = cache.get<Post>(cacheKey)
 
-  // if (post) {
-  //   if (fields) {
-  //     // @ts-ignore
-  //     return filterPostFields(post, fields)
-  //   }
+  if (post) {
+    if (fields) {
+      // @ts-ignore
+      return filterPostFields(post, fields)
+    }
 
-  //   return post
-  // }
+    return post
+  }
 
   post = await getFullPostFromPath(postType, filename)
   cache.set(cacheKey, post)

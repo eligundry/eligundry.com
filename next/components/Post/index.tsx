@@ -119,6 +119,10 @@ const Article = styled<React.FC>(Paper.article)`
 
       figcaption {
         ${tw`italic text-center py-4 font-serif`}
+
+        & > p {
+          ${tw`my-0`}
+        }
       }
 
       & + p {
