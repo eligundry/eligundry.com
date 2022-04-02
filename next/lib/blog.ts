@@ -1,18 +1,17 @@
 import path from 'path'
 import fs from 'fs'
-import matter from 'gray-matter'
 import * as dateFns from 'date-fns'
-import { MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { serialize as mdxSerialize } from 'next-mdx-remote/serialize'
+import { bundleMDX } from 'mdx-bundler'
+import NodeCache from 'node-cache'
+import pick from 'lodash/pick'
+import SimpleGit from 'simple-git'
+// @ts-ignore
+import rehypeImagePlaceholder from 'rehype-image-placeholder'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
 import remarkReadingType from 'remark-reading-time/mdx'
-// @ts-ignore
-import rehypeImagePlaceholder from 'rehype-image-placeholder'
-import NodeCache from 'node-cache'
-import pick from 'lodash/pick'
-import SimpleGit from 'simple-git'
+import remarkUnwrapImages from 'remark-unwrap-images'
 
 const git = SimpleGit()
 const cache = new NodeCache({
@@ -36,7 +35,7 @@ export interface Post {
   frontmatter: Frontmatter
   path: string
   content: string
-  markdown: MDXRemoteSerializeResult<Record<string, unknown>>
+  code: string
   collection: PostType
   filepath: string
   modified?: string
@@ -74,14 +73,14 @@ async function getByFilename(
   const cacheKey = generateCacheKey(postType, filename, mtime)
   let post = cache.get<Post>(cacheKey)
 
-  if (post) {
-    if (fields) {
-      // @ts-ignore
-      return filterPostFields(post, fields)
-    }
+  // if (post) {
+  //   if (fields) {
+  //     // @ts-ignore
+  //     return filterPostFields(post, fields)
+  //   }
 
-    return post
-  }
+  //   return post
+  // }
 
   post = await getFullPostFromPath(postType, filename)
   cache.set(cacheKey, post)
@@ -120,52 +119,48 @@ const getFullPostFromPath = async (
   filename: string
 ): Promise<Post> => {
   const filepath = getPath(postType, filename)
-  const fileContents = await fs.promises.readFile(getPath(postType, filename), {
-    encoding: 'utf8',
-  })
-  const { content, data } = matter(fileContents)
+  const { code, frontmatter } = await bundleMDXFile(filepath)
   const post: Post = {
     // @ts-ignore
-    frontmatter: {},
-    content,
-    markdown: await renderMarkdownToHTML(content),
+    frontmatter,
+    code,
     collection: postType,
-    path: data.slug
-      ? `/${postType}/${data.slug}`
+    path: frontmatter.slug
+      ? `/${postType}/${frontmatter.slug}`
       : `/${postType}/${path.parse(filename).name}`,
     filepath,
     modified: await git.log({ file: filepath }).then((log) => log.latest?.date),
   }
 
   frontmatterFields.forEach((key) => {
-    if (!data[key]) {
+    if (!frontmatter[key]) {
       return
     }
 
     switch (key) {
       case 'date':
-        post.frontmatter.date = data[key] ?? new Date().toISOString()
+        post.frontmatter.date = frontmatter[key] ?? new Date().toISOString()
         break
 
       case 'slug':
-        if (!data[key]) {
-          post.frontmatter.slug = path.parse(filename).name
+        if (frontmatter.slug) {
+          post.frontmatter.slug = frontmatter.slug
         } else {
-          post.frontmatter.slug = data[key]
+          post.frontmatter.slug = path.parse(filename).name
         }
         break
 
       case 'draft':
-        if (typeof data[key] !== undefined) {
-          post.frontmatter.draft = !!data[key]
+        if (typeof frontmatter.draft !== undefined) {
+          post.frontmatter.draft = !!frontmatter.draft
         } else {
           post.frontmatter.draft = false
         }
         break
 
       case 'tags':
-        if (Array.isArray(data[key])) {
-          post.frontmatter.tags = data[key]
+        if (Array.isArray(frontmatter.tags)) {
+          post.frontmatter.tags = frontmatter.tags
         } else {
           post.frontmatter.tags = []
         }
@@ -173,7 +168,7 @@ const getFullPostFromPath = async (
 
       default:
         // @ts-ignore
-        post.frontmatter[key] = data?.[key] ?? ''
+        post.frontmatter[key] = frontmatter?.[key] ?? ''
     }
   })
 
@@ -215,16 +210,24 @@ const generateCacheKey = (
   mtime: number
 ) => `${postType}-${filename}-${mtime}`
 
-export const renderMarkdownToHTML = async (markdown: string) =>
-  mdxSerialize(markdown, {
-    mdxOptions: {
-      rehypePlugins: [
+export const bundleMDXFile = async (file: string) =>
+  bundleMDX<Partial<Frontmatter>>({
+    file,
+    mdxOptions: (options, frontmatter) => {
+      options.rehypePlugins = [
+        ...(options.rehypePlugins ?? []),
         [rehypePrism],
         [rehypeAccessibleEmojis],
         [rehypeSlug],
         [rehypeImagePlaceholder, { dir: 'public' }],
-      ],
-      remarkPlugins: [[remarkReadingType]],
+      ]
+      options.remarkPlugins = [
+        ...(options.remarkPlugins ?? []),
+        [remarkReadingType],
+        [remarkUnwrapImages],
+      ]
+
+      return options
     },
   })
 

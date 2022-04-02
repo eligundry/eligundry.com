@@ -4,7 +4,7 @@ import compareDatesDesc from 'date-fns/compareDesc'
 import parseISO from 'date-fns/parseISO'
 import config from '@/utils/config'
 import ReactDOMServer from 'react-dom/server'
-import { MDXRemote } from 'next-mdx-remote'
+import { getMDXComponent } from 'mdx-bundler/client'
 import { MDXShortcodesForFeed } from '@/components/Post/shortcodes'
 
 import daylio from './daylio'
@@ -36,13 +36,15 @@ export const generateBlogFeed = async () => {
       )
     )
     .forEach((post) => {
+      const Component = getMDXComponent(post.code)
+
       feed.addItem({
         title: post.frontmatter.title,
         date: new Date(post.frontmatter.date),
         link: config.siteUrl + post.path,
         description: post.frontmatter.description,
         content: ReactDOMServer.renderToStaticMarkup(
-          <MDXRemote {...post.markdown} components={MDXShortcodesForFeed} />
+          <Component components={MDXShortcodesForFeed} />
         ),
         category: post.frontmatter.tags?.map((category) => ({
           name: category,

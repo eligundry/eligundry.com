@@ -17,7 +17,7 @@ const BlogPost: NextPage<Props> = ({ post, daylio }) => (
     <SEO path={post.path} post={post} />
     <PostTemplate
       title={post.frontmatter.title}
-      body={post.markdown}
+      body={post.code}
       datePublished={post?.frontmatter?.date}
       dateModified={post.modified}
       itemType="BlogPosting"
@@ -67,7 +67,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
           'slug',
           'path',
           'tags',
-          'markdown',
+          'code',
           'collection',
           'date',
           'modified',
