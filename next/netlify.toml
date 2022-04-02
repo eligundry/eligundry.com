@@ -7,3 +7,6 @@
 
 [[plugins]]
   package = '@netlify/plugin-nextjs'
+
+[functions]
+  included_files = ["!node_modules/canvas/**/*"]
