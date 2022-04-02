@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic'
-import type { MDXRemoteProps } from 'next-mdx-remote'
+import type { MDXComponents } from 'mdx/types'
 
 import MdxNextImage from '@/components/Embeds/MdxNextImage'
 
-const MDXShortcodes: MDXRemoteProps['components'] = {
+const MDXShortcodes: MDXComponents = {
   img: (props) => (
     // @ts-ignore
     <MdxNextImage {...props} layout="responsive" loading="lazy" />
@@ -28,7 +28,7 @@ const MDXShortcodes: MDXRemoteProps['components'] = {
   ),
 }
 
-export const MDXShortcodesForFeed: MDXRemoteProps['components'] = {
+export const MDXShortcodesForFeed: MDXComponents = {
   // @ts-ignore
   JobSearchSankeyChart: () => null,
   // @ts-ignore

@@ -213,7 +213,7 @@ const generateCacheKey = (
 export const bundleMDXFile = async (file: string) =>
   bundleMDX<Partial<Frontmatter>>({
     file,
-    mdxOptions: (options, frontmatter) => {
+    mdxOptions: (options) => {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         [rehypePrism],

@@ -1,7 +1,5 @@
 import type { GetStaticProps } from 'next'
-import isAfter from 'date-fns/isAfter'
-import parseISO from 'date-fns/parseISO'
-import subMonths from 'date-fns/subMonths'
+import * as dateFns from 'date-fns'
 import promiseHash from 'promise-hash'
 
 import { DaylioEntry, MoodMapping } from '@/components/Daylio/types'
@@ -20,7 +18,9 @@ const getLatest = async () => getAll().then((feelings) => feelings[0])
 
 const getRange = async (start: Date) =>
   getAll().then((feelings) =>
-    feelings.filter(({ time }) => isAfter(parseISO(time), start))
+    feelings.filter(({ time }) =>
+      dateFns.isAfter(dateFns.parseISO(time), start)
+    )
   )
 
 const getChartData = async (timeWindow: Date) =>
@@ -30,7 +30,10 @@ const getChartData = async (timeWindow: Date) =>
         x: time,
         y: Object.keys(MoodMapping).findIndex((m) => m === mood),
       }))
-      .filter(({ x }) => isAfter(parseISO(x), timeWindow))
+      .filter(({ x }) => dateFns.isAfter(dateFns.parseISO(x), timeWindow))
+      .sort((a, b) =>
+        dateFns.compareAsc(dateFns.parseISO(a.x), dateFns.parseISO(b.x))
+      )
   )
 
 const getLimitedProps = async (): Promise<LimitedDaylioPageProps> => ({
@@ -47,13 +50,13 @@ const getLimitedPageProps: GetStaticProps<
 
 const getHomeProps = async () => ({
   entries: [await getLatest()],
-  chartData: await getChartData(subMonths(new Date(), 1)),
+  chartData: await getChartData(dateFns.subMonths(new Date(), 1)),
 })
 
 const getFeelingsPageProps = async () =>
   promiseHash({
-    entries: getRange(subMonths(new Date(), 6)),
-    chartData: getChartData(subMonths(new Date(), 1)),
+    entries: getRange(dateFns.subMonths(new Date(), 6)),
+    chartData: getChartData(dateFns.subMonths(new Date(), 1)),
   })
 
 export type { FullDaylioPageProps, LimitedDaylioPageProps }

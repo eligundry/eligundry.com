@@ -2,12 +2,12 @@ import React from 'react'
 import Image, { ImageProps } from 'next/image'
 import tw, { styled, css } from 'twin.macro'
 
-interface Props extends Omit<ImageProps, 'src' | 'alt'> {
+export interface MDXNextImageProps extends Omit<ImageProps, 'src' | 'alt'> {
   src: string
   alt: string
 }
 
-const MdxNextImage: React.FC<Props> = (props) => {
+const MDXNextImage: React.FC<MDXNextImageProps> = (props) => {
   if (
     typeof props.src === 'string' &&
     props.src.startsWith('http') &&
@@ -25,7 +25,7 @@ const MdxNextImage: React.FC<Props> = (props) => {
   )
 }
 
-const Wrapper = styled.div<Props>`
+const Wrapper = styled.div<MDXNextImageProps>`
   ${tw`mx-auto`}
 
   max-width: 690px;
@@ -37,4 +37,4 @@ const Wrapper = styled.div<Props>`
     `}
 `
 
-export default MdxNextImage
+export default MDXNextImage
