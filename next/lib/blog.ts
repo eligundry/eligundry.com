@@ -92,26 +92,16 @@ async function getByFilename(
   return post
 }
 
-const filterPostFields = (post: Post, fields: Field[]) =>
-  pick(
+const filterPostFields = (post: Post, fields: Field[]) => {
+  const frontmatterKeys = Object.keys(post.frontmatter)
+
+  return pick(
     post,
     fields.map((key) =>
-      // @ts-ignore
-      frontmatterFields.includes(key) ? `frontmatter.${key}` : key
+      frontmatterKeys.includes(key) ? `frontmatter.${key}` : key
     )
   )
-
-const frontmatterFields: (keyof Frontmatter)[] = [
-  'title',
-  'description',
-  'slug',
-  'cover',
-  'draft',
-  'date',
-  'tags',
-  'location',
-  'date',
-]
+}
 
 const getFullPostFromPath = async (
   postType: PostType,
