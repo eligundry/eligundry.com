@@ -34,7 +34,6 @@ export interface Frontmatter {
 export interface Post {
   frontmatter: Frontmatter
   path: string
-  content: string
   code: string
   collection: PostType
   filepath: string
@@ -120,59 +119,24 @@ const getFullPostFromPath = async (
 ): Promise<Post> => {
   const filepath = getPath(postType, filename)
   const { code, frontmatter } = await bundleMDXFile(filepath)
-  const post: Post = {
-    // @ts-ignore
-    frontmatter,
+  const slug = frontmatter.slug ?? path.parse(filename).name
+
+  return {
+    frontmatter: {
+      title: '',
+      description: '',
+      date: new Date().toISOString(),
+      slug,
+      draft: false,
+      tags: [],
+      ...frontmatter,
+    },
     code,
     collection: postType,
-    path: frontmatter.slug
-      ? `/${postType}/${frontmatter.slug}`
-      : `/${postType}/${path.parse(filename).name}`,
+    path: `/${postType}/${slug}`,
     filepath,
     modified: await git.log({ file: filepath }).then((log) => log.latest?.date),
   }
-
-  frontmatterFields.forEach((key) => {
-    if (!frontmatter[key]) {
-      return
-    }
-
-    switch (key) {
-      case 'date':
-        post.frontmatter.date = frontmatter[key] ?? new Date().toISOString()
-        break
-
-      case 'slug':
-        if (frontmatter.slug) {
-          post.frontmatter.slug = frontmatter.slug
-        } else {
-          post.frontmatter.slug = path.parse(filename).name
-        }
-        break
-
-      case 'draft':
-        if (typeof frontmatter.draft !== undefined) {
-          post.frontmatter.draft = !!frontmatter.draft
-        } else {
-          post.frontmatter.draft = false
-        }
-        break
-
-      case 'tags':
-        if (Array.isArray(frontmatter.tags)) {
-          post.frontmatter.tags = frontmatter.tags
-        } else {
-          post.frontmatter.tags = []
-        }
-        break
-
-      default:
-        // @ts-ignore
-        post.frontmatter[key] = frontmatter?.[key] ?? ''
-    }
-  })
-
-  return post
 }
 
 const getAll = async (
