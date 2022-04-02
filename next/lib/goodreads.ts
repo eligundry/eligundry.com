@@ -4,6 +4,7 @@ import trim from 'lodash/trim'
 import NodeCache from 'node-cache'
 
 import { cacheAxios } from './axios'
+import utils from './utils'
 
 const cache = new NodeCache({
   stdTTL: 60 * 60 * 24 * 1000,
@@ -20,6 +21,8 @@ export interface GoodReadsBook {
   started: string | null
   finished: string | null
   cover: string | null
+  thumbnail: string | null | undefined
+  placeholder: string
   url: string | null
 }
 
@@ -53,54 +56,65 @@ const getShelf = async (userID: string, shelf: string, limit?: number) => {
 
   const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
 
-  books = Array.from(
-    goodreadsDocument.querySelectorAll('#booksBody .bookalike')
-  )
-    .map((row): GoodReadsBook | null => {
-      const cover = row
-        ?.querySelector('td.field.cover img')
-        ?.getAttribute('src')
+  books = await Promise.all(
+    Array.from(goodreadsDocument.querySelectorAll('#booksBody .bookalike'))
+      .map((row): GoodReadsBook | null => {
+        const thumbnail = row
+          ?.querySelector('td.field.cover img')
+          ?.getAttribute('src')
         // Get the full sized thumbnail
-        ?.replace(/\._\w+\d+_/, '')
+        const cover = thumbnail?.replace(/\._\w+\d+_/, '')
 
-      const urlPath = row
-        ?.querySelector('td.field.cover a')
-        ?.getAttribute('href')
+        const urlPath = row
+          ?.querySelector('td.field.cover a')
+          ?.getAttribute('href')
 
-      if (!cover || !urlPath) {
-        return null
-      }
+        if (!cover || !urlPath) {
+          return null
+        }
 
-      return {
-        title: customTrim(
-          row?.querySelector('td.field.title a')?.getAttribute('title')
-        ),
-        author: customTrim(
-          row?.querySelector('td.field.author .value')?.textContent
-        ),
-        isbn: customTrim(
-          row?.querySelector('td.field.isbn .value')?.textContent
-        ),
-        isbn13: customTrim(
-          row?.querySelector('td.field.isbn13 .value')?.textContent
-        ),
-        asin: customTrim(
-          row?.querySelector('td.field.asin .value')?.textContent
-        ),
-        pages: parseInt(
-          customTrim(
-            row?.querySelector('td.field.num_pages .value')?.textContent
-          ) || '0'
-        ),
-        published: getDateField(row, 'td.field.date_pub .value'),
-        started: getDateField(row, 'td.field.date_started .date_started_value'),
-        finished: getDateField(row, 'td.field.date_read .date_read_value'),
-        cover,
-        url: urlPath ? `https://www.goodreads.com${urlPath}` : null,
-      }
-    })
-    .filter((book): book is GoodReadsBook => !!book)
-    .slice(0, limit)
+        return {
+          title: customTrim(
+            row?.querySelector('td.field.title a')?.getAttribute('title')
+          ),
+          author: customTrim(
+            row?.querySelector('td.field.author .value')?.textContent
+          ),
+          isbn: customTrim(
+            row?.querySelector('td.field.isbn .value')?.textContent
+          ),
+          isbn13: customTrim(
+            row?.querySelector('td.field.isbn13 .value')?.textContent
+          ),
+          asin: customTrim(
+            row?.querySelector('td.field.asin .value')?.textContent
+          ),
+          pages: parseInt(
+            customTrim(
+              row?.querySelector('td.field.num_pages .value')?.textContent
+            ) || '0'
+          ),
+          published: getDateField(row, 'td.field.date_pub .value'),
+          started: getDateField(
+            row,
+            'td.field.date_started .date_started_value'
+          ),
+          finished: getDateField(row, 'td.field.date_read .date_read_value'),
+          cover,
+          thumbnail,
+          placeholder: '',
+          url: urlPath ? `https://www.goodreads.com${urlPath}` : null,
+        }
+      })
+      .filter((book): book is GoodReadsBook => !!book)
+      .slice(0, limit)
+      .map(async (book) => ({
+        ...book,
+        placeholder: book.thumbnail
+          ? await utils.getPlaceholderForImage(book.thumbnail)
+          : '',
+      }))
+  )
 
   cache.set(cacheKey, books)
 

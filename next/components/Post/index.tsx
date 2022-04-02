@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import tw, { styled } from 'twin.macro'
-import { MDXRemote } from 'next-mdx-remote'
+import { getMDXComponent } from 'mdx-bundler/client'
 import LazyLoad from 'react-lazyload'
 import Skeleton from 'react-loading-skeleton'
 
@@ -12,7 +12,7 @@ import MDXShortcodes from './shortcodes'
 
 interface Props {
   title: string
-  body: PostType['markdown']
+  body: PostType['code']
   datePublished?: string
   dateModified?: string
   footer?: React.ReactNode
@@ -32,46 +32,50 @@ const Post: React.FC<Props> = ({
   itemType,
   location,
   featuredImageURL,
-}) => (
-  <Article
-    // @ts-ignore
-    itemScope
-    itemType={`https://schema.org/${itemType}`}
-  >
-    <link itemProp="author publisher" href="#eli-gundry" />
-    {dateModified && <meta itemProp="dateModified" content={dateModified} />}
-    {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
-    <header>
-      <h1 itemProp="name headline">{title}</h1>
-      {datePublished && (
-        <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
+}) => {
+  const Component = useMemo(() => getMDXComponent(body), [body])
+
+  return (
+    <Article
+      // @ts-ignore
+      itemScope
+      itemType={`https://schema.org/${itemType}`}
+    >
+      <link itemProp="author publisher" href="#eli-gundry" />
+      {dateModified && <meta itemProp="dateModified" content={dateModified} />}
+      {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
+      <header>
+        <h1 itemProp="name headline">{title}</h1>
+        {datePublished && (
+          <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
+        )}
+        {location && (
+          <address>
+            <EmojiText label="location of talk" emoji="📍">
+              {location}
+            </EmojiText>
+          </address>
+        )}
+      </header>
+      {preBody}
+      {body && (
+        <main className="body" itemProp="text">
+          <Component components={MDXShortcodes} />
+        </main>
       )}
-      {location && (
-        <address>
-          <EmojiText label="location of talk" emoji="📍">
-            {location}
-          </EmojiText>
-        </address>
+      {footer && (
+        <LazyLoad
+          once
+          offset={200}
+          classNamePrefix="lazyload-footer"
+          placeholder={<Skeleton height={270} width="100%" />}
+        >
+          {footer}
+        </LazyLoad>
       )}
-    </header>
-    {preBody}
-    {body && (
-      <main className="body" itemProp="text">
-        <MDXRemote {...body} components={MDXShortcodes} />
-      </main>
-    )}
-    {footer && (
-      <LazyLoad
-        once
-        offset={200}
-        classNamePrefix="lazyload-footer"
-        placeholder={<Skeleton height={270} width="100%" />}
-      >
-        {footer}
-      </LazyLoad>
-    )}
-  </Article>
-)
+    </Article>
+  )
+}
 
 const Article = styled<React.FC>(Paper.article)`
   & header {
@@ -115,6 +119,10 @@ const Article = styled<React.FC>(Paper.article)`
 
       figcaption {
         ${tw`italic text-center py-4 font-serif`}
+
+        & > p {
+          ${tw`my-0`}
+        }
       }
 
       & + p {
