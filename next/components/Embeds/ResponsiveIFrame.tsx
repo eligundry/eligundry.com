@@ -7,16 +7,15 @@ interface Props
   height: number
 }
 
-const ResponsiveIFrame: React.FC<Props> = ({ width, height, ...props }) => {
-  return (
-    <Wrapper
-      style={{ paddingBottom: `${(height / width) * 100}%` }}
-      className="responsive-iframe"
-    >
-      <iframe {...props} />
-    </Wrapper>
-  )
-}
+const ResponsiveIFrame: React.FC<Props> = ({ width, height, ...props }) => (
+  <Wrapper
+    style={{ paddingBottom: `${(height / width) * 100}%` }}
+    className="responsive-iframe"
+  >
+    {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
+    <iframe {...props} />
+  </Wrapper>
+)
 
 const Wrapper = styled.div`
   position: relative;

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title, @typescript-eslint/no-unused-vars, @next/next/no-img-element, jsx-a11y/alt-text */
 import dynamic from 'next/dynamic'
 import type { MDXComponents } from 'mdx/types'
 
