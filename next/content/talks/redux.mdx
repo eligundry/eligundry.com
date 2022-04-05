@@ -6,7 +6,13 @@ slug: redux-hooks
 location: QueensJS
 ---
 
-<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<ResponsiveIFrame 
+	src="https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000" 
+	frameBorder="0" 
+	width="960" 
+	height="569" 
+	allowFullScreen={true} 
+/>
 
 # Notes / Research / Outline
 
@@ -43,8 +49,7 @@ Please forgive any gramatical errors, these are raw notes for the talk.
 - Conceptually, all hooks are items in an array ordered by the position in the component which is then ordered by the components position in the tree.
 	- This is a very novel way of doing it and very effective
 	- This means that hooks can not be nested in `if` statements or loops.
-- Enables Concurrent Mode
-	- https://reactjs.org/docs/concurrent-mode-intro.html
+- Enables [Concurrent Mode](https://reactjs.org/docs/concurrent-mode-intro.html)
 - You can totally opt-in to them over time! No need to dump your `class` based components at all!
 	- This is what Facebook is doing, just roll with it.
 - The way that I think about hooks' state is that there are small stores distributed around your app
@@ -151,9 +156,8 @@ function useOrder() {
 - Higher order components are still a thing
 - But, instead of injecting the state/dispatches, you wire it up in the component itself using hooks!
 
-##### `useSelector`
+##### [`useSelector`](https://react-redux.js.org/next/api/hooks#useselector)
 
-- https://react-redux.js.org/next/api/hooks#useselector
 - This is the hooks version of `mapStateToProps`
 - It takes two arguments
 	- First is a function that selects the values you want from the state
@@ -249,8 +253,7 @@ const [tweets, sendTweet] = useTweets(34)
 
 - Is it a good idea?
 - Does it sorta go against the grain of a unidirectional flow?
-- Really need to wrap my head around memorizing selectors
-	- https://react-redux.js.org/next/api/hooks#using-memoizing-selectors
+- Really need to wrap my head around [memoizing selectors](https://react-redux.js.org/next/api/hooks#using-memoizing-selectors)
 
 ### Reselect
 

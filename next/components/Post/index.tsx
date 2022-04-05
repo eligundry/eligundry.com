@@ -154,6 +154,14 @@ const Article = styled<React.FC>(Paper.article)`
     & .center {
       margin: 1em auto;
     }
+
+    & iframe[src*='giphy.com'] {
+      ${tw`my-0`}
+    }
+
+    & *:not(pre) code {
+      ${tw`bg-siteBackground break-words`}
+    }
   }
 
   & .lazyload-footer-wrapper {

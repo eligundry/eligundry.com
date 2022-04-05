@@ -77,8 +77,6 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
         <figure className="headshot">
           <Image
             src="/img/eli-thumbs-up-memoji.PNG"
-            blurDataURL="/img/eli-thumbs-up-memoji.PNG"
-            placeholder="blur"
             alt="Eli Gundry's Memoji Headshot"
             width={421}
             height={421}

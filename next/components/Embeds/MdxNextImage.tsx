@@ -26,9 +26,9 @@ const MDXNextImage: React.FC<MDXNextImageProps> = (props) => {
 }
 
 const Wrapper = styled.div<MDXNextImageProps>`
-  ${tw`mx-auto`}
-
   max-width: 690px;
+
+  ${tw`mx-auto sm:max-w-full`}
 
   ${({ width }) =>
     width &&

@@ -2,12 +2,14 @@ import dynamic from 'next/dynamic'
 import type { MDXComponents } from 'mdx/types'
 
 import MdxNextImage from '@/components/Embeds/MdxNextImage'
+import ResponsiveIFrame from '@/components/Embeds/ResponsiveIFrame'
 
 const MDXShortcodes: MDXComponents = {
   img: (props) => (
     // @ts-ignore
     <MdxNextImage {...props} layout="responsive" loading="lazy" />
   ),
+  ResponsiveIFrame: (props) => <ResponsiveIFrame {...props} />,
   // @ts-ignore
   StreamingAlbum: dynamic(() => import('@/components/Embeds/Album')),
   // @ts-ignore
@@ -39,6 +41,9 @@ export const MDXShortcodesForFeed: MDXComponents = {
   YouTube: () => null,
   // @ts-ignore
   StreamingAlbum: () => null,
+  ResponsiveIFrame: (props) => <iframe {...props} />,
+  // @ts-ignore
+  img: ({ blurDataURL, ...props }) => <img {...props} />,
 }
 
 export default MDXShortcodes
