@@ -27,7 +27,15 @@ const TalksPage: NextPage<PageProps> = ({ posts, daylio }) => (
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => ({
   props: await promiseHash({
-    posts: blog.getAll('talks', ['title', 'path', 'date', 'description']),
+    posts: blog.getAll('talks', [
+      'title',
+      'path',
+      'date',
+      'description',
+      'cover',
+      'modified',
+      'readingTime',
+    ]),
     daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),
   }),
 })

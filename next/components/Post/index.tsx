@@ -20,6 +20,7 @@ interface Props {
   itemType: 'BlogPosting' | 'CreativeWork'
   location?: string
   featuredImageURL?: string
+  readingTime?: number
 }
 
 const Post: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const Post: React.FC<Props> = ({
   itemType,
   location,
   featuredImageURL,
+  readingTime = 0,
 }) => {
   const Component = useMemo(() => getMDXComponent(body), [body])
 
@@ -44,6 +46,9 @@ const Post: React.FC<Props> = ({
       <link itemProp="author publisher" href="#eli-gundry" />
       {dateModified && <meta itemProp="dateModified" content={dateModified} />}
       {featuredImageURL && <meta itemProp="image" content={featuredImageURL} />}
+      {readingTime > 0 && (
+        <meta itemProp="timeRequired" content={`PT${readingTime}M`} />
+      )}
       <header>
         <h1 itemProp="name headline">{title}</h1>
         {datePublished && (

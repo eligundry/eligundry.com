@@ -33,7 +33,17 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
     props: await promiseHash({
       posts: blog.getAll(
         'blog',
-        ['title', 'path', 'date', 'description', 'tags', 'draft'],
+        [
+          'title',
+          'path',
+          'date',
+          'description',
+          'tags',
+          'draft',
+          'cover',
+          'modified',
+          'readingTime',
+        ],
         { draft: false }
       ),
       daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),

@@ -46,9 +46,9 @@ const PostListing: React.FC<Props> = ({ posts, itemType }) => {
         cover: post?.frontmatter?.cover,
         title: post?.frontmatter?.title,
         date: post?.frontmatter?.date,
-        timeToRead: undefined,
+        timeToRead: post?.frontmatter?.readingTime,
         description: post?.frontmatter?.description,
-        dateModified: undefined,
+        dateModified: post.modified,
         tags: post?.frontmatter?.tags,
       }
     })
@@ -68,8 +68,13 @@ const PostListing: React.FC<Props> = ({ posts, itemType }) => {
           className="listing-post"
         >
           <link itemProp="author publisher" href="#eli-gundry" />
-          <meta itemProp="image" content={post.cover} />
-          <meta itemProp="dateModified" content={post.dateModified} />
+          {post.cover && <meta itemProp="image" content={post.cover} />}
+          {post.dateModified && (
+            <meta itemProp="dateModified" content={post.dateModified} />
+          )}
+          {post.timeToRead > 0 && (
+            <meta itemProp="timeRequired" content={`PT${post.timeToRead}M`} />
+          )}
           <h1 itemProp="name headline">
             <Link href={post.path}>
               <a itemProp="url">{post.title}</a>

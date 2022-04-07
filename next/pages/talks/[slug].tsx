@@ -21,6 +21,7 @@ const Talk: NextPage<Props> = ({ post, daylio }) => (
       datePublished={post?.frontmatter?.date}
       dateModified={post.modified}
       location={post?.frontmatter?.location}
+      readingTime={post?.frontmatter?.readingTime}
     />
   </DaylioProvider>
 )
@@ -55,6 +56,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
           'location',
           'date',
           'modified',
+          'readingTime',
         ])
         .then((post) => {
           if (!post) {

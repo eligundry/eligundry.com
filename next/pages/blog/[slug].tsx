@@ -22,6 +22,7 @@ const BlogPost: NextPage<Props> = ({ post, daylio }) => (
       dateModified={post.modified}
       itemType="BlogPosting"
       featuredImageURL={post.frontmatter.cover}
+      readingTime={post.frontmatter?.readingTime}
       footer={
         <>
           <hr />
@@ -71,6 +72,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
           'collection',
           'date',
           'modified',
+          'readingTime',
         ])
         .then((post) => {
           if (!post) {

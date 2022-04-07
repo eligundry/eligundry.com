@@ -5,12 +5,12 @@ import { bundleMDX } from 'mdx-bundler'
 import NodeCache from 'node-cache'
 import pick from 'lodash/pick'
 import SimpleGit from 'simple-git'
+import readingTime from 'reading-time'
 // @ts-ignore
 import rehypeImagePlaceholder from 'rehype-image-placeholder'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
-import remarkReadingType from 'remark-reading-time/mdx'
 import remarkUnwrapImages from 'remark-unwrap-images'
 
 const git = SimpleGit()
@@ -29,6 +29,7 @@ export interface Frontmatter {
   date: string
   tags: string[]
   location?: string
+  readingTime: number
 }
 
 export interface Post {
@@ -119,6 +120,7 @@ const getFullPostFromPath = async (
       slug,
       draft: false,
       tags: [],
+      readingTime: 0,
       ...frontmatter,
     },
     code,
@@ -164,10 +166,12 @@ const generateCacheKey = (
   mtime: number
 ) => `${postType}-${filename}-${mtime}`
 
-export const bundleMDXFile = async (file: string) =>
-  bundleMDX<Partial<Frontmatter>>({
-    file,
-    mdxOptions: (options) => {
+export const bundleMDXFile = async (file: string) => {
+  const source = await fs.promises.readFile(file, { encoding: 'utf8' })
+
+  return bundleMDX<Partial<Frontmatter>>({
+    source,
+    mdxOptions: (options, frontmatter) => {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         [rehypePrism],
@@ -177,13 +181,15 @@ export const bundleMDXFile = async (file: string) =>
       ]
       options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
-        [remarkReadingType],
         [remarkUnwrapImages],
       ]
+
+      frontmatter.readingTime = Math.round(readingTime(source).minutes)
 
       return options
     },
   })
+}
 
 const api = { getAll, getByFilename, getBySlug }
 
