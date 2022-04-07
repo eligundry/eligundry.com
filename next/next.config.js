@@ -20,6 +20,8 @@ const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   images: {
+    formats: ['image/webp'],
+    minimumCacheTTL: 120,
     domains: [
       'i.gr-assets.com',
       'lastfm.freetls.fastly.net',
