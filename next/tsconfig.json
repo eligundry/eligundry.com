@@ -22,6 +22,6 @@
       "@/utils/*": ["utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "public/**/*"],
+  "include": ["**/*.ts", "**/*.tsx", "public/**/*"],
   "exclude": ["node_modules"]
 }

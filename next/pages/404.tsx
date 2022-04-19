@@ -5,13 +5,12 @@ import Image from 'next/image'
 import SEO from '@/components/SEO'
 import Paper from '@/components/Shared/Paper'
 import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
-import DaylioProvider from '@/components/Daylio/Provider'
 
-const ErrorPage: NextPage<LimitedDaylioPageProps> = ({ daylio }) => {
+const ErrorPage: NextPage<LimitedDaylioPageProps> = () => {
   const { asPath } = useRouter()
 
   return (
-    <DaylioProvider {...daylio}>
+    <>
       <SEO path={asPath} title="Whoops!" />
       <Paper>
         <h1>Whoops!</h1>
@@ -25,7 +24,7 @@ const ErrorPage: NextPage<LimitedDaylioPageProps> = ({ daylio }) => {
           height={600}
         />
       </Paper>
-    </DaylioProvider>
+    </>
   )
 }
 

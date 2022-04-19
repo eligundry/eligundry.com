@@ -3,14 +3,13 @@ import Link from 'next/link'
 
 import SEO from '@/components/SEO'
 import { DaylioList } from '@/components/Daylio'
-import DaylioProvider from '@/components/Daylio/Provider'
 import DaylioChart from '@/components/Daylio/Chart'
 import Paper from '@/components/Shared/Paper'
 import daylioAPI, { FullDaylioPageProps } from '@/lib/daylio'
 import { generateDaylioFeed } from '@/lib/feed'
 
-const FeelingsPage: NextPage<FullDaylioPageProps> = ({ daylio }) => (
-  <DaylioProvider {...daylio}>
+const FeelingsPage: NextPage<FullDaylioPageProps> = () => (
+  <>
     <SEO
       path="/feelings"
       title="Feelings"
@@ -30,7 +29,7 @@ const FeelingsPage: NextPage<FullDaylioPageProps> = ({ daylio }) => (
       <DaylioChart months={1} />
     </Paper>
     <DaylioList />
-  </DaylioProvider>
+  </>
 )
 
 export const getStaticProps: GetStaticProps<FullDaylioPageProps> = async () => {

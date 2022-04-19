@@ -3,9 +3,7 @@ import promiseHash from 'promise-hash'
 
 import Home, { HomeDataProps } from '@/components/Home'
 import SEO from '@/components/SEO'
-import DaylioProvider, {
-  FullDaylioPageProps,
-} from '@/components/Daylio/Provider'
+import { FullDaylioPageProps } from '@/components/Daylio/Provider'
 import goodreadsAPI from '@/lib/goodreads'
 import daylioAPI from '@/lib/daylio'
 import lastfmAPI from '@/lib/lastfm'
@@ -15,13 +13,12 @@ import config from '@/utils/config'
 const HomePage: NextPage<HomeDataProps & FullDaylioPageProps> = ({
   reading,
   lastfmCover,
-  daylio,
   github,
 }) => (
-  <DaylioProvider {...daylio}>
+  <>
     <SEO path="/" />
     <Home reading={reading} lastfmCover={lastfmCover} github={github} />
-  </DaylioProvider>
+  </>
 )
 
 export const getStaticProps: GetStaticProps<

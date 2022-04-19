@@ -4,7 +4,6 @@ import promiseHash from 'promise-hash'
 import PostListing from '@/components/PostListing'
 import Paper from '@/components/Shared/Paper'
 import SEO from '@/components/SEO'
-import DaylioProvider from '@/components/Daylio/Provider'
 import blog, { Post } from '@/lib/blog'
 import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 import { generateBlogFeed } from '@/lib/feed'
@@ -13,8 +12,8 @@ interface PageProps extends LimitedDaylioPageProps {
   posts: Post[]
 }
 
-const Blog: NextPage<PageProps> = ({ posts, daylio }) => (
-  <DaylioProvider {...daylio}>
+const Blog: NextPage<PageProps> = ({ posts }) => (
+  <>
     <SEO
       title="Blog"
       description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
@@ -23,7 +22,7 @@ const Blog: NextPage<PageProps> = ({ posts, daylio }) => (
     <Paper className="listing-container">
       <PostListing itemType="BlogPosting" posts={posts} />
     </Paper>
-  </DaylioProvider>
+  </>
 )
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {

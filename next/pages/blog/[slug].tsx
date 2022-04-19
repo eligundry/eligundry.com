@@ -6,14 +6,13 @@ import SEO from '@/components/SEO'
 import Comments from '@/components/Comments'
 import blog, { Post } from '@/lib/blog'
 import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
-import DaylioProvider from '@/components/Daylio/Provider'
 
 interface Props extends LimitedDaylioPageProps {
   post: Post
 }
 
-const BlogPost: NextPage<Props> = ({ post, daylio }) => (
-  <DaylioProvider {...daylio}>
+const BlogPost: NextPage<Props> = ({ post }) => (
+  <>
     <SEO path={post.path} post={post} />
     <PostTemplate
       title={post.frontmatter.title}
@@ -40,7 +39,7 @@ const BlogPost: NextPage<Props> = ({ post, daylio }) => (
         )
       }
     />
-  </DaylioProvider>
+  </>
 )
 
 export const getStaticPaths: GetStaticPaths = async () => {
