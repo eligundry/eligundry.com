@@ -10,3 +10,13 @@
 
 [functions]
   included_files = ["!node_modules/canvas/**/*"]
+
+[[headers]]
+  for = "/_ipx/*"
+
+  [headers.values]
+    Cache-Control = '''
+    public,
+    s-max-age=365000000, 
+    max-age=365000000, 
+    immutable'''
