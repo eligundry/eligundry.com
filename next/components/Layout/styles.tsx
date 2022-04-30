@@ -19,11 +19,11 @@ export const GlobalStyles = createGlobalStyle`
     &.dark {
       ${tw`bg-black text-white`}
     }
-  }
 
-  #___gatsby #gatsby-focus-wrapper {
-    min-height: 100vh;
-    min-width: 100vw;
+    .wf-zillaslab-n4-loading & {
+      font-family: Georgia;
+      letter-spacing: -0.2px;
+    }
   }
 
   h1 {
@@ -36,6 +36,13 @@ export const GlobalStyles = createGlobalStyle`
 
   h3 {
     ${tw`text-lg font-sans font-bold`}
+  }
+
+  .wf-firasans-n4-loading {
+    h1, h2, h3 {
+      font-family: Helvetica;
+      letter-spacing: -0.75px;
+    }
   }
 
   ul {
