@@ -13,7 +13,7 @@ import '@/components/Layout/prism-material.scss'
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <DaylioProvider {...(pageProps?.daylio ?? {})}>
     <Layout>
-      <Script id="google-tag-manager">
+      <Script type="text/partytown" id="google-tag-manager">
         {`
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

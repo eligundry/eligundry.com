@@ -49,6 +49,9 @@ const nextConfig = {
   devIndicators: {
     buildActivityPosition: 'bottom-left',
   },
+  experimental: {
+    nextScriptWorkers: true,
+  },
 }
 
 module.exports = withPlugins(
