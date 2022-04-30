@@ -44,6 +44,7 @@ export default class MyDocument extends Document {
         itemScope
         itemType="https://schema.org/Person"
         itemID="#eli-gundry"
+        className="wf-firacode-n4-loading wf-zillaslab-n4-loading wf-firasans-n4-loading wf-loading"
       >
         <Head>
           <meta itemProp="image" content="/img/eli-gundry-headshot.jpg" />

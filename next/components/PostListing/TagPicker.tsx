@@ -46,13 +46,12 @@ const Tag = styled.a<{ active?: boolean }>`
     py-1 
     px-2 
     text-sm 
+    whitespace-nowrap
     hover:no-underline
     active:no-underline
     focus:no-underline
     hover:text-white hover:bg-primaryLite
   `}
-
-  white-space: nowrap;
 
   ${(props) => props.active && tw`text-white bg-primary`}
 

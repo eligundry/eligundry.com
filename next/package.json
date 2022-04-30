@@ -70,7 +70,8 @@
     "tailwindcss": "^2.2.19",
     "twin.macro": "^2.8.2",
     "url-join-ts": "^1.0.5",
-    "use-dark-mode": "^2.3.1"
+    "use-dark-mode": "^2.3.1",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^12.1.2",
@@ -84,6 +85,7 @@
     "@types/react-lazyload": "^3.2.0",
     "@types/styled-components": "^5.1.24",
     "@types/tailwindcss": "^3.0.9",
+    "@types/webfontloader": "^1.6.34",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
     "babel-plugin-macros": "^3.1.0",
