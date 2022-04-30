@@ -74,7 +74,7 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^12.1.2",
+    "@next/bundle-analyzer": "^12.1.5",
     "@types/color-thief-node": "^1.0.1",
     "@types/jsdom": "^16.2.14",
     "@types/lodash": "^4.14.180",
