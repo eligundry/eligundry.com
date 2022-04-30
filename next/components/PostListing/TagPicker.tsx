@@ -32,7 +32,7 @@ const TagWrapper = styled.nav`
   ${tw`mb-6`}
 
   & > * {
-    ${tw`mr-2`}
+    ${tw`mr-2 mb-2 inline-block`}
   }
 `
 
