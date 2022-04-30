@@ -48,6 +48,18 @@ export default class MyDocument extends Document {
       >
         <Head>
           <meta itemProp="image" content="/img/eli-gundry-headshot.jpg" />
+          <script
+            data-partytown-config
+            dangerouslySetInnerHTML={{
+              __html: `
+              partytown = {
+                lib: "/_next/static/~partytown/",
+                debug: true,
+                forward: ['dataLayer.push']
+              };
+            `,
+            }}
+          />
         </Head>
         <body>
           <Main />
