@@ -1,7 +1,20 @@
 import tw, { styled } from 'twin.macro'
 import { createGlobalStyle } from 'styled-components'
 
+// Import all the CSS files like this so that they can be inlined into a <style>
+// tag. This makes the fonts load a lot faster and the text shifting is a lot
+// less noticeable.
+import tailwindCSS from '!!raw-loader!tailwindcss/dist/base.min.css'
+import skeletonCSS from '!!raw-loader!react-loading-skeleton/dist/skeleton.css'
+import fontsCSS from '!!raw-loader!./fonts.css'
+import prismCSS from '!!raw-loader!./prism-material.scss'
+
 export const GlobalStyles = createGlobalStyle`
+  ${fontsCSS}
+  ${tailwindCSS}
+  ${skeletonCSS}
+  ${prismCSS}
+
   :root {
     color-scheme: dark light;
   }
