@@ -56,7 +56,8 @@ const Tag = styled.a<{ active?: boolean }>`
   ${(props) => props.active && tw`text-white bg-primary`}
 
   & span {
-    vertical-align: middle;
+    position: relative;
+    top: 2px;
   }
 `
 
@@ -67,7 +68,7 @@ const TagPicker: React.FC<Props> = ({ tags, selectedTag }) => {
     <TagWrapper>
       {selectedTag && (
         <Head>
-          <title>#{selectedTag} | Blog</title>
+          <title>#{selectedTag} | Blog | Eli Gundry</title>
         </Head>
       )}
       {[...tags].sort().map((tag) => (
