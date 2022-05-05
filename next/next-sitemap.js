@@ -97,8 +97,7 @@ const pathToMarkdownFile = ['talks', 'blog']
       .map((filename) => path.join('content', prefix, filename))
   )
   .reduce((acc, filepath) => {
-    const fileContents = fs.readFileSync(filepath, { encoding: 'utf8' })
-    const { data } = matter(fileContents)
+    const { data } = matter.read(filepath)
     acc[`/${filepath.includes('blog') ? 'blog' : 'talks'}/${data.slug}`] =
       filepath
     return acc

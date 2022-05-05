@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+const grayMatter = require('gray-matter')
 require('dotenv').config()
 
 const withMDX = require('@next/mdx')({
@@ -30,7 +33,7 @@ const nextConfig = {
     ],
   },
   eslint: {
-    ignoreDuringBuilds: process.env.NETLIFY === 'true',
+    ignoreDuringBuilds: process.env.NETLIFY === 'true' || true,
   },
   typescript: {
     ignoreBuildErrors: process.env.NETLIFY === 'true',
@@ -52,9 +55,45 @@ const nextConfig = {
   experimental: {
     nextScriptWorkers: true,
   },
+  redirects: async () => {
+    // For some reason, Google somehow indexed blog and talk pages from their
+    // filename? I need to redirect these pages to the path in frontmatter.slug.
+    return [
+      {
+        source: '/blog/icymi-wiz-khalifa-curren-y-live-in-concert-ep',
+        destination: '/blog/icymi-live-in-concert-ep',
+        permanent: true,
+      },
+      ...['blog', 'talks'].flatMap((contentType) =>
+        fs
+          .readdirSync(path.join('content', contentType))
+          .filter((p) => path.extname(p) === '.mdx')
+          .map((p) => {
+            const fileSlug = path.basename(p, '.mdx')
+            const file = grayMatter.read(path.join('content', contentType, p))
+
+            if (!file.data.slug || file.data.slug === fileSlug) {
+              return false
+            }
+
+            return {
+              source: `/${contentType}/${fileSlug}`,
+              destination: `/${contentType}/${file.data.slug}`,
+              permanent: true,
+            }
+          })
+          .filter(Boolean)
+      ),
+    ]
+  },
 }
 
 module.exports = withPlugins(
-  [withTM, withMDX, withBundleAnalyzer, withImages],
+  [
+    withTM,
+    // withMDX,
+    // withBundleAnalyzer,
+    withImages,
+  ],
   nextConfig
 )
