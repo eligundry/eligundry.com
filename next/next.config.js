@@ -60,7 +60,7 @@ const nextConfig = {
     // filename? I need to redirect these pages to the path in frontmatter.slug.
     return [
       {
-        source: '/blog/icymi-wiz-khalifa-curren-y-live-in-concert-ep',
+        source: '/blog/icymi-wiz-khalifa-curren-y-live-in-concert-ep*',
         destination: '/blog/icymi-live-in-concert-ep',
         permanent: true,
       },
@@ -77,7 +77,7 @@ const nextConfig = {
             }
 
             return {
-              source: `/${contentType}/${fileSlug}`,
+              source: `/${contentType}/${fileSlug}*`,
               destination: `/${contentType}/${file.data.slug}`,
               permanent: true,
             }
