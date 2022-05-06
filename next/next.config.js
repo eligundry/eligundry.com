@@ -3,14 +3,6 @@ const path = require('path')
 const grayMatter = require('gray-matter')
 require('dotenv').config()
 
-const withMDX = require('@next/mdx')({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
-    providerImportSource: '@mdx-js/react',
-  },
-})
 const withImages = require('next-images')
 const withTM = require('next-transpile-modules')(['react-lite-yt-embed'])
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -60,7 +52,7 @@ const nextConfig = {
     // filename? I need to redirect these pages to the path in frontmatter.slug.
     return [
       {
-        source: '/blog/icymi-wiz-khalifa-curren-y-live-in-concert-ep*',
+        source: '/blog/icymi-wiz-khalifa-curren-y-live-in-concert-ep',
         destination: '/blog/icymi-live-in-concert-ep',
         permanent: true,
       },
@@ -77,7 +69,7 @@ const nextConfig = {
             }
 
             return {
-              source: `/${contentType}/${fileSlug}*`,
+              source: `/${contentType}/${fileSlug}`,
               destination: `/${contentType}/${file.data.slug}`,
               permanent: true,
             }
@@ -89,11 +81,6 @@ const nextConfig = {
 }
 
 module.exports = withPlugins(
-  [
-    withTM,
-    // withMDX,
-    // withBundleAnalyzer,
-    withImages,
-  ],
+  [withTM, withBundleAnalyzer, withImages],
   nextConfig
 )
