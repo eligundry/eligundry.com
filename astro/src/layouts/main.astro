@@ -1,0 +1,59 @@
+---
+const navLinks = {
+  '/': {
+    title: 'Home',
+    emoji: '🏠',
+    emojiLabel: 'little house to denote the home page',
+  },
+  '/blog': {
+    title: 'Blog',
+    emoji: '📝',
+    emojiLabel: 'note to denote my blog',
+  },
+  '/feelings': {
+    title: 'Feelings',
+    emoji: '🥺',
+    emojiLabel: 'emotional looking emoji face to denote my feelings',
+  },
+  '/talks': {
+    title: 'Talks',
+    emoji: '🗣',
+    emojiLabel: 'silhouette of person speaking',
+  },
+  '/resume': {
+    title: 'Resume',
+    emoji: '📄',
+    emojiLabel: 'piece of paper representing my resume',
+  },
+}
+---
+<html lang="en">
+  <head>
+    <slot name="head" />
+  </head>
+  <body>
+    <header class="fixed print:relative w-full z-10 top-0 bg-white dark:bg-typographyDark shadow print:shadow-none print:bg-transparent">
+      <div class="wrapper w-full md:max-w-3xl mx-auto flex flex-wrap flex-row items-center sm:flex-col sm:items-start justify-between mt-0 py-3 sm:px-4">
+        <h1 itemprop="name">
+          <a href="/" itemprop="sameAs">
+            Eli Gundry
+          </a>
+        </h1>
+        <nav>
+          {Object.entries(navLinks).map(([path, { title, emoji, emojiLabel }]) => <a href={path}>{emoji} {title}</a>)}
+        </nav>
+      </div>
+    </header>
+    <main class="wrapper w-full md:max-w-3xl mx-auto pt-20 sm:pt-12 mt-6 print:mt-0 print:pt-0">
+      <slot />
+    </main>
+    <footer class="bg-white dark:bg-typographyDark shadow print:hidden">
+      <div class="wrapper max-w-3xl w-full mx-auto flex py-8 sm:flex-col-reverse sm:px-4">
+        <section className="about">
+          <h3>About</h3>
+          <p>This is the about block</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

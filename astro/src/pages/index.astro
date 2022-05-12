@@ -1,41 +1,41 @@
 ---
-// Component Imports
-import MainHead from '../components/MainHead.astro';
-import Nav from '../components/Nav.astro';
-import PostPreview from '../components/PostPreview.astro';
-import Pagination from '../components/Pagination.astro';
-import authorData from '../data/authors.json';
-
-// Component Script:
-// You can write any JavaScript/TypeScript that you'd like here.
-// It will run during the build, but never in the browser.
-// All variables are available to use in the HTML template below.
-let title = 'Don’s Blog';
-let description = 'An example blog on Astro';
-let canonicalURL = Astro.canonicalURL;
-
-// Data Fetching: List all Markdown posts in the repo.
-let allPosts = await Astro.glob('./post/*.md');
-allPosts.sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf());
-let firstPage = allPosts.slice(0, 2);
-// Full Astro Component Syntax:
-// https://docs.astro.build/core-concepts/astro-components/
+import MainLayout from '@layouts/main.astro';
+import Head from '@components/Head.astro';
+import EmojiText from '@components/Shared/EmojiText.astro';
+import Paper from '@components/Shared/Paper.astro';
 ---
 
-<html lang="en">
-	<head>
-		<MainHead {title} {description} image={allPosts[0].frontmatter.image} {canonicalURL} />
-	</head>
-
-	<body>
-		<Nav {title} />
-
-		<main class="wrapper">
-			{allPosts.map((post) => <PostPreview post={post} author={authorData[post.frontmatter.author]} />)}
-		</main>
-
-		<footer>
-			<Pagination prevUrl="/posts" nextUrl="/posts/2" />
-		</footer>
-	</body>
-</html>
+<MainLayout>
+  <Head
+    slot="head"
+    title="Eli Gundry"
+  />
+  <Paper Element="section">
+    <h2>Glad To Meet You!</h2>
+    <p>My name is Eli I only really write in lists, so here's my deal.</p>
+    <ul>
+      <li>
+        I am a{' '}
+        <EmojiText emoji="🧑‍💻" label="computer programmer emoji">
+          <strong>full stack web engineer</strong>
+        </EmojiText>.
+      </li>
+      <li>
+        I love to plan and{' '}
+        <EmojiText emoji="👨‍🍳" label="chef emoji">
+          <strong>cook elaborate meals</strong>
+        </EmojiText>.
+        It really activates the engineering part of my brain!
+      </li>
+      <li>
+        I have a{' '}
+        <EmojiText emoji="🤓" label="geek emoji">
+          <strong>non-traditional computer science education</strong>
+        </EmojiText>.
+        I attended a vocational school in high school, taught myself web
+        programming, bounced around colleges for computer science while
+        working the entire time before deciding to go pro!
+      </li>
+    </ul>
+  </Paper>
+</MainLayout>

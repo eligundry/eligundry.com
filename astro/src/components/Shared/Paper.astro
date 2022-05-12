@@ -1,0 +1,36 @@
+---
+import clsx from 'clsx'
+
+interface Props {
+  className?: string
+  noPadding?: boolean
+  transparent?: boolean
+  Element?: 'div' | 'section' | 'article' | 'figure'
+}
+
+const { className, Element = 'div', noPadding = false, transparent = false } = Astro.props
+---
+<style lang="scss">
+  .paper {
+    @apply w-full p-4 px-4 text-xl text-typography dark:text-white leading-normal rounded-lg bg-paper dark:bg-paperDark mb-4 print:mb-0;
+  }
+
+  .transparent {
+    @apply bg-transparent dark:bg-transparent shadow-none;
+  }
+
+  .opaque {
+    @apply shadow print:shadow-none;
+  }
+</style>
+
+<Element
+  class={clsx(
+    'paper',
+    noPadding && 'p-0',
+    transparent ? 'transparent' : 'opaque',
+    className
+  )}
+>
+  <slot />
+</Element>

@@ -1,0 +1,11 @@
+---
+import formatISO from 'date-fns/formatISO'
+import EmojiText from '@components/Shared/EmojiText.astro'
+
+const { dateTime, ...props } = Astro.props
+---
+<time dateTime={dateTime} {...props}>
+  <EmojiText label="calendar for the date" emoji="🗓">
+    {formatISO(dateTime, { representation: 'date' })}
+  </EmojiText>
+</time>

@@ -1,0 +1,36 @@
+---
+import * as dateFns from 'date-fns'
+
+import Layout from '@layouts/main.astro'
+import Head from '@components/Head.astro'
+import Paper from '@components/Shared/Paper.astro'
+import PostListing from '@components/Post/Listing.astro'
+
+const tags = new Set<string>()
+const posts = await Astro.glob('./*.md').then((posts) => {
+  const allPosts = posts
+    .filter(post => process.env.NODE_ENV === 'development' || !post.draft)
+    .sort((a, b) =>
+      dateFns.compareDesc(
+        dateFns.parseISO(a.frontmatter.date),
+        dateFns.parseISO(b.frontmatter.date)
+      )
+    )
+
+  allPosts.forEach((post) =>
+    post.frontmatter.tags?.forEach((tag) => tags.add(tag))
+  )
+
+  return allPosts
+})
+---
+<Layout>
+  <Head
+    slot="head"
+    title="Blog | Eli Gundry"
+    description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+  />
+  <Paper>
+    <PostListing posts={posts} tags={tags} itemType="BlogPosting" />
+  </Paper>
+</Layout>

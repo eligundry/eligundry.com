@@ -1,0 +1,11 @@
+---
+interface Props {
+  emoji: string
+  label: string
+  fallback?: any
+}
+
+const { emoji, label, fallback } = Astro.props
+---
+
+<><span role="img" aria-label={label} class="pr-2">{emoji}</span> <slot /></>

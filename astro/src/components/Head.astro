@@ -1,5 +1,7 @@
 ---
-import '../styles/global.css';
+import '../styles/fonts.css';
+import '../styles/global.scss';
+import '../styles/prism-material.scss';
 
 export interface Props {
 	title: string;
@@ -18,8 +20,6 @@ const { title, description, image, type, next, prev, canonicalURL } = Astro.prop
 <meta charset="UTF-8" />
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="preconnect" href="https://fonts.gstatic.com" />
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
 <!-- Sitemap -->
 <link rel="sitemap" href="/sitemap.xml" />
 <!-- RSS -->

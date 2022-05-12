@@ -1,0 +1,46 @@
+---
+import EmojiText from '@components/Shared/EmojiText.astro'
+import Time from '@components/Shared/Time.astro'
+
+interface Post {
+  frontmatter: {
+    title: string
+    description: string
+    slug: string
+    date?: string
+    cover?: string
+    draft?: boolean
+    tags?: string[]
+  }
+  file: string
+  url: string
+}
+
+interface Props {
+  posts: Post[]
+  tags?: Set<string>
+  itemType: 'CreativeWork' | 'BlogPosting'
+}
+
+const { posts, tags, itemType } = Astro.props as Props
+---
+{posts.map((post) => (
+  <article key={post.url}>
+    <link itemprop="author publisher" href="#eli-gundry" />
+    <h1 itemprop="name headline">
+      <a href={post.url} itemprop="url">
+        {post.frontmatter.title}
+      </a>
+    </h1>
+    {post.frontmatter.date && (
+      <Time dateTime={new Date(post.frontmatter.date)} itemprop="datePublished" />
+    )}
+    {post.frontmatter.description && (
+      <p itemprop="description">
+        <EmojiText label="description of the blog post" emoji="📝">
+          {post.frontmatter.description}
+        </EmojiText>
+      </p>
+    )}
+  </article>
+))}
