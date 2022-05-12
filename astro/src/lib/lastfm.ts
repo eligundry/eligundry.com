@@ -5,15 +5,12 @@ import getUnixTime from 'date-fns/getUnixTime'
 import subWeeks from 'date-fns/subWeeks'
 import groupBy from 'lodash/groupBy'
 
-import utils from './utils'
-
 export type RecentTrack = getRecentTracks['tracks'][number]
 export interface LastFMCoverItem {
   album: string
   artist: string
   count: number
   cover: string
-  placeholder: string
 }
 
 if (!import.meta.env.LAST_FM_API_KEY) {
@@ -85,14 +82,11 @@ const getTopAlbumsCover = async (
   topAlbums = (
     await Promise.all(
       Object.values(groupedScrobbles).map(
-        async (group): Promise<LastFMCoverItem> => ({
+        (group): LastFMCoverItem => ({
           album: group[0].album.name,
           artist: group[0].artist.name,
           count: group.length,
           cover: group[0].image.at(-1)?.url ?? '',
-          placeholder: await utils.getPlaceholderForImage(
-            group[0].image[0].url
-          ),
         })
       )
     )

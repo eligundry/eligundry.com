@@ -7,6 +7,8 @@ slug: icymi-live-in-concert-ep
 tags:
   - icymi
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 ![Wiz Khalifa & Curren$y - Live In Concert EP](/img/icymi/live-in-concert.jpg)

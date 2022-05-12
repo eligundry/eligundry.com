@@ -8,6 +8,7 @@ const config = {
   googleTagManagerID: 'GTM-W7KHFLM',
   goodreadsUserID: '29665939',
   lastFM: 'eli_pwnd',
+  github: 'eligundry',
 }
 
 export default config

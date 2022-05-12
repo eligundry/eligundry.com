@@ -7,6 +7,8 @@ cover: /img/gatsby-digitialocean-spaces/grimace-cover.png
 tags:
   - code
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 ![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](/img/gatsby-digitialocean-spaces/grimace-cover.png)
 

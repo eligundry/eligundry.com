@@ -7,6 +7,8 @@ slug: icymi-beauty-and-the-beat
 tags:
   - icymi
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 This week, I want to turn you on to a fun record. A record that will let you

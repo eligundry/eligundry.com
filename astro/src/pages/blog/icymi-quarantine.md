@@ -7,6 +7,8 @@ slug: icymi-quarantine
 tags:
   - icymi
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 I'm gonna veer off my normal course of grooveable music into something a little

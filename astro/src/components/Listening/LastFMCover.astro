@@ -1,4 +1,5 @@
 ---
+import { Picture } from 'astro-imagetools/components'
 import config from '@config'
 import lastfm from '@lib/lastfm'
 
@@ -12,9 +13,8 @@ const data = await lastfm.getTopAlbumsCover(config.lastFM)
 </style>
 
 <a href={`https://last.fm/user/${config.lastFM}`} class="last-fm-image">
-  {data.map(({ album, artist, count, cover, placeholder }) => (
-    <img
-      key={`${artist} ${album}`}
+  {data.map(({ album, artist, count, cover }) => (
+    <Picture
       src={cover}
       width={300}
       height={300}

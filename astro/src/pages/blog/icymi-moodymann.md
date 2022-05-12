@@ -7,6 +7,8 @@ slug: icymi-moodymann
 tags:
   - icymi
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 ![Moodymann - Moodymann][1]

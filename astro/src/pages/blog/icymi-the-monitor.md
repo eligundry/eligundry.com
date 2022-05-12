@@ -7,6 +7,8 @@ slug: icymi-the-monitor
 tags:
   - icymi
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 ![The Monitor][3]

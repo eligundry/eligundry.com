@@ -7,6 +7,8 @@ cover: /img/job-search-2k22/sankey-chart.png
 tags:
   - code
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 At the end of 2021, [I left my job at Talent Inc.][goodbye-talentinc] and conducted an extremely thorough job search.

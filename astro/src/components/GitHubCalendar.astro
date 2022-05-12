@@ -1,0 +1,15 @@
+---
+import Calendar from 'react-activity-calendar'
+import config from '@config'
+import github from '@lib/github'
+
+const data = await github.fetchData(config.github)
+---
+<Calendar
+  data={data.contributions}
+  dateFormat="yyyy-MM-dd"
+  hideColorLegend
+  labels={{
+    totalCount: `{{count}} contributions in the last year`,
+  }}
+/>

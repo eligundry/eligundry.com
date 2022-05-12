@@ -8,6 +8,7 @@ tags:
   - code
 layout: '@layouts/post.astro'
 setup: |
+  import { Picture } from 'astro-imagetools/components'
   import { Tweet } from '@astro-community/astro-embed-twitter'
   import GitHubFile from '@components/Post/Embeds/GitHubFile.tsx'
 ---

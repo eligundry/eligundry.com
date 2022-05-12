@@ -7,6 +7,8 @@ date: 2021-12-17T05:00
 tags:
   - code
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 Today is my last day working at [Talent Inc](https://talentinc.com/). I've been there four years, which is the longest
@@ -118,6 +120,7 @@ so hard I burnout once a year". I should probably work on that… I'm going to t
 habits and doing a thorough job search next year.
 
 <figure>
-  ![Me & a coworker in a marketing photo looking at an empty notebook](/img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg)
-  <figcaption>You never know when you're going to show up on the marketing website…</figcaption>
+
+![Me & a coworker in a marketing photo looking at an empty notebook](/img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg)
+<figcaption>You never know when you're going to show up on the marketing website…</figcaption>
 </figure>

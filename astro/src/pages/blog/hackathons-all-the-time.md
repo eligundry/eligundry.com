@@ -8,6 +8,8 @@ draft: false
 tags:
   - code
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 Over the past two years, I've been to quite a few hackathons

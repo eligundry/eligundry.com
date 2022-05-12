@@ -1,10 +1,11 @@
 import { defineConfig } from 'astro/config'
 import preact from '@astrojs/preact'
-import react from '@astrojs/react'
+// import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
 import turbolinks from '@astrojs/turbolinks'
 import partytown from '@astrojs/partytown'
 import sitemap from '@astrojs/sitemap'
+import { astroImageTools } from 'astro-imagetools'
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,5 +21,6 @@ export default defineConfig({
     turbolinks(),
     partytown(),
     sitemap(),
+    astroImageTools,
   ],
 })

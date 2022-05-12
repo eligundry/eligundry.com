@@ -7,6 +7,8 @@ date: 2021-06-21T05:00
 tags:
   - code
 layout: '@layouts/post.astro'
+setup: |
+  import { Picture } from 'astro-imagetools/components'
 ---
 
 As a software engineer, it's rare to have an idea for a personal project and actually finish it. We have ideas all the
