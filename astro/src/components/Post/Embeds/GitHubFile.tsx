@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react'
-import tw, { styled, css } from 'twin.macro'
+import { useRef, useState, useEffect } from 'preact/hooks'
 
-import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
+// import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 
 interface Props {
   fileURL: string
@@ -11,39 +10,41 @@ interface EmGitHubContainerProps {
   expanded: boolean
 }
 
-const EmGitHubContainer = styled.div<EmGitHubContainerProps>`
-  ${tw`text-base`}
-
-  ${(props) =>
-    !props.expanded &&
-    css`
-      max-height: 200px;
-      overflow: hidden;
-    `}
-`
-
-const ExpandButtonContainer = styled.div`
-  position: relative;
-  top: -3em;
-  height: 3em;
-  background-image: linear-gradient(to bottom, transparent, white);
-  display: flex;
-  justify-content: center;
-
-  ${tw`dark:bg-none`}
-
-  & button {
-    ${tw`bg-primary hover:bg-primaryLite active:bg-primaryDark text-white px-4 py-2 rounded font-sans`}
-  }
-`
+// const EmGitHubContainer = styled.div<EmGitHubContainerProps>`
+//   ${tw`text-base`}
+//
+//   ${(props) =>
+//     !props.expanded &&
+//     css`
+//       max-height: 200px;
+//       overflow: hidden;
+//     `}
+// `
+//
+// const ExpandButtonContainer = styled.div`
+//   position: relative;
+//   top: -3em;
+//   height: 3em;
+//   background-image: linear-gradient(to bottom, transparent, white);
+//   display: flex;
+//   justify-content: center;
+//
+//   ${tw`dark:bg-none`}
+//
+//   & button {
+//     ${tw`bg-primary hover:bg-primaryLite active:bg-primaryDark text-white px-4 py-2 rounded font-sans`}
+//   }
+// `
 
 const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   const [expanded, setExpanded] = useState(false)
   const scriptTarget = useRef<HTMLDivElement>()
-  const prefersDark = usePrefersDarkMode()
+  // const prefersDark = usePrefersDarkMode()
+  const prefersDark = false
   const rendered = !!scriptTarget
 
   useEffect(() => {
+    console.log('hello')
     if (!scriptTarget.current || scriptTarget.current.innerHTML) {
       return
     }
@@ -73,16 +74,16 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
     return function cleanup() {
       script.innerHTML = ''
     }
-  }, [rendered, fileURL, prefersDark])
+  }, [rendered, fileURL, prefersDark, scriptTarget.current])
 
   return (
     <div>
-      <EmGitHubContainer
+      <div
         ref={scriptTarget as React.MutableRefObject<HTMLDivElement>}
         expanded={expanded}
       />
       {!expanded && (
-        <ExpandButtonContainer>
+        <div>
           <button
             onClick={() => setExpanded(true)}
             data-gtm="emgithub-file-expaded"
@@ -91,7 +92,7 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
           >
             Expand File
           </button>
-        </ExpandButtonContainer>
+        </div>
       )}
     </div>
   )

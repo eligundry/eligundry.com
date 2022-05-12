@@ -7,6 +7,9 @@ date: 2021-11-09T05:00
 tags:
   - code
 layout: '@layouts/post.astro'
+setup: |
+  import { Tweet } from '@astro-community/astro-embed-twitter'
+  import GitHubFile from '@components/Post/Embeds/GitHubFile.tsx'
 ---
 
 ![Home page screenshot](/img/website-update/home-page.png)
@@ -16,9 +19,7 @@ based content on a site like [medium.com][medium] or [dev.to][dev.to] will get m
 make on your own, but there is something extremely satisfying in owning every pixel on a site with your name on it.
 I saw this Tweet the other day and it seemed fitting to how I think about personal sites.
 
-<Tweet id="1456360721084674098">
-  <blockquote><p lang="en" dir="ltr">trying this analogy thing <a href="https://t.co/Q9889HOF3B">pic.twitter.com/Q9889HOF3B</a></p>&mdash; Jane Manchun Wong (@wongmjane) <a href="https://twitter.com/wongmjane/status/1456360721084674098?ref_src=twsrc%5Etfw">November 4, 2021</a></blockquote>
-</Tweet>
+<Tweet id="1456360721084674098" />
 
 If we are entering the era of Web3 (which is Soylent in this Tweet, ewww) and it's ethos is trying to revive the
 techno-optimisim and ownership of the Web 1.0 era, what better way to embody this than with an over-engineered personal
@@ -229,9 +230,7 @@ in the best possible light. Thanks Amrit, I made sure to buy you some coffees.
 After cribbing the template for this site, I was feeling good about the design, but it still needed something more to
 really show off my personality. It took me a few weeks and some endless scrolling on Twitter before I came across this:
 
-<Tweet id="1455150458352381963">
-  <blockquote><p lang="en" dir="ltr">New Houdini stuff! ✨<br /><br />Magical generative patterns that rearrange themselves based on the browser window 🎨<br /><br />A kinda different approach for responsive design...<br /><br />Inspired by <a href="https://twitter.com/chriscoyier?ref_src=twsrc%5Etfw">@chriscoyier</a> &#39;s generative grids pen 💛<br /><br />CodePen (Desktop only + Chrome / Edge) <a href="https://t.co/WvYqXy3Yoq">https://t.co/WvYqXy3Yoq</a> <a href="https://t.co/6kJCifGdbB">pic.twitter.com/6kJCifGdbB</a></p>&mdash; George Francis (@georgedoescode) <a href="https://twitter.com/georgedoescode/status/1455150458352381963?ref_src=twsrc%5Etfw">November 1, 2021</a></blockquote>
-</Tweet>
+<Tweet id="1455150458352381963" />
 
 This only works natively in Chrome + Edge, but I have been able to polyfill it so it works in Safari + Firefox, thought
 it's slightly more buggy than the Chrome version.
@@ -317,7 +316,7 @@ last modified timestamps. So, I went about creating a super hacky script that ho
 lifecycle event to directly add the latest commit timestamp for any given node. This required a lot of hard coding path
 rules and is in no way open sourceable, but I really just want to tell people about it!
 
-<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/last-gatsby/gatsby/config/utils/addGitLastmodifiedToNode.ts" />
+<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/last-gatsby/gatsby/config/utils/addGitLastmodifiedToNode.ts" client:visible />
 
 # Performance
 

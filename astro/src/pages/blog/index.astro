@@ -27,8 +27,9 @@ const posts = await Astro.glob('./*.md').then((posts) => {
 <Layout>
   <Head
     slot="head"
-    title="Blog | Eli Gundry"
+    title="Blog"
     description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+    path="/blog"
   />
   <Paper>
     <PostListing posts={posts} tags={tags} itemType="BlogPosting" />

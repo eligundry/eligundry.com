@@ -3,12 +3,12 @@ import MainLayout from '@layouts/main.astro';
 import Head from '@components/Head.astro';
 import EmojiText from '@components/Shared/EmojiText.astro';
 import Paper from '@components/Shared/Paper.astro';
+import GoodreadsShelf from '@components/Reading/Shelf.astro'
 ---
 
 <MainLayout>
   <Head
     slot="head"
-    title="Eli Gundry"
   />
   <Paper Element="section">
     <h2>Glad To Meet You!</h2>
@@ -37,5 +37,27 @@ import Paper from '@components/Shared/Paper.astro';
         working the entire time before deciding to go pro!
       </li>
     </ul>
+  </Paper>
+  <Paper Element="section">
+    <h2>What I'm Reading</h2>
+    <p class="summary">
+      I wish I read more, but there are only so many hours in the day. These
+      are the books that I'm reading right now. You can find me on{' '}
+      <a
+        href="https://www.goodreads.com/user/show/29665939-eli-gundry"
+        itemProp="sameAs"
+      >
+        Goodreads
+      </a>
+      .
+    </p>
+    <p class="summary">
+      By the way,{' '}
+      <a href="https://www.npmjs.com/package/@eligundry/gatsby-source-goodreads">
+        I wrote the Gatsby source that is rendering these bookshelves
+      </a>
+      !
+    </p>
+    <GoodreadsShelf />
   </Paper>
 </MainLayout>

@@ -1,0 +1,35 @@
+---
+import type { GoodReadsBook } from '@lib/goodreads'
+export type Props = GoodReadsBook & {
+  shelf: 'current' | 'read'
+}
+
+const {
+  url,
+  title,
+  author,
+  cover,
+  shelf,
+} = Astro.props
+
+let correctAuthor = ''
+
+if (author) {
+  correctAuthor = author.split(', ').reverse().join(' ')
+}
+---
+<a
+  href={url ?? '#'}
+  data-tip={`${
+    shelf === 'current' ? 'Currently Reading: ' : ''
+  }${title} - ${correctAuthor}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img
+    src={cover}
+    alt={`${title} - ${correctAuthor}`}
+    width={128}
+    height={194}
+  />
+</a>

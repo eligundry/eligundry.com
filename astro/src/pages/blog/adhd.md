@@ -7,6 +7,8 @@ date: 2021-10-19T05:00
 tags:
   - mental-health
 layout: '@layouts/post.astro'
+setup: |
+  import { Tweet } from '@astro-community/astro-embed-twitter'
 ---
 
 > I talk about suicide and depression in this post.
@@ -164,22 +166,16 @@ sense. I had literally never looked into what ADHD was nor had anyone explained 
 
 **Let's take a look at the hits!**
 
-<!-- <Tweet id="1420061898393853952"> -->
-<!--     <blockquote><p lang="en" dir="ltr">Let&#39;s talk about the cycle of <a href="https://twitter.com/hashtag/ADHD?src=hash&amp;ref_src=twsrc%5Etfw">#ADHD</a> burnout.<br /><br />A thread. 💬 <a href="https://t.co/tXW2ad73h6">pic.twitter.com/tXW2ad73h6</a></p>&mdash; Inflow | ADHD app 🧠 (@get_inflow) <a href="https://twitter.com/get_inflow/status/1420061898393853952?ref_src=twsrc%5Etfw">July 27, 2021</a></blockquote> -->
-<!-- </Tweet> -->
+<Tweet id="1420061898393853952" />
 
 Oh man, does this sound familiar? This is the exact process that made me want to kill myself for years when I hit step
 4 for years!
 
-<!-- <Tweet id="1420152212253204481"> -->
-<!--     <blockquote><p lang="en" dir="ltr">This is honestly what hurts so much. ADHD has this lovely thing called Rejection Sensitive Dysphoria <br />And when I’m comfy w/people I’m myself but I tend to get loud when I’m excited. If I’m told to be quiet, you’ll see me go back inside so quick. This is what goes thru my mind… <a href="https://t.co/a8HJ16utNU">pic.twitter.com/a8HJ16utNU</a></p>&mdash; 🔥⚡️🎂8 Days🎂⚡️🔥 (@DrunkenDirewolf) <a href="https://twitter.com/DrunkenDirewolf/status/1420152212253204481?ref_src=twsrc%5Etfw">July 27, 2021</a></blockquote> -->
-<!-- </Tweet> -->
+<Tweet id="1420152212253204481" />
 
 Wait, not everyone replays every social interaction in their head after the fact convinced that everyone hates them?
 
-<!-- <Tweet id="1449051432599048192"> -->
-<!--     <blockquote><p lang="en" dir="ltr">This is honestly what hurts so much. ADHD has this lovely thing called Rejection Sensitive Dysphoria <br />And when I’m comfy w/people I’m myself but I tend to get loud when I’m excited. If I’m told to be quiet, you’ll see me go back inside so quick. This is what goes thru my mind… <a href="https://t.co/a8HJ16utNU">pic.twitter.com/a8HJ16utNU</a></p>&mdash; 🔥⚡️🎂8 Days🎂⚡️🔥 (@DrunkenDirewolf) <a href="https://twitter.com/DrunkenDirewolf/status/1420152212253204481?ref_src=twsrc%5Etfw">July 27, 2021</a></blockquote> -->
-<!-- </Tweet> -->
+<Tweet id="1449051432599048192" />
 
 Now it makes a lot of sense why I have trouble thinking about the future and continuously have conversations with my
 partner about our future. I want to plan longer term, but all I can really stick to is 3 month plans at max before

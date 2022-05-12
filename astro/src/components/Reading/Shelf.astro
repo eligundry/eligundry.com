@@ -1,0 +1,43 @@
+---
+import promiseHash from 'promise-hash'
+import config from '@config'
+import goodreads from '@lib/goodreads.ts'
+import Book from './Book.astro'
+
+const { current, read } = await promiseHash({
+  current: goodreads.getShelf(
+    config.goodreadsUserID,
+    'currently-reading',
+    1
+  ),
+  read: goodreads.getShelf(config.goodreadsUserID, 'read', 11),
+})
+---
+<style lang="scss">
+  .bookshelf {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    column-gap: 1vw;
+    margin: 0 1vw 1vw;
+    margin-left: 0;
+    text-align: center;
+
+    & a {
+      flex: 1;
+    }
+
+    & img {
+      min-width: 75px;
+    }
+  }
+</style>
+
+<div class="bookshelf">
+  {current.map((book) => (
+    <Book key={book.isbn} shelf="current" {...book} />
+  ))}
+  {read.map((book) => (
+    <Book key={book.isbn} shelf="read" {...book} />
+  ))}
+</div>

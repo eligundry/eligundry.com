@@ -11,11 +11,15 @@
     "isolatedModules": true,
     // Add type definitions for our Vite runtime.
     "types": ["vite/client"],
+    "allowSyntheticDefaultImports": true,
     // Fun importing!
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"]
-    }
+      "@layouts/*": ["src/layouts/*"],
+      "@lib/*": ["src/lib/*"],
+      "@config": ["src/config.ts"]
+    },
+    "jsx": "react"
   }
 }
