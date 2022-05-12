@@ -6,6 +6,7 @@ cover: /img/icymi/beauty-and-the-beat.jpg
 slug: icymi-beauty-and-the-beat
 tags:
   - icymi
+layout: '@layouts/post.astro'
 ---
 
 This week, I want to turn you on to a fun record. A record that will let you

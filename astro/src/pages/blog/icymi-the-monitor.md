@@ -6,6 +6,7 @@ cover: /img/icymi/the-monitor.jpg
 slug: icymi-the-monitor
 tags:
   - icymi
+layout: '@layouts/post.astro'
 ---
 
 ![The Monitor][3]

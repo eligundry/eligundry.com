@@ -6,6 +6,7 @@ slug: hosting-gatsby-on-digitalocean-spaces
 cover: /img/gatsby-digitialocean-spaces/grimace-cover.png
 tags:
   - code
+layout: '@layouts/post.astro'
 ---
 ![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](/img/gatsby-digitialocean-spaces/grimace-cover.png)
 

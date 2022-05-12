@@ -7,6 +7,7 @@ cover: /img/hackathons/hacksu_at_penn_apps.jpg
 draft: false
 tags:
   - code
+layout: '@layouts/post.astro'
 ---
 
 Over the past two years, I've been to quite a few hackathons
@@ -25,9 +26,10 @@ you look around at the people around you: The smartest of the smart working on
 groundbreaking, amazing stuff that you could only dream to make. And they are
 doing it with such ease.
 
-<figure className="pull-right">
-  ![Nerf Gun Turret](/img/hackathons/nerf-gun-turret.png)
-  <figcaption>They fired this bad boy at judges. It was a sight to behold.</figcaption>
+<figure className="float-right">
+
+![Nerf Gun Turret](/img/hackathons/nerf-gun-turret.png)
+<figcaption>They fired this bad boy at judges. It was a sight to behold.</figcaption>
 </figure>
 
 This lead me to an amazing discovery: **planning leads to success at
@@ -99,6 +101,7 @@ events, go to one. I'll probably be attending [Hack PSU](http://www.hackpsu.com/
 in a few weeks. Hopefully, I'll see you there.
 
 <figure className="center">
-    ![HacKSU at Penn Apps 2014](/img/hackathons/hacksu_at_penn_apps.jpg)
-    <figcaption>HacKSU at Penn Apps 2014</figcaption>
+
+![HacKSU at Penn Apps 2014](/img/hackathons/hacksu_at_penn_apps.jpg)
+<figcaption>HacKSU at Penn Apps 2014</figcaption>
 </figure>

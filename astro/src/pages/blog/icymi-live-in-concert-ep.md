@@ -4,8 +4,9 @@ date: 2016-11-18T05:00
 description: Weed rap meets classic jazz flute with fun results.
 cover: /img/icymi/live-in-concert.jpg
 slug: icymi-live-in-concert-ep
-tags: 
+tags:
   - icymi
+layout: '@layouts/post.astro'
 ---
 
 ![Wiz Khalifa & Curren$y - Live In Concert EP](/img/icymi/live-in-concert.jpg)

@@ -6,6 +6,7 @@ cover: /img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg
 date: 2021-12-17T05:00
 tags:
   - code
+layout: '@layouts/post.astro'
 ---
 
 Today is my last day working at [Talent Inc](https://talentinc.com/). I've been there four years, which is the longest

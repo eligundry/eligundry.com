@@ -4,8 +4,9 @@ date: 2016-12-02T05:00
 description: A catchy mix of Motown and house music.
 cover: /img/icymi/moodymann.jpg
 slug: icymi-moodymann
-tags: 
+tags:
   - icymi
+layout: '@layouts/post.astro'
 ---
 
 ![Moodymann - Moodymann][1]

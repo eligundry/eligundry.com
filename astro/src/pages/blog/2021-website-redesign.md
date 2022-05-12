@@ -6,6 +6,7 @@ cover: /img/website-update/home-page.png
 date: 2021-11-09T05:00
 tags:
   - code
+layout: '@layouts/post.astro'
 ---
 
 ![Home page screenshot](/img/website-update/home-page.png)

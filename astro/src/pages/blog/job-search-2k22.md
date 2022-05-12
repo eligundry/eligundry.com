@@ -6,6 +6,7 @@ date: 2022-01-28T05:00
 cover: /img/job-search-2k22/sankey-chart.png
 tags:
   - code
+layout: '@layouts/post.astro'
 ---
 
 At the end of 2021, [I left my job at Talent Inc.][goodbye-talentinc] and conducted an extremely thorough job search.
@@ -19,7 +20,7 @@ talk about how I conducted my job search as it's been something I've been planni
 
 This job market is wild! I can't tell if companies are hiring harder this cycle or if the fact that my last role was
 "senior software engineer" at a startup or what. This cycle could not have gone any more different than my last job
-search in 2017. 
+search in 2017.
 
 Let's take a quick at conversion rates compared to 2017:
 

@@ -1,0 +1,123 @@
+---
+import Paper from '@components/Shared/Paper.astro'
+import Time from '@components/Shared/Time.astro'
+
+interface Props {
+  title: string
+  datePublished?: string
+  dateModified?: string
+  footer?: any
+  preBody?: any
+  itemType: 'BlogPosting' | 'CreativeWork'
+  location?: string
+  featuredImageURL?: string
+  readingTime?: number
+  comments: boolean
+  tags: string[]
+}
+
+const post = Astro.props
+---
+<Paper Element="article" itemscope itemtype={`https://schema.org/${post.itemType}`} className="article">
+  <link itemProp="author publisher" href="#eli-gundry" />
+  {post.dateModified && <meta itemProp="dateModified" content={post.dateModified} />}
+  {post.featuredImageURL && <meta itemProp="image" content={post.featuredImageURL} />}
+  {post.readingTime > 0 && (
+    <meta itemProp="timeRequired" content={`PT${post.readingTime}M`} />
+  )}
+  <header class="header">
+    <h1 itemprop="name headline">{post.title}</h1>
+    {post.datePublished && (
+      <Time itemProp="datePublished" dateTime={new Date(post.datePublished)} />
+    )}
+    {post.location && (
+      <address>
+        <EmojiText label="location of talk" emoji="📍">
+          {post.location}
+        </EmojiText>
+      </address>
+    )}
+  </header>
+  <main itemprop="text" class="body">
+    <slot />
+  </main>
+</Paper>
+
+<style lang="scss">
+  .header {
+    @apply font-normal;
+
+    & h1 {
+      @apply font-extrabold font-sans break-normal text-typographyDark dark:text-white pb-2 text-3xl  md:text-4xl;
+    }
+
+    & > * {
+      @apply block;
+    }
+
+    & time + address {
+      @apply mt-0;
+    }
+  }
+
+  .body {
+    & .twitter-tweet {
+      margin: 0 auto;
+    }
+
+    & img[src*='.gif'] {
+      margin: 0 auto;
+    }
+
+    & figure {
+      & > p {
+        @apply mb-0;
+      }
+
+      figcaption {
+        @apply italic text-center py-4 font-serif;
+
+        & > p {
+          @apply my-0;
+        }
+      }
+
+      & + p {
+        @apply mt-0;
+      }
+    }
+
+    & *:not(p, ul, ol) + h1 {
+      @apply mt-4;
+    }
+
+    & h1 + *:not(p, ul, ol) {
+      @apply mt-4;
+    }
+
+    & iframe {
+      max-width: 100%;
+      @apply my-4;
+    }
+
+    & .float-right {
+      @apply ml-2 sm:float-none sm:mx-auto;
+    }
+
+    & .float-left {
+      @apply mr-2 sm:float-none sm:mx-auto;
+    }
+
+    & .center {
+      margin: 1em auto;
+    }
+
+    & iframe[src*='giphy.com'] {
+      @apply my-0;
+    }
+
+    & *:not(pre) code {
+      @apply bg-siteBackground break-words;
+    }
+  }
+</style>

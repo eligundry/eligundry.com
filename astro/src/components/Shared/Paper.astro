@@ -1,14 +1,20 @@
 ---
 import clsx from 'clsx'
 
-interface Props {
+interface Props extends HTMLElement {
   className?: string
   noPadding?: boolean
   transparent?: boolean
   Element?: 'div' | 'section' | 'article' | 'figure'
 }
 
-const { className, Element = 'div', noPadding = false, transparent = false } = Astro.props
+const {
+  className,
+  Element = 'div',
+  noPadding = false,
+  transparent = false,
+  ...htmlAttributes
+} = Astro.props
 ---
 <style lang="scss">
   .paper {
@@ -31,6 +37,7 @@ const { className, Element = 'div', noPadding = false, transparent = false } = A
     transparent ? 'transparent' : 'opaque',
     className
   )}
+  {...htmlAttributes}
 >
   <slot />
 </Element>

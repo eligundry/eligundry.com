@@ -6,6 +6,7 @@ slug: cooking-veggie-burgers-and-more
 cover: /img/cooking-veggie-burgers-and-more/finished-burgers.jpeg
 tags:
   - cooking
+layout: '@layouts/post.astro'
 ---
 
 This weekend was one of contrasts. On Friday, we went to a birthday party for my partner's yoga teacher / friend. Upon

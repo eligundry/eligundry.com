@@ -6,6 +6,7 @@ date: 2022-01-15T05:00
 cover: https://c.tenor.com/dXZsDQCgO4sAAAAC/the-wire-d-angelo-barksdale.gif
 tags:
   - code
+layout: '@layouts/post.astro'
 ---
 
 This is a post about cryptocurrency, but first, let me tell you a tale.
@@ -64,7 +65,7 @@ when I was young, I didn't learn. **But hey, that's $100 I didn't have before, a
 
 Well, a few weeks later, the IT job goes sideways. We weren't making enough money, my boss institutes that the day will
 start at 6am and end when the job is done. And now we can't pay for all the gas that you need to drive to and from
-sites. Me pushing for that got me fired. It was all good, I quickly found more work doing web sites for a <abbr title="Multi Level Marketing">MLM</abbr> 
+sites. Me pushing for that got me fired. It was all good, I quickly found more work doing web sites for a <abbr title="Multi Level Marketing">MLM</abbr>
 scheme, but that's a story for another time, just to show that I was very dumb back then.
 
 Fast forward 6 months. I'm working an internship at a respectable local publication and I get a call from an unknown
@@ -140,7 +141,7 @@ merchants seem like steal. And this is not to even mention the ecological impact
 (As an aside, I've always been confused about when a crypto person brings up the gold mining industry having at least
 the same impact as crypto on the environment, we just can't measure it. Literally no countries are still on the gold
 standard, so that is irrelevant. Also, being able to print and remove money from the economy is an amazing feature, not
-a bug. [Look into all the recessions in the 1800s around mining too much or too little gold in a given year][gold-recessions]. 
+a bug. [Look into all the recessions in the 1800s around mining too much or too little gold in a given year][gold-recessions].
 If you want me to agree that all mining is bad, I mean yes, it's exploitative and a form of colonialism, but at least is
 serves a purpose that the general public can benefit from.)
 
@@ -151,14 +152,14 @@ money, they are allowed to gamble as they see fit, right?
 
 **The other superpower crypto has is being perfect for criminals.** Let's play the hits!
 
-* Crypto is perfect for collecting payment in ransomware attacks against [hospitals][hospital-ransomware] and 
+* Crypto is perfect for collecting payment in ransomware attacks against [hospitals][hospital-ransomware] and
   [municipal governments][baltimore-ransomware]. [You can track the rise of these attacks against the prevalence of crypto][npr-ransomware].
 * <abbr title="Non Fungible Tokens">NFTs</abbr> replicate the worst elements of the art world being a tax haven EXCEPT
   it's far easier to commit fraud. You mint an NFT for $1k, sell it to yourself for $2k using another wallet, flip it to
   yourself a couple of more times til you can sell it to a mark for $8k, clearing $7k. It should also be noted that NFTs
   are ugly as shit and a capitalist's vision of what art is.
-* Rug pulling/pumping and dumping is a concept that all crypto bros have accepted as a part of life. 
-  You launch a coin or NFT or <abbr title="Decentralized Autonomous Organization">DAO</abbr>, raise a bunch of funds by 
+* Rug pulling/pumping and dumping is a concept that all crypto bros have accepted as a part of life.
+  You launch a coin or NFT or <abbr title="Decentralized Autonomous Organization">DAO</abbr>, raise a bunch of funds by
   getting influencers post about it on their story and then take off with the money and disappear.
 
 I could go on and on about all the fraud here, but [Web3 is going just great](https://web3isgoinggreat.com/) does a far

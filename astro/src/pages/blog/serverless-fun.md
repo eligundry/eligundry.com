@@ -6,6 +6,7 @@ date: 2022-03-10T05:00
 draft: true
 tags:
   - code
+layout: '@layouts/post.astro'
 ---
 
 * I love AWS Lambda

@@ -6,6 +6,7 @@ slug: cooking-cherry-slab-pie-hot-sauce-shrimp-cheesy-polenta
 cover: /img/cooking-cherry-slab-pie/pie-slice.jpeg
 tags:
   - cooking
+layout: '@layouts/post.astro'
 ---
 
 Last week was weird for me. The weekend before last, we booked social engagements every day of the weekend. While it was

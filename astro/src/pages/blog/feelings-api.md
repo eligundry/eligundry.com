@@ -6,6 +6,7 @@ slug: feelings-api
 tags:
   - mental-health
   - code
+layout: '@layouts/post.astro'
 ---
 
 I have been in therapy since I was 18 years old. At this point, I feel no shame about it and I know that it makes me
@@ -61,4 +62,4 @@ guards into the API:
 - I built a feature into the notes to hide notes with a `#private` hashtag in them.
 
 Let’s see how long I can keep this journaling up. Now that it serves a purpose I think is cool, I think it’ll have
-a little more staying power in my life. 
+a little more staying power in my life.

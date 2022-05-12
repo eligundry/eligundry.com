@@ -4,8 +4,9 @@ date: 2016-12-09T05:00
 description: A beautiful ambient album about the pain of a breakup.
 cover: /img/icymi/quarantine.jpg
 slug: icymi-quarantine
-tags: 
+tags:
   - icymi
+layout: '@layouts/post.astro'
 ---
 
 I'm gonna veer off my normal course of grooveable music into something a little

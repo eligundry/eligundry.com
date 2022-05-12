@@ -6,6 +6,7 @@ slug: cooking-strawberry-pretzel-pie-spiked-cucumber-soup
 cover: /img/cooking-strawberry-pie-cucumber-soup/finished-pie.jpeg
 tags:
   - cooking
+layout: '@layouts/post.astro'
 ---
 
 If there is one thing that I appreciate from 2020 is that I've gotten really good at cooking. By not commuting to work,

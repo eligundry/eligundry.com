@@ -6,6 +6,7 @@ cover: /img/adhd/fight-thoughts.png
 date: 2021-10-19T05:00
 tags:
   - mental-health
+layout: '@layouts/post.astro'
 ---
 
 > I talk about suicide and depression in this post.
@@ -64,11 +65,12 @@ both. And this cycle repeats itself for 5 years! I was constantly employed that 
 money to survive, and flunking classes.
 
 <figure className="center">
-    ![Eli in 2011 with Aaron Draplin and some of my fellow interns](/img/adhd/2011-06-10-21.22.12.jpg)
-    <figcaption>
-        Me in 2011 at one of my internships. I got to meet <a href="https://twitter.com/Draplin">Aaron Draplin</a> and
-        work with some very nice and cool people in Cleveland.
-    </figcaption>
+
+![Eli in 2011 with Aaron Draplin and some of my fellow interns](/img/adhd/2011-06-10-21.22.12.jpg)
+<figcaption>
+  Me in 2011 at one of my internships. I got to meet <a href="https://twitter.com/Draplin">Aaron Draplin</a> and
+  work with some very nice and cool people in Cleveland.
+</figcaption>
 </figure>
 
 Along with being poor came bouts of food insecurity and homelessness. Those bouts were short but how have they stuck
@@ -82,11 +84,12 @@ beer and cigarettes. I have since noticed that when I was on them, I would drink
 I was off.
 
 <figure>
-    ![Eli in 2013](/img/adhd/2013-10-05-17.36.09.jpg)
-    <figcaption>
-        Me in 2013. All that smoking and ADHD medications kept me skinny, but my skin was trash and I can't excuse that
-        facial hair.
-    </figcaption>
+
+![Eli in 2013](/img/adhd/2013-10-05-17.36.09.jpg)
+<figcaption>
+  Me in 2013. All that smoking and ADHD medications kept me skinny, but my skin was trash and I can't excuse that
+  facial hair.
+</figcaption>
 </figure>
 
 After 4 years of this, **I hit my rock bottom**. I was working in a computer repair shop and sometimes going to classes
@@ -126,11 +129,13 @@ took that offer as it was much more than what I could make in Ohio and NYC is a 
 old than a college town. I quickly become one of the better engineers on the team and just thrive at that job.
 
 <figure>
-    ![Eli in 2017 with sunglasses](/img/adhd/IMG_0138.JPG)
-    <figcaption>
-        This is literally a selfie I took on the way to meet the person it looks like I'm going to marry in 2017! Living
-        in Brooklyn was a lot of fun.
-    </figcaption>
+
+![Eli in 2017 with sunglasses](/img/adhd/IMG_0138.JPG)
+
+<figcaption>
+  This is literally a selfie I took on the way to meet the person it looks like I'm going to marry in 2017! Living
+  in Brooklyn was a lot of fun.
+</figcaption>
 </figure>
 
 Mentally, I find a good therapist & psychiatrist and finally go off my ADHD medication. Going off that medication caused
@@ -139,10 +144,12 @@ me to gain some weight that I haven't gotten close to shedding, but hey, at leas
 I fall in love with someone special and we move in together in March 2020 and then... COVID happens 😂.
 
 <figure>
-    ![Eli and his partner at a wedding](/img/adhd/IMG_0352.PNG)
-    <figcaption>
-        How can I not love this dork?
-    </figcaption>
+
+![Eli and his partner at a wedding](/img/adhd/IMG_0352.PNG)
+
+<figcaption>
+  How can I not love this dork?
+</figcaption>
 </figure>
 
 COVID isn't all bad though. We adopt a cat and I get really good at cooking. You would thinking moving in together and
