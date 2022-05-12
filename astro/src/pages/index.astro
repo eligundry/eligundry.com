@@ -4,6 +4,7 @@ import Head from '@components/Head.astro';
 import EmojiText from '@components/Shared/EmojiText.astro';
 import Paper from '@components/Shared/Paper.astro';
 import GoodreadsShelf from '@components/Reading/Shelf.astro'
+import LastFMCover from '@components/Listening/LastFMCover.astro'
 ---
 
 <MainLayout>
@@ -59,5 +60,41 @@ import GoodreadsShelf from '@components/Reading/Shelf.astro'
       !
     </p>
     <GoodreadsShelf />
+  </Paper>
+  <Paper Element="section">
+    <h2>What I'm Listening To</h2>
+    <p className="summary">
+      I listen to way too much music and I love to listen to full albums. I
+      mainly listen to hip hop, indie rock and{' '}
+      <a href="/blog/icymi-just-married">
+        <abbr title="Ask me about the fun 5th wave emo bands I love">
+          emo
+        </abbr>
+      </a>{' '}
+      music. I occasionally write reviews of old albums that I love but
+      aren't well known in a series called{' '}
+      <a href="/blog#icymi">
+        <abbr title="I See You Missed It">ICYMI</abbr>
+      </a>
+      .
+      <div class="flex flex-row">
+        <div class="mr-2">
+          <h3>Seasonal Playlist</h3>
+          <iframe
+            title="Spotify playlist that I have on repeat"
+            src="https://open.spotify.com/embed/playlist/6HasOSwBI2amViuCQFmQw0"
+            width="300"
+            height="380"
+            frameBorder="0"
+            allow="encrypted-media"
+            client:visible
+          />
+        </div>
+        <div>
+          <h3>On Repeat This Week</h3>
+          <LastFMCover />
+        </div>
+      </div>
+    </p>
   </Paper>
 </MainLayout>

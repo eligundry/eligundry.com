@@ -7,6 +7,7 @@ const config = {
   copyright: `Copyright © ${new Date().getFullYear()}. Eli Gundry`, // Copyright string for the footer of the website and RSS feed.
   googleTagManagerID: 'GTM-W7KHFLM',
   goodreadsUserID: '29665939',
+  lastFM: 'eli_pwnd',
 }
 
 export default config

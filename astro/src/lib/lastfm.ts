@@ -16,11 +16,11 @@ export interface LastFMCoverItem {
   placeholder: string
 }
 
-if (!process.env.LAST_FM_API_KEY) {
+if (!import.meta.env.LAST_FM_API_KEY) {
   throw new Error('LAST_FM_API_KEY must be defined for the site to run')
 }
 
-const lastfm = new LastFM(process.env.LAST_FM_API_KEY)
+const lastfm = new LastFM(import.meta.env.LAST_FM_API_KEY)
 const cache = new NodeCache({
   stdTTL: 60 * 60 * 1000,
 })

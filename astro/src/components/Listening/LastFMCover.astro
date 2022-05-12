@@ -1,0 +1,25 @@
+---
+import config from '@config'
+import lastfm from '@lib/lastfm'
+
+const data = await lastfm.getTopAlbumsCover(config.lastFM)
+---
+<style lang="scss">
+  .last-fm-image {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+</style>
+
+<a href={`https://last.fm/user/${config.lastFM}`} class="last-fm-image">
+  {data.map(({ album, artist, count, cover, placeholder }) => (
+    <img
+      key={`${artist} ${album}`}
+      src={cover}
+      width={300}
+      height={300}
+      alt={`${album} - ${artist} [${count} scrobbles]`}
+      data-tip={`${album} - ${artist} [${count} scrobbles]`}
+    />
+  ))}
+</a>
