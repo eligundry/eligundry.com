@@ -1,10 +1,9 @@
 import type { AxiosResponse } from 'axios'
 import { JSDOM } from 'jsdom'
-import trim from 'lodash/trim'
+import { trim } from 'lodash'
 import NodeCache from 'node-cache'
 
 import { cacheAxios } from './axios'
-import utils from './utils'
 
 const cache = new NodeCache({
   stdTTL: 60 * 60 * 24 * 1000,
@@ -22,7 +21,6 @@ export interface GoodReadsBook {
   finished: string | null
   cover: string | null
   thumbnail: string | null | undefined
-  placeholder: string
   url: string | null
 }
 
@@ -108,12 +106,6 @@ const getShelf = async (userID: string, shelf: string, limit?: number) => {
       })
       .filter((book): book is GoodReadsBook => !!book)
       .slice(0, limit)
-      .map(async (book) => ({
-        ...book,
-        placeholder: book.thumbnail
-          ? await utils.getPlaceholderForImage(book.thumbnail)
-          : '',
-      }))
   )
 
   cache.set(cacheKey, books)

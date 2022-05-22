@@ -6,12 +6,12 @@ slug: redux-hooks
 location: QueensJS
 ---
 
-<ResponsiveIFrame 
-	src="https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000" 
-	frameBorder="0" 
-	width="960" 
-	height="569" 
-	allowFullScreen={true} 
+<iframe
+	src="https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000"
+	frameBorder="0"
+	width="960"
+	height="569"
+	allowFullScreen={true}
 />
 
 # Notes / Research / Outline

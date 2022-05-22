@@ -2,7 +2,7 @@
 title: Can I Brag About This Site For A Second?
 description: I have put a lot of work into the newest version of this site and I want to tell you about it.
 slug: 2021-website-redesign
-cover: /img/website-update/home-page.png
+cover: img/website-update/home-page.png
 date: 2021-11-09T05:00
 tags:
   - code
@@ -13,7 +13,7 @@ setup: |
   import GitHubFile from '@components/Post/Embeds/GitHubFile.tsx'
 ---
 
-![Home page screenshot](/img/website-update/home-page.png)
+![Home page screenshot](img/website-update/home-page.png)
 
 In the age of social media and hosted blogs, personal websites don't get the love they deserve. Sure, writing developer
 based content on a site like [medium.com][medium] or [dev.to][dev.to] will get more eyeballs on it than something you
@@ -115,7 +115,7 @@ Here's some quick hot takes on some other libraries used in this update:
 
 <figure>
 
-![Feelings widget on my homepage](/img/website-update/feelings-widget.png)
+![Feelings widget on my homepage](img/website-update/feelings-widget.png)
 
   <figcaption>I just had to show off a little bit and add that chart</figcaption>
 </figure>
@@ -162,7 +162,7 @@ Speaking of those widgets...
 
 # Goodreads Shelves
 
-![Goodreads bookshelves on my home page](/img/website-update/bookshelves.png)
+![Goodreads bookshelves on my home page](img/website-update/bookshelves.png)
 
 Similar to the feelings widget, I had a Goodreads widget of what I was reading on the previous version of my website. It
 was using a [React component to pull the data from the Goodreads API][react-goodreads-shelf]. And this was fine until
@@ -187,7 +187,7 @@ for another day.
 
 # Listening Homepage Widget
 
-![Last.fm cover on my homepage](/img/website-update/last-fm-cover.png)
+![Last.fm cover on my homepage](img/website-update/last-fm-cover.png)
 
 It is very easy to pull a Last.fm collage of your top albums. A bunch of services exist for this. Why bring this up?
 
@@ -326,11 +326,11 @@ post, if nothing else, is a marketing tool for my next employer to hire me on th
 
 The primary consumer of this site will be on desktop, on that I have a perfect 💯!
 
-![Google Page Speed Insights Desktop 100 score](/img/website-update/desktop-100.png)
+![Google Page Speed Insights Desktop 100 score](img/website-update/desktop-100.png)
 
 Sadly, on mobile, this is another story and all I have is a 71 😧
 
-![Google Page Speed Insights Mobile 71 score](/img/website-update/mobile-71.png)
+![Google Page Speed Insights Mobile 71 score](img/website-update/mobile-71.png)
 
 This is going to be hard to get up. The biggest issue is that I have a lot of JavaScript powering all the functionality
 on my site. I can try to lazy load some stuff, but because it's statically rendered and available on first paint, it's

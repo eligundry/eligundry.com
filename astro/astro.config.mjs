@@ -23,4 +23,7 @@ export default defineConfig({
     sitemap(),
     astroImageTools,
   ],
+  experimental: {
+    integrations: true,
+  },
 })

@@ -1,9 +1,8 @@
 import LastFM from 'lastfm-typed'
 import type { getRecentTracks } from 'lastfm-typed/dist/interfaces/userInterface'
 import NodeCache from 'node-cache'
-import getUnixTime from 'date-fns/getUnixTime'
-import subWeeks from 'date-fns/subWeeks'
-import groupBy from 'lodash/groupBy'
+import * as dateFns from 'date-fns'
+import { groupBy } from 'lodash'
 
 export type RecentTrack = getRecentTracks['tracks'][number]
 export interface LastFMCoverItem {
@@ -38,8 +37,8 @@ const getScrobblesForWindow = async (
   const scrobbles: RecentTrack[] = []
 
   const page = await lastfm.user.getRecentTracks(username, {
-    from: getUnixTime(start).toString(),
-    to: getUnixTime(end).toString(),
+    from: dateFns.getUnixTime(start).toString(),
+    to: dateFns.getUnixTime(end).toString(),
   })
 
   scrobbles.push(...page.tracks.filter((scrobble) => !scrobble.nowplaying))
@@ -50,8 +49,8 @@ const getScrobblesForWindow = async (
     promises.push(
       lastfm.user
         .getRecentTracks(username, {
-          from: getUnixTime(start).toString(),
-          to: getUnixTime(end).toString(),
+          from: dateFns.getUnixTime(start).toString(),
+          to: dateFns.getUnixTime(end).toString(),
           page: i + 1,
         })
         .then((resp) => resp.tracks.filter(({ nowplaying }) => !nowplaying))
@@ -76,7 +75,7 @@ const getTopAlbumsCover = async (
 
   const scrobbles = await getScrobblesForWindow(
     username,
-    subWeeks(new Date(), 1)
+    dateFns.subWeeks(new Date(), 1)
   )
   const groupedScrobbles = groupBy(scrobbles, (scrobble) => scrobble.album.mbid)
   topAlbums = (

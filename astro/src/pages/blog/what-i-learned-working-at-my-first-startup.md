@@ -2,7 +2,7 @@
 title: What I Learned Working At My First Startup
 description: I spent 4 years working at Talent Inc, my first product & customer focused startup, and I learned so much.
 slug: what-i-learned-working-at-my-first-startup
-cover: /img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg
+cover: img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg
 date: 2021-12-17T05:00
 tags:
   - code
@@ -121,6 +121,6 @@ habits and doing a thorough job search next year.
 
 <figure>
 
-![Me & a coworker in a marketing photo looking at an empty notebook](/img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg)
+![Me & a coworker in a marketing photo looking at an empty notebook](img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg)
 <figcaption>You never know when you're going to show up on the marketing website…</figcaption>
 </figure>
