@@ -1,5 +1,5 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
+import clsx from 'clsx'
 import {
   FaGithubSquare,
   FaTwitterSquare,
@@ -8,6 +8,7 @@ import {
   FaLinkedin,
   FaLastfmSquare,
 } from 'react-icons/fa'
+import styles from './index.module.scss'
 
 export const links = Object.freeze([
   {
@@ -54,22 +55,8 @@ export const links = Object.freeze([
   },
 ])
 
-const Links = styled.div`
-  ${tw`flex flex-row text-4xl`}
-
-  & > a {
-    ${tw`
-      hover:text-primaryLite
-      transition 
-      duration-200 
-      ease-linear
-      transition-colors
-    `}
-  }
-`
-
 const UserLinks: React.FC = () => (
-  <Links className="user-links">
+  <nav className={clsx('user-links', styles.links)}>
     {links.map((link) => (
       <React.Fragment key={link.url}>
         <a
@@ -78,6 +65,7 @@ const UserLinks: React.FC = () => (
           target="_blank"
           rel="noopener noreferrer"
           itemProp={link.itemProp}
+          className={styles.link}
         >
           {link.icon}
         </a>
@@ -86,7 +74,7 @@ const UserLinks: React.FC = () => (
         )}
       </React.Fragment>
     ))}
-  </Links>
+  </nav>
 )
 
 export default UserLinks

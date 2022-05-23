@@ -1,0 +1,7 @@
+.links {
+  @apply flex flex-row text-4xl;
+}
+
+.link {
+  @apply hover:text-primaryLite transition duration-200 ease-linear transition-colors;
+}

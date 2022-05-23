@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-import UserLinks from '@/components/UserLinks/UserLinks'
+import UserLinks from '@/components/UserLinks'
 import EmojiText from '@/components/Shared/EmojiText'
 import styles from './Footer.module.scss'
 
