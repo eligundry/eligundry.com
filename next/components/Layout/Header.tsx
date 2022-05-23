@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import tw, { styled } from 'twin.macro'
 import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
 

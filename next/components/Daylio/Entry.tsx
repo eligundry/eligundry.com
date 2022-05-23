@@ -1,7 +1,7 @@
 import React from 'react'
 import formatISO from 'date-fns/formatISO'
-import tw, { styled, css } from 'twin.macro'
 import Link from 'next/link'
+import clsx from 'clsx'
 
 import Paper from '@/components/Shared/Paper'
 import {
@@ -10,91 +10,12 @@ import {
   MoodMapping,
   ActivityMapping,
 } from './types'
+import styles from './index.module.scss'
 
 interface Props extends DaylioEntry {
   variant: DaylioVariants
   selected?: boolean
 }
-
-const EntryWrapper = styled.div<Partial<Props>>`
-  ${tw`flex flex-row`}
-
-  & a {
-    scroll-margin-top: -200px;
-  }
-
-  ${(props) => props.variant === DaylioVariants.home && tw`flex-row-reverse`}
-
-  & .emoji-column {
-    ${(props) =>
-      props.variant === DaylioVariants.list
-        ? css`
-            display: inline-block;
-            width: 4rem;
-            vertical-align: top;
-            line-height: 1;
-            margin-right: 1em;
-          `
-        : tw`absolute`}
-
-    & > * {
-      display: block;
-      width: 100%;
-    }
-  }
-
-  & .text-column {
-    display: inline-block;
-    width: 100%;
-    ${(props) =>
-      props.variant === DaylioVariants.list &&
-      css`
-        max-width: calc(100% - 6rem);
-      `}
-
-    & h3 {
-      font-size: 1.5em;
-      margin-top: 0.2em;
-      margin-bottom: 0.3em;
-    }
-  }
-
-  & time {
-    ${tw`font-sans text-base`}
-  }
-
-  ${(props) => props.variant === DaylioVariants.list && tw`my-4`}
-
-  ${(props) =>
-    props.selected &&
-    css`
-      & .text-column {
-        ${tw`shadow-lg`}
-      }
-    `}
-`
-
-interface ActivityEmojiProps {
-  dropShadow?: boolean
-  home?: boolean
-}
-
-const Emoji = styled.span<ActivityEmojiProps>`
-  font-size: 4rem;
-  cursor: default;
-  z-index: 9;
-  position: relative;
-`
-
-const ActivitiesList = styled.ul`
-  padding-left: 0 !important;
-`
-
-const ActivityEmoji = styled.li`
-  display: inline;
-  font-size: 2rem;
-  cursor: default;
-`
 
 const Entry: React.FC<Props> = ({
   time,
@@ -109,10 +30,14 @@ const Entry: React.FC<Props> = ({
   const isoTime = formatISO(time ?? new Date())
 
   return (
-    <EntryWrapper
+    <article
       id={isoTime}
-      variant={variant}
-      selected={selected}
+      className={clsx(
+        styles.entryWrapper,
+        variant === DaylioVariants.list
+          ? styles.listEntryWrapper
+          : styles.homeEntryWrapper
+      )}
       itemScope
       itemType="https://schema.org/BlogPosting"
     >
@@ -121,17 +46,29 @@ const Entry: React.FC<Props> = ({
         itemProp="image"
       />
       <link itemProp="author publisher" href="#eli-gundry" />
-      <div className="emoji-column">
-        <Emoji
-          dropShadow={variant === DaylioVariants.list}
+      <div
+        className={clsx(
+          styles.emojiColumn,
+          variant === DaylioVariants.list
+            ? styles.listEmojiColumn
+            : styles.homeEmojiColumn
+        )}
+      >
+        <span
+          role="img"
+          aria-label="emoji showing my general mood"
           title={`I felt ${mood}`}
-          home={variant === DaylioVariants.home}
+          className={styles.emoji}
         >
           {MoodMapping[mood]}
-        </Emoji>
+        </span>
       </div>
       <Paper
-        className="text-column"
+        className={clsx(
+          styles.textColumn,
+          selected && styles.selectedTextColumn,
+          variant === DaylioVariants.list && styles.listTextColumn
+        )}
         transparent={variant === DaylioVariants.home}
         noPadding={variant === DaylioVariants.home}
       >
@@ -142,18 +79,19 @@ const Entry: React.FC<Props> = ({
           </Link>
         </time>
         {filteredActivities.length > 0 && (
-          <ActivitiesList>
+          <ul className={styles.activitiesList}>
             {filteredActivities.map((a) => (
-              <ActivityEmoji
+              <li
                 key={`${time}-${a}`}
                 data-tip={a}
                 itemProp="keywords"
                 aria-label={a}
+                className={styles.activityEmoji}
               >
                 {ActivityMapping[a] || a}
-              </ActivityEmoji>
+              </li>
             ))}
-          </ActivitiesList>
+          </ul>
         )}
         {notes &&
           (notes.length > 0 ? (
@@ -168,7 +106,7 @@ const Entry: React.FC<Props> = ({
             </p>
           ))}
       </Paper>
-    </EntryWrapper>
+    </article>
   )
 }
 

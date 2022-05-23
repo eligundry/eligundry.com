@@ -1,13 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import tw, { styled } from 'twin.macro'
 
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
-
-const UtterancesContainer = styled.aside`
-  & .utterances {
-    ${tw`m-0 print:hidden`}
-  }
-`
+import styles from './index.module.scss'
 
 const Comments: React.FC = () => {
   const utterancesRef = useRef<HTMLDivElement>(null)
@@ -35,7 +29,7 @@ const Comments: React.FC = () => {
     }
   }, [prefersDark])
 
-  return <UtterancesContainer ref={utterancesRef} />
+  return <aside className={styles.utterances} ref={utterancesRef} />
 }
 
 export default Comments

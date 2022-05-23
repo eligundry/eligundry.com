@@ -36,6 +36,7 @@ export enum ActivityMapping {
   travel = '✈️',
   'went outside' = '🌞',
   delivery = '🥡',
+  concert = '🎸',
 }
 
 export interface DaylioEntry<TimeType = Date> {
