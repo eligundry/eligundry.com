@@ -1,0 +1,23 @@
+.paper {
+  @apply w-full p-4 px-4 text-xl text-typography dark:text-white leading-normal rounded-lg bg-paper dark:bg-paperDark mb-4 print:mb-0;
+
+ body[data-fancy-background=""] & {
+   @apply shadow-none;
+ }
+
+  @media (prefers-reduced-transparency: reduce) {
+    @apply bg-siteBackground dark:bg-black;
+  }
+}
+
+.notTransparent {
+  @apply shadow print:shadow-none;
+}
+
+.transparent {
+  @apply bg-transparent dark:bg-transparent shadow-none;
+}
+
+.noPadding {
+  @apply p-0;
+}

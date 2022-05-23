@@ -1,11 +1,11 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
 import Link from 'next/link'
 import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
+import clsx from 'clsx'
 
 import Daylio from '@/components/Daylio'
-import Paper from '@/components/Shared/Paper'
+import Paper, { PaperProps } from '@/components/Shared/Paper'
 import Reading, { ReadingProps } from '@/components/Reading'
 import Listening from '@/components/Listening'
 import GitHubCalendar from '@/components/GitHubCalendar'
@@ -15,51 +15,20 @@ import EmojiText from '@/components/Shared/EmojiText'
 import type { LastFMCoverItem } from '@/lib/lastfm'
 import type { GitHubApiResponse } from '@/lib/github'
 import vimSVG from './assets/vim.svg'
+import styles from './Home.module.scss'
 
 const DaylioChart = React.lazy(async () => import('../Daylio/Chart'))
 
-interface SectionProps {
-  className?: string
-}
-
-const Section = styled<React.FC<SectionProps>>(Paper.section)`
-  ${tw`mb-4`}
-
-  & h2 {
-    ${tw`text-4xl text-primary font-extrabold`}
-  }
-
-  & h3 {
-    ${tw`font-semibold text-primary`}
-  }
-
-  &.introduction-hero {
-    display: block;
-
-    & .vim-icon {
-      height: 1.5rem;
-      width: 1.5rem;
-      display: inline;
-      vertical-align: top;
-    }
-  }
-
-  & .headshot {
-    min-width: 250px;
-    width: 250px;
-    height: 250px;
-
-    ${tw`float-right ml-8 sm:hidden`}
-  }
-
-  & .under-construction {
-    ${tw`inline-block`}
-  }
-
-  & .react-activity-calendar {
-    ${tw`font-mono`}
-  }
-`
+const Section: React.FC<Omit<PaperProps, 'element'>> = ({
+  className,
+  ...props
+}) => (
+  <Paper
+    element="section"
+    className={clsx(styles.section, className)}
+    {...props}
+  />
+)
 
 export interface HomeDataProps {
   reading: ReadingProps
@@ -72,9 +41,9 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
 
   return (
     <>
-      <Section className="introduction-hero">
+      <Section className={styles.introductionHero}>
         <h2>Glad To Meet You!</h2>
-        <figure className="headshot">
+        <figure className={styles.headshot}>
           <Image
             src="/img/eli-thumbs-up-memoji.PNG"
             alt="Eli Gundry's Memoji Headshot"
@@ -111,7 +80,7 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
             I am a {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={vimSVG}
-              className="vim-icon"
+              className={styles.vimIcon}
               alt="Vim logo"
               width={544}
               height={545}

@@ -1,47 +1,31 @@
-import tw, { styled } from 'twin.macro'
+import clsx from 'clsx'
+import styles from './Paper.module.scss'
 
-interface PaperProps {
+export interface PaperProps extends React.HTMLAttributes<HTMLElement> {
+  element?: 'div' | 'article' | 'section' | 'figure'
   transparent?: boolean
   noPadding?: boolean
 }
 
-const Paper = styled.div<PaperProps>`
-  ${tw`
-    w-full 
-    p-4
-    px-4
-    text-xl 
-    text-typography
-    dark:text-white
-    leading-normal
-    rounded-lg
-    bg-paper
-    dark:bg-paperDark
-    mb-4
-    print:mb-0
-  `}
+const Paper: React.FC<PaperProps> = ({
+  element = 'div',
+  className,
+  transparent = false,
+  noPadding,
+  ...props
+}) => {
+  const Component = element
 
-  ${({ transparent = false }) =>
-    !transparent
-      ? tw`shadow print:shadow-none`
-      : tw`bg-transparent dark:bg-transparent shadow-none`}
-
-  body[data-fancy-background=""] & {
-    ${tw`shadow-none`}
-  }
-
-  ${({ noPadding = false }) => noPadding && tw`p-0`}
-
-  @media (prefers-reduced-transparency: reduce) {
-    ${tw`bg-siteBackground dark:bg-black`}
-  }
-`
-
-// @ts-ignore
-Paper.article = Paper.withComponent('article')
-// @ts-ignore
-Paper.section = Paper.withComponent('section')
-// @ts-ignore
-Paper.figure = Paper.withComponent('figure')
+  return (
+    <Component
+      className={clsx(
+        styles.paper,
+        transparent ? styles.transparent : styles.notTransparent,
+        className
+      )}
+      {...props}
+    />
+  )
+}
 
 export default Paper

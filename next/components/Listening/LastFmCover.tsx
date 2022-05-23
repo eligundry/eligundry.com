@@ -1,8 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
-import { styled } from 'twin.macro'
 
 import type { LastFMCoverItem } from '@/lib/lastfm'
+import styles from './Listening.module.scss'
 
 interface Props {
   data: LastFMCoverItem[]
@@ -10,9 +10,9 @@ interface Props {
 
 const LastFmCover = React.forwardRef<HTMLAnchorElement, Props>(
   ({ data }, ref) => (
-    <Wrapper
+    <a
       href="https://www.last.fm/user/eli_pwnd"
-      className="last-fm-image"
+      className={styles.lastFMWrapper}
       ref={ref}
     >
       {data.map(({ album, artist, count, cover, placeholder }) => (
@@ -27,15 +27,10 @@ const LastFmCover = React.forwardRef<HTMLAnchorElement, Props>(
           data-tip={`${album} - ${artist} [${count} scrobbles]`}
         />
       ))}
-    </Wrapper>
+    </a>
   )
 )
 
 LastFmCover.displayName = 'LastFmCover'
-
-const Wrapper = styled.a`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-`
 
 export default LastFmCover
