@@ -1,0 +1,30 @@
+.header {
+  @apply fixed print:relative w-full z-10 top-0 sm:bg-white sm:dark:bg-typographyDark sm:shadow bg-white dark:bg-typographyDark shadow print:shadow-none print:bg-transparent;
+
+  & :global(.wrapper) {
+    @apply w-full md:max-w-3xl mx-auto flex flex-wrap flex-row items-center sm:flex-col sm:items-start justify-between mt-0 py-3 sm:px-4;
+
+    margin-top: -1.5rem;
+  }
+
+  & h1 {
+    & a {
+      @apply text-typographyDark dark:text-white hover:text-primary text-base no-underline hover:no-underline font-extrabold text-xl;
+    }
+  }
+}
+
+.progressBar {
+  @apply h-1 z-20 top-0 print:hidden;
+
+  vertical-align: top;
+  width: 100%;
+
+  &[value]::-webkit-progress-bar {
+    @apply bg-liteGray dark:bg-typographyLite;
+  }
+
+  &[value]::-webkit-progress-value {
+    @apply bg-primary;
+  }
+}

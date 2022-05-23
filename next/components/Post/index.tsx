@@ -1,5 +1,4 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
 /* eslint-disable-next-line import/no-unresolved */
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import LazyLoad from 'react-lazyload'

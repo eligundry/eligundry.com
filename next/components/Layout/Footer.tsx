@@ -1,58 +1,14 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
 import Link from 'next/link'
 
 import UserLinks from '@/components/UserLinks/UserLinks'
 import EmojiText from '@/components/Shared/EmojiText'
-
-const FooterContainer = styled.footer`
-  ${tw`bg-white dark:bg-typographyDark shadow print:hidden`}
-
-  & .container {
-    ${tw`
-        max-w-3xl 
-        w-full
-        mx-auto 
-        flex 
-        py-8
-        sm:flex-col-reverse
-        sm:px-4
-      `}
-
-    & > * {
-      ${tw`
-        flex 
-        flex-col
-      `}
-    }
-
-    & .about {
-      ${tw`
-        w-2/3 
-        sm:w-full
-        mr-4
-        sm:mr-0
-      `}
-
-      & p {
-        ${tw`mt-0`}
-      }
-    }
-
-    & .social {
-      ${tw`
-        w-1/3 
-        sm:w-full
-        sm:mb-4
-      `}
-    }
-  }
-`
+import styles from './Footer.module.scss'
 
 const Footer: React.FC = () => (
-  <FooterContainer>
-    <div className="container">
-      <section className="about">
+  <footer className={styles.footer}>
+    <div className={styles.container}>
+      <section className={styles.about}>
         <h3>About</h3>
         <p>
           Eli Gundry is a full stack web developer that loves JavaScript, devops
@@ -92,7 +48,7 @@ const Footer: React.FC = () => (
         <UserLinks />
       </section>
     </div>
-  </FooterContainer>
+  </footer>
 )
 
 export default Footer
