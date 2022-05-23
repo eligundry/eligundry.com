@@ -13,7 +13,7 @@ interface Props {
   title?: string
   description?: string
   image?: string
-  post?: Post
+  post?: Partial<Post>
 }
 
 const SEO: React.FC<Props> = ({
@@ -29,52 +29,54 @@ const SEO: React.FC<Props> = ({
   const latestDaylioEmoji = useLatestEmoji()
 
   if (post) {
-    if (post.frontmatter?.title) {
-      title = post.frontmatter.title
+    if (post.title) {
+      title = post.title
     }
 
-    if (post.frontmatter?.description) {
-      description = post.frontmatter.description
+    if (post.description) {
+      description = post.description
     }
 
-    if (post.frontmatter?.cover) {
-      image = urljoin(config.siteUrl, post.frontmatter.cover)
+    if (post.cover) {
+      image = urljoin(config.siteUrl, post.cover)
     }
 
-    schemaOrg.push(
-      jsonLdScriptProps<BreadcrumbList>({
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            item: {
-              '@id': config.siteUrl,
-              name: 'Eli Gundry',
+    if (post.collection) {
+      schemaOrg.push(
+        jsonLdScriptProps<BreadcrumbList>({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              item: {
+                '@id': config.siteUrl,
+                name: 'Eli Gundry',
+              },
             },
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            item: {
-              '@id': urljoin(config.siteUrl, post.collection),
-              name:
-                post.collection.charAt(0).toUpperCase() +
-                post.collection.slice(1),
+            {
+              '@type': 'ListItem',
+              position: 2,
+              item: {
+                '@id': urljoin(config.siteUrl, post.collection),
+                name:
+                  post.collection.charAt(0).toUpperCase() +
+                  post.collection.slice(1),
+              },
             },
-          },
-          {
-            '@type': 'ListItem',
-            position: 3,
-            item: {
-              '@id': url,
-              name: title,
+            {
+              '@type': 'ListItem',
+              position: 3,
+              item: {
+                '@id': url,
+                name: title,
+              },
             },
-          },
-        ],
-      })
-    )
+          ],
+        })
+      )
+    }
   }
 
   if (image && !image.startsWith('https://')) {

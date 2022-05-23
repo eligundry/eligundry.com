@@ -7,7 +7,19 @@ import blog, { Post } from '@/lib/blog'
 import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 
 interface Props extends LimitedDaylioPageProps {
-  post: Post
+  post: Pick<
+    Post,
+    | 'title'
+    | 'body'
+    | 'date'
+    | 'modified'
+    | 'cover'
+    | 'readingTime'
+    | 'tags'
+    | 'path'
+    | 'collection'
+    | 'location'
+  >
 }
 
 const Talk: NextPage<Props> = ({ post }) => (
@@ -26,7 +38,7 @@ const Talk: NextPage<Props> = ({ post }) => (
 )
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await blog.getAll('talks', ['slug'])
+  const posts = blog.getAll('talks', ['slug'])
 
   return {
     paths: posts.map(({ slug }) => ({ params: { slug } })),

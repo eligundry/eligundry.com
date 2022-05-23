@@ -11,7 +11,7 @@ import daylio from './daylio'
 import blog from './blog'
 
 export const generateBlogFeed = async () => {
-  const entries = await blog.getAll('blog', undefined, { draft: false })
+  const entries = blog.getAll('blog')
   const author = {
     name: 'Eli Gundry',
     email: 'eligundry@gmail.com',

@@ -1,5 +1,4 @@
 import type { NextPage, GetStaticPaths, GetStaticProps } from 'next'
-import promiseHash from 'promise-hash'
 
 import PostTemplate from '@/components/Post'
 import SEO from '@/components/SEO'
@@ -8,7 +7,18 @@ import blog, { Post } from '@/lib/blog'
 import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 
 interface Props extends LimitedDaylioPageProps {
-  post: Post
+  post: Pick<
+    Post,
+    | 'title'
+    | 'body'
+    | 'date'
+    | 'modified'
+    | 'cover'
+    | 'readingTime'
+    | 'tags'
+    | 'path'
+    | 'collection'
+  >
 }
 
 const BlogPost: NextPage<Props> = ({ post }) => (
@@ -75,11 +85,13 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
     throw new Error(`could not find blog post with slug ${params.slug}`)
   }
 
+  const daylio = await daylioAPI.getLimitedProps().then((r) => r.daylio)
+
   return {
-    props: await promiseHash({
+    props: {
       post,
-      daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),
-    }),
+      daylio,
+    },
   }
 }
 

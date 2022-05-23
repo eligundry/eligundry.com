@@ -50,15 +50,17 @@ export const Post = defineDocumentType(() => ({
       description: 'The location where a talk post occured',
       required: false,
     },
-    // tags: {
-    //   type: 'list',
-    // },
-  },
-  computedFields: {
+    tags: {
+      type: 'list',
+      of: {
+        type: 'string',
+      },
+    },
     draft: {
       type: 'boolean',
-      resolve: (post) => post.draft === true,
     },
+  },
+  computedFields: {
     slug: {
       type: 'string',
       description:
@@ -98,6 +100,7 @@ export const Post = defineDocumentType(() => ({
     },
     path: {
       type: 'string',
+      required: true,
       resolve: (post) => {
         let slug = post.slug
 

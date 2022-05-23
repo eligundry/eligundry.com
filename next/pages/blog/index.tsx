@@ -1,15 +1,15 @@
 import type { NextPage, GetStaticProps } from 'next'
 import promiseHash from 'promise-hash'
 
-import PostListing from '@/components/PostListing'
+import PostListing, { PostListingProps } from '@/components/PostListing'
 import Paper from '@/components/Shared/Paper'
 import SEO from '@/components/SEO'
-import blog, { Post } from '@/lib/blog'
+import blog from '@/lib/blog'
 import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 import { generateBlogFeed } from '@/lib/feed'
 
 interface PageProps extends LimitedDaylioPageProps {
-  posts: Post[]
+  posts: PostListingProps['posts']
 }
 
 const Blog: NextPage<PageProps> = ({ posts }) => (
@@ -30,20 +30,18 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
 
   return {
     props: await promiseHash({
-      posts: blog.getAll(
-        'blog',
-        [
-          'title',
-          'path',
-          'date',
-          'description',
-          'tags',
-          'cover',
-          'modified',
-          'readingTime',
-        ],
-        { draft: false }
-      ),
+      posts: blog.getAll('blog', [
+        'title',
+        'path',
+        'date',
+        'description',
+        'tags',
+        'cover',
+        'modified',
+        'readingTime',
+        'draft',
+        'slug',
+      ]),
       daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),
     }),
   }

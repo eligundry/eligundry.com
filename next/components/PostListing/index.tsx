@@ -7,8 +7,18 @@ import EmojiText from '@/components/Shared/EmojiText'
 import { Post } from '@/lib/blog'
 import TagPicker, { useSelectedTag } from './TagPicker'
 
-interface Props {
-  posts: Post[]
+export interface PostListingProps {
+  posts: Pick<
+    Post,
+    | 'title'
+    | 'path'
+    | 'date'
+    | 'description'
+    | 'tags'
+    | 'cover'
+    | 'modified'
+    | 'readingTime'
+  >[]
   itemType: 'CreativeWork' | 'BlogPosting'
 }
 
@@ -32,26 +42,16 @@ const Article = styled.article`
   }
 `
 
-const PostListing: React.FC<Props> = ({ posts, itemType }) => {
-  const tags = new Set<string>()
+const PostListing: React.FC<PostListingProps> = ({ posts, itemType }) => {
+  const tags = posts.reduce((acc, post) => {
+    post.tags?.forEach((tag) => acc.add(tag))
+    return acc
+  }, new Set<string>())
   const selectedTag = useSelectedTag()
-  const postList = posts
-    .map((post) => {
-      return {
-        path: post.path,
-        cover: post.cover,
-        title: post.title,
-        date: post.date,
-        timeToRead: post.readingTime,
-        description: post.description,
-        dateModified: post.modified,
-        tags: post?.tags ?? [],
-      }
-    })
-    .filter(
-      (post) =>
-        !!post.title && (!selectedTag || post?.tags?.includes(selectedTag))
-    )
+  const postList = posts.filter(
+    (post) =>
+      !!post.title && (!selectedTag || post?.tags?.includes(selectedTag))
+  )
 
   return (
     <>
@@ -65,11 +65,11 @@ const PostListing: React.FC<Props> = ({ posts, itemType }) => {
         >
           <link itemProp="author publisher" href="#eli-gundry" />
           {post.cover && <meta itemProp="image" content={post.cover} />}
-          {post.dateModified && (
-            <meta itemProp="dateModified" content={post.dateModified} />
+          {post.modified && (
+            <meta itemProp="dateModified" content={post.modified} />
           )}
-          {post.timeToRead > 0 && (
-            <meta itemProp="timeRequired" content={`PT${post.timeToRead}M`} />
+          {post.readingTime > 0 && (
+            <meta itemProp="timeRequired" content={`PT${post.readingTime}M`} />
           )}
           <h1 itemProp="name headline">
             <Link href={post.path}>
