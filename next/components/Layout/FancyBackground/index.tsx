@@ -5,7 +5,7 @@ import { FaSync } from 'react-icons/fa'
 import { isSSR } from '@/utils/env'
 import useDocument from '@/components/Shared/useDocument'
 import clsx from 'clsx'
-import styles from './FancyBackground.module.scss'
+import styles from './index.module.scss'
 
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
@@ -43,7 +43,10 @@ const FancyBackground: React.FC = () => {
       {seed && (
         <>
           <div
-            style={{ '--fluid-pattern-seed': seed }}
+            style={{
+              // @ts-ignore
+              '--fluid-pattern-seed': seed,
+            }}
             className={styles.canvas}
           />
           <button

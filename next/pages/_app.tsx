@@ -4,6 +4,8 @@ import Script from 'next/script'
 import Layout from '@/components/Layout'
 import config from '@/utils/config'
 import DaylioProvider from '@/components/Daylio/Provider'
+import '@/components/Layout/styles/index.scss'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <DaylioProvider {...(pageProps?.daylio ?? {})}>

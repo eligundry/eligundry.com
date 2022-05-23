@@ -119,6 +119,11 @@
       "debug": false
     }
   },
+  "sass": {
+    "includePaths": [
+      "./node_modules"
+    ]
+  },
   "browserslist": [
     "last 2 versions",
     ">1%",

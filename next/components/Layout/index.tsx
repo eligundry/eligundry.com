@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Tooltip from '@/components/Shared/Tooltip'
-import { ContentWrapper, GlobalStyles } from './styles'
+import ContentWrapper from './ContentWrapper'
 import Head from './Head'
 import Header from './Header'
 import Footer from './Footer'
@@ -15,7 +15,6 @@ interface Props {
 const MainLayout: React.FC<Props> = ({ children, hideHeader = false }) => (
   <ThemeModeProvider>
     <Head />
-    <GlobalStyles />
     {!hideHeader && <Header />}
     <ContentWrapper>{children}</ContentWrapper>
     <Footer />

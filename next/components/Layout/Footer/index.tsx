@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import UserLinks from '@/components/UserLinks'
 import EmojiText from '@/components/Shared/EmojiText'
-import styles from './Footer.module.scss'
+import styles from './index.module.scss'
 
 const Footer: React.FC = () => (
   <footer className={styles.footer}>

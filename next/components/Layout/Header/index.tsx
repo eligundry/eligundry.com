@@ -4,8 +4,8 @@ import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
 
 import useDocument from '@/components/Shared/useDocument'
-import Nav from './Nav'
-import styles from './Header.module.scss'
+import Nav from '@/components/Layout/Nav'
+import styles from './index.module.scss'
 
 const Header: React.FC = () => {
   const { y } = useWindowScroll()

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import EmojiText from '@/components/Shared/EmojiText'
-import styles from './Nav.module.scss'
+import styles from './index.module.scss'
 
 const navLinks = Object.freeze({
   '/': {
