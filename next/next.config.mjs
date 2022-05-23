@@ -1,14 +1,18 @@
-const fs = require('fs')
-const path = require('path')
-const grayMatter = require('gray-matter')
-require('dotenv').config()
+import fs from 'fs'
+import path from 'path'
+import grayMatter from 'gray-matter'
+import dotenv from 'dotenv'
+import withPlugins from 'next-compose-plugins'
+import withImages from 'next-images'
+import nextTranspileModules from 'next-transpile-modules'
+import nextBundleAnalyzer from '@next/bundle-analyzer'
 
-const withImages = require('next-images')
-const withTM = require('next-transpile-modules')(['react-lite-yt-embed'])
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+dotenv.config()
+
+const withTM = nextTranspileModules(['react-lite-yt-embed'])
+const withBundleAnalyzer = nextBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
-const withPlugins = require('next-compose-plugins')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -80,7 +84,4 @@ const nextConfig = {
   },
 }
 
-module.exports = withPlugins(
-  [withTM, withBundleAnalyzer, withImages],
-  nextConfig
-)
+export default withPlugins([withTM, withBundleAnalyzer, withImages], nextConfig)
