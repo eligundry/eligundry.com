@@ -14,13 +14,13 @@ const Talk: NextPage<Props> = ({ post }) => (
   <>
     <SEO path={post.path} post={post} />
     <PostTemplate
-      title={post.frontmatter.title}
-      body={post.code}
+      title={post.title}
+      body={post.body}
       itemType="CreativeWork"
-      datePublished={post?.frontmatter?.date}
+      datePublished={post.date}
       dateModified={post.modified}
-      location={post?.frontmatter?.location}
-      readingTime={post?.frontmatter?.readingTime}
+      location={post.location}
+      readingTime={post.readingTime}
     />
   </>
 )
@@ -29,7 +29,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await blog.getAll('talks', ['slug'])
 
   return {
-    paths: posts.map(({ frontmatter: { slug } }) => ({ params: { slug } })),
+    paths: posts.map(({ slug }) => ({ params: { slug } })),
     fallback: false,
   }
 }
@@ -41,29 +41,27 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
     throw new Error('this route requires a slug')
   }
 
+  const post = blog.getBySlug('talks', params.slug, [
+    'title',
+    'description',
+    'slug',
+    'path',
+    'tags',
+    'body',
+    'collection',
+    'location',
+    'date',
+    'modified',
+    'readingTime',
+  ])
+
+  if (!post) {
+    throw new Error(`could not find talk with slug ${params.slug}`)
+  }
+
   return {
     props: await promiseHash({
-      post: blog
-        .getBySlug('talks', params.slug, [
-          'title',
-          'description',
-          'slug',
-          'path',
-          'tags',
-          'code',
-          'collection',
-          'location',
-          'date',
-          'modified',
-          'readingTime',
-        ])
-        .then((post) => {
-          if (!post) {
-            throw new Error(`could not find talk with slug ${params.slug}`)
-          }
-
-          return post
-        }),
+      post,
       daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),
     }),
   }

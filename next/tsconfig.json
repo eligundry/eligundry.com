@@ -19,9 +19,10 @@
     "paths": {
       "@/components/*": ["components/*"],
       "@/lib/*": ["lib/*"],
-      "@/utils/*": ["utils/*"]
+      "@/utils/*": ["utils/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "public/**/*"],
+  "include": ["**/*.ts", "**/*.tsx", "public/**/*", ".contentlayer/generated"],
   "exclude": ["node_modules"]
 }

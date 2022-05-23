@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import tw, { styled } from 'twin.macro'
-import { getMDXComponent } from 'mdx-bundler/client'
+import { useMDXComponent } from 'next-contentlayer/hooks'
 import LazyLoad from 'react-lazyload'
 import Skeleton from 'react-loading-skeleton'
 
@@ -12,7 +12,7 @@ import MDXShortcodes from './shortcodes'
 
 interface Props {
   title: string
-  body: PostType['code']
+  body: PostType['body']
   datePublished?: string
   dateModified?: string
   footer?: React.ReactNode
@@ -35,7 +35,7 @@ const Post: React.FC<Props> = ({
   featuredImageURL,
   readingTime = 0,
 }) => {
-  const Component = useMemo(() => getMDXComponent(body), [body])
+  const Component = useMDXComponent(body.code)
 
   return (
     <Article
@@ -88,13 +88,13 @@ const Article = styled<React.FC>(Paper.article)`
 
     & h1 {
       ${tw`
-        font-extrabold 
-        font-sans 
-        break-normal 
-        text-typographyDark 
+        font-extrabold
+        font-sans
+        break-normal
+        text-typographyDark
         dark:text-white
-        pb-2 
-        text-3xl 
+        pb-2
+        text-3xl
         md:text-4xl
       `}
     }

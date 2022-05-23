@@ -29,24 +29,19 @@ export const generateBlogFeed = async () => {
   })
 
   entries
-    .sort((a, b) =>
-      compareDatesDesc(
-        parseISO(a.frontmatter.date),
-        parseISO(b.frontmatter.date)
-      )
-    )
+    .sort((a, b) => compareDatesDesc(parseISO(a.date), parseISO(b.date)))
     .forEach((post) => {
-      const Component = getMDXComponent(post.code)
+      const Component = getMDXComponent(post.body.code)
 
       feed.addItem({
-        title: post.frontmatter.title,
-        date: new Date(post.frontmatter.date),
+        title: post.title,
+        date: new Date(post.date),
         link: config.siteUrl + post.path,
-        description: post.frontmatter.description,
+        description: post.description,
         content: ReactDOMServer.renderToStaticMarkup(
           <Component components={MDXShortcodesForFeed} />
         ),
-        category: post.frontmatter.tags?.map((category) => ({
+        category: post.tags?.map((category) => ({
           name: category,
         })),
       })

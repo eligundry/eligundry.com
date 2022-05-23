@@ -4,6 +4,7 @@ import grayMatter from 'gray-matter'
 import dotenv from 'dotenv'
 import withPlugins from 'next-compose-plugins'
 import withImages from 'next-images'
+import { withContentlayer } from 'next-contentlayer'
 import nextTranspileModules from 'next-transpile-modules'
 import nextBundleAnalyzer from '@next/bundle-analyzer'
 
@@ -84,4 +85,7 @@ const nextConfig = {
   },
 }
 
-export default withPlugins([withTM, withBundleAnalyzer, withImages], nextConfig)
+export default withPlugins(
+  [withTM, withBundleAnalyzer, withImages, withContentlayer],
+  nextConfig
+)

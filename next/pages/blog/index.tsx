@@ -38,7 +38,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
           'date',
           'description',
           'tags',
-          'draft',
           'cover',
           'modified',
           'readingTime',

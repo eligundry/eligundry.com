@@ -37,19 +37,15 @@ const PostListing: React.FC<Props> = ({ posts, itemType }) => {
   const selectedTag = useSelectedTag()
   const postList = posts
     .map((post) => {
-      post.frontmatter?.tags
-        ?.filter((tag): tag is string => !!tag)
-        .forEach((tag) => tags.add(tag))
-
       return {
         path: post.path,
-        cover: post?.frontmatter?.cover,
-        title: post?.frontmatter?.title,
-        date: post?.frontmatter?.date,
-        timeToRead: post?.frontmatter?.readingTime,
-        description: post?.frontmatter?.description,
+        cover: post.cover,
+        title: post.title,
+        date: post.date,
+        timeToRead: post.readingTime,
+        description: post.description,
         dateModified: post.modified,
-        tags: post?.frontmatter?.tags,
+        tags: post?.tags ?? [],
       }
     })
     .filter(
