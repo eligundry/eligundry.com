@@ -83,12 +83,14 @@ const getLastModFromGit = async (p) => {
 }
 
 const getLatestCommitDateForPaths = async (paths, extraDates = []) =>
-  dateFns.max(
-    (await Promise.all(paths.map((file) => git.log({ file })))).map((log) =>
-      log?.latest?.date ? dateFns.parseISO(log.latest.date) : undefined
-    ),
-    ...extraDates
-  )
+  dateFns.max([
+    ...(await Promise.all(paths.map((file) => git.log({ file }))))
+      .map((log) =>
+        log?.latest?.date ? dateFns.parseISO(log.latest.date) : undefined
+      )
+      .filter(Boolean),
+    ...extraDates,
+  ])
 
 const pathToMarkdownFile = ['talks', 'blog']
   .flatMap((prefix) =>

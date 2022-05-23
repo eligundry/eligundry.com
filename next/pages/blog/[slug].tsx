@@ -1,5 +1,4 @@
 import type { NextPage, GetStaticPaths, GetStaticProps } from 'next'
-import promiseHash from 'promise-hash'
 
 import PostTemplate from '@/components/Post'
 import SEO from '@/components/SEO'
@@ -8,20 +7,31 @@ import blog, { Post } from '@/lib/blog'
 import daylioAPI, { LimitedDaylioPageProps } from '@/lib/daylio'
 
 interface Props extends LimitedDaylioPageProps {
-  post: Post
+  post: Pick<
+    Post,
+    | 'title'
+    | 'body'
+    | 'date'
+    | 'modified'
+    | 'cover'
+    | 'readingTime'
+    | 'tags'
+    | 'path'
+    | 'collection'
+  >
 }
 
 const BlogPost: NextPage<Props> = ({ post }) => (
   <>
     <SEO path={post.path} post={post} />
     <PostTemplate
-      title={post.frontmatter.title}
-      body={post.code}
-      datePublished={post?.frontmatter?.date}
+      title={post.title}
+      body={post.body}
+      datePublished={post.date}
       dateModified={post.modified}
       itemType="BlogPosting"
-      featuredImageURL={post.frontmatter.cover}
-      readingTime={post.frontmatter?.readingTime}
+      featuredImageURL={post.cover}
+      readingTime={post.readingTime}
       footer={
         <>
           <hr />
@@ -29,7 +39,7 @@ const BlogPost: NextPage<Props> = ({ post }) => (
         </>
       }
       preBody={
-        post?.frontmatter?.tags?.includes('icymi') && (
+        post?.tags?.includes('icymi') && (
           <blockquote>
             <abbr title="I See You Missed It">ICYMI</abbr> is a series where I
             review and recommend old albums that you may have missed. I used to
@@ -43,10 +53,10 @@ const BlogPost: NextPage<Props> = ({ post }) => (
 )
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await blog.getAll('blog', ['slug'])
+  const posts = blog.getAll('blog', ['slug'])
 
   return {
-    paths: posts.map(({ frontmatter: { slug } }) => ({ params: { slug } })),
+    paths: posts.map(({ slug }) => ({ params: { slug } })),
     fallback: false,
   }
 }
@@ -58,30 +68,30 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
     throw new Error('this route requires a slug')
   }
 
-  return {
-    props: await promiseHash({
-      post: blog
-        .getBySlug('blog', params.slug, [
-          'title',
-          'description',
-          'slug',
-          'path',
-          'tags',
-          'code',
-          'collection',
-          'date',
-          'modified',
-          'readingTime',
-        ])
-        .then((post) => {
-          if (!post) {
-            throw new Error(`could not find talk with slug ${params.slug}`)
-          }
+  const post = blog.getBySlug('blog', params.slug, [
+    'title',
+    'description',
+    'slug',
+    'path',
+    'tags',
+    'body',
+    'collection',
+    'date',
+    'modified',
+    'readingTime',
+  ])
 
-          return post
-        }),
-      daylio: daylioAPI.getLimitedProps().then((r) => r.daylio),
-    }),
+  if (!post) {
+    throw new Error(`could not find blog post with slug ${params.slug}`)
+  }
+
+  const daylio = await daylioAPI.getLimitedProps().then((r) => r.daylio)
+
+  return {
+    props: {
+      post,
+      daylio,
+    },
   }
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-webpack-loader-syntax, import/no-unresolved */
 import tw, { styled } from 'twin.macro'
 import { createGlobalStyle } from 'styled-components'
 
@@ -22,9 +23,9 @@ export const GlobalStyles = createGlobalStyle`
   body {
     ${tw`
       bg-siteBackground
-      print:bg-transparent 
-      font-serif 
-      leading-normal 
+      print:bg-transparent
+      font-serif
+      leading-normal
       tracking-normal
     `}
 
@@ -103,12 +104,12 @@ export const GlobalStyles = createGlobalStyle`
 
 export const ContentWrapper = styled.main`
   ${tw`
-    w-full 
-    md:max-w-3xl 
-    mx-auto 
-    pt-20 
+    w-full
+    md:max-w-3xl
+    mx-auto
+    pt-20
     sm:pt-12
-    mt-6 
+    mt-6
     print:mt-0
     print:pt-0
   `}
