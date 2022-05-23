@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Script from 'next/script'
 import Head from 'next/head'
-import tw, { styled, theme } from 'twin.macro'
 import { FaSync } from 'react-icons/fa'
 import { isSSR } from '@/utils/env'
 import useDocument from '@/components/Shared/useDocument'
+import clsx from 'clsx'
+import styles from './FancyBackground.module.scss'
 
 // Borrowed from https://codepen.io/georgedoescode/pen/YzxrRZe
 const generateSeed = () => Math.random() * 10000
@@ -41,61 +42,25 @@ const FancyBackground: React.FC = () => {
       </Script>
       {seed && (
         <>
-          <Canvas seed={seed} />
-          <RefreshButton
+          <div
+            style={{ '--fluid-pattern-seed': seed }}
+            className={styles.canvas}
+          />
+          <button
             onClick={() => setSeed(generateSeed())}
             title="Regenerate the background pattern"
             arial-label="Regenerate the background pattern"
-            className="gtm-background-refresh-button"
+            className={clsx(
+              'gtm-background-refresh-button',
+              styles.refreshButton
+            )}
           >
             <FaSync />
-          </RefreshButton>
+          </button>
         </>
       )}
     </>
   )
 }
-
-const Canvas = styled.div<{ seed: number }>`
-  --fluid-pattern-seed: ${(props) => props.seed};
-  --fluid-pattern-bg-color: ${theme`colors.siteBackground`};
-  --fluid-pattern-color-1: ${theme`colors.yellow`};
-  --fluid-pattern-color-2: ${theme`colors.primary`};
-  --fluid-pattern-color-3: ${theme`colors.red`};
-  --fluid-pattern-color-4: ${theme`colors.green`};
-
-  .dark & {
-    --fluid-pattern-bg-color: ${theme`colors.black`};
-  }
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: paint(fluidPattern);
-  z-index: -100000;
-
-  ${tw`print:hidden`}
-`
-
-const RefreshButton = styled.button`
-  font-size: 2rem;
-  z-index: 10;
-
-  ${tw`
-    fixed 
-    bottom-4 
-    right-4 
-    rounded-full 
-    bg-primary 
-    hover:bg-primaryLite
-    text-white 
-    p-4
-    sm:text-base
-    sm:p-2
-    print:hidden
-  `}
-`
 
 export default FancyBackground

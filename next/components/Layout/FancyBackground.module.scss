@@ -1,0 +1,28 @@
+.canvas {
+  --fluid-pattern-bg-color: theme('colors.siteBackground');
+  --fluid-pattern-color-1: theme('colors.yellow');
+  --fluid-pattern-color-2: theme('colors.primary');
+  --fluid-pattern-color-3: theme('colors.red');
+  --fluid-pattern-color-4: theme('colors.green');
+
+  :global(.dark) & {
+    --fluid-pattern-bg-color: theme('colors.black');
+  }
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: paint(fluidPattern);
+  z-index: -100000;
+
+  @apply print:hidden;
+}
+
+.refreshButton {
+  font-size: 2rem;
+  z-index: 10;
+
+  @apply fixed bottom-4 right-4 rounded-full bg-primary hover:bg-primaryLite text-white p-4 sm:text-base sm:p-2 print:hidden;
+}
