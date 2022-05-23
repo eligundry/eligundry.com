@@ -16,7 +16,8 @@
     "build:sitemap": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .next .contentlayer .netlify _next"
   },
   "dependencies": {
     "@builder.io/partytown": "^0.5.4",
