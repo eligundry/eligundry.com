@@ -6,6 +6,7 @@ export type Post = typeof allPosts[0]
 export type PostType = 'blog' | 'talks'
 export type Field = keyof Post
 
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function getBySlug<Fields extends undefined>(
   postType: PostType,
   slug: string
@@ -13,7 +14,7 @@ function getBySlug<Fields extends undefined>(
 function getBySlug<Fields extends Field[]>(
   postType: PostType,
   slug: string,
-  fields: Field[]
+  fields: Fields
 ): Pick<Post, typeof fields[number]>
 function getBySlug<Fields extends Field[]>(
   postType: PostType,
@@ -31,10 +32,11 @@ function getBySlug<Fields extends Field[]>(
   return post
 }
 
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function getAll<Fields extends undefined>(postType: PostType): Post[]
 function getAll<Fields extends Field[]>(
   postType: PostType,
-  fields: Field[]
+  fields: Fields
 ): Pick<Post, typeof fields[number]>[]
 function getAll<Fields extends Field[]>(postType: PostType, fields?: Fields) {
   const posts = allPosts
