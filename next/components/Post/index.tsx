@@ -10,6 +10,7 @@ import Time from '@/components/Shared/Time'
 import EmojiText from '@/components/Shared/EmojiText'
 import { Post as PostType } from '@/lib/blog'
 import MDXShortcodes from './shortcodes'
+import styles from './index.module.scss'
 
 interface Props {
   title: string
@@ -39,10 +40,12 @@ const Post: React.FC<Props> = ({
   const Component = useMDXComponent(body.code)
 
   return (
-    <Article
+    <Paper
       // @ts-ignore
       itemScope
       itemType={`https://schema.org/${itemType}`}
+      className={styles.article}
+      element="article"
     >
       <link itemProp="author publisher" href="#eli-gundry" />
       {dateModified && <meta itemProp="dateModified" content={dateModified} />}
@@ -79,100 +82,8 @@ const Post: React.FC<Props> = ({
           {footer}
         </LazyLoad>
       )}
-    </Article>
+    </Paper>
   )
 }
-
-const Article = styled<React.FC>(Paper.article)`
-  & header {
-    ${tw`font-normal`}
-
-    & h1 {
-      ${tw`
-        font-extrabold
-        font-sans
-        break-normal
-        text-typographyDark
-        dark:text-white
-        pb-2
-        text-3xl
-        md:text-4xl
-      `}
-    }
-
-    & > * {
-      ${tw`block`}
-    }
-
-    & time + address {
-      ${tw`mt-0`}
-    }
-  }
-
-  & .body {
-    & .twitter-tweet {
-      margin: 0 auto;
-    }
-
-    & img[src*='.gif'] {
-      margin: 0 auto;
-    }
-
-    & figure {
-      & > p {
-        ${tw`mb-0`}
-      }
-
-      figcaption {
-        ${tw`italic text-center py-4 font-serif`}
-
-        & > p {
-          ${tw`my-0`}
-        }
-      }
-
-      & + p {
-        ${tw`mt-0`}
-      }
-    }
-
-    & *:not(p, ul, ol) + h1 {
-      ${tw`mt-4`}
-    }
-
-    & h1 + *:not(p, ul, ol) {
-      ${tw`mt-4`}
-    }
-
-    & iframe {
-      max-width: 100%;
-      ${tw`my-4`}
-    }
-
-    & .float-right {
-      ${tw`float-right ml-2 sm:float-none sm:mx-auto`}
-    }
-
-    & .float-left {
-      ${tw`float-left mr-2 sm:float-none sm:mx-auto`}
-    }
-
-    & .center {
-      margin: 1em auto;
-    }
-
-    & iframe[src*='giphy.com'] {
-      ${tw`my-0`}
-    }
-
-    & *:not(pre) code {
-      ${tw`bg-siteBackground break-words`}
-    }
-  }
-
-  & .lazyload-footer-wrapper {
-    min-height: 270px;
-  }
-`
 
 export default Post
