@@ -53,6 +53,14 @@ module.exports = {
         namedComponents: ['arrow-function'],
       },
     ],
+    'react/button-has-type': [
+      2,
+      {
+        button: true,
+        submit: true,
+        reset: true,
+      },
+    ],
   },
   overrides: [
     {

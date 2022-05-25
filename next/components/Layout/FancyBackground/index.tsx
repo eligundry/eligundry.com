@@ -57,6 +57,7 @@ const FancyBackground: React.FC = () => {
               'gtm-background-refresh-button',
               styles.refreshButton
             )}
+            type="reset"
           >
             <FaSync />
           </button>

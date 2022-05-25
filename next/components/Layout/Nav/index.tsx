@@ -47,6 +47,7 @@ const Nav: React.FC = () => {
         aria-label={`${hamburgerExpanded ? 'close' : 'open'} the nav menu`}
         onClick={() => setHamburgerExpanded((exp) => !exp)}
         className={styles.hamburger}
+        type="reset"
       >
         {hamburgerExpanded ? '🙅' : '🍔'}
       </button>
@@ -56,7 +57,6 @@ const Nav: React.FC = () => {
           styles.nav,
           !hamburgerExpanded && styles.navNotExpanded
         )}
-        onClick={() => hamburgerExpanded && setHamburgerExpanded(false)}
       >
         <div className={styles.navLinks}>
           {Object.entries(navLinks).map(
@@ -83,6 +83,7 @@ const Nav: React.FC = () => {
         } theme for the site`}
         data-gtm="theme-toggle"
         className={styles.themeToggle}
+        type="reset"
       >
         {darkMode ? '🌚' : '🌞'}
       </button>

@@ -41,6 +41,7 @@ const SpotifyAlbumEmbed: React.FC<SpotifyProps & LoadingProps> = ({
     height="380"
     frameBorder="0"
     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    title="album embed from spotify.com"
     {...props}
   />
 )
@@ -67,6 +68,7 @@ const BandcampAlbumEmbed: React.FC<BandcampProps & LoadingProps> = ({
       width: '320px',
       height: '470px',
     }}
+    title="album embed from bandcamp.com"
     {...props}
   >
     <a href={url}>

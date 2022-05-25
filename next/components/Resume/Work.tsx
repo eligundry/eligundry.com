@@ -1,9 +1,9 @@
 import React from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
+import { useIsPrinting } from '@/hooks/useMediaQuery'
 import Experience from './Experience'
 import { Work } from './data'
-import { useIsPrinting } from '@/hooks/useMediaQuery'
 import {
   useParseOptimizedFlag,
   useJobSearchParams,

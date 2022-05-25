@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import clsx from 'clsx'
 
+import Paper from '@/components/Shared/Paper'
 import resumeData from './data'
 import Work from './Work'
 import Education from './Education'
 import Skills from './Skills'
 import ActivitiesInterests from './ActivitesInterests'
-import Paper from '@/components/Shared/Paper'
 import ResumeHeader from './Header'
 import ResumeFooter from './Footer'
 import { useParseOptimizedFlag } from './hooks'
