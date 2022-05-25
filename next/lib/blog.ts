@@ -1,10 +1,19 @@
-import { allPosts } from 'contentlayer/generated'
+import { allPosts, Post as RawPost } from 'contentlayer/generated'
 import * as dateFns from 'date-fns'
 import pick from 'lodash/pick'
+import omit from 'lodash/omit'
 
-export type Post = typeof allPosts[0]
+export interface Post extends Omit<RawPost, 'body'> {
+  body: {
+    code: RawPost['body']['code']
+  }
+}
 export type PostType = 'blog' | 'talks'
 export type Field = keyof Post
+
+// We never need to send the raw markdown to the client and there isn't an easy
+// way to remove the raw field
+const filterFields = (post: RawPost | undefined) => omit(post, 'body.raw')
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function getBySlug<Fields extends undefined>(
@@ -26,10 +35,10 @@ function getBySlug<Fields extends Field[]>(
   )
 
   if (fields) {
-    return pick(post, fields) as Pick<Post, typeof fields[number]>
+    return pick(filterFields(post), fields) as Pick<Post, typeof fields[number]>
   }
 
-  return post
+  return filterFields(post)
 }
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -61,11 +70,12 @@ function getAll<Fields extends Field[]>(postType: PostType, fields?: Fields) {
 
   if (fields) {
     return posts.map(
-      (post) => pick(post, fields) as Pick<Post, typeof fields[number]>
+      (post) =>
+        pick(filterFields(post), fields) as Pick<Post, typeof fields[number]>
     )
   }
 
-  return posts
+  return posts.map((post) => filterFields(post))
 }
 
 const api = { getAll, getBySlug }
