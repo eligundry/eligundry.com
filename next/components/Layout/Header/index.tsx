@@ -3,7 +3,7 @@ import Link from 'next/link'
 import useWindowScroll from 'react-use/lib/useWindowScroll'
 import useWindowSize from 'react-use/lib/useWindowSize'
 
-import useDocument from '@/components/Shared/useDocument'
+import useDocument from '@/hooks/useDocument'
 import Nav from '@/components/Layout/Nav'
 import styles from './index.module.scss'
 

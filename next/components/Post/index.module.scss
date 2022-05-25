@@ -3,7 +3,11 @@
     @apply font-normal;
 
     & h1 {
-      @apply font-extrabold font-sans break-normal text-typographyDark dark:text-white pb-2 text-3xl md:text-4xl;
+      @apply font-extrabold font-sans break-normal text-typographyDark pb-2 text-3xl md:text-4xl;
+
+      :global(body.dark) & {
+        @apply text-white;
+      }
     }
   }
 
@@ -15,8 +19,8 @@
     @apply mt-0;
   }
 
-  & .body {
-    & .twitter-tweet {
+  & :global(.body) {
+    & :global(.twitter-tweet) {
       margin: 0 auto;
     }
 
@@ -55,21 +59,21 @@
       @apply my-4;
     }
 
-    & .float-right {
+    & :global(.float-right) {
       float: right;
       @apply ml-2 sm:float-none sm:mx-auto;
     }
 
-    & .float-left {
+    & :global(.float-left) {
       float: left;
       @apply mr-2 sm:float-none sm:mx-auto;
     }
 
-    & .center {
+    & :global(.center) {
       margin: 1em auto;
     }
 
-    & iframe[src*='giphy.com'] {
+    & :global(iframe[src*='giphy.com']) {
       @apply my-0;
     }
 

@@ -1,41 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react'
-import tw, { styled, css } from 'twin.macro'
+import clsx from 'clsx'
 
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
+import styles from './index.module.scss'
 
 interface Props {
   fileURL: string
 }
-
-interface EmGitHubContainerProps {
-  expanded: boolean
-}
-
-const EmGitHubContainer = styled.div<EmGitHubContainerProps>`
-  ${tw`text-base`}
-
-  ${(props) =>
-    !props.expanded &&
-    css`
-      max-height: 200px;
-      overflow: hidden;
-    `}
-`
-
-const ExpandButtonContainer = styled.div`
-  position: relative;
-  top: -3em;
-  height: 3em;
-  background-image: linear-gradient(to bottom, transparent, white);
-  display: flex;
-  justify-content: center;
-
-  ${tw`dark:bg-none`}
-
-  & button {
-    ${tw`bg-primary hover:bg-primaryLite active:bg-primaryDark text-white px-4 py-2 rounded font-sans`}
-  }
-`
 
 const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
   const [expanded, setExpanded] = useState(false)
@@ -77,21 +48,25 @@ const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
 
   return (
     <div>
-      <EmGitHubContainer
+      <div
         ref={scriptTarget as React.MutableRefObject<HTMLDivElement>}
-        expanded={expanded}
+        className={clsx(
+          styles.container,
+          !expanded && styles.containerCollapsed
+        )}
       />
       {!expanded && (
-        <ExpandButtonContainer>
+        <div className={clsx(styles.expandButtonContainer)}>
           <button
             onClick={() => setExpanded(true)}
             data-gtm="emgithub-file-expaded"
             data-gtm-emgithub-file-url={fileURL}
             type="button"
+            className={clsx(styles.expandButton)}
           >
             Expand File
           </button>
-        </ExpandButtonContainer>
+        </div>
       )}
     </div>
   )

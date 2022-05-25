@@ -4,10 +4,10 @@ import parseISO from 'date-fns/parseISO'
 import formatISO from 'date-fns/formatISO'
 import dateSubDays from 'date-fns/subDays'
 import type { CoreChartOptions, ChartType } from 'chart.js/types/index.esm'
-import { theme } from 'twin.macro'
 import { useRouter } from 'next/router'
 
-import { useHasTouch } from '@/utils/useIsMobile'
+import useTailwindTheme from '@/hooks/useTailwindTheme'
+import { useHasTouch } from '@/hooks/useMediaQuery'
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
 import { toolTipTheme } from '@/utils/charts'
 import { useFeelingsChartData } from './hooks'
@@ -22,6 +22,7 @@ const DaylioChart: React.FC<Props> = () => {
   const isTouchScreen = useHasTouch(true)
   const prefersDark = usePrefersDarkMode()
   const router = useRouter()
+  const theme = useTailwindTheme()
 
   // Clicking on an entry will navigate to the entry on the feelings page
   const handlePointClick = useCallback<CoreChartOptions<ChartType>['onClick']>(
@@ -64,9 +65,9 @@ const DaylioChart: React.FC<Props> = () => {
               data,
               backgroundColor: 'transparent',
               pointStyle: 'rect',
-              borderColor: theme`colors.primaryLite`,
-              pointBorderColor: theme`colors.primary`,
-              pointBackgroundColor: theme`colors.primary`,
+              borderColor: theme.colors.primaryLite,
+              pointBorderColor: theme.colors.primary,
+              pointBackgroundColor: theme.colors.primary,
               pointRadius: 5,
             },
           ],
@@ -103,7 +104,7 @@ const DaylioChart: React.FC<Props> = () => {
             y: {
               min: 0,
               grid: {
-                color: prefersDark ? theme`colors.typographyLite` : undefined,
+                color: prefersDark ? theme.colors.typographyLite : undefined,
               },
               ticks: {
                 // @ts-ignore

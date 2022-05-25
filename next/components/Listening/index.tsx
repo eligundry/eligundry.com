@@ -4,8 +4,8 @@ import useMeasure from 'react-use/lib/useMeasure'
 import Skeleton from 'react-loading-skeleton'
 
 import type { LastFMCoverItem } from '@/lib/lastfm'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 import LastFmCover from './LastFmCover'
-import useIsMobile from '../../utils/useIsMobile'
 import styles from './Listening.module.scss'
 
 interface Props {

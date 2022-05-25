@@ -1,0 +1,19 @@
+.tooltip {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: theme('fontFamily.sans');
+
+  &.show {
+    opacity: 1;
+  }
+
+  & strong {
+    font-family: theme('fontFamily.sans');
+    font-weight: 600;
+  }
+
+  :global(.dark) &::before,
+  :global(.dark) &::after {
+    background-color: theme('colors.typographyDark');
+  }
+}

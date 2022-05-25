@@ -1,5 +1,5 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
+import clsx from 'clsx'
 
 interface Props
   extends Omit<React.HTMLProps<HTMLIFrameElement>, 'width' | 'height'> {
@@ -8,25 +8,23 @@ interface Props
 }
 
 const ResponsiveIFrame: React.FC<Props> = ({ width, height, ...props }) => (
-  <Wrapper
+  <div
     style={{ paddingBottom: `${(height / width) * 100}%` }}
-    className="responsive-iframe"
+    className={clsx('responsive-iframe', 'relative', 'overflow-hidden', 'h-0')}
   >
     {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
-    <iframe {...props} />
-  </Wrapper>
+    <iframe
+      className={clsx(
+        'absolute',
+        'w-full',
+        'h-full',
+        'top-0',
+        'left-0',
+        props.className
+      )}
+      {...props}
+    />
+  </div>
 )
-
-const Wrapper = styled.div`
-  position: relative;
-  height: 0;
-  overflow: hidden;
-
-  & > iframe {
-    top: 0;
-    left: 0;
-    ${tw`absolute w-full h-full`}
-  }
-`
 
 export default ResponsiveIFrame

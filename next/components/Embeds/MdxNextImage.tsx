@@ -1,6 +1,6 @@
 import React from 'react'
 import Image, { ImageProps } from 'next/image'
-import tw, { styled, css } from 'twin.macro'
+import clsx from 'clsx'
 
 export interface MDXNextImageProps extends Omit<ImageProps, 'src' | 'alt'> {
   src: string
@@ -18,23 +18,18 @@ const MDXNextImage: React.FC<MDXNextImageProps> = (props) => {
   }
 
   return (
-    <Wrapper className="next-mdx-image" {...props}>
+    <div
+      className={clsx('mx-auto', 'sm:maw-w-full', 'next-mdx-image')}
+      style={{
+        width: props.width ? `${props.width}px` : undefined,
+        maxWidth: '690px',
+      }}
+      {...props}
+    >
       {/* eslint-disable-next-line jsx-a11y/alt-text */}
       <Image placeholder="blur" {...props} />
-    </Wrapper>
+    </div>
   )
 }
-
-const Wrapper = styled.div<MDXNextImageProps>`
-  max-width: 690px;
-
-  ${tw`mx-auto sm:max-w-full`}
-
-  ${({ width }) =>
-    width &&
-    css`
-      width: ${width}px;
-    `}
-`
 
 export default MDXNextImage

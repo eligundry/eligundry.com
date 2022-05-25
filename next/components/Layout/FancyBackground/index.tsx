@@ -3,7 +3,7 @@ import Script from 'next/script'
 import Head from 'next/head'
 import { FaSync } from 'react-icons/fa'
 import { isSSR } from '@/utils/env'
-import useDocument from '@/components/Shared/useDocument'
+import useDocument from '@/hooks/useDocument'
 import clsx from 'clsx'
 import styles from './index.module.scss'
 

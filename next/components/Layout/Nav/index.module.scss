@@ -6,10 +6,18 @@
   @apply flex flex-row sm:flex-col justify-end flex-1 items-center sm:items-start;
 
   & a {
-    @apply inline-block text-typographyLite dark:text-white no-underline hover:text-primary py-2 px-4 sm:px-0 sm:w-full;
+    @apply inline-block text-typographyLite no-underline hover:text-primary py-2 px-4 sm:px-0 sm:w-full;
+
+    :global(body.dark) & {
+      @apply text-white;
+    }
 
     &[aria-current='page'] {
       @apply font-bold text-primary;
+
+      :global(body.dark) & {
+        @apply text-primary;
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
+import clsx from 'clsx'
 
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
-import styles from './index.module.scss'
 
 const Comments: React.FC = () => {
   const utterancesRef = useRef<HTMLDivElement>(null)
@@ -29,7 +29,7 @@ const Comments: React.FC = () => {
     }
   }, [prefersDark])
 
-  return <aside className={styles.utterances} ref={utterancesRef} />
+  return <aside className={clsx('m-0', 'print:hidden')} ref={utterancesRef} />
 }
 
 export default Comments

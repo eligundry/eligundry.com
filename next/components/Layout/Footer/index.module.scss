@@ -1,5 +1,9 @@
 .footer {
-  @apply bg-white dark:bg-typographyDark shadow print:hidden;
+  @apply bg-white shadow print:hidden;
+
+  :global(body.dark) & {
+    @apply bg-typographyDark;
+  }
 }
 
 .container {
