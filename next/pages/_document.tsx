@@ -2,41 +2,10 @@
 // on load. Without it, the styles are only added once
 // react loads on the frontend
 
-import Document, {
-  DocumentContext,
-  Html,
-  Head,
-  Main,
-  NextScript,
-} from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
+import clsx from 'clsx'
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
-    const sheet = new ServerStyleSheet()
-    const originalRenderPage = ctx.renderPage
-    try {
-      ctx.renderPage = () =>
-        originalRenderPage({
-          enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
-        })
-      const initialProps = await Document.getInitialProps(ctx)
-
-      return {
-        ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            {sheet.getStyleElement()}
-          </>
-        ),
-      }
-    } finally {
-      sheet.seal()
-    }
-  }
-
   render() {
     return (
       <Html
@@ -44,7 +13,12 @@ export default class MyDocument extends Document {
         itemScope
         itemType="https://schema.org/Person"
         itemID="#eli-gundry"
-        className="wf-firacode-n4-loading wf-zillaslab-n4-loading wf-firasans-n4-loading wf-loading"
+        className={clsx(
+          'wf-firacode-n4-loading',
+          'wf-zillaslab-n4-loading',
+          'wf-firasans-n4-loading',
+          'wf-loading'
+        )}
       >
         <Head>
           <meta itemProp="image" content="/img/eli-gundry-headshot.jpg" />

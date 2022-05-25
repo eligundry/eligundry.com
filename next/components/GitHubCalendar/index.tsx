@@ -25,7 +25,7 @@ const GitHubCalendar: React.FC<Props> = ({ data }) => {
         totalCount: `{{count}} contributions in the last year`,
       }}
     >
-      <Tooltip html />
+      <Tooltip />
     </Calendar>
   )
 }
