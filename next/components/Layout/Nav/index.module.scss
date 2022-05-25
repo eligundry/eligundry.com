@@ -8,6 +8,12 @@
   & a {
     @apply inline-block text-typographyLite no-underline hover:text-primary py-2 px-4 sm:px-0 sm:w-full;
 
+    &:hover,
+    &:active,
+    &:focus {
+      @apply no-underline;
+    }
+
     :global(body.dark) & {
       @apply text-white;
     }
