@@ -3,7 +3,7 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import Experience from './Experience'
 import { Work } from './data'
-import useIsPrinting from '../Shared/useIsPrinting'
+import { useIsPrinting } from '@/hooks/useMediaQuery'
 import {
   useParseOptimizedFlag,
   useJobSearchParams,

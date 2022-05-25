@@ -1,8 +1,8 @@
 .footer {
-  @apply bg-white shadow print:hidden;
+  @apply bg-white text-typography shadow print:hidden;
 
   :global(body.dark) & {
-    @apply bg-typographyDark;
+    @apply bg-typographyDark text-white;
   }
 }
 

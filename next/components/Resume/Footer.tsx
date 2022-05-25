@@ -1,30 +1,10 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
+import clsx from 'clsx'
 
 import EmojiText from '@/components/Shared/EmojiText'
-import useIsPrinting from '@/components/Shared/useIsPrinting'
+import { useIsPrinting } from '@/hooks/useMediaQuery'
 import { useParseOptimizedFlag, useJobSearchParams } from './hooks'
-
-const Footer = styled.footer<{ parseOptimized?: boolean }>`
-  ${tw`flex flex-row w-full font-sans font-bold text-xs`}
-
-  ${(props) =>
-    props.parseOptimized
-      ? tw`print:font-parseSafeSans pb-2 justify-end`
-      : tw`fixed bottom-0 border-t-2 pt-2`}
-
-  & > * {
-    ${tw`mr-4`}
-
-    &:last-child {
-      ${tw`mr-0`}
-    }
-  }
-
-  & svg {
-    ${tw`inline`}
-  }
-`
+import styles from './index.module.scss'
 
 const ResumeFooter: React.FC = () => {
   const isPrinting = useIsPrinting()
@@ -38,7 +18,14 @@ const ResumeFooter: React.FC = () => {
   }
 
   return (
-    <Footer parseOptimized={parseOptimized}>
+    <footer
+      className={clsx(
+        styles.resumeFooter,
+        parseOptimized
+          ? styles.parseOptimizedResumeFooter
+          : styles.notParseOptimizedResumeFooter
+      )}
+    >
       <span>
         <EmojiText
           emoji="💌"
@@ -88,7 +75,7 @@ const ResumeFooter: React.FC = () => {
           </EmojiText>
         </span>
       )}
-    </Footer>
+    </footer>
   )
 }
 

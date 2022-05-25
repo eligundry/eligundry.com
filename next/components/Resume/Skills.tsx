@@ -1,11 +1,11 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
+import clsx from 'clsx'
 
 import { Skills } from './data'
 
 interface SkillsItemProps {
   prefix: string | React.ReactNode
-  keywords: { [keyword: string]: string }
+  keywords: Record<string, string>
 }
 
 const SkillsItem: React.FC<SkillsItemProps> = ({ prefix, keywords }) => {
@@ -50,7 +50,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
       <header>
         <h2>Skills & Technologies</h2>
       </header>
-      <SkillsList>
+      <ul className={clsx('pl-0', 'mt-0', 'pb-4')}>
         {languages?.keywords && (
           <SkillsItem prefix="Fluent in" keywords={languages.keywords} />
         )}
@@ -69,15 +69,9 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
             keywords={loveHate.keywords}
           />
         )}
-      </SkillsList>
+      </ul>
     </section>
   )
 }
-
-const SkillsList = styled.ul`
-  && {
-    ${tw`pl-0 mt-0 mb-4`}
-  }
-`
 
 export default SkillsSection
