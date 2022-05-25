@@ -1,33 +1,11 @@
 import React from 'react'
-import tw, { styled, css } from 'twin.macro'
+import clsx from 'clsx'
 import Link from 'next/link'
 
-import useIsPrinting from '../Shared/useIsPrinting'
+import { useIsPrinting } from '@/hooks/useMediaQuery'
 import { useParseOptimizedFlag } from './hooks'
 import ResumeFooter from './Footer'
-
-const Header = styled.header<{ parseOptimized?: boolean }>`
-  ${tw`flex flex-row`}
-
-  border: 0 !important;
-
-  & h1 a {
-    ${tw`text-typographyDark text-2xl font-extrabold`}
-  }
-
-  && h2 {
-    ${tw`text-primary text-sm`}
-    ${(props) =>
-      !props.parseOptimized &&
-      css`
-        margin-top: 10px;
-      `}
-
-    & .comment {
-      ${tw`text-typographyLite`}
-    }
-  }
-`
+import styles from './index.module.scss'
 
 const ResumeHeader: React.FC = () => {
   const isPrinting = useIsPrinting()
@@ -38,7 +16,12 @@ const ResumeHeader: React.FC = () => {
   }
 
   return (
-    <Header parseOptimized={parseOptimized}>
+    <header
+      className={clsx(
+        styles.resumeHeader,
+        parseOptimized && styles.parseOptimizedResumeHeader
+      )}
+    >
       <h1>
         <Link href="/">
           <a>Eli Gundry</a>
@@ -57,7 +40,7 @@ const ResumeHeader: React.FC = () => {
         </h2>
         {parseOptimized && <ResumeFooter />}
       </div>
-    </Header>
+    </header>
   )
 }
 

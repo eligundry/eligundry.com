@@ -1,0 +1,48 @@
+.article {
+  @apply mb-8;
+
+  &:last-child {
+    @apply mb-0;
+  }
+
+  & h1 {
+    @apply font-extrabold text-3xl leading-none;
+  }
+
+  & > * {
+    @apply mb-2;
+  }
+}
+
+.description {
+  margin-top: 0;
+}
+
+.tagWrapper {
+  @apply mb-6;
+
+  & > * {
+    @apply mr-2 mb-2 inline-block;
+  }
+}
+
+.tag {
+  @apply font-sans border-2 border-primary border-solid rounded-full py-1 px-2 text-sm whitespace-nowrap;
+
+  &:hover, &:active, &:focus {
+    @apply no-underline;
+  }
+
+  &:hover {
+    @apply text-white bg-primaryLite;
+  }
+
+  & span {
+    position: relative;
+    top: 2px;
+  }
+}
+
+.activeTag {
+  @apply text-white bg-primary;
+}

@@ -1,15 +1,10 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
 
 interface Props {
   emoji: string
   label: string
   fallback?: React.ReactNode
 }
-
-const Emoji = styled.span`
-  ${tw`pr-2`}
-`
 
 const EmojiText: React.FC<Props> = ({ children, emoji, label, fallback }) => {
   if (fallback) {
@@ -22,9 +17,9 @@ const EmojiText: React.FC<Props> = ({ children, emoji, label, fallback }) => {
 
   return (
     <>
-      <Emoji role="img" aria-label={label}>
+      <span role="img" aria-label={label} className="pr-2">
         {emoji}
-      </Emoji>
+      </span>
       {children}
     </>
   )

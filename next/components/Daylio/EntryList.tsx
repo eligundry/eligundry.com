@@ -1,28 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-use'
-import tw, { styled } from 'twin.macro'
 
 import Entry from './Entry'
 import { DaylioEntry, DaylioVariants } from './types'
+import styles from './index.module.scss'
 
 interface Props {
   entries: DaylioEntry[]
 }
-
-const EntryListWrapper = styled.section`
-  position: relative;
-
-  &::before {
-    content: ' ';
-    position: absolute;
-    margin-left: calc(2rem - 4px);
-    height: 100%;
-    z-index: 8;
-    margin-top: 5px;
-
-    ${tw`border-4 border-primary border-solid`}
-  }
-`
 
 const EntryList: React.FC<Props> = ({ entries }) => {
   const { hash } = useLocation()
@@ -45,7 +30,7 @@ const EntryList: React.FC<Props> = ({ entries }) => {
   }, [hasScrolled, setHasScrolled, selectedEntryTime])
 
   return (
-    <EntryListWrapper>
+    <section className={styles.entryListWrapper}>
       {entries.map((entry) => (
         <Entry
           key={entry.time.toISOString()}
@@ -54,7 +39,7 @@ const EntryList: React.FC<Props> = ({ entries }) => {
           {...entry}
         />
       ))}
-    </EntryListWrapper>
+    </section>
   )
 }
 

@@ -1,0 +1,75 @@
+{
+  "colors": {
+    "transparent": "transparent",
+    "primaryLite": "#92c6e7",
+    "primaryMedium": "#4a93c2",
+    "primary": "#088CDE",
+    "primaryDark": "#4E7A94",
+    "typography": "#27272a",
+    "typographyLite": "#52525b",
+    "typographyDark": "#18181b",
+    "siteBackground": "#f4f4f5",
+    "white": "#fff",
+    "black": "#000",
+    "liteGray": "#E5E7EB",
+    "paper": "rgba(244, 244, 245, 0.95)",
+    "paperDark": "rgba(0, 0, 0, 0.85)",
+    "yellow": "#ffd53d",
+    "red": "#f25c54",
+    "green": "#48cb8a"
+  },
+  "screens": {
+    "sm": {
+      "min": "0px",
+      "max": "767px"
+    },
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px",
+    "xs": {
+      "min": "0px",
+      "max": "767px"
+    },
+    "print": {
+      "raw": "print"
+    }
+  },
+  "fontFamily": {
+    "sans": [
+      "Fira Sans",
+      "Helvetica Neue",
+      "Arial",
+      "sans-serif"
+    ],
+    "serif": [
+      "Zilla Slab",
+      "Georgia",
+      "serif"
+    ],
+    "mono": [
+      "Fira Code",
+      "monospace"
+    ],
+    "parseSafeSans": [
+      "Segoe UI",
+      "Helvetica",
+      "Arial",
+      "sans-serif"
+    ],
+    "parseSafeSerif": [
+      "Georgia",
+      "serif"
+    ],
+    "parseSafeMono": [
+      "monospace"
+    ]
+  },
+  "animation": {
+    "none": "none",
+    "spin": "spin 1s linear infinite",
+    "ping": "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
+    "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+    "bounce": "bounce 1s infinite"
+  }
+}

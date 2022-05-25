@@ -1,0 +1,25 @@
+.container {
+  @apply text-base;
+}
+
+.containerCollapsed {
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.expandButtonContainer {
+  position: relative;
+  top: -3em;
+  height: 3em;
+  background-image: linear-gradient(to bottom, transparent, white);
+  display: flex;
+  justify-content: center;
+
+  :global(.dark) & {
+    background-image: none;
+  }
+}
+
+.expandButton {
+  @apply bg-primary hover:bg-primaryLite text-white px-4 py-2 rounded font-sans;
+}

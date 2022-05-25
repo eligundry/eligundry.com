@@ -1,11 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
-import tw, { styled } from 'twin.macro'
 
 import Time from '@/components/Shared/Time'
 import EmojiText from '@/components/Shared/EmojiText'
 import { Post } from '@/lib/blog'
 import TagPicker, { useSelectedTag } from './TagPicker'
+import styles from './index.module.scss'
 
 export interface PostListingProps {
   posts: Pick<
@@ -22,26 +22,6 @@ export interface PostListingProps {
   itemType: 'CreativeWork' | 'BlogPosting'
 }
 
-const Article = styled.article`
-  ${tw`mb-8`}
-
-  &:last-child {
-    ${tw`mb-0`}
-  }
-
-  & h1 {
-    ${tw`font-extrabold text-3xl leading-none`}
-  }
-
-  & > * {
-    ${tw`mb-2`}
-  }
-
-  & .description {
-    margin-top: 0;
-  }
-`
-
 const PostListing: React.FC<PostListingProps> = ({ posts, itemType }) => {
   const tags = posts.reduce((acc, post) => {
     post.tags?.forEach((tag) => acc.add(tag))
@@ -57,11 +37,11 @@ const PostListing: React.FC<PostListingProps> = ({ posts, itemType }) => {
     <>
       {tags.size > 0 && <TagPicker tags={tags} selectedTag={selectedTag} />}
       {postList.map((post) => (
-        <Article
+        <article
           key={post.path}
           itemScope
           itemType={`https://schema.org/${itemType}`}
-          className="listing-post"
+          className={styles.article}
         >
           <link itemProp="author publisher" href="#eli-gundry" />
           {post.cover && <meta itemProp="image" content={post.cover} />}
@@ -80,13 +60,13 @@ const PostListing: React.FC<PostListingProps> = ({ posts, itemType }) => {
             <Time dateTime={new Date(post.date)} itemProp="datePublished" />
           )}
           {post.description && (
-            <p itemProp="description" className="description">
+            <p itemProp="description" className={styles.description}>
               <EmojiText label="description of the blog post" emoji="📝">
                 {post.description}
               </EmojiText>
             </p>
           )}
-        </Article>
+        </article>
       ))}
     </>
   )

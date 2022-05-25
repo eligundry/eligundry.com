@@ -1,13 +1,18 @@
 import React from 'react'
 import Image, { ImageProps } from 'next/image'
-import tw, { styled, css } from 'twin.macro'
+import clsx from 'clsx'
 
 export interface MDXNextImageProps extends Omit<ImageProps, 'src' | 'alt'> {
   src: string
   alt: string
+  containerClassName?: string
 }
 
-const MDXNextImage: React.FC<MDXNextImageProps> = (props) => {
+const MDXNextImage: React.FC<MDXNextImageProps> = ({
+  blurDataURL,
+  containerClassName,
+  ...props
+}) => {
   if (
     typeof props.src === 'string' &&
     props.src.startsWith('http') &&
@@ -18,23 +23,23 @@ const MDXNextImage: React.FC<MDXNextImageProps> = (props) => {
   }
 
   return (
-    <Wrapper className="next-mdx-image" {...props}>
+    <div
+      className={clsx(
+        'mx-auto',
+        'sm:maw-w-full',
+        'next-mdx-image',
+        containerClassName
+      )}
+      style={{
+        width: props.width ? `${props.width}px` : undefined,
+        maxWidth: '690px',
+      }}
+      {...props}
+    >
       {/* eslint-disable-next-line jsx-a11y/alt-text */}
-      <Image placeholder="blur" {...props} />
-    </Wrapper>
+      <Image placeholder="blur" blurDataURL={blurDataURL} {...props} />
+    </div>
   )
 }
-
-const Wrapper = styled.div<MDXNextImageProps>`
-  max-width: 690px;
-
-  ${tw`mx-auto sm:max-w-full`}
-
-  ${({ width }) =>
-    width &&
-    css`
-      width: ${width}px;
-    `}
-`
 
 export default MDXNextImage

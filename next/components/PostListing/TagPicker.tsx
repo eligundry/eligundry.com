@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import useLocation from 'react-use/lib/useLocation'
-import tw, { styled } from 'twin.macro'
 import Head from 'next/head'
 import Link from 'next/link'
+import clsx from 'clsx'
 
-import EmojiText from '../Shared/EmojiText'
+import EmojiText from '@/components/Shared/EmojiText'
+import styles from './index.module.scss'
 
 interface Props {
   selectedTag: string | undefined
@@ -28,44 +29,25 @@ export function useSelectedTag(): string | undefined {
   return tag
 }
 
-const TagWrapper = styled.nav`
-  ${tw`mb-6`}
-
-  & > * {
-    ${tw`mr-2 mb-2 inline-block`}
-  }
-`
-
-const Tag = styled.a<{ active?: boolean }>`
-  ${tw`
-    font-sans
-    border-2 
-    border-primary 
-    border-solid 
-    rounded-full 
-    py-1 
-    px-2 
-    text-sm 
-    whitespace-nowrap
-    hover:no-underline
-    active:no-underline
-    focus:no-underline
-    hover:text-white hover:bg-primaryLite
-  `}
-
-  ${(props) => props.active && tw`text-white bg-primary`}
-
-  & span {
-    position: relative;
-    top: 2px;
-  }
-`
+const Tag = React.forwardRef<
+  HTMLAnchorElement,
+  { active: boolean } & React.HTMLAttributes<HTMLAnchorElement>
+>(({ active, className, children, ...props }, ref) => (
+  <a
+    className={clsx(styles.tag, active && styles.activeTag, className)}
+    ref={ref}
+    {...props}
+  >
+    {children}
+  </a>
+))
+Tag.displayName = 'Tag'
 
 const TagPicker: React.FC<Props> = ({ tags, selectedTag }) => {
   const { pathname } = useLocation()
 
   return (
-    <TagWrapper>
+    <nav className={styles.tagWrapper}>
       {selectedTag && (
         <Head>
           <title>#{selectedTag} | Blog | Eli Gundry</title>
@@ -82,14 +64,14 @@ const TagPicker: React.FC<Props> = ({ tags, selectedTag }) => {
       ))}
       {selectedTag && (
         <Link href={pathname ?? ''} passHref>
-          <Tag>
+          <Tag active={false}>
             <EmojiText label="red x emoji to clear the filters" emoji="❌">
               clear
             </EmojiText>
           </Tag>
         </Link>
       )}
-    </TagWrapper>
+    </nav>
   )
 }
 

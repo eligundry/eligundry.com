@@ -2,10 +2,10 @@ import React from 'react'
 import { Chart } from 'react-chartjs-2'
 import { Chart as ChartJS, SankeyDataPoint } from 'chart.js'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
-import { theme } from 'twin.macro'
 
 import { toolTipTheme, textColor } from '@/utils/charts'
 import { usePrefersDarkMode } from '@/components/Layout/ThemeModeProvider'
+import theme from '@/hooks/useTailwindTheme/theme.json'
 import jobSearch2022 from './2022.json'
 
 try {
@@ -133,22 +133,22 @@ const jobSearchDataToSankeyPoints = (
 const chartPallete = (value: string) => {
   switch (value) {
     case 'Applied':
-      return theme`colors.primary`
+      return theme.colors.primary
     case 'Callback':
-      return theme`colors.primary`
+      return theme.colors.primary
     case 'Code Test':
     case 'On Site':
     case 'Offer':
     case 'Offer Accepted':
-      return theme`colors.green`
+      return theme.colors.green
     case 'Drop Out':
     case 'Offer Declined':
-      return theme`colors.yellow`
+      return theme.colors.yellow
     case 'Rejection':
     case 'Not Offered':
-      return theme`colors.red`
+      return theme.colors.red
     default:
-      return theme`colors.primary`
+      return theme.colors.primary
   }
 }
 

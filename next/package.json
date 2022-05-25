@@ -26,6 +26,7 @@
     "chart.js": "^3.7.1",
     "chartjs-adapter-date-fns": "^2.0.0",
     "chartjs-chart-sankey": "^0.8.1",
+    "clsx": "^1.1.1",
     "contentlayer": "^0.2.5",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
@@ -68,9 +69,7 @@
     "schema-dts": "^1.1.0",
     "sharp": "^0.30.3",
     "simple-git": "^3.4.0",
-    "styled-components": "^5.3.3",
     "tailwindcss": "^2.2.19",
-    "twin.macro": "^2.8.2",
     "url-join-ts": "^1.0.5",
     "use-dark-mode": "^2.3.1",
     "webfontloader": "^1.6.28"
@@ -85,20 +84,21 @@
     "@types/react": "17.0.42",
     "@types/react-dom": "^17.0.14",
     "@types/react-lazyload": "^3.2.0",
-    "@types/styled-components": "^5.1.24",
     "@types/tailwindcss": "^3.0.9",
     "@types/webfontloader": "^1.6.34",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
-    "babel-plugin-macros": "^3.1.0",
+    "autoprefixer": "^10.4.7",
     "eslint": "8.11.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "12.1.0",
     "eslint-config-prettier": "^8.5.0",
     "next-sitemap": "^2.5.14",
+    "postcss": "^8.4.14",
     "prettier": "^2.6.0",
     "raw-loader": "^4.0.2",
     "sass": "^1.49.9",
+    "ts-node": "^10.8.0",
     "typescript": "4.6.2"
   },
   "prettier": {
@@ -108,13 +108,10 @@
     "singleQuote": true,
     "bracketSpacing": true
   },
-  "babelMacros": {
-    "twin": {
-      "config": "tailwind.config.js",
-      "preset": "styled-components",
-      "debugPlugins": false,
-      "debug": false
-    }
+  "sass": {
+    "includePaths": [
+      "./node_modules"
+    ]
   },
   "browserslist": [
     "last 2 versions",
