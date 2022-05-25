@@ -1,5 +1,5 @@
 .paper {
-  @apply w-full p-4 px-4 text-xl text-typography leading-normal rounded-lg bg-paper mb-4 print:mb-0;
+  @apply w-full text-xl text-typography leading-normal rounded-lg bg-paper mb-4 print:mb-0;
 
  body[data-fancy-background=""] & {
    @apply shadow-none;
@@ -28,6 +28,10 @@
   :global(body.dark) & {
     @apply bg-transparent;
   }
+}
+
+.padding {
+  @apply p-4 px-4;
 }
 
 .noPadding {

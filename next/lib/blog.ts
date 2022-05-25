@@ -40,8 +40,11 @@ function getAll<Fields extends Field[]>(
 ): Pick<Post, typeof fields[number]>[]
 function getAll<Fields extends Field[]>(postType: PostType, fields?: Fields) {
   const posts = allPosts
-    .filter((post) => post.collection === postType)
     .filter((post) => {
+      if (post.collection !== postType) {
+        return false
+      }
+
       if (process.env.NODE_ENV === 'development') {
         return true
       }

@@ -29,14 +29,16 @@ export function useSelectedTag(): string | undefined {
   return tag
 }
 
-const Tag: React.FC<
+const Tag = React.forwardRef<
+  HTMLAnchorElement,
   { active: boolean } & React.HTMLAttributes<HTMLAnchorElement>
-> = ({ active, className, ...props }) => (
+>(({ active, className, ...props }, ref) => (
   <a
     className={clsx(styles.tag, active && styles.activeTag, className)}
+    ref={ref}
     {...props}
   />
-)
+))
 
 const TagPicker: React.FC<Props> = ({ tags, selectedTag }) => {
   const { pathname } = useLocation()

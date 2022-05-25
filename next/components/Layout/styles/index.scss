@@ -72,6 +72,10 @@ p {
   @apply my-4;
 }
 
+hr {
+  @apply border-liteGray;
+}
+
 address {
   @apply not-italic;
 }

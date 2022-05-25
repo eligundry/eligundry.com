@@ -79,6 +79,10 @@
 
     & *:not(pre) code {
       @apply bg-siteBackground break-words;
+
+      :global(body.dark) & {
+        @apply bg-black;
+      }
     }
   }
 

@@ -7,7 +7,7 @@
   }
 
   & header {
-    @apply border-b-2 mb-2 flex flex-row justify-between;
+    @apply border-b-2 border-liteGray mb-2 flex flex-row justify-between;
 
     & svg {
       margin-top: 3px;

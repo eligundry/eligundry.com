@@ -11,7 +11,7 @@ const Paper: React.FC<PaperProps> = ({
   element = 'div',
   className,
   transparent = false,
-  noPadding,
+  noPadding = false,
   ...props
 }) => {
   const Component = element
@@ -21,6 +21,7 @@ const Paper: React.FC<PaperProps> = ({
       className={clsx(
         styles.paper,
         transparent ? styles.transparent : styles.notTransparent,
+        noPadding ? styles.noPadding : styles.padding,
         className
       )}
       {...props}

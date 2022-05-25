@@ -24,8 +24,9 @@ module.exports = {
   theme: {
     colors: {
       transparent: 'transparent',
-      primary: '#088CDE',
       primaryLite: '#92c6e7',
+      primaryMedium: '#4a93c2',
+      primary: '#088CDE',
       primaryDark: '#4E7A94',
       typography: '#27272a',
       typographyLite: '#52525b',
@@ -35,7 +36,7 @@ module.exports = {
       black: '#000',
       liteGray: '#E5E7EB',
       paper: 'rgba(244, 244, 245, 0.95)',
-      paperDark: 'rgba(0, 0, 0, 0.75)',
+      paperDark: 'rgba(0, 0, 0, 0.85)',
       yellow: '#ffd53d',
       red: '#f25c54',
       green: '#48cb8a',
