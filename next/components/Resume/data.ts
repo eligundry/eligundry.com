@@ -87,7 +87,7 @@ const resume: Resume = {
   work: [
     {
       company: 'Chord',
-      position: 'Staff Engineer',
+      position: 'Staff Engineer, Developer Experience',
       website: 'https://chord.co/',
       location: {
         city: 'New York',
@@ -115,27 +115,27 @@ const resume: Resume = {
         `
         Tech lead for moving <a href="https://www.zipjob.com">ZipJob</a>
         to a statically compiled <a href="https://www.gatsbyjs.com/">Gatsby</a>/<a href="https://reactjs.org/">React</a>
-        site backed by <a href="https://www.contentful.com/">Contentful CMS</a>, increasing the 
-        <a href="https://developers.google.com/web/tools/lighthouse">Lighthouse</a> 
+        site backed by <a href="https://www.contentful.com/">Contentful CMS</a>, increasing the
+        <a href="https://developers.google.com/web/tools/lighthouse">Lighthouse</a>
         score 55 points & enabling our marketing team to control all copy on the website.
         `,
         `
-        Frontend tech lead for a Customer Portal, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>, 
-        that raised <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a> 
+        Frontend tech lead for a Customer Portal, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>,
+        that raised <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a>
         25 points & average customer revenue by $8.
         `,
         `
-        Frontend tech lead for our rewritten Expert Hub, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>, 
+        Frontend tech lead for our rewritten Expert Hub, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>,
         that decreased our average time to order completion by 12 hours.
         `,
         `
-        Tech lead for a dynamic payment & order offering system for contractors 
-        which decreased our average cost to fulfill an order by $10 & increased 
+        Tech lead for a dynamic payment & order offering system for contractors
+        which decreased our average cost to fulfill an order by $10 & increased
         our average payout to contractors by $7.
         `,
         `
-        Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a> 
-        across all applications company wide using <a href="https://www.okta.com/">Okta</a> & <a href="https://auth0.com/">Auth0</a>.
+        Implemented <abbr title="Single Sign On">SSO</abbr> through <a href="https://oauth.net/2/">OAuth</a>
+        across all applications using <a href="https://www.okta.com/">Okta</a> & <a href="https://auth0.com/">Auth0</a>.
         `,
       ],
     },
@@ -153,7 +153,7 @@ const resume: Resume = {
       summary: '',
       highlights: [
         `
-        Instilled a culture of 
+        Instilled a culture of
         <a href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
         into a company that previously had none, reducing the amount of time
         spent testing regressions manually across the company.
@@ -411,11 +411,11 @@ const resume: Resume = {
       level: 'Master',
       keywords: {
         React: 'https://reactjs.org/',
+        'Next.js': 'https://nextjs.org',
+        Remix: 'https://remix.run',
         Flask: 'https://www.palletsprojects.com/p/flask/',
         Django: 'https://www.djangoproject.com/',
         Gin: 'https://gin-gonic.com/',
-        'Gatsby.js': 'https://www.gatsbyjs.org/',
-        WordPress: 'https://wordpress.org/',
       },
     },
     {
@@ -423,6 +423,7 @@ const resume: Resume = {
       level: 'Master',
       keywords: {
         Vim: 'https://www.vim.org/',
+        Netlify: 'https://netlify.com/',
         Docker: 'https://www.docker.com/',
         Git: 'https://git-scm.com/',
         SaltStack: 'https://www.saltstack.com/',
@@ -434,6 +435,8 @@ const resume: Resume = {
       name: 'Love Hate',
       level: 'Master',
       keywords: {
+        'Gatsby.js': 'https://www.gatsbyjs.org/',
+        WordPress: 'https://wordpress.org/',
         Ansible: 'https://www.ansible.com/',
         SQLAlchemy: 'https://www.sqlalchemy.org/',
         jQuery: 'https://jquery.com/',
@@ -445,10 +448,15 @@ const resume: Resume = {
   ],
   activitesInterests: [
     `
-    Presented <a href="/talks">talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a> 
+    Presented <a href="/talks">talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a>
     and <a href="/talks/redux-hooks">QueensJS</a>.`,
     `
-    Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and 
+    Created <a href="https://album-mode.party">Album Mode.party</a>, a
+    <a href="https://remix.run">Remix</a> application that helps you find new
+    music to listen to.
+    `,
+    `
+    Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and
     <a href="https://devpost.com/eligundry">competed in numerous hackathons</a> including:
     <ul class="hackathons">
       <li><a href="https://khe.io/">KHE</a> 2013 (2nd place), 2014, 2015</li>
