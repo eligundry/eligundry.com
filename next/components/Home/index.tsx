@@ -173,8 +173,24 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
       <Section className="listening">
         <h2>What I'm Listening To</h2>
         <p className="summary">
-          I listen to way too much music and I love to listen to full albums. I
-          mainly listen to hip hop, indie rock and{' '}
+          Music is my favorite media in the world and I listen to way too much
+          of it. I'm always trying to find new music and built{' '}
+          <a href="https://album-mode.party">
+            <EmojiText
+              emoji="💿"
+              label="CD emoji because album-mode.party is all about music"
+            >
+              Album Mode.party{' '}
+              <EmojiText
+                emoji="🎉"
+                label="party streamer emoji because album-mode.party is fun"
+              />
+            </EmojiText>
+          </a>{' '}
+          to facilitate new discoveries.
+        </p>
+        <p className="summary">
+          I mainly listen to indie rock, hip hop and{' '}
           <Link href="/blog/icymi-glocca-morra-just-married">
             <a>
               <abbr title="Ask me about the fun 5th wave emo bands I love">
