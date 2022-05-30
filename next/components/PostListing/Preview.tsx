@@ -27,6 +27,7 @@ const PostPreviewListing: React.FC<PostPreviewListingProps> = ({
       {posts.map((post) => (
         <Post
           preview
+          key={post.path}
           title={post.title}
           description={post.description}
           path={post.path}
@@ -35,6 +36,7 @@ const PostPreviewListing: React.FC<PostPreviewListingProps> = ({
           dateModified={post.modified}
           itemType={itemType}
           readingTime={post.readingTime}
+          jumpLink="read-more"
         />
       ))}
     </>

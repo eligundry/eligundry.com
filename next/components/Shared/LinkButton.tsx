@@ -17,10 +17,17 @@ const LinkButton: React.FC<LinkButtonProps> = ({
     <a
       className={clsx(
         'bg-primary',
+        'hover:bg-primaryLite',
         'rounded-full',
         'text-white',
         'text-center',
         'font-sans',
+        'hover:no-underline',
+        'focus:no-underline',
+        'transition',
+        'duration-200',
+        'ease-linear',
+        'transition-colors',
         className
       )}
       {...anchorProps}

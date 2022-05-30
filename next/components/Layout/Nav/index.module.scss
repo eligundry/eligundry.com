@@ -16,6 +16,12 @@
 
     :global(body.dark) & {
       @apply text-white;
+
+      &:hover,
+      &:active,
+      &:focus {
+        @apply text-primary;
+      }
     }
 
     &[aria-current='page'] {

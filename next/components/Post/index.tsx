@@ -28,6 +28,7 @@ interface Props {
   featuredImageURL?: string
   readingTime?: number
   preview?: boolean
+  jumpLink?: string
 }
 
 const Post: React.FC<Props> = ({
@@ -44,6 +45,7 @@ const Post: React.FC<Props> = ({
   featuredImageURL,
   readingTime = 0,
   preview = false,
+  jumpLink,
 }) => {
   const Component = useMDXComponent(body.code)
 
@@ -71,6 +73,16 @@ const Post: React.FC<Props> = ({
         </h1>
         {datePublished && (
           <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
+        )}
+        {readingTime > 0 && (
+          <p>
+            <EmojiText
+              label="stopwatch denoting time to read article"
+              emoji="⏱"
+            >
+              {readingTime} Minutes
+            </EmojiText>
+          </p>
         )}
         {description && (
           <p itemProp="description" className={styles.description}>
@@ -104,14 +116,20 @@ const Post: React.FC<Props> = ({
         </LazyLoad>
       )}
       {preview && (
-        <LinkButton
-          href={path}
-          anchorProps={{
-            className: clsx('!inline-block'),
-          }}
-        >
-          Read More
-        </LinkButton>
+        <div>
+          <LinkButton
+            href={path + (jumpLink ? `#${jumpLink}` : '')}
+            anchorProps={{
+              className: clsx('inline-block', 'px-4', 'py-2'),
+            }}
+          >
+            Read More ({readingTime} Minutes){' '}
+            <EmojiText
+              emoji="➡️"
+              label="right arrow prompting you to read more"
+            />
+          </LinkButton>
+        </div>
       )}
     </Paper>
   )

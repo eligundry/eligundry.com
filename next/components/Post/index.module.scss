@@ -11,7 +11,7 @@
     }
 
     & :global(:not(h1) + :not(h1)) {
-      @apply mt-0;
+      @apply my-0;
     }
   }
 
@@ -22,6 +22,14 @@
   & :global(.body) {
     & :global(.twitter-tweet) {
       margin: 0 auto;
+    }
+
+    & > *:first-child {
+      @apply mt-4;
+    }
+
+    & > *:last-child {
+      @apply mb-4;
     }
 
     & img[src*='.gif'] {
