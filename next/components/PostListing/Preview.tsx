@@ -28,10 +28,13 @@ const PostPreviewListing: React.FC<PostPreviewListingProps> = ({
         <Post
           preview
           title={post.title}
+          description={post.description}
+          path={post.path}
           body={post.excerpt}
           datePublished={post.date}
           dateModified={post.modified}
           itemType={itemType}
+          readingTime={post.readingTime}
         />
       ))}
     </>

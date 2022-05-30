@@ -9,14 +9,14 @@
         @apply text-white;
       }
     }
+
+    & :global(:not(h1) + :not(h1)) {
+      @apply mt-0;
+    }
   }
 
   & > :global(*) {
     @apply block;
-  }
-
-  & :global(time + address) {
-    @apply mt-0;
   }
 
   & :global(.body) {
@@ -88,5 +88,13 @@
 
   & :global(.lazyload-footer-wrapper) {
     min-height: 270px;
+  }
+}
+
+.description {
+  @apply italic;
+
+  & span {
+    @apply not-italic;
   }
 }

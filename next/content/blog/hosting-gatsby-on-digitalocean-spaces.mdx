@@ -9,22 +9,24 @@ tags:
 ---
 ![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](/img/gatsby-digitialocean-spaces/grimace-cover.png)
 
-[DigitalOcean Spaces][do-spaces] is an object storage service that is S3 compatible (you can use all the AWS S3
+[DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/) is an object storage service that is S3 compatible (you can use all the AWS S3
 libraries, which is nifty) with a CDN automatically built in. It even lets you bring your own domain and will handle
-the SSL certificates for you through [Let's Encrypt][letsencrypt]. Based upon my experience with Gatsby and S3, this seemed like
+the SSL certificates for you through [Let's Encrypt](https://letsencrypt.org/). Based upon my experience with Gatsby and S3, this seemed like
 a great fit and since I'm already a DigitalOcean customer and figured I might as well give it a shot instead of signing
 up for another service.
 
-Long story short, I was able to get it working, but I ended up ditching it to go with [Netlify][netlify]. Still, if you
+Long story short, I was able to get it working, but I ended up ditching it to go with [Netlify](https://www.netlify.com/). Still, if you
 are here, you might have a do or die situation where you must host your site on Spaces and maybe this will be useful.
 Also, it's a fun story for me to tell!
+
+<!-- excerpt -->
 
 ## How to deploy Gatsby to DigitalOcean Spaces
 
 You will build and deploy your site in the standard Gatsby way:
 
 1. Build your Gatsby site using `gatsby build --prefix-paths`
-    * Set the `PREFIX_PATHS` environment variable to what your CDN URL is. 
+    * Set the `PREFIX_PATHS` environment variable to what your CDN URL is.
     * Mine is `https://cdn.eligundry.com/site` because I host the site in a folder in the bucket.
 2. Deploy your site using [gatsby-plugin-s3][gatsby-plugin-s3].
     * This plugin will correctly set the cache headers on your files for optimal performance.
@@ -32,7 +34,7 @@ You will build and deploy your site in the standard Gatsby way:
       DigitalOcean Console. Mine was `nyc3.digitaloceanspaces.com`.
 
 After you do this, your site's files will be in your Spaces bucket, but it definitely will not be working. Read on for
-the issues and how to fix them! 
+the issues and how to fix them!
 
 ## No Cloudfront or S3 Static Website Hosting Equivalent
 
@@ -56,7 +58,7 @@ CDN.
 server {
     listen 443 ssl http2;
 
-    # I have an API that I serve on the same domain and it must come 
+    # I have an API that I serve on the same domain and it must come
     # first because of the rules that come after
     location ~ ^/api {
         proxy_pass http://api:8080;
@@ -121,10 +123,10 @@ This will compress all your assets while leaving the original files intact. In o
 overwrite the existing files with these compressed files. I used the following shell snippet in my deploy script.
 
 ```bash
-$ for f in "public/*.gz"; do mv -v -- "$f" "${f%.gz}"; done 
+$ for f in "public/*.gz"; do mv -v -- "$f" "${f%.gz}"; done
 ```
 
-A quick note on the above snippet: If you plan on having this in a CI pipeline and want to leverage 
+A quick note on the above snippet: If you plan on having this in a CI pipeline and want to leverage
 [Gatsby incremental builds][gatsby-incremental-builds], this will break that, as it will be unable to detect if files
 have changed or not. Such are the sacrifices we make for speed.
 

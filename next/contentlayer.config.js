@@ -155,7 +155,6 @@ export const Post = defineDocumentType(() => ({
         }).then((mdx) => ({
           raw: mdx.matter.content,
           code: mdx.code,
-          all: mdx,
         }))
       },
     },
