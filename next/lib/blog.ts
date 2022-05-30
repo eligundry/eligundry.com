@@ -13,7 +13,8 @@ export type Field = keyof Post
 
 // We never need to send the raw markdown to the client and there isn't an easy
 // way to remove the raw field
-const filterFields = (post: RawPost | undefined) => omit(post, 'body.raw')
+const filterFields = (post: RawPost | undefined) =>
+  omit(post, ['body.raw', 'excerpt.raw'])
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function getBySlug<Fields extends undefined>(

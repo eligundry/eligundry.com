@@ -10,6 +10,12 @@ import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
 import remarkUnwrapImages from 'remark-unwrap-images'
+import { remark } from 'remark'
+import remarkExcerpt from 'remark-excerpt'
+import remarkParse from 'remark-parse'
+import remarkComment from 'remark-comment'
+import { bundleMDX } from 'mdx-bundler'
+import matter from 'gray-matter'
 
 const git = SimpleGit()
 
@@ -119,19 +125,57 @@ export const Post = defineDocumentType(() => ({
           '.mdx'
         )}`,
     },
+    excerpt: {
+      type: 'mdx',
+      resolve: async (post) => {
+        const { content } = matter(
+          (
+            await fs.promises.readFile(
+              path.join(process.cwd(), 'content', post._raw.sourceFilePath)
+            )
+          ).toString('utf-8')
+        )
+        const { value: source } = await remark()
+          .use(remarkExcerpt)
+          .process(content)
+
+        return bundleMDX({
+          source,
+          mdxOptions: (options) => {
+            options.rehypePlugins = [
+              ...(options.rehypePlugins ?? []),
+              ...mdxPlugins.rehypePlugins,
+            ]
+            options.remarkPlugins = [
+              ...(options.remarkPlugins ?? []),
+              ...mdxPlugins.remarkPlugins,
+            ]
+            return options
+          },
+        }).then((mdx) => ({
+          raw: mdx.matter.content,
+          code: mdx.code,
+          all: mdx,
+        }))
+      },
+    },
   },
 }))
+
+const mdxPlugins = {
+  rehypePlugins: [
+    [rehypePrism],
+    [rehypeAccessibleEmojis],
+    [rehypeSlug],
+    [rehypeImagePlaceholder, { dir: 'public' }],
+  ],
+  remarkPlugins: [[remarkUnwrapImages], [remarkParse], [remarkComment]],
+}
 
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Post],
   mdx: {
-    rehypePlugins: [
-      [rehypePrism],
-      [rehypeAccessibleEmojis],
-      [rehypeSlug],
-      [rehypeImagePlaceholder, { dir: 'public' }],
-    ],
-    remarkPlugins: [[remarkUnwrapImages]],
+    ...mdxPlugins,
   },
 })

@@ -22,6 +22,7 @@ interface Props {
   location?: string
   featuredImageURL?: string
   readingTime?: number
+  preview?: boolean
 }
 
 const Post: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const Post: React.FC<Props> = ({
   location,
   featuredImageURL,
   readingTime = 0,
+  preview = false,
 }) => {
   const Component = useMDXComponent(body.code)
 
@@ -45,6 +47,8 @@ const Post: React.FC<Props> = ({
       itemType={`https://schema.org/${itemType}`}
       className={styles.article}
       element="article"
+      noPadding={preview}
+      transparent={preview}
     >
       <link itemProp="author publisher" href="#eli-gundry" />
       {dateModified && <meta itemProp="dateModified" content={dateModified} />}
