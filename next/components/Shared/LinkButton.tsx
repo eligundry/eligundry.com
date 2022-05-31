@@ -18,7 +18,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({
       className={clsx(
         'bg-primary',
         'hover:bg-primaryLite',
-        'rounded-full',
+        'rounded',
         'text-white',
         'text-center',
         'font-sans',

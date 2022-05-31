@@ -146,6 +146,7 @@ export const Post = defineDocumentType(() => ({
         )
         let { value: source } = await remark()
           .use(remarkParse)
+          // @ts-ignore
           .use(remarkComment, { ast: true })
           .use(remarkExcerpt)
           .process(content)
@@ -155,11 +156,11 @@ export const Post = defineDocumentType(() => ({
           mdxOptions: (options) => {
             options.rehypePlugins = [
               ...(options.rehypePlugins ?? []),
-              ...mdxPlugins.rehypePlugins,
+              ...(mdxPlugins.rehypePlugins ?? []),
             ]
             options.remarkPlugins = [
               ...(options.remarkPlugins ?? []),
-              ...mdxPlugins.remarkPlugins,
+              ...(mdxPlugins.remarkPlugins ?? []),
             ]
             return options
           },

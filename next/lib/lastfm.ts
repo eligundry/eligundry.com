@@ -1,9 +1,6 @@
 import LastFM from 'lastfm-typed'
 import type { getRecentTracks } from 'lastfm-typed/dist/interfaces/userInterface'
 import NodeCache from 'node-cache'
-import getUnixTime from 'date-fns/getUnixTime'
-import subWeeks from 'date-fns/subWeeks'
-import groupBy from 'lodash/groupBy'
 
 import utils from './utils'
 

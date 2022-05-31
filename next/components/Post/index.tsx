@@ -29,6 +29,7 @@ interface Props {
   readingTime?: number
   preview?: boolean
   jumpLink?: string
+  className?: string
 }
 
 const Post: React.FC<Props> = ({
@@ -46,6 +47,7 @@ const Post: React.FC<Props> = ({
   readingTime = 0,
   preview = false,
   jumpLink,
+  className,
 }) => {
   const Component = useMDXComponent(body.code)
 
@@ -54,7 +56,7 @@ const Post: React.FC<Props> = ({
       // @ts-ignore
       itemScope
       itemType={`https://schema.org/${itemType}`}
-      className={styles.article}
+      className={clsx(styles.article, className)}
       element="article"
       noPadding={preview}
       transparent={preview}
@@ -65,25 +67,34 @@ const Post: React.FC<Props> = ({
       {readingTime > 0 && (
         <meta itemProp="timeRequired" content={`PT${readingTime}M`} />
       )}
-      <header>
+      <header className={clsx(styles.articleHeader)}>
         <h1 itemProp="name headline">
           <Link href={path}>
             <a itemProp="url">{title}</a>
           </Link>
         </h1>
-        {datePublished && (
-          <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
-        )}
-        {readingTime > 0 && (
-          <p>
-            <EmojiText
-              label="stopwatch denoting time to read article"
-              emoji="⏱"
-            >
-              {readingTime} Minutes
-            </EmojiText>
-          </p>
-        )}
+        <div className={clsx(styles.timeMetadata)}>
+          {datePublished && (
+            <Time itemProp="datePublished" dateTime={new Date(datePublished)} />
+          )}
+          {readingTime > 0 && (
+            <p>
+              <EmojiText
+                label="stopwatch denoting time to read article"
+                emoji="⏱"
+              >
+                {readingTime} {readingTime > 1 ? 'Minutes' : 'Minute'}
+              </EmojiText>
+            </p>
+          )}
+          {location && (
+            <address>
+              <EmojiText label="location of talk" emoji="📍">
+                {location}
+              </EmojiText>
+            </address>
+          )}
+        </div>
         {description && (
           <p itemProp="description" className={styles.description}>
             <EmojiText label="description of the blog post" emoji="📝">
@@ -91,17 +102,10 @@ const Post: React.FC<Props> = ({
             </EmojiText>
           </p>
         )}
-        {location && (
-          <address>
-            <EmojiText label="location of talk" emoji="📍">
-              {location}
-            </EmojiText>
-          </address>
-        )}
       </header>
       {preBody}
       {body && (
-        <main className="body" itemProp="text">
+        <main className={styles.articleBody} itemProp="text">
           <Component components={MDXShortcodes} />
         </main>
       )}
