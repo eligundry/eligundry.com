@@ -20,7 +20,6 @@ module.exports = {
       './utils/**/*.{js,ts,jsx,tsx}',
     ],
   },
-  important: true,
   darkMode: 'class',
   theme: {
     colors: {

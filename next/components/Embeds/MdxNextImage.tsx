@@ -31,7 +31,6 @@ const MDXNextImage: React.FC<MDXNextImageProps> = ({
         containerClassName
       )}
       style={{
-        width: props.width ? `${props.width}px` : undefined,
         maxWidth: '690px',
       }}
       {...props}
