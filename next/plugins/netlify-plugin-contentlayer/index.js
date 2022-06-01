@@ -19,6 +19,8 @@ const plugin = {
       return
     }
 
+    console.log({ caches: await cache.list() })
+
     if (await cache.restore(path.join('./', '.contentlayer'))) {
       console.log('Contentlayer cache restored.')
     } else {
