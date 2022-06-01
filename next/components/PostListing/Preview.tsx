@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import Post from '@/components/Post'
 import { Post as PostType } from '@/lib/blog'
 import TagPicker, { useSelectedTag } from './TagPicker'
+import styles from './index.module.scss'
 
 export interface PostPreviewListingProps {
   posts: Pick<
@@ -20,6 +21,7 @@ export interface PostPreviewListingProps {
   >[]
   itemType: 'CreativeWork' | 'BlogPosting'
 }
+
 const PostPreviewListing: React.FC<PostPreviewListingProps> = ({
   posts,
   itemType,
@@ -36,7 +38,7 @@ const PostPreviewListing: React.FC<PostPreviewListingProps> = ({
   return (
     <>
       {tags.size > 0 && <TagPicker tags={tags} selectedTag={selectedTag} />}
-      {postList.map((post, i) => (
+      {postList.map((post) => (
         <>
           <Post
             preview
@@ -50,8 +52,8 @@ const PostPreviewListing: React.FC<PostPreviewListingProps> = ({
             itemType={itemType}
             readingTime={post.readingTime}
             jumpLink="read-more"
+            className={clsx(styles.postPreview)}
           />
-          {i + 1 < postList.length && <hr className={clsx('my-8')} />}
         </>
       ))}
     </>

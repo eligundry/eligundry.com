@@ -10,8 +10,7 @@ import rehypeImagePlaceholder from 'rehype-image-placeholder'
 import {
   excerpt as remarkExcerpt,
   excerptBreakpoint as remarkExcerptBreakpoint,
-  // @ts-ignore
-} from 'remark-excerpt'
+} from '@eligundry/remark-excerpt'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
@@ -19,6 +18,7 @@ import remarkUnwrapImages from 'remark-unwrap-images'
 import { remark } from 'remark'
 import remarkParse from 'remark-parse'
 import remarkComment from 'remark-comment'
+import remarkInlineLinks from 'remark-inline-links'
 import { bundleMDX } from 'mdx-bundler'
 import matter from 'gray-matter'
 
@@ -145,6 +145,7 @@ export const Post = defineDocumentType(() => ({
           ).toString('utf-8')
         )
         let { value: source } = await remark()
+          .use(remarkInlineLinks)
           .use(remarkParse)
           // @ts-ignore
           .use(remarkComment, { ast: true })
@@ -183,6 +184,7 @@ const mdxPlugins: MDXOptions = {
     [rehypeImagePlaceholder, { dir: 'public' }],
   ],
   remarkPlugins: [
+    [remarkInlineLinks],
     [remarkUnwrapImages],
     [remarkParse],
     [

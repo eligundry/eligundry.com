@@ -23,7 +23,7 @@
 }
 
 .transparent {
-  @apply bg-transparent shadow-none;
+  @apply bg-transparent shadow-none rounded-none;
 
   :global(body.dark) & {
     @apply bg-transparent;
