@@ -46,3 +46,9 @@
 .activeTag {
   @apply text-white bg-primary;
 }
+
+.postPreview {
+  &:not(:last-child) {
+    @apply pb-8 mb-8 border-liteGray border-b-2;
+  }
+}

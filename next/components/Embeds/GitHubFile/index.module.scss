@@ -22,4 +22,5 @@
 
 .expandButton {
   @apply bg-primary hover:bg-primaryLite text-white px-4 py-2 rounded font-sans;
+  @apply transition duration-200 ease-linear transition-colors;
 }

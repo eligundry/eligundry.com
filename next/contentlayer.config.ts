@@ -1,15 +1,26 @@
 import fs from 'fs'
 import path from 'path'
 import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+import type { MDXOptions } from '@contentlayer/core/src/plugin'
 import readingTime from 'reading-time'
 import SimpleGit from 'simple-git'
 
 // @ts-ignore
 import rehypeImagePlaceholder from 'rehype-image-placeholder'
+import {
+  excerpt as remarkExcerpt,
+  excerptBreakpoint as remarkExcerptBreakpoint,
+} from '@eligundry/remark-excerpt'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
 import remarkUnwrapImages from 'remark-unwrap-images'
+import { remark } from 'remark'
+import remarkParse from 'remark-parse'
+import remarkComment from 'remark-comment'
+import remarkInlineLinks from 'remark-inline-links'
+import { bundleMDX } from 'mdx-bundler'
+import matter from 'gray-matter'
 
 const git = SimpleGit()
 
@@ -78,9 +89,11 @@ export const Post = defineDocumentType(() => ({
       description:
         'The amount of time, in minutes, it will take to read this post',
       resolve: async (post) => {
-        const body = await fs.promises.readFile(
-          path.join('./', 'content', post._raw.sourceFilePath)
-        )
+        const body = (
+          await fs.promises.readFile(
+            path.join('./', 'content', post._raw.sourceFilePath)
+          )
+        ).toString('utf-8')
 
         return Math.round(readingTime(body).minutes)
       },
@@ -91,7 +104,9 @@ export const Post = defineDocumentType(() => ({
         'The date when the file was last modified according to the Git history',
       resolve: async (post) =>
         git
-          .log({ file: path.join('./', 'content', post._raw.sourceFilePath) })
+          .log({
+            file: path.join(process.cwd(), 'content', post._raw.sourceFilePath),
+          })
           .then((log) => log.latest?.date),
     },
     collection: {
@@ -119,19 +134,76 @@ export const Post = defineDocumentType(() => ({
           '.mdx'
         )}`,
     },
+    excerpt: {
+      type: 'mdx',
+      resolve: async (post) => {
+        const { content } = matter(
+          (
+            await fs.promises.readFile(
+              path.join(process.cwd(), 'content', post._raw.sourceFilePath)
+            )
+          ).toString('utf-8')
+        )
+        let { value: source } = await remark()
+          .use(remarkInlineLinks)
+          .use(remarkParse)
+          // @ts-ignore
+          .use(remarkComment, { ast: true })
+          .use(remarkExcerpt)
+          .process(content)
+
+        const mdx = await bundleMDX({
+          source: source.toString('utf-8'),
+          mdxOptions: (options) => {
+            options.rehypePlugins = [
+              ...(options.rehypePlugins ?? []),
+              ...(mdxPlugins.rehypePlugins ?? []),
+            ]
+            options.remarkPlugins = [
+              ...(options.remarkPlugins ?? []),
+              ...(mdxPlugins.remarkPlugins ?? []),
+            ]
+            return options
+          },
+        })
+
+        return {
+          raw: mdx.matter.content,
+          code: mdx.code,
+        }
+      },
+    },
   },
 }))
+
+const mdxPlugins: MDXOptions = {
+  rehypePlugins: [
+    [rehypePrism],
+    [rehypeAccessibleEmojis],
+    [rehypeSlug],
+    [rehypeImagePlaceholder, { dir: 'public' }],
+  ],
+  remarkPlugins: [
+    [remarkInlineLinks],
+    [remarkUnwrapImages],
+    [remarkParse],
+    [
+      remarkComment,
+      {
+        ast: true,
+      },
+    ],
+  ],
+}
 
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Post],
   mdx: {
-    rehypePlugins: [
-      [rehypePrism],
-      [rehypeAccessibleEmojis],
-      [rehypeSlug],
-      [rehypeImagePlaceholder, { dir: 'public' }],
+    rehypePlugins: mdxPlugins.rehypePlugins,
+    remarkPlugins: [
+      ...(mdxPlugins.remarkPlugins ?? []),
+      [remarkExcerptBreakpoint],
     ],
-    remarkPlugins: [[remarkUnwrapImages]],
   },
 })
