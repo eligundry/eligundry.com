@@ -7,6 +7,9 @@ const shouldSkip = () =>
   process.env.NETLIFY_CONTENTLAYER_PLUGIN_SKIP === '1'
 
 /**
+ * Netlify plugin that will save and restore the .contentlayer folder between
+ * builds.
+ *
  * @type {import('@netlify/build').NetlifyPlugin}
  */
 const plugin = {
