@@ -8,7 +8,7 @@ const shouldSkip = () =>
 
 /**
  * Netlify plugin that will save and restore the .contentlayer folder between
- * builds.
+ * builds. This should speed up builds slightly.
  *
  * @type {import('@netlify/build').NetlifyPlugin}
  */
