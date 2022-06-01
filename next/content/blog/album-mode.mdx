@@ -7,29 +7,101 @@ date: 2022-05-28T04:00
 
 # Outline
 
-* I listen to way too much music
-  * My favorite thing to do it listen to a full album. There isn't a better way to experience an artist's vision than
-    that.
-* Spotify used to be a good way for me to find things, has failed me in recent years.
-  * It doesn't understand that I want music unlike what I've listened to. I need new things!
-  * I wrecked it's recommendations with the amount of ambient music I've listened to while falling asleep over the
-    years.
-* I find music from Pitchfork and other publications
 * I suffer from decision paralysis
   * Shout out @neilzo's lunch roulette thing from years ago
 * [album-mode.party](https://album-mode.party)
   * I needed an app where I can push buttons and get an album to listen to
+  * All this app does is, for a given search query, grab a random album from Spotify related to it.
+    * If you don't like it, hit next, and it'll give you a new one
+    * If you love it, confetti!
   * It started with searching by label and being able to get a random album from Pitchfork reviews
     * I ended up scraping minmal amounts of data on reviews into a sqlite database that I ship with the code
   * Had a "no, duh" moment about 2 weeks in about being able to search via genre and artist
     * Genre in Spotify is super interesting. They don't list it anywhere and I had to pull it from this random Spotify
       research site who's purpose I really don't understand, someone please explain it to me!
       * https://everynoise.com/everynoise1d.cgi?scope=all
-* Remix
-  * My new job at Chord is developer tooling on headless applications
-  * This app gave me an excuse to pick up Remix
-  * Reminds me a lot of PHP
-    * Your layout code is right beneath your data code
-    * File organization is like a refined first PHP project
-    * Hosting was somehow simpler than FTPing PHP files, even though there is a build step!
-    * Really nice integration with Netlify
+    * Artist search is using Spotify's related artists API
+  * Leveraging Github projects to organize my work on this, I'm so adult
+  * Using every part of the Spotify API buffalo
+  * Adding Spotify login to play a random album from your library is so helpful
+  * This app covers similar ground as Spotify Uncharted, I guess
+* What's next?
+  * Advanced searching features
+  * Better design
+    * Tinder swiping?
+    * Loose the bootstrap feel
+
+# What?
+
+I built an application that recommends me a random album to listen to. Since launching [album-mode.party][app], I have
+discovered so many new albums that I wouldn't have otherwise heard.
+
+# Why?
+
+I listen to way too much music. I love to put on an album and listen to it from font to back. It's comforting, as that
+is how my dad played music around the house. As I have gotten older, I've thought about it and have come to the
+conclusion that there isn't a better way to understand an artist's vision than listening to a full album.
+
+Quick history trip! I first started discovering new albums on [last.fm][last.fm] in 2008. I quickly outgrew them, as
+their recommendations were not very good, though I still scrobble heavily. Then I moved on to borrowing CDs from the
+library that I found good reviews of on [Pitchfork][p4k]. That worked out great during high school with an iPod. Then
+the streaming age came and Spotify rocked my world. All the albums I could ever want to hear, right at my fingertips!?
+Heaven, I tell you.
+
+Spotify's Discover tab was a godsend. I think I first started using it heavily in 2015.  It was smart enough to look at
+what I was listening to and recommend me stuff that was actually didn't know that I wanted. It was the ideal experience
+for me.
+
+But then, in the past year or two, Spotify's Discover tab fell off. All the recommendations just aren't what I'm in the
+mood for. My tastes are changing and I want things that I don't know that I want. All it's recommendations are skewed by
+me listening to ambient music as a I fall asleep and all the aggressive hip hop I listened to walking to work.
+
+I needed to do something about this.
+
+# How?
+
+## Stack
+
+### Remix
+
+* My new job at Chord is developer tooling on headless applications
+* This app gave me an excuse to pick up Remix
+* Reminds me a lot of PHP
+  * Your layout code is right beneath your data code
+  * File organization is like a refined first PHP project
+  * Hosting was somehow simpler than FTPing PHP files, even though there is a build step!
+  * Really nice integration with Netlify
+
+### Prisma
+
+* First time using it
+* Using it to pull reviews from various sources and Spotify genre lookups
+* Really cool how it auto generates schemas and database migrations
+
+### Tailwind
+
+* I can't quit this piece of crap library!
+* I'm using it as they suggest: completely with `className`s. I'm using no CSS files. It's still not good.
+
+### Local Storage
+
+* All user data, like loved albums, is stored in local storage
+* Was inspired by a Remix tweet about how powerful it is
+* I have no desire to manage user state on a server, that's for my day job. I want this to be fun and it won't be
+  fun if I have to worry about security and availability.
+
+### Github Actions
+
+* To keep the Pitchfork & Bandcamp albums up to date, I setup a Github Actions "cron" job that will update the
+  database weekly. No need to touch it to get new data (I hope)
+
+### Playwright
+
+* Had to do a bunch of database scraping. Struggled for a bit with raw HTML and running into walls with
+  anti-scraping issues.
+* Decided to kick the tires on Playwright and I really like it.
+* Cypress = jQuery, Playwright = JS is 2022
+
+[app]: https://album-mode.party
+[last.fm]: https://last.fm/user/eli_pwnd
+[p4k]: https://pitchfork.com
