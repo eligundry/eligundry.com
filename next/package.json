@@ -11,7 +11,9 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:netlify": "netlify dev",
     "build": "next build",
+    "build:netlify": "netlify build",
     "postbuild": "next-sitemap",
     "build:sitemap": "next-sitemap",
     "start": "next start",
