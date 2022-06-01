@@ -39,22 +39,20 @@ const PostPreviewListing: React.FC<PostPreviewListingProps> = ({
     <>
       {tags.size > 0 && <TagPicker tags={tags} selectedTag={selectedTag} />}
       {postList.map((post) => (
-        <>
-          <Post
-            preview
-            key={post.path}
-            title={post.title}
-            description={post.description}
-            path={post.path}
-            body={post.excerpt}
-            datePublished={post.date}
-            dateModified={post.modified}
-            itemType={itemType}
-            readingTime={post.readingTime}
-            jumpLink="read-more"
-            className={clsx(styles.postPreview)}
-          />
-        </>
+        <Post
+          preview
+          key={post.path}
+          title={post.title}
+          description={post.description}
+          path={post.path}
+          body={post.excerpt}
+          datePublished={post.date}
+          dateModified={post.modified}
+          itemType={itemType}
+          readingTime={post.readingTime}
+          jumpLink="read-more"
+          className={clsx(styles.postPreview)}
+        />
       ))}
     </>
   )
