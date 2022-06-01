@@ -19,6 +19,8 @@ interface Props extends LimitedDaylioPageProps {
     | 'path'
     | 'collection'
     | 'location'
+    | 'description'
+    | 'path'
   >
 }
 
@@ -28,6 +30,8 @@ const Talk: NextPage<Props> = ({ post }) => (
     <PostTemplate
       title={post.title}
       body={post.body}
+      description={post.description}
+      path={post.path}
       itemType="CreativeWork"
       datePublished={post.date}
       dateModified={post.modified}

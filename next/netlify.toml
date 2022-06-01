@@ -8,6 +8,9 @@
 [[plugins]]
   package = '@netlify/plugin-nextjs'
 
+[[plugins]]
+  package = './plugins/netlify-plugin-contentlayer'
+
 [functions]
   included_files = ["!node_modules/canvas/**/*"]
 
@@ -17,6 +20,6 @@
   [headers.values]
     Cache-Control = '''
     public,
-    s-max-age=365000000, 
-    max-age=365000000, 
+    s-max-age=365000000,
+    max-age=365000000,
     immutable'''

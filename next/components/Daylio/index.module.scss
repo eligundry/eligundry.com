@@ -15,6 +15,7 @@
 
 // Base entry styles
 .entryWrapper {
+  scroll-margin-top: 4.5rem;
   @apply flex flex-row;
 
   & a {

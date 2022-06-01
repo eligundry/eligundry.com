@@ -18,6 +18,8 @@ interface Props extends LimitedDaylioPageProps {
     | 'tags'
     | 'path'
     | 'collection'
+    | 'path'
+    | 'description'
   >
 }
 
@@ -27,6 +29,8 @@ const BlogPost: NextPage<Props> = ({ post }) => (
     <PostTemplate
       title={post.title}
       body={post.body}
+      path={post.path}
+      description={post.description}
       datePublished={post.date}
       dateModified={post.modified}
       itemType="BlogPosting"
@@ -79,6 +83,8 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async ({
     'date',
     'modified',
     'readingTime',
+    'path',
+    'description',
   ])
 
   if (!post) {
