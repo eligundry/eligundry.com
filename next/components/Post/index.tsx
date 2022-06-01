@@ -127,7 +127,7 @@ const Post: React.FC<Props> = ({
               className: clsx('inline-block', 'px-4', 'py-2'),
             }}
           >
-            Read More ({readingTime} Minutes){' '}
+            Read More ({readingTime} {readingTime > 1 ? 'Minutes' : 'Minute'}){' '}
             <EmojiText
               emoji="➡️"
               label="right arrow prompting you to read more"
