@@ -21,9 +21,11 @@
 }
 
 .refreshButton {
-  font-size: 2rem;
-  z-index: 10;
+  &[type='reset'] {
+    font-size: 2rem;
+    z-index: 10;
 
-  @apply fixed bottom-4 right-4 rounded-full bg-primary hover:bg-primaryLite text-white p-4 sm:text-base sm:p-2 print:hidden;
-  @apply transition duration-200 ease-linear transition-colors;
+    @apply fixed bottom-4 right-4 rounded-full bg-primary hover:bg-primaryLite text-white p-4 sm:text-base sm:p-2 print:hidden;
+    @apply transition duration-200 ease-linear transition-colors;
+  }
 }
