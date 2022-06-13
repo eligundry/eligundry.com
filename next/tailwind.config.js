@@ -11,15 +11,6 @@ module.exports = {
     './hooks/**/*.{js,ts,jsx,tsx}',
     './utils/**/*.{js,ts,jsx,tsx}',
   ],
-  purge: {
-    enabled: process.env.NODE_ENV === 'production',
-    content: [
-      './pages/**/*.{js,ts,jsx,tsx}',
-      './components/**/*.{js,ts,jsx,tsx}',
-      './hooks/**/*.{js,ts,jsx,tsx}',
-      './utils/**/*.{js,ts,jsx,tsx}',
-    ],
-  },
   darkMode: 'class',
   theme: {
     colors: {
