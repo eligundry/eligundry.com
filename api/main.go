@@ -13,6 +13,7 @@ import (
 	"github.com/eligundry/eligundry.com/api/ginzap"
 	"github.com/eligundry/eligundry.com/api/lastfm"
 	"github.com/eligundry/eligundry.com/api/netlify"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -25,6 +26,7 @@ func Router() *gin.Engine {
 	router.Use(
 		common.ErrorHandlerMiddleware,
 		ginzap.Ginzap(logger, time.RFC3339, true),
+		gzip.Gzip(gzip.DefaultCompression),
 	)
 	router.NoRoute(common.GinNoRoute)
 	router.NoMethod(common.GinNoMethod)

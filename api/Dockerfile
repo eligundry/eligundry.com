@@ -1,4 +1,4 @@
-FROM golang:1.17 AS development
+FROM golang:1.18 AS development
 
 # Install deps to install packages
 RUN apt-get update \
