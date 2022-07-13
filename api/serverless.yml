@@ -22,10 +22,14 @@ provider:
       api-eligundry-com:
         path: ./
 
+custom:
+  contentEncoding:
+    contentCompression: 100
+
 functions:
   api:
     name: eliGundryApi
-    image: 
+    image:
       name: api-eligundry-com
     description: My personal API
     environment:
