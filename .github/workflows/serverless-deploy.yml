@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - ugh-smol-image
     paths:
       - 'api/**'
       - '.github/**'

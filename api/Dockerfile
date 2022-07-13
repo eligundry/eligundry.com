@@ -15,8 +15,12 @@ RUN go mod download
 
 # Build the app
 ADD . /src
-RUN OUTPUT_DIR=/bin CGO_ENABLED=1  make static-build
+RUN CGO_ENABLED=1 make static-build
 
 EXPOSE 8080
 WORKDIR /src
 ENTRYPOINT ["/bin/api"]
+
+FROM golang:1.18-alpine
+COPY --from=development /src/bin /opt/bin
+ENTRYPOINT ["/opt/bin/api"]
