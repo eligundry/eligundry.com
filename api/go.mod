@@ -3,7 +3,7 @@ module github.com/eligundry/eligundry.com/api
 go 1.18
 
 require (
-	github.com/aws/aws-lambda-go v1.27.1
+	github.com/aws/aws-lambda-go v1.32.1
 	github.com/awslabs/aws-lambda-go-api-proxy v0.12.0
 	github.com/gin-contrib/gzip v0.0.6
 	github.com/gin-gonic/gin v1.8.1
