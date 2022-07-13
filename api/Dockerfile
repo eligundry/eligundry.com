@@ -6,7 +6,7 @@ RUN apt-get update \
     && echo "PRAGMA compile_options;" | sqlite3 | grep JSON1
 
 # Install goose for database migrations
-RUN go get github.com/pressly/goose/cmd/goose
+RUN go install github.com/pressly/goose/v3/cmd/goose@latest
 
 # Install go dependencies
 WORKDIR /src
