@@ -1,5 +1,5 @@
 import React from 'react'
-import Image, { ImageProps } from 'next/image'
+import Image, { ImageProps } from 'next/future/image'
 import clsx from 'clsx'
 
 export interface MDXNextImageProps extends Omit<ImageProps, 'src' | 'alt'> {
@@ -19,14 +19,22 @@ const MDXNextImage: React.FC<MDXNextImageProps> = ({
     (!props.width || !props.height)
   ) {
     /* eslint-disable-next-line @next/next/no-img-element */
-    return <img src={props.src} alt={props.alt} className={props.className} />
+    return (
+      <img
+        src={props.src}
+        alt={props.alt}
+        className={props.className}
+        loading="lazy"
+        decoding="async"
+      />
+    )
   }
 
   return (
     <div
       className={clsx(
         'mx-auto',
-        'sm:maw-w-full',
+        'sm:max-w-full',
         'next-mdx-image',
         containerClassName
       )}

@@ -8,7 +8,7 @@ import ResponsiveIFrame from '@/components/Embeds/ResponsiveIFrame'
 const MDXShortcodes: MDXComponents = {
   img: (props) => (
     // @ts-ignore
-    <MdxNextImage {...props} layout="responsive" loading="lazy" />
+    <MdxNextImage {...props} />
   ),
   ResponsiveIFrame: (props) => <ResponsiveIFrame {...props} />,
   // @ts-ignore
