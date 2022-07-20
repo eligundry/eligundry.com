@@ -13,6 +13,10 @@ const getAll = async () =>
   cacheAxios
     .get<DaylioEntry<string>[]>('https://api.eligundry.com/api/feelings')
     .then((resp) => resp.data)
+    .catch((error) => {
+      console.error('could not catch feelings', error)
+      throw error
+    })
 
 const getLatest = async () => getAll().then((feelings) => feelings[0])
 

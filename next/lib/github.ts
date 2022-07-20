@@ -14,6 +14,10 @@ const fetchData = async (username: string) =>
       `https://github-contributions-api.jogruber.de/v4/${username}?y=last`
     )
     .then((resp) => resp.data)
+    .catch((error) => {
+      console.error('could not pull github contributions', error)
+      throw error
+    })
 
 const api = { fetchData }
 

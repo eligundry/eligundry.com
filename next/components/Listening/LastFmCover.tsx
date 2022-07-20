@@ -15,11 +15,10 @@ const LastFmCover = React.forwardRef<HTMLAnchorElement, Props>(
       className={styles.lastFMWrapper}
       ref={ref}
     >
-      {data.map(({ album, artist, count, cover, placeholder }) => (
+      {data.map(({ album, artist, count, cover }) => (
         <Image
           key={`${artist} ${album}`}
           src={cover}
-          blurDataURL={placeholder}
           placeholder="blur"
           width={300}
           height={300}

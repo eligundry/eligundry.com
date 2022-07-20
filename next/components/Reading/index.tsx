@@ -28,7 +28,6 @@ const Book: React.FC<GoodReadsBook & { shelf: 'current' | 'read' }> = ({
   author,
   cover,
   shelf,
-  placeholder,
 }) => {
   let correctAuthor = ''
 
@@ -51,7 +50,6 @@ const Book: React.FC<GoodReadsBook & { shelf: 'current' | 'read' }> = ({
     >
       <Image
         src={cover}
-        blurDataURL={placeholder}
         placeholder="blur"
         alt={`${title} - ${correctAuthor}`}
         width={128}

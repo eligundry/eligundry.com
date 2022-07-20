@@ -4,7 +4,6 @@ import trim from 'lodash/trim'
 import NodeCache from 'node-cache'
 
 import { cacheAxios } from './axios'
-import utils from './utils'
 
 const cache = new NodeCache({
   stdTTL: 60 * 60 * 24 * 1000,
@@ -22,7 +21,6 @@ export interface GoodReadsBook {
   finished: string | null
   cover: string | null
   thumbnail: string | null | undefined
-  placeholder: string
   url: string | null
 }
 
@@ -102,18 +100,11 @@ const getShelf = async (userID: string, shelf: string, limit?: number) => {
           finished: getDateField(row, 'td.field.date_read .date_read_value'),
           cover,
           thumbnail,
-          placeholder: '',
           url: urlPath ? `https://www.goodreads.com${urlPath}` : null,
         }
       })
       .filter((book): book is GoodReadsBook => !!book)
       .slice(0, limit)
-      .map(async (book) => ({
-        ...book,
-        placeholder: book.thumbnail
-          ? await utils.getPlaceholderForImage(book.thumbnail)
-          : '',
-      }))
   )
 
   cache.set(cacheKey, books)

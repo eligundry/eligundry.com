@@ -2,15 +2,12 @@ import LastFM from 'lastfm-typed'
 import type { getRecentTracks } from 'lastfm-typed/dist/interfaces/userInterface'
 import NodeCache from 'node-cache'
 
-import utils from './utils'
-
 export type RecentTrack = getRecentTracks['tracks'][number]
 export interface LastFMCoverItem {
   album: string
   artist: string
   count: number
   cover: string
-  placeholder: string
 }
 
 if (!process.env.LAST_FM_API_KEY) {
@@ -38,13 +35,14 @@ const getTopAlbumsCover = async (
   topAlbums = await Promise.all(
     albumsResp.albums
       .filter((album) => album.image.length > 0)
-      .map(async (album) => ({
-        album: album.name,
-        artist: album.artist.name,
-        count: album.playcount,
-        cover: album.image.at(-1)?.url ?? '',
-        placeholder: await utils.getPlaceholderForImage(album.image[0].url),
-      }))
+      .map(
+        async (album): Promise<LastFMCoverItem> => ({
+          album: album.name,
+          artist: album.artist.name,
+          count: album.playcount,
+          cover: album.image.at(-1)?.url ?? '',
+        })
+      )
   )
 
   cache.set('lastfm-cover', topAlbums)
