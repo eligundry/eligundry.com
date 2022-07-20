@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import Image from 'next/future/image'
 
 import type { GoodReadsBook } from '@/lib/goodreads'
 import styles from './index.module.scss'
@@ -50,7 +50,6 @@ const Book: React.FC<GoodReadsBook & { shelf: 'current' | 'read' }> = ({
     >
       <Image
         src={cover}
-        placeholder="blur"
         alt={`${title} - ${correctAuthor}`}
         width={128}
         height={194}

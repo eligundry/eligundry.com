@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import Image from 'next/future/image'
 
 import type { LastFMCoverItem } from '@/lib/lastfm'
 import styles from './Listening.module.scss'
@@ -19,7 +19,6 @@ const LastFmCover = React.forwardRef<HTMLAnchorElement, Props>(
         <Image
           key={`${artist} ${album}`}
           src={cover}
-          placeholder="blur"
           width={300}
           height={300}
           alt={`${album} - ${artist} [${count} scrobbles]`}

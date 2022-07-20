@@ -30,7 +30,7 @@ const nextConfig = {
     ],
   },
   eslint: {
-    ignoreDuringBuilds: process.env.NETLIFY === 'true' || true,
+    ignoreDuringBuilds: process.env.NETLIFY === 'true',
   },
   typescript: {
     ignoreBuildErrors: process.env.NETLIFY === 'true',
@@ -51,6 +51,9 @@ const nextConfig = {
   },
   experimental: {
     nextScriptWorkers: true,
+    images: {
+      allowFutureImage: true,
+    },
   },
   redirects: async () => {
     // For some reason, Google somehow indexed blog and talk pages from their
