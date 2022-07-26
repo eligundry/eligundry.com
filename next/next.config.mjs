@@ -51,9 +51,6 @@ const nextConfig = {
   },
   experimental: {
     nextScriptWorkers: true,
-    images: {
-      allowFutureImage: true,
-    },
   },
   redirects: async () => {
     // For some reason, Google somehow indexed blog and talk pages from their

@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/future/image'
+import Image from 'next/image'
 
 import type { LastFMCoverItem } from '@/lib/lastfm'
 import styles from './Listening.module.scss'

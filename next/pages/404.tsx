@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import Image from 'next/future/image'
+import Image from 'next/image'
 
 import SEO from '@/components/SEO'
 import Paper from '@/components/Shared/Paper'
