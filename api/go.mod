@@ -9,7 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/gocarina/gocsv v0.0.0-20210408192840-02d7211d929d
 	github.com/jinzhu/now v1.1.2
-	github.com/jmoiron/sqlx v1.3.4
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/mattn/go-sqlite3 v1.14.8
 	github.com/pkg/errors v0.9.1
 	github.com/shkh/lastfm-go v0.0.0-20191215035245-89a801c244e0
