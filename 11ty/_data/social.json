@@ -1,0 +1,42 @@
+[
+  {
+    "name": "github",
+    "label": "Review my code on GitHub",
+    "url": "https://github.com/eligundry",
+    "itemProp": "sameAs",
+    "icon": "fa-brands fa-square-github"
+  },
+  {
+    "name": "twitter",
+    "label": "Follow me on Twitter",
+    "url": "https://twitter.com/EliGundry",
+    "itemProp": "sameAs",
+    "icon": "fa-brands fa-square-twitter"
+  },
+  {
+    "name": "linkedin",
+    "label": "Add me to your professional network on LinkedIn",
+    "url": "https://www.linkedin.com/in/eligundry/",
+    "itemProp": "sameAs",
+    "icon": "fa-brands fa-linkedin"
+  },
+  {
+    "name": "lastfm",
+    "label": "See what I'm listening to on Last.fm",
+    "url": "https://www.last.fm/user/eli_pwnd",
+    "itemProp": "sameAs",
+    "icon": "fa-brands fa-square-lastfm"
+  },
+  {
+    "name": "email",
+    "label": "Shoot me an email",
+    "url": "mailto:eligundry@gmail.com",
+    "icon": "fa-solid fa-square-envelope"
+  },
+  {
+    "name": "rss",
+    "label": "Add my blog to your Google Reader via RSS",
+    "url": "/blog.rss",
+    "icon": "fa-solid fa-square-rss"
+  }
+]

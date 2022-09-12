@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" itemscope itemtype="https://schema.org/Person" itemid="#eli-gundry">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ title or metadata.title }}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="flex-1">
+        <a href="/" itemprop="sameAs">Eli Gundry</a>
+      </div>
+      <nav class="flex-none">
+        {% for link in topNav %}
+          <a href="{{ link.href }}">{{ link.name }}</a>
+        {% endfor %}
+      </nav>
+    </header>
+    <main>
+      {{ content | safe }}
+    </main>
+    <footer class="footer">
+      <div>
+        <h3 class="footer-title">About</h3>
+        <p>
+          Eli Gundry is a full stack web developer that loves JavaScript, devops and web standards.
+        </p>
+      </div>
+      <div>
+        <h3 class="footer-title">Social</h3>
+        <div>
+          {% for link in social %}
+            <a href="{{ link.href }}" class="btn btn-primary" title="{{ link.label }}">
+              <i class="{{ link.icon }} text-4xl"></i>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "@eligundry/eligundry.com",
+  "version": "5.0.0",
+  "description": "My personal site with 11ty.dev",
+  "main": "index.js",
+  "scripts": {
+    "start": "run-p 'watch:*'",
+    "watch:11ty": "eleventy --serve",
+    "watch:tailwind": "npm run tailwind -- --watch",
+    "tailwind": "tailwindcss -i ./css/tailwind.css -o ./_site/css/style.css"
+  },
+  "author": "Eli Gundry <eligundry@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.2",
+    "@tailwindcss/typography": "^0.5.7",
+    "daisyui": "^2.27.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "tailwindcss": "^3.1.8"
+  }
+}

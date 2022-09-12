@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Home",
+    "href": "/"
+  },
+  {
+    "name": "Blog",
+    "href": "/blog"
+  },
+  {
+    "name": "Feelings",
+    "href": "/feelings"
+  },
+  {
+    "name": "Talks",
+    "href": "/talks"
+  },
+  {
+    "name": "Resume",
+    "href": "/resume"
+  }
+]
