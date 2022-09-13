@@ -7,7 +7,11 @@ a {
 }
 
 .paper {
-  @apply prose mb-4;
+  @apply prose max-w-none mb-4;
+}
+
+.prose {
+  @apply max-w-none;
 }
 
 .tooltip {

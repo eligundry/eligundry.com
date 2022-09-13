@@ -6,11 +6,11 @@ const lastfm = new LastFM(process.env.LAST_FM_API_KEY);
 
 module.exports = async function () {
   const username = "eli_pwnd";
-  const asset = new AssetCache(`${username}_lastfm_albums`);
+  const asset = new AssetCache(`${username}_top_lastfm_albums`);
 
-  // if (asset.isCacheValid("1h")) {
-  //   return asset.getCachedValue();
-  // }
+  if (asset.isCacheValid("1h")) {
+    return asset.getCachedValue();
+  }
 
   const albumsResp = await lastfm.user.getTopAlbums(username, {
     limit: 15,

@@ -14,6 +14,7 @@ layout: layouts/base.njk
         {% formatDate entry.time, 'iso8601' %}
       </a>
     </time>
+    {% feelingsActivityList entry.activities %}
     {% if entry.notes %}
       {% if entry.notes.length > 1 %}
         <ul>

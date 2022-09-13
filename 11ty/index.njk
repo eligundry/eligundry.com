@@ -40,6 +40,30 @@ layout: layouts/base.njk
     <a href="/blog/feelings-api">I made an API out of it and put it on my website</a>. The favicon for the site the
     emoji for my latest entry.
   </p>
+  <article itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="image" content="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ entry.emoji }}</text></svg>" />
+    <link itemprop="author publisher" href="#eli-gundry" />
+    <div>
+      <h3 itemprop="name headline">I felt {{ latestFeeling.mood }}</h3>
+      <time datetime="{% formatDate latestFeeling.time, 'iso8601' %}" itemprop="datePublished dateModified">
+        <a href="/feelings#{% formatDate latestFeeling.time, 'iso8601' %}">
+          {% formatDate latestFeeling.time, 'iso8601' %}
+        </a>
+      </time>
+      {% feelingsActivityList latestFeeling.activities %}
+      {% if latestFeeling.notes %}
+        {% if latestFeeling.notes.length > 1 %}
+          <ul>
+            {% for note in latestFeeling.notes %}
+              <li>{{ note }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>{{ latestFeeling.notes[0] }}</p>
+        {% endif %}
+      {% endif %}
+    </div>
+  </article>
 </section>
 
 <section class="coding paper">
@@ -82,7 +106,7 @@ layout: layouts/base.njk
   <div class="flex flex-row gap-4">
     <div>
       <h3>Seasonal Playlist</h3>
-      <iframe title="Spotify playlist that I have on repeat" src="{{ metadata.spotifyPlaylist }}" width="300" height="380" frameborder="0" allow="encrypted-media"></iframe>
+      <iframe title="Spotify playlist that I have on repeat" src="{{ metadata.spotifyPlaylist }}" width="300" height="380" frameborder="0" allow="encrypted-media" loading="lazy"></iframe>
     </div>
     <div>
       <h3>On Repeat</h3>

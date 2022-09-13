@@ -3,7 +3,6 @@ const EleventyFetch = require("@11ty/eleventy-fetch");
 const Image = require("@11ty/eleventy-img");
 const retry = require("async-retry");
 const trim = require("lodash/trim");
-const util = require("util");
 
 const getShelf = async (userID, shelf, limit) => {
   const params = new URLSearchParams({
@@ -116,8 +115,6 @@ module.exports = async function () {
     currentlyReading: await getShelf(userID, "currently-reading", 1),
     read: await getShelf(userID, "read", 11),
   };
-
-  console.log(util.inspect(shelves, false, 10000, true));
 
   return shelves;
 };
