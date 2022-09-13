@@ -1,0 +1,40 @@
+{% macro section(variant, exp) %}
+<section itemscope itemtype="http://schema.org/{% if variant == 'work' %}Organization{% else %}CollegeOrUniversity{% endif %}" itemprop="{% if exp.endDate %}alumniOf{% else %}worksFor{% endif %}">
+  <h3 itemprop="name">
+    <a href="{{ exp.website }}" itemprop="url">
+      {{ exp.company or exp.institution }}
+    </a>
+  </h3>
+  <span itemscope itemtype="https://schema.org/OrganizationRole" itemprop="member">
+    <meta itemprop="roleName" content="{{ exp.position or exp.area }}" />
+    <time itemprop="startDate" datetime="{% formatDate exp.startDate, 'iso8601-date' %}">
+      {% formatDate exp.startDate, 'month-year' %}
+    </time>
+    &mdash;
+    {% if exp.endDate %}
+      <time itemprop="endDate" datetime="{% formatDate exp.endDate, 'iso8601-date' %}">
+        {% formatDate exp.endDate, "month-year" %}
+      </time>
+    {% else %}
+      <span>Present</span>
+    {% endif %}
+  </span>
+  <h4>{{ exp.position or exp.area }}</h4>
+  <address itemscope itemprop="address" itemtype="https://schema.org/PostalAddress">
+    {% if exp.location.city %}
+      <span itemprop="addressLocality">{{ exp.location.city }}</span>,
+    {% endif %}
+    <span itemprop="addressRegion">{{ exp.location.region }}</span>
+  </address>
+  {% if exp.summary %}
+    <p itemprop="description">{{ exp.summary | safe }}</p>
+  {% endif %}
+  {% if exp.highlights %}
+    <ul itemprop="description">
+      {% for highlight in exp.highlights %}
+        <li>{{ highlight | safe }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>
+{% endmacro %}
