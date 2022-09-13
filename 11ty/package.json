@@ -7,7 +7,10 @@
     "start": "run-p 'watch:*'",
     "watch:11ty": "eleventy --serve",
     "watch:tailwind": "npm run tailwind -- --watch",
-    "tailwind": "tailwindcss -i ./css/tailwind.css -o ./_site/css/style.css"
+    "tailwind": "tailwindcss -i ./css/tailwind.css -o ./_site/css/style.css",
+    "build": "run-s build:tailwind build:11ty",
+    "build:11ty": "eleventy",
+    "build:tailwind": "npm run tailwind"
   },
   "author": "Eli Gundry <eligundry@gmail.com>",
   "license": "MIT",
