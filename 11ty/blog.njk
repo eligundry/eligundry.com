@@ -1,0 +1,10 @@
+---
+title: Blog
+layout: layouts/base.njk
+---
+
+<div class="paper">
+  {% for collection in collections %}
+    <h1>{{ collection }}</h1>
+  {% endfor %}
+</div>
