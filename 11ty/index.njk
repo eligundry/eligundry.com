@@ -61,6 +61,16 @@ layout: layouts/base.njk
     I wish I read more, but there are only so many hours in the day. These are the books that I'm reading right now. You
     can find me on <a href="https://www.goodreads.com/user/show/29665939-eli-gundry" itemprop="sameAs">Goodreads</a>.
   </p>
+  <div class="bookshelf not-prose">
+    {% for shelf, books in bookShelves %}
+      {% for book in books %}
+        <a href="{{ book.url }}" target="_blank" rel="noopener noreferrer">
+          {% set alt %}{% if shelf == 'currentlyReading' %}Currently Reading: {% endif %}{{ book.title }} - {{ book.author }}{% endset %}
+          {% cachedToolTipImage book.cover, alt %}
+        </a>
+      {% endfor %}
+    {% endfor %}
+  </div>
 </section>
 
 <section class="listening paper">
@@ -69,7 +79,7 @@ layout: layouts/base.njk
     I listen to way too much music and I love to listen to full albums. I mainly listen to hip hop, indie rock and <a href="/blog/icymi-glocca-morra-just-married"><abbr title="Ask me about the fun 5th wave emo bands I love">emo</abbr></a>.
     I occasionally write reviews of old albums that I love but aren't well known in a series called <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
   </p>
-  <div>
+  <div class="flex flex-row gap-4">
     <div>
       <h3>Seasonal Playlist</h3>
       <iframe title="Spotify playlist that I have on repeat" src="{{ metadata.spotifyPlaylist }}" width="300" height="380" frameborder="0" allow="encrypted-media"></iframe>
