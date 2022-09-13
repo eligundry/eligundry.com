@@ -2,7 +2,11 @@
 <html lang="en" itemscope itemtype="https://schema.org/Person" itemid="#eli-gundry">
   <head>
     <meta charset="utf-8">
-    <title>{{ title or metadata.title }}</title>
+    {% if title %}
+      <title>{{ title }} | {{ metadata.title }}</title>
+    {% else %}
+      <title>{{ metadata.title }}</title>
+    {% endif %}
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ latestFeeling.emoji }}</text></svg>" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="true" />
@@ -11,33 +15,41 @@
   </head>
   <body>
     <header class="navbar">
-      <div class="flex-1">
-        <a href="/" itemprop="sameAs">Eli Gundry</a>
+      <div class="container mx-auto flex flex-wrap">
+        <div class="flex-1">
+          <a href="/" itemprop="sameAs" class="btn btn-ghost normal-case text-xl">Eli Gundry</a>
+        </div>
+        <nav class="flex-none">
+          <ul class="menu menu-horizontal p-0">
+            {% for link in topNav %}
+              <li>
+                <a href="{{ link.href }}">{% emojiText link.emoji, link.emojiLabel, link.name %}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
       </div>
-      <nav class="flex-none">
-        {% for link in topNav %}
-          <a href="{{ link.href }}">{{ link.name }}</a>
-        {% endfor %}
-      </nav>
     </header>
-    <main class="w-full md:max-w-3xl mx-auto pt-20 sm:pt-12 mt-6 print:mt-0 print:pt-0">
+    <main class="w-full md:max-w-3xl mx-auto print:mt-0 print:pt-0">
       {{ content | safe }}
     </main>
     <footer class="footer">
-      <div>
-        <h3 class="footer-title">About</h3>
-        <p>
-          Eli Gundry is a full stack web developer that loves JavaScript, devops and web standards.
-        </p>
-      </div>
-      <div>
-        <h3 class="footer-title">Social</h3>
+      <div class="container mx-auto flex flex-row">
         <div>
-          {% for link in social %}
-            <a href="{{ link.href }}" class="btn btn-primary" title="{{ link.label }}">
-              <i class="{{ link.icon }} text-4xl"></i>
-            </a>
-          {% endfor %}
+          <h3 class="footer-title">About</h3>
+          <p>
+            Eli Gundry is a full stack web developer that loves JavaScript, devops and web standards.
+          </p>
+        </div>
+        <div>
+          <h3 class="footer-title">Social</h3>
+          <div>
+            {% for link in social %}
+              <a href="{{ link.href }}" class="btn btn-primary" title="{{ link.label }}">
+                <i class="{{ link.icon }} text-4xl"></i>
+              </a>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </footer>
