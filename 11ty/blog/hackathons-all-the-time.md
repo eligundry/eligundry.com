@@ -1,12 +1,12 @@
 ---
 title: Hackathons All The Time
 date: 2014-02-22T05:00
-slug: hackathons-all-the-time
 description: My memories of hackathons I've been to thus far.
 cover: /img/hackathons/hacksu_at_penn_apps.jpg
 layout: layouts/post.njk
 draft: false
-tags:
+tags: post
+postTags:
   - code
 ---
 

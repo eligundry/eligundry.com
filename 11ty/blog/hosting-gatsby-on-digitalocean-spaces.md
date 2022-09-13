@@ -5,7 +5,8 @@ date: 2021-06-02T05:00
 slug: hosting-gatsby-on-digitalocean-spaces
 cover: /img/gatsby-digitialocean-spaces/grimace-cover.png
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - code
 ---
 ![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](/img/gatsby-digitialocean-spaces/grimace-cover.png)

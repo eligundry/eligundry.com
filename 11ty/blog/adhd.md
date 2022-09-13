@@ -1,11 +1,11 @@
 ---
 title: ADHD
 description: Let's quickly run through my life and see how ADHD has effected it.
-slug: adhd
 cover: /img/adhd/fight-thoughts.png
 date: 2021-10-19T05:00
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - mental-health
 ---
 

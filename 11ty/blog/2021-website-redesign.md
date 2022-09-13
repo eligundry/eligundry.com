@@ -1,11 +1,11 @@
 ---
 title: Can I Brag About This Site For A Second?
 description: I have put a lot of work into the newest version of this site and I want to tell you about it.
-slug: 2021-website-redesign
 cover: /img/website-update/home-page.png
 date: 2021-11-09T05:00
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - code
 ---
 

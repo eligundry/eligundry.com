@@ -4,7 +4,7 @@ layout: layouts/base.njk
 ---
 
 <div class="paper">
-  {% for collection in collections %}
-    <h1>{{ collection }}</h1>
+  {% for post in collections.post %}
+    <h1>{{ post.data.title }}</h1>
   {% endfor %}
 </div>

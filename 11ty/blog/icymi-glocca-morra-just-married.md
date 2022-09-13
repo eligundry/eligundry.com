@@ -3,9 +3,9 @@ title: "ICYMI: Glocca Morra - Just Married"
 date: 2021-11-15T04:00
 description: Classic emo album about the first year of marriage. Also, a quick primer on emo music.
 cover: /img/icymi/just-married.jpeg
-slug: icymi-glocca-morra-just-married
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - icymi
 ---
 

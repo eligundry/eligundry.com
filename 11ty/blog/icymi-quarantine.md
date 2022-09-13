@@ -5,7 +5,8 @@ description: A beautiful ambient album about the pain of a breakup.
 cover: /img/icymi/quarantine.jpg
 slug: icymi-quarantine
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - icymi
 ---
 

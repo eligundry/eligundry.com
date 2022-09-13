@@ -5,7 +5,8 @@ description: Epic punk album about anxiety and fighting the man.
 cover: /img/icymi/the-monitor.jpg
 slug: icymi-the-monitor
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - icymi
 ---
 

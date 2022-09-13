@@ -2,10 +2,10 @@
 title: "👨‍🍳 Cherry Slab Pie & Hot Sauce Shrimp + Cheesy Polenta"
 description: The highlight of my weekend was making this pie, let me tell you all about it!
 date: 2021-06-28T04:00
-slug: cooking-cherry-slab-pie-hot-sauce-shrimp-cheesy-polenta
 cover: /img/cooking-cherry-slab-pie/pie-slice.jpeg
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - cooking
 ---
 

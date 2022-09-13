@@ -5,7 +5,8 @@ slug: job-search-2k22
 date: 2022-01-28T05:00
 cover: /img/job-search-2k22/sankey-chart.png
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - code
 ---
 

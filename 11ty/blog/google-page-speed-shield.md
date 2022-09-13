@@ -5,7 +5,8 @@ slug: google-page-speed-shield
 cover: /img/page-speed-shield/cover.png
 date: 2021-06-21T05:00
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - code
 ---
 

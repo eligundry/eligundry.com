@@ -1,11 +1,11 @@
 ---
 title: Funny Money
 description: By all means, make that money in crypto, but not all money is right.
-slug: funny-money
 date: 2022-01-15T05:00
 cover: https://c.tenor.com/dXZsDQCgO4sAAAAC/the-wire-d-angelo-barksdale.gif
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - code
 ---
 

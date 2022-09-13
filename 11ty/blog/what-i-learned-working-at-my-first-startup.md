@@ -5,7 +5,8 @@ slug: what-i-learned-working-at-my-first-startup
 cover: /img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg
 date: 2021-12-17T05:00
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - code
 ---
 

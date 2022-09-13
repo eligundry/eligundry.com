@@ -5,6 +5,7 @@ description: How I learned Redux at the exact right time
 slug: redux-hooks
 layout: layouts/post.njk
 location: QueensJS
+tags: talk
 ---
 
 <ResponsiveIFrame

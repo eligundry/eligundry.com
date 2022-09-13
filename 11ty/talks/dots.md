@@ -5,6 +5,7 @@ description: Effective dotfile management
 slug: dots
 layout: layouts/post.njk
 location: NYC Vim
+tags: talk
 ---
 
 <ResponsiveIFrame

@@ -5,7 +5,8 @@ date: 2021-07-19T04:00
 slug: cooking-veggie-burgers-and-more
 cover: /img/cooking-veggie-burgers-and-more/finished-burgers.jpeg
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - cooking
 ---
 

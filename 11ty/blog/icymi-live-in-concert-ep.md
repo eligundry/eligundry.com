@@ -5,7 +5,8 @@ description: Weed rap meets classic jazz flute with fun results.
 cover: /img/icymi/live-in-concert.jpg
 slug: icymi-live-in-concert-ep
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - icymi
 ---
 

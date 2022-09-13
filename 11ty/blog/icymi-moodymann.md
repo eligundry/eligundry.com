@@ -5,7 +5,8 @@ description: A catchy mix of Motown and house music.
 cover: /img/icymi/moodymann.jpg
 slug: icymi-moodymann
 layout: layouts/post.njk
-tags:
+tags: post
+postTags:
   - icymi
 ---
 
