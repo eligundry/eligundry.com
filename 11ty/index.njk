@@ -2,7 +2,7 @@
 layout: layouts/base.njk
 ---
 
-<section>
+<section class="intro paper">
   <h2>Glad To Meet You!</h2>
   <p>My name is Eli I only really write in lists, so here's my deal.</p>
   <ul>
@@ -29,11 +29,11 @@ layout: layouts/base.njk
     <li>
       I have a {% emojiText "😼", "smirking cat emoji because Fonzie is a stinker", "<strong>fat cat named Fonzie</strong>" %}
       and I sorta have a <a href="https://twitter.com/EliGundry/status/1055933062125703168">a tattoo of him on my arm</a>.
-    <li>
+    </li>
   </ul>
 </section>
 
-<section class="feeling">
+<section class="feeling paper">
   <h2>How I'm Feeling</h2>
   <p>
     A while ago, I decided to start journaling my feelings. Being a software engineer,
@@ -42,7 +42,7 @@ layout: layouts/base.njk
   </p>
 </section>
 
-<section class="coding">
+<section class="coding paper">
   <h2>Do You Code?</h2>
   <p>
     I make a living developing web applications. I jump all around the stack and will do whatever it takes to ship. Need
@@ -55,7 +55,7 @@ layout: layouts/base.njk
   </p>
 </section>
 
-<section class="reading">
+<section class="reading paper">
   <h2>What I'm Reading</h2>
   <p>
     I wish I read more, but there are only so many hours in the day. These are the books that I'm reading right now. You
@@ -63,10 +63,25 @@ layout: layouts/base.njk
   </p>
 </section>
 
-<section class="listening">
+<section class="listening paper">
   <h2>What I'm Listening To</h2>
   <p>
     I listen to way too much music and I love to listen to full albums. I mainly listen to hip hop, indie rock and <a href="/blog/icymi-glocca-morra-just-married"><abbr title="Ask me about the fun 5th wave emo bands I love">emo</abbr></a>.
     I occasionally write reviews of old albums that I love but aren't well known in a series called <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
   </p>
+  <div>
+    <div>
+      <h3>Seasonal Playlist</h3>
+      <iframe title="Spotify playlist that I have on repeat" src="{{ metadata.spotifyPlaylist }}" width="300" height="380" frameborder="0" allow="encrypted-media"></iframe>
+    </div>
+    <div>
+      <h3>On Repeat</h3>
+      <a href="https://www.last.fm/user/eli_pwnd" class="grid grid-cols-3 h-fit gap-0 not-prose">
+        {% for album in topAlbums %}
+          {% set alt %}{{ album.name }} - {{ album.artist }} [{{ album.count }} scrobbles]{% endset %}
+          {% cachedToolTipImage album.cover, alt %}
+        {% endfor %}
+      </a>
+    </div>
+  </div>
 </section>

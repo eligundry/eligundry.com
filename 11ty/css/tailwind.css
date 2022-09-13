@@ -5,3 +5,11 @@
 a {
   @apply link link-primary link-hover;
 }
+
+.paper {
+  @apply prose mb-4;
+}
+
+.tooltip {
+  z-index: 10000000;
+}
