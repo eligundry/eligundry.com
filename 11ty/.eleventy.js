@@ -99,6 +99,19 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addNunjucksAsyncShortcode("image", imageShortcode);
+  eleventyConfig.addNunjucksAsyncShortcode(
+    "cachedImage",
+    async (metadata, alt, sizes = "") => {
+      console.log({ metadata, alt });
+
+      return Image.generateHTML(metadata, {
+        alt,
+        sizes,
+        loading: "lazy",
+        decoding: "async",
+      });
+    }
+  );
 
   eleventyConfig.addShortcode(
     "cachedToolTipImage",
