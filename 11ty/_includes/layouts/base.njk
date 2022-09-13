@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="true" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    {% block head %}{% endblock %}
   </head>
   <body>
     <header class="navbar">
@@ -31,7 +32,9 @@
       </div>
     </header>
     <main class="w-full md:max-w-3xl mx-auto print:mt-0 print:pt-0">
-      {{ content | safe }}
+      {% block mainContent %}
+        {{ content | safe }}
+      {% endblock %}
     </main>
     <footer class="footer">
       <div class="container mx-auto flex flex-row">
