@@ -16,5 +16,17 @@ module.exports = {
         "2xl": "786px",
       },
     },
+    extend: {
+      typography: {
+        gray: {
+          css: {
+            pre: {
+              "background-color": "#181818",
+              color: "#d8d8d8",
+            },
+          },
+        },
+      },
+    },
   },
 };

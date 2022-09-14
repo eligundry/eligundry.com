@@ -1,13 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "highlight.js/styles/base16/default-dark";
 
 a {
   @apply link link-primary link-hover;
 }
 
 .paper {
-  @apply prose max-w-none mb-4;
+  @apply prose max-w-none mb-4 drop-shadow-xl;
 }
 
 .prose {
