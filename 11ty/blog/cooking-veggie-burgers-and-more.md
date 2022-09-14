@@ -14,10 +14,8 @@ This weekend was one of contrasts. On Friday, we went to a birthday party for my
 showing up, we were told to put on cat ears. I declined (I already have a cat tattoo) but still had a very fun time.
 
 <figure>
-
-![Actual picture from the cat ear party](/img/cooking-veggie-burgers-and-more/put-on-cat-ears.png)
-
-<figcaption>Actual picture from the birthday party</figcaption>
+  {% image './img/cooking-veggie-burgers-and-more/put-on-cat-ears.png', 'Actual picture from the cat ear party' %}
+  <figcaption>Actual picture from the birthday party</figcaption>
 </figure>
 
 Saturday, though, we were exhausted from the party and our very long week. I spent the day playing games from my youth
@@ -37,7 +35,7 @@ so we have to settle for the same kitchen we use for every meal. We're not compl
 use it. Today, I want to introduce you to my favorite burger that you can only make in a pan, the
 [Café Salle Pleyel Burger][burger-recipe].
 
-![Veggie burger ingredients](/img/cooking-veggie-burgers-and-more/veggie-burger-ingredients.jpg)
+{% image './img/cooking-veggie-burgers-and-more/veggie-burger-ingredients.jpg', 'Veggie burger ingredients' %}
 
 This recipe calls for sundried tomatoes, cornichon pickles, capers and parsley to be mixed into the meat. It also calls
 for fresh tarragon leaves in this mixture, but I forgot to pick those up so I tossed in some dried rosemary and Italian
@@ -52,14 +50,14 @@ Meat and they turned out just okay, though a little too rich for my taste.
 That said, mixing the vegetables into the Impossible Burger is weird. The way Impossible feels is gross and
 disconcerting, but such are the sacrifices we make to go to FlavorTown.
 
-![Burgers in pan](/img/cooking-veggie-burgers-and-more/burgers-in-pan.jpeg)
+{% image './img/cooking-veggie-burgers-and-more/burgers-in-pan.jpeg', 'Burgers in pan' %}
 
 The nice thing about Impossible Burger is that you can cook it like a normal burger and get similar results. I cook my
 burgers like I would cook a steak in cast iron: heat the pan up on high for a few minutes, squirt some olive oil on and
 get it warm and then place the burger on the pan. Let this go for like 4 minutes and flip. You'll note in the photo
 above that a nice crispy crust has developed on the burger.
 
-![Bacon Jam](/img/cooking-veggie-burgers-and-more/bacon-jam.jpg)
+{% image './img/cooking-veggie-burgers-and-more/bacon-jam.jpg', 'Bacon Jam' %}
 
 This recipe also calls for you to make a red onion jam. The first few times I made this, I didn't have time to make it
 (it takes around 30 minutes to boil down the onions) but I made it last time and wow did it make a huge difference.
@@ -72,7 +70,7 @@ sweetness. And finally, you add some balsamic vinegar, brown sugar, and maple sy
 simmering on low for about 10 minutes. I eyeballed and tasted my way to figure out if I had the right proportions, which
 was a fun improvisation.
 
-![Finished veggie burgers with sweet potato fries and salad](/img/cooking-veggie-burgers-and-more/finished-burgers.jpeg)
+{% image './img/cooking-veggie-burgers-and-more/finished-burgers.jpeg', 'Finished veggie burgers with sweet potato fries and salad' %}
 
 Overall, this burger turned out great. The cook was medium / medium rare, which is right where I like it.
 
@@ -83,7 +81,7 @@ experience would be different, but alas, it was not meant to be.
 
 # Sunday Cocktail: [Not Quite Picon Bière](https://cooking.nytimes.com/recipes/1021353-not-quite-picon-biere)
 
-![My take on Picon Bière with Miller High Life](/img/cooking-veggie-burgers-and-more/picon-biere.jpeg)
+{% image './img/cooking-veggie-burgers-and-more/picon-biere.jpeg', 'My take on Picon Bière with Miller High Life' %}
 
 The New York Times Cooking section has this recipe for a French beer cocktail that I enjoy and want to share. It is
 a mixture of beer, Amaro, and orange liqueur. All those ingredients are somewhat fancy so I've dumbed it down for my
@@ -104,14 +102,14 @@ a few weeks ago](/blog/cooking-cherry-slab-pie-hot-sauce-shrimp-cheesy-polenta).
 I did make it in a traditional pie pan after all. But I did use Rainer cherries marinated in lemon juice so the flavor
 is very similar.
 
-![Pie before it was baked](/img/cooking-veggie-burgers-and-more/pie-prep.jpg)
+{% image './img/cooking-veggie-burgers-and-more/pie-prep.jpg', 'Pie before it was baked' %}
 
 This time, though, I remembered to cut a slit in the pie so the steam could escape (it's a little heart because cooking
 is my love language) and remembered to put egg wash and demerara sugar on top. I also did a better job with the dough,
 it was much easier to roll out and fit in the pan than the last one I made. Maybe I added enough water, I'm not sure.
 I couldn't get the edge of the crust picture perfect, but that's life ain't it.
 
-![Finished pie with my cat, Fonzie, looking into the camera](/img/cooking-veggie-burgers-and-more/finished-pie.jpeg)
+{% image './img/cooking-veggie-burgers-and-more/finished-pie.jpeg', 'Finished pie with my cat, Fonzie, looking into the camera' %}
 
 The pie turned out great! So good that my cat wanted a slice! That's all I have to say about that.
 

@@ -8,13 +8,7 @@ location: QueensJS
 tags: talk
 ---
 
-<ResponsiveIFrame
-	src="https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000"
-	frameBorder="0"
-	width="960"
-	height="569"
-	allowFullScreen={true}
-/>
+{% googleSlideShow 'https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000' %}
 
 # Notes / Research / Outline
 

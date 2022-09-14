@@ -49,7 +49,7 @@ Looks pretty snazzy, though it takes around 30 seconds to run, time to add it to
 
 # Results
 
-![Page Speed shield fails to load on GitHub](/img/page-speed-shield/failure.png)
+{% image './img/page-speed-shield/failure.png', 'Page Speed shield fails to load on GitHub' %}
 
 Ah man, it failed to load! I did some Googling and it turns out that [GitHub proxies all images through their camo
 service which has a 4 second timeout][camo-timeout]. This is good for the end user (prevents tracking pixels on GitHub
@@ -72,7 +72,7 @@ One really cool thing I found while building this was this [server timing Gin mi
 [`Server-Timing` headers][server-timing] to a response. This allowed me to see how long Page Speed Insights was taking
 in the Chrome Dev Tools!
 
-![Server-Timing headers in the Chrome Dev Tools](/img/page-speed-shield/server-timing.png)
+{% image './img/page-speed-shield/server-timing.png', 'Server-Timing headers in the Chrome Dev Tools' %}
 
 It's like having a mini-DataDog right in your browser!
 

@@ -33,7 +33,7 @@ dough][pie-dough] calls for a [hand held pastry blender][pastry-blender] and not
 not have one and purchased it through the link on the page (you have to support Deb Perelman, so the affiliate link is
 retained).
 
-![Making the pie crust dough collage](/img/cooking-cherry-slab-pie/making-the-dough.jpg)
+{% image './img/cooking-cherry-slab-pie/making-the-dough.jpg', 'Making the pie crust dough collage' %}
 
 I got the flour and the ice cold butter in the bowl and started mashing. Senseless mashing wasn't working so I took
 a deep breath and switched up the technique. Push and turn, push and turn, push and turn, be the stand mixer you want to
@@ -42,7 +42,7 @@ butter blended pretty good and added some ice water and shaped into a ball. I sl
 for the top crust), wrapped in plastic and tossed it in the fridge for 3 hours while I mopped the floor (it was so
 nasty).
 
-![Making the cherries collage](/img/cooking-cherry-slab-pie/making-the-cherries.jpg)
+{% image './img/cooking-cherry-slab-pie/making-the-cherries.jpg', 'Making the cherries collage' %}
 
 After I finished mopping, I figured I should prepare the cherries. The recipe called for sour cherries, but all the
 grocery store I went to (Trade Fair) had were Rainier cherries. I've never seen baked good with Rainier cherries so
@@ -57,7 +57,7 @@ of how El-P looks at the world. I took away that you shouldn't try to force some
 live in the present instead of worrying about the future. Open Mike Eagle is one of my favorite live acts and I can't
 wait for the world to open up enough for me to see him again.
 
-![Cherry slab pie in the oven](/img/cooking-cherry-slab-pie/pie-in-oven.jpeg)
+{% image './img/cooking-cherry-slab-pie/pie-in-oven.jpeg', 'Cherry slab pie in the oven' %}
 
 Anyways, back to the pie. I spent like 30 minutes rolling out the ice cold pie dough so that it (barely) was the size of
 the sheet pan I was going to bake the pie in. I was sore the next morning because I'm so out of shape but I really had
@@ -67,7 +67,7 @@ crust to get it a little extra crunch. Always room for improvement!
 
 <figure>
 
-![Finished pie](/img/cooking-cherry-slab-pie/finished-pie.jpeg)
+{% image './img/cooking-cherry-slab-pie/finished-pie.jpeg', 'Finished pie' %}
 
 <figcaption>I should have never smoked that shit now I have a giant Toaster Strudel</figcaption>
 </figure>
@@ -75,7 +75,7 @@ crust to get it a little extra crunch. Always room for improvement!
 I pulled the pie out as I started cooking dinner (more on that in a second) and it smelled delicious. This is my way of
 saying that it's ugly as sin but I still love it. I set it aside to cool and we'd eat it after dinner.
 
-![Lemon glaze](/img/cooking-cherry-slab-pie/lemon-glaze.jpeg)
+{% image './img/cooking-cherry-slab-pie/lemon-glaze.jpeg', 'Lemon glaze' %}
 
 Now it's time to make glaze for our giant Toaster Strudel! The recipe had three different preparation for the glaze:
 
@@ -89,7 +89,7 @@ was "more interesting". This was met with my partner sarcastically commenting "O
 which I cut her off and told her "I will not stand for Deb Perelman slander or disrespect in this house. She has posted
 nearly a recipe a day for over a decade, what have you done!?". We love each other and this is our love language.
 
-![Slice of pie with lemon glaze](/img/cooking-cherry-slab-pie/pie-slice.jpeg)
+{% image './img/cooking-cherry-slab-pie/pie-slice.jpeg', 'Slice of pie with lemon glaze' %}
 
 Well, after we sliced the pie and put the lemon glaze on and ate it. The lemon glaze on the pie was so good that my
 partner had to retract her Deb Perelman slander and admit that it was interesting. The pie turned out great, even though
@@ -103,25 +103,25 @@ the inspiration for this pairing. But, I live in Astoria, Queens which is not th
 to offend my southern readers with a Yank daring to tackle a southern delicacy. Also, the selection of polenta in an
 Italian neighborhood is very very good.
 
-![Cooking the red onions and the shrimp](/img/cooking-cherry-slab-pie/cooking-shrimp.jpg)
+{% image './img/cooking-cherry-slab-pie/cooking-shrimp.jpg', 'Cooking the red onions and the shrimp' %}
 
 This recipe didn't call for caramelized red onion, but I love caramelized red onion, so in it goes. Also, I didn't
 have time to do a proper mise in place, so caramelizing onions bought me a little bit of time to prep the shrimp.
 Once the onions were good, I dumped the shrimp and cooked for six minutes (doubling the butter because why not).
 
-![Shrimp in the hot sauce... sauce?](/img/cooking-cherry-slab-pie/shrimp-in-sauce.jpeg)
+{% image './img/cooking-cherry-slab-pie/shrimp-in-sauce.jpeg', 'Shrimp in the hot sauce... sauce?' %}
 
 The sauce is just butter and hot sauce. I got my hands on some [Crystal hot sauce][crystal], which is probably a basic
 hot sauce not worth noting, but I really like it. A little spicier than Frank's, but still lots of flavor. I dumped the
 shrimp in here with some green onion and tossed.
 
-![Cheesy polenta](/img/cooking-cherry-slab-pie/cheesy-polenta.jpeg)
+{% image './img/cooking-cherry-slab-pie/cheesy-polenta.jpeg', 'Cheesy polenta' %}
 
 I really liked this [polenta recipe from Rachel Ray][cheesy-polenta]. It was just instant polenta with a bunch of
 Parmesan cheese and a little bit of honey. The polenta we got came with instructions in Italian, so that was a little
 stressful to decipher while the pot was boiling over, but it all worked out in the end.
 
-![Finished shrimp & cheesy polenta](/img/cooking-cherry-slab-pie/finished-shimp-polenta.jpeg)
+{% image './img/cooking-cherry-slab-pie/finished-shimp-polenta.jpeg', 'Finished shrimp & cheesy polenta' %}
 
 The end result was a spicy and savory dish that complimented itself very well. If I were to do it again, I would de-tail
 the shrimp as a part of my mise en place so that I could more easily blend the shrimp and polenta.

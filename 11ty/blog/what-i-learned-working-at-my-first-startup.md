@@ -121,6 +121,6 @@ so hard I burnout once a year". I should probably work on that… I'm going to t
 habits and doing a thorough job search next year.
 
 <figure>
-  ![Me & a coworker in a marketing photo looking at an empty notebook](/img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg)
+  {% image './img/what-i-learned-working-at-talentinc/reading-on-couch.jpeg', 'Me & a coworker in a marketing photo looking at an empty notebook' %}
   <figcaption>You never know when you're going to show up on the marketing website…</figcaption>
 </figure>

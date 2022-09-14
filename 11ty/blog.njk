@@ -1,10 +1,16 @@
 ---
 title: Blog
+description: Thoughts, tutorials, musings, album reviews and everything in between that I have written down.
 layout: layouts/base.njk
 ---
 
 <div class="paper">
-  {% for post in collections.post %}
-    <h1>{{ post.data.title }}</h1>
+  {% for post in collections.post | reverse %}
+    <article>
+      <h1 itemprop="name headline">
+        <a itemprop="url" href="{{ post.url }}">{{ post.data.title }}</a>
+      </h1>
+      <p itemprop="description">{{ post.data.description }}</p>
+    </article>
   {% endfor %}
 </div>

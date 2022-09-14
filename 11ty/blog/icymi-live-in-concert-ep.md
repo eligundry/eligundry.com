@@ -10,7 +10,7 @@ postTags:
   - icymi
 ---
 
-![Wiz Khalifa & Curren$y - Live In Concert EP](/img/icymi/live-in-concert.jpg)
+{% image './img/icymi/live-in-concert.jpg', 'Wiz Khalifa & Curren$y - Live In Concert EP' %}
 
 This week, I'm gonna take us back to 2013. Happier times for sure. The album is
 [*Live in Concert EP* from Wiz Khalifa and Curren$y][1]. Don't be mislead, this

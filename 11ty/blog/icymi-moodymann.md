@@ -10,7 +10,7 @@ postTags:
   - icymi
 ---
 
-![Moodymann - Moodymann](/img/icymi/moodymann.jpg)
+{% image './img/icymi/moodymann.jpg', 'Moodymann - Moodymann' %}
 
 This week, I want to take y'all to Detroit to visit [Moodymann's self titled album](://open.spotify.com/album/61sGO58ljdDgD4Mn6Bcj3P) from 2014. After 21 years of
 creating low key Detroit house music, James Dixon finally starts using his voice (literally, he doesn't sing on any

@@ -97,7 +97,7 @@ Never heard it put that way before, but product does be like that sometimes.
 
 # Enough about the search! Where are you working!?
 
-![Chord Commerce Logo](/img/job-search-2k22/chord-logo.jpg)
+{% image './img/job-search-2k22/chord-logo.jpg', 'Chord Commerce Logo' %}
 
 **I will be joining [Chord](https://chord.co) as a Staff Engineer in early February!**
 

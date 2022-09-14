@@ -1,12 +1,24 @@
 const Image = require("@11ty/eleventy-img");
 const dateFns = require("date-fns");
+const path = require("path");
 
 require("dotenv").config();
 
-async function imageShortcode(src, alt, sizes) {
-  let metadata = await Image(src, {
-    widths: [300, 600],
-    formats: ["avif", "jpeg"],
+async function imageShortcode(src, alt, sizes = "") {
+  let imgSrc = src;
+  let outputDir = path.join("_site", "img");
+  let urlPath = "/img/";
+
+  if (!imgSrc.startsWith("http")) {
+    imgSrc = path.join(path.dirname(this.page.inputPath), imgSrc);
+    outputDir = path.join("_site", path.dirname(imgSrc));
+    urlPath = `/${path.dirname(imgSrc)}`;
+  }
+
+  let metadata = await Image(imgSrc, {
+    widths: [690],
+    outputDir,
+    urlPath,
   });
 
   let imageAttributes = {
@@ -17,7 +29,9 @@ async function imageShortcode(src, alt, sizes) {
   };
 
   // You bet we throw an error on missing alt in `imageAttributes` (alt="" works okay)
-  return Image.generateHTML(metadata, imageAttributes);
+  return Image.generateHTML(metadata, imageAttributes, {
+    whitespaceMode: "inline",
+  });
 }
 
 module.exports = function (eleventyConfig) {
@@ -141,4 +155,12 @@ module.exports = function (eleventyConfig) {
     `;
     }
   );
+
+  eleventyConfig.addShortcode("googleSlideShow", (url) => {
+    return `<iframe src="${url}" frameborder="0" width="960" height="569" allowfullscreen="true"></iframe>`;
+  });
+
+  return {
+    markdownTemplateEngine: "njk",
+  };
 };

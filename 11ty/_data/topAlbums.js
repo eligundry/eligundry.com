@@ -22,8 +22,8 @@ module.exports = async function () {
       .map(async (album) => {
         const cover = await Image(album.image.at(-1).url, {
           widths: [300],
-          urlPath: "/lastfm-img/",
-          outputDir: "./_site/lastfm-img/",
+          urlPath: "/img/lastfm/",
+          outputDir: "./_site/img/lastfm/",
           cacheOptions: {
             duration: "1y",
           },

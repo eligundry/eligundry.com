@@ -10,7 +10,7 @@ postTags:
   - icymi
 ---
 
-![The Monitor](/img/icymi/the-monitor.jpg)
+{% image './img/icymi/the-monitor.jpg', 'The Monitor' %}
 
 To honor the inauguration today, I'm going to talk about one of my favorite punk
 albums of all time, [Titus Andronicus's *The Monitor*](https://open.spotify.com/album/5U09FQWagzAU5HPmufUAlU). This album is sort of

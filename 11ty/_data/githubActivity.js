@@ -10,11 +10,11 @@ module.exports = async function () {
     theme: "blue",
   });
   const url = `https://ssr-contributions-svg.vercel.app/_/${username}?${params.toString()}`;
-  console.log(url);
+
   return Image(url, {
     formats: ["svg"],
-    urlPath: "/github-calendar/",
-    outputDir: "./_site/github-calendar/",
+    urlPath: "/img/github-calendar/",
+    outputDir: "./_site/img/github-calendar/",
     cacheOptions: {
       duration: "12h",
     },

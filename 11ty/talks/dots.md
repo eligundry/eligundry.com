@@ -8,10 +8,4 @@ location: NYC Vim
 tags: talk
 ---
 
-<ResponsiveIFrame
-  src="https://docs.google.com/presentation/d/e/2PACX-1vQZg4uXLyw5SMuTbyZJ--fksNQTq4Ih34aWwcdLq9bAe1BeKLpcP-d05UwAAtVJieh5WjkD0iJln4is/embed?start=false&loop=false&delayms=3000"
-  frameborder="0"
-  width="960"
-  height="569"
-  allowFullScreen={true}
-/>
+{% googleSlideShow 'https://docs.google.com/presentation/d/e/2PACX-1vQZg4uXLyw5SMuTbyZJ--fksNQTq4Ih34aWwcdLq9bAe1BeKLpcP-d05UwAAtVJieh5WjkD0iJln4is/embed?start=false&loop=false&delayms=3000' %}

@@ -47,7 +47,7 @@ may not make sense at the time, but you'll be better off because of it.
 Finally, I'd love to talk about this album's cover, which I think might be
 my favorite of all time.
 
-![Laurel Halo - Quarantine](/img/icymi/quarantine.jpg)
+{% image './img/icymi/quarantine.jpg', 'Laurel Halo - Quarantine' %}
 
 [Pitchfork has an interview with Halo and the artist about this cover](http://pitchfork.com/features/take-cover/8859-laurel-halo/) this almost
 serves as a companion piece to the album. It's an interesting read, so if you

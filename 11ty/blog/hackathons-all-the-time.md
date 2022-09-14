@@ -27,7 +27,7 @@ groundbreaking, amazing stuff that you could only dream to make. And they are
 doing it with such ease.
 
 <figure className="pull-right">
-  ![Nerf Gun Turret](/img/hackathons/nerf-gun-turret.png)
+  {% image './img/hackathons/nerf-gun-turret.png', 'Nerf Gun Turret' %}
   <figcaption>They fired this bad boy at judges. It was a sight to behold.</figcaption>
 </figure>
 
@@ -102,6 +102,6 @@ events, go to one. I'll probably be attending [Hack PSU](http://www.hackpsu.com/
 in a few weeks. Hopefully, I'll see you there.
 
 <figure className="center">
-    ![HacKSU at Penn Apps 2014](/img/hackathons/hacksu_at_penn_apps.jpg)
+    {% image './img/hackathons/hacksu_at_penn_apps.jpg', 'HacKSU at Penn Apps 2014' %}
     <figcaption>HacKSU at Penn Apps 2014</figcaption>
 </figure>
