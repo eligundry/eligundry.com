@@ -2,13 +2,7 @@
  * @type {import('tailwindcss').Config}
  */
 module.exports = {
-  content: [
-    "./*.{html,md,njk,liquid,js}",
-    "./talks/*",
-    "./blog/*",
-    "./_includes/**/*",
-    "./.eleventy.js",
-  ],
+  content: ["./src/**/*.{html,md,njk,js}", "./.eleventy.js"],
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   safelist: ["tooltip"],
   theme: {

@@ -9,7 +9,7 @@
     "watch:tailwind": "npm run build:tailwind -- --watch",
     "build": "run-s build:tailwind build:11ty",
     "build:11ty": "eleventy",
-    "build:tailwind": "tailwindcss -i ./css/tailwind.css -o ./_site/css/style.css --postcss postcss.config.js"
+    "build:tailwind": "tailwindcss -i ./src/css/tailwind.css -o ./_site/css/style.css --postcss postcss.config.js"
   },
   "author": "Eli Gundry <eligundry@gmail.com>",
   "license": "MIT",
