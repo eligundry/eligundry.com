@@ -36,6 +36,8 @@ async function imageShortcode(src, alt, sizes = "") {
 }
 
 module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-rss"));
+
   eleventyConfig.addShortcode(
     "emojiText",
     (emoji, label, text) =>

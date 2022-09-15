@@ -7,4 +7,5 @@ module.exports = {
   googleTagManagerID: "GTM-W7KHFLM",
   spotifyPlaylist:
     "https://open.spotify.com/embed/playlist/6HasOSwBI2amViuCQFmQw0",
+  now: new Date(),
 };
