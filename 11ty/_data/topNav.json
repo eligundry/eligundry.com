@@ -7,25 +7,25 @@
   },
   {
     "name": "Blog",
-    "href": "/blog",
+    "href": "/blog/",
     "emoji": "📝",
     "emojiLabel": "note to denote my blog"
   },
   {
     "name": "Feelings",
-    "href": "/feelings",
+    "href": "/feelings/",
     "emoji": "🥺",
     "emojiLabel": "emotional looking emoji face to denote my feelings"
   },
   {
     "name": "Talks",
-    "href": "/talks",
+    "href": "/talks/",
     "emoji": "🗣",
     "emojiLabel": "silhouette of person speaking"
   },
   {
     "name": "Resume",
-    "href": "/resume",
+    "href": "/resume/",
     "emoji": "📄",
     "emojiLabel": "piece of paper representing my resume"
   }

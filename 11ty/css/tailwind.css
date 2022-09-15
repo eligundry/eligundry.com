@@ -28,3 +28,21 @@ a {
   margin-left: 0;
   text-align: center;
 }
+
+header.navbar {
+  & .site-name {
+    @apply pl-0;
+  }
+
+  & a:hover,
+  & a:focus {
+    @apply no-underline text-primary bg-transparent;
+  }
+
+  & .menu {
+
+    & a[aria-current="page"] {
+      @apply font-bold text-primary;
+    }
+  }
+}

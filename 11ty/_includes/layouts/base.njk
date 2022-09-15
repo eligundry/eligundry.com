@@ -18,46 +18,18 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    <header class="navbar">
-      <div class="container mx-auto flex flex-wrap">
-        <div class="flex-1">
-          <a href="/" itemprop="sameAs" class="btn btn-ghost normal-case text-xl">Eli Gundry</a>
-        </div>
-        <nav class="flex-none">
-          <ul class="menu menu-horizontal p-0">
-            {% for link in topNav %}
-              <li>
-                <a href="{{ link.href }}">{% emojiText link.emoji, link.emojiLabel, link.name %}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <main class="w-full md:max-w-3xl mx-auto print:mt-0 print:pt-0">
+    {% block header %}
+      {% include '../header.njk' %}
+    {% endblock %}
+
+    <main class="container mx-auto print:mt-0 print:pt-0">
       {% block mainContent %}
         {{ content | safe }}
       {% endblock %}
     </main>
-    <footer class="footer">
-      <div class="container mx-auto flex flex-row">
-        <div>
-          <h3 class="footer-title">About</h3>
-          <p>
-            Eli Gundry is a full stack web developer that loves JavaScript, devops and web standards.
-          </p>
-        </div>
-        <div>
-          <h3 class="footer-title">Social</h3>
-          <div>
-            {% for link in social %}
-              <a href="{{ link.href }}" class="btn btn-square btn-primary" title="{{ link.label }}">
-                <i class="{{ link.icon }} text-4xl"></i>
-              </a>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </footer>
+
+    {% block footer %}
+      {% include '../footer.njk' %}
+    {% endblock %}
   </body>
 </html>
