@@ -3,12 +3,14 @@
  */
 module.exports = {
   content: [
-    "./**/*.{html,md,njk,liquid,js}",
-    "!./_site/**/*",
-    "!./node_modules/**/*",
+    "./*.{html,md,njk,liquid,js}",
+    "./talks/*",
+    "./blog/*",
+    "./_includes/**/*",
+    "./.eleventy.js",
   ],
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
-  safelist: ["tooltip", "tooltip-open"],
+  safelist: ["tooltip"],
   theme: {
     container: {
       screens: {
@@ -29,4 +31,9 @@ module.exports = {
       },
     },
   },
+  daisyui: {
+    themes: ["light", "dark"],
+    darkTheme: "dark",
+  },
+  darkMode: ["class", "[data-theme='dark']"],
 };

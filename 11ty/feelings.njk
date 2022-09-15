@@ -7,7 +7,7 @@ layout: layouts/base.njk
 <article id="{% formatDate entry.time, 'iso8601' %}" itemscope itemtype="https://schema.org/BlogPosting">
   <meta itemprop="image" content="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ entry.emoji }}</text></svg>" />
   <link itemprop="author publisher" href="#eli-gundry" />
-  <div class="paper">
+  <div class="paper prose">
     <h3 itemprop="name headline">I felt {{ entry.mood }}</h3>
     <time datetime="{% formatDate entry.time, 'iso8601' %}" itemprop="datePublished dateModified">
       <a href="/feelings#{% formatDate entry.time, 'iso8601' %}">

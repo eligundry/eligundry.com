@@ -5,54 +5,56 @@ layout: layouts/base.njk
 
 {% import 'resume/experience.njk' as experience %}
 
-<section class="prose">
-  <header>
-    <h2>Skills & Technologies</h2>
-  </header>
-  <ul>
-    {% for section in resume.skills %}
-      <li>
-        {% if section.name == 'Languages' %}
-          Fluent in
-        {% elif section.name == 'Frameworks' %}
-          Built complext web applications using
-        {% elif section.name == 'Tools' %}
-          Loves using
-        {% elif section.name == 'Love Hate' %}
-          Has a love-hate relationship (that I will happily explain) with
-        {% endif %}
-
-        {% resumeSkillList section.keywords %}
-      </li>
-    {% endfor %}
-  </ul>
-</section>
-
-<section class="prose">
-  <header>
-    <h2>Work</h2>
-  </header>
-  {% for exp in resume.work %}
-    {{ experience.section('work', exp) }}
-  {% endfor %}
-</section>
-
-<section class="prose">
-  <header>
-    <h2>Education</h2>
-  </header>
-  {% for exp in resume.education %}
-    {{ experience.section('education', exp) }}
-  {% endfor %}
-</section>
-
-<section class="prose">
-  <header>
-    <h2>Activities & Interests</h2>
+<div class="paper">
+  <section class="prose">
+    <header>
+      <h2>Skills & Technologies</h2>
+    </header>
     <ul>
-      {% for ai in resume.activitesInterests %}
-        <li>{{ ai | safe }}</li>
+      {% for section in resume.skills %}
+        <li>
+          {% if section.name == 'Languages' %}
+            Fluent in
+          {% elif section.name == 'Frameworks' %}
+            Built complext web applications using
+          {% elif section.name == 'Tools' %}
+            Loves using
+          {% elif section.name == 'Love Hate' %}
+            Has a love-hate relationship (that I will happily explain) with
+          {% endif %}
+
+          {% resumeSkillList section.keywords %}
+        </li>
       {% endfor %}
     </ul>
-  </header>
-</section>
+  </section>
+
+  <section class="prose">
+    <header>
+      <h2>Work</h2>
+    </header>
+    {% for exp in resume.work %}
+      {{ experience.section('work', exp) }}
+    {% endfor %}
+  </section>
+
+  <section class="prose">
+    <header>
+      <h2>Education</h2>
+    </header>
+    {% for exp in resume.education %}
+      {{ experience.section('education', exp) }}
+    {% endfor %}
+  </section>
+
+  <section class="prose">
+    <header>
+      <h2>Activities & Interests</h2>
+      <ul>
+        {% for ai in resume.activitesInterests %}
+          <li>{{ ai | safe }}</li>
+        {% endfor %}
+      </ul>
+    </header>
+  </section>
+</div>

@@ -1,7 +1,6 @@
 const Image = require("@11ty/eleventy-img");
 const dateFns = require("date-fns");
 const path = require("path");
-const markdownIt = require("markdown-it");
 
 require("dotenv").config();
 
@@ -37,6 +36,7 @@ async function imageShortcode(src, alt, sizes = "") {
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-rss"));
+  eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-syntaxhighlight"));
 
   eleventyConfig.addShortcode(
     "emojiText",
@@ -160,11 +160,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addShortcode("googleSlideShow", (url) => {
     return `<iframe src="${url}" frameborder="0" width="960" height="569" allowfullscreen="true"></iframe>`;
   });
-
-  eleventyConfig.setLibrary(
-    "md",
-    markdownIt({ html: true }).use(require("markdown-it-highlightjs"))
-  );
 
   return {
     markdownTemplateEngine: "njk",
