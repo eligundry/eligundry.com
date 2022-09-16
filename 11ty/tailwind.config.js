@@ -19,6 +19,9 @@ module.exports = {
             a: {
               color: theme("colors.primary"),
             },
+            code: {
+              padding: 0,
+            },
           },
         },
       }),

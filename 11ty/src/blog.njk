@@ -7,10 +7,10 @@ layout: layouts/base.njk
 <div class="paper prose">
   {% for post in collections.post | reverse %}
     <article>
-      <h1 itemprop="name headline">
+      <h1 itemprop="name headline" class="mb-0">
         <a itemprop="url" href="{{ post.url }}" class="font-extrabold">{{ post.data.title }}</a>
       </h1>
-      <p itemprop="description">{{ post.data.description }}</p>
+      <p itemprop="description" class="mt-2">{{ post.data.description }}</p>
     </article>
   {% endfor %}
 </div>

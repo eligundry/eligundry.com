@@ -10,7 +10,8 @@
     "build": "run-s build:tailwind build:11ty",
     "build:11ty": "eleventy",
     "build:tailwind": "tailwindcss -i ./src/css/tailwind.css -o ./_site/css/style.css --postcss postcss.config.js",
-    "dev:netlify": "cross-env NODE_ENV=development netlify dev"
+    "netlify:dev": "cross-env NODE_ENV=development netlify dev",
+    "netlify:build": "cross-env NODE_ENV=production netlify build"
   },
   "author": "Eli Gundry <eligundry@gmail.com>",
   "license": "MIT",
