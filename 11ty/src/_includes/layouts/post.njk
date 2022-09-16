@@ -1,4 +1,4 @@
-{% extends "./base.njk" %}
+{% extends "layouts/base.njk" %}
 
 {% block mainContent %}
   <article class="paper prose" itemscope itemtype="https://schema.org/BlogPosting">
@@ -10,5 +10,22 @@
     <main itemprop="text">
       {{ content | safe }}
     </main>
+    <is-land on:visible>
+      <hr class="my-2" />
+      <aside class="print:hidden" id="utterances"></aside>
+      <script type="module/island">
+        const theme = document.querySelector('html').getAttribute('data-theme')
+        const utterancesElm = document.getElementById('utterances')
+        const scriptElem = document.createElement('script')
+        scriptElem.src = 'https://utteranc.es/client.js'
+        scriptElem.async = true
+        scriptElem.crossOrigin = 'anonymous'
+        scriptElem.setAttribute('repo', 'eligundry/eligundry.com')
+        scriptElem.setAttribute('issue-term', 'pathname')
+        scriptElem.setAttribute('label', '✨💬✨  Blog')
+        scriptElem.setAttribute('theme', `github-${theme}`)
+        utterancesElm.appendChild(scriptElem)
+      </script>
+    </is-land>
   </article>
 {% endblock %}
