@@ -44,13 +44,20 @@ layout: layouts/base.njk
     <meta itemprop="image" content="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ entry.emoji }}</text></svg>" />
     <link itemprop="author publisher" href="#eli-gundry" />
     <div>
-      <h3 itemprop="name headline">I felt {{ latestFeeling.mood }}</h3>
-      <time datetime="{% formatDate latestFeeling.time, 'iso8601' %}" itemprop="datePublished dateModified">
-        <a href="/feelings#{% formatDate latestFeeling.time, 'iso8601' %}">
-          {% formatDate latestFeeling.time, 'iso8601' %}
-        </a>
-      </time>
-      {% feelingsActivityList latestFeeling.activities %}
+      <div class="flex flex-row justify-between">
+        <div>
+          <h3 itemprop="name headline" class="mt-0">I felt {{ latestFeeling.mood }}</h3>
+          <time datetime="{% formatDate latestFeeling.time, 'iso8601' %}" itemprop="datePublished dateModified">
+            <a href="/feelings#{% formatDate latestFeeling.time, 'iso8601' %}">
+              {% formatDate latestFeeling.time, 'iso8601' %}
+            </a>
+          </time>
+          {% feelingsActivityList latestFeeling.activities %}
+        </div>
+        <div role="img" aria-label="{{ entry.mood }} emoji" class="text-9xl">
+          {{ latestFeeling.emoji }}
+        </div>
+      </div>
       {% if latestFeeling.notes %}
         {% if latestFeeling.notes.length > 1 %}
           <ul>

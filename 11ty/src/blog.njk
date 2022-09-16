@@ -8,7 +8,7 @@ layout: layouts/base.njk
   {% for post in collections.post | reverse %}
     <article>
       <h1 itemprop="name headline">
-        <a itemprop="url" href="{{ post.url }}">{{ post.data.title }}</a>
+        <a itemprop="url" href="{{ post.url }}" class="font-extrabold">{{ post.data.title }}</a>
       </h1>
       <p itemprop="description">{{ post.data.description }}</p>
     </article>

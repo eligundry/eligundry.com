@@ -13,16 +13,15 @@ module.exports = {
       },
     },
     extend: {
-      typography: {
+      typography: ({ theme }) => ({
         gray: {
           css: {
-            pre: {
-              "background-color": "#181818",
-              color: "#d8d8d8",
+            a: {
+              color: theme("colors.primary"),
             },
           },
         },
-      },
+      }),
     },
   },
   daisyui: {
