@@ -66,7 +66,7 @@ outlined 😭.
 Even though this is an impossible project to get working as I envisioned, I'm really happy with how it turned out! The
 [code][repo] is pretty "clean" (though that is subjective and I cringed saying that).
 
-<GitHubFile fileURL="https://github.com/eligundry/page-speed-shield/blob/main/api/main.go" />
+{% githubFileEmbed "https://github.com/eligundry/page-speed-shield/blob/21b795baaaa3d02b24a7767456e1432dfeea9d5a/api/main.go" %}
 
 One really cool thing I found while building this was this [server timing Gin middleware][gin-server-timing] for writing
 [`Server-Timing` headers][server-timing] to a response. This allowed me to see how long Page Speed Insights was taking

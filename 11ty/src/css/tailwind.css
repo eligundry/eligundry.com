@@ -4,6 +4,12 @@
 @import "./code.css";
 @import "./fancyBackground.css";
 
+@layer utilities {
+  .input-disabled {
+    pointer-events: none;
+  }
+}
+
 a {
   @apply link link-primary link-hover;
 }

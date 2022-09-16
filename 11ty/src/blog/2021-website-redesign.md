@@ -149,7 +149,7 @@ All I needed was the following in my `gatsby-config.js`.
 
 This allows me to fetch my latest diary entry like so:
 
-<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/f9aa93ddf5e384e621ebd549b87e4e72defb00e0/gatsby/src/components/Daylio/useLatestFeelings.ts" />
+{% githubFileEmbed 'https://github.com/eligundry/eligundry.com/blob/f9aa93ddf5e384e621ebd549b87e4e72defb00e0/gatsby/src/components/Daylio/useLatestFeelings.ts', 1000 %}
 
 Super easy! In order for this site to be built daily, I added a call to a Netlify build webhook to the API endpoint
 I upload the diary entries to. This build will also generate a dedicated RSS feed that I use IFTTT to post the entry to
@@ -240,7 +240,7 @@ I love that it's super dynamic, very cute and fits the theme of my site perfectl
 with a button in the bottom right part of the screen that can regenerate the pattern. It's even responsive to my dark
 mode toggle, speaking of which...
 
-<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/0cba16c996e88b8269ce124752751325f3051a8d/gatsby/src/layout/FancyBackground.tsx" />
+{% githubFileEmbed 'https://github.com/eligundry/eligundry.com/blob/0cba16c996e88b8269ce124752751325f3051a8d/gatsby/src/layout/FancyBackground.tsx', 30 %}
 
 ## Dark Theme
 
@@ -281,7 +281,7 @@ In a previous blog post, I wanted to show a [Gist][gist] like file embed of a fi
 Unfortunately, Github does not provide this out of the box. Luckily, a service called [EmGithub][emgithub] provides
 exactly this. They don't have a React component for this so I made one:
 
-<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/0cba16c996e88b8269ce124752751325f3051a8d/gatsby/src/components/Embeds/GitHubFile.tsx#L40-L97" />
+{% githubFileEmbed 'https://github.com/eligundry/eligundry.com/blob/0cba16c996e88b8269ce124752751325f3051a8d/gatsby/src/components/Embeds/GitHubFile.tsx#L40-L97', 29 %}
 
 Alright, time for me to 🤓 nerd out! EmGithub uses a JavaScript API called [`document.write`][document.write], which is
 something that I didn't know about until recently (for good reason). For those that don't know, `document.write` is an
@@ -317,7 +317,7 @@ last modified timestamps. So, I went about creating a super hacky script that ho
 lifecycle event to directly add the latest commit timestamp for any given node. This required a lot of hard coding path
 rules and is in no way open sourceable, but I really just want to tell people about it!
 
-<GitHubFile fileURL="https://github.com/eligundry/eligundry.com/blob/last-gatsby/gatsby/config/utils/addGitLastmodifiedToNode.ts" />
+{% githubFileEmbed 'https://github.com/eligundry/eligundry.com/blob/last-gatsby/gatsby/config/utils/addGitLastmodifiedToNode.ts#L2-L113', 25 %}
 
 # Performance
 

@@ -1,5 +1,4 @@
 const shortcodes = require("./src/_shortcodes");
-
 require("dotenv").config();
 
 module.exports = function (eleventyConfig) {
@@ -17,7 +16,7 @@ module.exports = function (eleventyConfig) {
     "feelingsActivityList",
     shortcodes.feelingsActivityList
   );
-  eleventyConfig.addNunjucksAsyncShortcode("image", shortcodes.imageShortcode);
+  eleventyConfig.addNunjucksAsyncShortcode("image", shortcodes.image);
   eleventyConfig.addShortcode("cachedImage", shortcodes.cachedImage);
   eleventyConfig.addShortcode(
     "cachedToolTipImage",
