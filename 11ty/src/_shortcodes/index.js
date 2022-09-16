@@ -7,8 +7,10 @@ const githubFileEmbed = require("./githubFileEmbed");
 const googleSlideShow = require("./googleSlideShow");
 const image = require("./image");
 const resumeSkillList = require("./resumeSkillsList");
+const bandcampAlbum = require("./bandcampAlbum");
 
 module.exports = {
+  bandcampAlbum,
   cachedImage,
   cachedToolTipImage,
   emojiText,

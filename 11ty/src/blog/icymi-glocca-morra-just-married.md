@@ -9,13 +9,7 @@ postTags:
   - icymi
 ---
 
-<StreamingAlbum
-  name="Just Married"
-  artist="Glocca Morra"
-  bandcampID="3914936245"
-  url="https://gloccamorradied.bandcamp.com/album/just-married-2"
-  className="float-right"
-/>
+{% bandcampAlbum name="Just Married", artist="Glocca Morra", bandcampID="3914936245", url="https://gloccamorradied.bandcamp.com/album/just-married-2", classes="float-right ml-4"  %}
 
 Y'all, I love emo music. As you can tell, I have a [range of emotions](/feelings) and I have "sad boi" tendencies for
 sure. So this love shouldn't of emo music shouldn't come as a surprise. All the same, I'm here to tell you that emo gets
