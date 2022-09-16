@@ -1,0 +1,21 @@
+<div id="fancy-background-canvas"></div>
+<button id="fancy-background-refresh-btn" class="btn btn-lg btn-primary btn-circle fixed tooltip tooltip-left right-4 bottom-4 normal-case text-4xl" data-tip="Regenerate the background pattern" aria-label="Regenerate the background pattern" type="reset">
+  <i class="fa-solid fa-arrows-rotate"></i>
+</button>
+
+<script>
+  const btn = document.querySelector("#fancy-background-refresh-btn")
+  const canvas = document.querySelector('#fancy-background-canvas')
+
+  if (window?.CSS?.paintWorklet) {
+    canvas.style.setProperty('--fluid-pattern-seed', Math.random() * 10000)
+    canvas.setAttribute('data-active', 'true')
+    document.body.setAttribute('data-fancy-background', 'true')
+
+    btn.addEventListener('click', () => {
+      canvas.style.setProperty('--fluid-pattern-seed', Math.random() * 10000)
+    })
+
+    window.CSS.paintWorklet.addModule('https://unpkg.com/@georgedoescode/fluid-pattern-worklet@1.0.1/worklet.bundle.js')
+  }
+</script>

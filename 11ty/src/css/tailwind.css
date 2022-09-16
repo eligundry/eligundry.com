@@ -2,6 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "./code.css";
+@import "./fancyBackground.css";
 
 a {
   @apply link link-primary link-hover;

@@ -23,7 +23,7 @@
   </head>
   <body>
     {% block header %}
-      {% include '../header.njk' %}
+      {% include 'header.njk' %}
     {% endblock %}
 
     <main class="container mx-auto print:mt-0 print:pt-0">
@@ -33,7 +33,9 @@
     </main>
 
     {% block footer %}
-      {% include '../footer.njk' %}
+      {% include 'footer.njk' %}
     {% endblock %}
+
+    {% include 'fancyBackground.njk' %}
   </body>
 </html>
