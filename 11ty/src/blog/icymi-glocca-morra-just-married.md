@@ -90,7 +90,7 @@ It really is thrilling, but back to my bullshit.
 
 I've been thinking a lot about this sketch from _I Think You Should Leave_ lately.
 
-<YouTube id="buK45NW_ikI" />
+{% youtube videoid="buK45NW_ikI" %}
 
 I used to be a piece of shit. I'm not anymore, but I used to be, people can change. Regardless of your past, you are
 worthy of love. Also, sloppy steaks is just so funny.

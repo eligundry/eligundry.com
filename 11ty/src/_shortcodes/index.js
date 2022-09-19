@@ -1,3 +1,4 @@
+const bandcampAlbum = require("./bandcampAlbum");
 const cachedImage = require("./cachedImage");
 const cachedToolTipImage = require("./cachedToolTipImage");
 const emojiText = require("./emojiText");
@@ -7,7 +8,7 @@ const githubFileEmbed = require("./githubFileEmbed");
 const googleSlideShow = require("./googleSlideShow");
 const image = require("./image");
 const resumeSkillList = require("./resumeSkillsList");
-const bandcampAlbum = require("./bandcampAlbum");
+const youtube = require("./youtube");
 
 module.exports = {
   bandcampAlbum,
@@ -20,4 +21,5 @@ module.exports = {
   googleSlideShow,
   image,
   resumeSkillList,
+  youtube,
 };

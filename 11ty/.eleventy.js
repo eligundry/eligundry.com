@@ -31,6 +31,7 @@ module.exports = function (eleventyConfig) {
     "bandcampAlbum",
     shortcodes.bandcampAlbum
   );
+  eleventyConfig.addNunjucksShortcode("youtube", shortcodes.youtube);
 
   eleventyConfig.addFilter("json", (value) => JSON.stringify(value));
   eleventyConfig.addShortcode("currentYear", () =>
