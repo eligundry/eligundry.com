@@ -12,7 +12,8 @@
     "build:tailwind": "tailwindcss -i ./src/css/tailwind.css -o ./_site/css/style.css --postcss postcss.config.js",
     "netlify:dev": "cross-env NODE_ENV=development netlify dev",
     "netlify:build": "cross-env NODE_ENV=production netlify build",
-    "partytown": "partytown copylib _site/~partytown"
+    "partytown": "partytown copylib _site/~partytown",
+    "clean": "rm -rf _site .cache"
   },
   "author": "Eli Gundry <eligundry@gmail.com>",
   "license": "MIT",
@@ -30,6 +31,7 @@
     "daisyui": "^2.27.0",
     "date-fns": "^2.29.2",
     "dotenv": "^16.0.2",
+    "eleventy-plugin-git-commit-date": "^0.1.3",
     "jsdom": "^20.0.0",
     "lastfm-typed": "^2.0.2",
     "lodash": "^4.17.21",

@@ -4,6 +4,7 @@ require("dotenv").config();
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-rss"));
   eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-syntaxhighlight"));
+  eleventyConfig.addPlugin(require("eleventy-plugin-git-commit-date"));
   eleventyConfig.addPassthroughCopy("src/components");
   eleventyConfig.addPassthroughCopy({
     "node_modules/@11ty/is-land/is-land.js": "js/is-land.js",
