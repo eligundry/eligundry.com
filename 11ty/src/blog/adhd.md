@@ -217,7 +217,7 @@ for me to swallow and I still feel guilt about how I thought.
 I spend a few months ruminating on these facts and discoveries before bringing them to my therapist. They hear me out
 and pose a very simple question:
 
-> "Is this actually effecting you? Is your ADHD negatively impacting you in this moment?"
+> Is this actually effecting you? Is your ADHD negatively impacting you in this moment?
 
 Initially, I felt this question was pretty dismissive and a little disrespectful. But it makes a lot of sense in the
 context of  <abbr title="Cognitive Behavioral Therapy">CBT</abbr>. Over thinking and over analyzing and over
@@ -232,7 +232,7 @@ others, there is no shame in taking some more chemicals to even the playing fiel
 
 I brought some of this information to my mom. She was surprised that I knew none of this but she dropped this on me:
 
-> "You've made ADHD work to your advantage. That's what intelligent people with ADHD do."
+> You've made ADHD work to your advantage. That's what intelligent people with ADHD do.
 
 Moms, they always make you know how to feel good, huh? And she's right, if I look at my ADHD as a super power, it takes
 on a whole new light. I literally experience the world differently than others. Some of it is bad, but a lot of it is
@@ -244,8 +244,8 @@ when I brought it up with my partner they were like "How did you not know that, 
 at time!?" As it turns out, it was one of the first things my mom noticed and brought up to my pediatrician that
 diagnosed my ADHD.
 
-> "I recognized the hyper focus when you were 6 and you could do Legos for hours. It was such a contrast to how active
-> you were"
+> I recognized the hyper focus when you were 6 and you could do Legos for hours. It was such a contrast to how active
+> you were
 
 Without this hyper focus, I would not be the (somewhat) successful developer I am today. I'm only as good as I am
 because I spent so many hours outside of school teaching myself to code. If I was neurotypical, I probably would not

@@ -4,18 +4,26 @@
 @import "./code.css";
 @import "./fancyBackground.css";
 
+@layer base {
+  a:not(.btn) {
+    @apply link link-primary link-hover;
+  }
+}
+
+@layer components {
+  .paper {
+    @apply max-w-none mb-4 drop-shadow-xl print:drop-shadow-none bg-base-100/90 p-4 rounded-lg;
+  }
+}
+
 @layer utilities {
   .input-disabled {
     pointer-events: none;
   }
-}
 
-a {
-  @apply link link-primary link-hover;
-}
-
-.paper {
-  @apply max-w-none mb-4 drop-shadow-xl bg-base-100/90 p-4 rounded-lg;
+  .page-break-avoid {
+    page-break-inside: avoid;
+  }
 }
 
 .prose {
@@ -48,8 +56,12 @@ header.navbar {
 
   & .menu {
 
+    & a {
+      @apply link-neutral hover:link-primary;
+    }
+
     & a[aria-current="page"] {
-      @apply font-bold text-primary;
+      @apply link-primary font-bold text-primary;
     }
   }
 }

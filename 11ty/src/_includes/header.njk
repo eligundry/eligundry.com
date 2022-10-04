@@ -8,13 +8,13 @@
   {% endfor %}
 {% endset %}
 
-<header class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 sm:px-0">
+<header class="navbar bg-base-100 shadow fixed top-0 z-50 pr-8 pl-14 print:hidden">
   <div class="container mx-auto flex flex-wrap">
     <div class="flex-1">
       <a href="/" itemprop="sameAs" class="btn btn-ghost normal-case text-xl site-name">Eli Gundry</a>
     </div>
-    <nav class="flex-none hidden sm:flex">
-      <ul class="menu menu-horizontal p-0">
+    <nav class="flex-none hidden md:flex">
+      <ul class="menu menu-horizontal p-0 [&>li>a:not([aria-current='page'])]:link-neutral">
         {{ navlinks | safe }}
         <li>
           <is-land>
@@ -32,7 +32,7 @@
       </ul>
     </nav>
     <div class="flex justify-end flex-none">
-      <nav class="navbar-end sm:hidden">
+      <nav class="navbar-end md:hidden">
         <div class="dropdown dropdown-end">
           <label class="swap swap-flip btn btn-ghost btn-circle" tabindex="0">
             <div class="swap-on">🙅‍♂️</div>

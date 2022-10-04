@@ -1,5 +1,5 @@
-<footer class="footer bg-base-100 px-4 sm:px-0 py-8 shadow">
-  <div class="container mx-auto flex flex-col sm:flex-row">
+<footer class="footer bg-base-100 pl-14 pr-8 py-8 shadow print:hidden">
+  <div class="container mx-auto flex flex-col md:flex-row">
     <div class="w-2/3">
       <h3 class="footer-title">About</h3>
       <p>
@@ -14,8 +14,8 @@
       <h3 class="footer-title">Social</h3>
       <div>
         {% for link in social %}
-          <a href="{{ link.href }}" class="btn btn-square btn-primary" title="{{ link.label }}">
-            <i class="{{ link.icon }} text-4xl"></i>
+          <a href="{{ link.href }}" class="btn btn-sm btn-square btn-primary" title="{{ link.label }}">
+            <i class="{{ link.icon }} text-2xl"></i>
           </a>
         {% endfor %}
       </div>

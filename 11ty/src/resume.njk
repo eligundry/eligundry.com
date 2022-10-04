@@ -7,8 +7,8 @@ layout: layouts/base.njk
 
 <div class="paper">
   <section class="prose">
-    <header class="[&>h2]:mt-0">
-      <h2>Skills & Technologies</h2>
+    <header>
+      <h2 class="mt-0 mb-4 border-b-2 border-b-accent">Skills & Technologies</h2>
     </header>
     <ul>
       {% for section in resume.skills %}
@@ -31,7 +31,7 @@ layout: layouts/base.njk
 
   <section class="prose">
     <header>
-      <h2>Work</h2>
+      <h2 class="my-4 border-b-2 border-b-accent">Work</h2>
     </header>
     {% for exp in resume.work %}
       {{ experience.section('work', exp) }}
@@ -40,7 +40,7 @@ layout: layouts/base.njk
 
   <section class="prose">
     <header>
-      <h2>Education</h2>
+      <h2 class="my-4 border-b-2 border-b-accent">Education</h2>
     </header>
     {% for exp in resume.education %}
       {{ experience.section('education', exp) }}
@@ -49,7 +49,7 @@ layout: layouts/base.njk
 
   <section class="prose">
     <header>
-      <h2>Activities & Interests</h2>
+      <h2 class="my-4 border-b-2 border-b-accent">Activities & Interests</h2>
       <ul>
         {% for ai in resume.activitesInterests %}
           <li>{{ ai | safe }}</li>

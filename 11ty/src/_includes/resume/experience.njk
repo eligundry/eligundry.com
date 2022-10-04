@@ -1,12 +1,13 @@
 {% macro section(variant, exp) %}
-<section itemscope itemtype="http://schema.org/{% if variant == 'work' %}Organization{% else %}CollegeOrUniversity{% endif %}" itemprop="{% if exp.endDate %}alumniOf{% else %}worksFor{% endif %}">
-  <h3 itemprop="name">
+<section class="flex flex-wrap justify-between page-break-avoid mb-4 order-1{% if exp.printHide %} print:hidden{% endif %}" itemscope itemtype="http://schema.org/{% if variant == 'work' %}Organization{% else %}CollegeOrUniversity{% endif %}" itemprop="{% if exp.endDate %}alumniOf{% else %}worksFor{% endif %}">
+  <h3 itemprop="name" class="w-full sm:w-1/2 print:w-1/2 m-0">
     <a href="{{ exp.website }}" itemprop="url">
       {{ exp.company or exp.institution }}
     </a>
   </h3>
-  <span itemscope itemtype="https://schema.org/OrganizationRole" itemprop="member">
+  <span itemscope itemtype="https://schema.org/OrganizationRole" itemprop="member" class="w-full sm:w-1/2 print:w-1/2 m-0 order-3 sm:order-2 print:order-2 sm:text-right print:text-right">
     <meta itemprop="roleName" content="{{ exp.position or exp.area }}" />
+    <span role="img" aria-label="calendar denoting tenure" class="sm:hidden">🗓</span>
     <time itemprop="startDate" datetime="{% formatDate exp.startDate, 'iso8601-date' %}">
       {% formatDate exp.startDate, 'month-year' %}
     </time>
@@ -18,19 +19,22 @@
     {% else %}
       <span>Present</span>
     {% endif %}
+    <span role="img" aria-label="calendar denoting tenure" class="hidden sm:inline">🗓</span>
   </span>
-  <h4>{{ exp.position or exp.area }}</h4>
-  <address itemscope itemprop="address" itemtype="https://schema.org/PostalAddress">
+  <h4 class="w-full sm:w-1/2 print:w-1/2 m-0 order-2 print:order-3 sm:order-3">{{ exp.position or exp.area }}</h4>
+  <address itemscope itemprop="address" itemtype="https://schema.org/PostalAddress" class="w-full sm:w-1/2 print:w-1/2 m-0 order-4 print:order-4 not-italic sm:text-right print:text-right">
+    <span role="img" aria-label="pin denoting location on map" class="sm:hidden">📍</span>
     {% if exp.location.city %}
       <span itemprop="addressLocality">{{ exp.location.city }}</span>,
     {% endif %}
     <span itemprop="addressRegion">{{ exp.location.region }}</span>
+    <span role="img" aria-label="pin denoting location on map" class="hidden sm:inline">📍</span>
   </address>
   {% if exp.summary %}
-    <p itemprop="description">{{ exp.summary | safe }}</p>
+    <p itemprop="description" class="order-5 my-0">{{ exp.summary | safe }}</p>
   {% endif %}
   {% if exp.highlights %}
-    <ul itemprop="description">
+    <ul itemprop="description" class="order-5 my-0">
       {% for highlight in exp.highlights %}
         <li>{{ highlight | safe }}</li>
       {% endfor %}
