@@ -116,6 +116,7 @@ layout: layouts/base.njk
       <h3 class="mt-0">Seasonal Playlist</h3>
       <iframe title="Spotify playlist that I have on repeat" src="{{ metadata.spotifyPlaylist }}" frameborder="0" allow="encrypted-media" loading="lazy" class="w-full sm:w-[300px] h-[380px] sm:flex-1"></iframe>
     </div>
+    <div>
       <h3 class="mt-2 sm:mt-0">On Repeat</h3>
       <a href="https://www.last.fm/user/eli_pwnd" class="grid grid-cols-3 h-fit gap-0 not-prose">
         {% for album in topAlbums %}
