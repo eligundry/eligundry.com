@@ -111,16 +111,15 @@ layout: layouts/base.njk
     I listen to way too much music and I love to listen to full albums. I mainly listen to hip hop, indie rock and <a href="/blog/icymi-glocca-morra-just-married"><abbr title="Ask me about the fun 5th wave emo bands I love">emo</abbr></a>.
     I occasionally write reviews of old albums that I love but aren't well known in a series called <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
   </p>
-  <div class="flex flex-row gap-4">
-    <div>
-      <h3>Seasonal Playlist</h3>
-      <iframe title="Spotify playlist that I have on repeat" src="{{ metadata.spotifyPlaylist }}" width="300" height="380" frameborder="0" allow="encrypted-media" loading="lazy"></iframe>
+  <div class="flex flex-col sm:flex-row sm:gap-4">
+    <div class="sm:items-stretch flex flex-col">
+      <h3 class="mt-0">Seasonal Playlist</h3>
+      <iframe title="Spotify playlist that I have on repeat" src="{{ metadata.spotifyPlaylist }}" frameborder="0" allow="encrypted-media" loading="lazy" class="w-full sm:w-[300px] h-[380px] sm:flex-1"></iframe>
     </div>
-    <div>
-      <h3>On Repeat</h3>
+      <h3 class="mt-2 sm:mt-0">On Repeat</h3>
       <a href="https://www.last.fm/user/eli_pwnd" class="grid grid-cols-3 h-fit gap-0 not-prose">
         {% for album in topAlbums %}
-          {% set alt %}{{ album.name }} - {{ album.artist }} [{{ album.count }} scrobbles]{% endset %}
+          {% set alt %}{{ album.name }} by {{ album.artist }} [{{ album.count }} scrobbles]{% endset %}
           {% cachedToolTipImage album.cover, alt %}
         {% endfor %}
       </a>
