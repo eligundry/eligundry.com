@@ -4,7 +4,7 @@ module.exports = (props) => {
     .join(" ");
 
   return `
-<is-land>
+<is-land on:visible>
   <lite-youtube ${attributes}></lite-youtube>
   <script type="module/island">
     import "https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.4.0/lite-youtube.js"

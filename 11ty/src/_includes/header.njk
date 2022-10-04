@@ -13,7 +13,17 @@
           </li>
         {% endfor %}
         <li>
-          <is-land autoinit="preact" import="/components/ThemeChanger.js"></is-land>
+          <is-land>
+            <label class="swap swap-flip">
+              <input type="checkbox" name="theme-toggle" id="theme-toggle" />
+              <div class="swap-on">🌚</div>
+              <div class="swap-off">🌞</div>
+            </label>
+
+            <script type="module/island">
+              import "/components/themeToggle.mjs";
+            </script>
+          </is-land>
         </li>
       </ul>
     </nav>
