@@ -6,7 +6,7 @@ const talks = (await Astro.glob('./talks/*.md')).sort((a, b) =>
   dateFns.compareDesc(new Date(a.frontmatter.date), new Date(b.frontmatter.date))
 )
 ---
-<Layout title="Blog">
+<Layout title="Talks">
   <div class="paper prose">
     {talks.map(talk => (
       <article>

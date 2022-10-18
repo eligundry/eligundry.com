@@ -12,7 +12,12 @@ import { cacheAxios } from './axios'
 const getAll = async () =>
   cacheAxios
     .get<DaylioEntry<string>[]>('https://api.eligundry.com/api/feelings')
-    .then((resp) => resp.data)
+    .then((resp) =>
+      resp.data.map((entry) => ({
+        ...entry,
+        emoji: MoodMapping[entry.mood],
+      }))
+    )
     .catch((error) => {
       console.error('could not catch feelings', error)
       throw error

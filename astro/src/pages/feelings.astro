@@ -1,0 +1,49 @@
+---
+import dateFns from 'date-fns'
+import daylio, { ActivityMapping } from '../lib/daylio.ts'
+import Layout from '../layouts/Layout.astro'
+
+const entries = await daylio.getRange(dateFns.subMonths(new Date(), 6))
+---
+<Layout title="Feelings">
+  {entries.map(entry => (
+    <article id={dateFns.formatISO(entry.time)} itemscope itemtype="https://schema.org/BlogPosting">
+      <meta itemprop="image" content={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${entry.emoji}</text></svg>`} />
+      <link itemprop="author publisher" href="#eli-gundry" />
+      <div class="paper prose">
+        <h3 itemprop="name headline">I felt {entry.mood}</h3>
+        <time datetime={dateFns.formatISO(entry.time)} itemprop="datePublished dateModified">
+          <a href={`/feelings#${dateFns.formatISO(entry.time)}`}>
+            {dateFns.formatISO(entry.time)}
+          </a>
+        </time>
+        {entry.activities.length > 0 && (
+          <ul>
+            {entry.activities.map((a) => (
+              <li
+                data-tip={a}
+                itemProp="keywords"
+                aria-label={a}
+                class="tooltip"
+              >
+                {ActivityMapping[a] || a}
+              </li>
+            ))}
+          </ul>
+        )}
+        {entry.notes &&
+          (entry.notes.length > 0 ? (
+            <ul className="notes" itemProp="articleBody">
+              {entry.notes.map((note) => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="note" itemProp="articleBody">
+              {entry.notes[0]}
+            </p>
+          ))}
+      </div>
+    </article>
+  ))}
+</Layout>

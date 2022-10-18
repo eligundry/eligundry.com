@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+import daylio from '../lib/daylio.ts'
 import '../styles/tailwind.css'
 
 export interface Props {
@@ -9,6 +10,7 @@ export interface Props {
 }
 
 const { title, description } = Astro.props
+const latestFeeling = await daylio.getLatest()
 ---
 <!doctype html>
 <html lang="en" itemscope itemtype="https://schema.org/Person" itemid="#eli-gundry">
@@ -20,8 +22,8 @@ const { title, description } = Astro.props
     <meta name="generator" content={Astro.generator} />
     <link rel="alternate" type="application/rss+xml" title="Eli Gundry's Blog" href="/blog.rss" />
     <link rel="alternate" type="application/rss+xml" title="Eli Gundry's Feelings" href="/feelings.rss">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ latestFeeling.emoji }}</text></svg>" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
+    <link rel="icon" href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${latestFeeling.emoji}</text></svg>`} />
+    <link rel="preconnect" href="https://fonts.gtatic.com" crossorigin="true" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="true" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
