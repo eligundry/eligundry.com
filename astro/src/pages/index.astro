@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
+import lastfm from '../lib/lastfm.ts'
+import config from '../config.ts'
 
 const currentYear = new Date().getFullYear()
+const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(0, 9)
 ---
 
 <Layout title="Welcome to Astro.">
@@ -62,5 +65,37 @@ const currentYear = new Date().getFullYear()
         .
       </li>
     </ul>
+  </section>
+
+  <section class="listening paper prose">
+    <h2>What I'm Listening To</h2>
+    <p>
+      I listen to way too much music and I love to listen to full albums. I mainly listen to hip hop, indie rock and <a href="/blog/icymi-glocca-morra-just-married"><abbr title="Ask me about the fun 5th wave emo bands I love">emo</abbr></a>.
+      I occasionally write reviews of old albums that I love but aren't well known in a series called <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
+    </p>
+    <div class="flex flex-col sm:flex-row sm:gap-4">
+      <div class="sm:items-stretch flex flex-col">
+        <h3 class="mt-0">Seasonal Playlist</h3>
+        <iframe
+          title="Spotify playlist that I have on repeat"
+          src={config.spotifyPlaylist}
+          frameborder="0"
+          allow="encrypted-media"
+          loading="lazy"
+          class="w-full sm:w-[300px] h-[380px] sm:flex-1"
+        />
+      </div>
+      <div>
+        <h3 class="mt-2 sm:mt-0">On Repeat</h3>
+        <a href="https://www.last.fm/user/eli_pwnd" class="grid grid-cols-3 h-fit gap-0 not-prose">
+          {topAlbums.map(album => {
+            const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
+            return (
+              <img alt={alt} data-tip={alt} class="tooltip" src={album.cover} />
+            )
+          })}
+        </a>
+      </div>
+    </div>
   </section>
 </Layout>
