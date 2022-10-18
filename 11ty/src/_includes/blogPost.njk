@@ -1,0 +1,31 @@
+{% macro header(post) %}
+<link itemprop="author publisher" href="#eli-gundry" />
+<meta itemprop="dateModified" />
+<meta itemprop="timeRequired" />
+<header>
+  <h1 itemprop="name headline">
+    <a href="{{ post.url }}" itemprop="url">
+      {{ post.data.title }}
+    </a>
+  </h1>
+  <div>
+    <time datetime="{% formatDate post.data.date, 'iso8601' %}">
+      {% formatDate post.data.date, 'iso8601-date' %}
+    </time>
+    <span>6 minute read</span>
+  </div>
+  <p itemprop="description">{{ post.data.description }}</p>
+</header>
+{% endmacro %}
+
+{% macro body(post) %}
+<main itemprop="text">
+  {{ post._templateContent | safe }}
+</main>
+{% endmacro %}
+
+{% macro excerpt(post) %}
+<main itemprop="text">
+  {{ post._templateContent | safe }}
+</main>
+{% endmacro %}

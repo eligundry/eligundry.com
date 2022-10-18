@@ -4,13 +4,13 @@ description: Thoughts, tutorials, musings, album reviews and everything in betwe
 layout: layouts/base.njk
 ---
 
+{% import 'blogPost.njk' as blogPost %}
+
 <div class="paper prose">
   {% for post in collections.post | reverse %}
-    <article>
-      <h1 itemprop="name headline" class="mb-0">
-        <a itemprop="url" href="{{ post.url }}" class="font-extrabold">{{ post.data.title }}</a>
-      </h1>
-      <p itemprop="description" class="mt-2">{{ post.data.description }}</p>
+    <article itemscope itemtype="https://schema.org/BlogPosting">
+      {{ blogPost.header(post) }}
+      {{ blogPost.excerpt(post) }}
     </article>
   {% endfor %}
 </div>

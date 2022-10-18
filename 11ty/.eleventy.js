@@ -1,3 +1,4 @@
+const util = require("util");
 const shortcodes = require("./src/_shortcodes");
 require("dotenv").config();
 
@@ -35,6 +36,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addNunjucksShortcode("youtube", shortcodes.youtube);
 
   eleventyConfig.addFilter("json", (value) => JSON.stringify(value));
+  eleventyConfig.addFilter("inspect", (value) => util.inspect(value));
   eleventyConfig.addShortcode("currentYear", () =>
     new Date().getFullYear().toString()
   );

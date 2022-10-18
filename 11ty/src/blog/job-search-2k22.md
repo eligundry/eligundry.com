@@ -75,23 +75,23 @@ interviews back to back to back that I'm certain my performance in some of them 
 
 # Interviewers Say The Funniest Things
 
-> "We love chaos here. We want just enough chaos to scare us to ship things fast, but not so much it paralyzes us."
+> We love chaos here. We want just enough chaos to scare us to ship things fast, but not so much it paralyzes us.
 >
-> "We like to say that do things right the second time. We want that first time to ship fast."
+> We like to say that do things right the second time. We want that first time to ship fast.
 
 Oh lord, I ran away from that company so fast. They had a wild code test that was closer to drive by than learning about
 how I can benefit them.
 
-> "So, your process of learning is just detective work?"
+> So, your process of learning is just detective work?
 
 This was an interviewer's reply after I described, in detail, how I work in an unfamiliar and terrible codebase. It's
 not super funny, but I had never heard it put that way before and I'm stealing it.
 
-> "Our lead investor is [Scooter Braun](https://en.wikipedia.org/wiki/Taylor_Swift_masters_controversy)."
+> Our lead investor is [Scooter Braun](https://en.wikipedia.org/wiki/Taylor_Swift_masters_controversy).
 
 \#TeamTaylor until I die, ran away from that super fast.
 
-> "The only downside is that product likes to live in the moment"
+> The only downside is that product likes to live in the moment
 
 Never heard it put that way before, but product does be like that sometimes.
 

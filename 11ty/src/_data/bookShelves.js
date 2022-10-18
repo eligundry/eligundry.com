@@ -44,7 +44,7 @@ const getShelf = async (userID, shelf, limit) => {
         }
 
         const image = await Image(cover, {
-          widths: [200],
+          widths: [150],
           urlPath: "/img/goodreads/",
           outputDir: "./_site/img/goodreads/",
           cacheOptions: {
