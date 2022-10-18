@@ -3,7 +3,7 @@ import { setupCache, buildStorage } from 'axios-cache-interceptor'
 import { caching } from 'cache-manager'
 import fsStore from 'cache-manager-fs-hash'
 
-const defaultTTL = 60 * 60
+const defaultTTL = 60 * 60 * 1000
 export const cache = caching({
   store: fsStore,
   options: {

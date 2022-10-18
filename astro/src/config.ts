@@ -8,4 +8,5 @@ export default {
   lastFmUsername: 'eli_pwnd',
   spotifyPlaylist:
     'https://open.spotify.com/embed/playlist/6HasOSwBI2amViuCQFmQw0',
+  goodreadsUserID: '29665939',
 }

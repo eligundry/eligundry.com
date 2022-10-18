@@ -2,10 +2,25 @@
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import lastfm from '../lib/lastfm.ts'
+import goodreads from '../lib/goodreads.ts'
 import config from '../config.ts'
 
 const currentYear = new Date().getFullYear()
 const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(0, 9)
+const shelves = {
+  current: await goodreads.getShelf({
+    userID: config.goodreadsUserID,
+    shelf: 'currently-reading',
+    limit: 1,
+  }),
+  read: await goodreads.getShelf({
+    userID: config.goodreadsUserID,
+    shelf: 'read',
+    limit: 11,
+    sort: 'date_read',
+    order: 'd'
+  }),
+}
 ---
 
 <Layout title="Welcome to Astro.">
@@ -65,6 +80,32 @@ const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(
         .
       </li>
     </ul>
+  </section>
+
+  <section class="reading paper prose">
+    <h2>What I'm Reading</h2>
+    <p>
+      I wish I read more, but there are only so many hours in the day. These are the books that I'm reading right now. You
+      can find me on <a href="https://www.goodreads.com/user/show/29665939-eli-gundry" itemprop="sameAs">Goodreads</a>.
+    </p>
+    <div class="bookshelf not-prose">
+      {shelves.current.map(book => {
+        let alt = `Currently Reading ${book.title} by ${book.author.split(', ').reverse().join(' ')}`
+        return (
+          <a href={book.url} target="_blank" rel="noopener noreferrer">
+            <img key={book.isbn} alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
+          </a>
+        )
+      })}
+      {shelves.read.map(book => {
+        let alt = `${book.title} by ${book.author.split(', ').reverse().join(' ')}`
+        return (
+          <a href={book.url} target="_blank" rel="noopener noreferrer">
+            <img key={book.isbn} alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
+          </a>
+        )
+      })}
+    </div>
   </section>
 
   <section class="listening paper prose">
