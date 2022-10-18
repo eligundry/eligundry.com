@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro'
+import EmojiText from '../components/EmojiText.astro'
+
+const currentYear = new Date().getFullYear()
+---
+
+<Layout title="Welcome to Astro.">
+  <section class="intro paper prose">
+    <h2>Glad To Meet You!</h2>
+    <p>My name is Eli I only really write in lists, so here's my deal.</p>
+    <ul>
+      <li>
+        I am a{' '}
+        <EmojiText emoji="🧑‍💻" label="computer programmer emoji">
+        <strong>full stack web engineer</strong>
+        </EmojiText>
+        .
+      </li>
+      <li>
+        I love to plan and{' '}
+        <EmojiText emoji="👨‍🍳" label="chef emoji">
+        <strong>cook elaborate meals</strong>
+        </EmojiText>
+        . It really activates the engineering part of my brain!
+      </li>
+      <li>
+        I have a{' '}
+        <EmojiText emoji="🤓" label="geek emoji">
+        <strong>non-traditional computer science education</strong>
+        </EmojiText>
+        . I attended a vocational school in high school, taught myself web
+        programming, bounced around colleges for computer science while
+        working the entire time before deciding to go pro!
+      </li>
+      <li>
+        I am a
+        <strong>Vim user</strong> but I actively encourage everyone to use
+        something else. Using Vim in {currentYear} is a cool
+        bar trick.
+      </li>
+      <li>
+        I currently live in{' '}
+        <EmojiText emoji="📍" label="pin emoji to denote location">
+        <strong>Astoria, Queens</strong>
+        </EmojiText>
+        . I didn't think I would settle down in Queens and love it as much
+        as I do, but life is like that sometimes.
+      </li>
+      <li>
+        I have a{' '}
+        <EmojiText
+        emoji="😼"
+        label="smirking cat emoji because Fonzie is a stinker"
+        >
+        <strong>fat cat named Fonzie</strong>
+        </EmojiText>{' '}
+        and I sorta have{' '}
+        <a href="https://twitter.com/EliGundry/status/1055933062125703168">
+          a tattoo of him on my arm
+        </a>
+        .
+      </li>
+    </ul>
+  </section>
+</Layout>

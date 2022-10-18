@@ -1,0 +1,71 @@
+---
+const links = [
+  {
+    name: "Home",
+    href: "/",
+    emoji: "🏠",
+    emojiLabel: "little house to denote the home page"
+  },
+  {
+    name: "Blog",
+    href: "/blog/",
+    emoji: "📝",
+    emojiLabel: "note to denote my blog"
+  },
+  {
+    name: "Feelings",
+    href: "/feelings/",
+    emoji: "🥺",
+    emojilabel: "emotional looking emoji face to denote my feelings"
+  },
+  {
+    name: "Talks",
+    href: "/talks/",
+    emoji: "🗣",
+    emojilabel: "silhouette of person speaking"
+  },
+  {
+    name: "Resume",
+    href: "/resume/",
+    emoji: "📄",
+    emojilabel: "piece of paper representing my resume"
+  }
+]
+---
+<header class="navbar bg-base-100 shadow fixed top-0 z-50 pr-8 pl-14 print:hidden">
+  <div class="container mx-auto flex flex-wrap">
+    <div class="flex-1">
+      <a href="/" itemprop="sameAs" class="btn btn-ghost normal-case text-xl site-name">Eli Gundry</a>
+    </div>
+    <nav class="flex-none hidden md:flex">
+      <ul class="menu menu-horizontal p-0 [&>li>a:not([aria-current='page'])]:link-neutral">
+        {links.map(link => (
+          <li>
+            <a href={link.href}>
+              {link.name}
+            </a>
+          </li>
+        ))}
+        <li>
+          <label class="swap swap-flip">
+            <input type="checkbox" id="theme-toggle" />
+            <div class="swap-on">🌚</div>
+            <div class="swap-off">🌞</div>
+          </label>
+        </li>
+      </ul>
+    </nav>
+    <div class="flex justify-end flex-none">
+      <nav class="navbar-end md:hidden">
+        <div class="dropdown dropdown-end">
+          <label class="swap swap-flip btn btn-ghost btn-circle" tabindex="0">
+            <div class="swap-on">🙅‍♂️</div>
+            <div class="swap-off">🍔</div>
+          </label>
+          <ul tabindex="0" class="menu menu-compact dropdown-content bg-base-100 rounded-box w-full">
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
