@@ -16,6 +16,7 @@
     "astro": "^1.5.0",
     "clsx": "^1.2.1",
     "daisyui": "^2.27.0",
+    "date-fns": "^2.29.3",
     "postcss": "^8.4.16",
     "postcss-import": "^15.0.0",
     "postcss-nesting": "^10.2.0",
