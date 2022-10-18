@@ -1,4 +1,6 @@
 ---
+import EmojiText from '../components/EmojiText.astro'
+
 const links = [
   {
     name: "Home",
@@ -42,7 +44,7 @@ const links = [
         {links.map(link => (
           <li>
             <a href={link.href}>
-              {link.name}
+              <EmojiText emoji={link.emoji} label={link.emojiLabel}>{link.name}</EmojiText>
             </a>
           </li>
         ))}

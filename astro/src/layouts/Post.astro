@@ -1,0 +1,10 @@
+---
+import BaseLayout from './Layout.astro'
+
+const { frontmatter } = Astro.props
+---
+<BaseLayout title={frontmatter.title}>
+  <article class="paper prose" itemscope itemtype="https://schema.org/BlogPosting">
+    <slot />
+  </article>
+</BaseLayout>
