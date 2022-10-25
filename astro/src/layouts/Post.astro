@@ -1,10 +1,51 @@
 ---
+import type { MarkdownLayoutProps } from 'astro'
 import BaseLayout from './Layout.astro'
 
-const { frontmatter } = Astro.props
+type Props = MarkdownLayoutProps<{
+  title: string
+  description: string
+  readingTime?: number
+  cover?: string
+  date: Date
+  modified: Date
+  tags?: string[]
+  showComments?: boolean
+  collection?: 'blog' | 'talk' | string
+}>
+
+const { frontmatter, url } = Astro.props
+const {
+  title,
+  itemType,
+  description,
+  cover,
+  date = new Date(),
+  modified,
+  showComments = true,
+  collection,
+  readingTime
+} = frontmatter
 ---
 <BaseLayout title={frontmatter.title}>
-  <article class="paper prose" itemscope itemtype="https://schema.org/BlogPosting">
-    <slot />
+  <article
+    class="paper prose"
+    itemscope
+    itemtype={`https://schema.org/${collection === 'blog' ? 'BlogPosting' : 'CreativeWork'}`}
+  >
+    <link itemProp="author publisher" href="#eli-gundry" />
+    {modified && <meta itemProp="dateModified" content={modified} />}
+    {cover && <meta itemProp="image" content={cover} />}
+    {readingTime > 0 && (
+      <meta itemProp="timeRequired" content={`PT${readingTime}M`} />
+    )}
+    <header>
+      <h1 itemprop="name headline">
+        <a href={url} itemprop="url">{title}</a>
+      </h1>
+    </header>
+    <main itemprop="text">
+      <slot />
+    </main>
   </article>
 </BaseLayout>

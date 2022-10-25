@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import daylio from '../lib/daylio.ts'
+import config from '../config.ts'
 import '../styles/tailwind.css'
 
 export interface Props {
@@ -16,7 +17,7 @@ const latestFeeling = await daylio.getLatest()
 <html lang="en" itemscope itemtype="https://schema.org/Person" itemid="#eli-gundry">
   <head>
     <meta charset="utf-8">
-    <title>{title}</title>
+    <title>{title ? `${title} | ${config.title}` : config.title}</title>
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />

@@ -6,6 +6,7 @@ import fsStore from 'cache-manager-fs-hash'
 const defaultTTL = 60 * 60 * 1000
 export const cache = caching({
   store: fsStore,
+  ttl: defaultTTL,
   options: {
     path: '.cache',
     ttl: defaultTTL,

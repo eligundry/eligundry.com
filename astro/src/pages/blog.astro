@@ -2,7 +2,7 @@
 import dateFns from 'date-fns'
 import Layout from '../layouts/Layout.astro'
 
-const posts = (await Astro.glob('./blog/*.md')).sort((a, b) =>
+const posts = (await Astro.glob('./blog/*.mdx')).sort((a, b) =>
   dateFns.compareDesc(new Date(a.frontmatter.date), new Date(b.frontmatter.date))
 )
 ---

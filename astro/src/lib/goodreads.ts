@@ -117,7 +117,9 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
       .slice(0, limit)
   )
 
-  cache.set(cacheKey, books)
+  cache.set(cacheKey, books, {
+    ttl: 60 * 60 * 24 * 1000,
+  })
 
   return books
 }

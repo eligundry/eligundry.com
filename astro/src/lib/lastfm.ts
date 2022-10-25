@@ -41,7 +41,9 @@ const getTopAlbumsCover = async (
       )
   )
 
-  cache.set('lastfm-cover', topAlbums)
+  cache.set('lastfm-cover', topAlbums, {
+    ttl: 60 * 60 * 12 * 1000,
+  })
 
   return topAlbums.slice(0, 9)
 }
