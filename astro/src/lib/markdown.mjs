@@ -9,7 +9,7 @@ import { remark } from 'remark'
 const git = SimpleGit()
 
 export function remarkGitLastModified() {
-  return async function (tree, file) {
+  return async function (_tree, file) {
     try {
       const commits = await git.log({
         file: file.history[0],
@@ -27,7 +27,7 @@ export function remarkGitLastModified() {
 }
 
 export function remarkCollection() {
-  return function (tree, file) {
+  return function (_tree, file) {
     const path = file.history[0]
     file.data.astro.frontmatter.collection = path.includes('talks')
       ? 'talks'
@@ -36,7 +36,7 @@ export function remarkCollection() {
 }
 
 export function remarkReadingTime() {
-  return function (tree, file) {
+  return function (_tree, file) {
     file.data.astro.frontmatter.readingTime = Math.round(
       readingTime(file.value).minutes
     )
@@ -51,6 +51,6 @@ export function remarkExcerpt() {
       file: file.history[0],
     })
 
-    console.log(mdx)
+    // console.log(mdx)
   }
 }

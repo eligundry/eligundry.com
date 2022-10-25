@@ -34,8 +34,10 @@ const {
     itemtype={`https://schema.org/${collection === 'blog' ? 'BlogPosting' : 'CreativeWork'}`}
   >
     <link itemProp="author publisher" href="#eli-gundry" />
-    {modified && <meta itemProp="dateModified" content={modified} />}
-    {cover && <meta itemProp="image" content={cover} />}
+    <div>
+      {modified && <meta itemProp="dateModified" content={modified} />}
+      {cover && <meta itemProp="image" content={cover} />}
+    </div>
     {readingTime > 0 && (
       <meta itemProp="timeRequired" content={`PT${readingTime}M`} />
     )}
