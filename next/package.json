@@ -74,7 +74,7 @@
   "devDependencies": {
     "@eligundry/remark-excerpt": "^2.0.0",
     "@netlify/plugin-nextjs": "^4.7.1",
-    "@next/bundle-analyzer": "^12.1.2",
+    "@next/bundle-analyzer": "^13.0.1",
     "@types/color-thief-node": "^1.0.1",
     "@types/jsdom": "^16.2.14",
     "@types/lodash": "^4.14.180",
