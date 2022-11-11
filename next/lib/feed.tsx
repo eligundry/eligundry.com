@@ -71,15 +71,17 @@ export const generateDaylioFeed = async () => {
   })
 
   entries.forEach((entry) => {
-    const dateTime = dateFns.parseISO(entry.time)
-    const difference = dateFns.differenceInCalendarDays(new Date(), dateTime)
+    const difference = dateFns.differenceInCalendarDays(
+      new Date(),
+      dateFns.parseISO(entry.time)
+    )
     let title = `I felt ${entry.mood}`
 
     if (difference === 0) {
       title = `Today, ${title}`
     } else if (difference === 1) {
       title = `Yesterday, ${title}`
-    } else if (difference < 7) {
+    } else if (difference <= 7) {
       title = `${difference} days ago, ${title}`
     }
 
