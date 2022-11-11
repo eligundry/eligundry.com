@@ -1,7 +1,6 @@
 import fs from 'fs'
 import { Feed } from 'feed'
-import compareDatesDesc from 'date-fns/compareDesc'
-import parseISO from 'date-fns/parseISO'
+import * as dateFns from 'date-fns'
 import config from '@/utils/config'
 import ReactDOMServer from 'react-dom/server'
 import { getMDXComponent } from 'mdx-bundler/client'
@@ -29,7 +28,9 @@ export const generateBlogFeed = async () => {
   })
 
   entries
-    .sort((a, b) => compareDatesDesc(parseISO(a.date), parseISO(b.date)))
+    .sort((a, b) =>
+      dateFns.compareDesc(dateFns.parseISO(a.date), dateFns.parseISO(b.date))
+    )
     .forEach((post) => {
       const Component = getMDXComponent(post.body.code)
 
@@ -70,8 +71,20 @@ export const generateDaylioFeed = async () => {
   })
 
   entries.forEach((entry) => {
+    const dateTime = dateFns.parseISO(entry.time)
+    const difference = dateFns.differenceInCalendarDays(new Date(), dateTime)
+    let title = `I felt ${entry.mood}`
+
+    if (difference === 0) {
+      title = `Today, ${title}`
+    } else if (difference === 1) {
+      title = `Yesterday, ${title}`
+    } else if (difference < 7) {
+      title = `${difference} days ago, ${title}`
+    }
+
     feed.addItem({
-      title: `I felt ${entry.mood}`,
+      title,
       author: [author],
       id: `https://eligundry.com/feelings#${entry.time}`,
       link: `https://eligundry.com/feelings#${entry.time}`,
