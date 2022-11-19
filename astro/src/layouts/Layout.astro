@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+import FancyBackground from '../components/FancyBackground.astro'
 import daylio from '../lib/daylio.ts'
 import config from '../config.ts'
 import '../styles/tailwind.css'
@@ -61,5 +62,6 @@ const latestFeeling = await daylio.getLatest()
       <slot />
     </main>
     <Footer />
+    <FancyBackground />
   </body>
 </html>

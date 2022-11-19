@@ -1,0 +1,48 @@
+<div id="fancy-bg" class="print:hidden"></div>
+<button
+  id="fancy-bg-refresh-btn"
+  class="btn btn-lg btn-primary btn-circle fixed tooltip tooltip-left right-4 bottom-4 normal-case text-4xl print:hidden"
+  aria-label="Regenerate the background pattern"
+  data-tip="Regenerate the background pattern"
+  type="reset"
+>
+  <i class="fa-solid fa-rotate"></i>
+</button>
+
+<style>
+  #fancy-bg {
+    --fluid-pattern-bg-color: transparent;
+    --fluid-pattern-bg-color: theme('colors.transparent');
+    --fluid-pattern-color-1: theme('colors.primary');
+    --fluid-pattern-color-2: theme('colors.secondary');
+    --fluid-pattern-color-3: theme('colors.warning');
+    --fluid-pattern-color-4: theme('colors.error');
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: paint(fluidPattern);
+    z-index: -100000;
+  }
+</style>
+
+<script>
+  window?.CSS?.paintWorklet?.addModule?.(
+    'https://unpkg.com/@georgedoescode/fluid-pattern-worklet@1.0.1/worklet.bundle.js'
+  )
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('fancy-bg-refresh-btn')
+    const canvas = document.getElementById('fancy-bg')
+
+    const updateBg = () =>
+      canvas?.style.setProperty(
+        '--fluid-pattern-seed',
+        (Math.random() * 10000).toString()
+      )
+
+    btn?.addEventListener('click', updateBg)
+    updateBg()
+  })
+</script>
