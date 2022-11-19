@@ -92,7 +92,7 @@
     "eslint-config-prettier": "^8.5.0",
     "next-sitemap": "^2.5.14",
     "postcss": "^8.4.14",
-    "prettier": "^2.6.0",
+    "prettier": "^2.7.1",
     "raw-loader": "^4.0.2",
     "rehype-accessible-emojis": "^0.3.2",
     "rehype-image-placeholder": "^1.0.1",
