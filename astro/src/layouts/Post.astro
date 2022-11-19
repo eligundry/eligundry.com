@@ -24,23 +24,32 @@ const {
   modified,
   showComments = true,
   collection,
-  readingTime
+  readingTime,
 } = frontmatter
 ---
+
 <BaseLayout title={frontmatter.title}>
   <article
     class="paper prose"
     itemscope
-    itemtype={`https://schema.org/${collection === 'blog' ? 'BlogPosting' : 'CreativeWork'}`}
+    itemtype={`https://schema.org/${
+      collection === 'blog' ? 'BlogPosting' : 'CreativeWork'
+    }`}
   >
-    <link itemProp="author publisher" href="#eli-gundry" />
+    <link itemprop="author publisher" href="#eli-gundry" />
     <div>
-      {modified && <meta itemProp="dateModified" content={modified} />}
-      {cover && <meta itemProp="image" content={cover} />}
+      {
+        modified && (
+          <meta itemprop="dateModified" content={modified.toString()} />
+        )
+      }
+      {cover && <meta itemprop="image" content={cover} />}
     </div>
-    {readingTime > 0 && (
-      <meta itemProp="timeRequired" content={`PT${readingTime}M`} />
-    )}
+    {
+      readingTime && (
+        <meta itemprop="timeRequired" content={`PT${readingTime}M`} />
+      )
+    }
     <header>
       <h1 itemprop="name headline">
         <a href={url} itemprop="url">{title}</a>

@@ -6,7 +6,10 @@ import goodreads from '../lib/goodreads.ts'
 import config from '../config.ts'
 
 const currentYear = new Date().getFullYear()
-const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(0, 9)
+const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(
+  0,
+  9
+)
 const shelves = {
   current: await goodreads.getShelf({
     userID: config.goodreadsUserID,
@@ -18,7 +21,7 @@ const shelves = {
     shelf: 'read',
     limit: 11,
     sort: 'date_read',
-    order: 'd'
+    order: 'd',
   }),
 }
 ---
@@ -31,47 +34,46 @@ const shelves = {
       <li>
         I am a{' '}
         <EmojiText emoji="🧑‍💻" label="computer programmer emoji">
-        <strong>full stack web engineer</strong>
+          <strong>full stack web engineer</strong>
         </EmojiText>
         .
       </li>
       <li>
         I love to plan and{' '}
         <EmojiText emoji="👨‍🍳" label="chef emoji">
-        <strong>cook elaborate meals</strong>
+          <strong>cook elaborate meals</strong>
         </EmojiText>
         . It really activates the engineering part of my brain!
       </li>
       <li>
         I have a{' '}
         <EmojiText emoji="🤓" label="geek emoji">
-        <strong>non-traditional computer science education</strong>
+          <strong>non-traditional computer science education</strong>
         </EmojiText>
-        . I attended a vocational school in high school, taught myself web
-        programming, bounced around colleges for computer science while
-        working the entire time before deciding to go pro!
+        . I attended a vocational school in high school, taught myself web programming,
+        bounced around colleges for computer science while working the entire time
+        before deciding to go pro!
       </li>
       <li>
         I am a
-        <strong>Vim user</strong> but I actively encourage everyone to use
-        something else. Using Vim in {currentYear} is a cool
-        bar trick.
+        <strong>Vim user</strong> but I actively encourage everyone to use something
+        else. Using Vim in {currentYear} is a cool bar trick.
       </li>
       <li>
         I currently live in{' '}
         <EmojiText emoji="📍" label="pin emoji to denote location">
-        <strong>Astoria, Queens</strong>
+          <strong>Astoria, Queens</strong>
         </EmojiText>
-        . I didn't think I would settle down in Queens and love it as much
-        as I do, but life is like that sometimes.
+        . I didn't think I would settle down in Queens and love it as much as I do,
+        but life is like that sometimes.
       </li>
       <li>
         I have a{' '}
         <EmojiText
-        emoji="😼"
-        label="smirking cat emoji because Fonzie is a stinker"
+          emoji="😼"
+          label="smirking cat emoji because Fonzie is a stinker"
         >
-        <strong>fat cat named Fonzie</strong>
+          <strong>fat cat named Fonzie</strong>
         </EmojiText>{' '}
         and I sorta have{' '}
         <a href="https://twitter.com/EliGundry/status/1055933062125703168">
@@ -85,34 +87,65 @@ const shelves = {
   <section class="reading paper prose">
     <h2>What I'm Reading</h2>
     <p>
-      I wish I read more, but there are only so many hours in the day. These are the books that I'm reading right now. You
-      can find me on <a href="https://www.goodreads.com/user/show/29665939-eli-gundry" itemprop="sameAs">Goodreads</a>.
+      I wish I read more, but there are only so many hours in the day. These are
+      the books that I'm reading right now. You can find me on <a
+        href="https://www.goodreads.com/user/show/29665939-eli-gundry"
+        itemprop="sameAs">Goodreads</a
+      >.
     </p>
     <div class="bookshelf not-prose">
-      {shelves.current.map(book => {
-        let alt = `Currently Reading ${book.title} by ${book.author.split(', ').reverse().join(' ')}`
-        return (
-          <a href={book.url} target="_blank" rel="noopener noreferrer">
-            <img key={book.isbn} alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
-          </a>
-        )
-      })}
-      {shelves.read.map(book => {
-        let alt = `${book.title} by ${book.author.split(', ').reverse().join(' ')}`
-        return (
-          <a href={book.url} target="_blank" rel="noopener noreferrer">
-            <img key={book.isbn} alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
-          </a>
-        )
-      })}
+      {
+        shelves.current.map((book) => {
+          let alt = `Currently Reading ${book.title} by ${book.author
+            .split(', ')
+            .reverse()
+            .join(' ')}`
+          return (
+            <a href={book.url} target="_blank" rel="noopener noreferrer">
+              <img
+                key={book.isbn}
+                alt={alt}
+                data-tip={alt}
+                class="tooltip"
+                src={book.cover}
+              />
+            </a>
+          )
+        })
+      }
+      {
+        shelves.read.map((book) => {
+          let alt = `${book.title} by ${book.author
+            .split(', ')
+            .reverse()
+            .join(' ')}`
+          return (
+            <a href={book.url} target="_blank" rel="noopener noreferrer">
+              <img
+                key={book.isbn}
+                alt={alt}
+                data-tip={alt}
+                class="tooltip"
+                src={book.cover}
+              />
+            </a>
+          )
+        })
+      }
     </div>
   </section>
 
   <section class="listening paper prose">
     <h2>What I'm Listening To</h2>
     <p>
-      I listen to way too much music and I love to listen to full albums. I mainly listen to hip hop, indie rock and <a href="/blog/icymi-glocca-morra-just-married"><abbr title="Ask me about the fun 5th wave emo bands I love">emo</abbr></a>.
-      I occasionally write reviews of old albums that I love but aren't well known in a series called <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
+      I listen to way too much music and I love to listen to full albums. I
+      mainly listen to hip hop, indie rock and <a
+        href="/blog/icymi-glocca-morra-just-married"
+        ><abbr title="Ask me about the fun 5th wave emo bands I love">emo</abbr>
+      </a>. I occasionally write reviews of old albums that I love but aren't
+      well known in a series called <a href="/tags/icymi"
+        ><abbr title="I See You Missed It">ICYMI</abbr>
+      </a>.
     </p>
     <div class="flex flex-col sm:flex-row sm:gap-4">
       <div class="sm:items-stretch flex flex-col">
@@ -123,18 +156,27 @@ const shelves = {
           frameborder="0"
           allow="encrypted-media"
           loading="lazy"
-          class="w-full sm:w-[300px] h-[380px] sm:flex-1"
-        />
+          class="w-full sm:w-[300px] h-[380px] sm:flex-1"></iframe>
       </div>
       <div>
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>
-        <a href="https://www.last.fm/user/eli_pwnd" class="grid grid-cols-3 h-fit gap-0 not-prose">
-          {topAlbums.map(album => {
-            const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
-            return (
-              <img alt={alt} data-tip={alt} class="tooltip" src={album.cover} />
-            )
-          })}
+        <a
+          href="https://www.last.fm/user/eli_pwnd"
+          class="grid grid-cols-3 h-fit gap-0 not-prose"
+        >
+          {
+            topAlbums.map((album) => {
+              const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
+              return (
+                <img
+                  alt={alt}
+                  data-tip={alt}
+                  class="tooltip"
+                  src={album.cover}
+                />
+              )
+            })
+          }
         </a>
       </div>
     </div>

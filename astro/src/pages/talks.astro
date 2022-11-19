@@ -3,16 +3,24 @@ import dateFns from 'date-fns'
 import Layout from '../layouts/Layout.astro'
 
 const talks = (await Astro.glob('./talks/*.md')).sort((a, b) =>
-  dateFns.compareDesc(new Date(a.frontmatter.date), new Date(b.frontmatter.date))
+  dateFns.compareDesc(
+    new Date(a.frontmatter.date),
+    new Date(b.frontmatter.date)
+  )
 )
 ---
+
 <Layout title="Talks">
   <div class="paper prose">
-    {talks.map(talk => (
-      <article>
-        <h2><a href={talk.url}>{talk.frontmatter.title}</a></h2>
-        <p>{talk.frontmatter.description}</p>
-      </article>
-    ))}
+    {
+      talks.map((talk) => (
+        <article>
+          <h2>
+            <a href={talk.url}>{talk.frontmatter.title}</a>
+          </h2>
+          <p>{talk.frontmatter.description}</p>
+        </article>
+      ))
+    }
   </div>
 </Layout>

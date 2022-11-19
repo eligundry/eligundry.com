@@ -2,12 +2,13 @@
 export interface Props {
   emoji: string
   label: string
-  fallback?: React.ReactNode
+  fallback?: any
 }
 
 const { emoji, label } = Astro.props
 ---
-<span role="img" aria-label={label} className="pr-2">
+
+<span role="img" aria-label={label} class="pr-2">
   {emoji}
 </span>
 <slot />

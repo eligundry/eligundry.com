@@ -1,7 +1,7 @@
 import dateFns from 'date-fns'
 import { cacheAxios } from './cache'
 
-const getAll = async (): Promise<DaylioEntry[]> =>
+const getAll = async () =>
   cacheAxios
     .get<DaylioEntry<string>[]>('https://api.eligundry.com/api/feelings')
     .then((resp) =>

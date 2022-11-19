@@ -36,13 +36,16 @@ const {
   printHide = false,
 } = Astro.props
 ---
+
 <section
   class={clsx(
     'flex flex-wrap justify-between page-break-avoid mb-4 order-1',
-    printHide && 'print:hidden',
+    printHide && 'print:hidden'
   )}
   itemscope
-  itemtype={`http://schema.org/${variant == 'work' ? 'Organization' : 'CollegeOrUniversity'}`}
+  itemtype={`http://schema.org/${
+    variant == 'work' ? 'Organization' : 'CollegeOrUniversity'
+  }`}
   itemprop={endDate ? 'alumniOf' : 'worksFor'}
 >
   <h3 itemprop="name" class="w-full sm:w-1/2 print:w-1/2 m-0">
@@ -57,36 +60,72 @@ const {
     class="w-full sm:w-1/2 print:w-1/2 m-0 order-3 sm:order-2 print:order-2 sm:text-right print:text-right"
   >
     <meta itemprop="roleName" content={position} />
-    <span role="img" aria-label="calendar denoting tenure" class="sm:hidden">🗓</span>
-    <time itemprop="startDate" datetime={dateFns.formatISO(startDate, { representation: 'date' })}>
-      {dateFns.format(startDate, "MMMM yyyy")}
+    <span role="img" aria-label="calendar denoting tenure" class="sm:hidden"
+      >🗓</span
+    >
+    <time
+      itemprop="startDate"
+      datetime={dateFns.formatISO(startDate, { representation: 'date' })}
+    >
+      {dateFns.format(startDate, 'MMMM yyyy')}
     </time>
     &mdash;
-    {endDate ? (
-      <time itemprop="endDate" datetime={dateFns.formatISO(endDate, { representation: 'date' })}>
-        {dateFns.format(endDate, "MMMM yyyy")}
-      </time>
-    ): (
-      <span>Present</span>
-    )}
-    <span role="img" aria-label="calendar denoting tenure" class="hidden sm:inline">🗓</span>
+    {
+      endDate ? (
+        <time
+          itemprop="endDate"
+          datetime={dateFns.formatISO(endDate, { representation: 'date' })}
+        >
+          {dateFns.format(endDate, 'MMMM yyyy')}
+        </time>
+      ) : (
+        <span>Present</span>
+      )
+    }
+    <span
+      role="img"
+      aria-label="calendar denoting tenure"
+      class="hidden sm:inline">🗓</span
+    >
   </span>
-  <h4 class="w-full sm:w-1/2 print:w-1/2 m-0 order-2 print:order-3 sm:order-3">{position}</h4>
+  <h4 class="w-full sm:w-1/2 print:w-1/2 m-0 order-2 print:order-3 sm:order-3">
+    {position}
+  </h4>
   <address
     itemscope
     itemprop="address"
     itemtype="https://schema.org/PostalAddress"
     class="w-full sm:w-1/2 print:w-1/2 m-0 order-4 print:order-4 not-italic sm:text-right print:text-right"
   >
-    <span role="img" aria-label="pin denoting location on map" class="sm:hidden">📍</span>
-    {location.city && <><span itemprop="addressLocality">{location.city}</span>,</>}
+    <span role="img" aria-label="pin denoting location on map" class="sm:hidden"
+      >📍</span
+    >
+    {
+      location.city && (
+        <>
+          <span itemprop="addressLocality">{location.city}</span>,
+        </>
+      )
+    }
     <span itemprop="addressRegion">{location.region}</span>
-    <span role="img" aria-label="pin denoting location on map" class="hidden sm:inline">📍</span>
+    <span
+      role="img"
+      aria-label="pin denoting location on map"
+      class="hidden sm:inline">📍</span
+    >
   </address>
-  {summary && <p itemprop="description" class="order-5 my-0" set:html={summary} />}
-  {highlights && (
-    <ul itemprop="description" class="order-5 my-0">
-      {highlights.map(highlight => <li set:html={highlight} />)}
-    </ul>
-  )}
+  {
+    summary && (
+      <p itemprop="description" class="order-5 my-0" set:html={summary} />
+    )
+  }
+  {
+    highlights && (
+      <ul itemprop="description" class="order-5 my-0">
+        {highlights.map((highlight) => (
+          <li set:html={highlight} />
+        ))}
+      </ul>
+    )
+  }
 </section>
