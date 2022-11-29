@@ -1,11 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
-import lastfm from '../lib/lastfm.ts'
-import goodreads from '../lib/goodreads.ts'
-import config from '../config.ts'
+import lastfm from '../lib/lastfm'
+import goodreads from '../lib/goodreads'
+import daylio from '../lib/daylio'
+import config from '../config'
 
-const currentYear = new Date().getFullYear()
+const latestEntry = await daylio.getLatest()
 const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(
   0,
   9
@@ -57,7 +58,7 @@ const shelves = {
       <li>
         I am a
         <strong>Vim user</strong> but I actively encourage everyone to use something
-        else. Using Vim in {currentYear} is a cool bar trick.
+        else. Using Vim in {new Date().getFullYear()} is a cool bar trick.
       </li>
       <li>
         I currently live in{' '}
@@ -84,6 +85,17 @@ const shelves = {
     </ul>
   </section>
 
+  <section class="daylio paper prose">
+    <h2>How I'm Feeling</h2>
+    <p>
+      A while ago, I decided to start journaling my feelings. Being a software
+      engineer,
+      <a href="/blog/feelings-api"
+        >I made an API out of it and put it on my website</a
+      >. The favicon for the site the emoji for my latest entry.
+    </p>
+  </section>
+
   <section class="reading paper prose">
     <h2>What I'm Reading</h2>
     <p>
@@ -96,38 +108,30 @@ const shelves = {
     <div class="bookshelf not-prose">
       {
         shelves.current.map((book) => {
-          let alt = `Currently Reading ${book.title} by ${book.author
-            .split(', ')
-            .reverse()
-            .join(' ')}`
+          let alt = `Currently Reading ${book.title}`
+
+          if (book.author) {
+            alt += ` by ${book.author.split(', ').reverse().join(' ')}`
+          }
+
           return (
             <a href={book.url} target="_blank" rel="noopener noreferrer">
-              <img
-                key={book.isbn}
-                alt={alt}
-                data-tip={alt}
-                class="tooltip"
-                src={book.cover}
-              />
+              <img alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
             </a>
           )
         })
       }
       {
         shelves.read.map((book) => {
-          let alt = `${book.title} by ${book.author
-            .split(', ')
-            .reverse()
-            .join(' ')}`
+          let alt = book.title
+
+          if (book.author) {
+            alt += ` by ${book.author.split(', ').reverse().join(' ')}`
+          }
+
           return (
             <a href={book.url} target="_blank" rel="noopener noreferrer">
-              <img
-                key={book.isbn}
-                alt={alt}
-                data-tip={alt}
-                class="tooltip"
-                src={book.cover}
-              />
+              <img alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
             </a>
           )
         })

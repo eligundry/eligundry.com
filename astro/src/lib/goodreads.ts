@@ -28,10 +28,10 @@ interface GetShelf {
 }
 
 const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
-  const cacheKey = `goodreads-user[${userID}]-shelf[${shelf}]-limit[${
-    limit ?? 'all'
-  }]`
-  let books = await cache.get<GoodReadsBook[]>(cacheKey)
+  const c = await cache
+  const cacheKey = `goodreads-user[${userID}]-shelf[${shelf}]-limit[${limit ?? 'all'
+    }]`
+  let books = await c.get<GoodReadsBook[]>(cacheKey)
 
   if (books) {
     return books
@@ -117,9 +117,7 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
       .slice(0, limit)
   )
 
-  cache.set(cacheKey, books, {
-    ttl: 60 * 60 * 24 * 1000,
-  })
+  c.set(cacheKey, books, 60 * 60 * 24 * 1000)
 
   return books
 }

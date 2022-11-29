@@ -14,11 +14,18 @@ if (!import.meta.env.LAST_FM_API_KEY) {
   throw new Error('LAST_FM_API_KEY must be defined for the site to run')
 }
 
-const lastfm = new LastFM(import.meta.env.LAST_FM_API_KEY)
+try {
+  // @ts-ignore
+  var lastfm = new LastFM.default(import.meta.env.LAST_FM_API_KEY) as LastFM
+} catch (e) {
+  var lastfm = new LastFM(import.meta.env.LAST_FM_API_KEY)
+}
 const getTopAlbumsCover = async (
+
   username: string
 ): Promise<LastFMCoverItem[]> => {
-  let topAlbums = await cache.get<LastFMCoverItem[]>('lastfm-cover')
+  const c = await cache
+  let topAlbums = await c.get<LastFMCoverItem[]>('lastfm-cover')
 
   if (topAlbums) {
     return topAlbums
@@ -41,9 +48,7 @@ const getTopAlbumsCover = async (
       )
   )
 
-  cache.set('lastfm-cover', topAlbums, {
-    ttl: 60 * 60 * 12 * 1000,
-  })
+  c.set('lastfm-cover', topAlbums, 60 * 60 * 12 * 1000)
 
   return topAlbums.slice(0, 9)
 }
