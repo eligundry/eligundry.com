@@ -1,8 +1,8 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "./code.css";
-@import "./fancyBackground.css";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import './code.css';
+@import './fancyBackground.css';
 
 @layer base {
   a:not(.btn) {
@@ -55,12 +55,11 @@ header.navbar {
   }
 
   & .menu {
-
     & a {
       @apply link-neutral hover:link-primary;
     }
 
-    & a[aria-current="page"] {
+    & a[aria-current='page'] {
       @apply link-primary font-bold text-primary;
     }
   }

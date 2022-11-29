@@ -8,6 +8,7 @@ tags:
   - code
 layout: '../../layouts/Post.astro'
 ---
+
 import { Tweet } from '@astro-community/astro-embed-twitter'
 
 ![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](/img/gatsby-digitialocean-spaces/grimace-cover.png)
@@ -29,12 +30,12 @@ Also, it's a fun story for me to tell!
 You will build and deploy your site in the standard Gatsby way:
 
 1. Build your Gatsby site using `gatsby build --prefix-paths`
-    * Set the `PREFIX_PATHS` environment variable to what your CDN URL is.
-    * Mine is `https://cdn.eligundry.com/site` because I host the site in a folder in the bucket.
+   - Set the `PREFIX_PATHS` environment variable to what your CDN URL is.
+   - Mine is `https://cdn.eligundry.com/site` because I host the site in a folder in the bucket.
 2. Deploy your site using [gatsby-plugin-s3][gatsby-plugin-s3].
-    * This plugin will correctly set the cache headers on your files for optimal performance.
-    * You will need to provide the option `customAwsEndpointHostname` set to the endpoint provided to you in your
-      DigitalOcean Console. Mine was `nyc3.digitaloceanspaces.com`.
+   - This plugin will correctly set the cache headers on your files for optimal performance.
+   - You will need to provide the option `customAwsEndpointHostname` set to the endpoint provided to you in your
+     DigitalOcean Console. Mine was `nyc3.digitaloceanspaces.com`.
 
 After you do this, your site's files will be in your Spaces bucket, but it definitely will not be working. Read on for
 the issues and how to fix them!
@@ -109,7 +110,7 @@ CDN would provide via proximity, but at least it's working, so onward to the nex
 ## No Automatic GZIP
 
 If you want to get that sweet sweet 💯 from [Lighthouse][lighthouse], you need your content gzip'd. Unfortunately,
-[DigitalOcean Spaces' CDN  does not support gzip'ing on the fly][no-gzip-issue] like Cloudfront does, so you have to precompress your
+[DigitalOcean Spaces' CDN does not support gzip'ing on the fly][no-gzip-issue] like Cloudfront does, so you have to precompress your
 assets as a part of the build. I used [`gatsby-plugin-zopfli`][gatsby-plugin-zopfli], which hooks into the Gatsby build
 process to compress the assets, with the following config:
 

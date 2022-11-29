@@ -1,4 +1,4 @@
-#fancy-background-canvas[data-active="true"] {
+#fancy-background-canvas[data-active='true'] {
   --fluid-pattern-bg-color: theme('colors.transparent');
   --fluid-pattern-color-1: theme('colors.primary');
   --fluid-pattern-color-2: theme('colors.secondary');

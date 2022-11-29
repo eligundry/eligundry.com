@@ -116,7 +116,13 @@ const shelves = {
 
           return (
             <a href={book.url} target="_blank" rel="noopener noreferrer">
-              <img alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
+              <img
+                alt={alt}
+                data-tip={alt}
+                class="tooltip"
+                src={book.cover}
+                style={{ backgroundColor: book.coverColor }}
+              />
             </a>
           )
         })
@@ -131,7 +137,13 @@ const shelves = {
 
           return (
             <a href={book.url} target="_blank" rel="noopener noreferrer">
-              <img alt={alt} data-tip={alt} class="tooltip" src={book.cover} />
+              <img
+                alt={alt}
+                data-tip={alt}
+                class="tooltip"
+                src={book.cover}
+                style={{ backgroundColor: book.coverColor }}
+              />
             </a>
           )
         })
@@ -177,6 +189,9 @@ const shelves = {
                   data-tip={alt}
                   class="tooltip"
                   src={album.cover}
+                  style={{
+                    backgroundColor: album.coverColor ?? undefined,
+                  }}
                 />
               )
             })

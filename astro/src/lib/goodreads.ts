@@ -3,6 +3,7 @@ import { JSDOM } from 'jsdom'
 import trim from 'lodash/trim'
 
 import { cacheAxios, cache } from './cache'
+import { averageColorFromURL } from './images'
 
 export interface GoodReadsBook {
   title: string | null
@@ -17,6 +18,7 @@ export interface GoodReadsBook {
   cover: string | null
   thumbnail: string | null | undefined
   url: string | null
+  coverColor: string | null
 }
 
 interface GetShelf {
@@ -29,8 +31,9 @@ interface GetShelf {
 
 const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
   const c = await cache
-  const cacheKey = `goodreads-user[${userID}]-shelf[${shelf}]-limit[${limit ?? 'all'
-    }]`
+  const cacheKey = `goodreads-user[${userID}]-shelf[${shelf}]-limit[${
+    limit ?? 'all'
+  }]`
   let books = await c.get<GoodReadsBook[]>(cacheKey)
 
   if (books) {
@@ -64,9 +67,11 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
   }, 2000)
   const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
 
-  books = await Promise.all(
-    Array.from(goodreadsDocument.querySelectorAll('#booksBody .bookalike'))
-      .map((row): GoodReadsBook | null => {
+  books = (
+    await Promise.all(
+      Array.from(
+        goodreadsDocument.querySelectorAll('#booksBody .bookalike')
+      ).map(async (row): Promise<GoodReadsBook | null> => {
         const thumbnail = row
           ?.querySelector('td.field.cover img')
           ?.getAttribute('src')
@@ -80,6 +85,8 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
         if (!cover || !urlPath) {
           return null
         }
+
+        const coverColor = await averageColorFromURL(cover).catch(() => null)
 
         return {
           title: customTrim(
@@ -111,13 +118,15 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
           cover,
           thumbnail,
           url: urlPath ? `https://www.goodreads.com${urlPath}` : null,
+          coverColor,
         }
       })
-      .filter((book): book is GoodReadsBook => !!book)
-      .slice(0, limit)
+    )
   )
+    .filter((book): book is GoodReadsBook => !!book)
+    .slice(0, limit)
 
-  c.set(cacheKey, books, 60 * 60 * 24 * 1000)
+  c.set(cacheKey, books, 60 * 60 * 24)
 
   return books
 }

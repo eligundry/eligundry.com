@@ -1,6 +1,6 @@
 ---
-title: "Dotfiles For Fun & Profit"
-date: "2017-06-13T05:00"
+title: 'Dotfiles For Fun & Profit'
+date: '2017-06-13T05:00'
 description: Effective dotfile management
 slug: dots
 location: NYC Vim

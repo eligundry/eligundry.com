@@ -21,12 +21,13 @@ import {
 } from './src/lib/markdown.mjs'
 
 // https://astro.build/config
+import image from '@astrojs/image'
+
+// https://astro.build/config
 export default defineConfig({
   vite: {
     ssr: {
-      external: [
-        'better-sqlite3',
-      ],
+      external: ['better-sqlite3'],
       noExternal: [
         '@astro-community/astro-embed-twitter',
         '@astro-community/astro-embed-youtube',
@@ -42,13 +43,18 @@ export default defineConfig({
         remarkInlineLinks,
         remarkUnwrapImages,
         remarkParse,
-        [remarkComment, { ast: true }],
+        [
+          remarkComment,
+          {
+            ast: true,
+          },
+        ],
         remarkExcerpt,
         remarkExcerptBreakpoint,
         remarkGitLastModified,
         remarkCollection,
       ],
     }),
+    image(),
   ],
 })
-
