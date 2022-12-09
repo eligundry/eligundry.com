@@ -1,4 +1,6 @@
 ---
+import clsx from 'clsx'
+import { Image } from '@astrojs/image/components'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import lastfm from '../lib/lastfm'
@@ -30,6 +32,25 @@ const shelves = {
 <Layout>
   <section class="intro paper prose">
     <h2>Glad To Meet You!</h2>
+    <figure
+      class={clsx([
+        'float-right',
+        'ml-8',
+        'hidden',
+        'sm:block',
+        'w-[250px]',
+        'h-[250px]',
+      ])}
+    >
+      <Image
+        src={import('../assets/img/eli-thumbs-up-memoji.png')}
+        loading="eager"
+        alt="Eli Gundry's Memoji Headshot"
+        width="250"
+        height="250"
+        format="webp"
+      />
+    </figure>
     <p>My name is Eli I only really write in lists, so here's my deal.</p>
     <ul>
       <li>
@@ -158,41 +179,19 @@ const shelves = {
         itemprop="sameAs">Goodreads</a
       >.
     </p>
-    <div class="bookshelf not-prose">
+    <div class="bookshelf not-prose gap-y-2">
       {
-        shelves.current.map((book) => {
-          let alt = `Currently Reading: ${book.title}`
-
-          if (book.author) {
-            alt += ` by ${book.author.split(', ').reverse().join(' ')}`
-          }
-
-          return (
-            <a
-              href={book.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="tooltip"
-              data-tip={alt}
-            >
-              <img
-                alt={alt}
-                src={book.cover}
-                style={{ backgroundColor: book.coverColor }}
-                loading="lazy"
-              />
-            </a>
-          )
-        })
-      }
-      {
-        shelves.read.map((book) => {
+        [...shelves.current, ...shelves.read].map((book, i) => {
           let alt = book.title
 
           if (book.author) {
             alt += ` by ${book.author.split(', ').reverse().join(' ')}`
           }
 
+          if (i === 0) {
+            alt = `Currently Reading: ${alt}`
+          }
+
           return (
             <a
               href={book.url}
@@ -201,11 +200,16 @@ const shelves = {
               class="tooltip"
               data-tip={alt}
             >
-              <img
+              <Image
                 alt={alt}
                 src={book.cover}
-                style={{ backgroundColor: book.coverColor }}
                 loading="lazy"
+                width="100"
+                height="160"
+                quality="90"
+                format="webp"
+                decoding="async"
+                style={{ backgroundColor: book.coverColor }}
               />
             </a>
           )
@@ -222,9 +226,8 @@ const shelves = {
         href="/blog/icymi-glocca-morra-just-married"
         ><abbr title="Ask me about the fun 5th wave emo bands I love">emo</abbr>
       </a>. I occasionally write reviews of old albums that I love but aren't
-      well known in a series called <a href="/tags/icymi"
-        ><abbr title="I See You Missed It">ICYMI</abbr>
-      </a>.
+      well known in a series called
+      <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
     </p>
     <div class="flex flex-col sm:flex-row sm:gap-4">
       <div class="sm:items-stretch flex flex-col">
@@ -247,14 +250,18 @@ const shelves = {
             topAlbums.map((album) => {
               const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
               return (
-                <img
+                <Image
                   alt={alt}
                   data-tip={alt}
-                  class="tooltip tooltip-open"
+                  class="tooltip"
                   src={album.cover}
-                  style={{
-                    backgroundColor: album.coverColor ?? undefined,
-                  }}
+                  width="146"
+                  height="146"
+                  quality="90"
+                  format="webp"
+                  loading="lazy"
+                  decoding="async"
+                  style={{ backgroundColor: album.coverColor ?? undefined }}
                 />
               )
             })

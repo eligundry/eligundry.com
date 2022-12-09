@@ -24,6 +24,8 @@ export default defineConfig({
   integrations: [
     tailwind(),
     mdx(mdxConfig),
-    image(),
+    image({
+      serviceEntryPoint: '@astrojs/image/sharp',
+    }),
   ],
 })
