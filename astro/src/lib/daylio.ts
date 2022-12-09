@@ -1,9 +1,9 @@
 import dateFns from 'date-fns'
 import { cacheAxios } from './cache'
 
-const getAll = async () =>
+const getAll = async (): Promise<DaylioEntry[]> =>
   cacheAxios
-    .get<DaylioEntry<string>[]>('https://api.eligundry.com/api/feelings')
+    .get<RawDaylioEntry<string>[]>('https://api.eligundry.com/api/feelings')
     .then((resp) =>
       resp.data.map((entry) => ({
         ...entry,
@@ -66,11 +66,16 @@ export enum ActivityMapping {
   guitar = '🎸',
 }
 
-export interface DaylioEntry<TimeType = Date> {
+export interface RawDaylioEntry<TimeType = Date> {
   time: TimeType
   mood: keyof typeof MoodMapping
   activities: (keyof typeof ActivityMapping)[]
   notes: string[] | null
+}
+
+export interface DaylioEntry extends RawDaylioEntry<Date> {
+  rawTime: string
+  emoji: MoodMapping
 }
 
 const api = { getAll, getLatest, getRange }
