@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
-import daylio from '../lib/daylio'
+import daylio, { ActivityMapping } from '../lib/daylio'
 import config from '../config'
 
 const latestEntry = await daylio.getLatest()
@@ -94,6 +94,59 @@ const shelves = {
         >I made an API out of it and put it on my website</a
       >. The favicon for the site the emoji for my latest entry.
     </p>
+
+    <article itemscope itemtype="https://schema.org/BlogPosting">
+      <meta
+        itemprop="image"
+        content="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ entry.emoji }}</text></svg>"
+      />
+      <link itemprop="author publisher" href="#eli-gundry" />
+      <div>
+        <div class="flex flex-row justify-between">
+          <div>
+            <h3 itemprop="name headline" class="mt-0">
+              I felt {latestEntry.mood}
+            </h3>
+            <time
+              datetime={latestEntry.rawTime}
+              itemprop="datePublished dateModified"
+            >
+              <a href={`/feelings#${latestEntry.rawTime}`}>
+                {latestEntry.rawTime}
+              </a>
+            </time>
+            <ul class="pl-0 not-prose gap-2 flex">
+              {
+                latestEntry.activities.map((a) => (
+                  <li
+                    role="img"
+                    aria-label={a}
+                    data-tip={a}
+                    class="tooltip"
+                    itemprop="keywords"
+                  >
+                    {ActivityMapping[a]}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div role="img" aria-label="{{ entry.mood }} emoji" class="text-9xl">
+            {latestEntry.emoji}
+          </div>
+        </div>
+        {latestEntry.notes?.length === 1 && <p>{latestEntry.notes[0]}</p>}
+        {
+          latestEntry.notes && latestEntry.notes.length > 1 && (
+            <ul>
+              {latestEntry.notes.map((n) => (
+                <li>{n}</li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </article>
   </section>
 
   <section class="reading paper prose">
