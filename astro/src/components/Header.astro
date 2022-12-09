@@ -104,7 +104,7 @@ const links = [
     <div class="flex justify-end flex-none">
       <nav class="navbar-end md:hidden">
         <div class="dropdown dropdown-end">
-          <label class="swap swap-flip btn btn-ghost btn-circle" tabindex="0">
+          <label class="swap swap-flip btn btn-ghost btn-circle" tabindex="0" data-theme-toggle="dark,light" data-act-class="active">
             <div class="swap-on">🙅‍♂️</div>
             <div class="swap-off">🍔</div>
           </label>
@@ -118,6 +118,14 @@ const links = [
     </div>
   </div>
 </header>
+
+<script>
+  import { themeChange } from 'theme-change'
+
+  document.addEventListener('DOMContentLoaded', () => {
+    themeChange()
+  })
+</script>
 
 <script type="module">
   const progress = document.getElementById('scroll-progress')

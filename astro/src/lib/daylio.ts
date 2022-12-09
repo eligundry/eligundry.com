@@ -9,6 +9,7 @@ const getAll = async () =>
         ...entry,
         emoji: MoodMapping[entry.mood],
         time: dateFns.parseISO(entry.time),
+        rawTime: entry.time,
       }))
     )
     .catch((error) => {
