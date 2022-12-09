@@ -52,24 +52,39 @@ const links = [
   value="0"
   max="100"></progress>
 <header
-  class="navbar bg-base-100 shadow fixed top-0 z-40 pr-8 pl-14 print:hidden"
+  class={clsx([
+    'navbar',
+    'bg-base-100',
+    'shadow',
+    'fixed',
+    'top-0',
+    'z-40',
+    'pr-8',
+    'pl-14',
+    'print-hidden',
+    '[&_a]:hover:bg-transparent',
+    '[&_a]:focus:bg-transparent',
+    '[&_a]:hover:no-underline',
+    '[&_a]:focus:no-underline',
+  ])}
 >
   <div class="container mx-auto flex flex-wrap">
     <div class="flex-1">
       <a
         href="/"
         itemprop="sameAs"
-        class="btn btn-ghost normal-case text-xl site-name">Eli Gundry</a
+        class="btn btn-ghost normal-case text-xl site-name pl-0">Eli Gundry</a
       >
     </div>
     <nav class="flex-none hidden md:flex">
-      <ul
-        class="menu menu-horizontal p-0 [&>li>a:not([aria-current='page'])]:link-neutral"
-      >
+      <ul class={clsx('menu', 'menu-horizontal', 'p-0', '[&_a]:text-current')}>
         {
           links.map((link) => (
             <li>
-              <a href={link.href}>
+              <a
+                href={link.href}
+                class={clsx('hover:link-primary', 'focus:link-primary')}
+              >
                 <EmojiText emoji={link.emoji} label={link.emojiLabel}>
                   {link.name}
                 </EmojiText>
