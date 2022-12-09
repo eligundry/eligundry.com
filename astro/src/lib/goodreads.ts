@@ -62,9 +62,6 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
     throw e
   }
 
-  setTimeout(() => {
-    console.error({ url: goodreadsHTML.config.url })
-  }, 2000)
   const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
 
   books = (

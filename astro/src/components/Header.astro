@@ -1,4 +1,5 @@
 ---
+import clsx from 'clsx'
 import EmojiText from '../components/EmojiText.astro'
 
 const links = [
@@ -35,8 +36,23 @@ const links = [
 ]
 ---
 
+<progress
+  id="scroll-progress"
+  aria-label="your scroll progress through the page"
+  class={clsx(
+    'progress',
+    'progress-primary',
+    'w-full',
+    'm-0',
+    'fixed',
+    'top-0',
+    'z-50',
+    'rounded-none'
+  )}
+  value="0"
+  max="100"></progress>
 <header
-  class="navbar bg-base-100 shadow fixed top-0 z-50 pr-8 pl-14 print:hidden"
+  class="navbar bg-base-100 shadow fixed top-0 z-40 pr-8 pl-14 print:hidden"
 >
   <div class="container mx-auto flex flex-wrap">
     <div class="flex-1">
@@ -87,3 +103,20 @@ const links = [
     </div>
   </div>
 </header>
+
+<script type="module">
+  const progress = document.getElementById('scroll-progress')
+
+  function animateProgress() {
+    requestAnimationFrame(() => {
+      progress.value = window.scrollY
+      progress.max =
+        Math.max(document.body.clientHeight, window.innerHeight + 1) -
+        window.innerHeight
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', animateProgress)
+  document.addEventListener('scroll', animateProgress)
+  document.addEventListener('resize', animateProgress)
+</script>

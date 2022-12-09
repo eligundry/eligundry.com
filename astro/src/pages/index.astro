@@ -108,20 +108,25 @@ const shelves = {
     <div class="bookshelf not-prose">
       {
         shelves.current.map((book) => {
-          let alt = `Currently Reading ${book.title}`
+          let alt = `Currently Reading: ${book.title}`
 
           if (book.author) {
             alt += ` by ${book.author.split(', ').reverse().join(' ')}`
           }
 
           return (
-            <a href={book.url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={book.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="tooltip"
+              data-tip={alt}
+            >
               <img
                 alt={alt}
-                data-tip={alt}
-                class="tooltip"
                 src={book.cover}
                 style={{ backgroundColor: book.coverColor }}
+                loading="lazy"
               />
             </a>
           )
@@ -136,13 +141,18 @@ const shelves = {
           }
 
           return (
-            <a href={book.url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={book.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="tooltip"
+              data-tip={alt}
+            >
               <img
                 alt={alt}
-                data-tip={alt}
-                class="tooltip"
                 src={book.cover}
                 style={{ backgroundColor: book.coverColor }}
+                loading="lazy"
               />
             </a>
           )
@@ -187,7 +197,7 @@ const shelves = {
                 <img
                   alt={alt}
                   data-tip={alt}
-                  class="tooltip"
+                  class="tooltip tooltip-open"
                   src={album.cover}
                   style={{
                     backgroundColor: album.coverColor ?? undefined,
