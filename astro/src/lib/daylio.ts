@@ -1,5 +1,6 @@
 import dateFns from 'date-fns'
 import { cacheAxios } from './cache'
+import { MoodMapping, ActivityMapping } from './enums'
 
 const getAll = async (): Promise<DaylioEntry[]> =>
   cacheAxios
@@ -24,47 +25,16 @@ const getRange = async (start: Date) =>
     feelings.filter(({ time }) => dateFns.isAfter(time, start))
   )
 
-export enum DaylioVariants {
-  home = 'home',
-  list = 'list',
-}
-
-export enum MoodMapping {
-  awful = '😖',
-  bad = '😣',
-  meh = '😕',
-  good = '😀',
-  rad = '🥳',
-}
-
-export enum ActivityMapping {
-  cook = '🧑‍🍳',
-  movies = '🍿',
-  movie = '🍿',
-  relax = '💆‍♂️',
-  'side-project' = '👨‍💻',
-  work = '💼',
-  friends = '👯‍♂️',
-  sport = '🏃‍♂️',
-  date = '👫',
-  WFH = '🏚',
-  reading = '📚',
-  shopping = '🛒',
-  'good meal' = '🍜',
-  museum = '🏛',
-  party = '🎉',
-  cleaning = '🧹',
-  gaming = '🕹',
-  'binging tv' = '📺',
-  'ate meat' = '🥩',
-  'no meat' = '🌿',
-  travel = '✈️',
-  'went outside' = '🌞',
-  delivery = '🥡',
-  concert = '🎶',
-  'Broadway show' = '🎭',
-  guitar = '🎸',
-}
+const getChartData = async (timeWindow: Date): Promise<DaylioChartEntry[]> =>
+  getAll().then((feelings) =>
+    feelings
+      .filter((entry) => dateFns.isAfter(entry.time, timeWindow))
+      .sort((a, b) => dateFns.compareAsc(a.time, b.time))
+      .map(({ rawTime, mood }) => ({
+        x: rawTime,
+        y: Object.keys(MoodMapping).findIndex((m) => m === mood),
+      }))
+  )
 
 export interface RawDaylioEntry<TimeType = Date> {
   time: TimeType
@@ -78,6 +48,11 @@ export interface DaylioEntry extends RawDaylioEntry<Date> {
   emoji: MoodMapping
 }
 
-const api = { getAll, getLatest, getRange }
+export interface DaylioChartEntry {
+  x: string
+  y: number
+}
+
+const api = { getAll, getLatest, getRange, getChartData }
 
 export default api

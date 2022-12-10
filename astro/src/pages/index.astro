@@ -4,9 +4,10 @@ import { Image } from '@astrojs/image/components'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
+import DaylioChart from '../components/DaylioChart.tsx'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
-import daylio, { ActivityMapping } from '../lib/daylio'
+import daylio from '../lib/daylio'
 import config from '../config'
 
 const latestEntry = await daylio.getLatest()
@@ -117,6 +118,7 @@ const shelves = {
       >. The favicon for the site the emoji for my latest entry.
     </p>
     <DaylioEntry entry={latestEntry} />
+    <DaylioChart client:visible />
   </section>
 
   <section class="reading paper prose">

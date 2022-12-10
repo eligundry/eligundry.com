@@ -11,6 +11,9 @@ import mdxConfig from './src/lib/markdown.mjs'
 import image from '@astrojs/image'
 
 // https://astro.build/config
+import react from '@astrojs/react'
+
+// https://astro.build/config
 export default defineConfig({
   vite: {
     ssr: {
@@ -18,6 +21,7 @@ export default defineConfig({
       noExternal: [
         '@astro-community/astro-embed-twitter',
         '@astro-community/astro-embed-youtube',
+        'chartjs-adapter-date-fns',
       ],
     },
   },
@@ -27,5 +31,6 @@ export default defineConfig({
     image({
       serviceEntryPoint: '@astrojs/image/sharp',
     }),
+    react(),
   ],
 })
