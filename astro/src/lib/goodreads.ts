@@ -55,7 +55,7 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
           ...queryParams,
         },
         cache: {
-          ttl: 60 * 60 * 1000 * 24,
+          ttl: 60 * 60 * 24,
         },
       }
     )

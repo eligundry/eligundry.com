@@ -8,8 +8,8 @@ tags:
   - code
 layout: '../../layouts/Post.astro'
 ---
-
 import { Tweet } from '@astro-community/astro-embed-twitter'
+export { components } from '../../components/Post/components.astro'
 
 ![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](/img/gatsby-digitialocean-spaces/grimace-cover.png)
 
@@ -22,8 +22,6 @@ up for another service.
 Long story short, I was able to get it working, but I ended up ditching it to go with [Netlify](https://www.netlify.com/). Still, if you
 are here, you might have a do or die situation where you must host your site on Spaces and maybe this will be useful.
 Also, it's a fun story for me to tell!
-
-<!-- excerpt -->
 
 ## How to deploy Gatsby to DigitalOcean Spaces
 

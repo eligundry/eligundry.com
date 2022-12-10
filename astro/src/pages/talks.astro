@@ -15,10 +15,10 @@ const talks = (await Astro.glob('./talks/*.md')).sort((a, b) =>
     {
       talks.map((talk) => (
         <article>
-          <h2>
+          <h2 class="my-2">
             <a href={talk.url}>{talk.frontmatter.title}</a>
           </h2>
-          <p>{talk.frontmatter.description}</p>
+          <p class="mb-0">{talk.frontmatter.description}</p>
         </article>
       ))
     }

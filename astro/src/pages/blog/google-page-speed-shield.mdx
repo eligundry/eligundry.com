@@ -8,6 +8,7 @@ tags:
   - code
 layout: '../../layouts/Post.astro'
 ---
+export { components } from '../../components/Post/components.astro'
 
 As a software engineer, it's rare to have an idea for a personal project and actually finish it. We have ideas all the
 time, buy domains for them, and then never finish them. For me, I've had a brain block for coding that isn't work for
@@ -21,8 +22,6 @@ during one of these runs that I got an idea:
 > What if I made a GitHub badge so that I can check on this passively?
 
 I did some Googling and couldn't find any implementations of it and went to work.
-
-<!-- excerpt -->
 
 # Implementation
 
@@ -39,10 +38,6 @@ This took me an evening and I was able to fetch a Page Speed badge using the fol
 ```
 
 Look at these badges!
-
-![eligundry.com Mobile Page Speed Insights](https://page-speed-shield.eligundry.com/mobile/https://eligundry.com)
-
-![eligundry.com Desktop Page Speed Insights](https://page-speed-shield.eligundry.com/desktop/https://eligundry.com)
 
 Looks pretty snazzy, though it takes around 30 seconds to run, time to add it to a README!
 
