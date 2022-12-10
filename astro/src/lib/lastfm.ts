@@ -53,7 +53,7 @@ const getTopAlbumsCover = async (
       })
   )
 
-  c.set('lastfm-cover', topAlbums, 60 * 60 * 12)
+  c.set('lastfm-cover', topAlbums, 60 * 60)
 
   return topAlbums.slice(0, 9)
 }

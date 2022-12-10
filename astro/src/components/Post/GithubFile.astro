@@ -1,0 +1,66 @@
+---
+import path from 'node:path'
+import { Code } from 'astro/components'
+import type { Lang as ShikiLang } from 'shiki'
+import { cacheAxios } from '../../lib/cache'
+
+interface Props {
+  url: string
+  expandable?: boolean
+  linesToShowInPreview?: number
+}
+
+const { url, expandable = false, linesToShowInPreview = 10 } = Astro.props
+
+// Construct the url to the raw version of the file and ensure that we have a commit hash for the file instead of a main
+// branch, as those can change and throw off the builds.
+const rawURL = new URL(url)
+rawURL.host = 'raw.githubusercontent.com'
+
+const [user, repo, _blob, ref, ...filePath] = rawURL.pathname
+  .split('/')
+  .filter(Boolean)
+
+if (ref === 'master' || ref === 'main') {
+  throw new Error(`Use a commit hash for githubFileEmbed "${url}"`)
+}
+
+rawURL.pathname = [user, repo, ref, ...filePath].join('/')
+
+let range = null
+
+if (rawURL.hash) {
+  try {
+    const matches = rawURL.hash.matchAll(/#L(\d+)-L(\d+)/g)
+    const items = Array.from(...matches)
+
+    if (items.length) {
+      range = items
+        .slice(1)
+        .map((n, i) => (i === 0 ? parseInt(n) - 1 : parseInt(n)))
+    }
+  } catch (e) {}
+}
+
+const extension = filePath.at(-1)
+  ? (path.extname(filePath.at(-1) as string).slice(1) as ShikiLang)
+  : undefined
+
+let file = await cacheAxios
+  .get<string>(rawURL.toString(), {
+    responseType: 'text',
+    cache: {
+      ttl: Infinity,
+    },
+  })
+  .then((resp) => resp.data)
+
+if (range) {
+  file = file
+    .split(/\r?\n/)
+    .slice(...range)
+    .join('\n')
+}
+---
+
+<Code code={file} lang={extension} />

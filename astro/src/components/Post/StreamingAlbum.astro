@@ -1,0 +1,50 @@
+---
+import clsx from 'clsx'
+
+interface SpotifyProps {
+  spotifyID: string
+}
+
+interface BandcampProps {
+  bandcampID: string
+  name: string
+  artist: string
+  url: string
+}
+
+type Props = (SpotifyProps | BandcampProps) &
+  Partial<{
+    className: string
+  }>
+
+const props = Astro.props
+---
+
+{
+  'spotifyID' in props && (
+    <iframe
+      class={clsx('border-0', 'w-[320px]', 'h-[380px]', props.className)}
+      src={`https://open.spotify.com/embed/album/${props.spotifyID}`}
+      height="380"
+      frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      title="album embed from spotify.com"
+      loading="lazy"
+    />
+  )
+}
+{
+  'bandcampID' in props && (
+    <iframe
+      src={`https://bandcamp.com/EmbeddedPlayer/album=${props.bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
+      seamless
+      class={clsx('border-0', 'w-[320px]', 'h-[470px]', props.className)}
+      title="album embed from bandcamp.com"
+      loading="lazy"
+    >
+      <a href={url}>
+        {name} by {artist}
+      </a>
+    </iframe>
+  )
+}

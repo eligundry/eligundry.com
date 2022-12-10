@@ -15,6 +15,11 @@ import react from '@astrojs/react'
 
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    shikiConfig: {
+      theme: 'css-variables',
+    },
+  },
   vite: {
     ssr: {
       external: ['better-sqlite3', 'react-use'],

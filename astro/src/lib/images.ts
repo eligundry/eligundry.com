@@ -1,12 +1,11 @@
 import path from 'node:path'
 import fs from 'fs/promises'
-import { promisify } from 'node:util'
 import { getAverageColor } from 'fast-average-color-node'
 import imageSize from 'image-size'
 import { cache } from './cache'
 
 export const averageColorFromURL = async (url: string) => {
-  const key = `avgColor-${url}`
+  const key = `avgColor[${url}]`
   const c = await cache
   let color = await c.get<string>(key)
 
@@ -34,7 +33,7 @@ interface MdxImageData {
 
 export const getRemoteImageMetadata = async (urlOrPath: string) => {
   const c = await cache
-  const key = `mdxImage-${urlOrPath}`
+  const key = `mdxImage[${urlOrPath}]`
   let data = await c.get<MdxImageData>(key)
 
   if (data) {
