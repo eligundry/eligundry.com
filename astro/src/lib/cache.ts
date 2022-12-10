@@ -4,7 +4,7 @@ import { caching } from 'cache-manager'
 import sqliteStore from 'cache-manager-better-sqlite3'
 import path from 'path'
 
-const defaultTTL = 60 * 60
+const defaultTTL = 60 * 60 * 24
 export const cache = caching(sqliteStore, {
   path: path.join(process.cwd(), '.cache', 'cache.db'),
   ttl: defaultTTL,

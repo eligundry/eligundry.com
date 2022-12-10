@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const pick = require('lodash/pick')
 
 /**
  * @type {import('tailwindcss').Config}
@@ -8,6 +9,7 @@ module.exports = {
   plugins: [require('@tailwindcss/typography'), require('daisyui')],
   safelist: ['tooltip'],
   theme: {
+    colors: pick(defaultTheme.colors, ['white', 'transparent']),
     container: {
       screens: {
         xl: '786px',
@@ -36,7 +38,34 @@ module.exports = {
     },
   },
   daisyui: {
-    themes: ['light', 'dark'],
+    themes: [
+      {
+        light: {
+          primary: '#c084fc',
+          secondary: '#7dd3fc',
+          accent: '#98a0f2',
+          neutral: '#78716c',
+          'base-100': '#ffe4e6',
+          info: '#2563eb',
+          success: '#10b981',
+          warning: '#fbbf24',
+          error: '#F94E5F',
+        },
+      },
+      {
+        dark: {
+          primary: '#c084fc',
+          secondary: '#7dd3fc',
+          accent: '#98a0f2',
+          neutral: '#78716c',
+          'base-100': '#1c1917',
+          info: '#2563eb',
+          success: '#10b981',
+          warning: '#fbbf24',
+          error: '#F94E5F',
+        },
+      },
+    ],
     darkTheme: 'dark',
   },
   darkMode: ['class', "[data-theme='dark']"],
