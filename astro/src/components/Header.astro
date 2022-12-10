@@ -60,7 +60,7 @@ const links = [
     'top-0',
     'z-40',
     'sm:pr-8',
-    'pl-4 sm:pl-14',
+    'pl-4 md:pl-14',
     'print-hidden',
     '[&_a]:hover:bg-transparent',
     '[&_a]:focus:bg-transparent',
@@ -93,10 +93,10 @@ const links = [
           ))
         }
         <li class="items-center">
-          <label class="swap swap-flip btn-sm">
+          <label class="swap swap-flip btn-sm text-2xl">
             <input
               type="checkbox"
-              id="theme-toggle"
+              class="theme-toggle"
               data-toggle-theme="dark,light"
             />
             <div class="swap-on">🌚</div>
@@ -106,51 +106,97 @@ const links = [
       </ul>
     </nav>
     <div class="flex justify-end flex-none">
-      <nav class="navbar-end md:hidden">
-        <div class="dropdown dropdown-end">
-          <label class="swap swap-flip btn btn-ghost btn-circle" tabindex="0">
-            <div class="swap-on">🙅‍♂️</div>
-            <div class="swap-off">🍔</div>
-          </label>
-          <ul
-            tabindex="0"
-            class="menu menu-compact dropdown-content bg-base-100 rounded-box w-full"
-          >
-            {
-              links.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    class={clsx('hover:link-primary', 'focus:link-primary')}
-                  >
-                    <EmojiText emoji={link.emoji} label={link.emojiLabel}>
-                      {link.name}
-                    </EmojiText>
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
+      <nav class="navbar-end md:hidden btn-group">
+        <label class="swap swap-flip btn btn-sm btn-ghost text-2xl">
+          <input
+            type="checkbox"
+            class="theme-toggle"
+            data-toggle-theme="dark,light"
+          />
+          <div class="swap-on">🌚</div>
+          <div class="swap-off">🌞</div>
+        </label>
+        <label
+          class="swap swap-flip btn btn-sm btn-ghost text-2xl"
+          tabindex="0"
+          for="mobile-nav-modal-control"
+        >
+          <input
+            type="checkbox"
+            id="mobile-nav-modal-control"
+            class="modal-control-input"
+          />
+          <div class="swap-on">🙅‍♂️</div>
+          <div class="swap-off">🍔</div>
+        </label>
       </nav>
     </div>
   </div>
 </header>
 
+<input
+  type="checkbox"
+  id="mobile-nav-modal"
+  class="modal-toggle modal-control-input"
+/>
+<label for="mobile-nav-modal" class="modal cursor-pointer bg-transparent">
+  <label
+    class={clsx(
+      'modal-box',
+      'w-full',
+      'max-w-full',
+      'absolute',
+      'top-[4rem]',
+      'rounded-t-none',
+      'bg-base-200',
+      'shadow-none',
+      'pt-0',
+      'pl-4'
+    )}
+    for=""
+  >
+    <ul>
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class={clsx('hover:link-primary', 'focus:link-primary')}
+            >
+              <EmojiText emoji={link.emoji} label={link.emojiLabel}>
+                {link.name}
+              </EmojiText>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </label>
+</label>
+
 <script>
+  import { on } from 'delegated-events'
   import { themeChange } from 'theme-change'
   themeChange()
 
   document.addEventListener('DOMContentLoaded', () => {
     themeChange()
 
-    const themeCheckbox = document.getElementById('theme-toggle')
+    const themeCheckboxes = document.querySelectorAll('.theme-toggle')
 
-    if (!themeCheckbox || !('checked' in themeCheckbox)) {
-      return
-    }
+    themeCheckboxes.forEach((cb) => {
+      if (!('checked' in cb)) {
+        return
+      }
 
-    themeCheckbox.checked = document.documentElement.dataset?.theme === 'dark'
+      cb.checked = document.documentElement.dataset?.theme === 'dark'
+    })
+
+    on('change', '.theme-toggle', (event) => {
+      themeCheckboxes.forEach((cb) => {
+        cb.checked = event.target.checked
+      })
+    })
   })
 </script>
 
@@ -169,4 +215,18 @@ const links = [
   document.addEventListener('DOMContentLoaded', animateProgress)
   document.addEventListener('scroll', animateProgress)
   document.addEventListener('resize', animateProgress)
+</script>
+
+<script>
+  import { on } from 'delegated-events'
+
+  document.addEventListener('DOMContentLoaded', () => {
+    on('change', '.modal-control-input', (event) => {
+      const inputs = document.querySelectorAll('.modal-control-input')
+
+      inputs.forEach((i) => {
+        i.checked = event.target.checked
+      })
+    })
+  })
 </script>

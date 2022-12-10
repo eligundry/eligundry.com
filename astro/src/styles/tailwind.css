@@ -1,14 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import './code.css';
 @import './fancyBackground.css';
-
-@layer base {
-  a:not(.btn) {
-    @apply link link-primary link-hover;
-  }
-}
 
 @layer components {
   .paper {
@@ -28,6 +21,14 @@
 
 .prose {
   @apply max-w-none;
+}
+
+.prose *:not(pre) > code {
+  @apply p-0;
+}
+
+.prose a:not(.btn) {
+  @apply link link-primary link-hover;
 }
 
 .tooltip {
