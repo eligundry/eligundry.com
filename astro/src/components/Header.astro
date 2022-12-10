@@ -59,8 +59,8 @@ const links = [
     'fixed',
     'top-0',
     'z-40',
-    'pr-8',
-    'pl-14',
+    'sm:pr-8',
+    'pl-4 sm:pl-14',
     'print-hidden',
     '[&_a]:hover:bg-transparent',
     '[&_a]:focus:bg-transparent',
@@ -92,9 +92,13 @@ const links = [
             </li>
           ))
         }
-        <li>
-          <label class="swap swap-flip">
-            <input type="checkbox" id="theme-toggle" />
+        <li class="items-center">
+          <label class="swap swap-flip btn-sm">
+            <input
+              type="checkbox"
+              id="theme-toggle"
+              data-toggle-theme="dark,light"
+            />
             <div class="swap-on">🌚</div>
             <div class="swap-off">🌞</div>
           </label>
@@ -104,7 +108,7 @@ const links = [
     <div class="flex justify-end flex-none">
       <nav class="navbar-end md:hidden">
         <div class="dropdown dropdown-end">
-          <label class="swap swap-flip btn btn-ghost btn-circle" tabindex="0" data-theme-toggle="dark,light" data-act-class="active">
+          <label class="swap swap-flip btn btn-ghost btn-circle" tabindex="0">
             <div class="swap-on">🙅‍♂️</div>
             <div class="swap-off">🍔</div>
           </label>
@@ -112,6 +116,20 @@ const links = [
             tabindex="0"
             class="menu menu-compact dropdown-content bg-base-100 rounded-box w-full"
           >
+            {
+              links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class={clsx('hover:link-primary', 'focus:link-primary')}
+                  >
+                    <EmojiText emoji={link.emoji} label={link.emojiLabel}>
+                      {link.name}
+                    </EmojiText>
+                  </a>
+                </li>
+              ))
+            }
           </ul>
         </div>
       </nav>
@@ -119,7 +137,24 @@ const links = [
   </div>
 </header>
 
-<script type="module">
+<script>
+  import { themeChange } from 'theme-change'
+  themeChange()
+
+  document.addEventListener('DOMContentLoaded', () => {
+    themeChange()
+
+    const themeCheckbox = document.getElementById('theme-toggle')
+
+    if (!themeCheckbox || !('checked' in themeCheckbox)) {
+      return
+    }
+
+    themeCheckbox.checked = document.documentElement.dataset?.theme === 'dark'
+  })
+</script>
+
+<script>
   const progress = document.getElementById('scroll-progress')
 
   function animateProgress() {

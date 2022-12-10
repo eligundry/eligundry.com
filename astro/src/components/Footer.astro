@@ -1,6 +1,11 @@
 ---
 import clsx from 'clsx'
 import EmojiText from '../components/EmojiText.astro'
+import { FaGithubAlt, FaMastodon } from 'react-icons/fa'
+import { ImLastfm } from 'react-icons/im'
+import { MdRssFeed, MdOutlineEmail } from 'react-icons/md'
+import { TbBrandTwitter } from 'react-icons/tb'
+import { TiSocialLinkedin } from 'react-icons/ti'
 
 const social = [
   {
@@ -8,47 +13,64 @@ const social = [
     label: 'Review my code on GitHub',
     url: 'https://github.com/eligundry',
     itemProp: 'sameAs',
-    icon: 'fa-brands fa-square-github',
+    Icon: FaGithubAlt,
   },
   {
     name: 'twitter',
     label: 'Follow me on Twitter',
     url: 'https://twitter.com/EliGundry',
     itemProp: 'sameAs',
-    icon: 'fa-brands fa-square-twitter',
+    Icon: TbBrandTwitter,
+  },
+  {
+    name: 'mastodon',
+    label: 'Toot me or whatever on Mastodon',
+    url: 'https://mas.to/@eligundry',
+    itemProp: 'sameAs',
+    Icon: FaMastodon,
   },
   {
     name: 'linkedin',
     label: 'Add me to your professional network on LinkedIn',
     url: 'https://www.linkedin.com/in/eligundry/',
     itemProp: 'sameAs',
-    icon: 'fa-brands fa-linkedin',
+    Icon: TiSocialLinkedin,
   },
   {
     name: 'lastfm',
     label: "See what I'm listening to on Last.fm",
     url: 'https://www.last.fm/user/eli_pwnd',
     itemProp: 'sameAs',
-    icon: 'fa-brands fa-square-lastfm',
+    Icon: ImLastfm,
   },
   {
     name: 'email',
     label: 'Shoot me an email',
     url: 'mailto:eligundry@gmail.com',
-    icon: 'fa-solid fa-square-envelope',
+    Icon: MdOutlineEmail,
   },
   {
     name: 'rss',
     label: 'Add my blog to your Google Reader via RSS',
     url: '/blog.rss',
-    icon: 'fa-solid fa-square-rss',
+    Icon: MdRssFeed,
   },
 ]
 ---
 
-<footer class="footer bg-base-100 pl-14 pr-8 py-8 shadow print:hidden">
+<footer
+  class={clsx(
+    'footer',
+    'bg-base-100',
+    'pl-14',
+    'pr-8',
+    'py-8',
+    'shadow',
+    'print:hidden'
+  )}
+>
   <div class="container mx-auto flex flex-col md:flex-row">
-    <div class="w-2/3">
+    <div class="w-full sm:w-2/3">
       <h4 class="footer-title">About</h4>
       <p>
         Eli Gundry is a full stack web developer that loves JavaScript, devops
@@ -82,15 +104,23 @@ const social = [
     </div>
     <div class="w-1/3">
       <h4 class="footer-title">Social</h4>
-      <div>
+      <div class="flex flex-row gap-2">
         {
           social.map((link) => (
             <a
               href={link.url}
-              class="btn btn-sm btn-square btn-primary"
-              title={link.label}
+              class={clsx(
+                'btn',
+                'btn-sm',
+                'btn-square',
+                'btn-primary',
+                'tooltip',
+                'normal-case',
+                'inline-flex'
+              )}
+              data-tip={link.label}
             >
-              <i class={clsx(link.icon, 'text-2xl')} />
+              <link.Icon size="1.75em" />
             </a>
           ))
         }

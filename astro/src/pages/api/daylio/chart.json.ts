@@ -4,7 +4,7 @@ import daylio from '../../../lib/daylio'
 
 export const get: APIRoute = async () => ({
   body: JSON.stringify(
-    await daylio.getChartData(dateFns.subMonths(new Date(), 2))
+    await daylio.getChartData(dateFns.subDays(new Date(), 45))
   ),
   headers: {
     'content-type': 'application/json',
