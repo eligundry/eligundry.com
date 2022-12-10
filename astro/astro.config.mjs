@@ -17,11 +17,12 @@ import react from '@astrojs/react'
 export default defineConfig({
   vite: {
     ssr: {
-      external: ['better-sqlite3'],
+      external: ['better-sqlite3', 'react-use'],
       noExternal: [
         '@astro-community/astro-embed-twitter',
         '@astro-community/astro-embed-youtube',
         'chartjs-adapter-date-fns',
+        'react-icons',
       ],
     },
   },

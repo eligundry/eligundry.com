@@ -1,9 +1,7 @@
 import 'chartjs-adapter-date-fns'
 import 'chart.js/auto'
 import { Chart } from 'react-chartjs-2'
-import parseISO from 'date-fns/parseISO'
-import formatISO from 'date-fns/formatISO'
-import dateSubDays from 'date-fns/subDays'
+import { parseISO, formatISO, subDays } from 'date-fns'
 
 import useTheme from '../hooks/useTheme'
 // import { toolTipTheme } from '@/utils/charts'
@@ -82,7 +80,7 @@ const DaylioChart = () => {
           scales: {
             x: {
               // @ts-ignore
-              min: dateSubDays(parseISO(data[0].x), 1).toISOString(),
+              min: subDays(parseISO(data[0].x), 1).toISOString(),
               ticks: {
                 callback: () => null,
               },

@@ -1,6 +1,9 @@
 import SimpleGit from 'simple-git'
 import readingTime from 'reading-time'
-import { excerpt, excerptBreakpoint as remarkExcerptBreakpoint } from '@eligundry/remark-excerpt'
+import {
+  excerpt,
+  excerptBreakpoint as remarkExcerptBreakpoint,
+} from '@eligundry/remark-excerpt'
 import { compile as mdxCompile } from '@mdx-js/mdx'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
@@ -38,11 +41,11 @@ export default mdxConfig
 // which prevents Vite from replacing strings like `import.meta.env.SITE`
 // in our JS representation of loaded Markdown files
 function escapeViteEnvReferences(code) {
-  return code.replace(/import\.meta\.env/g, 'import\\u002Emeta.env');
+  return code.replace(/import\.meta\.env/g, 'import\\u002Emeta.env')
 }
 
 export function remarkGitLastModified() {
-  return async function(_tree, file) {
+  return async function (_tree, file) {
     try {
       const commits = await git.log({
         file: file.history[0],
@@ -60,7 +63,7 @@ export function remarkGitLastModified() {
 }
 
 export function remarkCollection() {
-  return function(_tree, file) {
+  return function (_tree, file) {
     const path = file.history[0]
     file.data.astro.frontmatter.collection = path.includes('talks')
       ? 'talks'
@@ -69,7 +72,7 @@ export function remarkCollection() {
 }
 
 export function remarkReadingTime() {
-  return function(_tree, file) {
+  return function (_tree, file) {
     file.data.astro.frontmatter.readingTime = Math.round(
       readingTime(file.value).minutes
     )
@@ -79,17 +82,16 @@ export function remarkReadingTime() {
 export function remarkExcerpt() {
   const excerptFn = excerpt({ identifier: 'excerpt' })
 
-  return async function(tree, file, ...blah) {
+  return async function (tree, file, ...blah) {
     const mdx = await mdxCompile(file, {
       ...mdxConfig,
       remarkPlugins: {
         ...mdxConfig.remarkPlugins,
         excerpt,
-      }
+      },
     })
 
-    console.log(mdx.value.toString())
+    // console.log(mdx.value.toString())
     // file.data.astro.Excerpt = escapeViteEnvReferences(mdx.value.toString())
   }
 }
-
