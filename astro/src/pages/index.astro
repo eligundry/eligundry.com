@@ -118,7 +118,7 @@ const shelves = {
       >. The favicon for the site the emoji for my latest entry.
     </p>
     <DaylioEntry entry={latestEntry} />
-    <DaylioChart client:visible />
+    <DaylioChart client:visible client:only="react" />
   </section>
 
   <section class="reading paper prose">
@@ -157,7 +157,7 @@ const shelves = {
                 loading="lazy"
                 width="100"
                 height="160"
-                quality="90"
+                quality={90}
                 format="webp"
                 decoding="async"
                 style={{ backgroundColor: book.coverColor }}
@@ -207,7 +207,7 @@ const shelves = {
                   src={album.cover}
                   width="146"
                   height="146"
-                  quality="90"
+                  quality={90}
                   format="webp"
                   loading="lazy"
                   decoding="async"
