@@ -2,20 +2,29 @@ import 'chartjs-adapter-date-fns'
 import 'chart.js/auto'
 import { Chart } from 'react-chartjs-2'
 import { parseISO, formatISO, subDays } from 'date-fns'
+import useAsync from 'react-use/lib/useAsync'
 
 import useTheme from '../hooks/useTheme'
 // import { toolTipTheme } from '@/utils/charts'
 import type { DaylioChartEntry } from '../lib/daylio'
 import { MoodMapping } from '../lib/enums'
 
-const data: DaylioChartEntry[] = await fetch(
-  `http://localhost:3000/api/daylio/chart.json`
-).then((resp) => resp.json())
-
 const DaylioChart = () => {
   // const isTouchScreen = useHasTouch(true)
   const isTouchScreen = false
   const { pallete } = useTheme()
+  const {
+    loading,
+    error,
+    value: data,
+  } = useAsync<() => Promise<DaylioChartEntry[]>>(
+    async () => fetch(`/api/daylio/chart.json`).then((resp) => resp.json()),
+    []
+  )
+
+  if (error || loading) {
+    return null
+  }
 
   return (
     <div style={{ minHeight: '153px' }}>
