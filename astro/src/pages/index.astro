@@ -163,25 +163,25 @@ const shelves = {
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>
         <a
           href="https://www.last.fm/user/eli_pwnd"
-          class="grid grid-cols-3 h-fit gap-0 not-prose"
+          class="grid grid-cols-3 h-fit gap-0 not-prose overflow-visible"
         >
           {
             topAlbums.map((album) => {
               const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
               return (
-                <Image
-                  alt={alt}
-                  data-tip={alt}
-                  class="tooltip"
-                  src={album.cover}
-                  width="146"
-                  height="146"
-                  quality={90}
-                  format="webp"
-                  loading="lazy"
-                  decoding="async"
-                  style={{ backgroundColor: album.coverColor ?? undefined }}
-                />
+                <picture class="tooltip" data-tip={alt}>
+                  <Image
+                    alt={alt}
+                    src={album.cover}
+                    width="146"
+                    height="146"
+                    quality={90}
+                    format="webp"
+                    loading="lazy"
+                    decoding="async"
+                    style={{ backgroundColor: album.coverColor ?? undefined }}
+                  />
+                </picture>
               )
             })
           }

@@ -8,10 +8,12 @@ import { useAsync, useMountEffect } from '@react-hookz/web'
 import type { DaylioChartEntry } from '../lib/daylio'
 import { MoodMapping } from '../lib/enums'
 import { cssvar, tooltipTheme } from '../lib/charts'
+import useTheme from '../hooks/useTheme'
 
 const DaylioChart = () => {
   // const isTouchScreen = useHasTouch(true)
   const isTouchScreen = false
+  const { darkMode } = useTheme()
   const [{ error, status, result: data }, actions] = useAsync<
     DaylioChartEntry[]
   >(async () => fetch(`/api/daylio/chart.json`).then((resp) => resp.json()), [])
@@ -95,7 +97,7 @@ const DaylioChart = () => {
             y: {
               min: 0,
               grid: {
-                color: `hsl(${cssvar('--b3')})`,
+                color: `hsl(${cssvar(darkMode ? '--n' : '--b3')})`,
               },
               ticks: {
                 // @ts-ignore

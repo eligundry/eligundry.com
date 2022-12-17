@@ -54,7 +54,7 @@ const contributionsGroupedByWeek = groupBy(contributions, (c) =>
 /* }) */
 
 const theme = [
-  'hsl(var(--b2))',
+  'hsl(var(--n))',
   'hsla(var(--p) / 44%)',
   'hsla(var(--p) / 60%)',
   'hsla(var(--p) / 76%)',
@@ -97,7 +97,12 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
                 height={blockSize}
                 rx={blockRadius}
                 ry={blockRadius}
-                class={clsx('tooltip', 'stroke-base-300', 'stroke-1')}
+                class={clsx(
+                  'tooltip',
+                  'stroke-base-300',
+                  'stroke-1',
+                  'overflow-visible'
+                )}
                 data-tip={tooltip}
                 data-date={formattedDate}
               />
