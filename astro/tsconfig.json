@@ -12,7 +12,11 @@
     "strict": true,
     "importsNotUsedAsValues": "error",
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "preact",
+    "paths": {
+      "react": ["./node_modules/preact/compat"],
+      "react-dom": ["./node_modules/preact/compat"]
+    }
   },
   "extends": "astro/tsconfigs/strict"
 }

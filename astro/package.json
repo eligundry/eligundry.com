@@ -23,14 +23,12 @@
     "@astro-community/astro-embed-youtube": "^0.2.1",
     "@astrojs/image": "^0.11.6",
     "@astrojs/mdx": "^0.11.4",
-    "@astrojs/react": "^1.2.2",
+    "@astrojs/preact": "^1.2.0",
     "@astrojs/rss": "^1.1.0",
     "@astrojs/tailwind": "^2.1.0",
     "@eligundry/remark-excerpt": "^2.0.0",
     "@react-hookz/web": "^20.0.1",
     "@tailwindcss/typography": "^0.5.7",
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.9",
     "astro": "^1.5.0",
     "axios": "^0.27.2",
     "axios-cache-interceptor": "^0.10.7",
@@ -52,9 +50,8 @@
     "postcss": "^8.4.16",
     "postcss-import": "^15.0.0",
     "postcss-nesting": "^10.2.0",
-    "react": "^18.2.0",
+    "preact": "^10.11.3",
     "react-chartjs-2": "^5.0.1",
-    "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "reading-time": "^1.5.0",
     "rehype-accessible-emojis": "^0.3.2",
@@ -81,5 +78,9 @@
     "netlify-plugin-cache": "^1.0.3",
     "prettier": "^2.7.1",
     "simple-git": "^3.14.1"
+  },
+  "overrides": {
+    "react": "npm:@preact/compat@latest",
+    "react-dom": "npm:@preact/compat@latest"
   }
 }

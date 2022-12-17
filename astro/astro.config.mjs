@@ -11,7 +11,7 @@ import mdxConfig from './src/lib/markdown.mjs'
 import image from '@astrojs/image'
 
 // https://astro.build/config
-import react from '@astrojs/react'
+import preact from '@astrojs/preact'
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,6 +26,7 @@ export default defineConfig({
       noExternal: [
         '@astro-community/astro-embed-twitter',
         '@astro-community/astro-embed-youtube',
+        '@react-hookz/web',
         'chartjs-adapter-date-fns',
         'react-icons',
       ],
@@ -37,6 +38,8 @@ export default defineConfig({
     image({
       serviceEntryPoint: '@astrojs/image/sharp',
     }),
-    react(),
+    preact({
+      compat: true,
+    }),
   ],
 })
