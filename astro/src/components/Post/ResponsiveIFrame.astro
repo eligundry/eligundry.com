@@ -1,0 +1,23 @@
+---
+import clsx from 'clsx'
+
+interface Props {
+  src: string
+  width: number
+  height: number
+  className?: string
+}
+
+const { src, width, height, className } = Astro.props
+---
+
+<div
+  class={clsx('relative', 'overflow-hidden', 'h-0', className)}
+  style={{ paddingBottom: `${(height / width) * 100}%` }}
+>
+  <iframe
+    src={src}
+    class={clsx('absolute', 'w-full', 'h-full', 'top-0', 'left-0')}
+    frameborder={0}
+    allowfullscreen="true"></iframe>
+</div>

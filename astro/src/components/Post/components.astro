@@ -2,6 +2,7 @@
 import GithubFile from './GithubFile.astro'
 import Image from './Image.astro'
 import StreamingAlbum from './StreamingAlbum.astro'
+import ResponsiveIFrame from './ResponsiveIFrame.astro'
 import { Tweet } from '@astro-community/astro-embed-twitter'
 
 export const components = {
@@ -10,6 +11,6 @@ export const components = {
   StreamingAlbum,
   Tweet,
   img: Image,
-  ResponsiveIFrame: () => null,
+  ResponsiveIFrame,
 }
 ---

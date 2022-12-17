@@ -4,15 +4,14 @@ import { Chart } from 'react-chartjs-2'
 import { parseISO, formatISO, subDays } from 'date-fns'
 import { useAsync, useMountEffect } from '@react-hookz/web'
 
-import useTheme from '../hooks/useTheme'
 // import { toolTipTheme } from '@/utils/charts'
 import type { DaylioChartEntry } from '../lib/daylio'
 import { MoodMapping } from '../lib/enums'
+import { cssvar, tooltipTheme } from '../lib/charts'
 
 const DaylioChart = () => {
   // const isTouchScreen = useHasTouch(true)
   const isTouchScreen = false
-  const { pallete } = useTheme()
   const [{ error, status, result: data }, actions] = useAsync<
     DaylioChartEntry[]
   >(async () => fetch(`/api/daylio/chart.json`).then((resp) => resp.json()), [])
@@ -22,6 +21,8 @@ const DaylioChart = () => {
   if (error || status !== 'success' || !data.length) {
     return null
   }
+
+  console.log(tooltipTheme())
 
   return (
     <div style={{ minHeight: '153px' }}>
@@ -35,9 +36,9 @@ const DaylioChart = () => {
               data,
               backgroundColor: 'transparent',
               pointStyle: 'rect',
-              borderColor: pallete.primary,
-              pointBorderColor: pallete.primary,
-              pointBackgroundColor: pallete.primary,
+              borderColor: `hsl(${cssvar('--p')})`,
+              pointBorderColor: `hsl(${cssvar('--p')})`,
+              pointBackgroundColor: `hsl(${cssvar('--p')})`,
               pointRadius: 5,
             },
           ],
@@ -73,7 +74,7 @@ const DaylioChart = () => {
               display: false,
             },
             tooltip: {
-              // ...toolTipTheme(prefersDark),
+              ...tooltipTheme(),
               callbacks: {
                 title: (item) => `📅   ${formatISO(parseISO(item[0].label))}`,
                 label: (item) =>
@@ -94,7 +95,7 @@ const DaylioChart = () => {
             y: {
               min: 0,
               grid: {
-                color: pallete.neutral,
+                color: `hsl(${cssvar('--b3')})`,
               },
               ticks: {
                 // @ts-ignore

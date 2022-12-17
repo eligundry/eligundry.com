@@ -1,7 +1,31 @@
 {
   "colors": {
     "transparent": "transparent",
-    "current": "currentColor"
+    "current": "currentColor",
+    "primary": "hsl(var(--p))",
+    "primary-focus": "hsl(var(--pf, var(--p)))",
+    "primary-content": "hsl(var(--pc))",
+    "secondary": "hsl(var(--s))",
+    "secondary-focus": "hsl(var(--sf, var(--s)))",
+    "secondary-content": "hsl(var(--sc))",
+    "accent": "hsl(var(--a))",
+    "accent-focus": "hsl(var(--af, var(--a)))",
+    "accent-content": "hsl(var(--ac))",
+    "neutral": "hsl(var(--n))",
+    "neutral-focus": "hsl(var(--nf, var(--n)))",
+    "neutral-content": "hsl(var(--nc))",
+    "base-100": "hsl(var(--b1))",
+    "base-200": "hsl(var(--b2, var(--b1)))",
+    "base-300": "hsl(var(--b3, var(--b2)))",
+    "base-content": "hsl(var(--bc))",
+    "info": "hsl(var(--in))",
+    "info-content": "hsl(var(--inc, var(--nc)))",
+    "success": "hsl(var(--su))",
+    "success-content": "hsl(var(--suc, var(--nc)))",
+    "warning": "hsl(var(--wa))",
+    "warning-content": "hsl(var(--wac, var(--nc)))",
+    "error": "hsl(var(--er))",
+    "error-content": "hsl(var(--erc, var(--nc)))"
   },
   "screens": {
     "sm": "640px",
@@ -60,14 +84,14 @@
     "themes": [
       {
         "light": {
-          "primary": "#c084fc",
+          "primary": "#088CDE",
           "secondary": "#7dd3fc",
           "accent": "#98a0f2",
-          "neutral": "#78716c",
-          "base-100": "#ffe4e6",
+          "neutral": "#f4f4f5",
+          "base-100": "white",
           "info": "#2563eb",
           "success": "#10b981",
-          "warning": "#fbbf24",
+          "warning": "#ffd53d",
           "error": "#F94E5F"
         }
       },

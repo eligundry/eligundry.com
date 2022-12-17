@@ -10,12 +10,20 @@ fs.writeFileSync(
   p,
   JSON.stringify(
     {
-      ...pick(fullConfig.theme, [
-        'colors',
-        'screens',
-        'fontFamily',
-        'animation',
-      ]),
+      colors: Object.entries(fullConfig.theme.colors).reduce(
+        (acc, [name, value]) => {
+          if (typeof value === 'function') {
+            console.log(value.toString())
+            acc[name] = value({ opacityValue: undefined })
+          } else {
+            acc[name] = value
+          }
+
+          return acc
+        },
+        {}
+      ),
+      ...pick(fullConfig.theme, ['screens', 'fontFamily', 'animation']),
       ...pick(fullConfig, ['daisyui']),
     },
     undefined,
