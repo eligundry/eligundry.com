@@ -53,16 +53,7 @@ const contributionsGroupedByWeek = groupBy(contributions, (c) =>
 /*   ), */
 /* }) */
 
-const theme = [
-  'hsl(var(--n))',
-  'hsla(var(--p) / 44%)',
-  'hsla(var(--p) / 60%)',
-  'hsla(var(--p) / 76%)',
-  'hsla(var(--p) / 92%)',
-]
-
 const blockMargin = 4
-const blockRadius = 2
 const blockSize = 12
 const width =
   Object.keys(contributionsGroupedByWeek).length * (blockSize + blockMargin) -
@@ -82,6 +73,16 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
     '[&_rect]:stroke-base-300',
     '[&_rect]:stroke-1',
     '[&_rect]:overflow-visible',
+    '[&_rect]:w-[12px]',
+    '[&_rect]:h-[12px]',
+    '[&_rect]:[rx:2]',
+    '[&_rect]:[ry:2]',
+    '[&_rect]:[x:0]',
+    '[&_rect.level-0]:fill-neutral',
+    '[&_rect.level-1]:fill-primary/[.44]',
+    '[&_rect.level-2]:fill-primary/[.60]',
+    '[&_rect.level-3]:fill-primary/[.76]',
+    '[&_rect.level-4]:fill-neutral/[.92]',
     '[&_g]:overflow-visible',
   ])}
 >
@@ -99,14 +100,9 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
 
             return (
               <rect
-                x={0}
                 y={(blockSize + blockMargin) * dayIdx}
-                fill={theme[day.level]}
-                width={blockSize}
-                height={blockSize}
-                rx={blockRadius}
-                ry={blockRadius}
                 data-tip={tooltip}
+                class={`level-${day.level}`}
               />
             )
           })}

@@ -147,7 +147,7 @@ const shelves = {
         itemprop="sameAs">Goodreads</a
       >.
     </p>
-    <div class="bookshelf not-prose gap-y-2">
+    <div class="bookshelf not-prose gap-y-2 [&>a]:tooltip">
       {
         [...shelves.current, ...shelves.read].map((book, i) => {
           let alt = book.title
@@ -165,7 +165,6 @@ const shelves = {
               href={book.url}
               target="_blank"
               rel="noopener noreferrer"
-              class="tooltip"
               data-tip={alt}
             >
               <Image
@@ -211,13 +210,13 @@ const shelves = {
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>
         <a
           href="https://www.last.fm/user/eli_pwnd"
-          class="grid grid-cols-3 h-fit gap-0 not-prose overflow-visible"
+          class="grid grid-cols-3 h-fit gap-0 not-prose [&>picture]:tooltip"
         >
           {
             topAlbums.map((album) => {
               const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
               return (
-                <picture class="tooltip" data-tip={alt}>
+                <picture data-tip={alt}>
                   <Image
                     alt={alt}
                     src={album.cover}
