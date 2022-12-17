@@ -66,6 +66,7 @@ const links = [
     '[&_a]:focus:bg-transparent',
     '[&_a]:hover:no-underline',
     '[&_a]:focus:no-underline',
+    '[&_a[aria-current="page"]]:link-secondary',
   ])}
 >
   <div class="container mx-auto flex flex-wrap">
@@ -84,6 +85,13 @@ const links = [
               <a
                 href={link.href}
                 class={clsx('hover:link-primary', 'focus:link-primary')}
+                aria-current={
+                  Astro.url.pathname === link.href ||
+                  (link.href !== '/' &&
+                    Astro.url.pathname.startsWith(link.href))
+                    ? 'page'
+                    : undefined
+                }
               >
                 <EmojiText emoji={link.emoji} label={link.emojiLabel}>
                   {link.name}
@@ -151,7 +159,8 @@ const links = [
       'bg-base-200',
       'shadow-none',
       'pt-0',
-      'pl-4'
+      'pl-4',
+      '[&_a[aria-current="page"]]:link-secondary'
     )}
     for=""
   >
@@ -162,6 +171,12 @@ const links = [
             <a
               href={link.href}
               class={clsx('hover:link-primary', 'focus:link-primary')}
+              aria-current={
+                Astro.url.pathname === link.href ||
+                (link.href !== '/' && Astro.url.pathname.startsWith(link.href))
+                  ? 'page'
+                  : undefined
+              }
             >
               <EmojiText emoji={link.emoji} label={link.emojiLabel}>
                 {link.name}

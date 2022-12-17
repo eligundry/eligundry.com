@@ -1,6 +1,8 @@
 ---
 import dateFns from 'date-fns'
+import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/Layout.astro'
+import EmojiText from '../components/EmojiText.astro'
 
 const posts = (await Astro.glob('./blog/*.mdx')).sort((a, b) =>
   dateFns.compareDesc(
@@ -8,17 +10,74 @@ const posts = (await Astro.glob('./blog/*.mdx')).sort((a, b) =>
     new Date(b.frontmatter.date)
   )
 )
+const tags = [
+  ...posts.reduce((acc, curr) => {
+    curr?.frontmatter?.tags?.forEach((tag: string) => acc.add(tag))
+    return acc
+  }, new Set<string>()),
+]
 ---
 
-<Layout title="Blog">
+<Layout
+  title="Blog"
+  description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+>
   <div class="paper prose">
+    <div class="tags btn-group">
+      {
+        tags.map((tag) => (
+          <a href={`#${kebabCase(tag)}`} class="btn">
+            {tag}
+          </a>
+        ))
+      }
+      <a href="/blog/" class="btn">Reset</a>
+    </div>
     {
       posts.map((post) => (
-        <article>
-          <h2>
-            <a href={post.url}>{post.frontmatter.title}</a>
+        <article
+          itemscope
+          itemtype={`https://schema.org/${
+            post.frontmatter.collection === 'blog'
+              ? 'BlogPosting'
+              : 'CreativeWork'
+          }`}
+        >
+          <link itemprop="author publisher" href="#eli-gundry" />
+          {post.frontmatter.readingTime > 0 && (
+            <meta
+              itemprop="timeRequired"
+              content={`PT${post.frontmatter.readingTime}`}
+            />
+          )}
+          <h2 itemprop="name headline" class="mb-0">
+            <a href={post.url} itemprop="url">
+              {post.frontmatter.title}
+            </a>
           </h2>
-          <p>{post.frontmatter.description}</p>
+          <div class="flex flex-row gap-4 [&>*]:m-0">
+            <time datetime={post.frontmatter.date}>
+              <EmojiText label="calendar for the date" emoji="🗓">
+                {dateFns.formatISO(new Date(post.frontmatter.date), {
+                  representation: 'date',
+                })}
+              </EmojiText>
+            </time>
+            <p>
+              <EmojiText
+                label="stopwatch denoting time to read article"
+                emoji="⏱"
+              >
+                {post.frontmatter.readingTime}{' '}
+                {post.frontmatter.readingTime > 1 ? 'Minutes' : 'Minute'}
+              </EmojiText>
+            </p>
+          </div>
+          <p itemprop="description" class="m-0">
+            <EmojiText label="description of the blog post" emoji="📝">
+              {post.frontmatter.description}
+            </EmojiText>
+          </p>
         </article>
       ))
     }
