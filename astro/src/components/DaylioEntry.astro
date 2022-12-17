@@ -15,7 +15,13 @@ const { entry, wrapInPaper = false } = Astro.props
   itemscope
   itemtype="https://schema.org/BlogPosting"
   id={entry.rawTime}
-  class={clsx('prose', wrapInPaper && 'paper')}
+  class={clsx(
+    'prose',
+    wrapInPaper && 'paper',
+    'scroll-mt-20',
+    'target:border-2',
+    'target:border-primary'
+  )}
 >
   <meta
     itemprop="image"

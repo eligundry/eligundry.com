@@ -74,7 +74,16 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
   width={width + 2}
   height={height}
   viewBox={`0 0 ${width + 2} ${height}`}
-  class={clsx('max-w-full')}
+  class={clsx([
+    'not-prose',
+    'max-w-full',
+    '[&_rect]:tooltip',
+    '[&_rect]:tooltip-open',
+    '[&_rect]:stroke-base-300',
+    '[&_rect]:stroke-1',
+    '[&_rect]:overflow-visible',
+    '[&_g]:overflow-visible',
+  ])}
 >
   {
     Object.values(contributionsGroupedByWeek).map((week, weekIdx) => {
@@ -97,14 +106,7 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
                 height={blockSize}
                 rx={blockRadius}
                 ry={blockRadius}
-                class={clsx(
-                  'tooltip',
-                  'stroke-base-300',
-                  'stroke-1',
-                  'overflow-visible'
-                )}
                 data-tip={tooltip}
-                data-date={formattedDate}
               />
             )
           })}
