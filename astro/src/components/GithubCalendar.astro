@@ -1,0 +1,110 @@
+---
+// This code is adapted from  https://github.com/grubersjoe/react-activity-calendar
+// I wanted to be able to do the data fetching server side and just serve an
+// inline svg in the HTML.
+import dateFns from 'date-fns'
+import groupBy from 'lodash/groupBy'
+import clsx from 'clsx'
+import config from '../config'
+import { cacheAxios } from '../lib/cache'
+
+interface GithubApiResponse {
+  total: {
+    [year: number | string]: number
+  }
+  contributions: {
+    date: string
+    count: number
+    level: number
+  }[]
+}
+
+const contributions = await cacheAxios
+  .get<GithubApiResponse>(
+    `https://github-contributions-api.jogruber.de/v4/${config.github}`,
+    {
+      params: {
+        y: 'last',
+      },
+      cache: {
+        ttl: 60 * 60 * 24,
+      },
+    }
+  )
+  .then((resp) => {
+    if (import.meta.env.DEV) {
+      console.log(`github activity cache hit?`, resp.cached)
+    }
+    return resp.data.contributions.map((c) => ({
+      ...c,
+      date: dateFns.parseISO(c.date),
+    }))
+  })
+
+const contributionsGroupedByWeek = groupBy(contributions, (c) =>
+  dateFns.differenceInCalendarWeeks(contributions[0].date, c.date)
+)
+
+/* console.log(contributionsGroupedByWeek, { */
+/*   passing: Object.values(contributionsGroupedByWeek).every( */
+/*     (e, idx) => */
+/*       e.length === 7 || */
+/*       idx + 1 === Object.keys(contributionsGroupedByWeek).length */
+/*   ), */
+/* }) */
+
+const theme = [
+  'hsl(var(--b2))',
+  'hsla(var(--p) / 44%)',
+  'hsla(var(--p) / 60%)',
+  'hsla(var(--p) / 76%)',
+  'hsla(var(--p) / 92%)',
+]
+
+const blockMargin = 4
+const blockRadius = 2
+const blockSize = 12
+const width =
+  Object.keys(contributionsGroupedByWeek).length * (blockSize + blockMargin) -
+  blockMargin
+const height = (blockSize + blockMargin) * 7 - blockMargin
+---
+
+<svg
+  width={width + 2}
+  height={height}
+  viewBox={`0 0 ${width + 2} ${height}`}
+  class={clsx('max-w-full')}
+>
+  {
+    Object.values(contributionsGroupedByWeek).map((week, weekIdx) => {
+      return (
+        <g
+          transform={`translate(${1 + (blockSize + blockMargin) * weekIdx}, 0)`}
+        >
+          {week.map((day, dayIdx) => {
+            const formattedDate = dateFns.formatISO(day.date, {
+              representation: 'date',
+            })
+            const tooltip = `${day.count} contributions on ${formattedDate}`
+
+            return (
+              <rect
+                x={0}
+                y={(blockSize + blockMargin) * dayIdx}
+                fill={theme[day.level]}
+                width={blockSize}
+                height={blockSize}
+                rx={blockRadius}
+                ry={blockRadius}
+                class={clsx('tooltip', 'stroke-base-300', 'stroke-1')}
+                data-tip={tooltip}
+                data-date={formattedDate}
+              />
+            )
+          })}
+        </g>
+      )
+    })
+  }
+</svg>

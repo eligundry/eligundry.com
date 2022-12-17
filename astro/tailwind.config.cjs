@@ -41,14 +41,14 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: '#c084fc',
+          primary: '#088CDE',
           secondary: '#7dd3fc',
           accent: '#98a0f2',
-          neutral: '#78716c',
-          'base-100': '#ffe4e6',
+          neutral: '#f4f4f5',
+          'base-100': 'white',
           info: '#2563eb',
           success: '#10b981',
-          warning: '#fbbf24',
+          warning: '#ffd53d',
           error: '#F94E5F',
         },
       },

@@ -9,4 +9,5 @@ export default {
   spotifyPlaylist:
     'https://open.spotify.com/embed/playlist/0ZuDSuihh3xRfCZN9jx5BD?utm_source=generator',
   goodreadsUserID: '29665939',
+  github: 'eligundry',
 }

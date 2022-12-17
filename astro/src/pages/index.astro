@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart.tsx'
+import GithubCalendar from '../components/GithubCalendar.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
@@ -118,55 +119,23 @@ const shelves = {
       >. The favicon for the site the emoji for my latest entry.
     </p>
     <DaylioEntry entry={latestEntry} />
-    <DaylioChart client:visible client:only="react" />
+    <DaylioChart client:media="(min-width: 640px)" />
   </section>
 
-  <section class="reading paper prose">
-    <h2>What I'm Reading</h2>
+  <section class="coding paper prose">
+    <h2>Do You Code?</h2>
     <p>
-      I wish I read more, but there are only so many hours in the day. These are
-      the books that I'm reading right now. You can find me on <a
-        href="https://www.goodreads.com/user/show/29665939-eli-gundry"
-        itemprop="sameAs">Goodreads</a
-      >.
+      I make a living developing web applications. I jump all around the stack
+      and will do whatever it takes to ship. Need me to do some devops to get
+      this feature out? I gotcha. Some CSS is making a button look bad? I'll do
+      my best. A query running to slow? Stop, I can't deal with all this
+      excitement.
     </p>
-    <div class="bookshelf not-prose gap-y-2">
-      {
-        [...shelves.current, ...shelves.read].map((book, i) => {
-          let alt = book.title
-
-          if (book.author) {
-            alt += ` by ${book.author.split(', ').reverse().join(' ')}`
-          }
-
-          if (i === 0) {
-            alt = `Currently Reading: ${alt}`
-          }
-
-          return (
-            <a
-              href={book.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="tooltip"
-              data-tip={alt}
-            >
-              <Image
-                alt={alt}
-                src={book.cover}
-                loading="lazy"
-                width="100"
-                height="160"
-                quality={90}
-                format="webp"
-                decoding="async"
-                style={{ backgroundColor: book.coverColor }}
-              />
-            </a>
-          )
-        })
-      }
-    </div>
+    <p>
+      GitHub contribution calendars are not a good indicator of whether or not
+      someone is a good developer, but they are very pretty.
+    </p>
+    <GithubCalendar />
   </section>
 
   <section class="listening paper prose">
@@ -218,6 +187,54 @@ const shelves = {
           }
         </a>
       </div>
+    </div>
+  </section>
+
+  <section class="reading paper prose">
+    <h2>What I'm Reading</h2>
+    <p>
+      I wish I read more, but there are only so many hours in the day. These are
+      the books that I'm reading right now. You can find me on <a
+        href="https://www.goodreads.com/user/show/29665939-eli-gundry"
+        itemprop="sameAs">Goodreads</a
+      >.
+    </p>
+    <div class="bookshelf not-prose gap-y-2">
+      {
+        [...shelves.current, ...shelves.read].map((book, i) => {
+          let alt = book.title
+
+          if (book.author) {
+            alt += ` by ${book.author.split(', ').reverse().join(' ')}`
+          }
+
+          if (i === 0) {
+            alt = `Currently Reading: ${alt}`
+          }
+
+          return (
+            <a
+              href={book.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="tooltip"
+              data-tip={alt}
+            >
+              <Image
+                alt={alt}
+                src={book.cover}
+                loading="lazy"
+                width="100"
+                height="160"
+                quality={90}
+                format="webp"
+                decoding="async"
+                style={{ backgroundColor: book.coverColor }}
+              />
+            </a>
+          )
+        })
+      }
     </div>
   </section>
 </Layout>

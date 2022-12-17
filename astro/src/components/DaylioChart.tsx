@@ -22,7 +22,7 @@ const DaylioChart = () => {
     []
   )
 
-  if (error || loading) {
+  if (error || loading || !data) {
     return null
   }
 
