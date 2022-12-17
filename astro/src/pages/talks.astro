@@ -2,7 +2,7 @@
 import dateFns from 'date-fns'
 import Layout from '../layouts/Layout.astro'
 
-const talks = (await Astro.glob('./talks/*.md')).sort((a, b) =>
+const talks = (await Astro.glob('./talks/*.mdx')).sort((a, b) =>
   dateFns.compareDesc(
     new Date(a.frontmatter.date),
     new Date(b.frontmatter.date)

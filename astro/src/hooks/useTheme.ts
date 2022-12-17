@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import useMedia from 'react-use/lib/useMedia'
+import { useMediaQuery as useMedia } from '@react-hookz/web'
 import theme from '../theme.json'
 
 type Pallete = NonNullable<typeof theme.daisyui.themes[0]['dark']>
@@ -11,7 +11,9 @@ export function useMediaQuery(query: Query, defaultState = false) {
     query = query(theme)
   }
 
-  return useMedia(query, defaultState)
+  return useMedia(query, {
+    initializeWithValue: defaultState,
+  })
 }
 
 export function useDarkMode() {

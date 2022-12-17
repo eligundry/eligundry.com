@@ -22,7 +22,7 @@ export default defineConfig({
   },
   vite: {
     ssr: {
-      external: ['better-sqlite3', 'react-use'],
+      external: ['better-sqlite3'],
       noExternal: [
         '@astro-community/astro-embed-twitter',
         '@astro-community/astro-embed-youtube',

@@ -2,7 +2,7 @@ import 'chartjs-adapter-date-fns'
 import 'chart.js/auto'
 import { Chart } from 'react-chartjs-2'
 import { parseISO, formatISO, subDays } from 'date-fns'
-import useAsync from 'react-use/lib/useAsync'
+import { useAsync, useMountEffect } from '@react-hookz/web'
 
 import useTheme from '../hooks/useTheme'
 // import { toolTipTheme } from '@/utils/charts'
@@ -13,16 +13,13 @@ const DaylioChart = () => {
   // const isTouchScreen = useHasTouch(true)
   const isTouchScreen = false
   const { pallete } = useTheme()
-  const {
-    loading,
-    error,
-    value: data,
-  } = useAsync<() => Promise<DaylioChartEntry[]>>(
-    async () => fetch(`/api/daylio/chart.json`).then((resp) => resp.json()),
-    []
-  )
+  const [{ error, status, result: data }, actions] = useAsync<
+    DaylioChartEntry[]
+  >(async () => fetch(`/api/daylio/chart.json`).then((resp) => resp.json()), [])
 
-  if (error || loading || !data) {
+  useMountEffect(actions.execute)
+
+  if (error || status !== 'success' || !data.length) {
     return null
   }
 

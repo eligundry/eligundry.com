@@ -3,6 +3,8 @@ import useTailwindTheme, { Theme } from './useTailwindTheme'
 
 type Query = string | ((query: Theme) => string)
 
+console.log({ useMedia })
+
 export default function useMediaQuery(query: Query, defaultState?: boolean) {
   const theme = useTailwindTheme()
 
