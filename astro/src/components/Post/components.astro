@@ -1,13 +1,12 @@
 ---
+import { Tweet } from '@astro-community/astro-embed-twitter'
 import GithubFile from './GithubFile.astro'
 import Image from './Image.astro'
 import StreamingAlbum from './StreamingAlbum.astro'
 import ResponsiveIFrame from './ResponsiveIFrame.astro'
-import { Tweet } from '@astro-community/astro-embed-twitter'
 
 export const components = {
   GithubFile,
-  JobSearchSankeyChart: () => null,
   StreamingAlbum,
   Tweet,
   img: Image,

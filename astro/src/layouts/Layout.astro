@@ -1,4 +1,5 @@
 ---
+import clsx from 'clsx'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import FancyBackground from '../components/FancyBackground.astro'
@@ -9,9 +10,10 @@ import '../styles/tailwind.css'
 export interface Props {
   title?: string
   description?: string
+  fancyBackgroundPoints?: number
 }
 
-const { title, description } = Astro.props
+const { title, description, fancyBackgroundPoints } = Astro.props
 const latestFeeling = await daylio.getLatest()
 ---
 
@@ -64,10 +66,20 @@ const latestFeeling = await daylio.getLatest()
   </head>
   <body>
     <Header />
-    <main class="container mx-auto mt-24 print:mt-0 print:pt-0">
-      <slot />
-    </main>
+    <FancyBackground points={fancyBackgroundPoints}>
+      <main
+        class={clsx(
+          'container',
+          'grow-0',
+          'mx-auto',
+          'mt-24',
+          'print:mt-0',
+          'print:pt-0'
+        )}
+      >
+        <slot />
+      </main>
+    </FancyBackground>
     <Footer />
-    <FancyBackground />
   </body>
 </html>

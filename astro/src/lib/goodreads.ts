@@ -59,6 +59,11 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
         },
       }
     )
+    console.log(
+      goodreadsHTML.config.url +
+        '?' +
+        new URLSearchParams(goodreadsHTML.config.params ?? '').toString()
+    )
   } catch (e) {
     console.error('could not fetch Goodreads shelf', e)
     throw e

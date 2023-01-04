@@ -1,31 +1,52 @@
 ---
+import clsx from 'clsx'
 import { FaSyncAlt } from 'react-icons/fa'
+
+interface Props {
+  points?: number
+}
+
+const { points = 30 } = Astro.props
 ---
 
-<div id="fancy-bg" class="print:hidden"></div>
-<button
-  id="fancy-bg-refresh-btn"
-  class="btn btn-lg btn-primary btn-circle fixed tooltip tooltip-left right-4 bottom-4 normal-case print:hidden inline-flex"
-  aria-label="Regenerate the background pattern"
-  data-tip="Regenerate the background pattern"
-  type="reset"
->
-  <FaSyncAlt size="2.25rem" />
-</button>
+<div class={clsx('flex', 'flex-row', 'min-h-[calc(100vh-13.75rem)]')}>
+  <div
+    class={clsx('fancy-bg', 'print:hidden')}
+    style={{ '--fluid-pattern-points': points }}
+  >
+  </div>
+  <slot />
+  <div
+    class={clsx('fancy-bg', 'print:hidden')}
+    style={{ '--fluid-pattern-points': points }}
+  >
+  </div>
+  <button
+    id="fancy-bg-refresh-btn"
+    class="btn btn-lg btn-primary btn-circle fixed tooltip tooltip-left right-4 bottom-4 normal-case print:hidden inline-flex"
+    aria-label="Regenerate the background pattern"
+    data-tip="Regenerate the background pattern"
+    type="reset"
+  >
+    <FaSyncAlt size="2.25rem" />
+  </button>
+</div>
 
 <style>
-  #fancy-bg {
+  .fancy-bg {
     --fluid-pattern-bg-color: transparent;
     --fluid-pattern-bg-color: theme('colors.transparent');
-    --fluid-pattern-color-1: theme('colors.primary');
-    --fluid-pattern-color-2: theme('colors.secondary');
+    --fluid-pattern-color-1: theme('colors.accent');
+    --fluid-pattern-color-2: theme('colors.success');
     --fluid-pattern-color-3: theme('colors.warning');
     --fluid-pattern-color-4: theme('colors.error');
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    @apply grow mt-12;
+    /* flex-grow: 1; */
+    /* position: fixed; */
+    /* top: 0; */
+    /* left: 0; */
+    /* width: 100%; */
+    /* height: 100%; */
     background-image: paint(fluidPattern);
     z-index: -100000;
   }
@@ -33,18 +54,20 @@ import { FaSyncAlt } from 'react-icons/fa'
 
 <script>
   window?.CSS?.paintWorklet?.addModule?.(
-    'https://unpkg.com/@georgedoescode/fluid-pattern-worklet@1.0.1/worklet.bundle.js'
+    'https://cdn.statically.io/gh/eligundry/fluid-pattern-worklet/configurable-items/worklet.bundle.js'
   )
 
   document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('fancy-bg-refresh-btn')
-    const canvas = document.getElementById('fancy-bg')
+    const canvases = document.querySelectorAll('.fancy-bg')
 
     const updateBg = () =>
-      canvas?.style.setProperty(
-        '--fluid-pattern-seed',
-        (Math.random() * 10000).toString()
-      )
+      canvases.forEach((canvas) => {
+        canvas?.style?.setProperty?.(
+          '--fluid-pattern-seed',
+          (Math.random() * 10000).toString()
+        )
+      })
 
     btn?.addEventListener('click', updateBg)
     updateBg()

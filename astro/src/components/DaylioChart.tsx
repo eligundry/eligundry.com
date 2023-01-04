@@ -1,6 +1,4 @@
-import 'chartjs-adapter-date-fns'
-import 'chart.js/auto'
-import { Chart } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { parseISO, formatISO, subDays } from 'date-fns'
 import { useAsync, useMountEffect } from '@react-hookz/web'
 
@@ -28,8 +26,7 @@ const DaylioChart = () => {
 
   return (
     <div style={{ minHeight: '153px' }}>
-      <Chart
-        type="line"
+      <Line
         height={60}
         data={{
           labels: Object.values(MoodMapping).map((_, i) => i),

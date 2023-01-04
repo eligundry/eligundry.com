@@ -1,4 +1,26 @@
-import type { TooltipOptions } from 'chart.js'
+import 'chartjs-adapter-date-fns'
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  TimeSeriesScale,
+  Tooltip,
+  TooltipOptions,
+} from 'chart.js'
+import theme from '../theme.json'
+
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  TimeSeriesScale,
+  Tooltip
+)
 
 export const cssvar = (
   name: string,
@@ -34,3 +56,5 @@ export const tooltipTheme = (): Partial<TooltipOptions> => ({
   bodyColor: tooltipCssvar('--tooltip-text-color'),
   titleColor: tooltipCssvar('--tooltip-text-color'),
 })
+
+ChartJS.defaults.font.family = theme.fontFamily.sans.join(', ')

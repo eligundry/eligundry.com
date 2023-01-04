@@ -8,6 +8,7 @@ tags:
   - code
 layout: '../../layouts/Post.astro'
 ---
+import JobSearchSankeyChart from '../../components/JobSearchSankeyChart/index.tsx'
 export { components } from '../../components/Post/components.astro'
 
 At the end of 2021, [I left my job at Talent Inc.](/blog/what-i-learned-working-at-my-first-startup) and conducted an extremely thorough job search.
@@ -17,7 +18,7 @@ talk about how I conducted my job search as it's been something I've been planni
 
 # [Numbers On The Board](https://www.youtube.com/watch?v=DawrlSwHUiM)
 
-<JobSearchSankeyChart year={2022} />
+<JobSearchSankeyChart client:only year={2022} />
 
 This job market is wild! I can't tell if companies are hiring harder this cycle or if the fact that my last role was
 "senior software engineer" at a startup or what. This cycle could not have gone any more different than my last job
@@ -51,7 +52,7 @@ submitted me to even clicked.
 I did get elevated traffic to my website during my job search, though. It seems that I can attribute this increase from
 the fact that I did post my last blog post on Linkedin right as my job search started. This post was brought up a few
 times during interviews, which felt really good and gave the interviewer confidence in my writing skills. As they always
-say, **content is king 👑**
+say, **content is king 👑**.
 
 # What Would I Do Differently?
 

@@ -10,7 +10,7 @@ const talks = (await Astro.glob('./talks/*.mdx')).sort((a, b) =>
 )
 ---
 
-<Layout title="Talks">
+<Layout title="Talks" fancyBackgroundPoints={10}>
   <div class="paper prose">
     {
       talks.map((talk) => (
