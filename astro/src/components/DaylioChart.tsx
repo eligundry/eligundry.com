@@ -22,8 +22,6 @@ const DaylioChart = () => {
     return null
   }
 
-  console.log(tooltipTheme())
-
   return (
     <div style={{ minHeight: '153px' }}>
       <Line
