@@ -7,6 +7,10 @@ import DaylioEntry from '../components/DaylioEntry.astro'
 const entries = await daylio.getRange(dateFns.subMonths(new Date(), 6))
 ---
 
-<Layout title="Feelings" fancyBackgroundPoints={300}>
+<Layout
+  title="Feelings"
+  description="A log of my feelings. This really more of public diary. It's wild how long I've kept this going."
+  fancyBackgroundPoints={300}
+>
   {entries.map((entry) => <DaylioEntry entry={entry} wrapInPaper />)}
 </Layout>

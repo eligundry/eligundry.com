@@ -1,4 +1,5 @@
 ---
+import clsx from 'clsx'
 import dateFns from 'date-fns'
 import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/Layout.astro'
@@ -18,21 +19,43 @@ const tags = [
 ]
 ---
 
+<script>
+  window.addEventListener('hashchange', event => {
+    const url = new URL(event.newURL)
+    const hash = url.hash.slice(1)
+    const postList = document.getElementById('post-list')
+    console.log('hashchange', event, hash)
+
+    if (!hash) {
+      postList.className = ''
+    } else {
+      postList.className = `selected-tag-${hash}`
+    }
+  })
+</script>
+
+<style set:html={tags.map(tag => `
+  #post-list.selected-tag-${tag} > *:not(.tag-${tag}) {
+    display: none;
+  }
+`).join('\n')} />
+
 <Layout
   title="Blog"
   description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
 >
-  <div class="paper prose">
+  <div id="post-list" class="paper prose">
     <div class="tags btn-group">
       {
         tags.map((tag) => (
-          <a href={`#${kebabCase(tag)}`} class="btn">
+          <a href={`#${kebabCase(tag)}`} class:list={['btn', `tag-${tag}`]}>
             {tag}
           </a>
         ))
       }
-      <a href="/blog/" class="btn">Reset</a>
+      <a href="#" class="btn">Reset</a>
     </div>
+    <div>
     {
       posts.map((post) => (
         <article
@@ -42,6 +65,7 @@ const tags = [
               ? 'BlogPosting'
               : 'CreativeWork'
           }`}
+          class={clsx(post.frontmatter.tags.map((tag) => `tag-${tag}`))}
         >
           <link itemprop="author publisher" href="#eli-gundry" />
           {post.frontmatter.readingTime > 0 && (
@@ -81,5 +105,7 @@ const tags = [
         </article>
       ))
     }
+    </div>
   </div>
 </Layout>
+

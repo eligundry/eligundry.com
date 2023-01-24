@@ -45,14 +45,6 @@ const contributionsGroupedByWeek = groupBy(contributions, (c) =>
   dateFns.differenceInCalendarWeeks(contributions[0].date, c.date)
 )
 
-/* console.log(contributionsGroupedByWeek, { */
-/*   passing: Object.values(contributionsGroupedByWeek).every( */
-/*     (e, idx) => */
-/*       e.length === 7 || */
-/*       idx + 1 === Object.keys(contributionsGroupedByWeek).length */
-/*   ), */
-/* }) */
-
 const blockMargin = 4
 const blockSize = 12
 const width =
