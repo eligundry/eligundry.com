@@ -73,7 +73,7 @@
   },
   "devDependencies": {
     "@eligundry/remark-excerpt": "^2.0.0",
-    "@next/bundle-analyzer": "^12.1.2",
+    "@next/bundle-analyzer": "^13.1.6",
     "@types/color-thief-node": "^1.0.1",
     "@types/jsdom": "^16.2.14",
     "@types/lodash": "^4.14.180",
