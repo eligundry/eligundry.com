@@ -9,6 +9,6 @@
   "author": "Eli Gundry",
   "license": "MIT",
   "devDependencies": {
-    "@netlify/build": "^27.1.3"
+    "@netlify/build": "^29.5.5"
   }
 }
