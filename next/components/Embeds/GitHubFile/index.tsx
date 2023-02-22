@@ -6,10 +6,14 @@ import styles from './index.module.scss'
 
 interface Props {
   fileURL: string
+  expanded?: boolean
 }
 
-const GitHubFileEmbed: React.FC<Props> = ({ fileURL }) => {
-  const [expanded, setExpanded] = useState(false)
+const GitHubFileEmbed: React.FC<Props> = ({
+  fileURL,
+  expanded: forceExpanded = false,
+}) => {
+  const [expanded, setExpanded] = useState(forceExpanded)
   const scriptTarget = useRef<HTMLDivElement>()
   const prefersDark = usePrefersDarkMode()
   const rendered = !!scriptTarget

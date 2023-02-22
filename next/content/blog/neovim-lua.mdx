@@ -1,0 +1,162 @@
+---
+title: Friendship ended with Vimscript
+description: Lua is now my best friend for configuring Neovim.
+slug: neovim-lua
+date: 2023-02-20T04:00
+tags:
+  - code
+---
+
+⚠️ _**Warning: This post is very cringe as I hate talking about my tools instead of my work. You've been warned.**_
+
+Looking over my notes for this post, it seems like I've been using Vim in some sort or another for over a decade at this
+point? Time flies when you can't `:quit` Vim. Folks, I'll be here all week.
+
+I guess I switched to Neovim at some point in 2014? One of the main reasons that Neovim exists is that mainline Vim,
+historically, resisted allowing configuration in languages that were not Vimscript. Vimscript is… not a good language.
+People that love it, love it, all the more power to them, but I am not one of them. I recall at some point during my
+mainline Vim days using some plugins that were written in Python, but those seem to break all the time.
+
+All this time though, I have been maintaining a [very detailed and commented Vim config in Vimscript](https://github.com/eligundry/dots/blob/b6ec01b9fefb3d2883d12ffa2676e9fb1b6a6d48/config/nvim/init.vim).
+I have put a lot of sweat equity into this config! Perfecting it got me fired from a job in 2012. Lesson learned, you
+move on. I even kept it backwards compatible with ancient versions of Vim that I will never encounter in reality. It was fun and made me feel
+like a hacker. I would see people on Reddit talking about their configs in Lua and I would just tune them out. I have
+my config and it's already held together with Popsicle sticks and glue. If I even look at it wrong, I'll lose a day of
+development time.
+
+At some point in 2018, I discovered [coc.nvim](https://github.com/neoclide/coc.nvim) and it was a revelation. It was added
+Visual Studio Code's basic code completion features to my super custom Vim config! I could jump to definition!
+I could have accurate code completion! It probably does a lot more IDE like things, but I'm a simple man and that's
+all I need. My config would still break from time to time, but at least I became 1.3x more efficient.
+
+[I started working at Chord in 2022](/blog/job-search-2k22) and discovered that, for the first time, I had coworkers
+that used Vim! I started a little `#vim` channel and we got to sharing tips and configs. It's always nice to find
+people like you.
+
+On a Friday evening in November, [Chad](https://www.linkedin.com/in/chadnickell/) posts his brand new Neovim config
+written in Lua. Well that just pushed all of us over the Lua cliff and we all spent our weekend updating our configs.
+
+[**You can checkout how I did this in this pull request!**](https://github.com/eligundry/dots/pull/7)
+
+Chad's [base config](https://github.com/nickell/yadm/commit/5cc342cb5637294506421742b155a4db44b6c4fb) was a great base
+that I was able crib into my config as I converted it to Lua. It had all the code completion plugins that I needed to
+replace coc.nvim. At this point, he had his configs in a bunch of different files, which I have done in the past and
+hated as it's impossible to find anything easily, but I was able to work around that. (It should be noted that I mentioned
+my experience with multiple files in the past and he converted his [config to a single file](https://github.com/nickell/yadm/blob/4b057ddd343292f2f726336b4552a4231bd1cbf6/.config/nvim/init.lua)).
+
+Without any further ado, let's dive into what this conversion gave me!
+
+<!-- excerpt -->
+
+# I got a chance to switch up my plugins!
+
+Since I was moving from Vimscript to Lua, it only made sense that I switch some of my old plugins to newer, actively
+maintained Lua alternatives. Here are some packages I upgraded to.
+
+## plug.vim ➡️  [packer.nvim](https://github.com/wbthomason/packer.nvim)
+
+I like packer's syntax and how I can inline package configs right next to how I install them. Since I started porting,
+it seems that the new hotness is [lazy.nvim](https://github.com/folke/lazy.nvim), which I suppose I will check out 3
+years from now.
+
+Packer seems to have the ability to "snapshot" configs that allow you to rollback in case package upgrades bork your
+setup, but I haven't dived into that just yet.
+
+## coc.nvim ➡️ Various LSP plugins
+
+coc.nvim is pretty nice. It manages all of the language server stuff for you in it's own config format that is closer
+to Visual Studio Code than Neovim. It was great when the Neovim LSP space was somewhat immature. With that said, Neovim's
+LSP support is now first class it makes sense to use it directly.
+
+_Unfortunately_, using Neovim's LSP directly does not free you from installing plugins. No, you will install many plugins
+and like it. Luckily, they all seem to work together. Here's a sampling of said plugins:
+
+- [mason.nvim](https://github.com/williamboman/mason.nvim): This manages the installation of the desired LSP plugins.
+  Ex: Typescript server, linting, gopls.
+- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp): This is what powers all autocompletion prompts as you type. What makes
+  this better than coc.nvim's completions is that it works when in insert mode, searching, command line completions and
+  more!
+- [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim): This the glue that binds the LSPs that Mason installs
+  to the editor. It's slightly annoying to get going if you don't read the docs (which I wasn't when copying the config),
+  but once you do, you'll be like a Greek god of Vim.
+
+Here's a video of it all at work. Notice all the code completion and the auto formatting. It really works great!
+
+<DemoVideo
+  src="/img/neovim-lua/lsp-completion.webm"
+  alt="Video showing off the code compeltion plugins I setup"
+  className="pb-4"
+/>
+
+## ctrlp ➡️ [telescope](https://github.com/nvim-telescope/telescope.nvim)
+
+Telescope is a revelation! It's the single coolest thing that I introduced into my config in this sprint. It allows for
+searching in all sorts of ways. I used to use ctrlp to do fuzzy path searching exclusively and was planning on continuing
+to use it in this config, but ctrlp kept crashing this Vim setup like 20% of the time (and always when I hadn't saved
+a file 😤). I decided to map `<Ctrl-p>` to Telescope's find files function. Not only does it work exactly the same,
+I get a little preview of the file. And Telescope can search files for strings, buffers and more!
+
+You have to see it to believe it!
+
+<DemoVideo
+  src="/img/neovim-lua/telescope.webm"
+  alt="Video showing all the cool things Telescope can do (fuzzy path matching, live grepping)"
+/>
+
+# What was once a dream is now easy!
+
+Moving to Lua allowed me to do a bunch of things that seemed impossible in Vimscript relatively easy for me.
+
+For example, I am a big fan of combining `set number relativenumber` such I can see the current line number and also
+have the surrounding line numbers be the number of lines relative to the current line. This allows for easier composition
+of linewise movements while knowing where the heck I am! But, sometimes I want normal line numbering and other times, I
+want no numbering at all. I had a very nasty Vimscript function that could do this that I despised until I rewrote it in
+Lua!
+
+<GitHubFile
+  expanded
+  fileURL="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L647-L684"
+/>
+
+Below is a video of me calling that function with <kbd>,rn</kbd> in normal mode.
+
+<DemoVideo
+  src="/img/neovim-lua/numbering-modes.webm"
+  alt="Video showing the different Vim numbering modes being cycled through with ,rn"
+/>
+
+Another example is how I was able to finally make sense of my love of [Vim's `autochdir`](https://vim.fandom.com/wiki/Set_working_directory_to_the_current_file)
+with how plugins work with it. I will let the following code block explain what I mean.
+
+<GitHubFile
+  expanded
+  fileURL="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L802-L850"
+/>
+
+For my final example, I technically had this working in Vimscript, but I really want to show it off! I am the biggest fan
+of [Hipster Ipsum](https://hipsum.co/) for dummy text. I made Vim function that call's it's HTTP API and inserts the copy
+into the file!
+
+<GitHubFile
+  expanded
+  fileURL="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L852-L857"
+/>
+
+By pressing <kbd>,hi</kbd>, I get a paragraph of the finest hipsum!
+
+<DemoVideo
+  src="/img/neovim-lua/hipster-ipsum.webm"
+  alt="Video showing how to insert Hipster Ipsum with ,hi in Neovim"
+/>
+
+# Conclusion
+
+Switching my Neovim config to Lua was a fun experience that yielded pretty big advances in how I work. I can search more
+easily, I have more IDE features than I know what to do with and I definitely feel "with it."
+
+At the same time, my Neovim still breaks randomly when I upgrade packages or Neovim itself. I still need to tend to it
+like a garden. I wish I had chosen an editor that it more stable than what I have now, but like I said, I can't `:quit`
+Vim!
+
+Also, I just want to say goodbye to [Chad](https://www.linkedin.com/in/chadnickell/). He's moving on to bigger and better
+things. He was responsible for hiring me at Chord and has been an absolute delight to work with. Best of luck, bud!
