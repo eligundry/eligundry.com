@@ -7,10 +7,12 @@ interface Props {
 }
 
 const DemoVideo: React.FC<Props> = ({ src, alt, className }) => (
-  <video autoPlay loop muted className={clsx('mx-auto', className)}>
-    <source src={src} />
-    {alt}
-  </video>
+  <a href={src}>
+    <video autoPlay loop muted className={clsx('mx-auto', className)}>
+      <source src={src} />
+      {alt}
+    </video>
+  </a>
 )
 
 export default DemoVideo

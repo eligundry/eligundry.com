@@ -26,13 +26,13 @@ const MDXNextImage: React.FC<MDXNextImageProps> = ({
     <div
       className={clsx(
         'mx-auto',
-        'sm:maw-w-full',
+        'maw-w-full',
         'next-mdx-image',
         containerClassName
       )}
       style={{
         width: props.width ? `${props.width}px` : undefined,
-        maxWidth: '690px',
+        maxWidth: '100%',
       }}
       {...props}
     >
