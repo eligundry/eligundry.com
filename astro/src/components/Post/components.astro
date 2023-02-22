@@ -1,15 +1,17 @@
 ---
 import { Tweet } from '@astro-community/astro-embed-twitter'
+import DemoVideo from './DemoVideo.astro'
 import GithubFile from './GithubFile.astro'
 import Image from './Image.astro'
-import StreamingAlbum from './StreamingAlbum.astro'
 import ResponsiveIFrame from './ResponsiveIFrame.astro'
+import StreamingAlbum from './StreamingAlbum.astro'
 
 export const components = {
+  DemoVideo,
   GithubFile,
+  ResponsiveIFrame,
   StreamingAlbum,
   Tweet,
   img: Image,
-  ResponsiveIFrame,
 }
 ---
