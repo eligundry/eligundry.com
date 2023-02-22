@@ -2,12 +2,15 @@
 title: Friendship ended with Vimscript
 description: Lua is now my best friend for configuring Neovim.
 slug: neovim-lua
+cover: /img/neovim-lua/friendship-ended-with-vimscript.png
 date: 2023-02-20T04:00
 tags:
   - code
 ---
 
 ⚠️ _**Warning: This post is very cringe as I hate talking about my tools instead of my work. You've been warned.**_
+
+!["Friendship ended with Vimscript, Now Lua is my best friend" meme](/img/neovim-lua/friendship-ended-with-vimscript.png)
 
 Looking over my notes for this post, it seems like I've been using Vim in some sort or another for over a decade at this
 point? Time flies when you can't `:quit` Vim. Folks, I'll be here all week.
@@ -55,7 +58,7 @@ maintained Lua alternatives. Here are some packages I upgraded to.
 
 ## plug.vim ➡️  [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
-I like packer's syntax and how I can inline package configs right next to how I install them. Since I started porting,
+I like Packer's syntax and how I can inline package configs right next to how I install them. Since I started porting,
 it seems that the new hotness is [lazy.nvim](https://github.com/folke/lazy.nvim), which I suppose I will check out 3
 years from now.
 
@@ -65,7 +68,7 @@ setup, but I haven't dived into that just yet.
 ## coc.nvim ➡️ Various LSP plugins
 
 coc.nvim is pretty nice. It manages all of the language server stuff for you in it's own config format that is closer
-to Visual Studio Code than Neovim. It was great when the Neovim LSP space was somewhat immature. With that said, Neovim's
+to Visual Studio Code than Neovim. It was great when the Neovim LSP space was somewhat immature. Today though, Neovim's
 LSP support is now first class it makes sense to use it directly.
 
 _Unfortunately_, using Neovim's LSP directly does not free you from installing plugins. No, you will install many plugins
@@ -94,7 +97,7 @@ Telescope is a revelation! It's the single coolest thing that I introduced into 
 searching in all sorts of ways. I used to use ctrlp to do fuzzy path searching exclusively and was planning on continuing
 to use it in this config, but ctrlp kept crashing this Vim setup like 20% of the time (and always when I hadn't saved
 a file 😤). I decided to map `<Ctrl-p>` to Telescope's find files function. Not only does it work exactly the same,
-I get a little preview of the file. And Telescope can search files for strings, buffers and more!
+I get a little preview of the file. And Telescope can search files for strings, search active buffers and more!
 
 You have to see it to believe it!
 
@@ -105,7 +108,8 @@ You have to see it to believe it!
 
 # What was once a dream is now easy!
 
-Moving to Lua allowed me to do a bunch of things that seemed impossible in Vimscript relatively easy for me.
+Lua is an actual scripting language that is fun to use, unlike Vimscript. As such, I was able to add custom functionality
+that I would have struggled to add in Vimscript.
 
 For example, I am a big fan of combining `set number relativenumber` such I can see the current line number and also
 have the surrounding line numbers be the number of lines relative to the current line. This allows for easier composition
