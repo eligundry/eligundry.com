@@ -31,8 +31,11 @@ const resume = {
       },
       startDate: new Date('2022-02-07T05:00'),
       endDate: null,
-      summary: 'TBA',
-      highlights: [],
+      summary: '',
+      highlights: [
+        'Lead technical documentation efforts on a developer experience team.',
+        'Supported agency partners in implementing our ecommerce platform.',
+      ],
     },
     {
       company: 'Talent Inc.',
@@ -145,7 +148,7 @@ const resume = {
         and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
-      printHide: false,
+      printHide: true,
     },
     {
       company: 'Kent State University',
@@ -335,8 +338,8 @@ const resume = {
         JavaScript: 'https://en.wikipedia.org/wiki/JavaScript',
         Go: 'https://golang.org/',
         PHP: 'https://www.php.net/',
-        Python: 'https://www.python.org/',
         SQL: 'https://en.wikipedia.org/wiki/SQL',
+        Python: 'https://www.python.org/',
         HTML: 'https://en.wikipedia.org/wiki/HTML5',
         CSS: 'https://www.w3.org/Style/CSS/Overview.en.html',
       },
@@ -346,10 +349,12 @@ const resume = {
       level: 'Master',
       keywords: {
         React: 'https://reactjs.org/',
+        Remix: 'https://remix.run/',
+        'Next.js': 'https://nextjs.org/',
+        'Gatsby.js': 'https://www.gatsbyjs.org/',
         Flask: 'https://www.palletsprojects.com/p/flask/',
         Django: 'https://www.djangoproject.com/',
         Gin: 'https://gin-gonic.com/',
-        'Gatsby.js': 'https://www.gatsbyjs.org/',
         WordPress: 'https://wordpress.org/',
       },
     },
@@ -358,7 +363,6 @@ const resume = {
       level: 'Master',
       keywords: {
         Vim: 'https://www.vim.org/',
-        Docker: 'https://www.docker.com/',
         Git: 'https://git-scm.com/',
         SaltStack: 'https://www.saltstack.com/',
         'GitHub Actions': 'https://github.com/features/actions',
@@ -370,6 +374,7 @@ const resume = {
       level: 'Master',
       keywords: {
         Ansible: 'https://www.ansible.com/',
+        Docker: 'https://www.docker.com/',
         SQLAlchemy: 'https://www.sqlalchemy.org/',
         jQuery: 'https://jquery.com/',
         Okta: 'https://www.okta.com/',
@@ -380,17 +385,25 @@ const resume = {
   ],
   activitesInterests: [
     `
+    Created <a href="https://album-mode.party">Album Mode.party</a>, a
+    <a href="https://remix.run/">Remix</a> application that recommends random
+    albums from Spotify.
+    `,
+    `
+    Volunteered with <a href="https://codenation.org/">Code Nation</a> to teach
+    web development to 10th graders during the 2022 school year.
+    `,
+    `
     Presented <a href="/talks">talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a>
     and <a href="/talks/redux-hooks">QueensJS</a>.`,
     `
     Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and
     <a href="https://devpost.com/eligundry">competed in numerous hackathons</a> including:
-    <ul class="hackathons">
+    <ul class="columns-2 text-sm">
       <li><a href="https://khe.io/">KHE</a> 2013 (2nd place), 2014, 2015</li>
       <li><a href="https://mhacks.org/">MHacks</a> 2013, 2014, 2015</li>
       <li><a href="http://pennapps.com/">PennApps</a> 2014 (1st place Intel XDK App)</li>
       <li><a href="http://hackillinois.org/">HackIllinois</a> 2014</a></li>
-      <li>Fashion/Tech 2015</li>
     </ul>
     `,
     `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout" itemprop="award">Eagle Scout</a> in 2006.`,
@@ -400,6 +413,65 @@ const resume = {
 
 <Layout title="Resume">
   <div class="paper">
+    <header
+      class="hidden print:flex flex-row justify-between prose border-b-2 border-b-accent"
+    >
+      <h1 class="text-lg mb-0">Eli Gundry</h1>
+      <h2 class="text-base mt-0 font-mono">
+        <span class="text-primary">Full Stack Web Engineer</span>
+        <span class="comment"> // ❤️ Javascript, Devops && Web Standards</span>
+      </h2>
+    </header>
+    <section class="prose">
+      <header class="block print:hidden">
+        <h2 class="my-4 border-b-2 border-b-accent">Work</h2>
+      </header>
+      <header
+        class="hidden print:flex justify-between my-4 border-b-2 border-b-accent"
+      >
+        <h2>Selected Work</h2>
+        <span
+          >View full resume at <a href="/resume/">eligundry.com/resume/</a>
+        </span>
+      </header>
+      {
+        resume.work.map((exp) => (
+          <Experience
+            variant="work"
+            name={exp.company}
+            position={exp.position}
+            url={exp.website}
+            startDate={exp.startDate}
+            endDate={exp.endDate}
+            location={exp.location}
+            summary={exp.summary}
+            highlights={exp.highlights}
+          />
+        ))
+      }
+    </section>
+
+    <section class="prose">
+      <header>
+        <h2 class="my-4 border-b-2 border-b-accent">Education</h2>
+      </header>
+      {
+        resume.education.map((exp) => (
+          <Experience
+            variant="education"
+            name={exp.institution}
+            url={exp.website}
+            startDate={exp.startDate}
+            endDate={exp.endDate}
+            position={[exp.studyType, exp.area].filter((i) => !!i).join(' - ')}
+            location={exp.location}
+            summary={exp.summary}
+            highlights={[]}
+          />
+        ))
+      }
+    </section>
+
     <section class="prose">
       <header>
         <h2 class="mt-0 mb-4 border-b-2 border-b-accent">
@@ -438,48 +510,6 @@ const resume = {
           })
         }
       </ul>
-    </section>
-
-    <section class="prose">
-      <header>
-        <h2 class="my-4 border-b-2 border-b-accent">Work</h2>
-      </header>
-      {
-        resume.work.map((exp) => (
-          <Experience
-            variant="work"
-            name={exp.company}
-            position={exp.position}
-            url={exp.website}
-            startDate={exp.startDate}
-            endDate={exp.endDate}
-            location={exp.location}
-            summary={exp.summary}
-            highlights={exp.highlights}
-          />
-        ))
-      }
-    </section>
-
-    <section class="prose">
-      <header>
-        <h2 class="my-4 border-b-2 border-b-accent">Education</h2>
-      </header>
-      {
-        resume.education.map((exp) => (
-          <Experience
-            variant="education"
-            name={exp.institution}
-            url={exp.website}
-            startDate={exp.startDate}
-            endDate={exp.endDate}
-            position={[exp.studyType, exp.area].filter((i) => !!i).join(' - ')}
-            location={exp.location}
-            summary={exp.summary}
-            highlights={[]}
-          />
-        ))
-      }
     </section>
 
     <section class="prose">

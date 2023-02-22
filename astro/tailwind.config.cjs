@@ -70,3 +70,5 @@ module.exports = {
   },
   darkMode: ['class', "[data-theme='dark']"],
 }
+
+console.log(module.exports)
