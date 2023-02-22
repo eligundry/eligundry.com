@@ -4,6 +4,7 @@ import type { MDXComponents } from 'mdx/types'
 
 import MdxNextImage from '@/components/Embeds/MdxNextImage'
 import ResponsiveIFrame from '@/components/Embeds/ResponsiveIFrame'
+import DemoVideo from '@/components/Embeds/DemoVideo'
 
 const MDXShortcodes: MDXComponents = {
   img: (props) => (
@@ -29,6 +30,7 @@ const MDXShortcodes: MDXComponents = {
       (mod) => mod.JobSearchSankeyChartByYear
     )
   ),
+  DemoVideo: (props) => <DemoVideo {...props} />,
 }
 
 export const MDXShortcodesForFeed: MDXComponents = {
@@ -45,6 +47,8 @@ export const MDXShortcodesForFeed: MDXComponents = {
   ResponsiveIFrame: (props) => <iframe {...props} />,
   // @ts-ignore
   img: ({ blurDataURL, ...props }) => <img {...props} />,
+  // @ts-ignore
+  DemoVideo: () => null,
 }
 
 export default MDXShortcodes

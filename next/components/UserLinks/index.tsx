@@ -1,12 +1,13 @@
 import React from 'react'
 import clsx from 'clsx'
 import {
-  FaGithubSquare,
-  FaTwitterSquare,
-  FaEnvelopeSquare,
-  FaRssSquare,
+  FaGithub,
+  FaTwitter,
+  FaEnvelope,
+  FaRss,
   FaLinkedin,
-  FaLastfmSquare,
+  FaLastfm,
+  FaMastodon,
 } from 'react-icons/fa'
 import styles from './index.module.scss'
 
@@ -15,15 +16,23 @@ export const links = Object.freeze([
     name: 'github',
     label: 'Review my code on GitHub',
     url: 'https://github.com/eligundry',
-    icon: <FaGithubSquare />,
+    icon: <FaGithub />,
     itemProp: 'sameAs',
   },
   {
     name: 'twitter',
     label: 'Follow me on Twitter',
     url: 'https://twitter.com/EliGundry',
-    icon: <FaTwitterSquare />,
+    icon: <FaTwitter />,
     itemProp: 'sameAs',
+  },
+  {
+    name: 'Mastodon',
+    label: 'Toot me or whatever on Mastodon',
+    url: 'https://mas.to/@eligundry',
+    icon: <FaMastodon />,
+    itemProp: 'sameAs',
+    rel: 'me',
   },
   {
     name: 'linkedin',
@@ -36,21 +45,21 @@ export const links = Object.freeze([
     name: 'lastfm',
     label: "See what I'm listening to on Last.fm",
     url: 'https://www.last.fm/user/eli_pwnd',
-    icon: <FaLastfmSquare />,
+    icon: <FaLastfm />,
     itemProp: 'sameAs',
   },
   {
     name: 'email',
     label: 'Shoot me an email',
     url: 'mailto:eligundry@gmail.com',
-    icon: <FaEnvelopeSquare />,
+    icon: <FaEnvelope />,
     itemProp: undefined,
   },
   {
     name: 'rss',
     label: 'Add my blog to your Google Reader via RSS',
     url: '/blog.rss',
-    icon: <FaRssSquare />,
+    icon: <FaRss />,
     itemProp: undefined,
   },
 ])
@@ -61,9 +70,10 @@ const UserLinks: React.FC = () => (
       <React.Fragment key={link.url}>
         <a
           href={link.url}
-          title={link.label}
+          aria-label={link.label}
+          data-tip={link.label}
           target="_blank"
-          rel="noopener noreferrer"
+          rel={`noopener noreferrer ${link.rel ?? ''}`}
           itemProp={link.itemProp}
           className={styles.link}
         >

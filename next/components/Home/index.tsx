@@ -192,7 +192,7 @@ const Home: React.FC<HomeDataProps> = ({ reading, lastfmCover, github }) => {
           .
         </p>
         <Listening
-          spotifyEmbedURL="https://open.spotify.com/embed/playlist/6HasOSwBI2amViuCQFmQw0"
+          spotifyEmbedURL="https://open.spotify.com/embed/playlist/0ZuDSuihh3xRfCZN9jx5BD"
           lastfmCover={lastfmCover}
         />
       </Section>

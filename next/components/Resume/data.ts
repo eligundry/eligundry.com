@@ -96,8 +96,11 @@ const resume: Resume = {
       },
       startDate: new Date('2022-02-07T05:00'),
       endDate: null,
-      summary: 'TBA',
-      highlights: [],
+      summary: '',
+      highlights: [
+        'Lead technical documentation efforts on a developer experience team.',
+        'Supported agency partners in implementing our ecommerce platform.',
+      ],
     },
     {
       company: 'Talent Inc.',
@@ -115,26 +118,26 @@ const resume: Resume = {
         `
         Tech lead for moving <a href="https://www.zipjob.com">ZipJob</a>
         to a statically compiled <a href="https://www.gatsbyjs.com/">Gatsby</a>/<a href="https://reactjs.org/">React</a>
-        site backed by <a href="https://www.contentful.com/">Contentful CMS</a>, increasing the 
-        <a href="https://developers.google.com/web/tools/lighthouse">Lighthouse</a> 
+        site backed by <a href="https://www.contentful.com/">Contentful CMS</a>, increasing the
+        <a href="https://developers.google.com/web/tools/lighthouse">Lighthouse</a>
         score 55 points & enabling our marketing team to control all copy on the website.
         `,
         `
-        Frontend tech lead for a Customer Portal, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>, 
-        that raised <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a> 
+        Frontend tech lead for a Customer Portal, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>,
+        that raised <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a>
         25 points & average customer revenue by $8.
         `,
         `
-        Frontend tech lead for our rewritten Expert Hub, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>, 
+        Frontend tech lead for our rewritten Expert Hub, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>,
         that decreased our average time to order completion by 12 hours.
         `,
         `
-        Tech lead for a dynamic payment & order offering system for contractors 
-        which decreased our average cost to fulfill an order by $10 & increased 
+        Tech lead for a dynamic payment & order offering system for contractors
+        which decreased our average cost to fulfill an order by $10 & increased
         our average payout to contractors by $7.
         `,
         `
-        Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a> 
+        Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a>
         across all applications company wide using <a href="https://www.okta.com/">Okta</a> & <a href="https://auth0.com/">Auth0</a>.
         `,
       ],
@@ -153,7 +156,7 @@ const resume: Resume = {
       summary: '',
       highlights: [
         `
-        Instilled a culture of 
+        Instilled a culture of
         <a href="https://en.wikipedia.org/wiki/Software_testing">software testing</a>
         into a company that previously had none, reducing the amount of time
         spent testing regressions manually across the company.
@@ -210,7 +213,7 @@ const resume: Resume = {
         and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
-      printHide: false,
+      printHide: true,
     },
     {
       company: 'Kent State University',
@@ -400,8 +403,8 @@ const resume: Resume = {
         JavaScript: 'https://en.wikipedia.org/wiki/JavaScript',
         Go: 'https://golang.org/',
         PHP: 'https://www.php.net/',
-        Python: 'https://www.python.org/',
         SQL: 'https://en.wikipedia.org/wiki/SQL',
+        Python: 'https://www.python.org/',
         HTML: 'https://en.wikipedia.org/wiki/HTML5',
         CSS: 'https://www.w3.org/Style/CSS/Overview.en.html',
       },
@@ -411,10 +414,12 @@ const resume: Resume = {
       level: 'Master',
       keywords: {
         React: 'https://reactjs.org/',
+        Remix: 'https://remix.run/',
+        'Next.js': 'https://nextjs.org/',
+        'Gatsby.js': 'https://www.gatsbyjs.org/',
         Flask: 'https://www.palletsprojects.com/p/flask/',
         Django: 'https://www.djangoproject.com/',
         Gin: 'https://gin-gonic.com/',
-        'Gatsby.js': 'https://www.gatsbyjs.org/',
         WordPress: 'https://wordpress.org/',
       },
     },
@@ -423,7 +428,6 @@ const resume: Resume = {
       level: 'Master',
       keywords: {
         Vim: 'https://www.vim.org/',
-        Docker: 'https://www.docker.com/',
         Git: 'https://git-scm.com/',
         SaltStack: 'https://www.saltstack.com/',
         'GitHub Actions': 'https://github.com/features/actions',
@@ -435,6 +439,7 @@ const resume: Resume = {
       level: 'Master',
       keywords: {
         Ansible: 'https://www.ansible.com/',
+        Docker: 'https://www.docker.com/',
         SQLAlchemy: 'https://www.sqlalchemy.org/',
         jQuery: 'https://jquery.com/',
         Okta: 'https://www.okta.com/',
@@ -445,17 +450,25 @@ const resume: Resume = {
   ],
   activitesInterests: [
     `
-    Presented <a href="/talks">talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a> 
+    Created <a href="https://album-mode.party">Album Mode.party</a>, a
+    <a href="https://remix.run/">Remix</a> application that recommends random
+    albums from Spotify.
+    `,
+    `
+    Volunteered with <a href="https://codenation.org/">Code Nation</a> to teach
+    web development to 10th graders during the 2022 school year.
+    `,
+    `
+    Presented <a href="/talks">tech talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a>
     and <a href="/talks/redux-hooks">QueensJS</a>.`,
     `
-    Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and 
+    Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and
     <a href="https://devpost.com/eligundry">competed in numerous hackathons</a> including:
     <ul class="hackathons">
       <li><a href="https://khe.io/">KHE</a> 2013 (2nd place), 2014, 2015</li>
       <li><a href="https://mhacks.org/">MHacks</a> 2013, 2014, 2015</li>
       <li><a href="http://pennapps.com/">PennApps</a> 2014 (1st place Intel XDK App)</li>
       <li><a href="http://hackillinois.org/">HackIllinois</a> 2014</a></li>
-      <li>Fashion/Tech 2015</li>
     </ul>
     `,
     `Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout" itemprop="award">Eagle Scout</a> in 2006.`,
