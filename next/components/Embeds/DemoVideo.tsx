@@ -7,8 +7,9 @@ interface Props {
 }
 
 const DemoVideo: React.FC<Props> = ({ src, alt, className }) => (
-  <video autoPlay loop alt={alt} muted className={clsx('mx-auto', className)}>
+  <video autoPlay loop muted className={clsx('mx-auto', className)}>
     <source src={src} />
+    {alt}
   </video>
 )
 
