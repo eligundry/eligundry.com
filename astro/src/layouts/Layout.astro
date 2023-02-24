@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import FancyBackground from '../components/FancyBackground.astro'
@@ -69,14 +68,14 @@ const latestFeeling = await daylio.getLatest()
     <Header />
     <FancyBackground points={fancyBackgroundPoints}>
       <main
-        class={clsx(
+        class:list={[
           'container',
           'grow-0',
           'mx-auto',
           'mt-24',
           'print:mt-0',
-          'print:pt-0'
-        )}
+          'print:pt-0',
+        ]}
       >
         <slot />
       </main>

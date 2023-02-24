@@ -1,0 +1,79 @@
+---
+import crypto from 'node:crypto'
+import { JSDOM } from 'jsdom'
+
+interface Props {
+  startingLineNumber?: number
+  lineNumbers?: boolean
+  expandable?: boolean
+  expanded?: boolean
+}
+
+const { startingLineNumber = 0, lineNumbers = false } = Astro.props
+let { expandable = true, expanded = false } = Astro.props
+
+// Astro's code component through Shiki does not allow for any HTML
+// customization. What's happening here is that I am rendering the code
+// component to HTML, parsing it with JSDOM, and rebuilding it such that it has
+// line numbers and other fun things
+const html = await Astro.slots.render('default')
+const {
+  window: { document },
+} = new JSDOM(html)
+const code = document.querySelector('code')
+const lines = code.innerHTML.split('\n')
+const newLines = lines
+  .map((line, i) => {
+    const elm = document.createElement('pre')
+
+    if (lineNumbers) {
+      elm.setAttribute('data-prefix', (startingLineNumber + i + 1).toString())
+    }
+
+    elm.classList.add('line', ...Array.from(code?.classList ?? []))
+    elm.innerHTML = `<code>${line}</code>`
+    return elm.outerHTML
+  })
+  .join('\n')
+
+// Create a unique ID for the container
+const id = crypto.createHash('md5').update(html).digest('hex')
+
+if (lines.length <= 10) {
+  expanded = true
+  expandable = false
+}
+---
+
+<div class="code-wrapper">
+  {!expanded && <input type="checkbox" hidden id={id} class="peer" />}
+  <div
+    set:html={newLines}
+    class:list={[
+      'mockup-code',
+      'not-prose',
+      'astro-code',
+      !expanded && [
+        ['line-clamp-10', 'rounded-b-none', '!overflow-x-scroll'],
+        ['peer-checked:line-clamp-none', 'peer-checked:rounded-b-xl'],
+      ],
+    ]}
+  >
+  </div>
+  {
+    !expanded && (
+      <label
+        for={id}
+        class:list={[
+          'btn',
+          'btn-primary',
+          'w-full',
+          'rounded-t-none',
+          'peer-checked:hidden',
+        ]}
+      >
+        Expand
+      </label>
+    )
+  }
+</div>

@@ -6,7 +6,11 @@ const pick = require('lodash/pick')
  */
 module.exports = {
   content: ['./src/**/*.{html,astro,md,mdx}'],
-  plugins: [require('@tailwindcss/typography'), require('daisyui')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('daisyui'),
+    require('@tailwindcss/line-clamp'),
+  ],
   safelist: ['tooltip'],
   theme: {
     colors: pick(defaultTheme.colors, ['white', 'transparent']),
@@ -35,6 +39,9 @@ module.exports = {
           },
         },
       }),
+      lineClamp: {
+        10: '10',
+      },
     },
   },
   daisyui: {
@@ -70,5 +77,3 @@ module.exports = {
   },
   darkMode: ['class', "[data-theme='dark']"],
 }
-
-console.log(module.exports)

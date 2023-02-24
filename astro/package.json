@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/jsdom": "^20.0.0",
     "@types/lodash": "^4.14.186",
     "@types/react": "^18.0.26",

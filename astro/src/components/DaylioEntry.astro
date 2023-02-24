@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import { DaylioEntry } from '../lib/daylio'
 import { ActivityMapping } from '../lib/enums'
 
@@ -15,13 +14,13 @@ const { entry, wrapInPaper = false } = Astro.props
   itemscope
   itemtype="https://schema.org/BlogPosting"
   id={entry.rawTime}
-  class={clsx(
+  class:list={[
     'prose',
     wrapInPaper && 'paper',
     'scroll-mt-20',
     'target:border-2',
-    'target:border-primary'
-  )}
+    'target:border-primary',
+  ]}
 >
   <meta
     itemprop="image"

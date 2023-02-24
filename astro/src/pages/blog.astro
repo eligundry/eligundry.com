@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import dateFns from 'date-fns'
 import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/Layout.astro'
@@ -20,7 +19,7 @@ const tags = [
 ---
 
 <script>
-  window.addEventListener('hashchange', event => {
+  window.addEventListener('hashchange', (event) => {
     const url = new URL(event.newURL)
     const hash = url.hash.slice(1)
     const postList = document.getElementById('post-list')
@@ -34,11 +33,17 @@ const tags = [
   })
 </script>
 
-<style set:html={tags.map(tag => `
+<style
+  set:html={tags
+    .map(
+      (tag) => `
   #post-list.selected-tag-${tag} > *:not(.tag-${tag}) {
     display: none;
   }
-`).join('\n')} />
+`
+    )
+    .join('\n')}
+></style>
 
 <Layout
   title="Blog"
@@ -56,56 +61,55 @@ const tags = [
       <a href="#" class="btn">Reset</a>
     </div>
     <div>
-    {
-      posts.map((post) => (
-        <article
-          itemscope
-          itemtype={`https://schema.org/${
-            post.frontmatter.collection === 'blog'
-              ? 'BlogPosting'
-              : 'CreativeWork'
-          }`}
-          class={clsx(post.frontmatter.tags.map((tag) => `tag-${tag}`))}
-        >
-          <link itemprop="author publisher" href="#eli-gundry" />
-          {post.frontmatter.readingTime > 0 && (
-            <meta
-              itemprop="timeRequired"
-              content={`PT${post.frontmatter.readingTime}`}
-            />
-          )}
-          <h2 itemprop="name headline" class="mb-0">
-            <a href={post.url} itemprop="url">
-              {post.frontmatter.title}
-            </a>
-          </h2>
-          <div class="flex flex-row gap-4 [&>*]:m-0">
-            <time datetime={post.frontmatter.date}>
-              <EmojiText label="calendar for the date" emoji="🗓">
-                {dateFns.formatISO(new Date(post.frontmatter.date), {
-                  representation: 'date',
-                })}
-              </EmojiText>
-            </time>
-            <p>
-              <EmojiText
-                label="stopwatch denoting time to read article"
-                emoji="⏱"
-              >
-                {post.frontmatter.readingTime}{' '}
-                {post.frontmatter.readingTime > 1 ? 'Minutes' : 'Minute'}
+      {
+        posts.map((post) => (
+          <article
+            itemscope
+            itemtype={`https://schema.org/${
+              post.frontmatter.collection === 'blog'
+                ? 'BlogPosting'
+                : 'CreativeWork'
+            }`}
+            class:list={post.frontmatter.tags.map((tag) => `tag-${tag}`)}
+          >
+            <link itemprop="author publisher" href="#eli-gundry" />
+            {post.frontmatter.readingTime > 0 && (
+              <meta
+                itemprop="timeRequired"
+                content={`PT${post.frontmatter.readingTime}`}
+              />
+            )}
+            <h2 itemprop="name headline" class="mb-0">
+              <a href={post.url} itemprop="url">
+                {post.frontmatter.title}
+              </a>
+            </h2>
+            <div class="flex flex-row gap-4 [&>*]:m-0">
+              <time datetime={post.frontmatter.date}>
+                <EmojiText label="calendar for the date" emoji="🗓">
+                  {dateFns.formatISO(new Date(post.frontmatter.date), {
+                    representation: 'date',
+                  })}
+                </EmojiText>
+              </time>
+              <p>
+                <EmojiText
+                  label="stopwatch denoting time to read article"
+                  emoji="⏱"
+                >
+                  {post.frontmatter.readingTime}{' '}
+                  {post.frontmatter.readingTime > 1 ? 'Minutes' : 'Minute'}
+                </EmojiText>
+              </p>
+            </div>
+            <p itemprop="description" class="m-0">
+              <EmojiText label="description of the blog post" emoji="📝">
+                {post.frontmatter.description}
               </EmojiText>
             </p>
-          </div>
-          <p itemprop="description" class="m-0">
-            <EmojiText label="description of the blog post" emoji="📝">
-              {post.frontmatter.description}
-            </EmojiText>
-          </p>
-        </article>
-      ))
-    }
+          </article>
+        ))
+      }
     </div>
   </div>
 </Layout>
-

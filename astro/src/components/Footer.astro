@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import EmojiText from '../components/EmojiText.astro'
 import { FaGithubAlt, FaMastodon } from 'react-icons/fa'
 import { ImLastfm } from 'react-icons/im'
@@ -59,15 +58,15 @@ const social = [
 ---
 
 <footer
-  class={clsx(
+  class:list={[
     'footer',
     'bg-base-200',
     'pl-14',
     'pr-8',
     'py-8',
     'shadow',
-    'print:hidden'
-  )}
+    'print:hidden',
+  ]}
 >
   <div class="container mx-auto flex flex-col">
     <div class="w-full">
@@ -105,7 +104,7 @@ const social = [
     <div class="w-full">
       <h4 class="footer-title">Social</h4>
       <div
-        class={clsx([
+        class:list={[
           'flex',
           'flex-row',
           'gap-2',
@@ -113,14 +112,14 @@ const social = [
           '[&>a]:normal-case',
           '[&>a]:inline-flex',
           '[&>a]:w-8',
-        ])}
+        ]}
       >
         {
           social.map((link) => (
             <a
               href={link.url}
               data-tip={link.label}
-              class={clsx(['btn', 'btn-sm', 'btn-square', 'btn-primary'])}
+              class:list={['btn', 'btn-sm', 'btn-square', 'btn-primary']}
             >
               <link.Icon size="1.75rem" />
             </a>

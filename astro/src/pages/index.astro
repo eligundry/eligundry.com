@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import { Image } from '@astrojs/image/components'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
@@ -36,14 +35,14 @@ const shelves = {
   <section class="intro paper prose">
     <h2>Glad To Meet You!</h2>
     <figure
-      class={clsx([
+      class:list={[
         'float-right',
         'ml-8',
         'hidden',
         'sm:block',
         'w-[250px]',
         'h-[250px]',
-      ])}
+      ]}
     >
       <Image
         src={import('../assets/img/eli-thumbs-up-memoji.png')}

@@ -2,7 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './fancyBackground.css';
-@import './code.css';
+@import './prism-material.css';
 
 @layer components {
   .paper {
@@ -47,3 +47,6 @@
   cursor: default;
 }
 
+.mockup-code .line {
+  @apply pl-6;
+}

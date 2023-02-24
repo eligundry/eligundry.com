@@ -1,16 +1,17 @@
 ---
 import path from 'node:path'
-import { Code } from 'astro/components'
+import { Prism } from '@astrojs/prism'
 import type { Lang as ShikiLang } from 'shiki'
 import { cacheAxios } from '../../lib/cache'
+import CodeWrapper from '../CodeWrapper.astro'
 
 interface Props {
   url: string
   expandable?: boolean
-  linesToShowInPreview?: number
+  expanded?: boolean
 }
 
-const { url, expandable = false, linesToShowInPreview = 10 } = Astro.props
+const { url, expandable = true, expanded = false } = Astro.props
 
 // Construct the url to the raw version of the file and ensure that we have a commit hash for the file instead of a main
 // branch, as those can change and throw off the builds.
@@ -55,12 +56,23 @@ let file = await cacheAxios
   })
   .then((resp) => resp.data)
 
+let startingLineNumber = undefined
+
 if (range) {
   file = file
     .split(/\r?\n/)
     .slice(...range)
     .join('\n')
+
+  startingLineNumber = range[0]
 }
 ---
 
-<Code code={file} lang={extension} />
+<CodeWrapper
+  startingLineNumber={startingLineNumber}
+  lineNumbers
+  expanded={expanded}
+  expandable={expandable}
+>
+  <Prism code={file} lang={extension} />
+</CodeWrapper>

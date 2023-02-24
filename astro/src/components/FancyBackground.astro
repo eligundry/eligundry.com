@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import { FaSyncAlt } from 'react-icons/fa'
 
 interface Props {
@@ -9,15 +8,15 @@ interface Props {
 const { points = 30 } = Astro.props
 ---
 
-<div class={clsx('flex', 'flex-row', 'min-h-[calc(100vh-13.75rem)]')}>
+<div class:list={['flex', 'flex-row', 'min-h-[calc(100vh-13.75rem)]']}>
   <div
-    class={clsx('fancy-bg', 'print:hidden')}
+    class:list={['fancy-bg', 'print:hidden']}
     style={{ '--fluid-pattern-points': points }}
   >
   </div>
   <slot />
   <div
-    class={clsx('fancy-bg', 'print:hidden')}
+    class:list={['fancy-bg', 'print:hidden']}
     style={{ '--fluid-pattern-points': points }}
   >
   </div>

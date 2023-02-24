@@ -4,7 +4,6 @@
 // inline svg in the HTML.
 import dateFns from 'date-fns'
 import groupBy from 'lodash/groupBy'
-import clsx from 'clsx'
 import config from '../config'
 import { cacheAxios } from '../lib/cache'
 
@@ -57,7 +56,7 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
   width={width + 2}
   height={height}
   viewBox={`0 0 ${width + 2} ${height}`}
-  class={clsx([
+  class:list={[
     'not-prose',
     'max-w-full',
     '[&_rect]:tooltip',
@@ -76,7 +75,7 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
     '[&_rect.level-3]:fill-primary/[.76]',
     '[&_rect.level-4]:fill-neutral/[.92]',
     '[&_g]:overflow-visible',
-  ])}
+  ]}
 >
   {
     Object.values(contributionsGroupedByWeek).map((week, weekIdx) => {

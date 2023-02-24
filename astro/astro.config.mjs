@@ -16,9 +16,7 @@ import preact from '@astrojs/preact'
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    shikiConfig: {
-      theme: 'css-variables',
-    },
+    syntaxHighlight: 'prism',
   },
   vite: {
     ssr: {

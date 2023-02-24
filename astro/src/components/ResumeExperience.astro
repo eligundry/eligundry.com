@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import dateFns from 'date-fns'
 
 export interface Location {
@@ -38,10 +37,15 @@ const {
 ---
 
 <section
-  class={clsx(
-    'flex flex-wrap justify-between page-break-avoid mb-4 order-1',
-    printHide && 'print:hidden'
-  )}
+  class:list={[
+    'flex',
+    'flex-wrap',
+    'justify-between',
+    'page-break-avoid',
+    'mb-4',
+    'order-1',
+    printHide && 'print:hidden',
+  ]}
   itemscope
   itemtype={`http://schema.org/${
     variant == 'work' ? 'Organization' : 'CollegeOrUniversity'
