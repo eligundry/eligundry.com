@@ -65,6 +65,7 @@ pre[class*="language-"] ::selection {
 
 .token.comment {
 	color: #aabfc9;
+	font-style: italic;
 }
 
 .token.constant {
