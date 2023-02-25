@@ -1,6 +1,4 @@
 ---
-import clsx from 'clsx'
-
 interface SpotifyProps {
   spotifyID: string
 }
@@ -23,7 +21,7 @@ const props = Astro.props
 {
   'spotifyID' in props && (
     <iframe
-      class={clsx('border-0', 'w-[320px]', 'h-[380px]', props.className)}
+      class:list={['border-0', 'w-[320px]', 'h-[380px]', props.className]}
       src={`https://open.spotify.com/embed/album/${props.spotifyID}`}
       height="380"
       frameborder="0"
@@ -38,7 +36,7 @@ const props = Astro.props
     <iframe
       src={`https://bandcamp.com/EmbeddedPlayer/album=${props.bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
       seamless
-      class={clsx('border-0', 'w-[320px]', 'h-[470px]', props.className)}
+      class:list={['border-0', 'w-[320px]', 'h-[470px]', props.className]}
       title="album embed from bandcamp.com"
       loading="lazy"
     >

@@ -1,6 +1,8 @@
 ---
 import { CollectionEntry } from 'astro:content'
+import dateFns from 'date-fns'
 import BaseLayout from './Layout.astro'
+import EmojiText from '../components/EmojiText.astro'
 
 interface Props {
   collection: string
@@ -48,6 +50,28 @@ const url = `/${collection}/${slug}/`
       <h1 itemprop="name headline">
         <a href={url} itemprop="url">{title}</a>
       </h1>
+      <div class="flex flex-row gap-4 [&>*]:m-0">
+        <time datetime={date.toISOString()}>
+          <EmojiText label="calendar for the date" emoji="🗓">
+            {
+              dateFns.formatISO(date, {
+                representation: 'date',
+              })
+            }
+          </EmojiText>
+        </time>
+        <p>
+          <EmojiText label="stopwatch denoting time to read article" emoji="⏱">
+            {readingTime ?? 1}{' '}
+            {(readingTime ?? 0) > 1 ? 'Minutes' : 'Minute'}
+          </EmojiText>
+        </p>
+      </div>
+      <p itemprop="description" class="m-0">
+        <EmojiText label="description of the blog post" emoji="📝">
+          {description}
+        </EmojiText>
+      </p>
     </header>
     <main itemprop="text">
       <slot />

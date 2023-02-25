@@ -1,5 +1,4 @@
 ---
-import clsx from 'clsx'
 import EmojiText from '../components/EmojiText.astro'
 
 const links = [
@@ -39,7 +38,7 @@ const links = [
 <progress
   id="scroll-progress"
   aria-label="your scroll progress through the page"
-  class={clsx(
+  class:list={[
     'progress',
     'progress-primary',
     'w-full',
@@ -48,12 +47,12 @@ const links = [
     'top-0',
     'z-50',
     'rounded-none',
-    'print:hidden'
-  )}
+    'print:hidden',
+  ]}
   value="0"
   max="100"></progress>
 <header
-  class={clsx([
+  class:list={[
     'navbar',
     'bg-base-200',
     'shadow',
@@ -68,7 +67,7 @@ const links = [
     '[&_a]:hover:no-underline',
     '[&_a]:focus:no-underline',
     '[&_a[aria-current="page"]]:link-secondary',
-  ])}
+  ]}
 >
   <div class="container mx-auto flex flex-wrap">
     <div class="flex-1">
@@ -79,13 +78,13 @@ const links = [
       >
     </div>
     <nav class="flex-none hidden md:flex">
-      <ul class={clsx('menu', 'menu-horizontal', 'p-0', '[&_a]:text-current')}>
+      <ul class:list={['menu', 'menu-horizontal', 'p-0', '[&_a]:text-current']}>
         {
           links.map((link) => (
             <li>
               <a
                 href={link.href}
-                class={clsx('hover:link-primary', 'focus:link-primary')}
+                class:list={['hover:link-primary', 'focus:link-primary']}
                 aria-current={
                   Astro.url.pathname === link.href ||
                   (link.href !== '/' &&
@@ -150,7 +149,7 @@ const links = [
 />
 <label for="mobile-nav-modal" class="modal cursor-pointer bg-transparent">
   <label
-    class={clsx(
+    class:list={[
       'modal-box',
       'w-full',
       'max-w-full',
@@ -161,8 +160,8 @@ const links = [
       'shadow-none',
       'pt-0',
       'pl-4',
-      '[&_a[aria-current="page"]]:link-secondary'
-    )}
+      '[&_a[aria-current="page"]]:link-secondary',
+    ]}
     for=""
   >
     <ul>
@@ -171,7 +170,7 @@ const links = [
           <li>
             <a
               href={link.href}
-              class={clsx('hover:link-primary', 'focus:link-primary')}
+              class:list={['hover:link-primary', 'focus:link-primary']}
               aria-current={
                 Astro.url.pathname === link.href ||
                 (link.href !== '/' && Astro.url.pathname.startsWith(link.href))

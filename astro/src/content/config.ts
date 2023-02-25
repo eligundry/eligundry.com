@@ -2,8 +2,9 @@ import { z, defineCollection } from 'astro:content'
 
 const commonFrontmatterSchema = z.object({
   title: z.string(),
-  description: z.string().optional(),
+  description: z.string(),
   cover: z.string().optional(),
+  draft: z.boolean().default(false),
   date: z.string().transform((input) => {
     try {
       return new Date(input)
