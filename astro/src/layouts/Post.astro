@@ -1,31 +1,25 @@
 ---
-import type { MarkdownLayoutProps } from 'astro'
+import { CollectionEntry } from 'astro:content'
 import BaseLayout from './Layout.astro'
 
-type Props = MarkdownLayoutProps<{
-  title: string
-  description: string
-  readingTime?: number
-  cover?: string
-  date: Date
-  modified: Date
-  tags?: string[]
+interface Props {
+  collection: string
+  slug: string
   showComments?: boolean
-  collection?: 'blog' | 'talk' | string
-}>
+  frontmatter:
+    | CollectionEntry<'blog'>['data']
+    | CollectionEntry<'talks'>['data']
+  remarkPluginFrontmatter: Partial<{
+    modified: Date
+    readingTime: number
+  }>
+}
 
-const { frontmatter, url } = Astro.props
-const {
-  title,
-  itemType,
-  description,
-  cover,
-  date = new Date(),
-  modified,
-  showComments = true,
-  collection,
-  readingTime,
-} = frontmatter
+const { frontmatter, remarkPluginFrontmatter, slug, collection, showComments } =
+  Astro.props
+const { title, description, cover, date } = frontmatter
+const { modified, readingTime } = remarkPluginFrontmatter
+const url = `/${collection}/${slug}/`
 ---
 
 <BaseLayout title={frontmatter.title}>
@@ -46,7 +40,7 @@ const {
       {cover && <meta itemprop="image" content={cover} />}
     </div>
     {
-      readingTime && (
+      !!readingTime && (
         <meta itemprop="timeRequired" content={`PT${readingTime}M`} />
       )
     }
@@ -58,17 +52,21 @@ const {
     <main itemprop="text">
       <slot />
     </main>
-    <footer>
-      <script
-        is:inline
-        src="https://utteranc.es/client.js"
-        repo="eligundry/eligundry.com"
-        issue-term="pathname"
-        label="✨💬✨  Blog"
-        theme="preferred-color-scheme"
-        crossorigin="anonymous"
-        async
-      ></script>
-    </footer>
+    {
+      showComments && (
+        <footer>
+          <script
+            is:inline
+            src="https://utteranc.es/client.js"
+            repo="eligundry/eligundry.com"
+            issue-term="pathname"
+            label="✨💬✨  Blog"
+            theme="preferred-color-scheme"
+            crossorigin="anonymous"
+            async
+          />
+        </footer>
+      )
+    }
   </article>
 </BaseLayout>

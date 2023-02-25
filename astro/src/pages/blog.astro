@@ -1,18 +1,16 @@
 ---
+import { getCollection } from 'astro:content'
 import dateFns from 'date-fns'
 import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 
-const posts = (await Astro.glob('./blog/*.mdx')).sort((a, b) =>
-  dateFns.compareDesc(
-    new Date(a.frontmatter.date),
-    new Date(b.frontmatter.date)
-  )
+const posts = (await getCollection('blog')).sort((a, b) =>
+  dateFns.compareDesc(new Date(a.data.date), new Date(b.data.date))
 )
 const tags = [
   ...posts.reduce((acc, curr) => {
-    curr?.frontmatter?.tags?.forEach((tag: string) => acc.add(tag))
+    curr?.data?.tags?.forEach((tag: string) => acc.add(tag))
     return acc
   }, new Set<string>()),
 ]
@@ -23,7 +21,6 @@ const tags = [
     const url = new URL(event.newURL)
     const hash = url.hash.slice(1)
     const postList = document.getElementById('post-list')
-    console.log('hashchange', event, hash)
 
     if (!hash) {
       postList.className = ''
@@ -66,28 +63,26 @@ const tags = [
           <article
             itemscope
             itemtype={`https://schema.org/${
-              post.frontmatter.collection === 'blog'
-                ? 'BlogPosting'
-                : 'CreativeWork'
+              post.collection === 'blog' ? 'BlogPosting' : 'CreativeWork'
             }`}
-            class:list={post.frontmatter.tags.map((tag) => `tag-${tag}`)}
+            class:list={post.data.tags.map((tag) => `tag-${tag}`)}
           >
             <link itemprop="author publisher" href="#eli-gundry" />
-            {post.frontmatter.readingTime > 0 && (
+            {post.data.readingTime > 0 && (
               <meta
                 itemprop="timeRequired"
-                content={`PT${post.frontmatter.readingTime}`}
+                content={`PT${post.data.readingTime}`}
               />
             )}
             <h2 itemprop="name headline" class="mb-0">
-              <a href={post.url} itemprop="url">
-                {post.frontmatter.title}
+              <a href={`/${post.collection}/${post.slug}/`} itemprop="url">
+                {post.data.title}
               </a>
             </h2>
             <div class="flex flex-row gap-4 [&>*]:m-0">
-              <time datetime={post.frontmatter.date}>
+              <time datetime={post.data.date.toISOString()}>
                 <EmojiText label="calendar for the date" emoji="🗓">
-                  {dateFns.formatISO(new Date(post.frontmatter.date), {
+                  {dateFns.formatISO(new Date(post.data.date), {
                     representation: 'date',
                   })}
                 </EmojiText>
@@ -97,14 +92,14 @@ const tags = [
                   label="stopwatch denoting time to read article"
                   emoji="⏱"
                 >
-                  {post.frontmatter.readingTime}{' '}
-                  {post.frontmatter.readingTime > 1 ? 'Minutes' : 'Minute'}
+                  {post.data.readingTime}{' '}
+                  {post.data.readingTime > 1 ? 'Minutes' : 'Minute'}
                 </EmojiText>
               </p>
             </div>
             <p itemprop="description" class="m-0">
               <EmojiText label="description of the blog post" emoji="📝">
-                {post.frontmatter.description}
+                {post.data.description}
               </EmojiText>
             </p>
           </article>

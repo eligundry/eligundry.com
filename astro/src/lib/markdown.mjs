@@ -29,7 +29,6 @@ const mdxConfig = {
       },
     ],
     remarkGitLastModified,
-    remarkCollection,
     remarkExcerpt,
     remarkExcerptBreakpoint,
   ],
@@ -59,15 +58,6 @@ export function remarkGitLastModified() {
     } catch (e) {
       file.data.astro.frontmatter.modified = new Date()
     }
-  }
-}
-
-export function remarkCollection() {
-  return function (_tree, file) {
-    const path = file.history[0]
-    file.data.astro.frontmatter.collection = path.includes('talks')
-      ? 'talks'
-      : 'blog'
   }
 }
 
