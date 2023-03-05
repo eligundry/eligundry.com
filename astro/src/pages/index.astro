@@ -132,7 +132,7 @@ const shelves = {
       GitHub contribution calendars are not a good indicator of whether or not
       someone is a good developer, but they are very pretty.
     </p>
-    <GithubCalendar />
+    <GithubCalendar className="my-0" />
   </section>
 
   <section class="reading paper prose">
@@ -144,7 +144,7 @@ const shelves = {
         itemprop="sameAs">Goodreads</a
       >.
     </p>
-    <div class="bookshelf not-prose gap-y-2 [&>a]:tooltip">
+    <div class="bookshelf not-prose gap-y-2 [&>a]:sm:tooltip">
       {
         [...shelves.current, ...shelves.read].map((book, i) => {
           let alt = book.title
@@ -207,7 +207,7 @@ const shelves = {
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>
         <a
           href="https://www.last.fm/user/eli_pwnd"
-          class="grid grid-cols-3 h-fit gap-0 not-prose [&>picture]:tooltip"
+          class="grid grid-cols-3 h-fit gap-0 not-prose [&>picture]:sm:tooltip"
         >
           {
             topAlbums.map((album) => {

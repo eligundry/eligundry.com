@@ -29,7 +29,7 @@
     "@eligundry/remark-excerpt": "^2.0.0",
     "@react-hookz/web": "^22.0.0",
     "@tailwindcss/typography": "^0.5.9",
-    "astro": "^2.0.15",
+    "astro": "^2.0.17",
     "astro-google-fonts-optimizer": "^0.2.2",
     "axios": "^0.27.2",
     "axios-cache-interceptor": "^0.10.7",

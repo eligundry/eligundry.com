@@ -61,6 +61,7 @@ const links = [
     'z-40',
     'sm:pr-8',
     'pl-4 md:pl-14',
+    'max-w-full',
     'font-sans',
     'print:hidden',
     '[&_a]:hover:bg-transparent',
@@ -135,7 +136,7 @@ const links = [
           <div class="swap-off">🌞</div>
         </label>
         <label
-          class="swap swap-flip btn btn-sm btn-ghost text-2xl"
+          class="swap swap-flip btn btn-sm btn-ghost text-2xl max-w-full"
           tabindex="0"
           for="mobile-nav-modal-control"
         >
@@ -202,6 +203,8 @@ const links = [
 <script>
   import { on } from 'delegated-events'
   import { themeChange } from 'theme-change'
+
+  // Theme Changing
   themeChange()
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -223,9 +226,8 @@ const links = [
       })
     })
   })
-</script>
 
-<script>
+  // Scroll Progress
   const progress = document.getElementById('scroll-progress')
 
   function animateProgress() {
@@ -240,11 +242,8 @@ const links = [
   document.addEventListener('DOMContentLoaded', animateProgress)
   document.addEventListener('scroll', animateProgress)
   document.addEventListener('resize', animateProgress)
-</script>
 
-<script>
-  import { on } from 'delegated-events'
-
+  // Hamburger Menu
   document.addEventListener('DOMContentLoaded', () => {
     on('change', '.modal-control-input', (event) => {
       const inputs = document.querySelectorAll('.modal-control-input')

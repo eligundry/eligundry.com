@@ -24,6 +24,14 @@ const { modified, readingTime } = remarkPluginFrontmatter
 const url = `/${collection}/${slug}/`
 ---
 
+<style>
+  .post-body img,
+  .post-body iframe {
+    max-width: 100% !important;
+    display: none;
+  }
+</style>
+
 <BaseLayout title={frontmatter.title}>
   <article
     class="paper prose"
@@ -73,7 +81,7 @@ const url = `/${collection}/${slug}/`
         </EmojiText>
       </p>
     </header>
-    <main itemprop="text">
+    <main itemprop="text" class="post-body">
       <slot />
     </main>
     {

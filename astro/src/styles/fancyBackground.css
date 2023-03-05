@@ -13,5 +13,5 @@
   background-image: paint(fluidPattern);
   z-index: -100000;
 
-  @apply print:hidden;
+  @apply print:hidden hidden sm:block;
 }

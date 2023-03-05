@@ -66,6 +66,7 @@ const latestFeeling = await daylio.getLatest()
         )
       }
     </script>
+    <slot name="head" />
   </head>
   <body>
     <Header />
@@ -75,7 +76,7 @@ const latestFeeling = await daylio.getLatest()
           'container',
           'grow-0',
           'mx-auto',
-          'mt-24',
+          ['mt-16', 'sm:mt-24'],
           'print:mt-0',
           'print:pt-0',
         ]}

@@ -7,6 +7,10 @@ import groupBy from 'lodash/groupBy'
 import config from '../config'
 import { cacheAxios } from '../lib/cache'
 
+interface Props {
+  className?: string
+}
+
 interface GithubApiResponse {
   total: {
     [year: number | string]: number
@@ -75,6 +79,7 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
     '[&_rect.level-3]:fill-primary/[.76]',
     '[&_rect.level-4]:fill-neutral/[.92]',
     '[&_g]:overflow-visible',
+    Astro.props.className,
   ]}
 >
   {
