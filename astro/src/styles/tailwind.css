@@ -4,6 +4,12 @@
 @import './fancyBackground.css';
 @import './prism-material.css';
 
+@layer base {
+  html {
+    @apply font-serif;
+  }
+}
+
 @layer components {
   .paper {
     /* @apply max-w-none mb-4 drop-shadow-xl print:drop-shadow-none bg-base-100/90 p-4 rounded-lg; */
@@ -41,6 +47,19 @@
 
 .prose a:not(.btn) {
   @apply link link-primary link-hover;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply font-sans font-black;
+
+  & a {
+    @apply font-black;
+  }
 }
 
 .tooltip {

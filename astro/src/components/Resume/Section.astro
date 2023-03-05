@@ -1,0 +1,18 @@
+---
+interface Props {
+  title?: any
+}
+
+const { title } = Astro.props
+---
+
+<section class:list={['prose', 'flex', 'flex-col', 'gap-2']}>
+  {
+    title && (
+      <header>
+        <h2 class="my-0 border-b-2 border-b-accent text-base">{title}</h2>
+      </header>
+    )
+  }
+  <slot />
+</section>

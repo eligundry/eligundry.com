@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import Experience from '../components/ResumeExperience.astro'
+import Experience from '../components/Resume/Experience.astro'
+import Section from '../components/Resume/Section.astro'
 
 const formatter = new Intl.ListFormat('en', {
   style: 'long',
@@ -412,27 +413,46 @@ const resume = {
 ---
 
 <Layout title="Resume">
-  <div class="paper">
+  <div
+    class:list={[
+      'paper',
+      'gap-4',
+      'flex',
+      'flex-col',
+      '[&_.prose_ul]:list-outside',
+      '[&_.prose_ul]:pl-1',
+      '[&_.prose_ul]:sm:pl-0',
+      '[&_.prose_ul_li]:pl-0',
+      '[&_.prose_ul_ul]:pl-4',
+      '[&_.prose_ul_ul]:my-0',
+      '[&_.prose]:print:text-sm',
+    ]}
+  >
     <header
       class="hidden print:flex flex-row justify-between prose border-b-2 border-b-accent"
     >
       <h1 class="text-lg mb-0">Eli Gundry</h1>
-      <h2 class="text-base mt-0 font-mono">
+      <h2 class="text-sm mt-0 !font-mono self-center">
         <span class="text-primary">Full Stack Web Engineer</span>
         <span class="comment"> // ❤️ Javascript, Devops && Web Standards</span>
       </h2>
     </header>
-    <section class="prose">
-      <header class="block print:hidden">
-        <h2 class="my-4 border-b-2 border-b-accent">Work</h2>
-      </header>
-      <header
-        class="hidden print:flex justify-between my-4 border-b-2 border-b-accent"
-      >
-        <h2>Selected Work</h2>
-        <span
-          >View full resume at <a href="/resume/">eligundry.com/resume/</a>
-        </span>
+    <Section>
+      <header class="flex justify-between border-b-2 border-b-accent">
+        <h2 class="my-0 block print:hidden">Work</h2>
+        <h2 class="my-0 text-base hidden print:block">Selected Work</h2>
+        <h6
+          class:list={[
+            'self-center',
+            'italic',
+            'text-neutral-900',
+            'hidden',
+            'print:block',
+            'text-xs',
+          ]}
+        >
+          View full resume at <a href="/resume/">eligundry.com/resume/</a>
+        </h6>
       </header>
       {
         resume.work.map((exp) => (
@@ -446,15 +466,13 @@ const resume = {
             location={exp.location}
             summary={exp.summary}
             highlights={exp.highlights}
+            printHide={exp.printHide}
           />
         ))
       }
-    </section>
+    </Section>
 
-    <section class="prose">
-      <header>
-        <h2 class="my-4 border-b-2 border-b-accent">Education</h2>
-      </header>
+    <Section title="Education">
       {
         resume.education.map((exp) => (
           <Experience
@@ -470,15 +488,10 @@ const resume = {
           />
         ))
       }
-    </section>
+    </Section>
 
-    <section class="prose">
-      <header>
-        <h2 class="mt-0 mb-4 border-b-2 border-b-accent">
-          Skills & Technologies
-        </h2>
-      </header>
-      <ul>
+    <Section title="Skills & Technologies">
+      <ul class="mt-0">
         {
           resume.skills.map((section) => {
             let prefix
@@ -510,15 +523,12 @@ const resume = {
           })
         }
       </ul>
-    </section>
+    </Section>
 
-    <section class="prose">
-      <header>
-        <h2 class="my-4 border-b-2 border-b-accent">Activities & Interests</h2>
-        <ul>
-          {resume.activitesInterests.map((ai) => <li set:html={ai} />)}
-        </ul>
-      </header>
-    </section>
+    <Section title="Activities & Interests">
+      <ul class="mt-0">
+        {resume.activitesInterests.map((ai) => <li set:html={ai} />)}
+      </ul>
+    </Section>
   </div>
 </Layout>

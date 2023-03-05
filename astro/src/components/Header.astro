@@ -61,6 +61,7 @@ const links = [
     'z-40',
     'sm:pr-8',
     'pl-4 md:pl-14',
+    'font-sans',
     'print:hidden',
     '[&_a]:hover:bg-transparent',
     '[&_a]:focus:bg-transparent',
@@ -74,8 +75,17 @@ const links = [
       <a
         href="/"
         itemprop="sameAs"
-        class="btn btn-ghost normal-case text-xl site-name pl-0">Eli Gundry</a
+        class:list={[
+          'btn',
+          'btn-ghost',
+          'normal-case',
+          'text-xl',
+          'site-name',
+          'pl-0',
+        ]}
       >
+        Eli Gundry
+      </a>
     </div>
     <nav class="flex-none hidden md:flex">
       <ul class:list={['menu', 'menu-horizontal', 'p-0', '[&_a]:text-current']}>

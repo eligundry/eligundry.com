@@ -20,6 +20,11 @@ module.exports = {
         '2xl': '786px',
       },
     },
+    fontFamily: {
+      sans: ['Lato', 'sans-serif'],
+      serif: ['Arvo', 'serif'],
+      mono: ['"Fira Code"', 'monospace'],
+    },
     screens: {
       ...defaultTheme.screens,
       print: {

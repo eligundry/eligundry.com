@@ -42,7 +42,6 @@ const {
     'flex-wrap',
     'justify-between',
     'page-break-avoid',
-    'mb-4',
     'order-1',
     printHide && 'print:hidden',
   ]}
@@ -61,12 +60,25 @@ const {
     itemscope
     itemtype="https://schema.org/OrganizationRole"
     itemprop="member"
-    class="w-full sm:w-1/2 print:w-1/2 m-0 order-3 sm:order-2 print:order-2 sm:text-right print:text-right"
+    class:list={[
+      'w-full',
+      'sm:w-1/2',
+      'print:w-1/2',
+      'm-0',
+      'order-3',
+      'sm:order-2',
+      'print:order-2',
+      'sm:text-right',
+      'print:text-right',
+      'text-xs',
+      'font-mono',
+      'self-center',
+    ]}
   >
     <meta itemprop="roleName" content={position} />
-    <span role="img" aria-label="calendar denoting tenure" class="sm:hidden"
-      >🗓</span
-    >
+    <span role="img" aria-label="calendar denoting tenure" class="sm:hidden">
+      🗓
+    </span>
     <time
       itemprop="startDate"
       datetime={dateFns.formatISO(startDate, { representation: 'date' })}
@@ -99,7 +111,20 @@ const {
     itemscope
     itemprop="address"
     itemtype="https://schema.org/PostalAddress"
-    class="w-full sm:w-1/2 print:w-1/2 m-0 order-4 print:order-4 not-italic sm:text-right print:text-right"
+    class:list={[
+      'w-full',
+      'sm:w-1/2',
+      'print:w-1/2',
+      'm-0',
+      'order-4',
+      'print:order-4',
+      'not-italic',
+      'sm:text-right',
+      'print:text-right',
+      'text-xs',
+      'font-mono',
+      'self-center',
+    ]}
   >
     <span role="img" aria-label="pin denoting location on map" class="sm:hidden"
       >📍</span
@@ -120,7 +145,7 @@ const {
   </address>
   {
     summary && (
-      <p itemprop="description" class="order-5 my-0" set:html={summary} />
+      <p itemprop="description" class="order-5 my-2" set:html={summary} />
     )
   }
   {
