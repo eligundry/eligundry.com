@@ -36,7 +36,14 @@ const props = Astro.props
     <iframe
       src={`https://bandcamp.com/EmbeddedPlayer/album=${props.bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
       seamless
-      class:list={['border-0', 'w-[320px]', 'h-[470px]', props.className]}
+      class:list={[
+        'border-0',
+        'sm:w-[320px]',
+        'w-full',
+        'h-[470px]',
+        'mb-4',
+        props.className,
+      ]}
       title="album embed from bandcamp.com"
       loading="lazy"
     >

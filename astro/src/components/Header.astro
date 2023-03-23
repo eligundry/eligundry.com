@@ -68,7 +68,7 @@ const links = [
     '[&_a]:focus:bg-transparent',
     '[&_a]:hover:no-underline',
     '[&_a]:focus:no-underline',
-    '[&_a[aria-current="page"]]:link-secondary',
+    '[&_a[aria-current="page"]]:link-primary',
   ]}
 >
   <div class="container mx-auto flex flex-wrap">
@@ -95,7 +95,7 @@ const links = [
             <li>
               <a
                 href={link.href}
-                class:list={['hover:link-primary', 'focus:link-primary']}
+                class:list={['hover:link-accent', 'focus:link-accent']}
                 aria-current={
                   Astro.url.pathname === link.href ||
                   (link.href !== '/' &&
@@ -171,17 +171,23 @@ const links = [
       'shadow-none',
       'pt-0',
       'pl-4',
-      '[&_a[aria-current="page"]]:link-secondary',
+      '[&_a[aria-current="page"]]:btn-accent',
     ]}
     for=""
   >
-    <ul>
+    <ul class="flex flex-col gap-y-4">
       {
         links.map((link) => (
           <li>
             <a
               href={link.href}
-              class:list={['hover:link-primary', 'focus:link-primary']}
+              class:list={[
+                'btn',
+                'active:btn-primary',
+                'justify-start',
+                'text-left',
+                'w-full',
+              ]}
               aria-current={
                 Astro.url.pathname === link.href ||
                 (link.href !== '/' && Astro.url.pathname.startsWith(link.href))
@@ -189,7 +195,11 @@ const links = [
                   : undefined
               }
             >
-              <EmojiText emoji={link.emoji} label={link.emojiLabel}>
+              <EmojiText
+                emoji={link.emoji}
+                label={link.emojiLabel}
+                className="pr-2"
+              >
                 {link.name}
               </EmojiText>
             </a>
@@ -210,7 +220,8 @@ const links = [
   document.addEventListener('DOMContentLoaded', () => {
     themeChange()
 
-    const themeCheckboxes = document.querySelectorAll('.theme-toggle')
+    const themeCheckboxes =
+      document.querySelectorAll<HTMLInputElement>('.theme-toggle')
 
     themeCheckboxes.forEach((cb) => {
       if (!('checked' in cb)) {
@@ -222,20 +233,30 @@ const links = [
 
     on('change', '.theme-toggle', (event) => {
       themeCheckboxes.forEach((cb) => {
+        // @ts-ignore
         cb.checked = event.target.checked
       })
     })
   })
 
   // Scroll Progress
-  const progress = document.getElementById('scroll-progress')
+  const progress =
+    document.querySelector<HTMLProgressElement>('#scroll-progress')
 
   function animateProgress() {
     requestAnimationFrame(() => {
-      progress.value = window.scrollY
-      progress.max =
-        Math.max(document.body.clientHeight, window.innerHeight + 1) -
-        window.innerHeight
+      if (progress) {
+        progress.value = window.scrollY
+        progress.max =
+          Math.max(document.body.clientHeight, window.innerHeight + 1) -
+          window.innerHeight
+
+        if (progress.value === progress.max) {
+          progress.classList.add('full')
+        } else {
+          progress.classList.remove('full')
+        }
+      }
     })
   }
 
@@ -246,9 +267,12 @@ const links = [
   // Hamburger Menu
   document.addEventListener('DOMContentLoaded', () => {
     on('change', '.modal-control-input', (event) => {
-      const inputs = document.querySelectorAll('.modal-control-input')
+      const inputs = document.querySelectorAll<HTMLInputElement>(
+        '.modal-control-input'
+      )
 
       inputs.forEach((i) => {
+        // @ts-ignore
         i.checked = event.target.checked
       })
     })

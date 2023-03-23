@@ -1,5 +1,7 @@
 ---
 import { GoogleFontsOptimizer } from 'astro-google-fonts-optimizer'
+import { SEO } from 'astro-seo'
+import type { CollectionEntry } from 'astro:content'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import FancyBackground from '../components/FancyBackground.astro'
@@ -11,9 +13,22 @@ export interface Props {
   title?: string
   description?: string
   fancyBackgroundPoints?: number
+  frontmatter?:
+    | CollectionEntry<'blog'>['data']
+    | CollectionEntry<'talks'>['data']
+  remarkPluginFrontmatter?: Partial<{
+    modified: Date
+    readingTime: number
+  }>
 }
 
-const { title, description, fancyBackgroundPoints } = Astro.props
+const {
+  title,
+  description,
+  frontmatter,
+  remarkPluginFrontmatter,
+  fancyBackgroundPoints,
+} = Astro.props
 const latestFeeling = await daylio.getLatest()
 ---
 
@@ -26,26 +41,52 @@ const latestFeeling = await daylio.getLatest()
 >
   <head>
     <meta charset="utf-8" />
-    <title>{title ? `${title} | ${config.title}` : config.title}</title>
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="canonical" href={config.url + Astro.url.pathname} />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="Eli Gundry's Blog"
-      href="/blog.rss"
-    />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="Eli Gundry's Feelings"
-      href="/feelings.rss"
-    />
-    <link
-      rel="icon"
-      href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${latestFeeling.emoji}</text></svg>`}
+    <SEO
+      title={title}
+      titleTemplate={`%s | ${config.title}`}
+      titleDefault={config.title}
+      description={description}
+      canonical={config.url + Astro.url.pathname}
+      openGraph={{
+        basic: {
+          title: title ?? config.title,
+          image: frontmatter?.cover ?? config.seoImage ?? '',
+          type: 'website',
+          url: config.url + Astro.url.pathname,
+        },
+        article: {
+          publishedTime: frontmatter?.date?.toISOString() ?? '',
+          modifiedTime: remarkPluginFrontmatter?.modified?.toISOString() ?? '',
+        },
+      }}
+      twitter={{
+        creator: config.twitter,
+        card: 'summary_large_image',
+      }}
+      extend={{
+        meta: [
+          { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+          { name: 'generator', content: Astro.generator },
+        ],
+        link: [
+          {
+            rel: 'alternate',
+            type: 'application/rss+xml',
+            title: 'Eli Gundry’s Blog',
+            href: '/blog.rss',
+          },
+          {
+            rel: 'alternate',
+            type: 'application/rss+xml',
+            title: 'Eli Gundry’s Feelings',
+            href: '/feelings.rss',
+          },
+          {
+            rel: 'icon',
+            href: `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${latestFeeling.emoji}</text></svg>`,
+          },
+        ],
+      }}
     />
     <GoogleFontsOptimizer
       url="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code&family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"

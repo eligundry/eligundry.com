@@ -1,5 +1,6 @@
 ---
 import { getCollection, CollectionEntry } from 'astro:content'
+import { readingTimeToFancyBackgroundPoints } from '../../lib/utils'
 import PostLayout from '../../layouts/Post.astro'
 
 interface Props {
@@ -27,6 +28,9 @@ const { Content, remarkPluginFrontmatter } = await entry.render()
   frontmatter={entry.data}
   remarkPluginFrontmatter={remarkPluginFrontmatter}
   showComments
+  fancyBackgroundPoints={readingTimeToFancyBackgroundPoints(
+    remarkPluginFrontmatter.readingTime
+  )}
 >
   <Content />
 </PostLayout>

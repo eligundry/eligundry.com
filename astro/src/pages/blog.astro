@@ -3,8 +3,7 @@ import { getCollection } from 'astro:content'
 import dateFns from 'date-fns'
 import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/Layout.astro'
-import EmojiText from '../components/EmojiText.astro'
-import Excerpt from '../components/Post/Excerpt.astro'
+import PostPreview from '../components/Post/Preview.astro'
 
 const posts = (await getCollection('blog')).sort((a, b) =>
   dateFns.compareDesc(new Date(a.data.date), new Date(b.data.date))
@@ -14,20 +13,7 @@ const tags = [
     curr?.data?.tags?.forEach((tag: string) => acc.add(tag))
     return acc
   }, new Set<string>()),
-]
-const readingTimes = (
-  await Promise.all(
-    posts.map(async (post): Promise<[string, number]> => {
-      const { remarkPluginFrontmatter } = await post.render()
-      return [post.slug, remarkPluginFrontmatter.readingTime ?? 1]
-    })
-  )
-).reduce((acc, [slug, readingTime]) => {
-  acc[slug] = readingTime ?? 1
-  return acc
-}, {} as Record<string, number>)
-
-const renderedPosts = await Promise.all(posts.map((p) => p.render()))
+].sort((a, b) => (a < b ? -1 : 1))
 ---
 
 <script>
@@ -130,60 +116,7 @@ const renderedPosts = await Promise.all(posts.map((p) => p.render()))
       </a>
     </div>
     <div id="posts" class:list={['flex', 'flex-col', 'gap-y-4', 'mt-4']}>
-      {
-        posts.map((post, i) => {
-          const { Content, remarkPluginFrontmatter } = renderedPosts[i]
-
-          return (
-            <article
-              itemscope
-              itemtype={`https://schema.org/${
-                post.collection === 'blog' ? 'BlogPosting' : 'CreativeWork'
-              }`}
-              class:list={post.data.tags.map((tag) => `tag-${tag}`)}
-            >
-              <link itemprop="author publisher" href="#eli-gundry" />
-              {remarkPluginFrontmatter.readingTime > 0 && (
-                <meta
-                  itemprop="timeRequired"
-                  content={`PT${remarkPluginFrontmatter.readingTime}`}
-                />
-              )}
-              <h2 itemprop="name headline" class="my-0">
-                <a href={`/${post.collection}/${post.slug}/`} itemprop="url">
-                  {post.data.title}
-                </a>
-              </h2>
-              <div class="flex flex-row gap-4 [&>*]:m-0">
-                <time datetime={post.data.date.toISOString()}>
-                  <EmojiText label="calendar for the date" emoji="🗓">
-                    {dateFns.formatISO(post.data.date, {
-                      representation: 'date',
-                    })}
-                  </EmojiText>
-                </time>
-                <p>
-                  <EmojiText
-                    label="stopwatch denoting time to read article"
-                    emoji="⏱"
-                  >
-                    {readingTimes[post.slug]}{' '}
-                    {readingTimes[post.slug] > 1 ? 'Minutes' : 'Minute'}
-                  </EmojiText>
-                </p>
-              </div>
-              <p itemprop="description" class="m-0">
-                <EmojiText label="description of the blog post" emoji="📝">
-                  {post.data.description}
-                </EmojiText>
-              </p>
-              <Excerpt>
-                <Content />
-              </Excerpt>
-            </article>
-          )
-        })
-      }
+      {posts.map((post) => <PostPreview entry={post} />)}
     </div>
   </div>
 </Layout>

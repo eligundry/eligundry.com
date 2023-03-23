@@ -8,6 +8,11 @@
   html {
     @apply font-serif;
   }
+
+  :root {
+    --tooltip-color: red;
+    --tooltip-text-color: green;
+  }
 }
 
 @layer components {
@@ -63,13 +68,34 @@
 }
 
 .btn {
-  @apply font-sans;
+  @apply font-sans !cursor-pointer;
 }
 
 .tooltip {
   cursor: default;
 }
 
-.mockup-code .line {
+.mockup-code {
+  @apply pb-0;
+}
+
+.mockup-code .line,
+.mockup-code .code-line {
   @apply pl-6;
+}
+
+.code-wrapper + h1 {
+  @apply mt-4;
+}
+
+.prose pre:has(.mockup-code) {
+  @apply p-0;
+}
+
+#scroll-progress[value]::-webkit-progress-value {
+  @apply rounded-l-none;
+}
+
+#scroll-progress[value].full::-webkit-progress-value {
+  @apply rounded-r-none;
 }

@@ -28,11 +28,11 @@ export const cssvar = (
 ) => getComputedStyle(element).getPropertyValue(name).trim()
 
 const tooltipCssvar = (name: string) => {
-  let elm = document.querySelector('.tooltip')
+  let elm = document.querySelector('.tooltip.tooltip-primary')
 
   if (!elm) {
     elm = document.createElement('div')
-    elm.classList.add('tooltip')
+    elm.classList.add('tooltip', 'tooltip-primary')
     document.body.append(elm)
     const v = cssvar(name, elm)
     elm.remove()
@@ -46,10 +46,12 @@ const tooltipCssvar = (name: string) => {
 export const tooltipTheme = (): Partial<TooltipOptions> => ({
   displayColors: false,
   titleFont: {
+    family: "'Lato', sans-serif",
     size: 14,
   },
   bodyFont: {
-    size: 16,
+    family: "'Lato', sans-serif",
+    size: 14,
   },
   backgroundColor: tooltipCssvar('--tooltip-color'),
   footerColor: tooltipCssvar('--tooltip-color'),

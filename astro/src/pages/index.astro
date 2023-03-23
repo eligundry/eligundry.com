@@ -1,10 +1,12 @@
 ---
 import { Image } from '@astrojs/image/components'
+import { getCollection } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart.tsx'
 import GithubCalendar from '../components/GithubCalendar.astro'
+import PostPreview from '../components/Post/Preview.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
@@ -29,6 +31,9 @@ const shelves = {
     order: 'd',
   }),
 }
+const favoritePosts = (await getCollection('blog'))
+  .filter((post) => post.data.favoriteIndex)
+  .sort((a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0))
 ---
 
 <Layout>
@@ -48,8 +53,8 @@ const shelves = {
         src={import('../assets/img/eli-thumbs-up-memoji.png')}
         loading="eager"
         alt="Eli Gundry's Memoji Headshot"
-        width="250"
-        height="250"
+        width={250}
+        height={250}
         format="webp"
       />
     </figure>
@@ -135,6 +140,18 @@ const shelves = {
     <GithubCalendar className="my-0" />
   </section>
 
+  <section class="favoritePosts paper prose">
+    <h2>Are You A Blogger?</h2>
+    <p>
+      I'm certainly trying to be! I try to write four posts a year. Sometimes I
+      exceed it, other times, I completely whiff. No pressure though. Here are
+      some of my favorite posts.
+    </p>
+    <div class="posts flex flex-col gap-4">
+      {favoritePosts.map((post) => <PostPreview entry={post} />)}
+    </div>
+  </section>
+
   <section class="reading paper prose">
     <h2>What I'm Reading</h2>
     <p>
@@ -144,7 +161,7 @@ const shelves = {
         itemprop="sameAs">Goodreads</a
       >.
     </p>
-    <div class="bookshelf not-prose gap-y-2 [&>a]:sm:tooltip">
+    <div class="bookshelf not-prose gap-y-2">
       {
         [...shelves.current, ...shelves.read].map((book, i) => {
           let alt = book.title
@@ -162,6 +179,7 @@ const shelves = {
               href={book.url}
               target="_blank"
               rel="noopener noreferrer"
+              class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
               data-tip={alt}
             >
               <Image
@@ -192,6 +210,12 @@ const shelves = {
       called
       <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
     </p>
+    <p>
+      In order to listen to more new music, I created
+      <a href="https://album-mode.party">Album Mode.party</a>, which recommends
+      me albums that Spotify's algorithims would never dare show me. It's the
+      first application I have built that I use daily!
+    </p>
     <div class="flex flex-col sm:flex-row sm:gap-4">
       <div class="sm:items-stretch flex flex-col">
         <h3 class="mt-0">Seasonal Playlist</h3>
@@ -207,13 +231,16 @@ const shelves = {
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>
         <a
           href="https://www.last.fm/user/eli_pwnd"
-          class="grid grid-cols-3 h-fit gap-0 not-prose [&>picture]:sm:tooltip"
+          class:list={['grid', 'grid-cols-3', 'h-fit', 'gap-0', 'not-prose']}
         >
           {
             topAlbums.map((album) => {
               const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
               return (
-                <picture data-tip={alt}>
+                <picture
+                  data-tip={alt}
+                  class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
+                >
                   <Image
                     alt={alt}
                     src={album.cover}

@@ -9,7 +9,7 @@ indent_size = 4
 insert_final_newline = true
 charset = utf-8
 
-[*.{js,jsx,ts,tsx,mjs}]
+[*.{js,jsx,ts,tsx,mjs,cjs}]
 indent_style = space
 indent_size = 2
 

@@ -15,12 +15,19 @@ interface Props {
     modified: Date
     readingTime: number
   }>
+  fancyBackgroundPoints?: number
 }
 
-const { frontmatter, remarkPluginFrontmatter, slug, collection, showComments } =
-  Astro.props
+const {
+  frontmatter,
+  remarkPluginFrontmatter,
+  slug,
+  collection,
+  showComments,
+  fancyBackgroundPoints,
+} = Astro.props
 const { title, description, cover, date } = frontmatter
-const { modified, readingTime } = remarkPluginFrontmatter
+const { modified, readingTime = 0 } = remarkPluginFrontmatter
 const url = `/${collection}/${slug}/`
 ---
 
@@ -32,7 +39,11 @@ const url = `/${collection}/${slug}/`
   }
 </style>
 
-<BaseLayout title={frontmatter.title}>
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  fancyBackgroundPoints={fancyBackgroundPoints}
+>
   <article
     class="paper prose"
     itemscope
@@ -68,12 +79,19 @@ const url = `/${collection}/${slug}/`
             }
           </EmojiText>
         </time>
-        <p>
-          <EmojiText label="stopwatch denoting time to read article" emoji="⏱">
-            {readingTime ?? 1}{' '}
-            {(readingTime ?? 0) > 1 ? 'Minutes' : 'Minute'}
-          </EmojiText>
-        </p>
+        {
+          readingTime > 0 && (
+            <p>
+              <EmojiText
+                label="stopwatch denoting time to read article"
+                emoji="⏱"
+              >
+                {readingTime ?? 1}{' '}
+                {(readingTime ?? 0) > 1 ? 'Minutes' : 'Minute'}
+              </EmojiText>
+            </p>
+          )
+        }
       </div>
       <p itemprop="description" class="m-0">
         <EmojiText label="description of the blog post" emoji="📝">

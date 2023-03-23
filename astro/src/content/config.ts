@@ -16,6 +16,7 @@ const commonFrontmatterSchema = z.object({
 
 const blogSchema = commonFrontmatterSchema.extend({
   tags: z.array(z.string()).min(1),
+  favoriteIndex: z.number().optional(),
 })
 
 const talksSchema = commonFrontmatterSchema.extend({

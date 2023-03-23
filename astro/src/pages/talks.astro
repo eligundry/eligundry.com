@@ -2,12 +2,11 @@
 import { getCollection } from 'astro:content'
 import dateFns from 'date-fns'
 import Layout from '../layouts/Layout.astro'
+import PostPreview from '../components/Post/Preview.astro'
 
 const talks = (await getCollection('talks')).sort((a, b) =>
   dateFns.compareDesc(new Date(a.data.date), new Date(b.data.date))
 )
-
-console.log(talks)
 ---
 
 <Layout
@@ -15,16 +14,10 @@ console.log(talks)
   description="Talks that I have given at meetups and conferences."
   fancyBackgroundPoints={10}
 >
-  <div class="paper prose">
-    {
-      talks.map((talk) => (
-        <article>
-          <h2 class="my-2">
-            <a href={`/${talk.collection}/${talk.slug}/`}>{talk.data.title}</a>
-          </h2>
-          <p class="mb-0">{talk.data.description}</p>
-        </article>
-      ))
-    }
+  <div
+    id="posts"
+    class:list={['flex', 'flex-col', 'gap-y-4', 'mt-4', 'prose', 'paper']}
+  >
+    {talks.map((talk) => <PostPreview entry={talk} />)}
   </div>
 </Layout>

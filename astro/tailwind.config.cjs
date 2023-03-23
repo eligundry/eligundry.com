@@ -11,7 +11,7 @@ module.exports = {
     require('daisyui'),
     require('@tailwindcss/line-clamp'),
   ],
-  safelist: ['tooltip'],
+  safelist: ['tooltip', 'tooltip-primary'],
   theme: {
     colors: pick(defaultTheme.colors, ['white', 'transparent']),
     container: {
