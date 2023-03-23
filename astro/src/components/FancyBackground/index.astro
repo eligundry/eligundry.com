@@ -70,10 +70,9 @@ const { points = 30 } = Astro.props
 
 <script>
   import { on } from 'delegated-events'
+  import fluidBackgroundWorkletURL from './worklet.js?url'
 
-  window?.CSS?.paintWorklet?.addModule?.(
-    'https://cdn.statically.io/gh/eligundry/fluid-pattern-worklet/configurable-items/worklet.bundle.js'
-  )
+  window?.CSS?.paintWorklet?.addModule?.(fluidBackgroundWorkletURL)
 
   document.addEventListener('DOMContentLoaded', () => {
     const canvases = document.querySelectorAll('.fancy-bg')

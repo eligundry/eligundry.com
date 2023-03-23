@@ -38,21 +38,31 @@ const { entry, wrapInPaper = false } = Astro.props
             {entry.rawTime}
           </a>
         </time>
-        <ul class="pl-0 mx-0 my-2 not-prose gap-2 flex text-3xl">
+        <div
+          class:list={[
+            'pl-0',
+            'mx-0',
+            'my-0',
+            'not-prose',
+            'gap-3',
+            'text-3xl',
+            'flex',
+          ]}
+        >
           {
             entry.activities.map((a) => (
-              <li
+              <span
                 role="img"
                 aria-label={a}
                 data-tip={a}
-                class="tooltip"
+                class:list={['tooltip', 'tooltip-primary', 'font-sans']}
                 itemprop="keywords"
               >
                 {ActivityMapping[a]}
-              </li>
+              </span>
             ))
           }
-        </ul>
+        </div>
       </div>
       <div role="img" aria-label="{{ entry.mood }} emoji" class="text-8xl">
         {entry.emoji}
