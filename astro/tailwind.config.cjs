@@ -47,6 +47,15 @@ module.exports = {
       lineClamp: {
         10: '10',
       },
+      keyframes: {
+        fadein: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
+      },
+      animation: {
+        fadein: 'fadein 10s',
+      },
     },
   },
   daisyui: {

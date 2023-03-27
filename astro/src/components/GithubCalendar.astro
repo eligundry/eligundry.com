@@ -35,9 +35,6 @@ const contributions = await cacheAxios
     }
   )
   .then((resp) => {
-    if (import.meta.env.DEV) {
-      console.log(`github activity cache hit?`, resp.cached)
-    }
     return resp.data.contributions.map((c) => ({
       ...c,
       date: dateFns.parseISO(c.date),

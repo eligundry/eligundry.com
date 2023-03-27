@@ -107,6 +107,23 @@ const latestFeeling = await daylio.getLatest()
         )
       }
     </script>
+    <script>
+      const lazyLoadedIframes = document.querySelectorAll(
+        'iframe[loading="lazy"][data-src]'
+      )
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const iframe = entry.target
+            iframe.src = iframe.dataset.src
+            observer.unobserve(iframe)
+          }
+        })
+      })
+      lazyLoadedIframes.forEach((iframe) => {
+        observer.observe(iframe)
+      })
+    </script>
     <slot name="head" />
   </head>
   <body>

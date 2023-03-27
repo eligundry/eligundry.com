@@ -37,7 +37,7 @@ const favoritePosts = (await getCollection('blog'))
 ---
 
 <Layout>
-  <section class="intro paper prose">
+  <section class:list={['intro', 'paper', 'prose']}>
     <h2>Glad To Meet You!</h2>
     <figure
       class:list={[
@@ -208,7 +208,7 @@ const favoritePosts = (await getCollection('blog'))
       <a href="/blog/icymi-glocca-morra-just-married">emo</a>. I occasionally
       write reviews of old albums that I love but aren't well known in a series
       called
-      <a href="/tags/icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
+      <a href="/blog/#icymi"><abbr title="I See You Missed It">ICYMI</abbr></a>.
     </p>
     <p>
       In order to listen to more new music, I created
@@ -221,13 +221,14 @@ const favoritePosts = (await getCollection('blog'))
         <h3 class="mt-0">Seasonal Playlist</h3>
         <iframe
           title="Spotify playlist that I have on repeat"
-          src={config.spotifyPlaylist}
+          data-src={config.spotifyPlaylist}
           frameborder="0"
           allow="encrypted-media"
           loading="lazy"
           width="300"
           height="380"
-          class="w-full sm:w-[300px] h-[380px] sm:flex-1"></iframe>
+          class:list={['w-full', 'sm:w-[300px]', 'h-[380px]', 'sm:flex-1']}
+          loading="lazy"></iframe>
       </div>
       <div>
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>

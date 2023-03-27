@@ -1,7 +1,5 @@
 ---
-interface SpotifyProps {
-  spotifyID: string
-}
+type SpotifyProps = { spotifyID: string }
 
 interface BandcampProps {
   bandcampID: string
@@ -22,7 +20,7 @@ const props = Astro.props
   'spotifyID' in props && (
     <iframe
       class:list={['border-0', 'w-[320px]', 'h-[380px]', props.className]}
-      src={`https://open.spotify.com/embed/album/${props.spotifyID}`}
+      data-src={`https://open.spotify.com/embed/album/${props.spotifyID}`}
       height="380"
       frameborder="0"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -34,7 +32,7 @@ const props = Astro.props
 {
   'bandcampID' in props && (
     <iframe
-      src={`https://bandcamp.com/EmbeddedPlayer/album=${props.bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
+      data-src={`https://bandcamp.com/EmbeddedPlayer/album=${props.bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
       seamless
       class:list={[
         'border-0',
