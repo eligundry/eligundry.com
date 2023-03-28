@@ -158,7 +158,11 @@ const links = [
   id="mobile-nav-modal"
   class="modal-toggle modal-control-input"
 />
-<label for="mobile-nav-modal" class="modal cursor-pointer bg-transparent">
+<label
+  for="mobile-nav-modal"
+  class:list={['modal', 'cursor-pointer', 'bg-transparent']}
+  aria-label="toggles the mobile navigation dropdown"
+>
   <label
     class:list={[
       'modal-box',

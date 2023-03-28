@@ -38,8 +38,6 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
 
   if (books) {
     return books
-  } else {
-    console.info('goodreads cache miss')
   }
 
   let goodreadsHTML: AxiosResponse<string> | null
