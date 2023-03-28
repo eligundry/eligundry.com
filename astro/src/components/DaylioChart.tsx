@@ -55,7 +55,7 @@ const DaylioChart = () => {
               return
             }
 
-            window.location.href = `/feelings#${targetEntry.x}`
+            window.location.href = `/feelings/#${targetEntry.x}`
           },
           onHover: (event, points) => {
             // @ts-ignore

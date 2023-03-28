@@ -16,8 +16,13 @@ const talks = (await getCollection('talks')).sort((a, b) =>
 >
   <div
     id="posts"
-    class:list={['flex', 'flex-col', 'gap-y-4', 'mt-4', 'prose', 'paper']}
+    class:list={['flex', 'flex-col', 'gap-y-4', 'prose', 'paper']}
   >
+    <h1 class="mb-0">Talks</h1>
+    <p class="my-0">
+      I try to give a meetup talk once every three years. I wish I could be more
+      prolific in this sense, I just value working over talking.
+    </p>
     {talks.map((talk) => <PostPreview entry={talk} />)}
   </div>
 </Layout>

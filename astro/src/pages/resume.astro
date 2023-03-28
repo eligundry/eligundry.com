@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import Experience from '../components/Resume/Experience.astro'
 import Section from '../components/Resume/Section.astro'
 import Footer from '../components/Resume/Footer.astro'
+import { FaDownload } from 'react-icons/fa'
 
 const formatter = new Intl.ListFormat('en', {
   style: 'long',
@@ -446,6 +447,26 @@ const resume = {
         >
           View full resume at <a href="/resume/">eligundry.com/resume/</a>
         </h6>
+        <button
+          class:list={[
+            'print-button',
+            'btn',
+            'btn-sm',
+            'btn-ghost',
+            'sm:tooltip',
+            'sm:tooltip-primary',
+            'sm:tooltip-left',
+            'self-start',
+            'normal-case',
+            'hidden',
+            'print:hidden',
+            'sm:inline',
+          ]}
+          aria-label="download this resume by printing it as a pdf"
+          data-tip="Download this resume by printing it as a PDF"
+        >
+          <FaDownload />
+        </button>
       </header>
       {
         resume.work.map((exp) => (
@@ -526,3 +547,17 @@ const resume = {
     <Footer />
   </div>
 </Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const printBtn = document.querySelector('.print-button')
+
+    if (!printBtn) {
+      return
+    }
+
+    printBtn.addEventListener('click', () => {
+      window.print()
+    })
+  })
+</script>

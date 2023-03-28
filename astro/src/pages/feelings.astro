@@ -3,6 +3,7 @@ import dateFns from 'date-fns'
 import daylio, { ActivityMapping } from '../lib/daylio'
 import Layout from '../layouts/Layout.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
+import DaylioChart from '../components/DaylioChart.tsx'
 
 const entries = await daylio.getRange(dateFns.subMonths(new Date(), 6))
 ---
@@ -12,5 +13,16 @@ const entries = await daylio.getRange(dateFns.subMonths(new Date(), 6))
   description="A log of my feelings. This really more of public diary. It's wild how long I've kept this going."
   fancyBackgroundPoints={300}
 >
+  <div class="paper prose">
+    <h1 class="mb-0">Feelings</h1>
+    <p class="mt-4">
+      I maintain a diary of my feelings using{' '}
+      <a href="https://daylio.net/">Daylio</a> which I publish to this site daily.
+      I{' '}
+      <a href="/blog/feelings-api/"> wrote a bit about it on my blog</a>, if you
+      are interested in how and why.
+    </p>
+    <DaylioChart client:media="(min-width: 640px)" />
+  </div>
   {entries.map((entry) => <DaylioEntry entry={entry} wrapInPaper />)}
 </Layout>
