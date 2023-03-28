@@ -1,0 +1,49 @@
+---
+import EmojiText from '../EmojiText.astro'
+---
+
+<footer
+  class:list={[
+    ['hidden', 'print:flex'],
+    'flex-row',
+    'fixed',
+    'w-full',
+    'font-sans',
+    'font-bold',
+    'text-xs',
+    'bottom-0',
+    'gap-6',
+    '[&_a]:link-primary',
+    ['border-t-2', 'border-t-accent'],
+    'pt-2',
+  ]}
+>
+  <span>
+    <EmojiText
+      emoji="💌"
+      label="envelop with heart because you will love emailing me"
+    >
+      <a href="mailto:eligundry@gmail.com">eligundry@gmail.com</a>
+    </EmojiText>
+  </span>
+  <span>
+    <EmojiText emoji="📞" label="call me maybe">
+      <a href="tel:3475232652">347.523.2652</a>
+    </EmojiText>
+  </span>
+  <address class="not-italic">
+    <EmojiText emoji="📍" label="drop a pin cause I am in Astoria">
+      Astoria, NY
+    </EmojiText>
+  </address>
+  <span>
+    <EmojiText emoji="💾" label="floppy disk that my website is saved on">
+      <a href="https://eligundry.com"> eligundry.com</a>
+    </EmojiText>
+  </span>
+  <span>
+    <EmojiText emoji="👨‍💻" label="lil man at computer because i'm coding">
+      <a href="https://github.com/eligundry">github/eligundry</a>
+    </EmojiText>
+  </span>
+</footer>

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro'
 import Experience from '../components/Resume/Experience.astro'
 import Section from '../components/Resume/Section.astro'
+import Footer from '../components/Resume/Footer.astro'
 
 const formatter = new Intl.ListFormat('en', {
   style: 'long',
@@ -52,7 +53,7 @@ const resume = {
       summary: '',
       highlights: [
         `
-        Tech lead for moving <a href="https://www.zipjob.com">ZipJob</a>
+        Tech lead for <a href="https://www.zipjob.com">ZipJob</a> transitioning
         to a statically compiled <a href="https://www.gatsbyjs.com/">Gatsby</a>/<a href="https://reactjs.org/">React</a>
         site backed by <a href="https://www.contentful.com/">Contentful CMS</a>, increasing the
         <a href="https://developers.google.com/web/tools/lighthouse">Lighthouse</a>
@@ -61,7 +62,7 @@ const resume = {
         `
         Frontend tech lead for a Customer Portal, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>,
         that raised <a href="https://en.wikipedia.org/wiki/Net_promoter_score"><abbr title="Net Promoter Score">NPS</abbr></a>
-        25 points & average customer revenue by $8.
+        25 points & average customer revenue by $8 per order.
         `,
         `
         Frontend tech lead for our rewritten Expert Hub, using <a href="https://www.typescriptlang.org/">TypeScript</a>, <a href="https://reactjs.org/">React</a> & <a href="https://golang.org/">Go</a>,
@@ -73,7 +74,7 @@ const resume = {
         our average payout to contractors by $7.
         `,
         `
-        Implemented single sign on through <a href="https://oauth.net/2/">OAuth</a>
+        Implemented SSO with <a href="https://oauth.net/2/">OAuth</a>
         across all applications company wide using <a href="https://www.okta.com/">Okta</a> & <a href="https://auth0.com/">Auth0</a>.
         `,
       ],
@@ -149,7 +150,6 @@ const resume = {
         and <a href="https://en.wikipedia.org/wiki/Microsoft_Windows">Windows</a>.
       `,
       highlights: [],
-      printHide: true,
     },
     {
       company: 'Kent State University',
@@ -162,10 +162,7 @@ const resume = {
       },
       startDate: new Date('2013-05-01T05:00'),
       endDate: new Date('2013-08-01T05:00'),
-      summary: `
-        Helped provide help desk support for
-        <a href="http://www.kent.edu/CAS/">Kent State's College of Arts and Sciences</a>.
-      `,
+      summary: `Provided help desk support for <a href="http://www.kent.edu/CAS/">Kent State's College of Arts and Sciences</a>.`,
       highlights: [],
       printHide: true,
     },
@@ -209,11 +206,9 @@ const resume = {
       summary: '',
       highlights: [
         `
-        Used <a href="http://php.net">PHP</a> with the
-        <a href="http://framework.zend.com">Zend Framework</a>
-        to contribute to <a href="https://prooflab.us">Prooflab</a>,
-        <a href="http://gomedia.us">Go Media's</a> project management web
-        application.
+        Contributed to <a href="https://prooflab.us">Prooflab</a>, a project
+        management application, with <a href="http://php.net">PHP</a> &
+        <a href="http://framework.zend.com">Zend Framework</a>.
         `,
         `
         Developed the <a href="http://2012.wmcfest.com">Weapons of Mass
@@ -258,9 +253,7 @@ const resume = {
       },
       startDate: new Date('2010-03-01T05:00'),
       endDate: new Date('2010-09-01T05:00'),
-      summary: `
-      Provided IT support for customers in their homes and setup various internet cafés around Ohio.
-      `,
+      summary: `Provided IT support for customers in their homes and setup various internet cafés around Ohio.`,
       highlights: [],
       printHide: true,
     },
@@ -439,8 +432,8 @@ const resume = {
     </header>
     <Section>
       <header class="flex justify-between border-b-2 border-b-accent">
-        <h2 class="my-0 text-base block print:hidden">Work</h2>
-        <h2 class="my-0 text-base hidden print:block">Selected Work</h2>
+        <h2 class="my-0 text-lg block print:hidden">Work</h2>
+        <h2 class="my-0 text-lg hidden print:block">Selected Work</h2>
         <h6
           class:list={[
             'self-center',
@@ -519,7 +512,7 @@ const resume = {
               )
             )
 
-            return <li set:html={`${prefix} ${skillsLinks}`} />
+            return <li set:html={`${prefix} ${skillsLinks}.`} />
           })
         }
       </ul>
@@ -530,5 +523,6 @@ const resume = {
         {resume.activitesInterests.map((ai) => <li set:html={ai} />)}
       </ul>
     </Section>
+    <Footer />
   </div>
 </Layout>
