@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro'
 import { Feed } from 'feed'
 import dateFns from 'date-fns'
 import daylio from '../lib/daylio'
+import config from '../config'
 
 export const get: APIRoute = async () => {
   const entries = await daylio.getAll()
@@ -13,8 +14,8 @@ export const get: APIRoute = async () => {
   const feed = new Feed({
     title: "Eli Gundry's Feelings",
     description: "A daily journal of how I'm feeling",
-    id: 'https://eligundry.com/feelings',
-    link: 'https://eligundry.com/feelings',
+    id: 'https://eligundry.com/feelings/',
+    link: 'https://eligundry.com/feelings/',
     language: 'en-US',
     copyright: `${new Date().getFullYear()} Eli Gundry`,
     author,
@@ -35,8 +36,8 @@ export const get: APIRoute = async () => {
     feed.addItem({
       title,
       author: [author],
-      id: `https://eligundry.com/feelings#${entry.rawTime}`,
-      link: `https://eligundry.com/feelings#${entry.rawTime}`,
+      id: `${config.url}/feelings#${entry.rawTime}`,
+      link: `${config.url}/feelings#${entry.rawTime}`,
       date: new Date(entry.time),
       content: `
         <ul>
