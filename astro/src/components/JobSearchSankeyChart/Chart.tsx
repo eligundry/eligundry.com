@@ -8,30 +8,27 @@ import theme from '../../theme.json'
 import jobSearch2022 from './2022.json'
 import { jobSearchDataToSankeyPoints } from '../../lib/jobSearchSankey'
 
-try {
-  ChartJS.register(SankeyController, Flow)
-  /* eslint-disable-next-line no-empty */
-} catch (e) {}
+ChartJS.register(SankeyController, Flow)
 
 const chartPallete = (value: string) => {
   switch (value) {
     case 'Applied':
-      return theme.colors.primary
+      return `hsl(${cssvar('--p')})`
     case 'Callback':
-      return theme.colors.primary
+      return `hsl(${cssvar('--p')})`
     case 'Code Test':
     case 'On Site':
     case 'Offer':
     case 'Offer Accepted':
-      return theme.colors.success
+      return `hsl(${cssvar('--su')})`
     case 'Drop Out':
     case 'Offer Declined':
-      return theme.colors.warning
+      return `hsl(${cssvar('--wa')})`
     case 'Rejection':
     case 'Not Offered':
-      return theme.colors.error
+      return `hsl(${cssvar('--er')})`
     default:
-      return theme.colors.primary
+      return `hsl(${cssvar('--p')})`
   }
 }
 
@@ -39,7 +36,7 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
   data,
 }) => {
   return (
-    <>
+    <div className="mb-4">
       <Chart
         aria-label="Sankey chart of my job search"
         type="sankey"
@@ -63,27 +60,7 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
           },
         }}
       />
-      <noscript>
-        <table>
-          <thead>
-            <tr>
-              <th>Progress Step</th>
-              <th>Count</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row) => (
-              <tr key={`${row.from} -> ${row.to}`}>
-                <td>
-                  {row.from} → {row.to}
-                </td>
-                <td>{row.flow}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </noscript>
-    </>
+    </div>
   )
 }
 

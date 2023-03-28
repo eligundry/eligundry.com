@@ -2,6 +2,7 @@
 import path from 'node:path'
 import { Prism } from '@astrojs/prism'
 import type { Lang as ShikiLang } from 'shiki'
+import { FaGithub } from 'react-icons/fa'
 import { cacheAxios } from '../../lib/cache'
 import CodeWrapper from '../CodeWrapper.astro'
 
@@ -17,6 +18,7 @@ const { url, expandable = true, expanded = false } = Astro.props
 // branch, as those can change and throw off the builds.
 const rawURL = new URL(url)
 rawURL.host = 'raw.githubusercontent.com'
+const filename = path.basename(rawURL.pathname)
 
 const [user, repo, _blob, ref, ...filePath] = rawURL.pathname
   .split('/')
@@ -73,6 +75,27 @@ if (range) {
   lineNumbers
   expanded={expanded}
   expandable={expandable}
+  className="mt-[-2rem]"
 >
+  <div
+    slot="header"
+    class:list={[
+      'relative',
+      'top-[39px]',
+      'left-[100px]',
+      'z-20',
+      'font-mono',
+      'max-w-md',
+    ]}
+  >
+    <a
+      href={url}
+      target="_blank"
+      class:list={['flex', 'flex-row', 'gap-2', 'items-center']}
+    >
+      <FaGithub />
+      {filename}
+    </a>
+  </div>
   <Prism code={file} lang={extension} />
 </CodeWrapper>

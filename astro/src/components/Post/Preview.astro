@@ -56,7 +56,8 @@ if ('tags' in entry.data) {
       readingTime !== undefined && (
         <p>
           <EmojiText label="stopwatch denoting time to read article" emoji="⏱">
-            {readingTime}&nbsp;{readingTime > 1 ? 'Minutes' : 'Minute'}
+            {Math.max(readingTime, 1)}&nbsp;
+            {readingTime > 1 ? 'Minutes' : 'Minute'}
           </EmojiText>
         </p>
       )

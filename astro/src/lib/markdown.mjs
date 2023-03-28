@@ -1,10 +1,5 @@
 import SimpleGit from 'simple-git'
 import readingTime from 'reading-time'
-import {
-  excerpt,
-  excerptBreakpoint as remarkExcerptBreakpoint,
-} from '@eligundry/remark-excerpt'
-import { compile as mdxCompile } from '@mdx-js/mdx'
 import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
@@ -29,19 +24,10 @@ const mdxConfig = {
       },
     ],
     remarkGitLastModified,
-    remarkExcerpt,
-    remarkExcerptBreakpoint,
   ],
 }
 
 export default mdxConfig
-
-// Converts the first dot in `import.meta.env` to its Unicode escape sequence,
-// which prevents Vite from replacing strings like `import.meta.env.SITE`
-// in our JS representation of loaded Markdown files
-function escapeViteEnvReferences(code) {
-  return code.replace(/import\.meta\.env/g, 'import\\u002Emeta.env')
-}
 
 export function remarkGitLastModified() {
   return async function (_tree, file) {
@@ -67,22 +53,5 @@ export function remarkReadingTime() {
       1,
       Math.round(readingTime(file.value).minutes)
     )
-  }
-}
-
-export function remarkExcerpt() {
-  const excerptFn = excerpt({ identifier: 'excerpt' })
-
-  return async function (tree, file, ...blah) {
-    const mdx = await mdxCompile(file, {
-      ...mdxConfig,
-      remarkPlugins: {
-        ...mdxConfig.remarkPlugins,
-        excerpt,
-      },
-    })
-
-    // console.log(mdx.value.toString())
-    // file.data.astro.Excerpt = escapeViteEnvReferences(mdx.value.toString())
   }
 }

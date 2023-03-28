@@ -7,9 +7,10 @@ interface Props {
   lineNumbers?: boolean
   expandable?: boolean
   expanded?: boolean
+  className?: string
 }
 
-const { startingLineNumber = 0, lineNumbers = false } = Astro.props
+const { startingLineNumber = 0, lineNumbers = false, className } = Astro.props
 let { expandable = true, expanded = false } = Astro.props
 
 // Astro's code component through Shiki does not allow for any HTML
@@ -45,7 +46,8 @@ if (lines.length <= 10) {
 }
 ---
 
-<div class="code-wrapper">
+<div class:list={['code-wrapper', className]}>
+  <slot name="header" />
   {!expanded && <input type="checkbox" hidden id={id} class="peer" />}
   <div
     set:html={newLines}
