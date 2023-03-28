@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro'
 import FancyBackground from '../components/FancyBackground/index.astro'
 import daylio from '../lib/daylio.ts'
 import config from '../config.ts'
+import { getLastModifiedForPath } from '../lib/lastModified.ts'
 import '../styles/tailwind.css'
 
 export interface Props {
@@ -22,14 +23,9 @@ export interface Props {
   }>
 }
 
-const {
-  title,
-  description,
-  frontmatter,
-  remarkPluginFrontmatter,
-  fancyBackgroundPoints,
-} = Astro.props
+const { title, description, frontmatter, fancyBackgroundPoints } = Astro.props
 const latestFeeling = await daylio.getLatest()
+const modified = await getLastModifiedForPath(Astro.url.pathname)
 ---
 
 <!DOCTYPE html>
@@ -56,7 +52,7 @@ const latestFeeling = await daylio.getLatest()
         },
         article: {
           publishedTime: frontmatter?.date?.toISOString() ?? '',
-          modifiedTime: remarkPluginFrontmatter?.modified?.toISOString() ?? '',
+          modifiedTime: modified.toISOString(),
         },
       }}
       twitter={{

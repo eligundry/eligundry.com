@@ -52,20 +52,14 @@ const url = `/${collection}/${slug}/`
     }`}
   >
     <link itemprop="author publisher" href="#eli-gundry" />
-    <div>
-      {
-        modified && (
-          <meta itemprop="dateModified" content={modified.toString()} />
-        )
-      }
-      {cover && <meta itemprop="image" content={cover} />}
-    </div>
+    {modified && <meta itemprop="dateModified" content={modified.toString()} />}
+    {cover && <meta itemprop="image" content={cover} />}
     {
       !!readingTime && (
         <meta itemprop="timeRequired" content={`PT${readingTime}M`} />
       )
     }
-    <header class:list={['border-b', 'border-b-neutral-300', 'pb-2']}>
+    <header class:list={['border-b-2', 'border-b-accent', 'pb-2']}>
       <h1 itemprop="name headline" class="mb-2">
         <a href={url} itemprop="url">{title}</a>
       </h1>

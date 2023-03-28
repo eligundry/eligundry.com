@@ -63,8 +63,9 @@ export function remarkGitLastModified() {
 
 export function remarkReadingTime() {
   return function (_tree, file) {
-    file.data.astro.frontmatter.readingTime = Math.round(
-      readingTime(file.value).minutes
+    file.data.astro.frontmatter.readingTime = Math.max(
+      1,
+      Math.round(readingTime(file.value).minutes)
     )
   }
 }
