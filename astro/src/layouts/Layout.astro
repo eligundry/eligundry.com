@@ -5,6 +5,7 @@ import type { CollectionEntry } from 'astro:content'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import FancyBackground from '../components/FancyBackground/index.astro'
+import Tracking from '../components/Tracking.astro'
 import daylio from '../lib/daylio.ts'
 import config from '../config.ts'
 import { getLastModifiedForPath } from '../lib/lastModified.ts'
@@ -87,6 +88,7 @@ const modified = await getLastModifiedForPath(Astro.url.pathname)
     <GoogleFontsOptimizer
       url="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code&family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
     />
+    <Tracking />
     <script is:inline>
       if (localStorage.getItem('theme') === null) {
         const prefersDark =
