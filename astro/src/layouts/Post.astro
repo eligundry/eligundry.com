@@ -65,8 +65,8 @@ const url = `/${collection}/${slug}/`
         <meta itemprop="timeRequired" content={`PT${readingTime}M`} />
       )
     }
-    <header>
-      <h1 itemprop="name headline">
+    <header class:list={['border-b', 'border-b-neutral-300', 'pb-2']}>
+      <h1 itemprop="name headline" class="mb-2">
         <a href={url} itemprop="url">{title}</a>
       </h1>
       <div class="flex flex-row gap-4 [&>*]:m-0">
@@ -84,10 +84,11 @@ const url = `/${collection}/${slug}/`
             <p>
               <EmojiText
                 label="stopwatch denoting time to read article"
-                emoji="⏱"
+                emoji="⏱️"
               >
-                {readingTime ?? 1}{' '}
-                {(readingTime ?? 0) > 1 ? 'Minutes' : 'Minute'}
+                {`${readingTime ?? 1} ${
+                  (readingTime ?? 0) > 1 ? 'Minutes' : 'Minute'
+                }`}
               </EmojiText>
             </p>
           )

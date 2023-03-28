@@ -1,0 +1,48 @@
+---
+import { jobSearchDataToSankeyPoints } from '../../lib/jobSearchSankey'
+import jobSearch2022 from './2022.json'
+import Chart from './Chart.tsx'
+
+interface Props {
+  year: number
+}
+
+const { year } = Astro.props
+const data = jobSearchDataToSankeyPoints(jobSearch2022)
+---
+
+<Chart client:only="preact" year={year} />
+<div
+  tabindex="0"
+  class:list={[
+    'collapse',
+    'collapse-arrow',
+    'border',
+    'border-neutral-300',
+    'rounded-box',
+  ]}
+>
+  <h3 class:list={['collapse-title', 'pl-4', 'm-0']}>Detailed Stats</h3>
+  <div class:list={['collapse-content', 'pl-4']}>
+    <table class="m-0">
+      <thead>
+        <tr>
+          <th>Progress Step</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          data.map((row) => (
+            <tr>
+              <td>
+                {row.from} → {row.to}
+              </td>
+              <td>{row.flow}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

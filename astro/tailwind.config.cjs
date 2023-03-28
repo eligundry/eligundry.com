@@ -22,7 +22,7 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Lato', 'sans-serif'],
-      serif: ['Arvo', 'serif'],
+      serif: ['Arvo', 'serif', '"apple color emoji"'],
       mono: ['"Fira Code"', 'monospace'],
     },
     screens: {

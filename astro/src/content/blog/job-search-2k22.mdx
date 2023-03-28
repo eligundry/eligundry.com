@@ -7,7 +7,7 @@ cover: /img/job-search-2k22/sankey-chart.png
 tags:
   - code
 ---
-{/* import JobSearchSankeyChart from '../../components/JobSearchSankeyChart/index.tsx' */}
+import JobSearchSankeyChart from '../../components/JobSearchSankeyChart/index.astro'
 export { components } from '../../components/Post/components.astro'
 
 At the end of 2021, [I left my job at Talent Inc.](/blog/what-i-learned-working-at-my-first-startup) and conducted an extremely thorough job search.
@@ -17,7 +17,7 @@ talk about how I conducted my job search as it's been something I've been planni
 
 # [Numbers On The Board](https://www.youtube.com/watch?v=DawrlSwHUiM)
 
-{/* <JobSearchSankeyChart client:only year={2022} /> */}
+<JobSearchSankeyChart year={2022} />
 
 This job market is wild! I can't tell if companies are hiring harder this cycle or if the fact that my last role was
 "senior software engineer" at a startup or what. This cycle could not have gone any more different than my last job
@@ -73,23 +73,23 @@ interviews back to back to back that I'm certain my performance in some of them 
 
 # Interviewers Say The Funniest Things
 
-> "We love chaos here. We want just enough chaos to scare us to ship things fast, but not so much it paralyzes us."
+> We love chaos here. We want just enough chaos to scare us to ship things fast, but not so much it paralyzes us.
 >
-> "We like to say that do things right the second time. We want that first time to ship fast."
+> We like to say that do things right the second time. We want that first time to ship fast.
 
 Oh lord, I ran away from that company so fast. They had a wild code test that was closer to drive by than learning about
 how I can benefit them.
 
-> "So, your process of learning is just detective work?"
+> So, your process of learning is just detective work?
 
 This was an interviewer's reply after I described, in detail, how I work in an unfamiliar and terrible codebase. It's
 not super funny, but I had never heard it put that way before and I'm stealing it.
 
-> "Our lead investor is [Scooter Braun](https://en.wikipedia.org/wiki/Taylor_Swift_masters_controversy)."
+> Our lead investor is [Scooter Braun](https://en.wikipedia.org/wiki/Taylor_Swift_masters_controversy).
 
 \#TeamTaylor until I die, ran away from that super fast.
 
-> "The only downside is that product likes to live in the moment"
+> The only downside is that product likes to live in the moment
 
 Never heard it put that way before, but product does be like that sometimes.
 
