@@ -84,6 +84,13 @@ const favoritePosts = (await getCollection('blog'))
       </li>
       <li>
         I am a
+        <Image
+          src={import('../assets/img/vim.svg')}
+          alt="Vim Logo"
+          width={16}
+          height={16}
+          class:list={['inline', 'align-text-top', 'mx-0', 'mb-0', 'mt-[2px]']}
+        />
         <strong>Vim user</strong> but I actively encourage everyone to use something
         else. Using Vim in {new Date().getFullYear()} is a cool bar trick.
       </li>
@@ -112,7 +119,7 @@ const favoritePosts = (await getCollection('blog'))
   </section>
 
   <section class="daylio paper prose">
-    <h2>How I'm Feeling</h2>
+    <h2 class="mb-4">How I'm Feeling</h2>
     <p>
       A while ago, I decided to start journaling my feelings. Being a software
       engineer,
@@ -125,7 +132,7 @@ const favoritePosts = (await getCollection('blog'))
   </section>
 
   <section class="coding paper prose">
-    <h2>Do You Code?</h2>
+    <h2 class="mb-4">Do You Code?</h2>
     <p>
       I make a living developing web applications. I jump all around the stack
       and will do whatever it takes to ship. Need me to do some devops to get
@@ -141,7 +148,7 @@ const favoritePosts = (await getCollection('blog'))
   </section>
 
   <section class="favoritePosts paper prose">
-    <h2>Are You A Blogger?</h2>
+    <h2 class="mb-4">Are You A Blogger?</h2>
     <p>
       I'm certainly trying to be! I try to write four posts a year. Sometimes I
       exceed it, other times, I completely whiff. No pressure though. Below are
@@ -153,7 +160,7 @@ const favoritePosts = (await getCollection('blog'))
   </section>
 
   <section class="reading paper prose">
-    <h2>What I'm Reading</h2>
+    <h2 class="mb-4">What I'm Reading</h2>
     <p>
       I wish I read more, but there are only so many hours in the day. These are
       the books that I'm reading right now. You can find me on <a
@@ -201,7 +208,7 @@ const favoritePosts = (await getCollection('blog'))
   </section>
 
   <section class="listening paper prose">
-    <h2>What I'm Listening To</h2>
+    <h2 class="mb-4">What I'm Listening To</h2>
     <p>
       I listen to way too much music and I love to listen to full albums. I
       mainly listen to hip hop, indie rock and

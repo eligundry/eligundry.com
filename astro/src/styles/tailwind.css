@@ -8,17 +8,11 @@
   html {
     @apply font-serif;
   }
-
-  :root {
-    --tooltip-color: red;
-    --tooltip-text-color: green;
-  }
 }
 
 @layer components {
   .paper {
-    /* @apply max-w-none mb-4 drop-shadow-xl print:drop-shadow-none bg-base-100/90 p-4 rounded-lg; */
-    @apply max-w-none p-4;
+    @apply w-full p-4;
   }
 
   .bookshelf {
@@ -43,7 +37,7 @@
 }
 
 .prose {
-  @apply max-w-none;
+  @apply !max-w-none;
 }
 
 .prose *:not(pre) > code {
