@@ -7,7 +7,7 @@ My personal website.
 
 ## Built With
 
-* [Next.js](https://nextjs.org/)
+* [Astro](https://astro.build/)
 * [React](https://reactjs.org/)
 
 ## Frontend Development
