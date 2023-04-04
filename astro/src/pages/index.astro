@@ -128,7 +128,9 @@ const favoritePosts = (await getCollection('blog'))
       >. The favicon for the site the emoji for my latest entry.
     </p>
     <DaylioEntry entry={latestEntry} />
-    <DaylioChart client:media="(min-width: 640px)" />
+    <div class:list={['hidden', 'sm:block', 'sm:min-h-[153px]']}>
+      <DaylioChart client:media="(min-width: 640px)" />
+    </div>
   </section>
 
   <section class="coding paper prose">

@@ -7,3 +7,4 @@
 
 [[plugins]]
   package = 'netlify-plugin-cache'
+  paths = ['.cache', 'public/astro-fontaine']

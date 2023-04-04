@@ -2,6 +2,7 @@ import type { AxiosResponse } from 'axios'
 import { JSDOM } from 'jsdom'
 import trim from 'lodash/trim'
 import NodeCache from 'node-cache'
+import retry from 'async-retry'
 
 import { cacheAxios } from './axios'
 
@@ -37,15 +38,19 @@ const getShelf = async (userID: string, shelf: string, limit?: number) => {
   let goodreadsHTML: AxiosResponse<string> | null
 
   try {
-    goodreadsHTML = await cacheAxios.get<string>(
-      `https://www.goodreads.com/review/list/${userID}`,
-      {
-        params: {
-          ref: 'nav_mybooks',
-          shelf,
-          per_page: 100,
-        },
-      }
+    goodreadsHTML = await retry(
+      async () =>
+        cacheAxios.get<string>(
+          `https://www.goodreads.com/review/list/${userID}`,
+          {
+            params: {
+              ref: 'nav_mybooks',
+              shelf,
+              per_page: 100,
+            },
+          }
+        ),
+      { retries: 3 }
     )
   } catch (e) {
     console.error('could not fetch Goodreads shelf', e)

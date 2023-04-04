@@ -1,5 +1,4 @@
 ---
-import { GoogleFontsOptimizer } from 'astro-google-fonts-optimizer'
 import { SEO } from 'astro-seo'
 import type { CollectionEntry } from 'astro:content'
 import Header from '../components/Header.astro'
@@ -85,9 +84,6 @@ const modified = await getLastModifiedForPath(Astro.url.pathname)
         ],
       }}
     />
-    <GoogleFontsOptimizer
-      url="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code&family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
-    />
     <Tracking />
     <script is:inline>
       if (localStorage.getItem('theme') === null) {
@@ -132,8 +128,10 @@ const modified = await getLastModifiedForPath(Astro.url.pathname)
           'container',
           'grow-0',
           'mx-auto',
-          ['mt-16', 'sm:mt-24'],
+          'mt-20',
+          'mb-8',
           'print:mt-0',
+          'print:mb-0',
           'print:pt-0',
         ]}
       >

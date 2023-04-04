@@ -22,3 +22,5 @@ pnpm-debug.log*
 # site build caching
 .cache
 .astro
+public/astro-fontaine
+.temp*

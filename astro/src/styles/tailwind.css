@@ -37,7 +37,7 @@
 }
 
 .prose {
-  @apply !max-w-none;
+  @apply !max-w-none font-serif;
 }
 
 .prose *:not(pre) > code {

@@ -22,7 +22,9 @@ const entries = await daylio.getRange(dateFns.subMonths(new Date(), 6))
       <a href="/blog/feelings-api/"> wrote a bit about it on my blog</a>, if you
       are interested in how and why.
     </p>
-    <DaylioChart client:media="(min-width: 640px)" />
+    <div class:list={['hidden', 'sm:block', 'sm:min-h-[153px]']}>
+      <DaylioChart client:media="(min-width: 640px)" />
+    </div>
   </div>
   {entries.map((entry) => <DaylioEntry entry={entry} wrapInPaper />)}
 </Layout>

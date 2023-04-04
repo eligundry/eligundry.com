@@ -1,16 +1,19 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const pick = require('lodash/pick')
 
+const emojiFonts = [
+  '"Apple Color Emoji"',
+  '"Segoe UI Emoji"',
+  '"Segoe UI Symbol"',
+  '"Noto Color Emoji"',
+]
+
 /**
  * @type {import('tailwindcss').Config}
  */
 module.exports = {
   content: ['./src/**/*.{html,astro,md,mdx}'],
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('daisyui'),
-    require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [require('@tailwindcss/typography'), require('daisyui')],
   safelist: ['tooltip', 'tooltip-primary'],
   theme: {
     colors: pick(defaultTheme.colors, ['white', 'transparent']),
@@ -21,9 +24,9 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ['Lato', 'sans-serif'],
-      serif: ['Arvo', 'serif', '"apple color emoji"'],
-      mono: ['"Fira Code"', 'monospace'],
+      sans: ['Lato', '"Lato fallback"', 'sans-serif', ...emojiFonts],
+      serif: ['Arvo', '"Arvo fallback"', 'serif', ...emojiFonts],
+      mono: ['"Fira Code"', '"Fira Code fallback"', 'monospace', ...emojiFonts],
     },
     screens: {
       ...defaultTheme.screens,
