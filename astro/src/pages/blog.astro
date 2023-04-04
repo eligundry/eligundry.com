@@ -1,0 +1,129 @@
+---
+import { getCollection } from 'astro:content'
+import dateFns from 'date-fns'
+import kebabCase from 'lodash/kebabCase'
+import Layout from '../layouts/Layout.astro'
+import PostPreview from '../components/Post/Preview.astro'
+
+const posts = (await getCollection('blog')).sort((a, b) =>
+  dateFns.compareDesc(new Date(a.data.date), new Date(b.data.date))
+)
+const tags = [
+  ...posts.reduce((acc, curr) => {
+    curr?.data?.tags?.forEach((tag: string) => acc.add(tag))
+    return acc
+  }, new Set<string>()),
+].sort((a, b) => (a < b ? -1 : 1))
+---
+
+<script>
+  const postList = document.getElementById('post-list')
+  const tagFilterBtns = document.querySelectorAll('.tag-filter .btn')
+
+  const updateTagFilter = (tag) => {
+    Array.from(postList?.classList.values() ?? []).forEach((cl) => {
+      if (cl.startsWith('selected-tag-')) {
+        postList?.classList.remove(cl)
+      }
+    })
+
+    if (tag) {
+      postList?.classList.add(`selected-tag-${tag}`, 'tag-selected')
+    } else {
+      postList?.classList.remove('tag-selected')
+    }
+
+    tagFilterBtns.forEach((btn) => {
+      if (btn.classList.contains(`tag-${tag}`)) {
+        btn.classList.add('btn-accent')
+      } else {
+        btn.classList.remove('btn-accent')
+      }
+    })
+  }
+
+  window.addEventListener('hashchange', (event) => {
+    const url = new URL(event.newURL)
+    const hash = url.hash.slice(1)
+    updateTagFilter(hash)
+  })
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const url = new URL(window.location.href)
+    const hash = url.hash.slice(1)
+    updateTagFilter(hash)
+  })
+</script>
+
+<style
+  set:html={tags
+    .map(
+      (tag) => `
+#post-list.selected-tag-${tag} > #posts  > *:not(.tag-${tag}) {
+  display: none;
+}
+    `
+    )
+    .join('\n')}
+></style>
+
+<style>
+  #post-list:not(.tag-selected) .tag-filter .reset {
+    display: none;
+  }
+
+  #post-list:not(.tag-selected) .tag-filter .btn:nth-last-child(-n + 2) {
+    border-top-right-radius: var(--rounded-btn);
+    border-bottom-right-radius: var(--rounded-btn);
+  }
+</style>
+
+<Layout
+  title="Blog"
+  description="Thoughts, tutorials, musings, album reviews and everything in between that I have written down."
+>
+  <div id="post-list" class="paper prose">
+    <h1 class="mb-0">Blog</h1>
+    <p class="mb-2">
+      Thoughts, tutorials, musings, album reviews and everything in between that
+      I have written down. I try to write four posts a year, but I'm not super
+      strict about that.
+    </p>
+    <h6>Filter by tag</h6>
+    <div class="tag-filter btn-group">
+      {
+        tags.map((tag) => (
+          <a
+            href={`#${kebabCase(tag)}`}
+            class:list={[
+              'btn',
+              'btn-primary',
+              'btn-xs',
+              'sm:btn-md',
+              'normal-case',
+              `tag-${tag}`,
+            ]}
+          >
+            {tag}
+          </a>
+        ))
+      }
+      <a
+        href="#"
+        class:list={[
+          'btn',
+          'btn-primary',
+          'btn-xs',
+          'sm:btn-md',
+          'lowercase',
+          'reset',
+        ]}
+      >
+        Reset
+      </a>
+    </div>
+    <div id="posts" class:list={['flex', 'flex-col', 'gap-y-4', 'mt-4']}>
+      {posts.map((post) => <PostPreview entry={post} />)}
+    </div>
+  </div>
+</Layout>

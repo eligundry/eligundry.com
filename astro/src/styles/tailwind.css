@@ -1,0 +1,95 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import './fancyBackground.css';
+@import './prism-material.css';
+
+@layer base {
+  html {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .paper {
+    @apply w-full p-4;
+  }
+
+  .bookshelf {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    column-gap: 1vw;
+    margin: 0 1vw 1vw;
+    margin-left: 0;
+    text-align: center;
+  }
+}
+
+@layer utilities {
+  .input-disabled {
+    pointer-events: none;
+  }
+
+  .page-break-avoid {
+    page-break-inside: avoid;
+  }
+}
+
+.prose {
+  @apply !max-w-none font-serif;
+}
+
+.prose *:not(pre) > code {
+  @apply p-0;
+}
+
+.prose a:not(.btn) {
+  @apply link link-primary link-hover;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply font-sans font-black;
+
+  & a {
+    @apply font-black;
+  }
+}
+
+.btn {
+  @apply font-sans !cursor-pointer;
+}
+
+.tooltip {
+  cursor: default;
+}
+
+.mockup-code {
+  @apply pb-0;
+}
+
+.mockup-code .line,
+.mockup-code .code-line {
+  @apply pl-6;
+}
+
+.code-wrapper + h1 {
+  @apply mt-4;
+}
+
+.prose pre:has(.mockup-code) {
+  @apply p-0;
+}
+
+#scroll-progress[value]::-webkit-progress-value {
+  @apply rounded-l-none;
+}
+
+#scroll-progress[value].full::-webkit-progress-value {
+  @apply rounded-r-none;
+}

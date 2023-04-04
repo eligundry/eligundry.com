@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content'
+import dateFns from 'date-fns'
+import Layout from '../layouts/Layout.astro'
+import PostPreview from '../components/Post/Preview.astro'
+
+const talks = (await getCollection('talks')).sort((a, b) =>
+  dateFns.compareDesc(new Date(a.data.date), new Date(b.data.date))
+)
+---
+
+<Layout
+  title="Talks"
+  description="Talks that I have given at meetups and conferences."
+  fancyBackgroundPoints={10}
+>
+  <div
+    id="posts"
+    class:list={['flex', 'flex-col', 'gap-y-4', 'prose', 'paper']}
+  >
+    <h1 class="mb-0">Talks</h1>
+    <p class="my-0">
+      I try to give a meetup talk once every three years. I wish I could be more
+      prolific in this sense, I just value working over talking.
+    </p>
+    {talks.map((talk) => <PostPreview entry={talk} />)}
+  </div>
+</Layout>

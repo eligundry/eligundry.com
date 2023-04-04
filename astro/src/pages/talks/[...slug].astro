@@ -1,0 +1,36 @@
+---
+import { getCollection, CollectionEntry } from 'astro:content'
+import { readingTimeToFancyBackgroundPoints } from '../../lib/utils'
+import PostLayout from '../../layouts/Post.astro'
+
+interface Props {
+  entry: CollectionEntry<'talks'>
+}
+
+export async function getStaticPaths() {
+  return (await getCollection('talks')).map((entry) => ({
+    params: {
+      slug: entry.slug,
+    },
+    props: {
+      entry,
+    },
+  }))
+}
+
+const { entry } = Astro.props
+const { Content, remarkPluginFrontmatter } = await entry.render()
+---
+
+<PostLayout
+  collection={entry.collection}
+  slug={entry.slug}
+  frontmatter={entry.data}
+  remarkPluginFrontmatter={remarkPluginFrontmatter}
+  showComments
+  fancyBackgroundPoints={readingTimeToFancyBackgroundPoints(
+    remarkPluginFrontmatter.readingTime
+  )}
+>
+  <Content />
+</PostLayout>

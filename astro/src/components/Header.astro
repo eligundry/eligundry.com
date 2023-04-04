@@ -1,0 +1,282 @@
+---
+import EmojiText from '../components/EmojiText.astro'
+
+const links = [
+  {
+    name: 'Home',
+    href: '/',
+    emoji: '🏠',
+    emojiLabel: 'little house to denote the home page',
+  },
+  {
+    name: 'Blog',
+    href: '/blog/',
+    emoji: '📝',
+    emojiLabel: 'note to denote my blog',
+  },
+  {
+    name: 'Feelings',
+    href: '/feelings/',
+    emoji: '🥺',
+    emojiLabel: 'emotional looking emoji face to denote my feelings',
+  },
+  {
+    name: 'Talks',
+    href: '/talks/',
+    emoji: '🗣',
+    emojiLabel: 'silhouette of person speaking',
+  },
+  {
+    name: 'Resume',
+    href: '/resume/',
+    emoji: '📄',
+    emojiLabel: 'piece of paper representing my resume',
+  },
+]
+---
+
+<progress
+  id="scroll-progress"
+  aria-label="your scroll progress through the page"
+  class:list={[
+    'progress',
+    'progress-primary',
+    'w-full',
+    'm-0',
+    'fixed',
+    'top-0',
+    'z-50',
+    'rounded-none',
+    'print:hidden',
+  ]}
+  value="0"
+  max="100"></progress>
+<header
+  class:list={[
+    'navbar',
+    'bg-base-200',
+    'shadow',
+    'fixed',
+    'top-0',
+    'z-40',
+    'sm:pr-8',
+    'pl-4 md:pl-14',
+    'max-w-full',
+    'font-sans',
+    'print:hidden',
+    '[&_a]:hover:bg-transparent',
+    '[&_a]:focus:bg-transparent',
+    '[&_a]:hover:no-underline',
+    '[&_a]:focus:no-underline',
+    '[&_a[aria-current="page"]]:link-primary',
+  ]}
+>
+  <div class="container mx-auto flex flex-wrap">
+    <div class="flex-1">
+      <a
+        href="/"
+        itemprop="sameAs"
+        class:list={[
+          'btn',
+          'btn-ghost',
+          'normal-case',
+          'text-xl',
+          'site-name',
+          'pl-0',
+        ]}
+      >
+        Eli Gundry
+      </a>
+    </div>
+    <nav class="flex-none hidden md:flex">
+      <ul class:list={['menu', 'menu-horizontal', 'p-0', '[&_a]:text-current']}>
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class:list={['hover:link-accent', 'focus:link-accent']}
+                aria-current={
+                  Astro.url.pathname === link.href ||
+                  (link.href !== '/' &&
+                    Astro.url.pathname.startsWith(link.href))
+                    ? 'page'
+                    : undefined
+                }
+              >
+                <EmojiText emoji={link.emoji} label={link.emojiLabel}>
+                  {link.name}
+                </EmojiText>
+              </a>
+            </li>
+          ))
+        }
+        <li class="items-center">
+          <label class="swap swap-flip btn-sm text-2xl">
+            <input
+              type="checkbox"
+              class="theme-toggle"
+              data-toggle-theme="dark,light"
+            />
+            <div class="swap-on">🌚</div>
+            <div class="swap-off">🌞</div>
+          </label>
+        </li>
+      </ul>
+    </nav>
+    <div class="flex justify-end flex-none">
+      <nav class="navbar-end md:hidden btn-group">
+        <label class="swap swap-flip btn btn-sm btn-ghost text-2xl">
+          <input
+            type="checkbox"
+            class="theme-toggle"
+            data-toggle-theme="dark,light"
+          />
+          <div class="swap-on">🌚</div>
+          <div class="swap-off">🌞</div>
+        </label>
+        <label
+          class="swap swap-flip btn btn-sm btn-ghost text-2xl max-w-full"
+          tabindex="0"
+          for="mobile-nav-modal-control"
+        >
+          <input
+            type="checkbox"
+            id="mobile-nav-modal-control"
+            class="modal-control-input"
+          />
+          <div class="swap-on">🙅‍♂️</div>
+          <div class="swap-off">🍔</div>
+        </label>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<input
+  type="checkbox"
+  id="mobile-nav-modal"
+  class="modal-toggle modal-control-input"
+/>
+<label
+  for="mobile-nav-modal"
+  class:list={['modal', 'cursor-pointer', 'bg-transparent']}
+  aria-label="toggles the mobile navigation dropdown"
+>
+  <label
+    class:list={[
+      'modal-box',
+      'w-full',
+      'max-w-full',
+      'absolute',
+      'top-[4rem]',
+      'rounded-t-none',
+      'bg-base-200',
+      'shadow-none',
+      'pt-0',
+      'pl-4',
+      '[&_a[aria-current="page"]]:btn-accent',
+    ]}
+    for=""
+  >
+    <ul class="flex flex-col gap-y-4">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                'btn',
+                'active:btn-primary',
+                'justify-start',
+                'text-left',
+                'w-full',
+              ]}
+              aria-current={
+                Astro.url.pathname === link.href ||
+                (link.href !== '/' && Astro.url.pathname.startsWith(link.href))
+                  ? 'page'
+                  : undefined
+              }
+            >
+              <EmojiText
+                emoji={link.emoji}
+                label={link.emojiLabel}
+                className="pr-2"
+              >
+                {link.name}
+              </EmojiText>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </label>
+</label>
+
+<script>
+  import { on } from 'delegated-events'
+  import { themeChange } from 'theme-change'
+
+  // Theme Changing
+  themeChange()
+
+  document.addEventListener('DOMContentLoaded', () => {
+    themeChange()
+
+    const themeCheckboxes =
+      document.querySelectorAll<HTMLInputElement>('.theme-toggle')
+
+    themeCheckboxes.forEach((cb) => {
+      if (!('checked' in cb)) {
+        return
+      }
+
+      cb.checked = document.documentElement.dataset?.theme === 'dark'
+    })
+
+    on('change', '.theme-toggle', (event) => {
+      themeCheckboxes.forEach((cb) => {
+        // @ts-ignore
+        cb.checked = event.target.checked
+      })
+    })
+  })
+
+  // Scroll Progress
+  const progress =
+    document.querySelector<HTMLProgressElement>('#scroll-progress')
+
+  function animateProgress() {
+    if (progress) {
+      progress.value = window.scrollY
+      progress.max =
+        Math.max(document.body.clientHeight, window.innerHeight + 1) -
+        window.innerHeight
+
+      if (progress.value === progress.max) {
+        progress.classList.add('full')
+      } else {
+        progress.classList.remove('full')
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', animateProgress)
+  document.addEventListener('scroll', animateProgress)
+  document.addEventListener('resize', animateProgress)
+
+  // Hamburger Menu
+  document.addEventListener('DOMContentLoaded', () => {
+    on('change', '.modal-control-input', (event) => {
+      const inputs = document.querySelectorAll<HTMLInputElement>(
+        '.modal-control-input'
+      )
+
+      inputs.forEach((i) => {
+        // @ts-ignore
+        i.checked = event.target.checked
+      })
+    })
+  })
+</script>

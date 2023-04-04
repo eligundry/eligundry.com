@@ -1,0 +1,24 @@
+---
+import { Image } from '@astrojs/image/components'
+import { getRemoteImageMetadata } from '../../lib/images'
+
+interface Props {
+  alt: string
+  src: string
+}
+
+const { alt, src } = Astro.props
+const { aspectRatio, backgroundColor, width } = await getRemoteImageMetadata(
+  src
+)
+---
+
+<Image
+  src={src}
+  alt={alt}
+  width={Math.min(width, 690)}
+  aspectRatio={aspectRatio}
+  format="webp"
+  style={{ backgroundColor }}
+  class:list={['max-w-100']}
+/>

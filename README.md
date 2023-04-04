@@ -1,18 +1,18 @@
 # [eligundry.com](https://eligundry.com)
 
 ![Github Actions Status](https://github.com/eligundry/eligundry.com/actions/workflows/.github/workflows/serverless-deploy.yml/badge.svg)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b4f54025-ca08-4354-b146-4bfe4a7ba52e/deploy-status)](https://app.netlify.com/sites/eligundry/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/124e05a1-30a5-4e2c-bde5-1aa34cce1b4a/deploy-status)](https://app.netlify.com/sites/eligundry/deploys)
 
 My personal website.
 
 ## Built With
 
-* [Next.js](https://nextjs.org/)
+* [Astro](https://astro.build/)
 * [React](https://reactjs.org/)
 
 ## Frontend Development
 
-1. `cd next`
+1. `cd astro`
 2. `npm ci`
 3. `npm run dev`
 

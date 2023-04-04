@@ -1,0 +1,17 @@
+[build]
+  command = 'npm run build'
+  publish = 'dist'
+
+[build.environment]
+  NODE_VERSION = '18'
+
+[[plugins]]
+  package = 'netlify-plugin-cache'
+  [plugins.inputs]
+    paths = ['.cache', 'public/astro-fontaine']
+
+[[headers]]
+  for = "/*.rss"
+  [headers.values]
+    Content-Type = "application/rss+xml; charset=utf-8"
+

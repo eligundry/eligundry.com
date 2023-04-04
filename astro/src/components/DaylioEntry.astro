@@ -1,0 +1,82 @@
+---
+import { DaylioEntry } from '../lib/daylio'
+import { ActivityMapping } from '../lib/enums'
+
+interface Props {
+  entry: DaylioEntry
+  wrapInPaper?: boolean
+}
+
+const { entry, wrapInPaper = false } = Astro.props
+---
+
+<article
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+  id={entry.rawTime}
+  class:list={[
+    'prose',
+    wrapInPaper && 'paper',
+    'scroll-mt-20',
+    'target:border-2',
+    'target:border-primary',
+    'rounded-box',
+  ]}
+>
+  <meta
+    itemprop="image"
+    content="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ entry.emoji }}</text></svg>"
+  />
+  <link itemprop="author publisher" href="#eli-gundry" />
+  <div>
+    <div class="flex flex-row justify-between">
+      <div>
+        <h3 itemprop="name headline" class="m-0">
+          I felt {entry.mood}
+        </h3>
+        <time datetime={entry.rawTime} itemprop="datePublished dateModified">
+          <a href={`/feelings/#${entry.rawTime}`}>
+            {entry.rawTime}
+          </a>
+        </time>
+        <div
+          class:list={[
+            'pl-0',
+            'mx-0',
+            'my-0',
+            'not-prose',
+            'gap-3',
+            'text-3xl',
+            'flex',
+          ]}
+        >
+          {
+            entry.activities.map((a) => (
+              <span
+                role="img"
+                aria-label={a}
+                data-tip={a}
+                class:list={['tooltip', 'tooltip-primary', 'font-sans']}
+                itemprop="keywords"
+              >
+                {ActivityMapping[a]}
+              </span>
+            ))
+          }
+        </div>
+      </div>
+      <div role="img" aria-label="{{ entry.mood }} emoji" class="text-8xl">
+        {entry.emoji}
+      </div>
+    </div>
+    {
+      entry.notes && entry.notes.length > 0 && (
+        <ul class="my-0">
+          {entry.notes.map((n) => (
+            <li>{n}</li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</article>

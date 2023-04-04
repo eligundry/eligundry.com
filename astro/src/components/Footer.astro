@@ -1,0 +1,133 @@
+---
+import EmojiText from '../components/EmojiText.astro'
+import { FaGithubAlt, FaMastodon } from 'react-icons/fa'
+import { ImLastfm } from 'react-icons/im'
+import { MdRssFeed, MdOutlineEmail } from 'react-icons/md'
+import { TbBrandTwitter } from 'react-icons/tb'
+import { TiSocialLinkedin } from 'react-icons/ti'
+
+const social = [
+  {
+    name: 'github',
+    label: 'Review my code on GitHub',
+    url: 'https://github.com/eligundry',
+    itemProp: 'sameAs',
+    Icon: FaGithubAlt,
+  },
+  {
+    name: 'twitter',
+    label: 'Follow me on Twitter',
+    url: 'https://twitter.com/EliGundry',
+    itemProp: 'sameAs',
+    Icon: TbBrandTwitter,
+  },
+  {
+    name: 'mastodon',
+    label: 'Toot me or whatever on Mastodon',
+    url: 'https://mas.to/@eligundry',
+    itemProp: 'sameAs',
+    Icon: FaMastodon,
+  },
+  {
+    name: 'linkedin',
+    label: 'Add me to your professional network on LinkedIn',
+    url: 'https://www.linkedin.com/in/eligundry/',
+    itemProp: 'sameAs',
+    Icon: TiSocialLinkedin,
+  },
+  {
+    name: 'lastfm',
+    label: "See what I'm listening to on Last.fm",
+    url: 'https://www.last.fm/user/eli_pwnd',
+    itemProp: 'sameAs',
+    Icon: ImLastfm,
+  },
+  {
+    name: 'email',
+    label: 'Shoot me an email',
+    url: 'mailto:eligundry@gmail.com',
+    Icon: MdOutlineEmail,
+  },
+  {
+    name: 'rss',
+    label: 'Add my blog to your Google Reader via RSS',
+    url: '/blog.rss',
+    Icon: MdRssFeed,
+  },
+]
+---
+
+<footer
+  class:list={[
+    'footer',
+    'bg-base-200',
+    ['pl-4', 'sm:pl-14'],
+    ['pr-4', 'sm:pr-8'],
+    'py-8',
+    'shadow',
+    'print:hidden',
+  ]}
+>
+  <div class="container mx-auto flex flex-col">
+    <div class="w-full">
+      <h4 class="footer-title">About</h4>
+      <p class="[&_a]:link-primary font-serif">
+        Eli Gundry is a full stack web developer that loves JavaScript, devops
+        and web standards. When he isn't coding, he's{' '}
+        <a href="/blog#cooking">
+          <EmojiText emoji="👨‍🍳" label="chef cause I'm cooking">
+            cooking up something mean in the kitchen,
+          </EmojiText>
+        </a>{' '}
+        <EmojiText
+          emoji="🎾"
+          label="tennis ball because that's what I'm playing"
+        >
+          playing tennis
+        </EmojiText>{' '}
+        or{' '}
+        <EmojiText emoji="🐈🐈‍⬛" label="it's my cats!">
+          annoying his cats.
+        </EmojiText>
+        He is also a{' '}
+        <a href="/web0.html">
+          <EmojiText
+            emoji="✳️"
+            label="green asterisk emoji for that pure html energy"
+          >
+            web0 evangelist
+          </EmojiText>
+        </a>{' '}
+        and thinks everyone can benefit from writing some HTML.
+      </p>
+    </div>
+    <div class="w-full">
+      <h4 class="footer-title">Social</h4>
+      <div
+        class:list={[
+          'flex',
+          'flex-row',
+          'gap-2',
+          '[&>a]:tooltip',
+          '[&>a]:tooltip-primary',
+          '[&>a]:normal-case',
+          '[&>a]:inline-flex',
+          '[&>a]:w-8',
+        ]}
+      >
+        {
+          social.map((link) => (
+            <a
+              href={link.url}
+              data-tip={link.label}
+              aria-label={link.label}
+              class:list={['btn', 'btn-sm', 'btn-square', 'btn-primary']}
+            >
+              <link.Icon size="1.75rem" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,14 @@
+---
+interface Props {
+  src: string
+  alt: string
+  className?: string
+}
+
+const { src, alt, className } = Astro.props
+---
+
+<video autoplay loop muted class:list={['mx-auto', 'max-w-full', className]}>
+  <source src={src} />
+  {alt}
+</video>

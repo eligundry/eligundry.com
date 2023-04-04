@@ -1,0 +1,104 @@
+{
+  "colors": {
+    "transparent": "transparent",
+    "current": "currentColor",
+    "primary": "hsl(var(--p))",
+    "primary-focus": "hsl(var(--pf, var(--p)))",
+    "primary-content": "hsl(var(--pc))",
+    "secondary": "hsl(var(--s))",
+    "secondary-focus": "hsl(var(--sf, var(--s)))",
+    "secondary-content": "hsl(var(--sc))",
+    "accent": "hsl(var(--a))",
+    "accent-focus": "hsl(var(--af, var(--a)))",
+    "accent-content": "hsl(var(--ac))",
+    "neutral": "hsl(var(--n))",
+    "neutral-focus": "hsl(var(--nf, var(--n)))",
+    "neutral-content": "hsl(var(--nc))",
+    "base-100": "hsl(var(--b1))",
+    "base-200": "hsl(var(--b2, var(--b1)))",
+    "base-300": "hsl(var(--b3, var(--b2)))",
+    "base-content": "hsl(var(--bc))",
+    "info": "hsl(var(--in))",
+    "info-content": "hsl(var(--inc, var(--nc)))",
+    "success": "hsl(var(--su))",
+    "success-content": "hsl(var(--suc, var(--nc)))",
+    "warning": "hsl(var(--wa))",
+    "warning-content": "hsl(var(--wac, var(--nc)))",
+    "error": "hsl(var(--er))",
+    "error-content": "hsl(var(--erc, var(--nc)))",
+    "neutral-50": "#fafafa",
+    "neutral-100": "#f5f5f5",
+    "neutral-200": "#e5e5e5",
+    "neutral-300": "#d4d4d4",
+    "neutral-400": "#a3a3a3",
+    "neutral-500": "#737373",
+    "neutral-600": "#525252",
+    "neutral-700": "#404040",
+    "neutral-800": "#262626",
+    "neutral-900": "#171717"
+  },
+  "screens": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px",
+    "print": {
+      "raw": "print"
+    }
+  },
+  "fontFamily": {
+    "sans": [
+      "Lato",
+      "sans-serif"
+    ],
+    "serif": [
+      "Arvo",
+      "serif",
+      "\"apple color emoji\""
+    ],
+    "mono": [
+      "\"Fira Code\"",
+      "monospace"
+    ]
+  },
+  "animation": {
+    "none": "none",
+    "spin": "spin 1s linear infinite",
+    "ping": "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
+    "pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+    "bounce": "bounce 1s infinite",
+    "fadein": "fadein 10s"
+  },
+  "daisyui": {
+    "themes": [
+      {
+        "light": {
+          "primary": "#088CDE",
+          "secondary": "#7dd3fc",
+          "accent": "#98a0f2",
+          "neutral": "#f4f4f5",
+          "base-100": "white",
+          "info": "#2563eb",
+          "success": "#10b981",
+          "warning": "#ffd53d",
+          "error": "#F94E5F"
+        }
+      },
+      {
+        "dark": {
+          "primary": "#088CDE",
+          "secondary": "#7dd3fc",
+          "accent": "#98a0f2",
+          "neutral": "#78716c",
+          "base-100": "#1c1917",
+          "info": "#2563eb",
+          "success": "#10b981",
+          "warning": "#fbbf24",
+          "error": "#F94E5F"
+        }
+      }
+    ],
+    "darkTheme": "dark"
+  }
+}

@@ -1,0 +1,11 @@
+---
+/* prettier-ignore */
+---
+{
+  Astro.props.class && (
+    <div class="mockup-code">
+<slot />
+    </div>
+  )
+}
+{!Astro.props.class && <slot />}

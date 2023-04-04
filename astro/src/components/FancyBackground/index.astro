@@ -1,0 +1,84 @@
+---
+import { FaSyncAlt } from 'react-icons/fa'
+
+interface Props {
+  points?: number
+}
+
+const { points = 30 } = Astro.props
+---
+
+<div class:list={['flex', 'flex-row', 'min-h-[calc(100vh-13.75rem)]']}>
+  <div
+    class:list={['fancy-bg', 'print:hidden', 'hidden', 'sm:flex']}
+    style={{ '--fluid-pattern-points': points }}
+  >
+  </div>
+  <slot />
+  <div
+    class:list={['fancy-bg', 'print:hidden', 'hidden', 'sm:flex']}
+    style={{ '--fluid-pattern-points': points }}
+  >
+  </div>
+  <button
+    id="fancy-bg-refresh-btn"
+    class:list={[
+      'btn',
+      'btn-lg',
+      'btn-primary',
+      'btn-circle',
+      'fixed',
+      'tooltip',
+      'tooltip-left',
+      'tooltip-primary',
+      'right-4',
+      'bottom-4',
+      'normal-case',
+      'print:hidden',
+      'inline-flex',
+      'hidden',
+      'sm:flex',
+      'cursor-pointer',
+    ]}
+    aria-label="Regenerate the background pattern"
+    data-tip="Regenerate the background pattern"
+    type="reset"
+  >
+    <FaSyncAlt size="2.25rem" />
+  </button>
+</div>
+
+<style>
+  .fancy-bg {
+    --fluid-pattern-bg-color: transparent;
+    --fluid-pattern-bg-color: theme('colors.transparent');
+    --fluid-pattern-color-1: theme('colors.accent');
+    --fluid-pattern-color-2: theme('colors.success');
+    --fluid-pattern-color-3: theme('colors.warning');
+    --fluid-pattern-color-4: theme('colors.error');
+    @apply grow mt-12;
+    background-image: paint(fluidPattern);
+    z-index: -100000;
+  }
+</style>
+
+<script>
+  import { on } from 'delegated-events'
+  import fluidBackgroundWorkletURL from './worklet.js?url'
+
+  window?.CSS?.paintWorklet?.addModule?.(fluidBackgroundWorkletURL)
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvases = document.querySelectorAll('.fancy-bg')
+    const updateBg = () =>
+      canvases.forEach((canvas) => {
+        canvas?.style?.setProperty?.(
+          '--fluid-pattern-seed',
+          (Math.random() * 10000).toString()
+        )
+      })
+
+    on('click', '#fancy-bg-refresh-btn', updateBg)
+    updateBg()
+  })
+</script>

@@ -1,0 +1,117 @@
+---
+import { CollectionEntry } from 'astro:content'
+import dateFns from 'date-fns'
+import BaseLayout from './Layout.astro'
+import EmojiText from '../components/EmojiText.astro'
+
+interface Props {
+  collection: string
+  slug: string
+  showComments?: boolean
+  frontmatter:
+    | CollectionEntry<'blog'>['data']
+    | CollectionEntry<'talks'>['data']
+  remarkPluginFrontmatter: Partial<{
+    modified: Date
+    readingTime: number
+  }>
+  fancyBackgroundPoints?: number
+}
+
+const {
+  frontmatter,
+  remarkPluginFrontmatter,
+  slug,
+  collection,
+  showComments,
+  fancyBackgroundPoints,
+} = Astro.props
+const { title, description, cover, date } = frontmatter
+const { modified, readingTime = 0 } = remarkPluginFrontmatter
+const url = `/${collection}/${slug}/`
+---
+
+<style>
+  .post-body img,
+  .post-body iframe {
+    max-width: 100% !important;
+    display: none;
+  }
+</style>
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  fancyBackgroundPoints={fancyBackgroundPoints}
+>
+  <article
+    class="paper prose"
+    itemscope
+    itemtype={`https://schema.org/${
+      collection === 'blog' ? 'BlogPosting' : 'CreativeWork'
+    }`}
+  >
+    <link itemprop="author publisher" href="#eli-gundry" />
+    {modified && <meta itemprop="dateModified" content={modified.toString()} />}
+    {cover && <meta itemprop="image" content={cover} />}
+    {
+      !!readingTime && (
+        <meta itemprop="timeRequired" content={`PT${readingTime}M`} />
+      )
+    }
+    <header class:list={['border-b-2', 'border-b-accent', 'pb-2']}>
+      <h1 itemprop="name headline" class="mb-2">
+        <a href={url} itemprop="url">{title}</a>
+      </h1>
+      <div class="flex flex-row gap-4 [&>*]:m-0">
+        <time datetime={date.toISOString()}>
+          <EmojiText label="calendar for the date" emoji="🗓">
+            {
+              dateFns.formatISO(date, {
+                representation: 'date',
+              })
+            }
+          </EmojiText>
+        </time>
+        {
+          readingTime > 0 && (
+            <p>
+              <EmojiText
+                label="stopwatch denoting time to read article"
+                emoji="⏱️"
+              >
+                {`${readingTime ?? 1} ${
+                  (readingTime ?? 0) > 1 ? 'Minutes' : 'Minute'
+                }`}
+              </EmojiText>
+            </p>
+          )
+        }
+      </div>
+      <p itemprop="description" class="m-0">
+        <EmojiText label="description of the blog post" emoji="📝">
+          {description}
+        </EmojiText>
+      </p>
+    </header>
+    <main itemprop="text" class="post-body">
+      <slot />
+    </main>
+    {
+      showComments && (
+        <footer>
+          <script
+            is:inline
+            src="https://utteranc.es/client.js"
+            repo="eligundry/eligundry.com"
+            issue-term="pathname"
+            label="✨💬✨  Blog"
+            theme="preferred-color-scheme"
+            crossorigin="anonymous"
+            async
+          />
+        </footer>
+      )
+    }
+  </article>
+</BaseLayout>

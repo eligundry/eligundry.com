@@ -1,0 +1,74 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import dateFns from 'date-fns'
+import EmojiText from '../EmojiText.astro'
+import Excerpt from './Excerpt.astro'
+
+interface Props {
+  entry: CollectionEntry<'blog'> | CollectionEntry<'talks'>
+}
+
+const { entry } = Astro.props
+const { Content, remarkPluginFrontmatter } = await entry.render()
+const readingTime =
+  'readingTime' in remarkPluginFrontmatter
+    ? remarkPluginFrontmatter.readingTime ?? 1
+    : undefined
+let tags: string[] = []
+
+if ('tags' in entry.data) {
+  tags = entry.data.tags.map((tag) => `tag-${tag}`)
+}
+---
+
+<article
+  itemscope
+  itemtype={`https://schema.org/${
+    entry.collection === 'blog' ? 'BlogPosting' : 'CreativeWork'
+  }`}
+  class:list={tags}
+>
+  <link itemprop="author publisher" href="#eli-gundry" />
+  {
+    remarkPluginFrontmatter.readingTime > 0 && (
+      <meta
+        itemprop="timeRequired"
+        content={`PT${remarkPluginFrontmatter.readingTime}`}
+      />
+    )
+  }
+  <h2 itemprop="name headline" class="my-0">
+    <a href={`/${entry.collection}/${entry.slug}/`} itemprop="url">
+      {entry.data.title}
+    </a>
+  </h2>
+  <div class="flex flex-row gap-4 [&>*]:m-0">
+    <time datetime={entry.data.date.toISOString()}>
+      <EmojiText label="calendar for the date" emoji="🗓">
+        {
+          dateFns.formatISO(entry.data.date, {
+            representation: 'date',
+          })
+        }
+      </EmojiText>
+    </time>
+    {
+      readingTime !== undefined && (
+        <p>
+          <EmojiText label="stopwatch denoting time to read article" emoji="⏱">
+            {Math.max(readingTime, 1)}&nbsp;
+            {readingTime > 1 ? 'Minutes' : 'Minute'}
+          </EmojiText>
+        </p>
+      )
+    }
+  </div>
+  <p itemprop="description" class="m-0">
+    <EmojiText label="description of the blog post" emoji="📝">
+      {entry.data.description}
+    </EmojiText>
+  </p>
+  <Excerpt>
+    <Content />
+  </Excerpt>
+</article>

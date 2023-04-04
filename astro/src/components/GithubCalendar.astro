@@ -1,0 +1,106 @@
+---
+// This code is adapted from  https://github.com/grubersjoe/react-activity-calendar
+// I wanted to be able to do the data fetching server side and just serve an
+// inline svg in the HTML.
+import dateFns from 'date-fns'
+import groupBy from 'lodash/groupBy'
+import config from '../config'
+import { cacheAxios } from '../lib/cache'
+
+interface Props {
+  className?: string
+}
+
+interface GithubApiResponse {
+  total: {
+    [year: number | string]: number
+  }
+  contributions: {
+    date: string
+    count: number
+    level: number
+  }[]
+}
+
+const contributions = await cacheAxios
+  .get<GithubApiResponse>(
+    `https://github-contributions-api.jogruber.de/v4/${config.github}`,
+    {
+      params: {
+        y: 'last',
+      },
+      cache: {
+        ttl: 60 * 60 * 24,
+      },
+    }
+  )
+  .then((resp) => {
+    return resp.data.contributions.map((c) => ({
+      ...c,
+      date: dateFns.parseISO(c.date),
+    }))
+  })
+
+const contributionsGroupedByWeek = groupBy(contributions, (c) =>
+  dateFns.differenceInCalendarWeeks(contributions[0].date, c.date)
+)
+
+const blockMargin = 4
+const blockSize = 12
+const width =
+  Object.keys(contributionsGroupedByWeek).length * (blockSize + blockMargin) -
+  blockMargin
+const height = (blockSize + blockMargin) * 7 - blockMargin
+---
+
+<svg
+  width={width + 2}
+  height={height}
+  viewBox={`0 0 ${width + 2} ${height}`}
+  class:list={[
+    'not-prose',
+    'max-w-full',
+    '[&_rect]:tooltip',
+    '[&_rect]:tooltip-open',
+    '[&_rect]:stroke-base-300',
+    '[&_rect]:stroke-1',
+    '[&_rect]:overflow-visible',
+    '[&_rect]:w-[12px]',
+    '[&_rect]:h-[12px]',
+    '[&_rect]:[rx:2]',
+    '[&_rect]:[ry:2]',
+    '[&_rect]:[x:0]',
+    '[&_rect.level-0]:fill-neutral',
+    '[&_rect.level-1]:fill-primary/[.44]',
+    '[&_rect.level-2]:fill-primary/[.60]',
+    '[&_rect.level-3]:fill-primary/[.76]',
+    '[&_rect.level-4]:fill-neutral/[.92]',
+    '[&_g]:overflow-visible',
+    Astro.props.className,
+  ]}
+>
+  {
+    Object.values(contributionsGroupedByWeek).map((week, weekIdx) => {
+      return (
+        <g
+          transform={`translate(${1 + (blockSize + blockMargin) * weekIdx}, 0)`}
+        >
+          {week.map((day, dayIdx) => {
+            const formattedDate = dateFns.formatISO(day.date, {
+              representation: 'date',
+            })
+            const tooltip = `${day.count} contributions on ${formattedDate}`
+
+            return (
+              <rect
+                y={(blockSize + blockMargin) * dayIdx}
+                data-tip={tooltip}
+                class={`level-${day.level}`}
+              />
+            )
+          })}
+        </g>
+      )
+    })
+  }
+</svg>
