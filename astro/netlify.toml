@@ -8,4 +8,10 @@
 [[plugins]]
   package = 'netlify-plugin-cache'
   [plugins.inputs]
-  paths = ['.cache', 'public/astro-fontaine']
+    paths = ['.cache', 'public/astro-fontaine']
+
+[[headers]]
+  for = "/*.rss"
+  [headers.values]
+    Content-Type = "application/rss+xml; charset=utf-8"
+

@@ -19,6 +19,7 @@ export const get: APIRoute = async () => {
     language: 'en-US',
     copyright: `${new Date().getFullYear()} Eli Gundry`,
     author,
+    updated: entries[0].time,
   })
 
   entries.forEach((entry) => {
