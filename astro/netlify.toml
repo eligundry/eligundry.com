@@ -9,12 +9,3 @@
   package = 'netlify-plugin-cache'
   [plugins.inputs]
   paths = ['.cache', 'public/astro-fontaine']
-
-[[plugins]]
-  package = 'netlify-plugin-inline-critical-css'
-  [plugins.inputs]
-  dimensions = [
-    { width = 414, height = 896 },
-    { width = 1920, height = 1080 }
-  ]
-
