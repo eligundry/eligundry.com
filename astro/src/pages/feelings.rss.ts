@@ -52,5 +52,8 @@ export const get: APIRoute = async () => {
 
   return {
     body: feed.rss2(),
+    headers: {
+      'content-type': 'application/rss+xml; charset=utf-8',
+    },
   }
 }
