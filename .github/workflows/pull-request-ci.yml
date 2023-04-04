@@ -9,28 +9,37 @@ jobs:
     name: Run linters
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: next
+          node-version: 18
+          cache: 'npm'
       - name: Run linters
-        working-directory: next
+        working-directory: astro
         run: npm run lint
 
   type-check:
     name: Check types
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: next
+          node-version: 18
+          cache: 'npm'
       - name: Check types
-        working-directory: next
-        run: npm run typecheck
+        working-directory: astro
+        run: npm run type-check
+
+  astro-check:
+    name: Check types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Astro check
+        working-directory: astro
+        run: npm run astro-check

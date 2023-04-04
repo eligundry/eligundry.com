@@ -9,7 +9,10 @@
     "build": "astro build --verbose",
     "preview": "astro preview",
     "astro": "astro",
-    "prettier": "prettier -w ."
+    "prettier": "prettier -w .",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx,.astro,.mdx",
+    "astro-check": "astro check",
+    "type-check": "tsc --noEmit"
   },
   "prettier": {
     "trailingComma": "es5",
@@ -78,6 +81,7 @@
     "@typescript-eslint/parser": "^5.57.0",
     "eslint": "^8.36.0",
     "eslint-plugin-astro": "^0.26.1",
+    "eslint-plugin-mdx": "^2.0.5",
     "fontaine": "^0.3.1",
     "netlify-plugin-cache": "^1.0.3",
     "prettier": "^2.8.7",

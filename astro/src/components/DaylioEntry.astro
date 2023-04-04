@@ -35,7 +35,7 @@ const { entry, wrapInPaper = false } = Astro.props
           I felt {entry.mood}
         </h3>
         <time datetime={entry.rawTime} itemprop="datePublished dateModified">
-          <a href={`/feelings#${entry.rawTime}`}>
+          <a href={`/feelings/#${entry.rawTime}`}>
             {entry.rawTime}
           </a>
         </time>
