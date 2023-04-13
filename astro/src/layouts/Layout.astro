@@ -26,6 +26,14 @@ export interface Props {
 const { title, description, frontmatter, fancyBackgroundPoints } = Astro.props
 const latestFeeling = await daylio.getLatest()
 const modified = await getLastModifiedForPath(Astro.url.pathname)
+let opengraphImage = new URL(
+  frontmatter?.cover ?? config.seoImage ?? '',
+  config.url
+).toString()
+
+if (opengraphImage === config.url) {
+  opengraphImage = ''
+}
 ---
 
 <!DOCTYPE html>
@@ -46,7 +54,7 @@ const modified = await getLastModifiedForPath(Astro.url.pathname)
       openGraph={{
         basic: {
           title: title ?? config.title,
-          image: frontmatter?.cover ?? config.seoImage ?? '',
+          image: opengraphImage,
           type: 'website',
           url: config.url + Astro.url.pathname,
         },
