@@ -1,13 +1,12 @@
 ---
 import { getEntryBySlug } from 'astro:content'
-import EmojiText from '../components/EmojiText.astro'
 import { FaGithubAlt, FaMastodon } from 'react-icons/fa'
 import { ImLastfm } from 'react-icons/im'
 import { MdRssFeed, MdOutlineEmail } from 'react-icons/md'
 import { TbBrandTwitter } from 'react-icons/tb'
 import { TiSocialLinkedin } from 'react-icons/ti'
 
-const about = await getEntryBySlug('sections', 'footer-about')
+const about = await getEntryBySlug('sections', 'about')
 const { Content } = await about.render()
 
 const social = [

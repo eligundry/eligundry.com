@@ -12,28 +12,32 @@ import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
 import config from '../config'
 
-const latestEntry = await daylio.getLatest()
-const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(
-  0,
-  9
-)
-const shelves = {
-  current: await goodreads.getShelf({
-    userID: config.goodreadsUserID,
-    shelf: 'currently-reading',
-    limit: 1,
-  }),
-  read: await goodreads.getShelf({
-    userID: config.goodreadsUserID,
-    shelf: 'read',
-    limit: 11,
-    sort: 'date_read',
-    order: 'd',
-  }),
-}
-const favoritePosts = (await getCollection('blog'))
-  .filter((post) => post.data.favoriteIndex)
-  .sort((a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0))
+const [latestEntry, topAlbums, currentlyReading, recentlyRead, favoritePosts] =
+  await Promise.all([
+    daylio.getLatest(),
+    lastfm
+      .getTopAlbumsCover(config.lastFmUsername)
+      .then((albums) => albums.slice(0, 9)),
+    goodreads.getShelf({
+      userID: config.goodreadsUserID,
+      shelf: 'currently-reading',
+      limit: 1,
+    }),
+    goodreads.getShelf({
+      userID: config.goodreadsUserID,
+      shelf: 'read',
+      limit: 11,
+      sort: 'date_read',
+      order: 'd',
+    }),
+    getCollection('blog').then((posts) =>
+      posts
+        .filter((post) => post.data.favoriteIndex)
+        .sort(
+          (a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0)
+        )
+    ),
+  ])
 ---
 
 <Layout>
@@ -172,7 +176,7 @@ const favoritePosts = (await getCollection('blog'))
     </p>
     <div class="bookshelf not-prose gap-y-2">
       {
-        [...shelves.current, ...shelves.read].map((book, i) => {
+        [...currentlyReading, ...recentlyRead].map((book, i) => {
           let alt = book.title
 
           if (book.author) {

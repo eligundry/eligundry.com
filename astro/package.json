@@ -51,6 +51,7 @@
     "jsdom": "^21.1.1",
     "lastfm-typed": "^2.1.0",
     "lodash": "^4.17.21",
+    "markdown-to-txt": "^2.0.1",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
     "postcss-nesting": "^11.2.2",
