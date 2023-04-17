@@ -49,6 +49,7 @@ const social = [
     name: 'email',
     label: 'Shoot me an email',
     url: 'mailto:eligundry@gmail.com',
+    itemProp: 'email',
     Icon: MdOutlineEmail,
   },
   {
@@ -97,6 +98,7 @@ const social = [
               data-tip={link.label}
               aria-label={link.label}
               class:list={['btn', 'btn-sm', 'btn-square', 'btn-primary']}
+              itemprop={link.itemProp}
             >
               <link.Icon size="1.75rem" />
             </a>

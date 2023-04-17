@@ -76,7 +76,7 @@ const url = `/${collection}/${slug}/`
           </EmojiText>
         </time>
         {
-          readingTime > 0 && (
+          readingTime > 0 && collection === 'blog' && (
             <p>
               <EmojiText
                 label="stopwatch denoting time to read article"
@@ -88,6 +88,20 @@ const url = `/${collection}/${slug}/`
               </EmojiText>
             </p>
           )
+        }
+        {
+          collection === 'talks' &&
+            'location' in frontmatter &&
+            frontmatter.location && (
+              <span>
+                <EmojiText
+                  emoji="📍"
+                  label="map pin denoting that I gave this talk somewhere"
+                >
+                  {frontmatter.location}
+                </EmojiText>
+              </span>
+            )
         }
       </div>
       <p itemprop="description" class="m-0">

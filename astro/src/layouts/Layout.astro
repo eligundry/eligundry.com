@@ -56,12 +56,12 @@ if (opengraphImage === config.url) {
   itemid="#eli-gundry"
 >
   <head>
-    <meta charset="utf-8" />
     <SEO
+      charset="utf-8"
       title={title}
       titleTemplate={`%s | ${config.title}`}
       titleDefault={config.title}
-      description={description ?? config.description}
+      description={description}
       canonical={config.url + Astro.url.pathname}
       openGraph={{
         basic: {
@@ -104,6 +104,8 @@ if (opengraphImage === config.url) {
         ],
       }}
     />
+    <meta itemprop="name" content="Eli Gundry" />
+    <meta itemprop="description" content={about} />
     <Tracking />
     <script is:inline>
       if (localStorage.getItem('theme') === null) {
