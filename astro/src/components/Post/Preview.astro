@@ -6,9 +6,13 @@ import Excerpt from './Excerpt.astro'
 
 interface Props {
   entry: CollectionEntry<'blog'> | CollectionEntry<'talks'>
+  badge?: {
+    text: string
+    className?: string | string[]
+  }
 }
 
-const { entry } = Astro.props
+const { entry, badge } = Astro.props
 const { Content, remarkPluginFrontmatter } = await entry.render()
 const readingTime =
   'readingTime' in remarkPluginFrontmatter
@@ -38,6 +42,7 @@ if ('tags' in entry.data) {
       />
     )
   }
+  {badge && <span class:list={['badge', badge.className]}>{badge.text}</span>}
   <h2 itemprop="name headline" class="my-0">
     <a href={`/${entry.collection}/${entry.slug}/`} itemprop="url">
       {entry.data.title}

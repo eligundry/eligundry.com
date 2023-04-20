@@ -1,5 +1,6 @@
 ---
 import { Image } from '@astrojs/image/components'
+import dateFns from 'date-fns'
 import { getCollection } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
@@ -10,34 +11,43 @@ import PostPreview from '../components/Post/Preview.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
+import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 
-const [latestEntry, topAlbums, currentlyReading, recentlyRead, favoritePosts] =
-  await Promise.all([
-    daylio.getLatest(),
-    lastfm
-      .getTopAlbumsCover(config.lastFmUsername)
-      .then((albums) => albums.slice(0, 9)),
-    goodreads.getShelf({
-      userID: config.goodreadsUserID,
-      shelf: 'currently-reading',
-      limit: 1,
-    }),
-    goodreads.getShelf({
-      userID: config.goodreadsUserID,
-      shelf: 'read',
-      limit: 11,
-      sort: 'date_read',
-      order: 'd',
-    }),
-    getCollection('blog').then((posts) =>
-      posts
-        .filter((post) => post.data.favoriteIndex)
-        .sort(
-          (a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0)
-        )
-    ),
-  ])
+const [
+  latestEntry,
+  topAlbums,
+  currentlyReading,
+  recentlyRead,
+  favoritePosts,
+  latestPost,
+] = await Promise.all([
+  daylio.getLatest(),
+  lastfm
+    .getTopAlbumsCover(config.lastFmUsername)
+    .then((albums) => albums.slice(0, 9)),
+  goodreads.getShelf({
+    userID: config.goodreadsUserID,
+    shelf: 'currently-reading',
+    limit: 1,
+  }),
+  goodreads.getShelf({
+    userID: config.goodreadsUserID,
+    shelf: 'read',
+    limit: 11,
+    sort: 'date_read',
+    order: 'd',
+  }),
+  getCollection('blog').then((posts) =>
+    posts
+      .filter((post) => post.data.favoriteIndex)
+      .sort((a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0))
+  ),
+  getCollection('blog').then(
+    (posts) =>
+      posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
+  ),
+])
 ---
 
 <Layout>
@@ -161,7 +171,24 @@ const [latestEntry, topAlbums, currentlyReading, recentlyRead, favoritePosts] =
       some of my favorite posts.
     </p>
     <div class="posts flex flex-col gap-4">
-      {favoritePosts.map((post) => <PostPreview entry={post} />)}
+      <PostPreview
+        entry={latestPost}
+        badge={{
+          text: 'Latest',
+          className: 'badge-secondary',
+        }}
+      />
+      {
+        favoritePosts.map((post, i) => (
+          <PostPreview
+            entry={post}
+            badge={{
+              text: `${convertNumberToOrdinal(i + 1)} Favorite`,
+              className: 'badge-accent',
+            }}
+          />
+        ))
+      }
     </div>
   </section>
 
