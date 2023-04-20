@@ -16,6 +16,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: astro/package-lock.json
       - run: npm ci
+        working-directory: astro
       - name: Run linters
         working-directory: astro
         run: npm run lint
@@ -31,6 +32,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: astro/package-lock.json
       - run: npm ci
+        working-directory: astro
       - name: Check types
         working-directory: astro
         run: npm run type-check
@@ -46,6 +48,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: astro/package-lock.json
       - run: npm ci
+        working-directory: astro
       - name: Astro check
         working-directory: astro
         run: npm run astro-check
