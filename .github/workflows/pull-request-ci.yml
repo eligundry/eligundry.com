@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: astro/package-lock.json
       - name: Run linters
         working-directory: astro
         run: npm run lint
@@ -27,12 +28,13 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: astro/package-lock.json
       - name: Check types
         working-directory: astro
         run: npm run type-check
 
   astro-check:
-    name: Check types
+    name: Astro check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -40,6 +42,7 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: astro/package-lock.json
       - name: Astro check
         working-directory: astro
         run: npm run astro-check
