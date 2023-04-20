@@ -1,12 +1,11 @@
 ---
 import { Image } from '@astrojs/image/components'
 import dateFns from 'date-fns'
-import { getCollection } from 'astro:content'
+import { getCollection, getEntryBySlug } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart.tsx'
-import GithubCalendar from '../components/GithubCalendar.astro'
 import PostPreview from '../components/Post/Preview.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
@@ -21,6 +20,7 @@ const [
   recentlyRead,
   favoritePosts,
   latestPost,
+  CodingSection,
 ] = await Promise.all([
   daylio.getLatest(),
   lastfm
@@ -47,6 +47,10 @@ const [
     (posts) =>
       posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
   ),
+  getEntryBySlug('sections', 'do-you-code').then(async (section) => {
+    const { Content } = await section.render()
+    return Content
+  }),
 ])
 ---
 
@@ -147,20 +151,16 @@ const [
     </div>
   </section>
 
-  <section class="coding paper prose">
-    <h2 class="mb-4">Do You Code?</h2>
-    <p>
-      I make a living developing web applications. I jump all around the stack
-      and will do whatever it takes to ship. Need me to do some devops to get
-      this feature out? I gotcha. Some CSS is making a button look bad? I'll do
-      my best. A query running to slow? Stop, I can't deal with all this
-      excitement.
-    </p>
-    <p>
-      GitHub contribution calendars are not a good indicator of whether or not
-      someone is a good developer, but they are very pretty.
-    </p>
-    <GithubCalendar className="my-0" />
+  <section
+    class:list={[
+      'coding',
+      'paper',
+      'prose',
+      ['pb-0', 'sm:pb-4'],
+      ['[&>p:last-of-type]:mb-0', 'sm:[&>p:last-of-type]:mb-4'],
+    ]}
+  >
+    <CodingSection />
   </section>
 
   <section class="favoritePosts paper prose">
