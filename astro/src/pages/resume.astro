@@ -389,8 +389,8 @@ const resume = {
     web development to 10th graders during the 2022 school year.
     `,
     `
-    Presented <a href="/talks">talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a>
-    and <a href="/talks/redux-hooks">QueensJS</a>.`,
+    Presented <a href="/talks">technical talks</a> at <a href="/talks/dots">The New York City Vim Meetup</a>,
+    <a href="/talks/redux-hooks">QueensJS</a>, and <a href="/talks/remix-ab-testing">Remix NYC</a>.`,
     `
     Former member of <a href="http://hacksu.cs.kent.edu/">HacKSU</a>, Kent State's hacker community and
     <a href="https://devpost.com/eligundry">competed in numerous hackathons</a> including:
@@ -437,15 +437,15 @@ const resume = {
     <Section>
       <header class="flex justify-between border-b-2 border-b-accent">
         <h2 class="my-0 text-lg block print:hidden">Work</h2>
-        <h2 class="my-0 text-lg hidden print:block">Selected Work</h2>
+        <h2 class="my-0 text-lg hidden print:block">Selected Work History</h2>
         <h6
           class:list={[
             'self-center',
             'italic',
             'text-neutral-900',
-            'hidden',
-            'print:block',
             'text-xs',
+            'hidden',
+            'print:!block',
           ]}
         >
           View full resume at <a href="/resume/">eligundry.com/resume/</a>
@@ -461,12 +461,11 @@ const resume = {
             'sm:tooltip-left',
             'self-start',
             'normal-case',
-            'hidden',
-            'print:hidden',
+            'print:!hidden',
             'sm:inline',
           ]}
-          aria-label="download this resume by printing it as a pdf"
           data-tip="Download this resume by printing it as a PDF"
+          aria-label="Download this resume by printing it as a PDF"
         >
           <FaDownload />
         </button>

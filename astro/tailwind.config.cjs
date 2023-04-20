@@ -28,12 +28,6 @@ module.exports = {
       serif: ['Arvo', '"Arvo fallback"', 'serif', ...emojiFonts],
       mono: ['"Fira Code"', '"Fira Code fallback"', 'monospace', ...emojiFonts],
     },
-    screens: {
-      ...defaultTheme.screens,
-      print: {
-        raw: 'print',
-      },
-    },
     extend: {
       typography: ({ theme }) => ({
         gray: {

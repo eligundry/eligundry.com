@@ -47,10 +47,9 @@ const [
     (posts) =>
       posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
   ),
-  getEntryBySlug('sections', 'do-you-code').then(async (section) => {
-    const { Content } = await section.render()
-    return Content
-  }),
+  getEntryBySlug('sections', 'do-you-code')
+    .then((section) => section.render())
+    .then(({ Content }) => Content),
 ])
 ---
 
@@ -201,7 +200,15 @@ const [
         itemprop="sameAs">Goodreads</a
       >.
     </p>
-    <div class="bookshelf not-prose gap-y-2">
+    <div
+      class:list={[
+        'not-prose',
+        'grid',
+        'items-center',
+        ['grid-cols-4', 'md:grid-cols-6'],
+        'md:gap-y-2',
+      ]}
+    >
       {
         [...currentlyReading, ...recentlyRead].map((book, i) => {
           let alt = book.title
