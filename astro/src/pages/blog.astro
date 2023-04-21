@@ -30,7 +30,8 @@ const tagsCss = tags
   const postList = document.getElementById('post-list')
   const tagFilterBtns = document.querySelectorAll('.tag-filter .btn')
 
-  const updateTagFilter = (tag: string) => {
+  // @ts-ignore
+  const updateTagFilter = (tag) => {
     Array.from(postList?.classList.values() ?? []).forEach((cl) => {
       if (cl.startsWith('selected-tag-')) {
         postList?.classList.remove(cl)

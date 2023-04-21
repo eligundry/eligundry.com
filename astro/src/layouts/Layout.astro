@@ -124,16 +124,18 @@ if (opengraphImage === config.url) {
       }
     </script>
     <script>
-      const lazyLoadedIframes = document.querySelectorAll<HTMLIFrameElement>(
+      const lazyLoadedIframes = document.querySelectorAll(
         'iframe[loading="lazy"][data-src]'
       )
       const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // @ts-ignore
-            const iframe: HTMLIFrameElement = entry.target
+            const iframe = entry.target
 
+            // @ts-ignore
             if (!iframe.src && iframe.dataset.src) {
+              // @ts-ignore
               iframe.src = iframe.dataset.src
               observer.unobserve(iframe)
             }
