@@ -22,6 +22,11 @@ const {
   window: { document },
 } = new JSDOM(html)
 const code = document.querySelector('code')
+
+if (!code) {
+  throw new Error('Could not construct JSDOM code element to do line numbers')
+}
+
 const lines = code.innerHTML.split('\n')
 const newLines = lines
   .map((line, i) => {
@@ -44,6 +49,8 @@ if (lines.length <= 10) {
   expanded = true
   expandable = false
 }
+
+const showExpandButton = !expanded && expandable
 ---
 
 <div class:list={['code-wrapper', className]}>
@@ -52,17 +59,16 @@ if (lines.length <= 10) {
   <div
     set:html={newLines}
     class:list={[
-      'mockup-code',
       'not-prose',
       'astro-code',
-      !expanded && [
+      showExpandButton && [
         ['line-clamp-10', 'rounded-b-none', '!overflow-x-scroll'],
         ['peer-checked:line-clamp-none', 'peer-checked:rounded-b-xl'],
       ],
     ]}
   />
   {
-    !expanded && (
+    showExpandButton && (
       <label
         for={id}
         class:list={[

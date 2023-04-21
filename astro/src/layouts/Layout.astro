@@ -6,9 +6,9 @@ import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import FancyBackground from '../components/FancyBackground/index.astro'
 import Tracking from '../components/Tracking.astro'
-import daylio from '../lib/daylio.ts'
-import config from '../config.ts'
-import { getLastModifiedForPath } from '../lib/lastModified.ts'
+import daylio from '../lib/daylio'
+import config from '../config'
+import { getLastModifiedForPath } from '../lib/lastModified'
 import '../styles/tailwind.css'
 
 export interface Props {
@@ -124,15 +124,19 @@ if (opengraphImage === config.url) {
       }
     </script>
     <script>
-      const lazyLoadedIframes = document.querySelectorAll(
+      const lazyLoadedIframes = document.querySelectorAll<HTMLIFrameElement>(
         'iframe[loading="lazy"][data-src]'
       )
       const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const iframe = entry.target
-            iframe.src = iframe.dataset.src
-            observer.unobserve(iframe)
+            // @ts-ignore
+            const iframe: HTMLIFrameElement = entry.target
+
+            if (!iframe.src && iframe.dataset.src) {
+              iframe.src = iframe.dataset.src
+              observer.unobserve(iframe)
+            }
           }
         })
       })

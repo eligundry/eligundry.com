@@ -21,22 +21,6 @@ jobs:
         working-directory: astro
         run: npm run lint
 
-  type-check:
-    name: Check types
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: astro/package-lock.json
-      - run: npm ci
-        working-directory: astro
-      - name: Check types
-        working-directory: astro
-        run: npm run type-check
-
   astro-check:
     name: Astro check
     runs-on: ubuntu-latest

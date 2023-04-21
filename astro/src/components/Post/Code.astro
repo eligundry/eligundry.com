@@ -3,9 +3,9 @@
 ---
 {
   Astro.props.class && (
-    <div class="mockup-code">
+  <pre class:list={['astro-code', 'astro-code-compact', Astro.props.class]}>
 <slot />
-    </div>
+  </pre>
   )
 }
-{!Astro.props.class && <slot />}
+{!Astro.props.class && <pre><slot /></pre>}

@@ -14,13 +14,23 @@ const tags = [
     return acc
   }, new Set<string>()),
 ].sort((a, b) => (a < b ? -1 : 1))
+
+const tagsCss = tags
+  .map(
+    (tag) => `
+#post-list.selected-tag-${tag} > #posts  > *:not(.tag-${tag}) {
+  display: none;
+}
+`
+  )
+  .join('\n')
 ---
 
 <script>
   const postList = document.getElementById('post-list')
   const tagFilterBtns = document.querySelectorAll('.tag-filter .btn')
 
-  const updateTagFilter = (tag) => {
+  const updateTagFilter = (tag: string) => {
     Array.from(postList?.classList.values() ?? []).forEach((cl) => {
       if (cl.startsWith('selected-tag-')) {
         postList?.classList.remove(cl)
@@ -55,17 +65,7 @@ const tags = [
   })
 </script>
 
-<style
-  set:html={tags
-    .map(
-      (tag) => `
-#post-list.selected-tag-${tag} > #posts  > *:not(.tag-${tag}) {
-  display: none;
-}
-    `
-    )
-    .join('\n')}
-></style>
+<style set:html={tagsCss}></style>
 
 <style>
   #post-list:not(.tag-selected) .tag-filter .reset {

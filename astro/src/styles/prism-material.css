@@ -1,4 +1,5 @@
-.mockup-code,
+.code-wrapper,
+.astro-code,
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #90a4ae;
@@ -171,7 +172,8 @@ pre[class*="language-"] ::selection {
 }
 
 [data-theme='dark'] {
-  .mockup-code,
+  .code-wrapper,
+  .astro-code,
 	code[class*="language-"],
 	pre[class*="language-"] {
 		color: #eee;

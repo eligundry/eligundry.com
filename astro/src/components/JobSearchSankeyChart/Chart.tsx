@@ -4,7 +4,6 @@ import { Chart } from 'react-chartjs-2'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
 
 import { tooltipTheme, cssvar } from '../../lib/charts'
-import theme from '../../theme.json'
 import jobSearch2022 from './2022.json'
 import { jobSearchDataToSankeyPoints } from '../../lib/jobSearchSankey'
 

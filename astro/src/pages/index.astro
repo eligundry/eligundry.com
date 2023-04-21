@@ -5,13 +5,15 @@ import { getCollection, getEntryBySlug } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
-import DaylioChart from '../components/DaylioChart.tsx'
+import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
+import memoji from '../assets/img/eli-thumbs-up-memoji.png'
+import vimSVG from '../assets/img/vim.svg'
 
 const [
   latestEntry,
@@ -67,7 +69,7 @@ const [
       ]}
     >
       <Image
-        src={import('../assets/img/eli-thumbs-up-memoji.png')}
+        src={memoji}
         loading="eager"
         alt="Eli Gundry's Memoji Headshot"
         width={250}
@@ -102,7 +104,7 @@ const [
       <li>
         I am a
         <Image
-          src={import('../assets/img/vim.svg')}
+          src={vimSVG}
           alt="Vim Logo"
           width={16}
           height={16}
@@ -220,6 +222,8 @@ const [
           if (i === 0) {
             alt = `Currently Reading: ${alt}`
           }
+
+          if (!alt || !book.cover) return null
 
           return (
             <a

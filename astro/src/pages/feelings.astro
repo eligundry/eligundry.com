@@ -1,9 +1,9 @@
 ---
 import dateFns from 'date-fns'
-import daylio, { ActivityMapping } from '../lib/daylio'
+import daylio from '../lib/daylio'
 import Layout from '../layouts/Layout.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
-import DaylioChart from '../components/DaylioChart.tsx'
+import DaylioChart from '../components/DaylioChart'
 
 const entries = await daylio.getRange(dateFns.subMonths(new Date(), 6))
 ---

@@ -8,15 +8,20 @@ interface Props {
 }
 
 const { alt, src } = Astro.props
-const { aspectRatio, backgroundColor, width } = await getRemoteImageMetadata(
-  src
-)
+const {
+  aspectRatio,
+  backgroundColor,
+  width: fullWidth,
+} = await getRemoteImageMetadata(src)
+const width = Math.min(fullWidth, 690)
+const height = Math.round(width / aspectRatio)
 ---
 
 <Image
   src={src}
   alt={alt}
-  width={Math.min(width, 690)}
+  width={width}
+  height={height}
   aspectRatio={aspectRatio}
   format="webp"
   style={{ backgroundColor }}
