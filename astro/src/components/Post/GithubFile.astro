@@ -35,6 +35,7 @@ let range = null
 if (rawURL.hash) {
   try {
     const matches = rawURL.hash.matchAll(/#L(\d+)-L(\d+)/g)
+    // @ts-ignore
     const items = Array.from(...matches)
 
     if (items.length) {
@@ -75,19 +76,8 @@ if (range) {
   lineNumbers
   expanded={expanded}
   expandable={expandable}
-  className="mt-[-2rem]"
 >
-  <div
-    slot="header"
-    class:list={[
-      'relative',
-      'top-[39px]',
-      'left-[100px]',
-      'z-20',
-      'font-mono',
-      'max-w-md',
-    ]}
-  >
+  <div slot="header" class="code-wrapper-header">
     <a
       href={url}
       target="_blank"

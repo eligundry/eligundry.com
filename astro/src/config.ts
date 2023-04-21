@@ -11,4 +11,5 @@ export default {
   goodreadsUserID: '29665939',
   github: 'eligundry',
   twitter: '@eligundry',
+  seoImage: '',
 }

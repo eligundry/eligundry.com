@@ -1,13 +1,14 @@
 ---
 import { SEO } from 'astro-seo'
-import type { CollectionEntry } from 'astro:content'
+import { markdownToTxt } from 'markdown-to-txt'
+import { CollectionEntry, getEntryBySlug } from 'astro:content'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import FancyBackground from '../components/FancyBackground/index.astro'
 import Tracking from '../components/Tracking.astro'
-import daylio from '../lib/daylio.ts'
-import config from '../config.ts'
-import { getLastModifiedForPath } from '../lib/lastModified.ts'
+import daylio from '../lib/daylio'
+import config from '../config'
+import { getLastModifiedForPath } from '../lib/lastModified'
 import '../styles/tailwind.css'
 
 export interface Props {
@@ -23,9 +24,20 @@ export interface Props {
   }>
 }
 
-const { title, description, frontmatter, fancyBackgroundPoints } = Astro.props
-const latestFeeling = await daylio.getLatest()
-const modified = await getLastModifiedForPath(Astro.url.pathname)
+const [latestFeeling, modified, about] = await Promise.all([
+  daylio.getLatest(),
+  getLastModifiedForPath(Astro.url.pathname),
+  getEntryBySlug('sections', 'about').then((section) =>
+    markdownToTxt(section.body).split('\n').slice(2).join(' ')
+  ),
+])
+
+const {
+  title,
+  description = about,
+  frontmatter,
+  fancyBackgroundPoints,
+} = Astro.props
 let opengraphImage = new URL(
   frontmatter?.cover ?? config.seoImage ?? '',
   config.url
@@ -44,12 +56,12 @@ if (opengraphImage === config.url) {
   itemid="#eli-gundry"
 >
   <head>
-    <meta charset="utf-8" />
     <SEO
+      charset="utf-8"
       title={title}
       titleTemplate={`%s | ${config.title}`}
       titleDefault={config.title}
-      description={description ?? config.description}
+      description={description}
       canonical={config.url + Astro.url.pathname}
       openGraph={{
         basic: {
@@ -92,6 +104,8 @@ if (opengraphImage === config.url) {
         ],
       }}
     />
+    <meta itemprop="name" content="Eli Gundry" />
+    <meta itemprop="description" content={about} />
     <Tracking />
     <script is:inline>
       if (localStorage.getItem('theme') === null) {
@@ -116,9 +130,15 @@ if (opengraphImage === config.url) {
       const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // @ts-ignore
             const iframe = entry.target
-            iframe.src = iframe.dataset.src
-            observer.unobserve(iframe)
+
+            // @ts-ignore
+            if (!iframe.src && iframe.dataset.src) {
+              // @ts-ignore
+              iframe.src = iframe.dataset.src
+              observer.unobserve(iframe)
+            }
           }
         })
       })

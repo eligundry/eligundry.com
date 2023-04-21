@@ -6,9 +6,13 @@ import Excerpt from './Excerpt.astro'
 
 interface Props {
   entry: CollectionEntry<'blog'> | CollectionEntry<'talks'>
+  badge?: {
+    text: string
+    className?: string | string[]
+  }
 }
 
-const { entry } = Astro.props
+const { entry, badge } = Astro.props
 const { Content, remarkPluginFrontmatter } = await entry.render()
 const readingTime =
   'readingTime' in remarkPluginFrontmatter
@@ -29,6 +33,7 @@ if ('tags' in entry.data) {
   class:list={tags}
 >
   <link itemprop="author publisher" href="#eli-gundry" />
+  {entry.data.cover && <link itemprop="image" href={entry.data.cover} />}
   {
     remarkPluginFrontmatter.readingTime > 0 && (
       <meta
@@ -37,6 +42,7 @@ if ('tags' in entry.data) {
       />
     )
   }
+  {badge && <span class:list={['badge', badge.className]}>{badge.text}</span>}
   <h2 itemprop="name headline" class="my-0">
     <a href={`/${entry.collection}/${entry.slug}/`} itemprop="url">
       {entry.data.title}
@@ -53,13 +59,25 @@ if ('tags' in entry.data) {
       </EmojiText>
     </time>
     {
-      readingTime !== undefined && (
+      readingTime !== undefined && entry.collection === 'blog' && (
         <p>
           <EmojiText label="stopwatch denoting time to read article" emoji="⏱">
             {Math.max(readingTime, 1)}&nbsp;
             {readingTime > 1 ? 'Minutes' : 'Minute'}
           </EmojiText>
         </p>
+      )
+    }
+    {
+      entry.collection === 'talks' && entry.data.location && (
+        <span>
+          <EmojiText
+            emoji="📍"
+            label="map pin denoting that I gave this talk somewhere"
+          >
+            {entry.data.location}
+          </EmojiText>
+        </span>
       )
     }
   </div>

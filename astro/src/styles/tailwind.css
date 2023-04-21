@@ -15,14 +15,42 @@
     @apply w-full p-4;
   }
 
-  .bookshelf {
-    display: grid;
-    align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    column-gap: 1vw;
-    margin: 0 1vw 1vw;
-    margin-left: 0;
-    text-align: center;
+  .code-wrapper {
+    @apply rounded-2xl;
+  }
+
+  .code-wrapper-header {
+    @apply pt-4 ml-4 font-mono;
+  }
+
+  .astro-code {
+    @apply relative overflow-hidden overflow-x-scroll min-w-[18rem] pt-2 pb-6  pr-4 rounded-2xl;
+    padding-right: 2ch;
+  }
+
+  .astro-code.astro-code-compact {
+    @apply py-0;
+  }
+
+  .astro-code > pre {
+    @apply pl-4;
+  }
+
+  .astro-code > pre > code {
+    @apply pr-4;
+  }
+
+  .astro-code > pre:before {
+    content: '';
+    margin-right: 2ch;
+  }
+
+  .astro-code pre[data-prefix]:before {
+    content: attr(data-prefix);
+    display: inline-block;
+    text-align: right;
+    width: 2rem;
+    opacity: 0.5;
   }
 }
 

@@ -8,15 +8,15 @@ interface Props {
 const { points = 30 } = Astro.props
 ---
 
-<div class:list={['flex', 'flex-row', 'min-h-[calc(100vh-13.75rem)]']}>
+<div class:list={['flex', 'flex-row', 'min-h-[calc(100vh-14.25rem)]']}>
   <div
-    class:list={['fancy-bg', 'print:hidden', 'hidden', 'sm:flex']}
+    class:list={['fancy-bg', 'print:!hidden', 'hidden', 'sm:flex']}
     style={{ '--fluid-pattern-points': points }}
   >
   </div>
   <slot />
   <div
-    class:list={['fancy-bg', 'print:hidden', 'hidden', 'sm:flex']}
+    class:list={['fancy-bg', 'print:!hidden', 'hidden', 'sm:flex']}
     style={{ '--fluid-pattern-points': points }}
   >
   </div>
@@ -69,7 +69,7 @@ const { points = 30 } = Astro.props
   window?.CSS?.paintWorklet?.addModule?.(fluidBackgroundWorkletURL)
 
   document.addEventListener('DOMContentLoaded', () => {
-    const canvases = document.querySelectorAll('.fancy-bg')
+    const canvases = document.querySelectorAll<HTMLDivElement>('.fancy-bg')
     const updateBg = () =>
       canvases.forEach((canvas) => {
         canvas?.style?.setProperty?.(

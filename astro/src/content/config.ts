@@ -23,6 +23,8 @@ const talksSchema = commonFrontmatterSchema.extend({
   location: z.string(),
 })
 
+const sectionSchema = z.object({})
+
 export const collections = {
   blog: defineCollection({
     schema: blogSchema,
@@ -31,5 +33,8 @@ export const collections = {
   talks: defineCollection({
     schema: talksSchema,
     slug: ({ collection, defaultSlug }) => `/${collection}/${defaultSlug}/`,
+  }),
+  sections: defineCollection({
+    schema: sectionSchema,
   }),
 }

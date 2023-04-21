@@ -2,7 +2,7 @@ version: 2
 
 updates:
   - package-ecosystem: npm
-    directory: "/next"
+    directory: "/astro"
     schedule:
       interval: monthly
     open-pull-requests-limit: 5

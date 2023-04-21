@@ -1,39 +1,58 @@
 ---
 import { Image } from '@astrojs/image/components'
-import { getCollection } from 'astro:content'
+import dateFns from 'date-fns'
+import { getCollection, getEntryBySlug } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
-import DaylioChart from '../components/DaylioChart.tsx'
-import GithubCalendar from '../components/GithubCalendar.astro'
+import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
+import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
+import memoji from '../assets/img/eli-thumbs-up-memoji.png'
+import vimSVG from '../assets/img/vim.svg'
 
-const latestEntry = await daylio.getLatest()
-const topAlbums = (await lastfm.getTopAlbumsCover(config.lastFmUsername)).slice(
-  0,
-  9
-)
-const shelves = {
-  current: await goodreads.getShelf({
+const [
+  latestEntry,
+  topAlbums,
+  currentlyReading,
+  recentlyRead,
+  favoritePosts,
+  latestPost,
+  CodingSection,
+] = await Promise.all([
+  daylio.getLatest(),
+  lastfm
+    .getTopAlbumsCover(config.lastFmUsername)
+    .then((albums) => albums.slice(0, 9)),
+  goodreads.getShelf({
     userID: config.goodreadsUserID,
     shelf: 'currently-reading',
     limit: 1,
   }),
-  read: await goodreads.getShelf({
+  goodreads.getShelf({
     userID: config.goodreadsUserID,
     shelf: 'read',
     limit: 11,
     sort: 'date_read',
     order: 'd',
   }),
-}
-const favoritePosts = (await getCollection('blog'))
-  .filter((post) => post.data.favoriteIndex)
-  .sort((a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0))
+  getCollection('blog').then((posts) =>
+    posts
+      .filter((post) => post.data.favoriteIndex)
+      .sort((a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0))
+  ),
+  getCollection('blog').then(
+    (posts) =>
+      posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
+  ),
+  getEntryBySlug('sections', 'do-you-code')
+    .then((section) => section.render())
+    .then(({ Content }) => Content),
+])
 ---
 
 <Layout>
@@ -50,7 +69,7 @@ const favoritePosts = (await getCollection('blog'))
       ]}
     >
       <Image
-        src={import('../assets/img/eli-thumbs-up-memoji.png')}
+        src={memoji}
         loading="eager"
         alt="Eli Gundry's Memoji Headshot"
         width={250}
@@ -85,7 +104,7 @@ const favoritePosts = (await getCollection('blog'))
       <li>
         I am a
         <Image
-          src={import('../assets/img/vim.svg')}
+          src={vimSVG}
           alt="Vim Logo"
           width={16}
           height={16}
@@ -133,20 +152,16 @@ const favoritePosts = (await getCollection('blog'))
     </div>
   </section>
 
-  <section class="coding paper prose">
-    <h2 class="mb-4">Do You Code?</h2>
-    <p>
-      I make a living developing web applications. I jump all around the stack
-      and will do whatever it takes to ship. Need me to do some devops to get
-      this feature out? I gotcha. Some CSS is making a button look bad? I'll do
-      my best. A query running to slow? Stop, I can't deal with all this
-      excitement.
-    </p>
-    <p>
-      GitHub contribution calendars are not a good indicator of whether or not
-      someone is a good developer, but they are very pretty.
-    </p>
-    <GithubCalendar className="my-0" />
+  <section
+    class:list={[
+      'coding',
+      'paper',
+      'prose',
+      ['pb-0', 'sm:pb-4'],
+      ['[&>p:last-of-type]:mb-0', 'sm:[&>p:last-of-type]:mb-4'],
+    ]}
+  >
+    <CodingSection />
   </section>
 
   <section class="favoritePosts paper prose">
@@ -157,7 +172,24 @@ const favoritePosts = (await getCollection('blog'))
       some of my favorite posts.
     </p>
     <div class="posts flex flex-col gap-4">
-      {favoritePosts.map((post) => <PostPreview entry={post} />)}
+      <PostPreview
+        entry={latestPost}
+        badge={{
+          text: 'Latest',
+          className: 'badge-secondary',
+        }}
+      />
+      {
+        favoritePosts.map((post, i) => (
+          <PostPreview
+            entry={post}
+            badge={{
+              text: `${convertNumberToOrdinal(i + 1)} Favorite`,
+              className: 'badge-accent',
+            }}
+          />
+        ))
+      }
     </div>
   </section>
 
@@ -170,9 +202,17 @@ const favoritePosts = (await getCollection('blog'))
         itemprop="sameAs">Goodreads</a
       >.
     </p>
-    <div class="bookshelf not-prose gap-y-2">
+    <div
+      class:list={[
+        'not-prose',
+        'grid',
+        'items-center',
+        ['grid-cols-4', 'md:grid-cols-6'],
+        'md:gap-y-2',
+      ]}
+    >
       {
-        [...shelves.current, ...shelves.read].map((book, i) => {
+        [...currentlyReading, ...recentlyRead].map((book, i) => {
           let alt = book.title
 
           if (book.author) {
@@ -182,6 +222,8 @@ const favoritePosts = (await getCollection('blog'))
           if (i === 0) {
             alt = `Currently Reading: ${alt}`
           }
+
+          if (!alt || !book.cover) return null
 
           return (
             <a

@@ -1,5 +1,5 @@
 ---
-import { DaylioEntry } from '../lib/daylio'
+import type { DaylioEntry } from '../lib/daylio'
 import { ActivityMapping } from '../lib/enums'
 
 interface Props {
@@ -70,7 +70,7 @@ const { entry, wrapInPaper = false } = Astro.props
       </div>
     </div>
     {
-      entry.notes && entry.notes.length > 0 && (
+      entry.notes && entry.notes.length > 1 && (
         <ul class="my-0">
           {entry.notes.map((n) => (
             <li>{n}</li>
@@ -78,5 +78,6 @@ const { entry, wrapInPaper = false } = Astro.props
         </ul>
       )
     }
+    {entry.notes && entry.notes.length === 1 && <p>{entry.notes[0]}</p>}
   </div>
 </article>

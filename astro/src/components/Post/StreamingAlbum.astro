@@ -45,8 +45,8 @@ const props = Astro.props
       title="album embed from bandcamp.com"
       loading="lazy"
     >
-      <a href={url}>
-        {name} by {artist}
+      <a href={props.url}>
+        {props.name} by {props.artist}
       </a>
     </iframe>
   )
