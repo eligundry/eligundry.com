@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro'
 import { Feed } from 'feed'
 import dateFns from 'date-fns'
-import daylio from '../lib/daylio'
+import daylio, { colloquialDifferenceInDays } from '../lib/daylio'
 import config from '../config'
 
 export const get: APIRoute = async () => {
@@ -22,8 +22,10 @@ export const get: APIRoute = async () => {
     updated: entries[0].time,
   })
 
+  const now = new Date()
+
   entries.forEach((entry) => {
-    const difference = dateFns.differenceInCalendarDays(new Date(), entry.time)
+    const difference = colloquialDifferenceInDays(now, entry.time)
     let title = `I felt ${entry.mood}`
 
     if (difference === 0) {

@@ -36,6 +36,29 @@ const getChartData = async (timeWindow: Date): Promise<DaylioChartEntry[]> =>
       }))
   )
 
+export const colloquialDifferenceInDays = (
+  later: Date,
+  earlier: Date
+): number => {
+  const resetLater = dateFns.set(later, {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  })
+  const resetEarlier = dateFns.set(earlier, {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  })
+  const resetDifference = dateFns.differenceInDays(resetLater, resetEarlier)
+
+  if (resetDifference === 1 && later.getHours() <= 6) {
+    return 0
+  }
+
+  return resetDifference
+}
+
 export interface RawDaylioEntry<TimeType = Date> {
   time: TimeType
   mood: keyof typeof MoodMapping
