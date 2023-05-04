@@ -1,9 +1,7 @@
-import type { APIRoute, MDXInstance, AstroInstance } from 'astro'
+import type { APIRoute, AstroInstance } from 'astro'
 import { getCollection } from 'astro:content'
 import { SitemapStream, streamToPromise } from 'sitemap'
-import { simpleGit } from 'simple-git'
 import dateFns from 'date-fns'
-import daylio from '../lib/daylio'
 import { getLastModifiedForPath } from '../lib/lastModified'
 
 export const get: APIRoute = async () => {
@@ -17,14 +15,11 @@ export const get: APIRoute = async () => {
   await Promise.all(
     Object.values(astroFiles).map(async (f) => {
       const astroFile = await f()
+      const url = (astroFile.url ?? '') + '/'
 
       sitemap.write({
-        url: astroFile.url,
-        lastmod: dateFns.formatISO(
-          astroFile.url
-            ? await getLastModifiedForPath(astroFile.url)
-            : new Date()
-        ),
+        url,
+        lastmod: dateFns.formatISO(await getLastModifiedForPath(url)),
         changefreq: 'daily',
         priority: 0.7,
       })

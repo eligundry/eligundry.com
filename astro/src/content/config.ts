@@ -32,7 +32,9 @@ const resumeExperiencesSchema = z.object({
   printHide: z.boolean().optional(),
 })
 
-const sectionSchema = z.object({})
+const sectionSchema = z.object({
+  page: z.string(),
+})
 
 export const collections = {
   blog: defineCollection({

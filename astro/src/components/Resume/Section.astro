@@ -7,17 +7,7 @@ interface Props {
 const { title, className } = Astro.props
 ---
 
-<section
-  class:list={[
-    'prose',
-    'flex',
-    'flex-col',
-    'gap-2',
-    ['[&>ul]:order-5', '[&>p]:order-5'],
-    ['[&>ul]:my-2', '[&>p]:my-2'],
-    className,
-  ]}
->
+<section class:list={['prose', 'flex', 'flex-col', 'gap-2', className]}>
   {
     title && (
       <header>
