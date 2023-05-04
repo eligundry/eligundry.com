@@ -1,0 +1,72 @@
+---
+import { Image } from '@astrojs/image/components'
+
+interface AstroGlobImage {
+  default: {
+    src: string
+    width: number
+    height: number
+    format: string
+  }
+}
+
+const memojis = await Astro.glob<AstroGlobImage>('../assets/img/memoji/*.png')
+---
+
+<button
+  class:list={[
+    'float-right',
+    'hidden',
+    'sm:block',
+    'w-[300px]',
+    'h-[300px]',
+    '!cursor-pointer',
+    '[&>img]:cursor-pointer',
+    'tooltip',
+    'tooltip-primary',
+  ]}
+  id="memoji-wrapper"
+  data-tip="Click me! I have a range of emotions!"
+>
+  {
+    memojis.map((memoji) => (
+      <Image
+        src={memoji.default.src}
+        width={memoji.default.width}
+        height={memoji.default.height}
+        format="webp"
+        class:list={['hidden', 'my-0', 'tooltip', 'tooltip-primary']}
+        alt="Eli Gundry Memoji"
+      />
+    ))
+  }
+</button>
+
+<script>
+  const memojiWrapper = document.getElementById('memoji-wrapper')
+
+  function showRandomMemoji() {
+    if (!memojiWrapper) return
+
+    const memojis = memojiWrapper.querySelectorAll('img.hidden')
+    const shownMemoji = memojiWrapper.querySelector('img:not(.hidden)')
+
+    if (shownMemoji) {
+      shownMemoji.classList.add('hidden')
+    }
+
+    memojis[Math.floor(Math.random() * memojis.length)].classList.remove(
+      'hidden'
+    )
+  }
+
+  document.addEventListener('DOMContentLoaded', showRandomMemoji)
+  const memojiInterval = setInterval(showRandomMemoji, 2000)
+
+  if (memojiWrapper) {
+    memojiWrapper.addEventListener('click', () => {
+      clearInterval(memojiInterval)
+      showRandomMemoji()
+    })
+  }
+</script>

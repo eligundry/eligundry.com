@@ -12,8 +12,8 @@ import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
-import memoji from '../assets/img/eli-thumbs-up-memoji.png'
 import vimSVG from '../assets/img/vim.svg'
+import Memoji from '../components/Memoji.astro'
 
 const [
   latestEntry,
@@ -58,25 +58,7 @@ const [
 <Layout>
   <section class:list={['intro', 'paper', 'prose']}>
     <h1>Glad To Meet You!</h1>
-    <figure
-      class:list={[
-        'float-right',
-        'ml-8',
-        'hidden',
-        'sm:block',
-        'w-[250px]',
-        'h-[250px]',
-      ]}
-    >
-      <Image
-        src={memoji}
-        loading="eager"
-        alt="Eli Gundry's Memoji Headshot"
-        width={250}
-        height={250}
-        format="webp"
-      />
-    </figure>
+    <Memoji />
     <p>My name is Eli I only really write in lists, so here's my deal.</p>
     <ul>
       <li>

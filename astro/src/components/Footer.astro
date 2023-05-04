@@ -5,6 +5,7 @@ import { ImLastfm } from 'react-icons/im'
 import { MdRssFeed, MdOutlineEmail } from 'react-icons/md'
 import { TbBrandTwitter } from 'react-icons/tb'
 import { TiSocialLinkedin } from 'react-icons/ti'
+import { BsFillCloudyFill } from 'react-icons/bs'
 
 const about = await getEntryBySlug('sections', 'about')
 const { Content } = await about.render()
@@ -16,6 +17,13 @@ const social = [
     url: 'https://github.com/eligundry',
     itemProp: 'sameAs',
     Icon: FaGithubAlt,
+  },
+  {
+    name: 'bluesky',
+    label: 'Join me in leaving Twitter for Bluesky',
+    url: 'https://bsky.app/profile/eligundry.dev',
+    itemProp: 'sameAs',
+    Icon: BsFillCloudyFill,
   },
   {
     name: 'twitter',
@@ -89,6 +97,8 @@ const social = [
           '[&>a]:normal-case',
           '[&>a]:inline-flex',
           '[&>a]:w-8',
+          'overflow-hidden',
+          'sm:overflow-visible',
         ]}
       >
         {
