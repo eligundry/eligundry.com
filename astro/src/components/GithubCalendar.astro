@@ -60,8 +60,6 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
   class:list={[
     'not-prose',
     'max-w-full',
-    '[&_rect]:tooltip',
-    '[&_rect]:tooltip-open',
     '[&_rect]:stroke-base-300',
     '[&_rect]:stroke-1',
     '[&_rect]:overflow-visible',
@@ -85,20 +83,12 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
         <g
           transform={`translate(${1 + (blockSize + blockMargin) * weekIdx}, 0)`}
         >
-          {week.map((day, dayIdx) => {
-            const formattedDate = dateFns.formatISO(day.date, {
-              representation: 'date',
-            })
-            const tooltip = `${day.count} contributions on ${formattedDate}`
-
-            return (
-              <rect
-                y={(blockSize + blockMargin) * dayIdx}
-                data-tip={tooltip}
-                class={`level-${day.level}`}
-              />
-            )
-          })}
+          {week.map((day, dayIdx) => (
+            <rect
+              y={(blockSize + blockMargin) * dayIdx}
+              class={`level-${day.level}`}
+            />
+          ))}
         </g>
       )
     })
