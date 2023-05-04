@@ -12,7 +12,7 @@ const emojiFonts = [
  * @type {import('tailwindcss').Config}
  */
 module.exports = {
-  content: ['./src/**/*.{html,astro,md,mdx}'],
+  content: ['./src/**/*.{html,astro,md,mdx,ts,tsx}'],
   plugins: [require('@tailwindcss/typography'), require('daisyui')],
   safelist: ['tooltip', 'tooltip-primary'],
   theme: {
@@ -56,6 +56,7 @@ module.exports = {
     },
   },
   daisyui: {
+    logs: false,
     themes: [
       {
         light: {

@@ -12,7 +12,7 @@
 
 @layer components {
   .paper {
-    @apply w-full p-4;
+    @apply w-full p-4 print:py-0;
   }
 
   .code-wrapper {
