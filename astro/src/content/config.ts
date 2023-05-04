@@ -5,13 +5,7 @@ const commonFrontmatterSchema = z.object({
   description: z.string(),
   cover: z.string().optional(),
   draft: z.boolean().default(false),
-  date: z.string().transform((input) => {
-    try {
-      return new Date(input)
-    } catch (e) {
-      return new Date()
-    }
-  }),
+  date: z.coerce.date(),
 })
 
 const blogSchema = commonFrontmatterSchema.extend({
@@ -21,6 +15,21 @@ const blogSchema = commonFrontmatterSchema.extend({
 
 const talksSchema = commonFrontmatterSchema.extend({
   location: z.string(),
+})
+
+const resumeExperiencesSchema = z.object({
+  type: z.enum(['work', 'education']),
+  position: z.string(),
+  organization: z.string(),
+  website: z.string().url(),
+  location: z.object({
+    city: z.string(),
+    region: z.string(),
+    country: z.string(),
+  }),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
+  printHide: z.boolean().optional(),
 })
 
 const sectionSchema = z.object({})
@@ -36,5 +45,8 @@ export const collections = {
   }),
   sections: defineCollection({
     schema: sectionSchema,
+  }),
+  resumeExperiences: defineCollection({
+    schema: resumeExperiencesSchema,
   }),
 }

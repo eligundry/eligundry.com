@@ -1,39 +1,23 @@
 ---
 import dateFns from 'date-fns'
-
-export interface Location {
-  address: string
-  postalCode: string
-  city: string
-  countryCode: string
-  region: string
-}
+import type { CollectionEntry } from 'astro:content'
 
 export interface Props {
-  variant: 'work' | 'education'
-  name: string
-  url: string
-  startDate: Date
-  endDate: Date | null
-  position: string
-  location: Partial<Location>
-  summary: string | null
-  highlights: string[]
-  printHide?: boolean
+  experience: CollectionEntry<'resumeExperiences'>
 }
 
+const { experience } = Astro.props
 const {
-  variant,
-  name,
-  url,
-  startDate,
-  endDate,
+  type,
+  organization,
   position,
   location,
-  summary,
-  highlights,
-  printHide = false,
-} = Astro.props
+  website,
+  startDate,
+  endDate,
+  printHide,
+} = experience.data
+const { Content } = await experience.render()
 ---
 
 <section
@@ -42,18 +26,18 @@ const {
     'flex-wrap',
     'justify-between',
     'page-break-avoid',
-    'order-1',
+    /* 'order-1', */
     printHide && 'print:hidden',
   ]}
   itemscope
   itemtype={`http://schema.org/${
-    variant == 'work' ? 'Organization' : 'CollegeOrUniversity'
+    type == 'work' ? 'Organization' : 'CollegeOrUniversity'
   }`}
   itemprop={endDate ? 'alumniOf' : 'worksFor'}
 >
-  <h3 itemprop="name" class="w-full sm:w-1/2 print:w-1/2 m-0 text-base">
-    <a href={url} itemprop="url">
-      {name}
+  <h3 itemprop="name" class="w-full sm:w-1/2 print:w-1/2 m-0 text-base order-1">
+    <a href={website} itemprop="url">
+      {organization}
     </a>
   </h3>
   <span
@@ -143,18 +127,5 @@ const {
       class="hidden sm:inline">📍</span
     >
   </address>
-  {
-    summary && (
-      <p itemprop="description" class="order-5 my-2" set:html={summary} />
-    )
-  }
-  {
-    highlights && (
-      <ul itemprop="description" class="order-5 my-0">
-        {highlights.map((highlight) => (
-          <li set:html={highlight} />
-        ))}
-      </ul>
-    )
-  }
+  <Content />
 </section>
