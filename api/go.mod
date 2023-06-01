@@ -13,7 +13,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.8
 	github.com/pkg/errors v0.9.1
 	github.com/shkh/lastfm-go v0.0.0-20191215035245-89a801c244e0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.20.0
 )
 
