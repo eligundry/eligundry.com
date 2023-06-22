@@ -5,6 +5,10 @@
 [build.environment]
   NODE_VERSION = '18'
 
+[dev]
+  command = "astro dev"
+  port = 8000
+
 [[plugins]]
   package = 'netlify-plugin-cache'
   [plugins.inputs]
@@ -13,5 +17,6 @@
 [[headers]]
   for = "/*.rss"
   [headers.values]
-    Content-Type = "application/rss+xml; charset=utf-8"
+    Content-Type = "application/xml; charset=utf-8"
+    x-content-type-options = "nosniff"
 
