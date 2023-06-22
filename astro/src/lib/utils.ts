@@ -27,3 +27,13 @@ export function convertNumberToOrdinal(n: number) {
 
   return n + ord
 }
+
+export function insertPrettyFeed(feedBody: string) {
+  const lines = feedBody.split('\n')
+  lines.splice(
+    1,
+    0,
+    '<?xml-stylesheet type="text/xsl" href="/pretty-feed-v3.xsl"?>'
+  )
+  return lines.join('\n')
+}

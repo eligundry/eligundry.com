@@ -1,4 +1,5 @@
 import dateFns from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 import { cacheAxios } from './cache'
 import { MoodMapping, ActivityMapping } from './enums'
 
@@ -9,7 +10,7 @@ const getAll = async (): Promise<DaylioEntry[]> =>
       resp.data.map((entry) => ({
         ...entry,
         emoji: MoodMapping[entry.mood],
-        time: dateFns.parseISO(entry.time),
+        time: utcToZonedTime(dateFns.parseISO(entry.time), 'America/New_York'),
         rawTime: entry.time,
       }))
     )

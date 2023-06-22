@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro'
 import { Feed } from 'feed'
-import dateFns from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 import daylio, { colloquialDifferenceInDays } from '../lib/daylio'
+import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 
 export const get: APIRoute = async () => {
@@ -13,7 +14,7 @@ export const get: APIRoute = async () => {
   }
   const feed = new Feed({
     title: "Eli Gundry's Feelings",
-    description: "A daily journal of how I'm feeling",
+    description: "A daily journal of how I'm feeling.",
     id: 'https://eligundry.com/feelings/',
     link: 'https://eligundry.com/feelings/',
     language: 'en-US',
@@ -22,7 +23,7 @@ export const get: APIRoute = async () => {
     updated: entries[0].time,
   })
 
-  const now = new Date()
+  const now = utcToZonedTime(new Date(), 'America/New_York')
 
   entries.forEach((entry) => {
     const difference = colloquialDifferenceInDays(now, entry.time)
@@ -54,9 +55,10 @@ export const get: APIRoute = async () => {
   })
 
   return {
-    body: feed.rss2(),
+    body: insertPrettyFeed(feed.rss2()),
     headers: {
-      'content-type': 'application/rss+xml; charset=utf-8',
+      'content-type': 'application/xml; charset=utf-8',
+      'x-content-type-options': 'nosniff',
     },
   }
 }

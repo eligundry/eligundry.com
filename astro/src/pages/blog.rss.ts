@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
 import { Feed } from 'feed'
 import dateFns from 'date-fns'
+import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 
 export const get: APIRoute = async () => {
@@ -35,9 +36,10 @@ export const get: APIRoute = async () => {
   }
 
   return {
-    body: feed.rss2(),
+    body: insertPrettyFeed(feed.rss2()),
     headers: {
-      'content-type': 'application/rss+xml; charset=utf-8',
+      'content-type': 'application/xml; charset=utf-8',
+      'x-content-type-options': 'nosniff',
     },
   }
 }
