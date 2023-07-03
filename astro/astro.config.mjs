@@ -1,8 +1,6 @@
 import { defineConfig } from 'astro/config'
-
 import tailwind from '@astrojs/tailwind'
 
-// https://astro.build/config
 import mdx from '@astrojs/mdx'
 import mdxConfig from './src/lib/markdown.mjs'
 
@@ -19,7 +17,12 @@ import partytown from '@astrojs/partytown'
 import fontaine from 'astro-fontaine'
 
 // https://astro.build/config
+import netlify from '@astrojs/netlify/functions'
+
+// https://astro.build/config
 export default defineConfig({
+  output: 'hybrid',
+  adapter: netlify(),
   markdown: {
     syntaxHighlight: 'prism',
   },
