@@ -7,13 +7,16 @@ import {
   primaryKey,
 } from 'drizzle-orm/sqlite-core'
 
-const timestampSQL = sql`(cast(strftime('%s', 'now') as int))`
+export const timestampSQL = sql`(cast(strftime('%s', 'now') as int))`
 
 export const daylioEntries = sqliteTable('daylio_entries', {
   time: integer('time', { mode: 'timestamp' }).primaryKey(),
   createdAt: integer('createdAt', { mode: 'timestamp' }).default(timestampSQL),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
-  mood: text('mood'),
+  publishedAt: integer('publishedAt', { mode: 'timestamp' }),
+  mood: text('mood', {
+    enum: ['awful', 'bad', 'meh', 'good', 'rad'],
+  }).notNull(),
   notes: blob('notes', {
     mode: 'json',
   }).$type<string[]>(),
@@ -29,17 +32,18 @@ export const daylioActivities = sqliteTable('daylio_activities', {
 export const daylioEntryActivities = sqliteTable(
   'daylio_entry_activities',
   {
-    time: integer('time', { mode: 'timestamp' }).references(
-      () => daylioEntries.time,
-      {
+    time: integer('time', { mode: 'timestamp' })
+      .references(() => daylioEntries.time, {
         onDelete: 'cascade',
         onUpdate: 'cascade',
-      }
-    ),
-    activity: text('activity').references(() => daylioActivities.activity, {
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    }),
+      })
+      .notNull(),
+    activity: text('activity')
+      .references(() => daylioActivities.activity, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      })
+      .notNull(),
     createdAt: integer('createdAt', { mode: 'timestamp' }).default(
       timestampSQL
     ),

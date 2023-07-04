@@ -40,8 +40,8 @@ export const get: APIRoute = async () => {
     feed.addItem({
       title,
       author: [author],
-      id: `${config.url}/feelings#${entry.rawTime}`,
-      link: `${config.url}/feelings#${entry.rawTime}`,
+      id: `${config.url}/feelings#${entry.time.toISOString()}`,
+      link: `${config.url}/feelings#${entry.time.toISOString()}`,
       date: new Date(entry.time),
       content: `
         <ul>
@@ -54,11 +54,10 @@ export const get: APIRoute = async () => {
     })
   })
 
-  return {
-    body: insertPrettyFeed(feed.rss2()),
+  return new Response(insertPrettyFeed(feed.rss2()), {
     headers: {
       'content-type': 'application/xml; charset=utf-8',
       'x-content-type-options': 'nosniff',
     },
-  }
+  })
 }

@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "5ea96e13-afef-4fb0-84a6-7b388a4d8f8f",
+  "id": "f55e3f27-9fec-4e21-9977-3447586e52f9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "daylio_activities": {
@@ -69,11 +69,18 @@
           "autoincrement": false,
           "default": "(cast(strftime('%s', 'now') as int))"
         },
+        "publishedAt": {
+          "name": "publishedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "mood": {
           "name": "mood",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "notes": {
@@ -95,14 +102,14 @@
           "name": "time",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "activity": {
           "name": "activity",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "createdAt": {

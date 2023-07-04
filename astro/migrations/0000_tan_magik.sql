@@ -9,13 +9,14 @@ CREATE TABLE `daylio_entries` (
 	`time` integer PRIMARY KEY NOT NULL,
 	`createdAt` integer DEFAULT (cast(strftime('%s', 'now') as int)),
 	`updatedAt` integer DEFAULT (cast(strftime('%s', 'now') as int)),
-	`mood` text,
+	`publishedAt` integer,
+	`mood` text NOT NULL,
 	`notes` blob
 );
 --> statement-breakpoint
 CREATE TABLE `daylio_entry_activities` (
-	`time` integer,
-	`activity` text,
+	`time` integer NOT NULL,
+	`activity` text NOT NULL,
 	`createdAt` integer DEFAULT (cast(strftime('%s', 'now') as int)),
 	`updatedAt` integer DEFAULT (cast(strftime('%s', 'now') as int)),
 	PRIMARY KEY(`activity`, `time`),

@@ -37,3 +37,7 @@ export function insertPrettyFeed(feedBody: string) {
   )
   return lines.join('\n')
 }
+
+// export function formatStubbornDateToISO601(date: Date) {
+//
+// }
