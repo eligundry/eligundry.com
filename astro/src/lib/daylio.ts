@@ -2,7 +2,17 @@ import dateFns from 'date-fns'
 import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
-import { sql, eq, and, or, isNotNull, notLike, desc, gte } from 'drizzle-orm'
+import {
+  sql,
+  eq,
+  and,
+  or,
+  isNotNull,
+  notLike,
+  desc,
+  gte,
+  isNull,
+} from 'drizzle-orm'
 import omit from 'lodash/omit'
 import { MoodMapping, ActivityMapping } from './enums'
 import {
@@ -133,7 +143,12 @@ const processCSV = async (buffer: Buffer) => {
 const getAll = async ({
   start,
   limit,
-}: { start?: Date; limit?: number } = {}) => {
+  unpublished,
+}: {
+  start?: Date
+  limit?: number
+  unpublished?: boolean
+} = {}) => {
   let query = db
     .select({
       time: daylioEntries.time,
@@ -169,7 +184,8 @@ const getAll = async ({
           eq(daylioActivities.private, 0),
           isNotNull(daylioActivities.activity)
         ),
-        start ? gte(daylioEntries.time, start) : undefined
+        start ? gte(daylioEntries.time, start) : undefined,
+        unpublished ? isNull(daylioEntries.publishedAt) : undefined
       )
     )
     .groupBy(daylioEntries.time)
@@ -227,6 +243,21 @@ export const colloquialDifferenceInDays = (
   return resetDifference
 }
 
+const tweetPrefix = (entry: DaylioEntry, now: Date = new Date()) => {
+  const difference = colloquialDifferenceInDays(now, entry.time)
+  let title = `I felt ${entry.mood}`
+
+  if (difference === 0) {
+    title = `Today, ${title}`
+  } else if (difference === 1) {
+    title = `Yesterday, ${title}`
+  } else if (difference <= 7) {
+    title = `${difference} days ago, ${title}`
+  }
+
+  return title
+}
+
 export interface RawDaylioEntry<TimeType = Date> {
   time: TimeType
   mood: keyof typeof MoodMapping
@@ -244,6 +275,13 @@ export interface DaylioChartEntry {
   y: number
 }
 
-const api = { getAll, getLatest, getRange, getChartData, processCSV }
+const api = {
+  getAll,
+  getLatest,
+  getRange,
+  getChartData,
+  processCSV,
+  tweetPrefix,
+}
 
 export default api

@@ -26,16 +26,7 @@ export const get: APIRoute = async () => {
   const now = utcToZonedTime(new Date(), 'America/New_York')
 
   entries.forEach((entry) => {
-    const difference = colloquialDifferenceInDays(now, entry.time)
-    let title = `I felt ${entry.mood}`
-
-    if (difference === 0) {
-      title = `Today, ${title}`
-    } else if (difference === 1) {
-      title = `Yesterday, ${title}`
-    } else if (difference <= 7) {
-      title = `${difference} days ago, ${title}`
-    }
+    const title = daylio.tweetPrefix(entry, now)
 
     feed.addItem({
       title,

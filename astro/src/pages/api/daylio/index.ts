@@ -1,5 +1,7 @@
 import type { APIRoute, EndpointOutput } from 'astro'
 import daylio from '../../../lib/daylio'
+import blueSky from '../../../lib/bluesky'
+import { dedent } from '../../../lib/utils'
 
 export const prerender = false
 
@@ -72,6 +74,36 @@ export const post: APIRoute = async ({ request }) => {
 
   const buffer = Buffer.from(await file.arrayBuffer())
   const entries = await daylio.processCSV(buffer)
+
+  // if (process.env.NODE_ENV === 'production') {
+  const unpublishedPosts = await daylio.getAll({ unpublished: true })
+  console.log({ unpublishedPosts })
+
+  await Promise.all(
+    unpublishedPosts.map(async (post) => {
+      const url = `https://eligundry.com/feelings/#${post.time.toISOString()}`
+      const maxTextLength = 300 - url.length
+      let text = dedent(`
+${daylio.tweetPrefix(post)}
+
+${post.notes?.map((note) => `* ${note}`).join('\n')}
+      `)
+      let message = text + '\n\n' + url
+
+      if (message.length > maxTextLength) {
+        message =
+          dedent(text.slice(0, maxTextLength - url.length - 1)) +
+          '…' +
+          '\n\n' +
+          url
+      }
+
+      console.log(message.slice(0, 300))
+
+      // return blueSky.sendPost(text + '\n\n' + url)
+    })
+  )
+  // }
 
   return endpointOutputToResponse({
     body: JSON.stringify(entries),
