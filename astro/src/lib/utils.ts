@@ -1,5 +1,6 @@
 import { dedent as _dedent } from 'ts-dedent'
 import trim from 'lodash/trim'
+import { formatInTimeZone } from 'date-fns-tz'
 
 export function readingTimeToFancyBackgroundPoints(minutes: number) {
   let fancyBackgroundPoints = 30
@@ -41,7 +42,13 @@ export function insertPrettyFeed(feedBody: string) {
   return lines.join('\n')
 }
 
-export function formatStubbornDateToISO601(date: Date) {}
+export function formatStubbornDateToISO601(date: Date) {
+  return formatInTimeZone(
+    date,
+    'America/New_York',
+    'yyyy-MM-dd HH:mm:ssXXX'
+  ).replace(' ', 'T')
+}
 
 export function dedent(str: string) {
   return _dedent(trim(str, ' \n\t'))

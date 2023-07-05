@@ -81,7 +81,7 @@ export const post: APIRoute = async ({ request }) => {
 
   await Promise.all(
     unpublishedPosts.map(async (post) => {
-      const url = `https://eligundry.com/feelings/#${post.time.toISOString()}`
+      const url = `https://eligundry.com/feelings/#${post.slug}`
       const maxTextLength = 300 - url.length
       let text = dedent(`
 ${daylio.tweetPrefix(post)}

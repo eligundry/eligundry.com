@@ -13,7 +13,7 @@ const { entry, wrapInPaper = false } = Astro.props
 <article
   itemscope
   itemtype="https://schema.org/BlogPosting"
-  id={entry.time.toISOString()}
+  id={entry.slug}
   class:list={[
     'prose',
     wrapInPaper && 'paper',
@@ -38,7 +38,7 @@ const { entry, wrapInPaper = false } = Astro.props
           datetime={entry.time.toISOString()}
           itemprop="datePublished dateModified"
         >
-          <a href={`/feelings/#${entry.time.toISOString()}`}>
+          <a href={`/feelings/#${entry.slug}`}>
             {entry.time.toISOString()}
           </a>
         </time>

@@ -1,5 +1,5 @@
 import dateFns from 'date-fns'
-import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz'
+import { zonedTimeToUtc } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
 import {
@@ -14,7 +14,13 @@ import {
   isNull,
 } from 'drizzle-orm'
 import omit from 'lodash/omit'
-import { MoodMapping, ActivityMapping } from './enums'
+import {
+  MoodMapping,
+  MoodNames,
+  ActivityMapping,
+  ActivityNames,
+  PrivateActivityNames,
+} from './enums'
 import {
   db,
   daylioEntries,
@@ -22,6 +28,7 @@ import {
   daylioEntryActivities,
   timestampSQL,
 } from './database'
+import { formatStubbornDateToISO601 } from './utils'
 
 const csvSchema = z
   .object({
@@ -29,11 +36,20 @@ const csvSchema = z
     date: z.string(),
     weekday: z.string(),
     time: z.string(),
-    mood: z.enum(['rad', 'good', 'meh', 'bad', 'awful']),
-    activities: z.preprocess(
-      (s) => (typeof s === 'string' ? s.split(' | ') : []),
-      z.array(z.string())
-    ),
+    mood: z.enum(MoodNames),
+    activities: z.preprocess((s) => {
+      if (typeof s !== 'string') {
+        return []
+      }
+
+      const activities = s.split(' | ').map((str) => str.trim())
+
+      if (activities.length === 1 && activities[0] === '') {
+        return []
+      }
+
+      return activities
+    }, z.array(z.enum(ActivityNames).or(z.enum(PrivateActivityNames)))),
     note_title: z.string().optional(),
     note: z.preprocess((val): string[] => {
       if (!val || typeof val !== 'string') {
@@ -73,7 +89,9 @@ const processCSV = async (buffer: Buffer) => {
     ],
   })
   const entries: ReturnType<(typeof csvSchema)['parse']>[] = []
-  const activities = new Set<string>()
+  const activities = new Set<
+    (typeof ActivityNames | typeof PrivateActivityNames)[number]
+  >()
   let idx = 0
 
   for await (const row of parser) {
@@ -140,6 +158,24 @@ const processCSV = async (buffer: Buffer) => {
   return entries
 }
 
+const apiSchema = z
+  .object({
+    time: z.date(),
+    mood: z.enum(MoodNames),
+    activities: z.array(z.enum(ActivityNames)),
+    notes: z.array(z.string()).or(z.null()),
+  })
+  .transform((data) => {
+    return {
+      ...data,
+      slug: formatStubbornDateToISO601(data.time),
+      emoji: MoodMapping[data.mood],
+      activityEmojis: data.activities.map(
+        (activity) => ActivityMapping[activity]
+      ),
+    }
+  })
+
 const getAll = async ({
   start,
   limit,
@@ -154,10 +190,10 @@ const getAll = async ({
       time: daylioEntries.time,
       mood: daylioEntries.mood,
       activities:
-        sql`json_group_array(distinct daylio_activities.activity)`.mapWith(
+        sql`json_group_array(distinct "daylio_activities"."activity")`.mapWith(
           (v) => JSON.parse(v).filter(Boolean)
         ),
-      notes: sql`json_group_array(distinct notes.value)`.mapWith((v) =>
+      notes: sql`json_group_array(distinct "notes"."value")`.mapWith((v) =>
         JSON.parse(v).filter(Boolean)
       ),
     })
@@ -180,10 +216,7 @@ const getAll = async ({
     )
     .where(
       and(
-        or(
-          eq(daylioActivities.private, 0),
-          isNotNull(daylioActivities.activity)
-        ),
+        or(eq(daylioActivities.private, 0), isNull(daylioActivities.activity)),
         start ? gte(daylioEntries.time, start) : undefined,
         unpublished ? isNull(daylioEntries.publishedAt) : undefined
       )
@@ -196,13 +229,8 @@ const getAll = async ({
   }
 
   const entries = await query.all()
-  console.log(entries[0].time.getTimezoneOffset())
 
-  return entries.map((entry) => ({
-    ...entry,
-    emoji: MoodMapping[entry.mood],
-    time: utcToZonedTime(entry.time, 'America/New_York'),
-  }))
+  return entries.map((entry) => apiSchema.parse(entry))
 }
 
 const getLatest = async () => getAll({ limit: 1 }).then((entries) => entries[0])
@@ -258,18 +286,7 @@ const tweetPrefix = (entry: DaylioEntry, now: Date = new Date()) => {
   return title
 }
 
-export interface RawDaylioEntry<TimeType = Date> {
-  time: TimeType
-  mood: keyof typeof MoodMapping
-  activities: (keyof typeof ActivityMapping)[]
-  notes: string[] | null
-}
-
-export interface DaylioEntry extends RawDaylioEntry<Date> {
-  rawTime: string
-  emoji: MoodMapping
-}
-
+export type DaylioEntry = Awaited<ReturnType<typeof getAll>>[0]
 export interface DaylioChartEntry {
   x: string
   y: number

@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro'
 import { Feed } from 'feed'
 import { utcToZonedTime } from 'date-fns-tz'
-import daylio, { colloquialDifferenceInDays } from '../lib/daylio'
+import daylio from '../lib/daylio'
 import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 
@@ -31,8 +31,8 @@ export const get: APIRoute = async () => {
     feed.addItem({
       title,
       author: [author],
-      id: `${config.url}/feelings#${entry.time.toISOString()}`,
-      link: `${config.url}/feelings#${entry.time.toISOString()}`,
+      id: `${config.url}/feelings#${entry.slug}`,
+      link: `${config.url}/feelings#${entry.slug}`,
       date: new Date(entry.time),
       content: `
         <ul>
