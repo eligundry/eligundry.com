@@ -86,29 +86,34 @@ export const post: APIRoute = async ({ request }) => {
   const buffer = Buffer.from(await file.arrayBuffer())
   const entries = await daylio.processCSV(buffer)
 
-  if (import.meta.env.NODE_ENV === 'production' || true) {
+  if (import.meta.env.NODE_ENV === 'production') {
     const unpublishedPosts = await daylio.getAll({ unpublished: true })
 
     await Promise.all(
       unpublishedPosts.map(async (post) => {
         const url = `https://eligundry.com/feelings/#${post.slug}`
-        const maxTextLength = 300 - url.length
+        const maxTextLength = 299 - url.length
         let text = dedent(`
 ${daylio.tweetPrefix(post)}
 
-${post.notes?.map((note) => `* ${note}`).join('\n')}
+${post.notes?.map((note) => `${note}`).join('\n\n')}
       `)
         let message = text + '\n\n' + url
 
         if (message.length > maxTextLength) {
+          console.log(
+            `message too long, truncating (length: ${message.length})\n`,
+            message
+          )
           message =
-            dedent(text.slice(0, maxTextLength - url.length - 1)) +
-            '…' +
-            '\n\n' +
-            url
+            dedent(text.slice(0, maxTextLength - 2)).trim() + '…' + '\n\n' + url
+          console.log(
+            `truncated message (length: ${message.length})\n`,
+            message
+          )
         }
 
-        // return blueSky.sendPost(message)
+        return blueSky.sendPost(message)
       })
     )
 

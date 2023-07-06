@@ -5,8 +5,9 @@ import { dedent } from './utils'
 async function sendPost(text: string, extra?: any) {
   const agent = new BskyAgent({ service: 'https://bsky.social' })
   const richText = new RichText({
-    text: dedent(trim(text.slice(0, 300), ' \n')),
+    text: dedent(trim(text, ' \n')),
   })
+  await richText.detectFacets(agent)
 
   await agent.login({
     identifier: import.meta.env.BLUESKY_USERNAME,
