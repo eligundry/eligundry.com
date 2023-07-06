@@ -1,14 +1,30 @@
-*.pyc
-**/node_modules/
-gatsby/node_modules/
-data/*
-!data/.gitkeep
-.env
-api/vendor
-!api/migrations/*.sql
-api/bin
-api/.serverless
-api/node_modules
+# build output
+dist/
+.output/
 
-# Local Netlify folder
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# site build caching
+.cache
+.astro
+public/astro-fontaine
+.temp*
+dist
+
+# Netlify cache
 .netlify
