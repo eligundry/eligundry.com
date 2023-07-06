@@ -1,6 +1,8 @@
 import type { APIRoute, EndpointOutput } from 'astro'
+import auth from '../../../lib/auth'
 import daylio from '../../../lib/daylio'
 import blueSky from '../../../lib/bluesky'
+import netlify from '../../../lib/netlify'
 import { dedent } from '../../../lib/utils'
 
 export const prerender = false
@@ -31,6 +33,15 @@ function endpointOutputToResponse(
 }
 
 export const post: APIRoute = async ({ request }) => {
+  if (!auth.check(request.headers.get('authorization'))) {
+    return new Response(null, {
+      status: 401,
+      headers: {
+        'www-authenticate': 'Basic realm="daylio"',
+      },
+    })
+  }
+
   try {
     var formData = await request.formData()
   } catch (e: any) {
@@ -75,35 +86,50 @@ export const post: APIRoute = async ({ request }) => {
   const buffer = Buffer.from(await file.arrayBuffer())
   const entries = await daylio.processCSV(buffer)
 
-  // if (process.env.NODE_ENV === 'production') {
-  const unpublishedPosts = await daylio.getAll({ unpublished: true })
-  console.log({ unpublishedPosts })
+  if (import.meta.env.NODE_ENV === 'production' || true) {
+    const unpublishedPosts = await daylio.getAll({ unpublished: true })
 
-  await Promise.all(
-    unpublishedPosts.map(async (post) => {
-      const url = `https://eligundry.com/feelings/#${post.slug}`
-      const maxTextLength = 300 - url.length
-      let text = dedent(`
+    await Promise.all(
+      unpublishedPosts.map(async (post) => {
+        const url = `https://eligundry.com/feelings/#${post.slug}`
+        const maxTextLength = 300 - url.length
+        let text = dedent(`
 ${daylio.tweetPrefix(post)}
 
 ${post.notes?.map((note) => `* ${note}`).join('\n')}
       `)
-      let message = text + '\n\n' + url
+        let message = text + '\n\n' + url
 
-      if (message.length > maxTextLength) {
-        message =
-          dedent(text.slice(0, maxTextLength - url.length - 1)) +
-          '…' +
-          '\n\n' +
-          url
+        if (message.length > maxTextLength) {
+          message =
+            dedent(text.slice(0, maxTextLength - url.length - 1)) +
+            '…' +
+            '\n\n' +
+            url
+        }
+
+        // return blueSky.sendPost(message)
+      })
+    )
+
+    await daylio.markAllEntriesAsPublished()
+
+    try {
+      const netlifyRes = await netlify.triggerSiteDeploy()
+
+      if (!netlifyRes) {
+        console.log('skipped netlify deploy because build hook url is not set')
       }
-
-      console.log(message.slice(0, 300))
-
-      // return blueSky.sendPost(text + '\n\n' + url)
-    })
-  )
-  // }
+    } catch (e: any) {
+      return endpointOutputToResponse({
+        status: 500,
+        body: JSON.stringify({
+          error: 'failed to trigger netlify deploy',
+          details: e.message,
+        }),
+      })
+    }
+  }
 
   return endpointOutputToResponse({
     body: JSON.stringify(entries),

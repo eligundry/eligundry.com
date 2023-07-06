@@ -158,6 +158,15 @@ const processCSV = async (buffer: Buffer) => {
   return entries
 }
 
+const markAllEntriesAsPublished = async () =>
+  db
+    .update(daylioEntries)
+    .set({
+      publishedAt: new Date(),
+    })
+    .where(isNull(daylioEntries.publishedAt))
+    .run()
+
 const apiSchema = z
   .object({
     time: z.date(),
@@ -299,6 +308,7 @@ const api = {
   getChartData,
   processCSV,
   tweetPrefix,
+  markAllEntriesAsPublished,
 }
 
 export default api
