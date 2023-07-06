@@ -242,8 +242,8 @@ const getChartData = async (timeWindow: Date): Promise<DaylioChartEntry[]> =>
     feelings
       .filter((entry) => dateFns.isAfter(entry.time, timeWindow))
       .sort((a, b) => dateFns.compareAsc(a.time, b.time))
-      .map(({ time, mood }) => ({
-        x: time.toISOString(),
+      .map(({ slug, mood }) => ({
+        x: slug,
         y: Object.keys(MoodMapping).findIndex((m) => m === mood),
       }))
   )

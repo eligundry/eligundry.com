@@ -38,12 +38,16 @@ const sectionSchema = z.object({
 
 export const collections = {
   blog: defineCollection({
-    schema: blogSchema,
-    slug: ({ collection, defaultSlug }) => `/${collection}/${defaultSlug}/`,
+    schema: ({ image }) =>
+      blogSchema.extend({
+        cover: image().optional(),
+      }),
   }),
   talks: defineCollection({
-    schema: talksSchema,
-    slug: ({ collection, defaultSlug }) => `/${collection}/${defaultSlug}/`,
+    schema: ({ image }) =>
+      talksSchema.extend({
+        cover: image().optional(),
+      }),
   }),
   sections: defineCollection({
     schema: sectionSchema,

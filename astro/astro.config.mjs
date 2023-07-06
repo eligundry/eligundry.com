@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config'
+import { defineConfig, sharpImageService } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 
 import mdx from '@astrojs/mdx'
@@ -25,6 +25,9 @@ export default defineConfig({
   experimental: {
     assets: true,
   },
+  image: {
+    service: sharpImageService(),
+  },
   markdown: {
     syntaxHighlight: 'prism',
   },
@@ -32,7 +35,6 @@ export default defineConfig({
     ssr: {
       external: ['better-sqlite3'],
       noExternal: [
-        '@astro-community/astro-embed-twitter',
         '@astro-community/astro-embed-youtube',
         '@react-hookz/web',
         'chartjs-adapter-date-fns',
