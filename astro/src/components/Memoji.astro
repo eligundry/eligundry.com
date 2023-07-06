@@ -1,16 +1,44 @@
 ---
-import { Image } from '@astrojs/image/components'
+import { Image, getImage } from 'astro:assets'
+import clouds from '../assets/img/memoji/clouds.png'
+import coding from '../assets/img/memoji/coding.png'
+import dazed from '../assets/img/memoji/dazed.png'
+import determined from '../assets/img/memoji/determined.png'
+import eyeroll from '../assets/img/memoji/eyeroll.png'
+import hearts from '../assets/img/memoji/hearts.png'
+import kiss from '../assets/img/memoji/kiss.png'
+import no from '../assets/img/memoji/no.png'
+import party from '../assets/img/memoji/party.png'
+import shh from '../assets/img/memoji/shh.png'
+import shocked from '../assets/img/memoji/shocked.png'
+import stars from '../assets/img/memoji/stars.png'
+import swearing from '../assets/img/memoji/swearing.png'
+import sweat from '../assets/img/memoji/sweat.png'
+import thinking from '../assets/img/memoji/thinking.png'
+import thumbsUp from '../assets/img/memoji/thumbs-up.png'
+import wink from '../assets/img/memoji/wink.png'
 
-interface AstroGlobImage {
-  default: {
-    src: string
-    width: number
-    height: number
-    format: string
-  }
-}
+const memojis = [
+  clouds,
+  coding,
+  dazed,
+  determined,
+  eyeroll,
+  hearts,
+  kiss,
+  no,
+  party,
+  shh,
+  shocked,
+  stars,
+  swearing,
+  sweat,
+  thinking,
+  thumbsUp,
+  wink,
+]
 
-const memojis = await Astro.glob<AstroGlobImage>('../assets/img/memoji/*.png')
+console.log(memojis)
 ---
 
 <button
@@ -31,9 +59,9 @@ const memojis = await Astro.glob<AstroGlobImage>('../assets/img/memoji/*.png')
   {
     memojis.map((memoji) => (
       <Image
-        src={memoji.default.src}
-        width={memoji.default.width}
-        height={memoji.default.height}
+        src={memoji}
+        width={300}
+        height={300}
         format="webp"
         class:list={['hidden', 'my-0', 'tooltip', 'tooltip-primary']}
         alt="Eli Gundry Memoji"

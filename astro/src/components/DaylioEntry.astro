@@ -34,12 +34,9 @@ const { entry, wrapInPaper = false } = Astro.props
         <h3 itemprop="name headline" class="m-0">
           I felt {entry.mood}
         </h3>
-        <time
-          datetime={entry.time.toISOString()}
-          itemprop="datePublished dateModified"
-        >
+        <time datetime={entry.slug} itemprop="datePublished dateModified">
           <a href={`/feelings/#${entry.slug}`}>
-            {entry.time.toISOString()}
+            {entry.slug}
           </a>
         </time>
         <div

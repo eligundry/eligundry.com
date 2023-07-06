@@ -5,9 +5,6 @@ import mdx from '@astrojs/mdx'
 import mdxConfig from './src/lib/markdown.mjs'
 
 // https://astro.build/config
-import image from '@astrojs/image'
-
-// https://astro.build/config
 import preact from '@astrojs/preact'
 
 // https://astro.build/config
@@ -25,6 +22,9 @@ export default defineConfig({
   adapter: netlify({
     builders: true,
   }),
+  experimental: {
+    assets: true,
+  },
   markdown: {
     syntaxHighlight: 'prism',
   },
@@ -43,9 +43,6 @@ export default defineConfig({
   integrations: [
     tailwind(),
     mdx(mdxConfig),
-    image({
-      serviceEntryPoint: '@astrojs/image/sharp',
-    }),
     preact({
       compat: true,
     }),
