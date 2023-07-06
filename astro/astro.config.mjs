@@ -36,6 +36,7 @@ export default defineConfig({
       external: ['better-sqlite3'],
       noExternal: [
         '@astro-community/astro-embed-youtube',
+        '@atproto/api',
         '@react-hookz/web',
         'chartjs-adapter-date-fns',
         'react-icons',
