@@ -1,13 +1,8 @@
-import { defineConfig } from 'astro/config'
-
+import { defineConfig, sharpImageService } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 
-// https://astro.build/config
 import mdx from '@astrojs/mdx'
 import mdxConfig from './src/lib/markdown.mjs'
-
-// https://astro.build/config
-import image from '@astrojs/image'
 
 // https://astro.build/config
 import preact from '@astrojs/preact'
@@ -19,7 +14,20 @@ import partytown from '@astrojs/partytown'
 import fontaine from 'astro-fontaine'
 
 // https://astro.build/config
+import netlify from '@astrojs/netlify/functions'
+
+// https://astro.build/config
 export default defineConfig({
+  output: 'hybrid',
+  adapter: netlify({
+    builders: true,
+  }),
+  experimental: {
+    assets: true,
+  },
+  image: {
+    service: sharpImageService(),
+  },
   markdown: {
     syntaxHighlight: 'prism',
   },
@@ -27,8 +35,8 @@ export default defineConfig({
     ssr: {
       external: ['better-sqlite3'],
       noExternal: [
-        '@astro-community/astro-embed-twitter',
         '@astro-community/astro-embed-youtube',
+        '@atproto/api',
         '@react-hookz/web',
         'chartjs-adapter-date-fns',
         'react-icons',
@@ -38,9 +46,6 @@ export default defineConfig({
   integrations: [
     tailwind(),
     mdx(mdxConfig),
-    image({
-      serviceEntryPoint: '@astrojs/image/sharp',
-    }),
     preact({
       compat: true,
     }),

@@ -1,5 +1,5 @@
 ---
-import { Image } from '@astrojs/image/components'
+import { Image } from 'astro:assets'
 import { getRemoteImageMetadata } from '../../lib/images'
 
 interface Props {
@@ -22,7 +22,6 @@ const height = Math.round(width / aspectRatio)
   alt={alt}
   width={width}
   height={height}
-  aspectRatio={aspectRatio}
   format="webp"
   style={{ backgroundColor }}
   class:list={['max-w-100', 'mx-auto']}

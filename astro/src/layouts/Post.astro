@@ -55,7 +55,7 @@ const url = `/${collection}/${slug}/`
   >
     <link itemprop="author publisher" href="#eli-gundry" />
     {modified && <meta itemprop="dateModified" content={modified.toString()} />}
-    {cover && <meta itemprop="image" content={cover} />}
+    {cover && <meta itemprop="image" content={cover.src} />}
     {
       !!readingTime && (
         <meta itemprop="timeRequired" content={`PT${readingTime}M`} />

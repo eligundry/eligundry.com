@@ -3,14 +3,13 @@ title: Hosting Gatsby on DigitalOcean Spaces
 description: You shouldn't use DigitalOcean Spaces to host a Gatsby site, but I had to do it to them for science.
 date: 2021-06-02T05:00
 slug: hosting-gatsby-on-digitalocean-spaces
-cover: /img/gatsby-digitialocean-spaces/grimace-cover.png
+cover: ../../assets/img/gatsby-digitialocean-spaces/grimace-cover.png
 tags:
   - code
 ---
-import { Tweet } from '@astro-community/astro-embed-twitter'
 export { components } from '../../components/Post/components.astro'
 
-![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](/img/gatsby-digitialocean-spaces/grimace-cover.png)
+![Hosting Gatsby on DigitalOcean Spaces will make you grimmace](../../assets/img/gatsby-digitialocean-spaces/grimace-cover.png)
 
 [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/) is an object storage service that is S3 compatible (you can use all the AWS S3
 libraries, which is nifty) with a CDN automatically built in. It even lets you bring your own domain and will handle
@@ -169,7 +168,7 @@ header. What was I doing wrong!?
 I was doing nothing wrong. In the network panel, when I hovered over the request size, I saw that the transfer size
 was smaller than the resource size, just like it would if it was gzip'd.
 
-![The gzip lie](/img/gatsby-digitialocean-spaces/do-spaces-gzip-lie.png)
+![The gzip lie](../../assets/img/gatsby-digitialocean-spaces/do-spaces-gzip-lie.png)
 
 I did a little bit of Googling to figure out what's happening here and found this:
 
@@ -188,7 +187,7 @@ I have this site running!
 Now that my site was live and somewhat functional, I started digging into the network tab to make sure everything is
 order. I was greeted with this waterfall:
 
-![My site on DigitalOcean Spaces connection waterfall. There is a lot of stalling.](/img/gatsby-digitialocean-spaces/do-spaces-waterfall.png)
+![My site on DigitalOcean Spaces connection waterfall. There is a lot of stalling.](../../assets/img/gatsby-digitialocean-spaces/do-spaces-waterfall.png)
 
 **Those highlighted gray bars are bad.** They are connections that are stalling because of too many other connections.
 This is happening because [DigitalOcean Spaces does not support HTTP/2][do-spaces-no-http2]. [People have been voting on
@@ -206,11 +205,11 @@ supporting that anytime soon.
 
 # Results
 
-![:100: from Lighthouse](/img/gatsby-digitialocean-spaces/do-spaces-lighthouse-100.png)
+![:100: from Lighthouse](../../assets/img/gatsby-digitialocean-spaces/do-spaces-lighthouse-100.png)
 
 I was able to get a 100 from Lighthouse! But at what cost?
 
-![No HTTP/2 from DigitalOcean Spaces hurt me](/img/gatsby-digitialocean-spaces/do-spaces-lighthouse-no-http2.png)
+![No HTTP/2 from DigitalOcean Spaces hurt me](../../assets/img/gatsby-digitialocean-spaces/do-spaces-lighthouse-no-http2.png)
 
 The site was still a little glitchy, I suspect because of the nginx routing I setup poorly and maybe some script loading
 issues related to scripts sometimes loading out of order because of HTTP/1.1 restrictions.
@@ -227,7 +226,7 @@ Netlify was so easy to setup! I had my site running in about 10 minutes and I go
 without any of the bugginess that I was seeing on DigitalOcean Spaces. And look at how much flatter and full of happy
 colors this connection waterfall is (the time scale is roughly the same as the waterfall for DigitalOcean Spaces).
 
-![My site on Netlify connection waterfall. All the JS and images end up fetching concurrently!](/img/gatsby-digitialocean-spaces/netlify-waterfall.png)
+![My site on Netlify connection waterfall. All the JS and images end up fetching concurrently!](../../assets/img/gatsby-digitialocean-spaces/netlify-waterfall.png)
 
 Also, how can you not enjoy their developer content!?
 

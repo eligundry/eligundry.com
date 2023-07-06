@@ -6,6 +6,14 @@ export enum MoodMapping {
   rad = '🥳',
 }
 
+export const MoodNames = Object.freeze([
+  'awful',
+  'bad',
+  'meh',
+  'good',
+  'rad',
+] as const)
+
 export enum ActivityMapping {
   cook = '🧑‍🍳',
   movies = '🍿',
@@ -34,3 +42,38 @@ export enum ActivityMapping {
   'Broadway show' = '🎭',
   guitar = '🎸',
 }
+
+export const ActivityNames = Object.freeze([
+  'cook',
+  'movies',
+  'movie',
+  'relax',
+  'side-project',
+  'work',
+  'friends',
+  'sport',
+  'date',
+  'WFH',
+  'reading',
+  'shopping',
+  'good meal',
+  'museum',
+  'party',
+  'cleaning',
+  'gaming',
+  'binging tv',
+  'ate meat',
+  'no meat',
+  'travel',
+  'went outside',
+  'delivery',
+  'concert',
+  'Broadway show',
+  'guitar',
+] as const)
+
+export const PrivateActivityNames = Object.freeze([
+  'smoked',
+  'drank',
+  'cuddle',
+] as const)

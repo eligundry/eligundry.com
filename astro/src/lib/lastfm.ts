@@ -40,14 +40,14 @@ const getTopAlbumsCover = async (
     albumsResp.albums
       .filter((album) => album.image.length > 0)
       .map(async (album): Promise<LastFMCoverItem> => {
-        const cover = album.image.at(-1)?.url ?? ''
+        const cover = album.image.at(2)?.url ?? ''
         const coverColor = cover ? await averageColorFromURL(cover) : null
 
         return {
           album: album.name,
           artist: album.artist.name,
           count: album.playcount,
-          cover,
+          cover: cover,
           coverColor,
         }
       })

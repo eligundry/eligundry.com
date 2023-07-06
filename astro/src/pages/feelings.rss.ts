@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro'
 import { Feed } from 'feed'
 import { utcToZonedTime } from 'date-fns-tz'
-import daylio, { colloquialDifferenceInDays } from '../lib/daylio'
+import daylio from '../lib/daylio'
 import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 
@@ -26,22 +26,13 @@ export const get: APIRoute = async () => {
   const now = utcToZonedTime(new Date(), 'America/New_York')
 
   entries.forEach((entry) => {
-    const difference = colloquialDifferenceInDays(now, entry.time)
-    let title = `I felt ${entry.mood}`
-
-    if (difference === 0) {
-      title = `Today, ${title}`
-    } else if (difference === 1) {
-      title = `Yesterday, ${title}`
-    } else if (difference <= 7) {
-      title = `${difference} days ago, ${title}`
-    }
+    const title = daylio.tweetPrefix(entry, now)
 
     feed.addItem({
       title,
       author: [author],
-      id: `${config.url}/feelings#${entry.rawTime}`,
-      link: `${config.url}/feelings#${entry.rawTime}`,
+      id: `${config.url}/feelings#${entry.slug}`,
+      link: `${config.url}/feelings#${entry.slug}`,
       date: new Date(entry.time),
       content: `
         <ul>
@@ -54,11 +45,10 @@ export const get: APIRoute = async () => {
     })
   })
 
-  return {
-    body: insertPrettyFeed(feed.rss2()),
+  return new Response(insertPrettyFeed(feed.rss2()), {
     headers: {
       'content-type': 'application/xml; charset=utf-8',
       'x-content-type-options': 'nosniff',
     },
-  }
+  })
 }

@@ -1,0 +1,177 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "id": "f55e3f27-9fec-4e21-9977-3447586e52f9",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "daylio_activities": {
+      "name": "daylio_activities",
+      "columns": {
+        "activity": {
+          "name": "activity",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "private": {
+          "name": "private",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as int))"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as int))"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    },
+    "daylio_entries": {
+      "name": "daylio_entries",
+      "columns": {
+        "time": {
+          "name": "time",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as int))"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as int))"
+        },
+        "publishedAt": {
+          "name": "publishedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mood": {
+          "name": "mood",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "notes": {
+          "name": "notes",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    },
+    "daylio_entry_activities": {
+      "name": "daylio_entry_activities",
+      "columns": {
+        "time": {
+          "name": "time",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "activity": {
+          "name": "activity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as int))"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as int))"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "daylio_entry_activities_time_daylio_entries_time_fk": {
+          "name": "daylio_entry_activities_time_daylio_entries_time_fk",
+          "tableFrom": "daylio_entry_activities",
+          "tableTo": "daylio_entries",
+          "columnsFrom": [
+            "time"
+          ],
+          "columnsTo": [
+            "time"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "daylio_entry_activities_activity_daylio_activities_activity_fk": {
+          "name": "daylio_entry_activities_activity_daylio_activities_activity_fk",
+          "tableFrom": "daylio_entry_activities",
+          "tableTo": "daylio_activities",
+          "columnsFrom": [
+            "activity"
+          ],
+          "columnsTo": [
+            "activity"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "daylio_entry_activities_time_activity_pk": {
+          "columns": [
+            "activity",
+            "time"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

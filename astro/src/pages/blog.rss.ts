@@ -35,11 +35,10 @@ export const get: APIRoute = async () => {
     })
   }
 
-  return {
-    body: insertPrettyFeed(feed.rss2()),
+  return new Response(insertPrettyFeed(feed.rss2()), {
     headers: {
       'content-type': 'application/xml; charset=utf-8',
       'x-content-type-options': 'nosniff',
     },
-  }
+  })
 }

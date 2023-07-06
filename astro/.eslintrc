@@ -18,6 +18,12 @@
         "sourceType": "module"
       },
       "rules": {}
+    },
+    {
+      "files": ["*.mdx"],
+      "rules": {
+        "null-null": "off"
+      }
     }
   ]
 }

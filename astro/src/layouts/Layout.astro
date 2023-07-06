@@ -38,10 +38,12 @@ const {
   frontmatter,
   fancyBackgroundPoints,
 } = Astro.props
-let opengraphImage = new URL(
-  frontmatter?.cover ?? config.seoImage ?? '',
-  config.url
-).toString()
+let opengraphImage = ''
+const opengraphImagePath = frontmatter?.cover?.src ?? config.seoImage
+
+if (opengraphImagePath) {
+  opengraphImage = new URL(opengraphImagePath, config.url).toString()
+}
 
 if (opengraphImage === config.url) {
   opengraphImage = ''

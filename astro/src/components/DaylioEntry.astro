@@ -13,7 +13,7 @@ const { entry, wrapInPaper = false } = Astro.props
 <article
   itemscope
   itemtype="https://schema.org/BlogPosting"
-  id={entry.rawTime}
+  id={entry.slug}
   class:list={[
     'prose',
     wrapInPaper && 'paper',
@@ -34,9 +34,9 @@ const { entry, wrapInPaper = false } = Astro.props
         <h3 itemprop="name headline" class="m-0">
           I felt {entry.mood}
         </h3>
-        <time datetime={entry.rawTime} itemprop="datePublished dateModified">
-          <a href={`/feelings/#${entry.rawTime}`}>
-            {entry.rawTime}
+        <time datetime={entry.slug} itemprop="datePublished dateModified">
+          <a href={`/feelings/#${entry.slug}`}>
+            {entry.slug}
           </a>
         </time>
         <div

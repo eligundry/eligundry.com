@@ -1,5 +1,5 @@
 ---
-import { Image } from '@astrojs/image/components'
+import { Image } from 'astro:assets'
 import dateFns from 'date-fns'
 import { getCollection, getEntryBySlug } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
@@ -12,7 +12,6 @@ import goodreads from '../lib/goodreads'
 import daylio from '../lib/daylio'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
-import vimSVG from '../assets/img/vim.svg'
 import Memoji from '../components/Memoji.astro'
 
 const [
@@ -86,7 +85,7 @@ const [
       <li>
         I am a
         <Image
-          src={vimSVG}
+          src="/img/vim.svg"
           alt="Vim Logo"
           width={16}
           height={16}
