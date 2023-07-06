@@ -4,7 +4,7 @@
   "version": "5.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "netlify dev",
+    "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build --verbose",
     "preview": "astro preview",
@@ -47,7 +47,7 @@
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-chart-sankey": "^0.12.0",
     "csv-parse": "^5.4.0",
-    "daisyui": "^3.1.9",
+    "daisyui": "^2.51.6",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "delegated-events": "^1.1.2",
