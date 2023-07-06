@@ -33,7 +33,7 @@ if ('tags' in entry.data) {
   class:list={tags}
 >
   <link itemprop="author publisher" href="#eli-gundry" />
-  {entry.data.cover && <link itemprop="image" href={entry.data.cover} />}
+  {entry.data.cover && <link itemprop="image" href={entry.data.cover.src} />}
   {
     remarkPluginFrontmatter.readingTime > 0 && (
       <meta
