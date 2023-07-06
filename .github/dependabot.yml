@@ -2,12 +2,7 @@ version: 2
 
 updates:
   - package-ecosystem: npm
-    directory: "/astro"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 5
-  - package-ecosystem: gomod
-    directory: "/api"
+    directory: "/"
     schedule:
       interval: monthly
     open-pull-requests-limit: 5

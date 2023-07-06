@@ -14,11 +14,9 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          cache-dependency-path: astro/package-lock.json
+          cache-dependency-path: package-lock.json
       - run: npm ci
-        working-directory: astro
       - name: Run linters
-        working-directory: astro
         run: npm run lint
 
   astro-check:
@@ -30,9 +28,7 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          cache-dependency-path: astro/package-lock.json
+          cache-dependency-path: package-lock.json
       - run: npm ci
-        working-directory: astro
       - name: Astro check
-        working-directory: astro
         run: npm run astro-check
