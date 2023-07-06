@@ -9,8 +9,8 @@ async function sendPost(text: string, extra?: any) {
   })
 
   await agent.login({
-    identifier: process.env.BLUESKY_USERNAME,
-    password: process.env.BLUESKY_PASSWORD,
+    identifier: import.meta.env.BLUESKY_USERNAME,
+    password: import.meta.env.BLUESKY_PASSWORD,
   })
   await agent.post({
     ...extra,
