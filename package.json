@@ -30,7 +30,7 @@
     "@astrojs/partytown": "^1.2.3",
     "@astrojs/preact": "^2.2.1",
     "@astrojs/tailwind": "^4.0.0",
-    "@atproto/api": "^0.3.13",
+    "@atproto/api": "^0.4.0",
     "@libsql/client": "^0.2.2",
     "@react-hookz/web": "^23.1.0",
     "@tailwindcss/typography": "^0.5.9",
