@@ -77,8 +77,8 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
         const thumbnail = row
           ?.querySelector('td.field.cover img')
           ?.getAttribute('src')
-        // Get the full sized thumbnail
-        const cover = thumbnail?.replace(/\._\w+\d+_/, '')
+        // Resize the thumbnail to be 150px wide
+        const cover = thumbnail?.replace(/\._\w+\d+_/, '._SX150_')
 
         const urlPath = row
           ?.querySelector('td.field.cover a')
