@@ -24,7 +24,6 @@
     "bracketSpacing": true
   },
   "dependencies": {
-    "@astro-community/astro-embed-twitter": "^0.2.2",
     "@astro-community/astro-embed-youtube": "^0.2.2",
     "@astrojs/mdx": "^0.19.7",
     "@astrojs/netlify": "^2.3.0",
