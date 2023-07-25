@@ -21,4 +21,4 @@
     x-content-type-options = "nosniff"
 
 [functions]
-  external_node_modules = [astro]
+  external_node_modules = ["astro"]
