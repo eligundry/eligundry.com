@@ -86,7 +86,7 @@ export const post: APIRoute = async ({ request }) => {
   const buffer = Buffer.from(await file.arrayBuffer())
   const entries = await daylio.processCSV(buffer)
 
-  if (import.meta.env.NODE_ENV === 'production') {
+  if (import.meta.env.PROD) {
     const unpublishedPosts = await daylio.getAll({ unpublished: true })
 
     await Promise.all(
