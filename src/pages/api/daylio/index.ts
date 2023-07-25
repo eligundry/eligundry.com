@@ -12,7 +12,7 @@ export const get: APIRoute = async () => {
 
   return new Response(JSON.stringify(entries), {
     headers: {
-      'content-type': 'application/json',
+      'content-type': 'application/json; charset=utf-8',
     },
   })
 }
@@ -26,7 +26,7 @@ function endpointOutputToResponse(
   return new Response(output.body, {
     status: output.status ?? 200,
     headers: {
-      'content-type': 'application/json',
+      'content-type': 'application/json; charset=utf-8',
       ...(output.headers ?? {}),
     },
   })
