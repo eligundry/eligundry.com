@@ -20,3 +20,5 @@
     Content-Type = "application/xml; charset=utf-8"
     x-content-type-options = "nosniff"
 
+[functions]
+  external_node_modules = [astro]
