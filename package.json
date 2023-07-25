@@ -94,7 +94,7 @@
     "eslint": "^8.45.0",
     "eslint-plugin-astro": "^0.27.2",
     "eslint-plugin-mdx": "^2.1.0",
-    "fontaine": "^0.3.1",
+    "fontaine": "^0.4.0",
     "netlify-cli": "^15.9.1",
     "netlify-plugin-cache": "^1.0.3",
     "prettier": "^3.0.0",
