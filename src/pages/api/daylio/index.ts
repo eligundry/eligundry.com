@@ -33,14 +33,14 @@ function endpointOutputToResponse(
 }
 
 export const post: APIRoute = async ({ request }) => {
-  if (!auth.check(request.headers.get('authorization'))) {
-    return new Response(null, {
-      status: 401,
-      headers: {
-        'www-authenticate': 'Basic realm="daylio"',
-      },
-    })
-  }
+  // if (!auth.check(request.headers.get('authorization'))) {
+  //   return new Response(null, {
+  //     status: 401,
+  //     headers: {
+  //       'www-authenticate': 'Basic realm="daylio"',
+  //     },
+  //   })
+  // }
 
   try {
     var formData = await request.formData()
