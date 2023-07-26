@@ -14,7 +14,7 @@ export const handler: Handler = async () => {
     `${process.env.BASIC_AUTH_USERNAME}:${process.env.BASIC_AUTH_PASSWORD}`
   ).toString('base64')
   const body = new URLSearchParams()
-  body.set('period', '7day')
+  body.set('period', '12month')
 
   const resp = await fetch(`${process.env.URL}/api/lastfm/post-cover`, {
     method: 'POST',

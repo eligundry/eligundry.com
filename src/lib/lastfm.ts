@@ -14,7 +14,7 @@ export interface LastFMCoverItem {
   cover: string
   coverColor: string | null
 }
-export type LastFMPeriods =
+export type LastFMPeriod =
   | 'overall'
   | '7day'
   | '1month'
@@ -35,7 +35,7 @@ try {
 
 const getTopAlbums = async (
   username: string,
-  period: LastFMPeriods = '7day'
+  period: LastFMPeriod = '7day'
 ) => {
   const c = await cache
   const cacheKey = `lastfm:getTopAlbums:${username}:${period}`
@@ -63,7 +63,7 @@ const getTopAlbums = async (
 
 const getTopAlbumsCover = async (
   username: string,
-  period: LastFMPeriods = '7day'
+  period: LastFMPeriod = '7day'
 ): Promise<LastFMCoverItem[]> => {
   const c = await cache
   const cacheKey = `lastfm:getTopAlbumsCover:${username}:${period}`
@@ -97,7 +97,7 @@ const getTopAlbumsCover = async (
   return topAlbums.slice(0, 9)
 }
 
-const getCollage = async (username: string, period: LastFMPeriods = '7day') => {
+const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
   const url = new URL('https://tapmusic.net/collage.php')
   url.searchParams.set('user', username)
   url.searchParams.set('type', period)

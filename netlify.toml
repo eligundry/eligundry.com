@@ -27,3 +27,7 @@
 [functions."lastfm-monthly"]
   # First day of the month at 11:30am eastern (give or take an hour)
   schedule = '30 16 1 * *'
+
+[functions."lastfm-yearly"]
+  # New Years day at reasonable hour
+  schedule = '30 16 1 1 *'
