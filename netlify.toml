@@ -19,3 +19,11 @@
   [headers.values]
     Content-Type = "application/xml; charset=utf-8"
     x-content-type-options = "nosniff"
+
+[functions."lastfm-weekly"]
+  # Every Friday at 11:30am eastern (give or take an hour)
+  schedule = '30 16 * * 5'
+
+[functions."lastfm-monthly"]
+  # First day of the month at 11:30am eastern (give or take an hour)
+  schedule = '30 16 1 * *'
