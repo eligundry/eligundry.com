@@ -1,6 +1,8 @@
-import { BskyAgent, RichText } from '@atproto/api'
+import * as bsky from '@atproto/api'
 import trim from 'lodash/trim'
 import { dedent } from './utils'
+
+const { BskyAgent, RichText } = bsky
 
 async function getAgent() {
   const agent = new BskyAgent({ service: 'https://bsky.social' })

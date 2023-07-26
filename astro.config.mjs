@@ -31,10 +31,9 @@ export default defineConfig({
   },
   vite: {
     ssr: {
-      external: ['better-sqlite3', '@atproto/api'],
+      external: ['better-sqlite3'],
       noExternal: [
         '@astro-community/astro-embed-youtube',
-        '@atproto/api',
         '@react-hookz/web',
         'chartjs-adapter-date-fns',
         'react-icons',
