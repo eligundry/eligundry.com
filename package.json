@@ -92,7 +92,7 @@
     "@types/react": "^18.2.15",
     "@typescript-eslint/parser": "^6.1.0",
     "drizzle-kit": "^0.19.10",
-    "eslint": "^8.45.0",
+    "eslint": "^8.46.0",
     "eslint-plugin-astro": "^0.27.2",
     "eslint-plugin-mdx": "^2.1.0",
     "fontaine": "^0.3.1",
