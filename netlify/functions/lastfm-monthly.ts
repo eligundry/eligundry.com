@@ -1,8 +1,11 @@
 import type { Handler } from '@netlify/functions'
 
 export const handler: Handler = async () => {
-  if (process.env.CONTEXT !== 'production') {
-    console.log('Not in production, skipping Last.FM cover post')
+  if (process.env.CONTEXT !== 'production' && process.env.BRANCH !== 'main') {
+    console.log('Not in production, skipping Last.FM cover post', {
+      CONTEXT: process.env.CONTEXT,
+      BRANCH: process.env.BRANCH,
+    })
     return {
       statusCode: 204,
     }
