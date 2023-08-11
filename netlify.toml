@@ -1,33 +1,33 @@
 [build]
-  command = 'npm run build'
-  publish = 'dist'
+command = 'npm run build'
+publish = 'dist'
 
 [build.environment]
-  NODE_VERSION = '18'
+NODE_VERSION = '18'
 
 [dev]
-  command = "astro dev"
-  port = 8000
+command = "astro dev"
+port = 8000
 
 [[plugins]]
-  package = 'netlify-plugin-cache'
-  [plugins.inputs]
-    paths = ['.cache', 'public/astro-fontaine']
+package = 'netlify-plugin-cache'
+[plugins.inputs]
+paths = ['.cache', 'public/astro-fontaine']
 
 [[headers]]
-  for = "/*.rss"
-  [headers.values]
-    Content-Type = "application/xml; charset=utf-8"
-    x-content-type-options = "nosniff"
+for = "/*.rss"
+[headers.values]
+Content-Type = "application/xml; charset=utf-8"
+x-content-type-options = "nosniff"
 
 [functions."lastfm-weekly"]
-  # Every Friday at 11:30am eastern (give or take an hour)
-  schedule = '30 16 * * 5'
+# Every Friday at 12pm eastern (give or take an hour)
+schedule = '00 17 * * 5'
 
 [functions."lastfm-monthly"]
-  # First day of the month at 11:30am eastern (give or take an hour)
-  schedule = '30 16 1 * *'
+# First day of the month at 12pm eastern (give or take an hour)
+schedule = '00 17 1 * *'
 
 [functions."lastfm-yearly"]
-  # New Years day at reasonable hour
-  schedule = '30 16 1 1 *'
+# New Years day at reasonable hour
+schedule = '00 17 1 1 *'

@@ -1,16 +1,6 @@
 import type { Handler } from '@netlify/functions'
 
 export const handler: Handler = async () => {
-  if (process.env.CONTEXT !== 'production' && process.env.BRANCH !== 'main') {
-    console.log('Not in production, skipping Last.FM cover post', {
-      CONTEXT: process.env.CONTEXT,
-      BRANCH: process.env.BRANCH,
-    })
-    return {
-      statusCode: 204,
-    }
-  }
-
   console.log('Attempting to post weekly Last.FM cover to social media')
 
   const basicAuth = Buffer.from(
