@@ -7,7 +7,7 @@ import path from 'path'
 export let cache: Promise<MemoryCache | Cache<SqliteCacheAdapter>> =
   caching('memory')
 
-if (process.env.CONTEXT === undefined || process.env.CONTEXT === 'dev') {
+if (!process.env.NETLIFY) {
   cache = caching(sqliteStore, {
     path: path.join(process.cwd(), '.cache', 'cache.db'),
   })
