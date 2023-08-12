@@ -1,9 +1,8 @@
 import type { APIRoute } from 'astro'
 import { getWeek } from 'date-fns'
-import sample from 'lodash/sample'
 import auth from '../../../lib/auth'
 import bsky from '../../../lib/bluesky'
-import lastfm, { LastFMPeriod } from '../../../lib/lastfm'
+import lastfm from '../../../lib/lastfm'
 import config from '../../../config'
 
 export const prerender = false
@@ -44,9 +43,8 @@ export const post: APIRoute = async ({ request }) => {
     '7day': `Happy Friday! Here's what I've been listening to this week! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/week/${getWeek(
       now
     )}`,
-    '1month': `What a month! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/month/${
-      now.getMonth() + 1
-    }`,
+    '1month': `What a month! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/month/${now.getMonth() + 1
+      }`,
     '12month': `What a year! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}`,
   }
 

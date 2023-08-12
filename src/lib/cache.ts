@@ -1,12 +1,18 @@
 import axios from 'axios'
 import { setupCache, buildStorage } from 'axios-cache-interceptor'
-import { caching } from 'cache-manager'
-import sqliteStore from 'cache-manager-better-sqlite3'
+import { caching, MemoryCache, Cache } from 'cache-manager'
+import sqliteStore, { SqliteCacheAdapter } from 'cache-manager-better-sqlite3'
 import path from 'path'
 
-export const cache = caching(sqliteStore, {
-  path: path.join(process.cwd(), '.cache', 'cache.db'),
-})
+export let cache: Promise<MemoryCache | Cache<SqliteCacheAdapter>> =
+  caching('memory')
+
+if (process.env.CONTEXT === undefined || process.env.CONTEXT === 'dev') {
+  cache = caching(sqliteStore, {
+    path: path.join(process.cwd(), '.cache', 'cache.db'),
+  })
+}
+
 const storage = buildStorage({
   set: async (key, value, request) => {
     let ttl = Infinity
