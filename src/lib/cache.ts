@@ -7,7 +7,7 @@ import path from 'path'
 export let cache: Promise<MemoryCache | Cache<SqliteCacheAdapter>> =
   caching('memory')
 
-if (!process.env.NETLIFY) {
+if (!process.env.AWS_LAMBDA_JS_RUNTIME) {
   cache = caching(sqliteStore, {
     path: path.join(process.cwd(), '.cache', 'cache.db'),
   })

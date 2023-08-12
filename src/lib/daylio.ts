@@ -37,19 +37,22 @@ const csvSchema = z
     weekday: z.string(),
     time: z.string(),
     mood: z.enum(MoodNames),
-    activities: z.preprocess((s) => {
-      if (typeof s !== 'string') {
-        return []
-      }
+    activities: z.preprocess(
+      (s) => {
+        if (typeof s !== 'string') {
+          return []
+        }
 
-      const activities = s.split(' | ').map((str) => str.trim())
+        const activities = s.split(' | ').map((str) => str.trim())
 
-      if (activities.length === 1 && activities[0] === '') {
-        return []
-      }
+        if (activities.length === 1 && activities[0] === '') {
+          return []
+        }
 
-      return activities
-    }, z.array(z.enum(ActivityNames).or(z.enum(PrivateActivityNames)))),
+        return activities
+      },
+      z.array(z.enum(ActivityNames).or(z.enum(PrivateActivityNames)))
+    ),
     note_title: z.string().optional(),
     note: z.preprocess((val): string[] => {
       if (!val || typeof val !== 'string') {
@@ -239,7 +242,7 @@ const getAll = async ({
 
   const entries = await query.all()
 
-  return entries.map((entry) => apiSchema.parse(entry))
+  return z.array(apiSchema).parse(entries)
 }
 
 const getLatest = async () => getAll({ limit: 1 }).then((entries) => entries[0])
