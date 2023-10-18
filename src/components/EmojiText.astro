@@ -9,7 +9,7 @@ export interface Props {
 const { emoji, label, className } = Astro.props
 ---
 
-<span role="img" aria-label={label} class={className}>
+<span role="img" aria-label={label} class:list={['emoji', className]}>
   {emoji}
 </span>
 <slot />
