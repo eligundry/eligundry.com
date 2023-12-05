@@ -9,6 +9,7 @@ import Tracking from '../components/Tracking.astro'
 import daylio from '../lib/daylio'
 import config from '../config'
 import { getLastModifiedForPath } from '../lib/lastModified'
+import { Fontaine } from 'astro-fontaine'
 import '../styles/tailwind.css'
 
 export interface Props {
@@ -109,21 +110,44 @@ if (opengraphImage === config.url) {
     <meta itemprop="name" content="Eli Gundry" />
     <meta itemprop="description" content={about} />
     <Tracking />
+    <Fontaine
+      href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700"
+      family="Arvo"
+      fallbacks={['Georgia', 'Cambria']}
+    />
+    <Fontaine
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900"
+      family="Lato"
+      fallbacks={['Helvetica Neue', 'Arial', 'sans-serif']}
+    />
+    <Fontaine
+      href="https://fonts.googleapis.com/css2?family=Fira+Code"
+      family="Fira Code"
+      fallbacks={[
+        'SFMono-Regular',
+        'Menlo',
+        'Monaco',
+        'Consolas',
+        'Liberation Mono',
+        'Courier New',
+        'monospace',
+      ]}
+    />
     <script is:inline>
-      if (localStorage.getItem('theme') === null) {
-        const prefersDark =
-          window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme:dark)').matches
-        document.documentElement.setAttribute(
-          'data-theme',
-          prefersDark ? 'dark' : 'light'
-        )
-      } else {
-        document.documentElement.setAttribute(
-          'data-theme',
-          localStorage.getItem('theme')
-        )
-      }
+    if (localStorage.getItem('theme') === null) {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme:dark)').matches
+      document.documentElement.setAttribute(
+        'data-theme',
+        prefersDark ? 'dark' : 'light'
+      )
+    } else {
+      document.documentElement.setAttribute(
+        'data-theme',
+        localStorage.getItem('theme')
+      )
+    }
     </script>
     <script>
       const lazyLoadedIframes = document.querySelectorAll(
