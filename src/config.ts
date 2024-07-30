@@ -7,7 +7,7 @@ export default {
   googleTagManagerID: 'GTM-W7KHFLM',
   lastFmUsername: 'eli_pwnd',
   spotifyPlaylist:
-    'https://open.spotify.com/embed/playlist/6dpvBdNKFQ7bATsitV4N9p?utm_source=generator',
+    'https://open.spotify.com/embed/playlist/3xD8nNQ95c7zMQsFOc2phN?utm_source=generator',
   goodreadsUserID: '29665939',
   github: 'eligundry',
   twitter: '@eligundry',
