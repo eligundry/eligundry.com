@@ -42,6 +42,8 @@ export const post: APIRoute = async ({ request }) => {
     })
   }
 
+  console.log('processing a new daylio CSV file')
+
   try {
     var formData = await request.formData()
   } catch (e: any) {
