@@ -31,7 +31,7 @@
     "@astrojs/preact": "^2.2.1",
     "@astrojs/tailwind": "^4.0.0",
     "@atproto/api": "^0.4.3",
-    "@libsql/client": "^0.3.1",
+    "@libsql/client": "^0.14.0",
     "@netlify/functions": "^1.6.0",
     "@react-hookz/web": "^23.1.0",
     "@tailwindcss/typography": "^0.5.9",
@@ -104,6 +104,7 @@
   },
   "overrides": {
     "react": "npm:@preact/compat@latest",
-    "react-dom": "npm:@preact/compat@latest"
+    "react-dom": "npm:@preact/compat@latest",
+    "better-sqlite3": "11.5.0"
   }
 }
