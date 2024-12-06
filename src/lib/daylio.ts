@@ -185,6 +185,7 @@ const apiSchema = z
       activityEmojis: data.activities.map(
         (activity) => ActivityMapping[activity]
       ),
+      score: Object.keys(MoodMapping).findIndex((m) => m === data.mood),
     }
   })
 
@@ -312,6 +313,7 @@ const api = {
   processCSV,
   tweetPrefix,
   markAllEntriesAsPublished,
+  schema: apiSchema,
 }
 
 export default api

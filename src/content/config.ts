@@ -1,4 +1,5 @@
 import { z, defineCollection } from 'astro:content'
+import { feelingsCollection } from './feelings'
 
 const commonFrontmatterSchema = z.object({
   title: z.string(),
@@ -55,4 +56,5 @@ export const collections = {
   resumeExperiences: defineCollection({
     schema: resumeExperiencesSchema,
   }),
+  feelings: feelingsCollection,
 }
