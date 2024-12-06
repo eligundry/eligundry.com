@@ -1,5 +1,5 @@
-import dateFns from 'date-fns'
-import { zonedTimeToUtc } from 'date-fns-tz'
+import * as dateFns from 'date-fns'
+import { toZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
 import {
@@ -66,7 +66,7 @@ const csvSchema = z
     }, z.array(z.string().optional())),
   })
   .transform((data) => {
-    const time = zonedTimeToUtc(
+    const time = toZonedTime(
       `${data.full_date}T${data.time}:00`,
       'America/New_York'
     )

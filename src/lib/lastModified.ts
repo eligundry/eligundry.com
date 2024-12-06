@@ -1,7 +1,7 @@
 import path from 'node:path'
 import type { AstroInstance } from 'astro'
 import { getCollection } from 'astro:content'
-import dateFns from 'date-fns'
+import * as dateFns from 'date-fns'
 import { simpleGit } from 'simple-git'
 import { cache } from './cache'
 import daylio from './daylio'

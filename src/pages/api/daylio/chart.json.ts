@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import dateFns from 'date-fns'
+import * as dateFns from 'date-fns'
 import daylio from '../../../lib/daylio'
 
 export const get: APIRoute = async () => {

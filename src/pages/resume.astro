@@ -5,7 +5,7 @@ import Section from '../components/Resume/Section.astro'
 import Footer from '../components/Resume/Footer.astro'
 import { FaDownload } from 'react-icons/fa'
 import { getCollection, getEntryBySlug } from 'astro:content'
-import dateFns from 'date-fns'
+import * as dateFns from 'date-fns'
 
 const [experiences, Skills, Activities] = await Promise.all([
   getCollection('resumeExperiences').then((experiences) =>

@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
 import { Feed } from 'feed'
-import dateFns from 'date-fns'
+import * as dateFns from 'date-fns'
 import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 
