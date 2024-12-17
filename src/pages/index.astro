@@ -9,14 +9,12 @@ import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
 import lastfm from '../lib/lastfm'
 import goodreads from '../lib/goodreads'
-import daylio from '../lib/daylio'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 import Memoji from '../components/Memoji.astro'
 
 const [
   latestEntry,
-  chartData,
   topAlbums,
   currentlyReading,
   recentlyRead,
@@ -25,7 +23,6 @@ const [
   CodingSection,
 ] = await Promise.all([
   getCollection('feelings').then((entries) => entries[0].data),
-  getCollection('feelings').then((entries) => entries.slice(0, 30).map(({ data }) => ({ x: data.slug, y: data.score }))),
   lastfm
     .getTopAlbumsCover(config.lastFmUsername)
     .then((albums) => albums.slice(0, 9)),

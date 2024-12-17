@@ -1,9 +1,10 @@
 import type { APIRoute } from 'astro'
-import * as dateFns from 'date-fns'
-import daylio from '../../../lib/daylio'
+import { getCollection } from 'astro:content'
 
-export const get: APIRoute = async () => {
-  const entries = await daylio.getChartData(dateFns.subDays(new Date(), 45))
+export const GET: APIRoute = async () => {
+  const entries = await getCollection('feelings').then((entries) =>
+    entries.slice(0, 30).map(({ data }) => ({ x: data.slug, y: data.score }))
+  )
 
   return new Response(JSON.stringify(entries), {
     headers: {

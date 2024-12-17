@@ -1,5 +1,6 @@
 import { Line } from 'react-chartjs-2'
 import { parseISO, formatISO, subDays } from 'date-fns'
+import { useAsync, useMountEffect } from '@react-hookz/web'
 
 // import { toolTipTheme } from '@/utils/charts'
 import type { DaylioChartEntry } from '../lib/daylio'
@@ -7,16 +8,17 @@ import { MoodMapping } from '../lib/enums'
 import { cssvar, tooltipTheme } from '../lib/charts'
 import useTheme from '../hooks/useTheme'
 
-interface Props {
-  data: DaylioChartEntry[]
-}
-
-const DaylioChart: React.FC<Props> = ({ data }) => {
+const DaylioChart = () => {
   // const isTouchScreen = useHasTouch(true)
   const isTouchScreen = false
   const { darkMode } = useTheme()
+  const [{ error, status, result: data }, actions] = useAsync<
+    DaylioChartEntry[]
+  >(async () => fetch(`/api/daylio/chart.json`).then((resp) => resp.json()), [])
 
-  if (!data?.length) {
+  useMountEffect(actions.execute)
+
+  if (error || status !== 'success' || !data.length) {
     return null
   }
 
