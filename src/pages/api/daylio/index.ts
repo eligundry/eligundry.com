@@ -1,4 +1,4 @@
-import type { APIRoute, EndpointOutput } from 'astro'
+import type { APIRoute } from 'astro'
 import auth from '../../../lib/auth'
 import daylio from '../../../lib/daylio'
 import blueSky from '../../../lib/bluesky'
@@ -7,7 +7,7 @@ import { dedent } from '../../../lib/utils'
 
 export const prerender = false
 
-export const get: APIRoute = async () => {
+export const GET: APIRoute = async () => {
   const entries = await daylio.getAll()
 
   return new Response(JSON.stringify(entries), {
@@ -17,12 +17,11 @@ export const get: APIRoute = async () => {
   })
 }
 
-function endpointOutputToResponse(
-  output: EndpointOutput & {
-    status?: number
-    headers?: Record<string, string>
-  }
-) {
+function endpointOutputToResponse(output: {
+  body: string
+  status?: number
+  headers?: Record<string, string>
+}) {
   return new Response(output.body, {
     status: output.status ?? 200,
     headers: {

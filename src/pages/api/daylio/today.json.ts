@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro'
 import daylio from '../../../lib/daylio'
 
-export const get: APIRoute = async () => {
+export const GET: APIRoute = async () => {
   const entry = await daylio.getLatest()
 
   return new Response(JSON.stringify(entry), {

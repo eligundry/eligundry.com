@@ -4,32 +4,30 @@ import Experience from '../components/Resume/Experience.astro'
 import Section from '../components/Resume/Section.astro'
 import Footer from '../components/Resume/Footer.astro'
 import { FaDownload } from 'react-icons/fa'
-import { getCollection, getEntryBySlug } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
+import { skillsComponents } from '../components/Resume/mdxComponents'
 
-const [experiences, Skills, Activities] = await Promise.all([
-  getCollection('resumeExperiences').then((experiences) =>
-    experiences.sort((a, b) =>
-      dateFns.compareDesc(a.data.startDate, b.data.startDate)
-    )
-  ),
-  getEntryBySlug('sections', 'resume-skills').then(async (section) => {
-    if (!section) {
-      throw new Error('No "resume-skills" section found')
-    }
-    const { Content } = await section.render()
+const experiences = await getCollection('resumeExperiences').then((experiences) =>
+  experiences.sort((a, b) => dateFns.compareDesc(a.data.startDate, b.data.startDate))
+)
 
-    return Content
-  }),
-  getEntryBySlug('sections', 'resume-activities').then(async (section) => {
-    if (!section) {
-      throw new Error('No "resume-activities" section found')
-    }
-    const { Content } = await section.render()
+const Skills = await getEntry('sections', 'resume-skills')?.then(async (section) => {
+  if (!section) {
+    throw new Error('No "resume-skills" section found')
+  }
+  const { Content } = await section.render()
+  return Content
+})
 
-    return Content
-  }),
-])
+const Activities = await getEntry('sections', 'resume-activities')?.then(async (section) => {
+  if (!section) {
+    throw new Error('No "resume-activities" section found')
+  }
+  const { Content } = await section.render()
+  return Content
+})
+
 const work = experiences.filter((experience) => experience.data.type === 'work')
 const education = experiences.filter(
   (experience) => experience.data.type === 'education'
@@ -108,11 +106,11 @@ const education = experiences.filter(
     </Section>
 
     <Section title="Skills & Technologies" className="[&>ul]:mt-0">
-      <Skills />
+      <Skills components={skillsComponents} />
     </Section>
 
     <Section title="Activities & Interests" className="[&>ul]:mt-0">
-      <Activities />
+      <Activities components={skillsComponents} />
     </Section>
     <Footer />
   </div>

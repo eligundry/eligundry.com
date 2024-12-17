@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import * as dateFns from 'date-fns'
-import { getCollection, getEntryBySlug } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
@@ -47,9 +47,7 @@ const [
     (posts) =>
       posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
   ),
-  getEntryBySlug('sections', 'do-you-code')
-    .then((section) => section.render())
-    .then(({ Content }) => Content),
+  getEntry('sections', 'do-you-code')?.then((section) => section.render()).then(({ Content }) => Content),
 ])
 
 console.log({latestEntry,})

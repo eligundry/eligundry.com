@@ -1,12 +1,15 @@
 import type { APIRoute } from 'astro'
 import { Feed } from 'feed'
-import { utcToZonedTime } from 'date-fns-tz'
+import { toZonedTime } from 'date-fns-tz'
 import daylio from '../lib/daylio'
 import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
+import { getCollection } from 'astro:content'
 
 export const get: APIRoute = async () => {
-  const entries = await daylio.getAll()
+  const entries = await getCollection('feelings').then((c) =>
+    c.map((e) => e.data)
+  )
   const author = {
     name: 'Eli Gundry',
     email: 'eligundry@gmail.com',
@@ -23,7 +26,7 @@ export const get: APIRoute = async () => {
     updated: entries[0].time,
   })
 
-  const now = utcToZonedTime(new Date(), 'America/New_York')
+  const now = toZonedTime(new Date(), 'America/New_York')
 
   entries.forEach((entry) => {
     const title = daylio.tweetPrefix(entry, now)
@@ -36,10 +39,9 @@ export const get: APIRoute = async () => {
       date: new Date(entry.time),
       content: `
         <ul>
-          ${
-            entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ??
-            `<li>No notes!</li>`
-          }
+          ${entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ??
+        `<li>No notes!</li>`
+        }
         </ul>
       `,
     })

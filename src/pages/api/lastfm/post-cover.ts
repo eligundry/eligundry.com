@@ -7,7 +7,7 @@ import config from '../../../config'
 
 export const prerender = false
 
-export const post: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request }) => {
   if (!auth.check(request.headers.get('authorization'))) {
     return new Response(null, {
       status: 401,
@@ -61,7 +61,9 @@ export const post: APIRoute = async ({ request }) => {
     },
   })
 
-  return {
-    body: 'ok',
-  }
+  return new Response(JSON.stringify({ ok: true, period, alt }), {
+    headers: {
+      'content-type': 'application/json',
+    },
+  })
 }

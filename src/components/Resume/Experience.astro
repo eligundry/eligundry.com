@@ -1,5 +1,6 @@
 ---
 import * as dateFns from 'date-fns'
+import { experienceComponents } from './mdxComponents.tsx'
 import type { CollectionEntry } from 'astro:content'
 
 export interface Props {
@@ -127,5 +128,5 @@ const { Content } = await experience.render()
       class="hidden sm:inline">📍</span
     >
   </address>
-  <Content />
+  <Content components={experienceComponents} />
 </section>
