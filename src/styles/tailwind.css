@@ -11,6 +11,10 @@
 }
 
 @layer components {
+  .btn {
+    @apply uppercase;
+  }
+
   .paper {
     @apply w-full p-4 print:py-0;
   }
@@ -24,7 +28,7 @@
   }
 
   .astro-code {
-    @apply relative overflow-hidden overflow-x-scroll min-w-[18rem] pt-2 pb-6  pr-4 rounded-2xl;
+    @apply relative overflow-hidden overflow-x-scroll min-w-[18rem] pt-2 pb-6 pr-4 rounded-2xl;
     padding-right: 2ch;
   }
 
@@ -32,15 +36,15 @@
     @apply py-0;
   }
 
-  .astro-code > pre {
+  .astro-code>pre {
     @apply pl-4;
   }
 
-  .astro-code > pre > code {
+  .astro-code>pre>code {
     @apply pr-4;
   }
 
-  .astro-code > pre:before {
+  .astro-code>pre:before {
     content: '';
     margin-right: 2ch;
   }
@@ -68,7 +72,7 @@
   @apply !max-w-none font-serif;
 }
 
-.prose *:not(pre) > code {
+.prose *:not(pre)>code {
   @apply p-0;
 }
 
@@ -89,7 +93,8 @@
   }
 }
 
-.btn, button {
+.btn,
+button {
   @apply font-sans !cursor-pointer;
 }
 
@@ -106,7 +111,7 @@
   @apply pl-6;
 }
 
-.code-wrapper + h1 {
+.code-wrapper+h1 {
   @apply mt-4;
 }
 
