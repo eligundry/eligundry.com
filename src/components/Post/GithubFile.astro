@@ -1,7 +1,6 @@
 ---
 import path from 'node:path'
 import { Prism } from '@astrojs/prism'
-import type { Lang as ShikiLang } from 'shiki'
 import { FaGithub } from 'react-icons/fa'
 import { cacheAxios } from '../../lib/cache'
 import CodeWrapper from '../CodeWrapper.astro'
@@ -47,7 +46,7 @@ if (rawURL.hash) {
 }
 
 const extension = filePath.at(-1)
-  ? (path.extname(filePath.at(-1) as string).slice(1) as ShikiLang)
+  ? (path.extname(filePath.at(-1) as string).slice(1))
   : undefined
 
 let file = await cacheAxios

@@ -1,4 +1,4 @@
-import { defineConfig, sharpImageService } from 'astro/config'
+import { defineConfig, passthroughImageService } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 
 import mdx from '@astrojs/mdx'
@@ -14,13 +14,15 @@ import partytown from '@astrojs/partytown'
 import fontaine from 'astro-fontaine'
 
 // https://astro.build/config
-import netlify from '@astrojs/netlify/functions'
+import netlify from '@astrojs/netlify'
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: netlify(),
+  adapter: netlify({
+    imageCDN: false,
+  }),
   image: {
-    service: sharpImageService(),
+    service: passthroughImageService(),
   },
   markdown: {
     syntaxHighlight: 'prism',

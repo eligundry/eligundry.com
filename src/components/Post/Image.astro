@@ -1,5 +1,6 @@
 ---
 import { getImage } from 'astro:assets'
+import path from 'node:path'
 import { averageColorFromURL } from '../../lib/images'
 
 interface Props {
@@ -14,8 +15,27 @@ const img = await getImage({
   quality: 90,
   inferSize: true,
 })
-let fileUrl = typeof src === 'string' ? new URL(src) : new URL(src.src.replace('/@fs', ''), img.src.startsWith('http') ? undefined : 'file:/')
-const backgroundColor = await averageColorFromURL(fileUrl.pathname)
+
+// console.log({src, img})
+// let pathNameOrUrl: string
+//
+// if (typeof src === 'string') {
+//   pathNameOrUrl = src
+//
+//   if (src.startsWith('/_astro')) {
+//     pathNameOrUrl = path.join(process.cwd(), src)
+//   }
+// } else if (src.src.startsWith('/_astro/')) {
+//     pathNameOrUrl = path.join(process.cwd(), src.src)
+// } else if (src.src.startsWith('/@fs/')) {
+//   const url = new URL(src.src.replace('/@fs', ''), img.src.startsWith('http') ? undefined : 'file:/')
+//   pathNameOrUrl = url.pathname
+// } else {
+//   pathNameOrUrl = src.src
+// }
+
+// const backgroundColor = await averageColorFromURL(pathNameOrUrl)
+const backgroundColor = null
 ---
 
 <img
