@@ -3,7 +3,6 @@ import type {
   getRecentTracks,
   getTopAlbums,
 } from 'lastfm-typed/dist/interfaces/userInterface'
-import { cache } from './cache'
 import { averageColorFromURL } from './images'
 
 export type RecentTrack = getRecentTracks['tracks'][number]
@@ -13,6 +12,7 @@ export interface LastFMCoverItem {
   count: number
   cover: string
   coverColor: string | null
+  url: string
 }
 export type LastFMPeriod =
   | 'overall'
@@ -37,15 +37,7 @@ const getTopAlbums = async (
   username: string,
   period: LastFMPeriod = '7day'
 ) => {
-  const c = await cache
-  const cacheKey = `lastfm:getTopAlbums:${username}:${period}`
-  let topAlbums = await c.get<getTopAlbums['albums']>(cacheKey)
-
-  if (topAlbums) {
-    return topAlbums
-  }
-
-  topAlbums = await lastfm.user
+  const topAlbums = await lastfm.user
     .getTopAlbums(username, {
       period,
       limit: 15,
@@ -56,8 +48,6 @@ const getTopAlbums = async (
     throw new Error('Could not fetch top albums')
   }
 
-  await c.set(cacheKey, topAlbums, 60 * 60)
-
   return topAlbums
 }
 
@@ -65,17 +55,8 @@ const getTopAlbumsCover = async (
   username: string,
   period: LastFMPeriod = '7day'
 ): Promise<LastFMCoverItem[]> => {
-  const c = await cache
-  const cacheKey = `lastfm:getTopAlbumsCover:${username}:${period}`
-  let topAlbums = await c.get<LastFMCoverItem[]>(cacheKey)
-
-  if (topAlbums) {
-    return topAlbums
-  }
-
   const albumsResp = await getTopAlbums(username, period)
-
-  topAlbums = await Promise.all(
+  const topAlbums = await Promise.all(
     albumsResp
       .filter((album) => album.image.length > 0)
       .map(async (album): Promise<LastFMCoverItem> => {
@@ -88,13 +69,12 @@ const getTopAlbumsCover = async (
           count: album.playcount,
           cover: cover,
           coverColor,
+          url: album.url,
         }
       })
   )
 
-  c.set(cacheKey, topAlbums, 60 * 60)
-
-  return topAlbums.slice(0, 9)
+  return topAlbums
 }
 
 const getCollage = async (username: string, period: LastFMPeriod = '7day') => {

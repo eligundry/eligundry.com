@@ -2,6 +2,7 @@ import { z, defineCollection } from 'astro:content'
 import { feelingsCollection } from './feelings'
 import { createGoodreadsCollection } from './goodreads'
 import config from '../config'
+import { createLastFmCoverCollection } from './lastfm'
 
 const commonFrontmatterSchema = z.object({
   title: z.string(),
@@ -71,4 +72,5 @@ export const collections = {
     sort: 'date_read',
     order: 'd',
   }),
+  lastfmCovers: createLastFmCoverCollection(config.lastFmUsername),
 }

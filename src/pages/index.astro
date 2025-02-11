@@ -7,7 +7,6 @@ import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
-import lastfm from '../lib/lastfm'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 import Memoji from '../components/Memoji.astro'
@@ -22,9 +21,7 @@ const [
   CodingSection,
 ] = await Promise.all([
   getCollection('feelings').then((entries) => entries[0].data),
-  lastfm
-    .getTopAlbumsCover(config.lastFmUsername)
-    .then((albums) => albums.slice(0, 9)),
+  getCollection('lastfmCovers').then(entries => entries.slice(0, 9).map(entry => entry.data)),
   getCollection('currentlyReading').then(books => books.map(book => book.data)),
   getCollection('recentlyRead').then(books => books.map(book => book.data)),
   getCollection('blog').then((posts) =>
