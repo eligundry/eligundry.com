@@ -8,7 +8,6 @@ import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
 import lastfm from '../lib/lastfm'
-import goodreads from '../lib/goodreads'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 import Memoji from '../components/Memoji.astro'
@@ -26,18 +25,8 @@ const [
   lastfm
     .getTopAlbumsCover(config.lastFmUsername)
     .then((albums) => albums.slice(0, 9)),
-  goodreads.getShelf({
-    userID: config.goodreadsUserID,
-    shelf: 'currently-reading',
-    limit: 1,
-  }),
-  goodreads.getShelf({
-    userID: config.goodreadsUserID,
-    shelf: 'read',
-    limit: 11,
-    sort: 'date_read',
-    order: 'd',
-  }),
+  getCollection('currentlyReading').then(books => books.map(book => book.data)),
+  getCollection('recentlyRead').then(books => books.map(book => book.data)),
   getCollection('blog').then((posts) =>
     posts
       .filter((post) => post.data.favoriteIndex)
