@@ -2,7 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './fancyBackground.css';
-@import './prism-material.css';
 
 @layer base {
   html {
