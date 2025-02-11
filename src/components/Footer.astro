@@ -1,5 +1,5 @@
 ---
-import { getEntryBySlug } from 'astro:content'
+import { getEntry } from 'astro:content'
 import { FaGithubAlt, FaMastodon } from 'react-icons/fa'
 import { ImLastfm } from 'react-icons/im'
 import { MdRssFeed, MdOutlineEmail } from 'react-icons/md'
@@ -7,7 +7,12 @@ import { TbBrandTwitter } from 'react-icons/tb'
 import { TiSocialLinkedin } from 'react-icons/ti'
 import { BsFillCloudyFill } from 'react-icons/bs'
 
-const about = await getEntryBySlug('sections', 'about')
+const about = await getEntry('sections', 'about')
+
+if (!about) {
+  throw new Error('No about section found')
+}
+
 const { Content } = await about.render()
 
 const social = [

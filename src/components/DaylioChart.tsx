@@ -75,7 +75,8 @@ const DaylioChart = () => {
               callbacks: {
                 title: (item) => `📅   ${formatISO(parseISO(item[0].label))}`,
                 label: (item) =>
-                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${Object.keys(MoodMapping)[item.parsed.y]
+                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${
+                    Object.keys(MoodMapping)[item.parsed.y]
                   }`,
               },
             },

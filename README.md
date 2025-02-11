@@ -6,8 +6,8 @@ My personal website.
 
 ## Built With
 
-* [Astro](https://astro.build/)
-* [React](https://reactjs.org/)
+- [Astro](https://astro.build/)
+- [React](https://reactjs.org/)
 
 ## Frontend Development
 

@@ -4,11 +4,12 @@ date: '2020-02-05T05:00'
 description: How I learned Redux at the exact right time
 location: QueensJS
 ---
+
 <ResponsiveIFrame
-	src="https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000"
-	width="960"
-	height="569"
-	className="my-8"
+  src="https://docs.google.com/presentation/d/e/2PACX-1vRtaPvro6rZuE6fu8csqAZ5HQIiUW9Hd-LxuSMOfCt1nOTZzp88GxYRakwHRaqv-rvvwk34lSSkAPqX/embed?start=false&loop=false&delayms=3000"
+  width="960"
+  height="569"
+  className="my-8"
 />
 
 # Notes / Research / Outline
@@ -213,7 +214,19 @@ const sendTweet = useCallback(
   - Do you think you can do this better than Redux? Furthermore, do you think you can cultivate an ecosystem of ready made middlewares that make you more efficient/reliable?
 
 <Tweet id="1192420546912432128">
-	<blockquote><p lang="en" dir="ltr">local state, yes. but global, no. if you centralize it, it will either turn into a salad or tank performance b/c everything re-renders on every state change. i am seeing people do this recently as some kind of work around, which is pretty sad: <a href="https://t.co/ouhjisVsQ4">https://t.co/ouhjisVsQ4</a></p>&mdash; ☄︎ (@0xca0a) <a href="https://twitter.com/0xca0a/status/1192420546912432128?ref_src=twsrc%5Etfw">November 7, 2019</a></blockquote>
+  <blockquote>
+    <p lang="en" dir="ltr">
+      local state, yes. but global, no. if you centralize it, it will either
+      turn into a salad or tank performance b/c everything re-renders on every
+      state change. i am seeing people do this recently as some kind of work
+      around, which is pretty sad:{' '}
+      <a href="https://t.co/ouhjisVsQ4">https://t.co/ouhjisVsQ4</a>
+    </p>
+    &mdash; ☄︎ (@0xca0a){' '}
+    <a href="https://twitter.com/0xca0a/status/1192420546912432128?ref_src=twsrc%5Etfw">
+      November 7, 2019
+    </a>
+  </blockquote>
 </Tweet>
 
 - Another thing I am skeptical about with hooks is tracing and debugging

@@ -135,12 +135,8 @@
           "name": "daylio_entry_activities_time_daylio_entries_time_fk",
           "tableFrom": "daylio_entry_activities",
           "tableTo": "daylio_entries",
-          "columnsFrom": [
-            "time"
-          ],
-          "columnsTo": [
-            "time"
-          ],
+          "columnsFrom": ["time"],
+          "columnsTo": ["time"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -148,22 +144,15 @@
           "name": "daylio_entry_activities_activity_daylio_activities_activity_fk",
           "tableFrom": "daylio_entry_activities",
           "tableTo": "daylio_activities",
-          "columnsFrom": [
-            "activity"
-          ],
-          "columnsTo": [
-            "activity"
-          ],
+          "columnsFrom": ["activity"],
+          "columnsTo": ["activity"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
         "daylio_entry_activities_time_activity_pk": {
-          "columns": [
-            "activity",
-            "time"
-          ]
+          "columns": ["activity", "time"]
         }
       }
     }

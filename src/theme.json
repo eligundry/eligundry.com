@@ -48,19 +48,9 @@
     }
   },
   "fontFamily": {
-    "sans": [
-      "Lato",
-      "sans-serif"
-    ],
-    "serif": [
-      "Arvo",
-      "serif",
-      "\"apple color emoji\""
-    ],
-    "mono": [
-      "\"Fira Code\"",
-      "monospace"
-    ]
+    "sans": ["Lato", "sans-serif"],
+    "serif": ["Arvo", "serif", "\"apple color emoji\""],
+    "mono": ["\"Fira Code\"", "monospace"]
   },
   "animation": {
     "none": "none",

@@ -28,7 +28,7 @@ const mdxConfig = {
 export default mdxConfig
 
 export function remarkGitLastModified() {
-  return async function(_tree, file) {
+  return async function (_tree, file) {
     try {
       const commits = await git.log({
         file: file.history[0],
@@ -46,7 +46,7 @@ export function remarkGitLastModified() {
 }
 
 export function remarkReadingTime() {
-  return function(_tree, file) {
+  return function (_tree, file) {
     file.data.astro.frontmatter.readingTime = Math.max(
       1,
       Math.round(readingTime(file.value).minutes)

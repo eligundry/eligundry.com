@@ -39,9 +39,10 @@ export const get: APIRoute = async () => {
       date: new Date(entry.time),
       content: `
         <ul>
-          ${entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ??
-        `<li>No notes!</li>`
-        }
+          ${
+            entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ??
+            `<li>No notes!</li>`
+          }
         </ul>
       `,
     })

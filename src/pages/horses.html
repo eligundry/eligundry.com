@@ -1,111 +1,109 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Horses</title>
+    <style>
+      body {
+        background-color: beige;
+        font-family: Georgia;
+        margin: 0;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Horses</title>
-  <style>
-    body {
-      background-color: beige;
-      font-family: Georgia;
-      margin: 0;
-    }
+      main {
+        width: 60%;
+        margin: 0 auto;
+      }
 
-    main {
-      width: 60%;
-      margin: 0 auto;
-    }
+      p {
+        font-size: 1.25rem;
+      }
 
-    p {
-      font-size: 1.25rem;
-    }
+      p i {
+        text-align: right;
+        font-size: 0.8rem;
+        display: block;
+      }
 
-    p i {
-      text-align: right;
-      font-size: 0.8rem;
-      display: block;
-    }
+      .header-banner {
+        width: 100%;
+      }
 
-    .header-banner {
-      width: 100%;
-    }
+      .footer {
+        font-weight: bold;
+      }
 
-    .footer {
-      font-weight: bold;
-    }
+      .panel {
+        position: absolute;
+      }
 
-    .panel {
-      position: absolute;
-    }
+      .panel.top,
+      .panel.bottom {
+        background-image: url(/img/horses/horizontal-wood.jpg);
+        background-repeat: repeat-x;
+        width: 100%;
+        height: 30px;
+      }
 
-    .panel.top,
-    .panel.bottom {
-      background-image: url(/img/horses/horizontal-wood.jpg);
-      background-repeat: repeat-x;
-      width: 100%;
-      height: 30px;
-    }
+      .panel.right,
+      .panel.left {
+        background-image: url(/img/horses/vertical-wood.jpg);
+        background-repeat: repeat-y;
+        height: 100vh;
+        width: 30px;
+      }
 
-    .panel.right,
-    .panel.left {
-      background-image: url(/img/horses/vertical-wood.jpg);
-      background-repeat: repeat-y;
-      height: 100vh;
-      width: 30px;
-    }
+      .panel.right {
+        right: -30px;
+      }
+    </style>
+  </head>
 
-    .panel.right {
-      right: -30px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="panel top"></div>
-  <div class="panel right"></div>
-  <div class="panel bottom"></div>
-  <div class="panel left"></div>
-  <main>
-    <img src="/img/horses/running-horses.gif" class="header-banner" />
-    <h1>Horses</h1>
-    <p>
-      The late nights at the horse farm<br />
-      <i>A half lifetime ago, have I changed at all?</i>
-    </p>
-    <p>
-      Driving 80 on Amish roads<br />
-      <i>I drive slower now</i>
-    </p>
-    <p>
-      $7 an hour tax free was all I needed<br />
-      <i>Money is more important now, but still not #1</i>
-    </p>
-    <p>
-      Pirated Dreamweaver made the dreams happen<br />
-      <i>It's preview was so useless, but it moved the HTML</i>
-    </p>
-    <p>
-      I was excited to drive an hour to work<br />
-      <i>What was that like?</i>
-    </p>
-    <p>
-      It was lonely at times working in someone else's study<br />
-      <i>The glow kept me company</i>
-    </p>
-    <p>
-      But it felt great to be special in someone else's eyes<br />
-      <i>They thought I was a magician</i>
-    </p>
-    <p>
-      It was the first time that I inherited someone else's mess<br />
-      <i>Our previous devloper lives in New York City</i>
-    </p>
-    <p class="footer">
-      You were meant to gallop away<br />
-      <i>Neigh</i>
-    </p>
-    <img src="/img/horses/cowboy.gif" />
-  </main>
-</body>
-
+  <body>
+    <div class="panel top"></div>
+    <div class="panel right"></div>
+    <div class="panel bottom"></div>
+    <div class="panel left"></div>
+    <main>
+      <img src="/img/horses/running-horses.gif" class="header-banner" />
+      <h1>Horses</h1>
+      <p>
+        The late nights at the horse farm<br />
+        <i>A half lifetime ago, have I changed at all?</i>
+      </p>
+      <p>
+        Driving 80 on Amish roads<br />
+        <i>I drive slower now</i>
+      </p>
+      <p>
+        $7 an hour tax free was all I needed<br />
+        <i>Money is more important now, but still not #1</i>
+      </p>
+      <p>
+        Pirated Dreamweaver made the dreams happen<br />
+        <i>It's preview was so useless, but it moved the HTML</i>
+      </p>
+      <p>
+        I was excited to drive an hour to work<br />
+        <i>What was that like?</i>
+      </p>
+      <p>
+        It was lonely at times working in someone else's study<br />
+        <i>The glow kept me company</i>
+      </p>
+      <p>
+        But it felt great to be special in someone else's eyes<br />
+        <i>They thought I was a magician</i>
+      </p>
+      <p>
+        It was the first time that I inherited someone else's mess<br />
+        <i>Our previous devloper lives in New York City</i>
+      </p>
+      <p class="footer">
+        You were meant to gallop away<br />
+        <i>Neigh</i>
+      </p>
+      <img src="/img/horses/cowboy.gif" />
+    </main>
+  </body>
 </html>
