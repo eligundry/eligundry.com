@@ -13,37 +13,35 @@ type Props = (SpotifyProps | BandcampProps) & { className?: string }
 const props = Astro.props
 ---
 
-{
-  'spotifyID' in props && (
-    <iframe
-      class:list={['border-0', 'w-[320px]', 'h-[380px]', props.className]}
-      data-src={`https://open.spotify.com/embed/album/${props.spotifyID}`}
-      height="380"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      title="album embed from spotify.com"
-      loading="lazy"
-    />
-  )
-}
-{
-  'bandcampID' in props && (
-    <iframe
-      data-src={`https://bandcamp.com/EmbeddedPlayer/album=${props.bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
-      seamless
-      class:list={[
-        'border-0',
-        'sm:w-[320px]',
-        'w-full',
-        'h-[470px]',
-        'mb-4',
-        props.className,
-      ]}
-      title="album embed from bandcamp.com"
-      loading="lazy"
-    >
-      <a href={props.url}>
-        {props.name} by {props.artist}
-      </a>
-    </iframe>
-  )
-}
+<>
+  {
+    'spotifyID' in props && (
+      <iframe
+        class:list={['border-0', 'w-[320px]', 'h-[380px]', props.className]}
+        data-src={`https://open.spotify.com/embed/album/${props.spotifyID}`}
+        height="380"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        title="album embed from spotify.com"
+        loading="lazy"
+      />
+    )
+  }
+  {
+    'bandcampID' in props && (
+      <iframe
+        data-src={`https://bandcamp.com/EmbeddedPlayer/album=${props.bandcampID}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/`}
+        seamless
+        class:list={[
+          'border-0',
+          'sm:w-[320px]',
+          'w-full',
+          'h-[470px]',
+          'mb-4',
+          props.className,
+        ]}
+        title={`album embed from bandcamp.com of ${props.name} by ${props.artist}`}
+        loading="lazy"
+      />
+    )
+  }
+</>

@@ -28,4 +28,4 @@ jobs:
 
       - name: Astro check
         if: steps.dependencies.conclusion == 'success' && !cancelled()
-        run: npm run astro-check
+        run: pnpm run astro-check
