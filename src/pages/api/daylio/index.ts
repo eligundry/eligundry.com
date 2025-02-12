@@ -6,6 +6,8 @@ import netlify from '../../../lib/netlify'
 import { dedent } from '../../../lib/utils'
 import { getCollection } from 'astro:content'
 
+export const prerender = false
+
 export const GET: APIRoute = async () => {
   const entries = await getCollection('feelings').then((records) =>
     records.map((record) => record.data)
