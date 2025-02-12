@@ -1,10 +1,12 @@
 ---
-import daylio from '../lib/daylio'
 import Layout from '../layouts/Layout.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
+import { getCollection } from 'astro:content'
 
-const entries = await daylio.getAll({ limit: 180 })
+const entries = await getCollection('feelings').then((records) =>
+  records.map((record) => record.data).slice(0, 100)
+)
 ---
 
 <Layout

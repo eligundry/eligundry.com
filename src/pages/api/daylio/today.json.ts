@@ -1,10 +1,12 @@
 import type { APIRoute } from 'astro'
-import daylio from '../../../lib/daylio'
+import { getCollection } from 'astro:content'
 
 export const GET: APIRoute = async () => {
-  const entry = await daylio.getLatest()
+  const entries = await getCollection('feelings').then((records) =>
+    records.slice(0).map((record) => record.data)
+  )
 
-  return new Response(JSON.stringify(entry), {
+  return new Response(JSON.stringify(entries[0]), {
     headers: {
       'content-type': 'application/json; charset=utf-8',
     },

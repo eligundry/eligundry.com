@@ -14,7 +14,13 @@ const DaylioChart = () => {
   const { darkMode } = useTheme()
   const [{ error, status, result: data }, actions] = useAsync<
     DaylioChartEntry[]
-  >(async () => fetch(`/api/daylio/chart.json`).then((resp) => resp.json()), [])
+  >(
+    async () =>
+      fetch(`/api/daylio/chart.json`)
+        .then((resp) => resp.json())
+        .then((entries) => entries.reverse()),
+    []
+  )
 
   useMountEffect(actions.execute)
 

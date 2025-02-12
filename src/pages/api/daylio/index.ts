@@ -4,11 +4,12 @@ import daylio from '../../../lib/daylio'
 import blueSky from '../../../lib/bluesky'
 import netlify from '../../../lib/netlify'
 import { dedent } from '../../../lib/utils'
-
-export const prerender = false
+import { getCollection } from 'astro:content'
 
 export const GET: APIRoute = async () => {
-  const entries = await daylio.getAll()
+  const entries = await getCollection('feelings').then((records) =>
+    records.map((record) => record.data)
+  )
 
   return new Response(JSON.stringify(entries), {
     headers: {
@@ -31,7 +32,7 @@ function endpointOutputToResponse(output: {
   })
 }
 
-export const post: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request }) => {
   if (!auth.check(request.headers.get('authorization'))) {
     return new Response(null, {
       status: 401,
