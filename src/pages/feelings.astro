@@ -1,11 +1,10 @@
 ---
-import dateFns from 'date-fns'
 import daylio from '../lib/daylio'
 import Layout from '../layouts/Layout.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
 
-const entries = await daylio.getRange(dateFns.subMonths(new Date(), 6))
+const entries = await daylio.getAll({ limit: 180 })
 ---
 
 <Layout

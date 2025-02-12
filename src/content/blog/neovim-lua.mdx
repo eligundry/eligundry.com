@@ -6,7 +6,6 @@ date: 2023-02-21T04:00
 tags:
   - code
 ---
-export { components } from '../../components/Post/components.astro'
 
 ⚠️ _**Warning: This post is very cringe as I hate talking about my tools instead of my work. You've been warned.**_
 
@@ -54,7 +53,7 @@ Without any further ado, let's dive into what this conversion gave me!
 Since I was moving from Vimscript to Lua, it only made sense that I switch some of my old plugins to newer, actively
 maintained Lua alternatives. Here are some packages I upgraded to.
 
-## plug.vim ➡️  [packer.nvim](https://github.com/wbthomason/packer.nvim)
+## plug.vim ➡️ [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 I like Packer's syntax and how I can inline package configs right next to how I install them. Since I started porting,
 it seems that the new hotness is [lazy.nvim](https://github.com/folke/lazy.nvim), which I suppose I will check out 3
@@ -114,9 +113,7 @@ of linewise movements while knowing where the heck I am! But, sometimes I want n
 want no numbering at all. I had a very nasty Vimscript function that could do this that I despised until I rewrote it in
 Lua!
 
-<GithubFile
-  url="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L647-L684"
-/>
+<GithubFile url="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L647-L684" />
 
 Below is a video of me calling that function with <kbd>,rn</kbd> in normal mode.
 
@@ -128,17 +125,13 @@ Below is a video of me calling that function with <kbd>,rn</kbd> in normal mode.
 Another example is how I was able to finally make sense of my love of [Vim's `autochdir`](https://vim.fandom.com/wiki/Set_working_directory_to_the_current_file)
 with how plugins work with it. I will let the following code block explain what I mean.
 
-<GithubFile
-  url="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L802-L850"
-/>
+<GithubFile url="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L802-L850" />
 
 For my final example, I technically had this working in Vimscript, but I really want to show it off! I am the biggest fan
 of [Hipster Ipsum](https://hipsum.co/) for dummy text. I made Vim function that call's it's HTTP API and inserts the copy
 into the file!
 
-<GithubFile
-  url="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L852-L857"
-/>
+<GithubFile url="https://github.com/eligundry/dots/blob/eeed2f2fcbf3c1aa02b6981e2abea746b1c50cd6/config/nvim/init.lua#L852-L857" />
 
 By pressing <kbd>,hi</kbd>, I get a paragraph of the finest hipsum!
 

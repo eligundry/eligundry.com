@@ -1,57 +1,40 @@
 ---
 import { Image } from 'astro:assets'
-import dateFns from 'date-fns'
-import { getCollection, getEntryBySlug } from 'astro:content'
+import * as dateFns from 'date-fns'
+import { getCollection, getEntry } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
-import lastfm from '../lib/lastfm'
-import goodreads from '../lib/goodreads'
-import daylio from '../lib/daylio'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 import Memoji from '../components/Memoji.astro'
 
-const [
-  latestEntry,
-  topAlbums,
-  currentlyReading,
-  recentlyRead,
-  favoritePosts,
-  latestPost,
-  CodingSection,
-] = await Promise.all([
-  daylio.getLatest(),
-  lastfm
-    .getTopAlbumsCover(config.lastFmUsername)
-    .then((albums) => albums.slice(0, 9)),
-  goodreads.getShelf({
-    userID: config.goodreadsUserID,
-    shelf: 'currently-reading',
-    limit: 1,
-  }),
-  goodreads.getShelf({
-    userID: config.goodreadsUserID,
-    shelf: 'read',
-    limit: 11,
-    sort: 'date_read',
-    order: 'd',
-  }),
-  getCollection('blog').then((posts) =>
-    posts
-      .filter((post) => post.data.favoriteIndex)
-      .sort((a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0))
-  ),
-  getCollection('blog').then(
-    (posts) =>
-      posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
-  ),
-  getEntryBySlug('sections', 'do-you-code')
-    .then((section) => section.render())
-    .then(({ Content }) => Content),
-])
+const latestEntry = await getCollection('feelings').then(
+  (entries) => entries[0].data
+)
+const topAlbums = await getCollection('lastfmCovers').then((entries) =>
+  entries.slice(0, 9).map((entry) => entry.data)
+)
+const currentlyReading = await getCollection('currentlyReading').then((books) =>
+  books.map((book) => book.data)
+)
+const recentlyRead = await getCollection('recentlyRead').then((books) =>
+  books.map((book) => book.data)
+)
+const favoritePosts = await getCollection('blog').then((posts) =>
+  posts
+    .filter((post) => post.data.favoriteIndex)
+    .sort((a, b) => (a.data.favoriteIndex ?? 0) - (b.data.favoriteIndex ?? 0))
+)
+const latestPost = await getCollection('blog').then(
+  (posts) =>
+    posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
+)
+const CodingSection = await getEntry('sections', 'do-you-code')
+  ?.then((section) => section.render())
+  .then(({ Content }) => Content)
 ---
 
 <Layout>
@@ -254,7 +237,6 @@ const [
         <iframe
           title="Spotify playlist that I have on repeat"
           data-src={config.spotifyPlaylist}
-          frameborder="0"
           allow="encrypted-media"
           loading="lazy"
           width="300"

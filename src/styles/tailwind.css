@@ -2,7 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './fancyBackground.css';
-@import './prism-material.css';
 
 @layer base {
   html {
@@ -11,6 +10,10 @@
 }
 
 @layer components {
+  .btn {
+    @apply uppercase;
+  }
+
   .paper {
     @apply w-full p-4 print:py-0;
   }
@@ -24,7 +27,7 @@
   }
 
   .astro-code {
-    @apply relative overflow-hidden overflow-x-scroll min-w-[18rem] pt-2 pb-6  pr-4 rounded-2xl;
+    @apply relative overflow-hidden overflow-x-scroll min-w-[18rem] pt-2 pb-6 pr-4 rounded-2xl;
     padding-right: 2ch;
   }
 
@@ -89,7 +92,8 @@
   }
 }
 
-.btn, button {
+.btn,
+button {
   @apply font-sans !cursor-pointer;
 }
 

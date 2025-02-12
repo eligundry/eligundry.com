@@ -1,4 +1,8 @@
 import { z, defineCollection } from 'astro:content'
+import { feelingsCollection } from './feelings'
+import { createGoodreadsCollection } from './goodreads'
+import config from '../config'
+import { createLastFmCoverCollection } from './lastfm'
 
 const commonFrontmatterSchema = z.object({
   title: z.string(),
@@ -55,4 +59,18 @@ export const collections = {
   resumeExperiences: defineCollection({
     schema: resumeExperiencesSchema,
   }),
+  feelings: feelingsCollection,
+  currentlyReading: createGoodreadsCollection({
+    userID: config.goodreadsUserID,
+    shelf: 'currently-reading',
+    limit: 2,
+  }),
+  recentlyRead: createGoodreadsCollection({
+    userID: config.goodreadsUserID,
+    shelf: 'read',
+    limit: 16,
+    sort: 'date_read',
+    order: 'd',
+  }),
+  lastfmCovers: createLastFmCoverCollection(config.lastFmUsername),
 }

@@ -1,28 +1,48 @@
 ---
-import { Image } from 'astro:assets'
-import { getRemoteImageMetadata } from '../../lib/images'
+import { getImage } from 'astro:assets'
 
 interface Props {
   alt: string
-  src: string
+  src: ImageMetadata | string
 }
 
 const { alt, src } = Astro.props
-const {
-  aspectRatio,
-  backgroundColor,
-  width: fullWidth,
-} = await getRemoteImageMetadata(src)
-const width = Math.min(fullWidth, 690)
-const height = Math.round(width / aspectRatio)
+const img = await getImage({
+  src: src,
+  format: 'webp',
+  quality: 90,
+  inferSize: true,
+})
+
+// console.log({src, img})
+// let pathNameOrUrl: string
+//
+// if (typeof src === 'string') {
+//   pathNameOrUrl = src
+//
+//   if (src.startsWith('/_astro')) {
+//     pathNameOrUrl = path.join(process.cwd(), src)
+//   }
+// } else if (src.src.startsWith('/_astro/')) {
+//     pathNameOrUrl = path.join(process.cwd(), src.src)
+// } else if (src.src.startsWith('/@fs/')) {
+//   const url = new URL(src.src.replace('/@fs', ''), img.src.startsWith('http') ? undefined : 'file:/')
+//   pathNameOrUrl = url.pathname
+// } else {
+//   pathNameOrUrl = src.src
+// }
+
+// const backgroundColor = await averageColorFromURL(pathNameOrUrl)
+const backgroundColor = null
 ---
 
-<Image
-  src={src}
+<img
+  src={img.src}
+  width={img.options.width}
+  height={img.options.height}
   alt={alt}
-  width={width}
-  height={height}
-  format="webp"
   style={{ backgroundColor }}
+  decoding="async"
+  loading="lazy"
   class:list={['max-w-100', 'mx-auto']}
 />

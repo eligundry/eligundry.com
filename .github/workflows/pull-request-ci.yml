@@ -5,30 +5,32 @@ on:
       - main
 
 jobs:
-  lint:
+  validate:
     name: Run linters
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-      - run: npm ci
-      - name: Run linters
-        run: npm run lint
+          cache: 'pnpm'
+          node-version-file: '.nvmrc'
 
-  astro-check:
-    name: Astro check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-      - run: npm ci
+      - name: Install Dependencies
+        id: dependencies
+        run: |
+          pnpm --version
+          pnpm install
+
+      - name: Run linters
+        if: steps.dependencies.conclusion == 'success' && !cancelled()
+        run: pnpm run lint
+
       - name: Astro check
-        run: npm run astro-check
+        if: steps.dependencies.conclusion == 'success' && !cancelled()
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          ./node_modules/.bin/netlify env:list --plain > './.env'
+          pnpm run astro-check

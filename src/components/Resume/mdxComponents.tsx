@@ -1,12 +1,12 @@
 export const experienceComponents = {
-  ul: (props) => (
+  ul: (props: any) => (
     <ul
       itemprop="description"
       class={`order-5 my-0 ${props.class ?? ''}`}
       {...props}
     />
   ),
-  p: (props) => (
+  p: (props: any) => (
     <p
       itemprop="description"
       class={`order-5 my-2 ${props.class ?? ''}`}
@@ -16,5 +16,5 @@ export const experienceComponents = {
 }
 
 export const skillsComponents = {
-  a: (props) => <a itemprop="knowsAbout" target="_blank" {...props} />,
+  a: (props: any) => <a itemprop="knowsAbout" target="_blank" {...props} />,
 }

@@ -17,7 +17,7 @@ let { expandable = true, expanded = false } = Astro.props
 // customization. What's happening here is that I am rendering the code
 // component to HTML, parsing it with JSDOM, and rebuilding it such that it has
 // line numbers and other fun things
-const html = await Astro.slots.render('default')
+const html = await Astro.slots.render('code')
 const {
   window: { document },
 } = new JSDOM(html)

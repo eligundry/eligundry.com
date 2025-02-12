@@ -87,7 +87,7 @@ const memojis = [
   }
 
   document.addEventListener('DOMContentLoaded', showRandomMemoji)
-  const memojiInterval = setInterval(showRandomMemoji, 2000)
+  const memojiInterval = window.setInterval(showRandomMemoji, 2000)
 
   if (memojiWrapper) {
     memojiWrapper.addEventListener('click', () => {

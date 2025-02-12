@@ -1,7 +1,8 @@
 ---
-import { getCollection, CollectionEntry } from 'astro:content'
+import { getCollection, type CollectionEntry } from 'astro:content'
 import { readingTimeToFancyBackgroundPoints } from '../../lib/utils'
 import PostLayout from '../../layouts/Post.astro'
+import { components } from '../../components/Post/components.astro'
 
 interface Props {
   entry: CollectionEntry<'talks'>
@@ -32,5 +33,5 @@ const { Content, remarkPluginFrontmatter } = await entry.render()
     remarkPluginFrontmatter.readingTime
   )}
 >
-  <Content />
+  <Content components={components} />
 </PostLayout>

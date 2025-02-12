@@ -8,7 +8,7 @@ import {
   CategoryScale,
   TimeSeriesScale,
   Tooltip,
-  TooltipOptions,
+  type TooltipOptions,
 } from 'chart.js'
 import theme from '../theme.json'
 

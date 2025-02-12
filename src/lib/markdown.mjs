@@ -1,9 +1,8 @@
 import SimpleGit from 'simple-git'
 import readingTime from 'reading-time'
-import rehypePrism from 'rehype-prism-plus'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import rehypeSlug from 'rehype-slug'
-import remarkUnwrapImages from 'remark-unwrap-images'
+import rehypeUnwrapImages from 'rehype-unwrap-images'
 import remarkParse from 'remark-parse'
 import remarkComment from 'remark-comment'
 import remarkInlineLinks from 'remark-inline-links'
@@ -11,11 +10,10 @@ import remarkInlineLinks from 'remark-inline-links'
 const git = SimpleGit()
 
 const mdxConfig = {
-  rehypePlugins: [rehypePrism, rehypeAccessibleEmojis, rehypeSlug],
+  rehypePlugins: [rehypeAccessibleEmojis, rehypeSlug, rehypeUnwrapImages],
   remarkPlugins: [
     remarkReadingTime,
     remarkInlineLinks,
-    remarkUnwrapImages,
     remarkParse,
     [
       remarkComment,

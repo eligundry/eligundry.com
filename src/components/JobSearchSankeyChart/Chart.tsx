@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Chart as ChartJS, SankeyDataPoint } from 'chart.js'
+import { Chart as ChartJS, type SankeyDataPoint } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
 

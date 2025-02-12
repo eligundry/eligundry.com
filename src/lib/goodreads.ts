@@ -1,8 +1,7 @@
-import type { AxiosResponse } from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 import { JSDOM } from 'jsdom'
 import trim from 'lodash/trim'
 
-import { cacheAxios, cache } from './cache'
 import { averageColorFromURL } from './images'
 
 export interface GoodReadsBook {
@@ -21,7 +20,7 @@ export interface GoodReadsBook {
   coverColor: string | null
 }
 
-interface GetShelf {
+export interface GetShelf {
   userID: string
   shelf: string
   limit?: number
@@ -30,20 +29,10 @@ interface GetShelf {
 }
 
 const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
-  const c = await cache
-  const cacheKey = `goodreads-user[${userID}]-shelf[${shelf}]-limit[${
-    limit ?? 'all'
-  }]`
-  let books = await c.get<GoodReadsBook[]>(cacheKey)
-
-  if (books) {
-    return books
-  }
-
   let goodreadsHTML: AxiosResponse<string> | null
 
   try {
-    goodreadsHTML = await cacheAxios.get<string>(
+    goodreadsHTML = await axios.get<string>(
       `https://www.goodreads.com/review/list/${userID}`,
       {
         params: {
@@ -52,24 +41,20 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
           per_page: 100,
           ...queryParams,
         },
-        cache: {
-          ttl: 60 * 60 * 24,
-        },
       }
-    )
-    console.log(
-      goodreadsHTML.config.url +
-        '?' +
-        new URLSearchParams(goodreadsHTML.config.params ?? '').toString()
     )
   } catch (e) {
     console.error('could not fetch Goodreads shelf', e)
     throw e
   }
 
+  if (!goodreadsHTML) {
+    throw new Error('could not fetch Goodreads shelf')
+  }
+
   const { document: goodreadsDocument } = new JSDOM(goodreadsHTML.data).window
 
-  books = (
+  const books = (
     await Promise.all(
       Array.from(
         goodreadsDocument.querySelectorAll('#booksBody .bookalike')
@@ -127,8 +112,6 @@ const getShelf = async ({ userID, shelf, limit, ...queryParams }: GetShelf) => {
   )
     .filter((book): book is GoodReadsBook => !!book)
     .slice(0, limit)
-
-  c.set(cacheKey, books, 60 * 60 * 24)
 
   return books
 }

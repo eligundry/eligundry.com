@@ -4,32 +4,37 @@ import Experience from '../components/Resume/Experience.astro'
 import Section from '../components/Resume/Section.astro'
 import Footer from '../components/Resume/Footer.astro'
 import { FaDownload } from 'react-icons/fa'
-import { getCollection, getEntryBySlug } from 'astro:content'
-import dateFns from 'date-fns'
+import { getCollection, getEntry } from 'astro:content'
+import * as dateFns from 'date-fns'
+import { skillsComponents } from '../components/Resume/mdxComponents'
 
-const [experiences, Skills, Activities] = await Promise.all([
-  getCollection('resumeExperiences').then((experiences) =>
+const experiences = await getCollection('resumeExperiences').then(
+  (experiences) =>
     experiences.sort((a, b) =>
       dateFns.compareDesc(a.data.startDate, b.data.startDate)
     )
-  ),
-  getEntryBySlug('sections', 'resume-skills').then(async (section) => {
+)
+
+const Skills = await getEntry('sections', 'resume-skills')?.then(
+  async (section) => {
     if (!section) {
       throw new Error('No "resume-skills" section found')
     }
     const { Content } = await section.render()
-
     return Content
-  }),
-  getEntryBySlug('sections', 'resume-activities').then(async (section) => {
+  }
+)
+
+const Activities = await getEntry('sections', 'resume-activities')?.then(
+  async (section) => {
     if (!section) {
       throw new Error('No "resume-activities" section found')
     }
     const { Content } = await section.render()
-
     return Content
-  }),
-])
+  }
+)
+
 const work = experiences.filter((experience) => experience.data.type === 'work')
 const education = experiences.filter(
   (experience) => experience.data.type === 'education'
@@ -61,7 +66,9 @@ const education = experiences.filter(
       <h1 class="text-lg mb-0">Eli Gundry</h1>
       <h2 class="text-sm mt-0 !font-mono self-center">
         <span class="text-primary">Full Stack Web Engineer</span>
-        <span class="comment"> // <span class="font-normal">❤️</span> Typescript, AI and everything in between</span>
+        <span class="comment">
+          // <span class="font-normal">❤️</span> Typescript, AI and everything inbetween</span
+        >
       </h2>
     </header>
     <Section>
@@ -108,11 +115,11 @@ const education = experiences.filter(
     </Section>
 
     <Section title="Skills & Technologies" className="[&>ul]:mt-0">
-      <Skills />
+      <Skills components={skillsComponents} />
     </Section>
 
     <Section title="Activities & Interests" className="[&>ul]:mt-0">
-      <Activities />
+      <Activities components={skillsComponents} />
     </Section>
     <Footer />
   </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useMediaQuery as useMedia } from '@react-hookz/web'
 import theme from '../theme.json'
 
-type Pallete = NonNullable<typeof theme.daisyui.themes[0]['dark']>
+type Pallete = NonNullable<(typeof theme.daisyui.themes)[0]['dark']>
 type Theme = typeof theme
 type Query = string | ((theme: Theme) => string)
 
@@ -37,13 +37,12 @@ export function useDarkMode() {
     const obs = new MutationObserver((mutationList) => {
       mutationList.forEach((m) => {
         if (m.type === 'attributes' && m.attributeName === 'data-theme') {
-          setHtmlDataTheme(
-            m.target.dataset?.theme === 'light' ? 'light' : 'dark'
-          )
+          const target = m.target as HTMLElement
+          setHtmlDataTheme(target.dataset?.theme === 'light' ? 'light' : 'dark')
         }
       })
     })
-    obs.observe(document.querySelector('html'), {
+    obs.observe(document.querySelector('html')!, {
       attributes: true,
     })
 
@@ -59,15 +58,18 @@ export function useDarkMode() {
 
 export default function useTheme() {
   const darkMode = useDarkMode()
-  const palletes = theme.daisyui.themes.reduce((acc, t) => {
-    if (t.dark) {
-      acc.dark = t.dark
-    } else if (t.light) {
-      acc.light = t.light
-    }
+  const palletes = theme.daisyui.themes.reduce(
+    (acc, t) => {
+      if (t.dark) {
+        acc.dark = t.dark
+      } else if (t.light) {
+        acc.light = t.light
+      }
 
-    return acc
-  }, {} as Record<'light' | 'dark', Pallete>)
+      return acc
+    },
+    {} as Record<'light' | 'dark', Pallete>
+  )
 
   return {
     darkMode,

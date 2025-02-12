@@ -1,10 +1,10 @@
 import type { APIRoute, AstroInstance } from 'astro'
 import { getCollection } from 'astro:content'
 import { SitemapStream, streamToPromise } from 'sitemap'
-import dateFns from 'date-fns'
+import * as dateFns from 'date-fns'
 import { getLastModifiedForPath } from '../lib/lastModified'
 
-export const get: APIRoute = async () => {
+export const GET: APIRoute = async () => {
   const sitemap = new SitemapStream({
     hostname: 'https://eligundry.com',
   })
@@ -54,7 +54,9 @@ export const get: APIRoute = async () => {
 
   sitemap.end()
 
-  const body = await streamToPromise(sitemap).then((sm) => sm.toString())
-
-  return { body }
+  return new Response(await streamToPromise(sitemap), {
+    headers: {
+      'content-type': 'application/xml',
+    },
+  })
 }
