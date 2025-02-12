@@ -63,8 +63,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(chart.js@4.4.7)(date-fns@4.1.0)
       chartjs-chart-sankey:
-        specifier: ^0.13.0
-        version: 0.13.0(chart.js@4.4.7)
+        specifier: ^0.14.0
+        version: 0.14.0(chart.js@4.4.7)
       csv-parse:
         specifier: ^5.6.0
         version: 5.6.0
@@ -3304,8 +3304,8 @@ packages:
       chart.js: '>=2.8.0'
       date-fns: '>=2.0.0'
 
-  chartjs-chart-sankey@0.13.0:
-    resolution: {integrity: sha512-RnmdWdVHj6vlwBsUfdxdO4LCguhzaUplun3Goudva4AgSCkicKS8Zt/gPQWi2i/FmBTYIOuNoYe6GtY+xleJiA==}
+  chartjs-chart-sankey@0.14.0:
+    resolution: {integrity: sha512-MrU3lE73TE9kALy4MjWFlfcwf4R1EN/DBvhHxmv9n4AHap//JLKjlJTLIZwHsUjDsYo0B8PuMkrJODwfirEZUA==}
     peerDependencies:
       chart.js: '>=3.3.0'
 
@@ -11655,7 +11655,7 @@ snapshots:
       chart.js: 4.4.7
       date-fns: 4.1.0
 
-  chartjs-chart-sankey@0.13.0(chart.js@4.4.7):
+  chartjs-chart-sankey@0.14.0(chart.js@4.4.7):
     dependencies:
       chart.js: 4.4.7
 

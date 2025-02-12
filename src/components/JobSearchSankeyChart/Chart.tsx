@@ -11,29 +11,29 @@ ChartJS.register(SankeyController, Flow)
 
 const chartPallete = (value: string) => {
   switch (value) {
-    case 'Applied':
-      return `hsl(${cssvar('--p')})`
-    case 'Callback':
-      return `hsl(${cssvar('--p')})`
     case 'Code Test':
     case 'On Site':
     case 'Offer':
     case 'Offer Accepted':
-      return `hsl(${cssvar('--su')})`
+      return `oklch(${cssvar('--su')})`
     case 'Drop Out':
     case 'Offer Declined':
-      return `hsl(${cssvar('--wa')})`
+      return `oklch(${cssvar('--wa')})`
     case 'Rejection':
     case 'Not Offered':
-      return `hsl(${cssvar('--er')})`
+      return `oklch(${cssvar('--er')})`
+    case 'Applied':
+    case 'Callback':
     default:
-      return `hsl(${cssvar('--p')})`
+      return `oklch(${cssvar('--p')})`
   }
 }
 
 const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
   data,
 }) => {
+  console.log(chartPallete(data[0].from))
+
   return (
     <div className="mb-4">
       <Chart
@@ -51,8 +51,10 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
         options={{
           // @ts-ignore
           colorFrom: (c) => chartPallete(c.raw.from),
+          // For whatever reason, the to color must be a hex, otherwise it will
+          // not show up
           // @ts-ignore
-          colorTo: (c) => chartPallete(c.raw.to),
+          colorTo: (c) => oklchToHex(chartPallete(c.raw.to)),
           colorMode: 'to',
           plugins: {
             tooltip: tooltipTheme(),
@@ -77,6 +79,23 @@ export const JobSearchSankeyChartByYear: React.FC<{ year: number }> = ({
       console.error(`Job Search Sankey chart does not exist for year ${year}`)
       return null
   }
+}
+
+function oklchToHex(oklchStr: string): string {
+  // Create a canvas element
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return '#000000'
+
+  // Draw a rectangle with the OKLCH color
+  ctx.fillStyle = oklchStr
+  ctx.fillRect(0, 0, 1, 1)
+
+  // Get the pixel data
+  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
+
+  // Convert to hex
+  return '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')
 }
 
 export default JobSearchSankeyChartByYear
