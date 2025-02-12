@@ -63,12 +63,12 @@ export const collections = {
   currentlyReading: createGoodreadsCollection({
     userID: config.goodreadsUserID,
     shelf: 'currently-reading',
-    limit: 1,
+    limit: 2,
   }),
   recentlyRead: createGoodreadsCollection({
     userID: config.goodreadsUserID,
     shelf: 'read',
-    limit: 11,
+    limit: 16,
     sort: 'date_read',
     order: 'd',
   }),

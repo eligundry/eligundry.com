@@ -4,7 +4,7 @@ import { SitemapStream, streamToPromise } from 'sitemap'
 import * as dateFns from 'date-fns'
 import { getLastModifiedForPath } from '../lib/lastModified'
 
-export const get: APIRoute = async () => {
+export const GET: APIRoute = async () => {
   const sitemap = new SitemapStream({
     hostname: 'https://eligundry.com',
   })

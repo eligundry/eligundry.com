@@ -6,7 +6,7 @@ import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 import { getCollection } from 'astro:content'
 
-export const get: APIRoute = async () => {
+export const GET: APIRoute = async () => {
   const entries = await getCollection('feelings').then((c) =>
     c.map((e) => e.data)
   )
@@ -39,10 +39,9 @@ export const get: APIRoute = async () => {
       date: new Date(entry.time),
       content: `
         <ul>
-          ${
-            entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ??
-            `<li>No notes!</li>`
-          }
+          ${entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ??
+        `<li>No notes!</li>`
+        }
         </ul>
       `,
     })

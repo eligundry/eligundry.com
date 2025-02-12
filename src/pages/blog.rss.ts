@@ -5,7 +5,7 @@ import * as dateFns from 'date-fns'
 import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 
-export const get: APIRoute = async () => {
+export const GET: APIRoute = async () => {
   const posts = (await getCollection('blog')).sort((a, b) =>
     dateFns.compareDesc(a.data.date, b.data.date)
   )
