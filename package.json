@@ -60,7 +60,7 @@
     "lastfm-typed": "^2.1.0",
     "lodash": "^4.17.21",
     "markdown-to-txt": "^2.0.1",
-    "postcss": "^8.4.49",
+    "postcss": "^8.5.2",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^13.0.1",
     "preact": "^10.25.1",
