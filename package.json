@@ -93,7 +93,7 @@
     "@types/jsdom": "^21.1.7",
     "@types/lodash": "^4.17.13",
     "@types/react": "^19.0.1",
-    "@typescript-eslint/parser": "^8.17.0",
+    "@typescript-eslint/parser": "^8.24.0",
     "drizzle-kit": "^0.29.1",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^10.0.1",
