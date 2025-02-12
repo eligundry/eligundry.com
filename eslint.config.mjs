@@ -10,7 +10,7 @@ export default [
     ...mdx.flat,
     // optional, if you want to lint code blocks at the same
     processor: mdx.createRemarkProcessor({
-      lintCodeBlocks: true,
+      lintCodeBlocks: false,
       // optional, if you want to disable language mapper, set it to `false`
       // if you want to override the default language mapper inside, you can provide your own
       languageMapper: {},

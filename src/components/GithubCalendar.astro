@@ -5,7 +5,7 @@
 import * as dateFns from 'date-fns'
 import groupBy from 'lodash/groupBy'
 import config from '../config'
-import { cacheAxios } from '../lib/cache'
+import axios from 'axios'
 
 interface Props {
   className?: string
@@ -22,15 +22,12 @@ interface GithubApiResponse {
   }[]
 }
 
-const contributions = await cacheAxios
+const contributions = await axios
   .get<GithubApiResponse>(
     `https://github-contributions-api.jogruber.de/v4/${config.github}`,
     {
       params: {
         y: 'last',
-      },
-      cache: {
-        ttl: 60 * 60 * 24,
       },
     }
   )

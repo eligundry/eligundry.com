@@ -37,13 +37,7 @@ export const GET: APIRoute = async () => {
       id: `${config.url}/feelings#${entry.slug}`,
       link: `${config.url}/feelings#${entry.slug}`,
       date: new Date(entry.time),
-      content: `
-        <ul>
-          ${entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ??
-        `<li>No notes!</li>`
-        }
-        </ul>
-      `,
+      content: `<ul>${entry.notes?.map((note) => `<li>${note}</li>`).join('\n') ?? `<li>No notes!</li>`}</ul>`,
     })
   })
 
