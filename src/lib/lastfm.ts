@@ -83,9 +83,12 @@ const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
   url.searchParams.set('type', period)
   url.searchParams.set('size', '3x3')
 
-  return fetch(url.toString())
-    .then((resp) => resp.arrayBuffer())
-    .then((buffer) => Buffer.from(buffer, 'binary'))
+  return (
+    fetch(url.toString())
+      .then((resp) => resp.arrayBuffer())
+      // @ts-ignore
+      .then((buffer) => Buffer.from(buffer, 'binary'))
+  )
 }
 
 const api = { getTopAlbumsCover, getTopAlbums, getCollage }

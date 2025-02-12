@@ -3,7 +3,6 @@ import type { AstroInstance } from 'astro'
 import { getCollection } from 'astro:content'
 import * as dateFns from 'date-fns'
 import { simpleGit } from 'simple-git'
-import { cache } from './cache'
 import daylio from './daylio'
 
 const git = simpleGit()
@@ -19,14 +18,7 @@ const getLastModFromFile = async (filePath: string): Promise<Date> => {
 }
 
 export async function getAllLastModifieds(): Promise<Record<string, Date>> {
-  const c = await cache
-  let lastModifieds = await c.get<Record<string, Date>>('lastModifieds')
-
-  if (lastModifieds) {
-    return lastModifieds
-  }
-
-  lastModifieds = {}
+  const lastModifieds = {}
 
   const [
     astroPages,
@@ -112,8 +104,6 @@ export async function getAllLastModifieds(): Promise<Record<string, Date>> {
       lastModifieds[url] = dateFns.max(possibleDates)
     })
   )
-
-  await c.set('lastModifieds', lastModifieds, 60 * 3)
 
   return lastModifieds
 }

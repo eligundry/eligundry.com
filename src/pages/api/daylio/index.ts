@@ -114,7 +114,7 @@ ${post.notes?.map((note) => `${note}`).join('\n\n')}
           )
         }
 
-        return blueSky.sendPost(message)
+        return blueSky.sendPost(message, { createdAt: post.time })
       })
     )
 

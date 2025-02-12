@@ -8,10 +8,7 @@ interface BandcampProps {
   url: string
 }
 
-type Props = (SpotifyProps | BandcampProps) &
-  Partial<{
-    className: string
-  }>
+type Props = (SpotifyProps | BandcampProps) & { className?: string }
 
 const props = Astro.props
 ---
@@ -22,7 +19,6 @@ const props = Astro.props
       class:list={['border-0', 'w-[320px]', 'h-[380px]', props.className]}
       data-src={`https://open.spotify.com/embed/album/${props.spotifyID}`}
       height="380"
-      frameborder="0"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       title="album embed from spotify.com"
       loading="lazy"

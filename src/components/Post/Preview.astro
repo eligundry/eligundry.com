@@ -16,7 +16,7 @@ const { entry, badge } = Astro.props
 const { Content, remarkPluginFrontmatter } = await entry.render()
 const readingTime =
   'readingTime' in remarkPluginFrontmatter
-    ? remarkPluginFrontmatter.readingTime ?? 1
+    ? (remarkPluginFrontmatter.readingTime ?? 1)
     : undefined
 let tags: string[] = []
 

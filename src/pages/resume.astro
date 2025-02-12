@@ -8,25 +8,32 @@ import { getCollection, getEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
 import { skillsComponents } from '../components/Resume/mdxComponents'
 
-const experiences = await getCollection('resumeExperiences').then((experiences) =>
-  experiences.sort((a, b) => dateFns.compareDesc(a.data.startDate, b.data.startDate))
+const experiences = await getCollection('resumeExperiences').then(
+  (experiences) =>
+    experiences.sort((a, b) =>
+      dateFns.compareDesc(a.data.startDate, b.data.startDate)
+    )
 )
 
-const Skills = await getEntry('sections', 'resume-skills')?.then(async (section) => {
-  if (!section) {
-    throw new Error('No "resume-skills" section found')
+const Skills = await getEntry('sections', 'resume-skills')?.then(
+  async (section) => {
+    if (!section) {
+      throw new Error('No "resume-skills" section found')
+    }
+    const { Content } = await section.render()
+    return Content
   }
-  const { Content } = await section.render()
-  return Content
-})
+)
 
-const Activities = await getEntry('sections', 'resume-activities')?.then(async (section) => {
-  if (!section) {
-    throw new Error('No "resume-activities" section found')
+const Activities = await getEntry('sections', 'resume-activities')?.then(
+  async (section) => {
+    if (!section) {
+      throw new Error('No "resume-activities" section found')
+    }
+    const { Content } = await section.render()
+    return Content
   }
-  const { Content } = await section.render()
-  return Content
-})
+)
 
 const work = experiences.filter((experience) => experience.data.type === 'work')
 const education = experiences.filter(
@@ -59,7 +66,10 @@ const education = experiences.filter(
       <h1 class="text-lg mb-0">Eli Gundry</h1>
       <h2 class="text-sm mt-0 !font-mono self-center">
         <span class="text-primary">Full Stack Web Engineer</span>
-        <span class="comment"> // <span class="font-normal">❤️</span> Typescript, AI and everything in between</span>
+        <span class="comment">
+          // <span class="font-normal">❤️</span> Typescript, AI and everything in
+          between</span
+        >
       </h2>
     </header>
     <Section>

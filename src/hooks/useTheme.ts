@@ -37,13 +37,12 @@ export function useDarkMode() {
     const obs = new MutationObserver((mutationList) => {
       mutationList.forEach((m) => {
         if (m.type === 'attributes' && m.attributeName === 'data-theme') {
-          setHtmlDataTheme(
-            m.target.dataset?.theme === 'light' ? 'light' : 'dark'
-          )
+          const target = m.target as HTMLElement
+          setHtmlDataTheme(target.dataset?.theme === 'light' ? 'light' : 'dark')
         }
       })
     })
-    obs.observe(document.querySelector('html'), {
+    obs.observe(document.querySelector('html')!, {
       attributes: true,
     })
 

@@ -238,6 +238,7 @@ const getAll = async ({
     .orderBy(desc(daylioEntries.time))
 
   if (limit) {
+    // @ts-ignore
     query = query.limit(limit)
   }
 

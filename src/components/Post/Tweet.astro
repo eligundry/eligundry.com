@@ -6,12 +6,19 @@ interface Props {
 
 const { id, children } = Astro.props
 ---
+
 <slot name="head">
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script
+    is:inline
+    async
+    src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const tweetElements = document.querySelectorAll('.twitter-tweet[data-tweet-id]')
+      const tweetElements = document.querySelectorAll(
+        '.twitter-tweet[data-tweet-id]'
+      )
 
       tweetElements.forEach((element) => {
         const id = element.getAttribute('data-tweet-id')
@@ -32,7 +39,7 @@ const { id, children } = Astro.props
         }
 
         if (!createTweet()) {
-          const intervalID = setInterval(() => {
+          const intervalID = window.setInterval(() => {
             if (createTweet()) {
               clearInterval(intervalID)
             }

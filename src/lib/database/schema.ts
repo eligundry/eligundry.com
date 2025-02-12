@@ -52,7 +52,5 @@ export const daylioEntryActivities = sqliteTable(
       timestampSQL
     ),
   },
-  (table) => ({
-    pk: primaryKey(table.time, table.activity),
-  })
+  (table) => [primaryKey({ columns: [table.time, table.activity] })]
 )

@@ -1,11 +1,19 @@
 ---
+
 /* prettier-ignore */
 ---
+
 {
   Astro.props.class && (
-  <pre class:list={['astro-code', 'astro-code-compact', Astro.props.class]}>
-<slot />
-  </pre>
+    <pre class:list={['astro-code', 'astro-code-compact', Astro.props.class]}>
+      <slot />
+    </pre>
   )
 }
-{!Astro.props.class && <pre><slot /></pre>}
+{
+  !Astro.props.class && (
+    <pre>
+      <slot />
+    </pre>
+  )
+}

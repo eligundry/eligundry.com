@@ -30,7 +30,7 @@ async function sendPost(text: string, extra?: any) {
 
 async function uploadImage(image: Buffer, encoding: string) {
   const agent = await getAgent()
-  return agent.uploadBlob(image, {
+  return agent.uploadBlob(image.toString(), {
     encoding: encoding,
   })
 }

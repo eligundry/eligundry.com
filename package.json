@@ -22,7 +22,10 @@
     "tabWidth": 2,
     "semi": false,
     "singleQuote": true,
-    "bracketSpacing": true
+    "bracketSpacing": true,
+    "plugins": [
+      "prettier-plugin-astro"
+    ]
   },
   "dependencies": {
     "@astro-community/astro-embed-youtube": "^0.5.6",
@@ -51,7 +54,7 @@
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "delegated-events": "^1.1.2",
-    "drizzle-orm": "^0.37.0",
+    "drizzle-orm": "^0.39.3",
     "fast-average-color-node": "^3.1.0",
     "feed": "^4.2.2",
     "image-size": "^1.1.1",
@@ -103,6 +106,7 @@
     "netlify-cli": "^17.38.0",
     "netlify-plugin-cache": "^1.0.3",
     "prettier": "^3.5.0",
+    "prettier-plugin-astro": "^0.14.1",
     "simple-git": "^3.27.0",
     "vitest": "^2.1.8"
   },
