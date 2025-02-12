@@ -33,9 +33,9 @@ const DaylioChart = () => {
               data,
               backgroundColor: 'transparent',
               pointStyle: 'rect',
-              borderColor: `hsl(${cssvar('--p')})`,
-              pointBorderColor: `hsl(${cssvar('--p')})`,
-              pointBackgroundColor: `hsl(${cssvar('--p')})`,
+              borderColor: `oklch(${cssvar('--p')})`,
+              pointBorderColor: `oklch(${cssvar('--p')})`,
+              pointBackgroundColor: `oklch(${cssvar('--p')})`,
               pointRadius: 5,
             },
           ],
@@ -75,9 +75,7 @@ const DaylioChart = () => {
               callbacks: {
                 title: (item) => `📅   ${formatISO(parseISO(item[0].label))}`,
                 label: (item) =>
-                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${
-                    Object.keys(MoodMapping)[item.parsed.y]
-                  }`,
+                  `${Object.values(MoodMapping)[item.parsed.y]}  I felt ${Object.keys(MoodMapping)[item.parsed.y]}`,
               },
             },
           },
@@ -92,7 +90,7 @@ const DaylioChart = () => {
             y: {
               min: 0,
               grid: {
-                color: `hsl(${cssvar(darkMode ? '--n' : '--b3')})`,
+                color: `oklch(${cssvar(darkMode ? '--n' : '--b3')})`,
               },
               ticks: {
                 // @ts-ignore

@@ -48,6 +48,7 @@ const links = [
     'z-50',
     'rounded-none',
     'print:hidden',
+    'bg-base-200',
   ]}
   value="0"
   max="100"></progress>
@@ -95,7 +96,16 @@ const links = [
             <li>
               <a
                 href={link.href}
-                class:list={['hover:link-accent', 'focus:link-accent']}
+                class:list={[
+                  'hover:link-accent',
+                  'focus:link-accent',
+                  'py-3',
+                  'px-4',
+                  'text-base',
+                  'gap-3',
+                  'active:!bg-base-200',
+                  'focus:!bg-base-200',
+                ]}
                 aria-current={
                   Astro.url.pathname === link.href ||
                   (link.href !== '/' &&
@@ -111,7 +121,7 @@ const links = [
             </li>
           ))
         }
-        <li class="items-center">
+        <li class="items-center py-2">
           <label class="swap swap-flip btn-sm text-2xl">
             <input
               type="checkbox"
@@ -125,8 +135,8 @@ const links = [
       </ul>
     </nav>
     <div class="flex justify-end flex-none">
-      <nav class="navbar-end md:hidden btn-group">
-        <label class="swap swap-flip btn btn-sm btn-ghost text-2xl">
+      <nav class="navbar-end md:hidden join">
+        <label class="swap swap-flip btn btn-sm btn-ghost text-2xl join-item">
           <input
             type="checkbox"
             class="theme-toggle"
@@ -136,7 +146,7 @@ const links = [
           <div class="swap-off">🌞</div>
         </label>
         <label
-          class="swap swap-flip btn btn-sm btn-ghost text-2xl max-w-full"
+          class="swap swap-flip btn btn-sm btn-ghost text-2xl max-w-full join-item"
           tabindex="0"
           for="mobile-nav-modal-control"
         >
@@ -160,7 +170,7 @@ const links = [
 />
 <label
   for="mobile-nav-modal"
-  class:list={['modal', 'cursor-pointer', 'bg-transparent']}
+  class:list={['modal', 'cursor-pointer', '!bg-transparent']}
   aria-label="toggles the mobile navigation dropdown"
 >
   <label
