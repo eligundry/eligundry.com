@@ -22,18 +22,15 @@ jobs:
           pnpm --version
           pnpm install
 
-      - name: Import environment variables from Netlify
-        uses: South-Paw/action-netlify-cli@v2
-        with:
-          args: env:list --plain > .env
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-
       - name: Run linters
         if: steps.dependencies.conclusion == 'success' && !cancelled()
         run: pnpm run lint
 
       - name: Astro check
         if: steps.dependencies.conclusion == 'success' && !cancelled()
-        run: pnpm run astro-check
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          ./node_modules/.bin/netlify env:list --plain > './.env'
+          pnpm run astro-check
