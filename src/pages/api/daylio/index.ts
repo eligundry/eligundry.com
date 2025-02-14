@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { subHours } from 'date-fns'
 import auth from '../../../lib/auth'
 import daylio from '../../../lib/daylio'
 import blueSky from '../../../lib/bluesky'
@@ -91,7 +92,10 @@ export const POST: APIRoute = async ({ request }) => {
   const entries = await daylio.processCSV(buffer)
 
   if (import.meta.env.PROD) {
-    const unpublishedPosts = await daylio.getAll({ unpublished: true })
+    const unpublishedPosts = await daylio.getAll({
+      unpublished: true,
+      start: subHours(new Date(), 6),
+    })
 
     await Promise.all(
       unpublishedPosts.map(async (post) => {
@@ -141,7 +145,7 @@ ${post.notes?.map((note) => `${note}`).join('\n\n')}
   }
 
   return endpointOutputToResponse({
-    body: JSON.stringify(entries),
+    body: JSON.stringify({ ok: true, count: entries.length }),
     headers: {
       'content-type': 'application/json',
     },
