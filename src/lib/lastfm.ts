@@ -4,7 +4,8 @@ import type {
   getTopAlbums,
 } from 'lastfm-typed/dist/interfaces/userInterface'
 import { averageColorFromURL } from './images'
-import { createCanvas, loadImage } from 'canvas'
+import * as PureImage from 'pureimage'
+import { Readable, Writable } from 'node:stream'
 
 export type RecentTrack = getRecentTracks['tracks'][number]
 export interface LastFMCoverItem {
@@ -87,7 +88,7 @@ const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
   const first9Albums = albums.slice(0, 9)
 
   // Create canvas
-  const canvas = createCanvas(900, 900) // 300x300 per album
+  const canvas = PureImage.make(900, 900)
   const ctx = canvas.getContext('2d')
 
   // Fill background
@@ -98,7 +99,25 @@ const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
   await Promise.all(
     first9Albums.map(async (album, index) => {
       try {
-        const img = await loadImage(album.hires)
+        const response = await fetch(album.hires)
+        const arrayBuffer = await response.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer)
+
+        // Check image format by looking at magic numbers
+        const signature = buffer.slice(0, 4).toString('hex')
+        const stream = Readable.from(buffer)
+
+        let img
+        if (signature.startsWith('89504e47')) {
+          // PNG
+          img = await PureImage.decodePNGFromStream(stream)
+        } else if (signature.startsWith('ffd8')) {
+          // JPEG
+          img = await PureImage.decodeJPEGFromStream(stream)
+        } else {
+          throw new Error(`Unsupported image format: ${signature}`)
+        }
+
         const row = Math.floor(index / 3)
         const col = index % 3
         const x = col * 300
@@ -107,7 +126,10 @@ const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
         // Draw image
         ctx.drawImage(img, x, y, 300, 300)
       } catch (error) {
-        console.error(`Failed to load image for ${album.album}:`, error)
+        console.error(
+          `Failed to load image for ${album.album} (${album.hires}):`,
+          error
+        )
         // Draw placeholder for failed image
         ctx.fillStyle = '#333333'
         const row = Math.floor(index / 3)
@@ -117,9 +139,37 @@ const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
     })
   )
 
-  // Convert to buffer
+  // Create a PassThrough stream that we can convert to a ReadableStream
+  const chunks: Buffer[] = []
+  const stream = new Readable({
+    read() {
+      void 0
+    },
+  })
+
+  // Create a promise that will resolve with our stream
+  await new Promise<void>((resolve) => {
+    const writable = new Writable({
+      write(chunk, encoding, callback) {
+        chunks.push(Buffer.from(chunk))
+        callback()
+      },
+      final(callback) {
+        // @ts-expect-error We complain about Node's packaging, yet we do not
+        // acknowledge it's issues with streams
+        const buffer = Buffer.concat(chunks)
+        stream.push(buffer)
+        stream.push(null)
+        callback()
+        resolve()
+      },
+    })
+
+    PureImage.encodeJPEGToStream(canvas, writable)
+  })
+
   return {
-    collage: canvas.toBuffer('image/jpeg', { quality: 0.9 }),
+    collage: stream,
     albums: first9Albums,
   }
 }
