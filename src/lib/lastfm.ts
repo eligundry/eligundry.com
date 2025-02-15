@@ -4,6 +4,7 @@ import type {
   getTopAlbums,
 } from 'lastfm-typed/dist/interfaces/userInterface'
 import { averageColorFromURL } from './images'
+import { createCanvas, loadImage } from 'canvas'
 
 export type RecentTrack = getRecentTracks['tracks'][number]
 export interface LastFMCoverItem {
@@ -11,6 +12,7 @@ export interface LastFMCoverItem {
   artist: string
   count: number
   cover: string
+  hires: string
   coverColor: string | null
   url: string
 }
@@ -61,6 +63,7 @@ const getTopAlbumsCover = async (
       .filter((album) => album.image.length > 0)
       .map(async (album): Promise<LastFMCoverItem> => {
         const cover = album.image.at(2)?.url ?? ''
+        const hires = album.image.at(3)?.url ?? ''
         const coverColor = cover ? await averageColorFromURL(cover) : null
 
         return {
@@ -69,6 +72,7 @@ const getTopAlbumsCover = async (
           count: album.playcount,
           cover: cover,
           coverColor,
+          hires,
           url: album.url,
         }
       })
@@ -78,17 +82,46 @@ const getTopAlbumsCover = async (
 }
 
 const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
-  const url = new URL('https://tapmusic.net/collage.php')
-  url.searchParams.set('user', username)
-  url.searchParams.set('type', period)
-  url.searchParams.set('size', '3x3')
+  // Get top albums
+  const albums = await getTopAlbumsCover(username, period)
+  const first9Albums = albums.slice(0, 9)
 
-  return (
-    fetch(url.toString())
-      .then((resp) => resp.arrayBuffer())
-      // @ts-ignore
-      .then((buffer) => Buffer.from(buffer, 'binary'))
+  // Create canvas
+  const canvas = createCanvas(900, 900) // 300x300 per album
+  const ctx = canvas.getContext('2d')
+
+  // Fill background
+  ctx.fillStyle = '#000000'
+  ctx.fillRect(0, 0, 900, 900)
+
+  // Load and draw all images
+  await Promise.all(
+    first9Albums.map(async (album, index) => {
+      try {
+        const img = await loadImage(album.hires)
+        const row = Math.floor(index / 3)
+        const col = index % 3
+        const x = col * 300
+        const y = row * 300
+
+        // Draw image
+        ctx.drawImage(img, x, y, 300, 300)
+      } catch (error) {
+        console.error(`Failed to load image for ${album.album}:`, error)
+        // Draw placeholder for failed image
+        ctx.fillStyle = '#333333'
+        const row = Math.floor(index / 3)
+        const col = index % 3
+        ctx.fillRect(col * 300, row * 300, 300, 300)
+      }
+    })
   )
+
+  // Convert to buffer
+  return {
+    collage: canvas.toBuffer('image/jpeg', { quality: 0.9 }),
+    albums: first9Albums,
+  }
 }
 
 const api = { getTopAlbumsCover, getTopAlbums, getCollage }

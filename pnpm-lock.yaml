@@ -56,6 +56,9 @@ importers:
       basic-auth:
         specifier: ^2.0.1
         version: 2.0.1
+      canvas:
+        specifier: ^3.1.0
+        version: 3.1.0
       chart.js:
         specifier: ^4.4.7
         version: 4.4.7
@@ -94,7 +97,7 @@ importers:
         version: 1.1.1
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1
+        version: 25.0.1(canvas@3.1.0)
       lastfm-typed:
         specifier: ^2.1.0
         version: 2.1.0
@@ -239,7 +242,7 @@ importers:
         version: 3.27.0
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.1)(jsdom@25.0.1)
+        version: 2.1.8(@types/node@22.10.1)(jsdom@25.0.1(canvas@3.1.0))
 
 packages:
 
@@ -3250,6 +3253,10 @@ packages:
 
   caniuse-lite@1.0.30001687:
     resolution: {integrity: sha512-0S/FDhf4ZiqrTUiQ39dKeUjYRjkv7lOZU1Dgif2rIqrTzX/1wV2hfKu9TOm1IHkdSijfLswxTFzl/cvir+SLSQ==}
+
+  canvas@3.1.0:
+    resolution: {integrity: sha512-tTj3CqqukVJ9NgSahykNwtGda7V33VLObwrHfzT0vqJXu7J4d4C/7kQQW3fOEGDfZZoILPut5H00gOjyttPGyg==}
+    engines: {node: ^18.12.0 || >= 20.9.0}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -11607,6 +11614,11 @@ snapshots:
 
   caniuse-lite@1.0.30001687: {}
 
+  canvas@3.1.0:
+    dependencies:
+      node-addon-api: 7.1.1
+      prebuild-install: 7.1.2
+
   ccount@2.0.1: {}
 
   chai@5.1.2:
@@ -13922,7 +13934,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsdom@25.0.1:
+  jsdom@25.0.1(canvas@3.1.0):
     dependencies:
       cssstyle: 4.1.0
       data-urls: 5.0.0
@@ -13945,6 +13957,8 @@ snapshots:
       whatwg-url: 14.1.0
       ws: 8.18.0
       xml-name-validator: 5.0.0
+    optionalDependencies:
+      canvas: 3.1.0
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -15092,7 +15106,7 @@ snapshots:
 
   node-abi@3.71.0:
     dependencies:
-      semver: 7.6.3
+      semver: 7.7.1
 
   node-addon-api@6.1.0: {}
 
@@ -17316,7 +17330,7 @@ snapshots:
     optionalDependencies:
       vite: 6.1.0(@types/node@22.10.1)(jiti@2.4.1)(yaml@2.6.1)
 
-  vitest@2.1.8(@types/node@22.10.1)(jsdom@25.0.1):
+  vitest@2.1.8(@types/node@22.10.1)(jsdom@25.0.1(canvas@3.1.0)):
     dependencies:
       '@vitest/expect': 2.1.8
       '@vitest/mocker': 2.1.8(vite@5.4.11(@types/node@22.10.1))
@@ -17340,7 +17354,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.10.1
-      jsdom: 25.0.1
+      jsdom: 25.0.1(canvas@3.1.0)
     transitivePeerDependencies:
       - less
       - lightningcss

@@ -18,7 +18,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const formData = await request.formData()
-  let period = formData.get('period') as '7day' | '1month' | '12month'
+  let period = (formData.get('period') ?? '7day') as
+    | '7day'
+    | '1month'
+    | '12month'
 
   if (
     typeof period !== 'string' ||
@@ -27,25 +30,21 @@ export const POST: APIRoute = async ({ request }) => {
     period = '7day'
   }
 
-  const [topAlbums, collage] = await Promise.all([
-    lastfm.getTopAlbums(config.lastFmUsername, period),
-    lastfm.getCollage(config.lastFmUsername, period),
-  ])
+  const { albums: topAlbums, collage } = await lastfm.getCollage(
+    config.lastFmUsername,
+    period
+  )
+
   const alt = topAlbums
     .slice(0, 9)
     .map(
-      (album) =>
-        `${album.name} by ${album.artist.name} [${album.playcount} scrobbles]`
+      (album) => `${album.album} by ${album.artist} [${album.count} scrobbles]`
     )
     .join(', ')
   const now = new Date()
   const text = {
-    '7day': `Happy Friday! Here's what I've been listening to this week! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/week/${getWeek(
-      now
-    )}`,
-    '1month': `What a month! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/month/${
-      now.getMonth() + 1
-    }`,
+    '7day': `Happy Friday! Here's what I've been listening to this week! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/week/${getWeek(now)}`,
+    '1month': `What a month! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/month/${now.getMonth() + 1}`,
     '12month': `What a year! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}`,
   }
 

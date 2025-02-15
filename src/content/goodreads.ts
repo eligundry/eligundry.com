@@ -7,7 +7,7 @@ export const createGoodreadsCollection = (params: GetShelf) => {
       const shelf = await goodreads.getShelf(params)
       return shelf.map((book) => ({
         ...book,
-        id: book.isbn13 ?? book.isbn!,
+        id: book.url,
       }))
     },
     schema: z.object({
