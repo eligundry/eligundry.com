@@ -139,37 +139,27 @@ const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
     })
   )
 
-  // Create a PassThrough stream that we can convert to a ReadableStream
-  const chunks: Buffer[] = []
-  const stream = new Readable({
-    read() {
-      void 0
-    },
-  })
-
-  // Create a promise that will resolve with our stream
-  await new Promise<void>((resolve) => {
+  // Create a buffer from the JPEG data
+  const buffer = await new Promise<Buffer>((resolve, reject) => {
+    const chunks: Buffer[] = []
     const writable = new Writable({
-      write(chunk, encoding, callback) {
+      write(chunk, _encoding, callback) {
         chunks.push(Buffer.from(chunk))
         callback()
       },
       final(callback) {
-        // @ts-expect-error We complain about Node's packaging, yet we do not
-        // acknowledge it's issues with streams
-        const buffer = Buffer.concat(chunks)
-        stream.push(buffer)
-        stream.push(null)
         callback()
-        resolve()
+        // @ts-expect-error Node's various streams and buffer types are mess
+        resolve(Buffer.concat(chunks))
       },
     })
 
+    writable.on('error', reject)
     PureImage.encodeJPEGToStream(canvas, writable)
   })
 
   return {
-    collage: stream,
+    collage: buffer,
     albums: first9Albums,
   }
 }
