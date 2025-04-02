@@ -55,7 +55,7 @@
     "drizzle-orm": "^0.39.3",
     "fast-average-color-node": "^3.1.0",
     "feed": "^4.2.2",
-    "image-size": "^1.1.1",
+    "image-size": "^1.2.1",
     "jsdom": "^25.0.1",
     "lastfm-typed": "^2.1.0",
     "lodash": "^4.17.21",
