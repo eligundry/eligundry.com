@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/html-energy/2k25.css" />
+    <title>Saturdays</title>
+  </head>
+  <body>
+    <main>
+      <div class="poem">
+        <div class="poem-content">
+          How do you see the world?<br />
+          Is it just a series of random Wikipedia articles?<br />
+          Will my child see it the same way?<br />
+          Can we not talk about Charlie Chaplin?
+          <sup data-note="And not Al Jolsen's racist ass">[1]</sup>
+        </div>
+      </div>
+      <iframe
+        id="random-wiki"
+        src="https://en.wikipedia.org/wiki/Special:Random"
+        frameborder="0"
+      ></iframe>
+    </main>
+    <a class="next-page" href="/saturdays/03.html">Next</a>
+    <script>
+      const iframe = document.getElementById('random-wiki')
+      setInterval(() => {
+        iframe.src = ''
+        iframe.src = 'https://en.wikipedia.org/wiki/Special:Random'
+      }, 1000)
+    </script>
+  </body>
+</html>
