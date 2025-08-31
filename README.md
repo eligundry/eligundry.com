@@ -11,8 +11,8 @@ My personal website.
 
 ## Frontend Development
 
-1. `npm ci`
-2. `npm run dev`
+1. `pnpm install`
+2. `pnpm dev`
 
 ## Deployment
 
