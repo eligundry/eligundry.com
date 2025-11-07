@@ -19,6 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a personal website built with **Astro** as the main framework, using **Preact** for interactive components and **Tailwind CSS** for styling. The site is deployed on **Netlify**.
 
 ### Key Technologies
+
 - **Astro 5.x**: Static site generator with islands architecture
 - **Preact**: React alternative for interactive components (configured with React compatibility via @preact/compat)
 - **Tailwind CSS**: Utility-first CSS framework with DaisyUI components
@@ -27,6 +28,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 - **MDX**: Enhanced markdown with component support
 
 ### Project Structure
+
 - `src/pages/`: Astro pages and API routes
 - `src/components/`: Reusable UI components
 - `src/layouts/`: Page layout templates
@@ -36,19 +38,23 @@ This is a personal website built with **Astro** as the main framework, using **P
 - `src/styles/`: Global styles and theme configuration
 
 ### Content Management
+
 - Uses Astro Content Collections for type-safe content management
 - Blog posts, talks, and resume experiences are stored as Markdown/MDX files in `src/content/`
 - Dynamic data integrations with Last.fm, Goodreads, and other APIs
 
 ### Database
+
 - Uses LibSQL (SQLite compatible) with Drizzle ORM
 - Database schema defined in `src/lib/database/schema.ts`
 - Migrations managed via `drizzle-kit`
 
 ### Deployment
+
 - Configured for Netlify deployment with `@astrojs/netlify` adapter
 - All pushes to main branch trigger automatic builds
 - Uses Netlify Functions for serverless API endpoints
 
 ## Package Manager
+
 Uses **pnpm** (version 9.15.3) as specified in `packageManager` field.
