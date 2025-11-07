@@ -169,10 +169,13 @@ const CodingSection = await getEntry('sections', 'do-you-code')
           'md:gap-y-2',
         ]}
         aria-busy="true"
+        slot="fallback"
       >
-        {Array.from({ length: 18 }).map(() => (
-          <div class="skeleton w-[100px] h-[160px]"></div>
-        ))}
+        {
+          Array.from({ length: 18 }).map(() => (
+            <div class="skeleton w-[100px] h-[160px]" />
+          ))
+        }
       </div>
     </GoodreadsShelf>
   </section>
@@ -213,6 +216,7 @@ const CodingSection = await getEntry('sections', 'do-you-code')
             href="https://www.last.fm/user/eli_pwnd"
             class:list={['grid', 'grid-cols-3', 'h-fit', 'gap-0', 'not-prose']}
             aria-busy="true"
+            slot="fallback"
           >
             <div class="skeleton w-[438px] h-[438px]"></div>
           </a>
