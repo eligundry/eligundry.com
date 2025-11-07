@@ -1,0 +1,46 @@
+---
+import { getLiveCollection } from 'astro:content'
+
+const { entries: lastfmEntries, cacheHint: lastfmCache } = await getLiveCollection('lastfmCovers')
+const topAlbums = lastfmEntries.slice(0, 9).map((entry) => entry.data)
+
+// Set cache control headers for 24 hours
+Astro.response.headers.set('Cache-Control', 'public, max-age=86400, s-maxage=86400')
+
+// Add cache tags if available
+if (lastfmCache?.tags && lastfmCache.tags.length > 0) {
+  Astro.response.headers.set('Cache-Tag', lastfmCache.tags.join(','))
+}
+
+// Add Last-Modified header
+if (lastfmCache?.lastModified) {
+  Astro.response.headers.set('Last-Modified', lastfmCache.lastModified.toUTCString())
+}
+---
+
+<a
+  href="https://www.last.fm/user/eli_pwnd"
+  class:list={['grid', 'grid-cols-3', 'h-fit', 'gap-0', 'not-prose']}
+>
+  {
+    topAlbums.map((album) => {
+      const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
+      return (
+        <picture
+          data-tip={alt}
+          class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
+        >
+          <img
+            alt={alt}
+            src={album.cover}
+            width="146"
+            height="146"
+            loading="lazy"
+            decoding="async"
+            style={`background-color: ${album.coverColor || 'transparent'}`}
+          />
+        </picture>
+      )
+    })
+  }
+</a>
