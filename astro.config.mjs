@@ -19,6 +19,10 @@ import netlify from '@astrojs/netlify'
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    liveContentCollections: true,
+  },
+  serverIslands: true,
   security: {
     checkOrigin: false,
   },

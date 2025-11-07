@@ -7,21 +7,14 @@ import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
+import GoodreadsShelf from '../components/GoodreadsShelf.astro'
+import LastFmCover from '../components/LastFmCover.astro'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 import Memoji from '../components/Memoji.astro'
 
 const latestEntry = await getCollection('feelings').then(
   (entries) => entries[0].data
-)
-const topAlbums = await getCollection('lastfmCovers').then((entries) =>
-  entries.slice(0, 9).map((entry) => entry.data)
-)
-const currentlyReading = await getCollection('currentlyReading').then((books) =>
-  books.map((book) => book.data)
-)
-const recentlyRead = await getCollection('recentlyRead').then((books) =>
-  books.map((book) => book.data)
 )
 const favoritePosts = await getCollection('blog').then((posts) =>
   posts
@@ -166,53 +159,22 @@ const CodingSection = await getEntry('sections', 'do-you-code')
         itemprop="sameAs">Goodreads</a
       >.
     </p>
-    <div
-      class:list={[
-        'not-prose',
-        'grid',
-        'items-center',
-        ['grid-cols-4', 'md:grid-cols-6'],
-        'md:gap-y-2',
-      ]}
-    >
-      {
-        [...currentlyReading, ...recentlyRead].map((book, i) => {
-          let alt = book.title
-
-          if (book.author) {
-            alt += ` by ${book.author.split(', ').reverse().join(' ')}`
-          }
-
-          if (i === 0) {
-            alt = `Currently Reading: ${alt}`
-          }
-
-          if (!alt || !book.cover) return null
-
-          return (
-            <a
-              href={book.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
-              data-tip={alt}
-            >
-              <Image
-                alt={alt}
-                src={book.cover}
-                loading="lazy"
-                width={100}
-                height={160}
-                quality={90}
-                format="webp"
-                decoding="async"
-                style={{ backgroundColor: book.coverColor }}
-              />
-            </a>
-          )
-        })
-      }
-    </div>
+    <GoodreadsShelf server:defer>
+      <div
+        class:list={[
+          'not-prose',
+          'grid',
+          'items-center',
+          ['grid-cols-4', 'md:grid-cols-6'],
+          'md:gap-y-2',
+        ]}
+        aria-busy="true"
+      >
+        {Array.from({ length: 18 }).map(() => (
+          <div class="skeleton w-[100px] h-[160px]"></div>
+        ))}
+      </div>
+    </GoodreadsShelf>
   </section>
 
   <section class="listening paper prose">
@@ -246,34 +208,15 @@ const CodingSection = await getEntry('sections', 'do-you-code')
       </div>
       <div>
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>
-        <a
-          href="https://www.last.fm/user/eli_pwnd"
-          class:list={['grid', 'grid-cols-3', 'h-fit', 'gap-0', 'not-prose']}
-        >
-          {
-            topAlbums.map((album) => {
-              const alt = `${album.album} by ${album.artist} [${album.count} scrobbles]`
-              return (
-                <picture
-                  data-tip={alt}
-                  class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
-                >
-                  <Image
-                    alt={alt}
-                    src={album.cover}
-                    width={146}
-                    height={146}
-                    quality={90}
-                    format="webp"
-                    loading="lazy"
-                    decoding="async"
-                    style={{ backgroundColor: album.coverColor ?? undefined }}
-                  />
-                </picture>
-              )
-            })
-          }
-        </a>
+        <LastFmCover server:defer>
+          <a
+            href="https://www.last.fm/user/eli_pwnd"
+            class:list={['grid', 'grid-cols-3', 'h-fit', 'gap-0', 'not-prose']}
+            aria-busy="true"
+          >
+            <div class="skeleton w-[438px] h-[438px]"></div>
+          </a>
+        </LastFmCover>
       </div>
     </div>
   </section>

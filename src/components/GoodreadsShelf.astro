@@ -1,0 +1,85 @@
+---
+import { getLiveCollection } from 'astro:content'
+
+const { entries: currentlyReadingEntries, cacheHint: currentlyReadingCache } =
+  await getLiveCollection('currentlyReading')
+const currentlyReading = currentlyReadingEntries.map((book) => book.data)
+
+const { entries: recentlyReadEntries, cacheHint: recentlyReadCache } =
+  await getLiveCollection('recentlyRead')
+const recentlyRead = recentlyReadEntries.map((book) => book.data)
+
+// Set cache control headers for 24 hours
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, max-age=86400, s-maxage=86400'
+)
+
+// Add cache tags if available
+const tags = [
+  ...(currentlyReadingCache?.tags || []),
+  ...(recentlyReadCache?.tags || []),
+]
+if (tags.length > 0) {
+  Astro.response.headers.set('Cache-Tag', tags.join(','))
+}
+
+// Add Last-Modified header using the most recent modification time
+const lastModifiedDates = [
+  currentlyReadingCache?.lastModified,
+  recentlyReadCache?.lastModified,
+].filter(Boolean) as Date[]
+
+if (lastModifiedDates.length > 0) {
+  const mostRecent = new Date(
+    Math.max(...lastModifiedDates.map((d) => d.getTime()))
+  )
+  Astro.response.headers.set('Last-Modified', mostRecent.toUTCString())
+}
+---
+
+<div
+  class:list={[
+    'not-prose',
+    'grid',
+    'items-center',
+    ['grid-cols-4', 'md:grid-cols-6'],
+    'md:gap-y-2',
+  ]}
+>
+  {
+    [...currentlyReading, ...recentlyRead].map((book, i) => {
+      let alt = book.title
+
+      if (book.author) {
+        alt += ` by ${book.author.split(', ').reverse().join(' ')}`
+      }
+
+      if (i <= 1) {
+        alt = `Currently Reading: ${alt}`
+      }
+
+      if (!alt || !book.cover) return null
+
+      return (
+        <a
+          href={book.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
+          data-tip={alt}
+        >
+          <img
+            alt={alt}
+            src={book.cover}
+            loading="lazy"
+            width="100"
+            height="160"
+            decoding="async"
+            style={`background-color: ${book.coverColor || 'transparent'}`}
+          />
+        </a>
+      )
+    })
+  }
+</div>
