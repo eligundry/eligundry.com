@@ -3,8 +3,12 @@ export const prerender = false
 
 import { Image } from 'astro:assets'
 import * as dateFns from 'date-fns'
-import { getCollection, getEntry } from 'astro:content'
-import { getLiveCollection } from 'astro:content'
+import {
+  getCollection,
+  getEntry,
+  getLiveCollection,
+  render,
+} from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
@@ -13,25 +17,36 @@ import PostPreview from '../components/Post/Preview.astro'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 import Memoji from '../components/Memoji.astro'
+import type { LastFMCoverItem } from '../lib/lastfm'
+import type { GoodReadsBook } from '../lib/goodreads'
 
 // Fetch live collections at request time
-const { entries: lastfmEntries, cacheHint: lastfmCache } = await getLiveCollection('lastfmCovers')
-const topAlbums = lastfmEntries.slice(0, 9).map((entry) => entry.data)
+const { entries: lastfmEntries, cacheHint: lastfmCache } =
+  await getLiveCollection('lastfmCovers')
+const topAlbums =
+  lastfmEntries?.slice(0, 9).map((entry) => entry.data as LastFMCoverItem) ?? []
 
-const { entries: currentlyReadingEntries, cacheHint: currentlyReadingCache } = await getLiveCollection('currentlyReading')
-const currentlyReading = currentlyReadingEntries.map((book) => book.data)
+const { entries: currentlyReadingEntries, cacheHint: currentlyReadingCache } =
+  await getLiveCollection('currentlyReading')
+const currentlyReading =
+  currentlyReadingEntries?.map((book) => book.data as GoodReadsBook) ?? []
 
-const { entries: recentlyReadEntries, cacheHint: recentlyReadCache } = await getLiveCollection('recentlyRead')
-const recentlyRead = recentlyReadEntries.map((book) => book.data)
+const { entries: recentlyReadEntries, cacheHint: recentlyReadCache } =
+  await getLiveCollection('recentlyRead')
+const recentlyRead =
+  recentlyReadEntries?.map((book) => book.data as GoodReadsBook) ?? []
 
 // Set cache control headers for 24 hours
-Astro.response.headers.set('Cache-Control', 'public, max-age=86400, s-maxage=86400')
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, max-age=86400, s-maxage=86400'
+)
 
 // Combine all cache tags
 const cacheTags = [
   ...(lastfmCache?.tags || []),
   ...(currentlyReadingCache?.tags || []),
-  ...(recentlyReadCache?.tags || [])
+  ...(recentlyReadCache?.tags || []),
 ]
 if (cacheTags.length > 0) {
   Astro.response.headers.set('Cache-Tag', cacheTags.join(','))
@@ -41,11 +56,11 @@ if (cacheTags.length > 0) {
 const lastModifiedDates = [
   lastfmCache?.lastModified,
   currentlyReadingCache?.lastModified,
-  recentlyReadCache?.lastModified
+  recentlyReadCache?.lastModified,
 ].filter(Boolean) as Date[]
 
 if (lastModifiedDates.length > 0) {
-  const mostRecent = new Date(Math.max(...lastModifiedDates.map(d => d.getTime())))
+  const mostRecent = dateFns.max(lastModifiedDates)
   Astro.response.headers.set('Last-Modified', mostRecent.toUTCString())
 }
 
@@ -61,9 +76,11 @@ const latestPost = await getCollection('blog').then(
   (posts) =>
     posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
 )
-const CodingSection = await getEntry('sections', 'do-you-code')
-  ?.then((section) => section.render())
-  .then(({ Content }) => Content)
+const codingSection = await getEntry('sections', 'do-you-code')
+if (!codingSection) {
+  throw new Error('No "do-you-code" section found')
+}
+const { Content: CodingSection } = await render(codingSection)
 ---
 
 <Layout>

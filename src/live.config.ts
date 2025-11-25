@@ -1,11 +1,15 @@
 import { defineLiveCollection } from 'astro:content'
+import type { LiveLoader } from 'astro/loaders'
 import { z } from 'zod'
 import lastfm, { type LastFMPeriod } from './lib/lastfm'
 import goodreads, { type GetShelf } from './lib/goodreads'
 import config from './config'
 
 // Live loader for Last.fm album covers
-const lastfmCoverLoader = (username: string, period: LastFMPeriod = '7day') => {
+const lastfmCoverLoader = (
+  username: string,
+  period: LastFMPeriod = '7day'
+): LiveLoader => {
   return {
     name: 'lastfm-cover-loader',
     loadCollection: async () => {
@@ -16,7 +20,7 @@ const lastfmCoverLoader = (username: string, period: LastFMPeriod = '7day') => {
         return {
           entries: covers.map((album) => ({
             id: album.url,
-            data: album,
+            data: album as unknown as Record<string, unknown>,
           })),
           cacheHint: {
             lastModified: now,
@@ -46,7 +50,7 @@ const lastfmCoverLoader = (username: string, period: LastFMPeriod = '7day') => {
 
         return {
           id: album.url,
-          data: album,
+          data: album as unknown as Record<string, unknown>,
           cacheHint: {
             lastModified: new Date(),
             tags: ['lastfm', 'albums'],
@@ -64,7 +68,7 @@ const lastfmCoverLoader = (username: string, period: LastFMPeriod = '7day') => {
 }
 
 // Live loader for Goodreads books
-const goodreadsLoader = (params: GetShelf) => {
+const goodreadsLoader = (params: GetShelf): LiveLoader => {
   return {
     name: 'goodreads-loader',
     loadCollection: async () => {
@@ -75,7 +79,7 @@ const goodreadsLoader = (params: GetShelf) => {
         return {
           entries: books.map((book) => ({
             id: book.url!,
-            data: book,
+            data: book as unknown as Record<string, unknown>,
           })),
           cacheHint: {
             lastModified: now,
@@ -104,7 +108,7 @@ const goodreadsLoader = (params: GetShelf) => {
 
         return {
           id: book.url!,
-          data: book,
+          data: book as unknown as Record<string, unknown>,
           cacheHint: {
             lastModified: new Date(),
             tags: ['goodreads', params.shelf],
@@ -121,7 +125,7 @@ const goodreadsLoader = (params: GetShelf) => {
   }
 }
 
-// Define live collections
+// Define live collections with Zod schemas for runtime validation
 const lastfmCovers = defineLiveCollection({
   loader: lastfmCoverLoader(config.lastFmUsername),
   schema: z.object({
@@ -135,27 +139,29 @@ const lastfmCovers = defineLiveCollection({
   }),
 })
 
+const goodreadsBookSchema = z.object({
+  title: z.string().nullable(),
+  author: z.string().nullable(),
+  isbn: z.string().nullable(),
+  isbn13: z.string().nullable(),
+  asin: z.string().nullable(),
+  pages: z.number().nullable(),
+  published: z.string().nullable(),
+  started: z.string().nullable(),
+  finished: z.string().nullable(),
+  cover: z.string().nullable(),
+  thumbnail: z.string().nullable().optional(),
+  url: z.string().nullable(),
+  coverColor: z.string().nullable(),
+})
+
 const currentlyReading = defineLiveCollection({
   loader: goodreadsLoader({
     userID: config.goodreadsUserID,
     shelf: 'currently-reading',
     limit: 2,
   }),
-  schema: z.object({
-    title: z.string().nullable(),
-    author: z.string().nullable(),
-    isbn: z.string().nullable(),
-    isbn13: z.string().nullable(),
-    asin: z.string().nullable(),
-    pages: z.number().nullable(),
-    published: z.string().nullable(),
-    started: z.string().nullable(),
-    finished: z.string().nullable(),
-    cover: z.string().nullable(),
-    thumbnail: z.string().nullable().optional(),
-    url: z.string().nullable(),
-    coverColor: z.string().nullable(),
-  }),
+  schema: goodreadsBookSchema,
 })
 
 const recentlyRead = defineLiveCollection({
@@ -166,21 +172,7 @@ const recentlyRead = defineLiveCollection({
     sort: 'date_read',
     order: 'd',
   }),
-  schema: z.object({
-    title: z.string().nullable(),
-    author: z.string().nullable(),
-    isbn: z.string().nullable(),
-    isbn13: z.string().nullable(),
-    asin: z.string().nullable(),
-    pages: z.number().nullable(),
-    published: z.string().nullable(),
-    started: z.string().nullable(),
-    finished: z.string().nullable(),
-    cover: z.string().nullable(),
-    thumbnail: z.string().nullable().optional(),
-    url: z.string().nullable(),
-    coverColor: z.string().nullable(),
-  }),
+  schema: goodreadsBookSchema,
 })
 
 export const collections = {
