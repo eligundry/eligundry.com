@@ -1,7 +1,14 @@
 ---
+export const prerender = false
+
 import { Image } from 'astro:assets'
 import * as dateFns from 'date-fns'
-import { getCollection, getEntry } from 'astro:content'
+import {
+  getCollection,
+  getEntry,
+  getLiveCollection,
+  render,
+} from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
@@ -10,18 +17,55 @@ import PostPreview from '../components/Post/Preview.astro'
 import { convertNumberToOrdinal } from '../lib/utils'
 import config from '../config'
 import Memoji from '../components/Memoji.astro'
+import type { LastFMCoverItem } from '../lib/lastfm'
+import type { GoodReadsBook } from '../lib/goodreads'
+
+// Fetch live collections at request time
+const { entries: lastfmEntries, cacheHint: lastfmCache } =
+  await getLiveCollection('lastfmCovers')
+const topAlbums =
+  lastfmEntries?.slice(0, 9).map((entry) => entry.data as LastFMCoverItem) ?? []
+
+const { entries: currentlyReadingEntries, cacheHint: currentlyReadingCache } =
+  await getLiveCollection('currentlyReading')
+const currentlyReading =
+  currentlyReadingEntries?.map((book) => book.data as GoodReadsBook) ?? []
+
+const { entries: recentlyReadEntries, cacheHint: recentlyReadCache } =
+  await getLiveCollection('recentlyRead')
+const recentlyRead =
+  recentlyReadEntries?.map((book) => book.data as GoodReadsBook) ?? []
+
+// Set cache control headers for 24 hours
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, max-age=86400, s-maxage=86400'
+)
+
+// Combine all cache tags
+const cacheTags = [
+  ...(lastfmCache?.tags || []),
+  ...(currentlyReadingCache?.tags || []),
+  ...(recentlyReadCache?.tags || []),
+]
+if (cacheTags.length > 0) {
+  Astro.response.headers.set('Cache-Tag', cacheTags.join(','))
+}
+
+// Use the most recent Last-Modified date
+const lastModifiedDates = [
+  lastfmCache?.lastModified,
+  currentlyReadingCache?.lastModified,
+  recentlyReadCache?.lastModified,
+].filter(Boolean) as Date[]
+
+if (lastModifiedDates.length > 0) {
+  const mostRecent = dateFns.max(lastModifiedDates)
+  Astro.response.headers.set('Last-Modified', mostRecent.toUTCString())
+}
 
 const latestEntry = await getCollection('feelings').then(
   (entries) => entries[0].data
-)
-const topAlbums = await getCollection('lastfmCovers').then((entries) =>
-  entries.slice(0, 9).map((entry) => entry.data)
-)
-const currentlyReading = await getCollection('currentlyReading').then((books) =>
-  books.map((book) => book.data)
-)
-const recentlyRead = await getCollection('recentlyRead').then((books) =>
-  books.map((book) => book.data)
 )
 const favoritePosts = await getCollection('blog').then((posts) =>
   posts
@@ -32,9 +76,11 @@ const latestPost = await getCollection('blog').then(
   (posts) =>
     posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
 )
-const CodingSection = await getEntry('sections', 'do-you-code')
-  ?.then((section) => section.render())
-  .then(({ Content }) => Content)
+const codingSection = await getEntry('sections', 'do-you-code')
+if (!codingSection) {
+  throw new Error('No "do-you-code" section found')
+}
+const { Content: CodingSection } = await render(codingSection)
 ---
 
 <Layout>
@@ -183,7 +229,7 @@ const CodingSection = await getEntry('sections', 'do-you-code')
             alt += ` by ${book.author.split(', ').reverse().join(' ')}`
           }
 
-          if (i === 0) {
+          if (i <= 1) {
             alt = `Currently Reading: ${alt}`
           }
 
@@ -197,16 +243,14 @@ const CodingSection = await getEntry('sections', 'do-you-code')
               class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
               data-tip={alt}
             >
-              <Image
+              <img
                 alt={alt}
                 src={book.cover}
                 loading="lazy"
-                width={100}
-                height={160}
-                quality={90}
-                format="webp"
+                width="100"
+                height="160"
                 decoding="async"
-                style={{ backgroundColor: book.coverColor }}
+                style={`background-color: ${book.coverColor || 'transparent'}`}
               />
             </a>
           )
@@ -258,16 +302,14 @@ const CodingSection = await getEntry('sections', 'do-you-code')
                   data-tip={alt}
                   class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
                 >
-                  <Image
+                  <img
                     alt={alt}
                     src={album.cover}
-                    width={146}
-                    height={146}
-                    quality={90}
-                    format="webp"
+                    width="146"
+                    height="146"
                     loading="lazy"
                     decoding="async"
-                    style={{ backgroundColor: album.coverColor ?? undefined }}
+                    style={`background-color: ${album.coverColor || 'transparent'}`}
                   />
                 </picture>
               )

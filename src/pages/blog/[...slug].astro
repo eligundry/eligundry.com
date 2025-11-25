@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
 import PostLayout from '../../layouts/Post.astro'
 import { readingTimeToFancyBackgroundPoints } from '../../lib/utils'
 import { components } from '../../components/Post/components.astro'
@@ -20,7 +20,12 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
-const { Content, remarkPluginFrontmatter } = await entry.render()
+const {
+  Content,
+  remarkPluginFrontmatter,
+  // @ts-expect-error components is returned here, so I don't know why it's typed wrong
+  components: mdxComponents,
+} = await render(entry)
 ---
 
 <PostLayout
@@ -33,5 +38,5 @@ const { Content, remarkPluginFrontmatter } = await entry.render()
     remarkPluginFrontmatter.readingTime
   )}
 >
-  <Content components={components} />
+  <Content components={{ ...components, ...mdxComponents }} />
 </PostLayout>

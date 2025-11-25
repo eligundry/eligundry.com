@@ -4,7 +4,7 @@ import Experience from '../components/Resume/Experience.astro'
 import Section from '../components/Resume/Section.astro'
 import Footer from '../components/Resume/Footer.astro'
 import { FaDownload } from 'react-icons/fa'
-import { getCollection, getEntry } from 'astro:content'
+import { getCollection, getEntry, render } from 'astro:content'
 import * as dateFns from 'date-fns'
 import { skillsComponents } from '../components/Resume/mdxComponents'
 
@@ -15,25 +15,17 @@ const experiences = await getCollection('resumeExperiences').then(
     )
 )
 
-const Skills = await getEntry('sections', 'resume-skills')?.then(
-  async (section) => {
-    if (!section) {
-      throw new Error('No "resume-skills" section found')
-    }
-    const { Content } = await section.render()
-    return Content
-  }
-)
+const skillsSection = await getEntry('sections', 'resume-skills')
+if (!skillsSection) {
+  throw new Error('No "resume-skills" section found')
+}
+const { Content: Skills } = await render(skillsSection)
 
-const Activities = await getEntry('sections', 'resume-activities')?.then(
-  async (section) => {
-    if (!section) {
-      throw new Error('No "resume-activities" section found')
-    }
-    const { Content } = await section.render()
-    return Content
-  }
-)
+const activitiesSection = await getEntry('sections', 'resume-activities')
+if (!activitiesSection) {
+  throw new Error('No "resume-activities" section found')
+}
+const { Content: Activities } = await render(activitiesSection)
 
 const work = experiences.filter((experience) => experience.data.type === 'work')
 const education = experiences.filter(

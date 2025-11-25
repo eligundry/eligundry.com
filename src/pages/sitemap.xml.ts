@@ -54,7 +54,8 @@ export const GET: APIRoute = async () => {
 
   sitemap.end()
 
-  return new Response(await streamToPromise(sitemap), {
+  const buffer = await streamToPromise(sitemap)
+  return new Response(buffer.toString(), {
     headers: {
       'content-type': 'application/xml',
     },
