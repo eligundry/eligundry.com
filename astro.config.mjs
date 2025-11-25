@@ -22,7 +22,6 @@ export default defineConfig({
   experimental: {
     liveContentCollections: true,
   },
-  serverIslands: true,
   security: {
     checkOrigin: false,
   },
