@@ -1,17 +1,11 @@
-import { defineLiveCollection, type LiveLoader } from 'astro:content'
+import { defineLiveCollection } from 'astro:content'
 import { z } from 'zod'
-import lastfm, { type LastFMPeriod, type LastFMCoverItem } from './lib/lastfm'
-import goodreads, { type GetShelf, type GoodReadsBook } from './lib/goodreads'
+import lastfm, { type LastFMPeriod } from './lib/lastfm'
+import goodreads, { type GetShelf } from './lib/goodreads'
 import config from './config'
 
-// 24 hours in milliseconds
-const CACHE_EXPIRY_24H = 24 * 60 * 60 * 1000
-
 // Live loader for Last.fm album covers
-const lastfmCoverLoader = (
-  username: string,
-  period: LastFMPeriod = '7day'
-): LiveLoader<LastFMCoverItem> => {
+const lastfmCoverLoader = (username: string, period: LastFMPeriod = '7day') => {
   return {
     name: 'lastfm-cover-loader',
     loadCollection: async () => {
@@ -37,7 +31,7 @@ const lastfmCoverLoader = (
         }
       }
     },
-    loadEntry: async ({ filter }) => {
+    loadEntry: async ({ filter }: { filter: string }) => {
       try {
         // For single entry, we need to fetch all and find the specific one
         // This is not ideal but Last.fm API doesn't support single album lookup in this way
@@ -70,7 +64,7 @@ const lastfmCoverLoader = (
 }
 
 // Live loader for Goodreads books
-const goodreadsLoader = (params: GetShelf): LiveLoader<GoodReadsBook> => {
+const goodreadsLoader = (params: GetShelf) => {
   return {
     name: 'goodreads-loader',
     loadCollection: async () => {
@@ -96,7 +90,7 @@ const goodreadsLoader = (params: GetShelf): LiveLoader<GoodReadsBook> => {
         }
       }
     },
-    loadEntry: async ({ filter }) => {
+    loadEntry: async ({ filter }: { filter: string }) => {
       try {
         // For single entry, we need to fetch all and find the specific one
         const books = await goodreads.getShelf(params)

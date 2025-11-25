@@ -2,6 +2,9 @@
 // This code is adapted from  https://github.com/grubersjoe/react-activity-calendar
 // I wanted to be able to do the data fetching server side and just serve an
 // inline svg in the HTML.
+//
+// NOTE: This component fetches data at request time. Cache headers are set
+// by the parent page (index.astro) since this is rendered inline.
 import * as dateFns from 'date-fns'
 import groupBy from 'lodash/groupBy'
 import config from '../config'
@@ -22,6 +25,7 @@ interface GithubApiResponse {
   }[]
 }
 
+// Fetch GitHub contributions at request time
 const contributions = await axios
   .get<GithubApiResponse>(
     `https://github-contributions-api.jogruber.de/v4/${config.github}`,
