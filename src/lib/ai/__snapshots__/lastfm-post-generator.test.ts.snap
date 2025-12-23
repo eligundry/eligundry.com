@@ -1,0 +1,187 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AI Post Generator - Prompt Snapshots > monthly prompt uses correct period label > monthly-prompt 1`] = `
+"You are writing a social media post for Eli Gundry about his music listening habits this month.
+
+## Writing Style
+Eli writes casually and authentically. He uses lowercase for effect occasionally, references personal experiences when relevant, and keeps posts concise. He may use self-deprecating humor or witty observations. He does NOT use hashtags or excessive emoji.
+
+## Top Albums this month:
+1. "OK Computer" by Radiohead (25 plays)
+2. "In Rainbows" by Radiohead (20 plays)
+3. "Kid A" by Radiohead (15 plays)
+
+## Recent Mood/Journal Notes (last 7 days):
+- Had a productive coding session today
+- Feeling good about the new feature
+
+## Latest Blog Post:
+Title: "Building Better Software"
+Description: A guide to improving your development workflow
+Date: January 14, 2025
+
+## Task
+Write a short, personal post about sharing the music collage. Reference the music genres/artists when relevant. If mood notes suggest a connection to the music, mention it naturally. The post must include the Last.fm link placeholder: {{LASTFM_URL}}
+
+Requirements:
+- Keep it under 280 characters if possible
+- Sound like Eli, not a corporate brand
+- No hashtags
+- One emoji maximum, only if it fits naturally
+"
+`;
+
+exports[`AI Post Generator - Prompt Snapshots > prompt includes all 9 albums when provided > prompt-with-many-albums 1`] = `
+"You are writing a social media post for Eli Gundry about his music listening habits this week.
+
+## Writing Style
+Eli writes casually and authentically. He uses lowercase for effect occasionally, references personal experiences when relevant, and keeps posts concise. He may use self-deprecating humor or witty observations. He does NOT use hashtags or excessive emoji.
+
+## Top Albums this week:
+1. "Album 1" by Artist 1 (100 plays)
+2. "Album 2" by Artist 2 (95 plays)
+3. "Album 3" by Artist 3 (90 plays)
+4. "Album 4" by Artist 4 (85 plays)
+5. "Album 5" by Artist 5 (80 plays)
+6. "Album 6" by Artist 6 (75 plays)
+7. "Album 7" by Artist 7 (70 plays)
+8. "Album 8" by Artist 8 (65 plays)
+9. "Album 9" by Artist 9 (60 plays)
+
+## Recent Mood/Journal Notes (last 7 days):
+- Had a productive coding session today
+- Feeling good about the new feature
+
+## Latest Blog Post:
+Title: "Building Better Software"
+Description: A guide to improving your development workflow
+Date: January 14, 2025
+
+## Task
+Write a short, personal post about sharing the music collage. Reference the music genres/artists when relevant. If mood notes suggest a connection to the music, mention it naturally. The post must include the Last.fm link placeholder: {{LASTFM_URL}}
+
+Requirements:
+- Keep it under 280 characters if possible
+- Sound like Eli, not a corporate brand
+- No hashtags
+- One emoji maximum, only if it fits naturally
+"
+`;
+
+exports[`AI Post Generator - Prompt Snapshots > prompt without blog post omits that section > prompt-without-blog 1`] = `
+"You are writing a social media post for Eli Gundry about his music listening habits this week.
+
+## Writing Style
+Eli writes casually and authentically. He uses lowercase for effect occasionally, references personal experiences when relevant, and keeps posts concise. He may use self-deprecating humor or witty observations. He does NOT use hashtags or excessive emoji.
+
+## Top Albums this week:
+1. "OK Computer" by Radiohead (25 plays)
+2. "In Rainbows" by Radiohead (20 plays)
+3. "Kid A" by Radiohead (15 plays)
+
+## Recent Mood/Journal Notes (last 7 days):
+- Had a productive coding session today
+- Feeling good about the new feature
+
+## Task
+Write a short, personal post about sharing the music collage. Reference the music genres/artists when relevant. If mood notes suggest a connection to the music, mention it naturally. The post must include the Last.fm link placeholder: {{LASTFM_URL}}
+
+Requirements:
+- Keep it under 280 characters if possible
+- Sound like Eli, not a corporate brand
+- No hashtags
+- One emoji maximum, only if it fits naturally
+"
+`;
+
+exports[`AI Post Generator - Prompt Snapshots > prompt without daylio notes shows fallback message > prompt-without-notes 1`] = `
+"You are writing a social media post for Eli Gundry about his music listening habits this week.
+
+## Writing Style
+Eli writes casually and authentically. He uses lowercase for effect occasionally, references personal experiences when relevant, and keeps posts concise. He may use self-deprecating humor or witty observations. He does NOT use hashtags or excessive emoji.
+
+## Top Albums this week:
+1. "OK Computer" by Radiohead (25 plays)
+2. "In Rainbows" by Radiohead (20 plays)
+3. "Kid A" by Radiohead (15 plays)
+
+## Recent Mood/Journal Notes (last 7 days):
+No recent notes available.
+
+## Latest Blog Post:
+Title: "Building Better Software"
+Description: A guide to improving your development workflow
+Date: January 14, 2025
+
+## Task
+Write a short, personal post about sharing the music collage. Reference the music genres/artists when relevant. If mood notes suggest a connection to the music, mention it naturally. The post must include the Last.fm link placeholder: {{LASTFM_URL}}
+
+Requirements:
+- Keep it under 280 characters if possible
+- Sound like Eli, not a corporate brand
+- No hashtags
+- One emoji maximum, only if it fits naturally
+"
+`;
+
+exports[`AI Post Generator - Prompt Snapshots > weekly prompt includes all context sections > weekly-prompt-with-full-context 1`] = `
+"You are writing a social media post for Eli Gundry about his music listening habits this week.
+
+## Writing Style
+Eli writes casually and authentically. He uses lowercase for effect occasionally, references personal experiences when relevant, and keeps posts concise. He may use self-deprecating humor or witty observations. He does NOT use hashtags or excessive emoji.
+
+## Top Albums this week:
+1. "OK Computer" by Radiohead (25 plays)
+2. "In Rainbows" by Radiohead (20 plays)
+3. "Kid A" by Radiohead (15 plays)
+
+## Recent Mood/Journal Notes (last 7 days):
+- Had a productive coding session today
+- Feeling good about the new feature
+
+## Latest Blog Post:
+Title: "Building Better Software"
+Description: A guide to improving your development workflow
+Date: January 14, 2025
+
+## Task
+Write a short, personal post about sharing the music collage. Reference the music genres/artists when relevant. If mood notes suggest a connection to the music, mention it naturally. The post must include the Last.fm link placeholder: {{LASTFM_URL}}
+
+Requirements:
+- Keep it under 280 characters if possible
+- Sound like Eli, not a corporate brand
+- No hashtags
+- One emoji maximum, only if it fits naturally
+"
+`;
+
+exports[`AI Post Generator - Prompt Snapshots > yearly prompt uses correct period label > yearly-prompt 1`] = `
+"You are writing a social media post for Eli Gundry about his music listening habits this year.
+
+## Writing Style
+Eli writes casually and authentically. He uses lowercase for effect occasionally, references personal experiences when relevant, and keeps posts concise. He may use self-deprecating humor or witty observations. He does NOT use hashtags or excessive emoji.
+
+## Top Albums this year:
+1. "OK Computer" by Radiohead (25 plays)
+2. "In Rainbows" by Radiohead (20 plays)
+3. "Kid A" by Radiohead (15 plays)
+
+## Recent Mood/Journal Notes (last 7 days):
+- Had a productive coding session today
+- Feeling good about the new feature
+
+## Latest Blog Post:
+Title: "Building Better Software"
+Description: A guide to improving your development workflow
+Date: January 14, 2025
+
+## Task
+Write a short, personal post about sharing the music collage. Reference the music genres/artists when relevant. If mood notes suggest a connection to the music, mention it naturally. The post must include the Last.fm link placeholder: {{LASTFM_URL}}
+
+Requirements:
+- Keep it under 280 characters if possible
+- Sound like Eli, not a corporate brand
+- No hashtags
+- One emoji maximum, only if it fits naturally
+"
+`;
