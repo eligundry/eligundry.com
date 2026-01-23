@@ -47,7 +47,9 @@ async function fetchGoodreadsShelf({
 
     const title = item.querySelector('title')?.textContent?.trim()
     const author = item.querySelector('author_name')?.textContent?.trim()
-    const cover = item.querySelector('book_large_image_url')?.textContent?.trim()
+    const cover = item
+      .querySelector('book_large_image_url')
+      ?.textContent?.trim()
     const url = item.querySelector('link')?.textContent?.trim()
     const ratingStr = item.querySelector('user_rating')?.textContent?.trim()
     const rating = ratingStr ? parseInt(ratingStr, 10) : 0
@@ -60,7 +62,9 @@ async function fetchGoodreadsShelf({
   return books
 }
 
-export const createGoodreadsCollection = (params: GoodreadsCollectionOptions) => {
+export const createGoodreadsCollection = (
+  params: GoodreadsCollectionOptions
+) => {
   return defineCollection({
     loader: async () => {
       const books = await fetchGoodreadsShelf(params)

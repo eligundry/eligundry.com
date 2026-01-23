@@ -222,12 +222,24 @@ const CodingSection = await getEntry('sections', 'do-you-code')
                 />
               </a>
               {book.rating > 0 && (
-                <div itemprop="review" itemscope itemtype="https://schema.org/Review" class="hidden">
-                  <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
-                    <meta itemprop="ratingValue" content={book.rating.toString()} />
+                <div
+                  itemprop="review"
+                  itemscope
+                  itemtype="https://schema.org/Review"
+                  class="hidden"
+                >
+                  <div
+                    itemprop="reviewRating"
+                    itemscope
+                    itemtype="https://schema.org/Rating"
+                  >
+                    <meta
+                      itemprop="ratingValue"
+                      content={book.rating.toString()}
+                    />
                     <meta itemprop="bestRating" content="5" />
                   </div>
-                  <meta itemprop="author" content="Eli Gundry" />
+                  <link itemprop="author" href="#eli-gundry" />
                 </div>
               )}
             </div>
