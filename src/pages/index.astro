@@ -177,38 +177,60 @@ const CodingSection = await getEntry('sections', 'do-you-code')
     >
       {
         [...currentlyReading, ...recentlyRead].map((book, i) => {
+          const authorName = book.author?.split(', ').reverse().join(' ')
           let alt = book.title
 
-          if (book.author) {
-            alt += ` by ${book.author.split(', ').reverse().join(' ')}`
+          if (authorName) {
+            alt += ` by ${authorName}`
           }
 
-          if (i === 0) {
+          const isCurrentlyReading = i < currentlyReading.length
+          if (isCurrentlyReading) {
             alt = `Currently Reading: ${alt}`
+          } else if (book.rating > 0) {
+            alt += ` ${'★'.repeat(book.rating)}${'☆'.repeat(5 - book.rating)}`
           }
 
           if (!alt || !book.cover) return null
 
           return (
-            <a
-              href={book.url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <div
+              itemscope
+              itemtype="https://schema.org/Book"
               class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
               data-tip={alt}
             >
-              <Image
-                alt={alt}
-                src={book.cover}
-                loading="lazy"
-                width={100}
-                height={160}
-                quality={90}
-                format="webp"
-                decoding="async"
-                style={{ backgroundColor: book.coverColor }}
-              />
-            </a>
+              <meta itemprop="name" content={book.title} />
+              <meta itemprop="author" content={authorName} />
+              <a
+                href={book.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                itemprop="url"
+              >
+                <Image
+                  alt={alt}
+                  src={book.cover}
+                  loading="lazy"
+                  width={100}
+                  height={160}
+                  quality={90}
+                  format="webp"
+                  decoding="async"
+                  style={{ backgroundColor: book.coverColor }}
+                  itemprop="image"
+                />
+              </a>
+              {book.rating > 0 && (
+                <div itemprop="review" itemscope itemtype="https://schema.org/Review" class="hidden">
+                  <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
+                    <meta itemprop="ratingValue" content={book.rating.toString()} />
+                    <meta itemprop="bestRating" content="5" />
+                  </div>
+                  <meta itemprop="author" content="Eli Gundry" />
+                </div>
+              )}
+            </div>
           )
         })
       }
