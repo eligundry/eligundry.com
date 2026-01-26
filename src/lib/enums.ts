@@ -76,4 +76,5 @@ export const PrivateActivityNames = Object.freeze([
   'smoked',
   'drank',
   'cuddle',
+  'Rachel cried',
 ] as const)
