@@ -8,7 +8,9 @@ import {
 
 export const linksSchema = notionPageSchema({
   properties: z.object({
-    Slug: transformedPropertySchema.title,
+    Name: transformedPropertySchema.title,
+    Slug: transformedPropertySchema.rich_text,
+    Description: transformedPropertySchema.rich_text.optional(),
     Tags: transformedPropertySchema.multi_select,
     URL: transformedPropertySchema.url,
     Published: transformedPropertySchema.checkbox,

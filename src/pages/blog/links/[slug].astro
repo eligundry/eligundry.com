@@ -1,7 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
-import kebabCase from 'lodash/kebabCase'
 import BaseLayout from '../../../layouts/Layout.astro'
 import EmojiText from '../../../components/EmojiText.astro'
 import LinkEmbed from '../../../components/LinkEmbed.astro'
@@ -14,7 +13,7 @@ export async function getStaticPaths() {
   const links = await getCollection('links')
   return links.map((entry) => ({
     params: {
-      slug: kebabCase(entry.data.properties.Slug),
+      slug: entry.data.properties.Slug,
     },
     props: { entry },
   }))
@@ -23,10 +22,10 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { Content } = await entry.render()
 const props = entry.data.properties
-const url = `/blog/links/${kebabCase(props.Slug)}/`
+const url = `/blog/links/${props.Slug}/`
 ---
 
-<BaseLayout title={props.Slug} description={props.URL ?? ''}>
+<BaseLayout title={props.Name} description={props.Description ?? props.URL ?? ''}>
   <article
     class="paper prose"
     itemscope
@@ -35,7 +34,7 @@ const url = `/blog/links/${kebabCase(props.Slug)}/`
     <link itemprop="author publisher" href="#eli-gundry" />
     <header class:list={['border-b-2', 'border-b-accent', 'pb-2']}>
       <h1 itemprop="name headline" class="mb-2">
-        <a href={url} itemprop="url">{props.Slug}</a>
+        <a href={url} itemprop="url">{props.Name}</a>
       </h1>
       <div class="flex flex-row gap-4 [&>*]:m-0">
         <time datetime={props.Created.toISOString()}>
@@ -44,6 +43,13 @@ const url = `/blog/links/${kebabCase(props.Slug)}/`
           </EmojiText>
         </time>
       </div>
+      {
+        props.Description && (
+          <p itemprop="description" class="m-0">
+            {props.Description}
+          </p>
+        )
+      }
       {
         props.URL && (
           <p class="m-0">

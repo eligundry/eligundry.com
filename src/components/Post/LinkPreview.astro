@@ -2,16 +2,14 @@
 import type { CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
 import EmojiText from '../EmojiText.astro'
-import kebabCase from 'lodash/kebabCase'
 
 interface Props {
   entry: CollectionEntry<'links'>
 }
 
 const { entry } = Astro.props
-const { Content } = await entry.render()
 const props = entry.data.properties
-const slug = kebabCase(props.Slug)
+const slug = props.Slug
 const tags = props.Tags.map((tag: string) => `tag-${tag}`)
 const displayUrl = (() => {
   try {
@@ -27,7 +25,7 @@ const displayUrl = (() => {
   <span class="badge badge-secondary badge-sm">Link</span>
   <h2 itemprop="name headline" class="my-0">
     <a href={`/blog/links/${slug}/`} itemprop="url">
-      {props.Slug}
+      {props.Name}
     </a>
   </h2>
   <div class="flex flex-row gap-4 [&>*]:m-0">
@@ -53,7 +51,11 @@ const displayUrl = (() => {
       )
     }
   </div>
-  <div class="not-prose text-sm text-base-content/80 line-clamp-3 mt-1">
-    <Content />
-  </div>
+  {
+    props.Description && (
+      <p itemprop="description" class="m-0">
+        {props.Description}
+      </p>
+    )
+  }
 </article>

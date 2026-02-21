@@ -2,7 +2,6 @@ import type { APIRoute, AstroInstance } from 'astro'
 import { getCollection } from 'astro:content'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import * as dateFns from 'date-fns'
-import kebabCase from 'lodash/kebabCase'
 import { getLastModifiedForPath } from '../lib/lastModified'
 
 export const GET: APIRoute = async () => {
@@ -56,8 +55,7 @@ export const GET: APIRoute = async () => {
 
   await Promise.all(
     links.map(async (link) => {
-      const slug = kebabCase(link.data.properties.Slug)
-      const url = `/blog/links/${slug}/`
+      const url = `/blog/links/${link.data.properties.Slug}/`
       const lastEdited = new Date(
         link.data.properties['Last edited time'].last_edited_time
       )

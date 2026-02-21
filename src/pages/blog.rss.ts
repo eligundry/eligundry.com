@@ -2,7 +2,6 @@ import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
 import { Feed } from 'feed'
 import * as dateFns from 'date-fns'
-import kebabCase from 'lodash/kebabCase'
 import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
 
@@ -39,14 +38,14 @@ export const GET: APIRoute = async () => {
   }
 
   for (const link of linkPosts) {
-    const slug = kebabCase(link.data.properties.Slug)
+    const slug = link.data.properties.Slug
     feed.addItem({
-      title: link.data.properties.Slug,
+      title: link.data.properties.Name,
       author: [author],
       id: `${config.url}/blog/links/${slug}/`,
       link: `${config.url}/blog/links/${slug}/`,
       date: link.data.properties.Created,
-      description: link.data.properties.URL ?? '',
+      description: link.data.properties.Description ?? link.data.properties.URL ?? '',
     })
   }
 
