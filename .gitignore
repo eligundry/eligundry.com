@@ -23,6 +23,7 @@ pnpm-debug.log*
 .cache
 .astro
 public/astro-fontaine
+public/og-cache
 .temp*
 dist
 
