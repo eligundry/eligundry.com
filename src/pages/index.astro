@@ -272,7 +272,9 @@ const CodingSection = await getEntry('sections', 'do-you-code')
     </p>
     <div class="flex flex-col sm:flex-row gap-y-4 sm:gap-4">
       <div class="sm:items-stretch flex flex-col">
-        <h3 class="mt-0"><a href="/seasonal-playlists">Seasonal Playlist</a></h3>
+        <h3 class="mt-0">
+          <a href="/seasonal-playlists">Seasonal Playlist</a>
+        </h3>
         <SpotifyPlaylist
           spotifyId={currentPlaylist.spotifyId}
           name={currentPlaylist.name}
