@@ -2,12 +2,13 @@
 interface Props {
   spotifyId: string
   name: string
+  date: Date
   description?: string
   lazy?: boolean
   class?: string
 }
 
-const { spotifyId, name, description, lazy = false, class: className } = Astro.props
+const { spotifyId, name, date, description, lazy = false, class: className } = Astro.props
 const spotifyUrl = `https://open.spotify.com/playlist/${spotifyId}`
 const embedUrl = `https://open.spotify.com/embed/playlist/${spotifyId}?utm_source=generator`
 ---
@@ -20,6 +21,7 @@ const embedUrl = `https://open.spotify.com/embed/playlist/${spotifyId}?utm_sourc
   <link itemprop="creator" href="#eli-gundry" />
   <meta itemprop="name" content={name} />
   <meta itemprop="url" content={spotifyUrl} />
+  <meta itemprop="dateCreated" content={date.toISOString().split('T')[0]} />
   {description && <meta itemprop="description" content={description} />}
   <iframe
     title={`Spotify playlist: ${name}`}

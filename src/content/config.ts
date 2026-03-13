@@ -45,6 +45,7 @@ const seasonalPlaylistSchema = z.object({
   spotifyId: z.string(),
   name: z.string(),
   description: z.string(),
+  date: z.coerce.date(),
 })
 
 export const collections = {

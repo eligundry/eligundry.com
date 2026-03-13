@@ -3,7 +3,9 @@ import { getCollection } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import SpotifyPlaylist from '../components/SpotifyPlaylist.astro'
 
-const playlists = await getCollection('seasonalPlaylists')
+const playlists = (await getCollection('seasonalPlaylists')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+)
 ---
 
 <Layout
@@ -23,6 +25,7 @@ const playlists = await getCollection('seasonalPlaylists')
           <SpotifyPlaylist
             spotifyId={playlist.data.spotifyId}
             name={playlist.data.name}
+            date={playlist.data.date}
             description={playlist.data.description}
           />
         ))

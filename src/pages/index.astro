@@ -33,7 +33,9 @@ const latestPost = await getCollection('blog').then(
     posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
 )
 const currentPlaylist = await getCollection('seasonalPlaylists').then(
-  (playlists) => playlists[0].data
+  (playlists) =>
+    playlists.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0]
+      .data
 )
 const CodingSection = await getEntry('sections', 'do-you-code')
   ?.then((section) => section.render())
@@ -274,6 +276,7 @@ const CodingSection = await getEntry('sections', 'do-you-code')
         <SpotifyPlaylist
           spotifyId={currentPlaylist.spotifyId}
           name={currentPlaylist.name}
+          date={currentPlaylist.date}
           description={currentPlaylist.description}
           lazy
           class="w-full sm:w-[300px] sm:flex-1"
