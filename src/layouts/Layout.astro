@@ -138,11 +138,13 @@ if (opengraphImage === config.url) {
           const iframe = entry.target as HTMLIFrameElement
 
           if (entry.isIntersecting) {
-            if (iframe.dataset.src && iframe.getAttribute('src') !== iframe.dataset.src) {
+            if (iframe.dataset.src) {
               iframe.src = iframe.dataset.src
+              delete iframe.dataset.src
             }
           } else {
-            if (iframe.dataset.src && iframe.hasAttribute('src')) {
+            if (iframe.src) {
+              iframe.dataset.src = iframe.src
               iframe.removeAttribute('src')
             }
           }
