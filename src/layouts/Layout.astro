@@ -133,21 +133,26 @@ if (opengraphImage === config.url) {
       const lazyLoadedIframes = document.querySelectorAll(
         'iframe[loading="lazy"][data-src]'
       )
-      const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // @ts-ignore
-            const iframe = entry.target
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const iframe = entry.target as HTMLIFrameElement
 
-            // @ts-ignore
-            if (!iframe.src && iframe.dataset.src) {
-              // @ts-ignore
-              iframe.src = iframe.dataset.src
-              observer.unobserve(iframe)
+            if (entry.isIntersecting) {
+              if (iframe.dataset.src) {
+                iframe.src = iframe.dataset.src
+                delete iframe.dataset.src
+              }
+            } else {
+              if (iframe.src) {
+                iframe.dataset.src = iframe.src
+                iframe.removeAttribute('src')
+              }
             }
-          }
-        })
-      })
+          })
+        },
+        { rootMargin: '200px' }
+      )
       lazyLoadedIframes.forEach((iframe) => {
         observer.observe(iframe)
       })

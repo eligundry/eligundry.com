@@ -6,8 +6,6 @@ export default {
   copyright: `Copyright © ${new Date().getFullYear()}. Eli Gundry`,
   googleTagManagerID: 'GTM-W7KHFLM',
   lastFmUsername: 'eli_pwnd',
-  spotifyPlaylist:
-    'https://open.spotify.com/embed/playlist/53HFJoot1bU3mD8JoMjwvy?utm_source=generator',
   goodreadsUserID: '29665939',
   github: 'eligundry',
   twitter: '@eligundry',
