@@ -268,10 +268,18 @@ const CodingSection = await getEntry('sections', 'do-you-code')
       first application I have built that I use daily!
     </p>
     <div class="flex flex-col sm:flex-row gap-y-4 sm:gap-4">
-      <div class="sm:items-stretch flex flex-col">
-        <h3 class="mt-0"><a href="/seasonal-playlists">Seasonal Playlist</a></h3>
+      <div
+        class="sm:items-stretch flex flex-col"
+        itemscope
+        itemtype="https://schema.org/MusicPlaylist"
+      >
+        <link itemprop="creator" href="#eli-gundry" />
+        <h3 class="mt-0">
+          <a href="/seasonal-playlists" itemprop="name">{currentPlaylist.name}</a>
+        </h3>
+        <meta itemprop="url" content={`https://open.spotify.com/playlist/${currentPlaylist.spotifyId}`} />
         <iframe
-          title="Spotify playlist that I have on repeat"
+          title={`Spotify playlist: ${currentPlaylist.name}`}
           data-src={`https://open.spotify.com/embed/playlist/${currentPlaylist.spotifyId}?utm_source=generator`}
           allow="encrypted-media"
           loading="lazy"

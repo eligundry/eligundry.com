@@ -19,11 +19,16 @@ const playlists = await getCollection('seasonalPlaylists')
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {
         playlists.map((playlist) => (
-          <div>
-            <h3 class="mt-0 mb-2">{playlist.data.name}</h3>
+          <div
+            itemscope
+            itemtype="https://schema.org/MusicPlaylist"
+          >
+            <link itemprop="creator" href="#eli-gundry" />
+            <h3 class="mt-0 mb-2" itemprop="name">{playlist.data.name}</h3>
             {playlist.data.description && (
-              <p class="my-0 mb-2">{playlist.data.description}</p>
+              <p class="my-0 mb-2" itemprop="description">{playlist.data.description}</p>
             )}
+            <meta itemprop="url" content={`https://open.spotify.com/playlist/${playlist.data.spotifyId}`} />
             <iframe
               title={`Spotify playlist: ${playlist.data.name}`}
               src={`https://open.spotify.com/embed/playlist/${playlist.data.spotifyId}?utm_source=generator`}
