@@ -1,4 +1,5 @@
-import { z, defineCollection, file } from 'astro:content'
+import { z, defineCollection } from 'astro:content'
+import { file } from 'astro/loaders'
 import { feelingsCollection } from './feelings'
 import { createGoodreadsCollection } from './goodreads'
 import config from '../config'
