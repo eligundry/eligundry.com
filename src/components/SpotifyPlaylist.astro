@@ -21,7 +21,7 @@ const embedUrl = `https://open.spotify.com/embed/playlist/${spotifyId}?utm_sourc
   <link itemprop="creator" href="#eli-gundry" />
   <meta itemprop="name" content={name} />
   <meta itemprop="url" content={spotifyUrl} />
-  <meta itemprop="dateCreated" content={date.toISOString().split('T')[0]} />
+  <meta itemprop="datePublished" content={date.toISOString().split('T')[0]} />
   {description && <meta itemprop="description" content={description} />}
   <iframe
     title={`Spotify playlist: ${name}`}

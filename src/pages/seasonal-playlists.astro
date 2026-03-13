@@ -1,10 +1,11 @@
 ---
 import { getCollection } from 'astro:content'
+import * as dateFns from 'date-fns'
 import Layout from '../layouts/Layout.astro'
 import SpotifyPlaylist from '../components/SpotifyPlaylist.astro'
 
-const playlists = (await getCollection('seasonalPlaylists')).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+const playlists = (await getCollection('seasonalPlaylists')).sort((a, b) =>
+  dateFns.compareDesc(a.data.date, b.data.date)
 )
 ---
 
