@@ -28,6 +28,7 @@ const playlists = (await getCollection('seasonalPlaylists')).sort((a, b) =>
             name={playlist.data.name}
             date={playlist.data.date}
             description={playlist.data.description}
+            lazy
           />
         ))
       }
