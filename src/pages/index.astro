@@ -8,7 +8,6 @@ import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
 import { convertNumberToOrdinal } from '../lib/utils'
-import config from '../config'
 import Memoji from '../components/Memoji.astro'
 
 const latestEntry = await getCollection('feelings').then(
@@ -31,6 +30,9 @@ const favoritePosts = await getCollection('blog').then((posts) =>
 const latestPost = await getCollection('blog').then(
   (posts) =>
     posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
+)
+const currentPlaylist = await getCollection('seasonalPlaylists').then(
+  (playlists) => playlists[0].data
 )
 const CodingSection = await getEntry('sections', 'do-you-code')
   ?.then((section) => section.render())
@@ -270,7 +272,7 @@ const CodingSection = await getEntry('sections', 'do-you-code')
         <h3 class="mt-0"><a href="/seasonal-playlists">Seasonal Playlist</a></h3>
         <iframe
           title="Spotify playlist that I have on repeat"
-          data-src={`https://open.spotify.com/embed/playlist/${config.spotifyPlaylists[0]}?utm_source=generator`}
+          data-src={`https://open.spotify.com/embed/playlist/${currentPlaylist.spotifyId}?utm_source=generator`}
           allow="encrypted-media"
           loading="lazy"
           width="300"
