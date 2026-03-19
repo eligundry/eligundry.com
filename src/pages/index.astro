@@ -202,7 +202,12 @@ const CodingSection = await getEntry('sections', 'do-you-code')
             <div
               itemscope
               itemtype="https://schema.org/Book"
-              class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
+              class:list={[
+                'sm:tooltip',
+                'sm:tooltip-primary',
+                'font-sans',
+                i >= 12 && 'hidden md:block',
+              ]}
               data-tip={alt}
             >
               <meta itemprop="name" content={book.title} />
