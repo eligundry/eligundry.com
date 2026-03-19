@@ -178,7 +178,6 @@ const CodingSection = await getEntry('sections', 'do-you-code')
         'items-center',
         ['grid-cols-4', 'md:grid-cols-6'],
         'md:gap-y-2',
-        'books-grid',
       ]}
     >
       {
@@ -203,7 +202,12 @@ const CodingSection = await getEntry('sections', 'do-you-code')
             <div
               itemscope
               itemtype="https://schema.org/Book"
-              class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
+              class:list={[
+                'sm:tooltip',
+                'sm:tooltip-primary',
+                'font-sans',
+                i >= 12 && 'hidden md:block',
+              ]}
               data-tip={alt}
             >
               <meta itemprop="name" content={book.title} />
@@ -319,11 +323,3 @@ const CodingSection = await getEntry('sections', 'do-you-code')
     </div>
   </section>
 </Layout>
-
-<style>
-  @media (max-width: 767px) {
-    .books-grid > :nth-child(n + 13) {
-      display: none;
-    }
-  }
-</style>
