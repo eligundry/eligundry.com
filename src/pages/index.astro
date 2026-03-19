@@ -178,6 +178,7 @@ const CodingSection = await getEntry('sections', 'do-you-code')
         'items-center',
         ['grid-cols-4', 'md:grid-cols-6'],
         'md:gap-y-2',
+        'books-grid',
       ]}
     >
       {
@@ -318,3 +319,11 @@ const CodingSection = await getEntry('sections', 'do-you-code')
     </div>
   </section>
 </Layout>
+
+<style>
+  @media (max-width: 767px) {
+    .books-grid > :nth-child(n + 13) {
+      display: none;
+    }
+  }
+</style>
