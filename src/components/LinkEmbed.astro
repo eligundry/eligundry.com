@@ -1,0 +1,69 @@
+---
+import { YouTube } from '@astro-community/astro-embed-youtube'
+import { fetchOpenGraphData, getYouTubeVideoId } from '../lib/opengraph'
+
+interface Props {
+  url: string
+}
+
+const { url } = Astro.props
+const youtubeId = getYouTubeVideoId(url)
+const ogData = youtubeId ? null : await fetchOpenGraphData(url)
+const displayUrl = (() => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return url
+  }
+})()
+---
+
+{
+  youtubeId ? (
+    <YouTube id={youtubeId} />
+  ) : ogData ? (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="not-prose card card-side bg-base-200 shadow-sm hover:shadow-md transition-shadow no-underline mb-4"
+      aria-label={`Visit ${ogData.title ?? url}`}
+    >
+      {ogData.cachedImagePath && (
+        <figure class="w-32 shrink-0 sm:w-48">
+          <img
+            src={ogData.cachedImagePath}
+            alt={ogData.title ?? ''}
+            class="h-full w-full object-cover"
+            loading="lazy"
+          />
+        </figure>
+      )}
+      <div class="card-body p-4 gap-1">
+        {ogData.siteName && (
+          <p class="text-xs text-base-content/60 m-0">{ogData.siteName}</p>
+        )}
+        {ogData.title && (
+          <h3 class="card-title text-base m-0">{ogData.title}</h3>
+        )}
+        {ogData.description && (
+          <p class="text-sm text-base-content/80 line-clamp-2 m-0">
+            {ogData.description}
+          </p>
+        )}
+        <p class="text-xs text-base-content/50 m-0">{displayUrl}</p>
+      </div>
+    </a>
+  ) : (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="not-prose card bg-base-200 shadow-sm hover:shadow-md transition-shadow no-underline mb-4"
+    >
+      <div class="card-body p-4">
+        <p class="text-sm text-base-content/80 m-0">{displayUrl}</p>
+      </div>
+    </a>
+  )
+}

@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import * as dateFns from 'date-fns'
+import EmojiText from '../EmojiText.astro'
+
+interface Props {
+  entry: CollectionEntry<'links'>
+}
+
+const { entry } = Astro.props
+const props = entry.data.properties
+const slug = props.Slug
+const tags = props.Tags.map((tag: string) => `tag-${tag}`)
+const displayUrl = (() => {
+  try {
+    return new URL(props.URL ?? '').hostname.replace(/^www\./, '')
+  } catch {
+    return props.URL ?? ''
+  }
+})()
+---
+
+<article itemscope itemtype="https://schema.org/BlogPosting" class:list={tags}>
+  <link itemprop="author publisher" href="#eli-gundry" />
+  <span class="badge badge-secondary badge-sm">Link</span>
+  <h2 itemprop="name headline" class="my-0">
+    <a href={`/blog/links/${slug}/`} itemprop="url">
+      {props.Name}
+    </a>
+  </h2>
+  <div class="flex flex-row gap-4 [&>*]:m-0">
+    <time datetime={props.Created.toISOString()}>
+      <EmojiText label="calendar for the date" emoji="🗓">
+        {dateFns.formatISO(props.Created, { representation: 'date' })}
+      </EmojiText>
+    </time>
+    {
+      props.URL && (
+        <p>
+          <EmojiText label="external link" emoji="🔗">
+            <a
+              href={props.URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm"
+            >
+              {displayUrl}
+            </a>
+          </EmojiText>
+        </p>
+      )
+    }
+  </div>
+  {
+    props.Description && (
+      <p itemprop="description" class="m-0">
+        {props.Description}
+      </p>
+    )
+  }
+</article>

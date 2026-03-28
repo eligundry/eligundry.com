@@ -1,6 +1,15 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client-image" />
 
+interface ImportMetaEnv {
+  readonly NOTION_TOKEN: string
+  readonly NOTION_LINKS_DATABASE_ID: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+
 declare namespace CSS {
   interface Houdini {
     addModule: (url: string) => void

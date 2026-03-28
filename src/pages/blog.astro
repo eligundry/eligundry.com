@@ -1,16 +1,32 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, type CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
 import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/Layout.astro'
 import PostPreview from '../components/Post/Preview.astro'
+import LinkPreview from '../components/Post/LinkPreview.astro'
 
-const posts = (await getCollection('blog')).sort((a, b) =>
-  dateFns.compareDesc(new Date(a.data.date), new Date(b.data.date))
+const blogPosts = (await getCollection('blog')).map((entry) => ({
+  type: 'blog' as const,
+  entry,
+  date: entry.data.date,
+  tags: entry.data.tags,
+}))
+
+const linkPosts = (await getCollection('links')).map((entry) => ({
+  type: 'links' as const,
+  entry,
+  date: entry.data.properties.Created,
+  tags: entry.data.properties.Tags,
+}))
+
+const allPosts = [...blogPosts, ...linkPosts].sort((a, b) =>
+  dateFns.compareDesc(a.date, b.date)
 )
+
 const tags = [
-  ...posts.reduce((acc, curr) => {
-    curr?.data?.tags?.forEach((tag: string) => acc.add(tag))
+  ...allPosts.reduce((acc, curr) => {
+    curr.tags?.forEach((tag: string) => acc.add(tag))
     return acc
   }, new Set<string>()),
 ].sort((a, b) => (a < b ? -1 : 1))
@@ -126,7 +142,15 @@ const tagsCss = tags
       </a>
     </div>
     <div id="posts" class:list={['flex', 'flex-col', 'gap-y-4', 'mt-4']}>
-      {posts.map((post) => <PostPreview entry={post} />)}
+      {
+        allPosts.map((item) =>
+          item.type === 'blog' ? (
+            <PostPreview entry={item.entry} />
+          ) : (
+            <LinkPreview entry={item.entry} />
+          )
+        )
+      }
     </div>
   </div>
 </Layout>
