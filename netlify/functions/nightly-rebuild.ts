@@ -49,7 +49,12 @@ export const handler: Handler = async () => {
       `Latest Daylio entry is stale (${new Date(latest).toISOString()}), triggering nightly rebuild`
     )
 
-    const buildResp = await fetch(process.env.NETLIFY_BUILD_HOOK, {
+    const buildHookUrl = new URL(process.env.NETLIFY_BUILD_HOOK)
+    buildHookUrl.searchParams.set(
+      'trigger_title',
+      'Nightly rebuild cron (stale Daylio entries)'
+    )
+    const buildResp = await fetch(buildHookUrl, {
       method: 'POST',
     })
 
