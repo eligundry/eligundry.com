@@ -1,14 +1,16 @@
+import path from 'node:path'
 import type { APIRoute, AstroInstance } from 'astro'
 import { getCollection } from 'astro:content'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import * as dateFns from 'date-fns'
-import { getLastModifiedForPath } from '../lib/lastModified'
+import { getLastModifiedForPath, getLastModFromFile } from '../lib/lastModified'
 
 export const GET: APIRoute = async () => {
   const sitemap = new SitemapStream({
     hostname: 'https://eligundry.com',
   })
   const astroFiles = import.meta.glob<AstroInstance>('./*.astro')
+  const htmlFiles = import.meta.glob('./**/*.html')
   const posts = await getCollection('blog')
   const talks = await getCollection('talks')
 
@@ -20,6 +22,23 @@ export const GET: APIRoute = async () => {
       sitemap.write({
         url,
         lastmod: dateFns.formatISO(await getLastModifiedForPath(url)),
+        changefreq: 'daily',
+        priority: 0.7,
+      })
+    })
+  )
+
+  await Promise.all(
+    Object.keys(htmlFiles).map(async (globPath) => {
+      const url = globPath
+        .replace(/^\./, '')
+        .replace(/\/index\.html$/, '/')
+        .replace(/\.html$/, '/')
+      const filePath = path.join('src', 'pages', globPath.replace(/^\.\//, ''))
+
+      sitemap.write({
+        url,
+        lastmod: dateFns.formatISO(await getLastModFromFile(filePath)),
         changefreq: 'daily',
         priority: 0.7,
       })
