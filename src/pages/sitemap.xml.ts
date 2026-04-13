@@ -29,23 +29,6 @@ export const GET: APIRoute = async () => {
   )
 
   await Promise.all(
-    Object.keys(htmlFiles).map(async (globPath) => {
-      const url = globPath
-        .replace(/^\./, '')
-        .replace(/\/index\.html$/, '/')
-        .replace(/\.html$/, '/')
-      const filePath = path.join('src', 'pages', globPath.replace(/^\.\//, ''))
-
-      sitemap.write({
-        url,
-        lastmod: dateFns.formatISO(await getLastModFromFile(filePath)),
-        changefreq: 'daily',
-        priority: 0.7,
-      })
-    })
-  )
-
-  await Promise.all(
     posts.map(async (post) => {
       const url = `/${post.collection}/${post.slug}/`
 
@@ -65,6 +48,23 @@ export const GET: APIRoute = async () => {
       sitemap.write({
         url,
         lastmod: dateFns.formatISO(await getLastModifiedForPath(url)),
+        changefreq: 'daily',
+        priority: 0.7,
+      })
+    })
+  )
+
+  await Promise.all(
+    Object.keys(htmlFiles).map(async (globPath) => {
+      const url = globPath
+        .replace(/^\./, '')
+        .replace(/\/index\.html$/, '/')
+        .replace(/\.html$/, '/')
+      const filePath = path.join('src', 'pages', globPath.replace(/^\.\//, ''))
+
+      sitemap.write({
+        url,
+        lastmod: dateFns.formatISO(await getLastModFromFile(filePath)),
         changefreq: 'daily',
         priority: 0.7,
       })
