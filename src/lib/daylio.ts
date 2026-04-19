@@ -19,6 +19,7 @@ import {
   MoodNames,
   ActivityMapping,
   ActivityNames,
+  PrivateActivityNames,
 } from './enums'
 import {
   db,
@@ -28,6 +29,16 @@ import {
   timestampSQL,
 } from './database'
 import { formatStubbornDateToISO601 } from './utils'
+
+type KnownActivity =
+  | (typeof ActivityNames)[number]
+  | (typeof PrivateActivityNames)[number]
+// `string & {}` preserves autocomplete for known activity names while still
+// accepting new ones that Daylio introduces.
+type Activity = KnownActivity | (string & {})
+const activitySchema = z
+  .union([z.enum(ActivityNames), z.enum(PrivateActivityNames), z.string()])
+  .transform((val) => val as Activity)
 
 const csvSchema = z
   .object({
@@ -50,7 +61,7 @@ const csvSchema = z
 
         return activities
       },
-      z.array(z.string())
+      z.array(activitySchema)
     ),
     scales: z.string().optional(),
     note_title: z.string().optional(),
@@ -100,7 +111,7 @@ const processCSV = async (buffer: Buffer) => {
     ],
   })
   const entries: ReturnType<(typeof csvSchema)['parse']>[] = []
-  const activities = new Set<string>()
+  const activities = new Set<Activity>()
   let idx = 0
 
   for await (const row of parser) {
