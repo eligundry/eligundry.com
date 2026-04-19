@@ -19,7 +19,6 @@ import {
   MoodNames,
   ActivityMapping,
   ActivityNames,
-  PrivateActivityNames,
 } from './enums'
 import {
   db,
@@ -51,8 +50,9 @@ const csvSchema = z
 
         return activities
       },
-      z.array(z.enum(ActivityNames).or(z.enum(PrivateActivityNames)))
+      z.array(z.string())
     ),
+    scales: z.string().optional(),
     note_title: z.string().optional(),
     note: z.preprocess((val): string[] => {
       if (!val || typeof val !== 'string') {
@@ -74,7 +74,14 @@ const csvSchema = z
     return {
       time,
       note: data.note as string[],
-      ...omit(data, ['full_date', 'time', 'weekday', 'date', 'note']),
+      ...omit(data, [
+        'full_date',
+        'time',
+        'weekday',
+        'date',
+        'note',
+        'scales',
+      ]),
     }
   })
 
@@ -87,14 +94,13 @@ const processCSV = async (buffer: Buffer) => {
       'time',
       'mood',
       'activities',
-      'node_title',
+      'scales',
+      'note_title',
       'note',
     ],
   })
   const entries: ReturnType<(typeof csvSchema)['parse']>[] = []
-  const activities = new Set<
-    (typeof ActivityNames | typeof PrivateActivityNames)[number]
-  >()
+  const activities = new Set<string>()
   let idx = 0
 
   for await (const row of parser) {
@@ -174,7 +180,15 @@ const apiSchema = z
   .object({
     time: z.date(),
     mood: z.enum(MoodNames),
-    activities: z.array(z.enum(ActivityNames)),
+    activities: z.preprocess(
+      (val) =>
+        Array.isArray(val)
+          ? val.filter((a): a is (typeof ActivityNames)[number] =>
+              (ActivityNames as readonly string[]).includes(a)
+            )
+          : val,
+      z.array(z.enum(ActivityNames))
+    ),
     notes: z.array(z.string()).or(z.null()),
   })
   .transform((data) => {
