@@ -303,17 +303,30 @@ const CodingSection = await getEntry('sections', 'do-you-code')
                   data-tip={alt}
                   class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
                 >
-                  <Image
-                    alt={alt}
-                    src={album.cover}
-                    width={146}
-                    height={146}
-                    quality={90}
-                    format="webp"
-                    loading="lazy"
-                    decoding="async"
-                    style={{ backgroundColor: album.coverColor ?? undefined }}
-                  />
+                  {album.cover ? (
+                    <Image
+                      alt={alt}
+                      src={album.cover}
+                      width={146}
+                      height={146}
+                      quality={90}
+                      format="webp"
+                      loading="lazy"
+                      decoding="async"
+                      style={{ backgroundColor: album.coverColor ?? undefined }}
+                    />
+                  ) : (
+                    <div
+                      role="img"
+                      aria-label={alt}
+                      class="bg-base-300"
+                      style={{
+                        width: '146px',
+                        height: '146px',
+                        backgroundColor: album.coverColor ?? undefined,
+                      }}
+                    />
+                  )}
                 </picture>
               )
             })
