@@ -319,10 +319,8 @@ const CodingSection = await getEntry('sections', 'do-you-code')
                     <div
                       role="img"
                       aria-label={alt}
-                      class="bg-base-300"
+                      class:list={['w-full', 'aspect-square', 'bg-base-300']}
                       style={{
-                        width: '146px',
-                        height: '146px',
                         backgroundColor: album.coverColor ?? undefined,
                       }}
                     />
