@@ -109,18 +109,12 @@ const processCSV = async (buffer: Buffer) => {
       'note_title',
       'note',
     ],
+    from_line: 2,
   })
   const entries: ReturnType<(typeof csvSchema)['parse']>[] = []
   const activities = new Set<Activity>()
-  let idx = 0
 
   for await (const row of parser) {
-    idx++
-
-    if (idx === 1) {
-      continue
-    }
-
     const entry = csvSchema.parse(row)
 
     entries.push(entry)
@@ -129,37 +123,41 @@ const processCSV = async (buffer: Buffer) => {
     })
   }
 
+  if (entries.length === 0) {
+    return entries
+  }
+
   await db.transaction(async (tx) => {
+    if (activities.size > 0) {
+      await tx
+        .insert(daylioActivities)
+        .values(
+          Array.from(activities.values()).map((activity) => ({
+            activity,
+          }))
+        )
+        .onConflictDoNothing()
+        .run()
+    }
+
     await tx
-      .insert(daylioActivities)
+      .insert(daylioEntries)
       .values(
-        Array.from(activities.values()).map((activity) => ({
-          activity,
+        entries.map((entry) => ({
+          time: entry.time,
+          mood: entry.mood,
+          notes: entry.note,
         }))
       )
-      .onConflictDoNothing()
+      .onConflictDoUpdate({
+        target: daylioEntries.time,
+        set: {
+          mood: sql`excluded.mood`,
+          notes: sql`excluded.notes`,
+          updatedAt: timestampSQL,
+        },
+      })
       .run()
-
-    await Promise.all(
-      entries.map((entry) =>
-        tx
-          .insert(daylioEntries)
-          .values({
-            time: entry.time,
-            mood: entry.mood,
-            notes: entry.note,
-          })
-          .onConflictDoUpdate({
-            target: daylioEntries.time,
-            set: {
-              mood: entry.mood,
-              notes: entry.note,
-              updatedAt: timestampSQL,
-            },
-          })
-          .run()
-      )
-    )
 
     const entryActivities = entries.flatMap((entry) =>
       entry.activities.map((activity) => ({
@@ -168,11 +166,13 @@ const processCSV = async (buffer: Buffer) => {
       }))
     )
 
-    await tx
-      .insert(daylioEntryActivities)
-      .values(entryActivities)
-      .onConflictDoNothing()
-      .run()
+    if (entryActivities.length > 0) {
+      await tx
+        .insert(daylioEntryActivities)
+        .values(entryActivities)
+        .onConflictDoNothing()
+        .run()
+    }
   })
 
   return entries
