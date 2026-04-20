@@ -28,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.88",
     "@astro-community/astro-embed-youtube": "^0.5.6",
     "@astrojs/mdx": "^4.0.8",
     "@astrojs/netlify": "^6.1.0",
@@ -39,6 +40,7 @@
     "@netlify/functions": "^3.0.0",
     "@react-hookz/web": "^24.0.4",
     "@tailwindcss/typography": "^0.5.15",
+    "ai": "^5.0.115",
     "astro": "^5.2.5",
     "astro-seo": "^0.8.4",
     "async-retry": "^1.3.3",
@@ -83,7 +85,7 @@
     "ts-dedent": "^2.2.0",
     "ts-node": "^10.9.2",
     "vite-plugin-webfont-dl": "^3.10.4",
-    "zod": "^3.23.8"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -95,6 +97,7 @@
     "@types/lodash": "^4.17.13",
     "@types/react": "^19.0.1",
     "@typescript-eslint/parser": "^8.17.0",
+    "dotenv": "^17.2.3",
     "drizzle-kit": "^0.29.1",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^10.0.1",
