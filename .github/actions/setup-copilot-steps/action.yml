@@ -1,0 +1,34 @@
+name: Setup Dev Environment
+description: Prepares the dev environment with Node.js, pnpm, and project dependencies
+
+inputs:
+  netlify-site-id:
+    description: Netlify site ID for pulling environment variables
+    required: false
+  netlify-auth-token:
+    description: Netlify auth token for CLI access
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+
+    - uses: pnpm/action-setup@v4
+
+    - uses: actions/setup-node@v4
+      with:
+        cache: pnpm
+        node-version-file: .nvmrc
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install
+
+    - name: Pull Netlify environment variables
+      if: inputs.netlify-site-id != '' && inputs.netlify-auth-token != ''
+      shell: bash
+      env:
+        NETLIFY_SITE_ID: ${{ inputs.netlify-site-id }}
+        NETLIFY_AUTH_TOKEN: ${{ inputs.netlify-auth-token }}
+      run: ./node_modules/.bin/netlify env:list --plain > .env
