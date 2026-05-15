@@ -1,5 +1,12 @@
 /// <reference types="vitest" />
-// @ts-ignore
-import { getViteConfig } from 'astro/config'
+import 'dotenv/config'
+import { defineConfig } from 'vitest/config'
 
-export default getViteConfig({})
+export default defineConfig({
+  test: {
+    globals: false,
+    environment: 'node',
+    include: ['src/**/*.test.ts'],
+    exclude: ['node_modules', 'dist'],
+  },
+})

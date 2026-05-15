@@ -1,9 +1,9 @@
 import type { APIRoute } from 'astro'
-import { getWeek } from 'date-fns'
 import auth from '../../../lib/auth'
 import bsky from '../../../lib/bluesky'
 import lastfm from '../../../lib/lastfm'
 import config from '../../../config'
+import { generatePostText } from '../../../lib/ai/lastfm-post-generator'
 
 export const prerender = false
 
@@ -41,15 +41,12 @@ export const POST: APIRoute = async ({ request }) => {
       (album) => `${album.album} by ${album.artist} [${album.count} scrobbles]`
     )
     .join(', ')
-  const now = new Date()
-  const text = {
-    '7day': `Happy Friday! Here's what I've been listening to this week! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/week/${getWeek(now)}`,
-    '1month': `What a month! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/month/${now.getMonth() + 1}`,
-    '12month': `What a year! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}`,
-  }
+
+  // Generate AI post text - no fallback, if this fails, the whole request fails
+  const text = await generatePostText(topAlbums, period)
 
   const upload = await bsky.uploadImage(collage, 'image/jpeg')
-  await bsky.sendPost(text[period], {
+  await bsky.sendPost(text, {
     embed: {
       $type: 'app.bsky.embed.images',
       images: [
@@ -61,7 +58,7 @@ export const POST: APIRoute = async ({ request }) => {
     },
   })
 
-  return new Response(JSON.stringify({ ok: true, period, alt }), {
+  return new Response(JSON.stringify({ ok: true, period, alt, text }), {
     headers: {
       'content-type': 'application/json',
     },
