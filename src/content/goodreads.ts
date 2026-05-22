@@ -18,6 +18,13 @@ interface GoodreadsBook {
   rating: number
 }
 
+function upgradeCoverUrl(url: string): string {
+  // Goodreads cover URLs include a size directive like `._SX98_` or `._SY75_`
+  // that constrains the image dimensions. Strip it so we fetch the original
+  // full-resolution image and let our own resize pipeline downscale.
+  return url.replace(/\._S[XY]\d+_/i, '')
+}
+
 async function fetchGoodreadsShelf({
   userID,
   shelf,
@@ -47,9 +54,10 @@ async function fetchGoodreadsShelf({
 
     const title = item.querySelector('title')?.textContent?.trim()
     const author = item.querySelector('author_name')?.textContent?.trim()
-    const cover = item
+    const rawCover = item
       .querySelector('book_large_image_url')
       ?.textContent?.trim()
+    const cover = rawCover ? upgradeCoverUrl(rawCover) : undefined
     const url = item.querySelector('link')?.textContent?.trim()
     const ratingStr = item.querySelector('user_rating')?.textContent?.trim()
     const rating = ratingStr ? parseInt(ratingStr, 10) : 0

@@ -4,6 +4,7 @@ import { feelingsCollection } from './feelings'
 import { createGoodreadsCollection } from './goodreads'
 import config from '../config'
 import { createLastFmCoverCollection } from './lastfm'
+import { linksCollection } from './links'
 
 const commonFrontmatterSchema = z.object({
   title: z.string(),
@@ -72,6 +73,7 @@ export const collections = {
     schema: seasonalPlaylistSchema,
   }),
   feelings: feelingsCollection,
+  links: linksCollection,
   currentlyReading: createGoodreadsCollection({
     userID: config.goodreadsUserID,
     shelf: 'currently-reading',

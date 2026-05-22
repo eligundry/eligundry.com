@@ -3,12 +3,15 @@ import { getCollection } from 'astro:content'
 import { Feed } from 'feed'
 import * as dateFns from 'date-fns'
 import { insertPrettyFeed } from '../lib/utils'
+import { getLinkPostDate } from '../content/links'
 import config from '../config'
 
 export const GET: APIRoute = async () => {
-  const posts = (await getCollection('blog')).sort((a, b) =>
-    dateFns.compareDesc(a.data.date, b.data.date)
-  )
+  const [blogPosts, linkPosts] = await Promise.all([
+    getCollection('blog'),
+    getCollection('links'),
+  ])
+
   const author = {
     name: 'Eli Gundry',
     email: 'eligundry@gmail.com',
@@ -24,7 +27,7 @@ export const GET: APIRoute = async () => {
     author,
   })
 
-  for (const post of posts) {
+  for (const post of blogPosts) {
     feed.addItem({
       title: post.data.title,
       author: [author],
@@ -34,6 +37,21 @@ export const GET: APIRoute = async () => {
       description: post.data.description,
     })
   }
+
+  for (const link of linkPosts) {
+    const slug = link.data.properties.Slug
+    feed.addItem({
+      title: link.data.properties.Title,
+      author: [author],
+      id: `${config.url}/blog/links/${slug}/`,
+      link: `${config.url}/blog/links/${slug}/`,
+      date: getLinkPostDate(link.data),
+      description:
+        link.data.properties.Description ?? link.data.properties.URL ?? '',
+    })
+  }
+
+  feed.items.sort((a, b) => dateFns.compareDesc(a.date, b.date))
 
   return new Response(insertPrettyFeed(feed.rss2()), {
     headers: {

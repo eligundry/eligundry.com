@@ -63,7 +63,9 @@ const getTopAlbumsCover = async (
     albumsResp
       .filter((album) => album.image.length > 0)
       .map(async (album): Promise<LastFMCoverItem> => {
-        const cover = album.image.at(2)?.url ?? ''
+        // image[2] is "large" (174px); image[3] is "extralarge" (300px).
+        // Use extralarge so we have enough pixels for retina displays.
+        const cover = album.image.at(3)?.url ?? album.image.at(2)?.url ?? ''
         const hires = album.image.at(3)?.url ?? ''
         const coverColor = cover ? await averageColorFromURL(cover) : null
 

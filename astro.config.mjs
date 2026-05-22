@@ -1,4 +1,4 @@
-import { defineConfig, passthroughImageService } from 'astro/config'
+import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 
 import mdx from '@astrojs/mdx'
@@ -26,7 +26,7 @@ export default defineConfig({
     imageCDN: false,
   }),
   image: {
-    service: passthroughImageService(),
+    remotePatterns: [{ protocol: 'https' }],
   },
   markdown: {
     shikiConfig: {

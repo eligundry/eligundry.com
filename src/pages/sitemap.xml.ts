@@ -13,6 +13,7 @@ export const GET: APIRoute = async () => {
   const htmlFiles = import.meta.glob('./**/*.html')
   const posts = await getCollection('blog')
   const talks = await getCollection('talks')
+  const links = await getCollection('links')
 
   await Promise.all(
     Object.values(astroFiles).map(async (f) => {
@@ -70,6 +71,17 @@ export const GET: APIRoute = async () => {
       })
     })
   )
+
+  for (const link of links) {
+    sitemap.write({
+      url: `/blog/links/${link.data.properties.Slug}/`,
+      lastmod: dateFns.formatISO(
+        new Date(link.data.properties['Last edited time'].last_edited_time)
+      ),
+      changefreq: 'daily',
+      priority: 0.7,
+    })
+  }
 
   sitemap.end()
 
