@@ -37,9 +37,11 @@ const currentPlaylist = await getCollection('seasonalPlaylists').then(
     playlists.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
       .data
 )
-const CodingSection = await getEntry('sections', 'do-you-code')
-  ?.then((section) => section.render())
-  .then(({ Content }) => Content)
+const codingEntry = await getEntry('sections', 'do-you-code')
+if (!codingEntry) {
+  throw new Error('No "do-you-code" section found')
+}
+const { Content: CodingSection } = await codingEntry.render()
 ---
 
 <Layout>
