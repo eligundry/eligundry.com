@@ -15,7 +15,8 @@
     "astro-check": "astro check",
     "type-check": "tsc --noEmit",
     "test": "vitest",
-    "drizzle:migration:generate": "drizzle-kit generate:sqlite --out ./migrations --schema ./src/lib/database/schema.ts"
+    "drizzle:migration:generate": "drizzle-kit generate:sqlite --out ./migrations --schema ./src/lib/database/schema.ts",
+    "prepare": "husky"
   },
   "prettier": {
     "trailingComma": "es5",
@@ -25,6 +26,15 @@
     "bracketSpacing": true,
     "plugins": [
       "prettier-plugin-astro"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,astro,mdx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,css}": [
+      "prettier --write"
     ]
   },
   "dependencies": {
@@ -103,6 +113,8 @@
     "eslint-plugin-mdx": "^3.1.5",
     "eslint-plugin-prettier": "^5.2.3",
     "fontaine": "^0.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.5",
     "netlify-cli": "^17.38.0",
     "netlify-plugin-cache": "^1.0.3",
     "prettier": "^3.5.0",
