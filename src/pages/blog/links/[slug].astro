@@ -4,6 +4,7 @@ import * as dateFns from 'date-fns'
 import BaseLayout from '../../../layouts/Layout.astro'
 import EmojiText from '../../../components/EmojiText.astro'
 import LinkEmbed from '../../../components/LinkEmbed.astro'
+import { getLinkPostDate } from '../../../content/links'
 
 interface Props {
   entry: CollectionEntry<'links'>
@@ -23,6 +24,7 @@ const { entry } = Astro.props
 const { Content } = await render(entry)
 const props = entry.data.properties
 const url = `/blog/links/${props.Slug}/`
+const date = getLinkPostDate(entry.data)
 ---
 
 <BaseLayout
@@ -40,13 +42,9 @@ const url = `/blog/links/${props.Slug}/`
         <a href={url} itemprop="url">{props.Title}</a>
       </h1>
       <div class="flex flex-row gap-4 [&>*]:m-0">
-        <time datetime={props['Created time'].toISOString()}>
+        <time datetime={date.toISOString()}>
           <EmojiText label="calendar for the date" emoji="🗓">
-            {
-              dateFns.formatISO(props['Created time'], {
-                representation: 'date',
-              })
-            }
+            {dateFns.formatISO(date, { representation: 'date' })}
           </EmojiText>
         </time>
       </div>

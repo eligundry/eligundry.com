@@ -5,6 +5,7 @@ import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/Layout.astro'
 import PostPreview from '../components/Post/Preview.astro'
 import LinkPreview from '../components/Post/LinkPreview.astro'
+import { getLinkPostDate } from '../content/links'
 
 const blogPosts = (await getCollection('blog')).map((entry) => ({
   type: 'blog' as const,
@@ -16,7 +17,7 @@ const blogPosts = (await getCollection('blog')).map((entry) => ({
 const linkPosts = (await getCollection('links')).map((entry) => ({
   type: 'links' as const,
   entry,
-  date: entry.data.properties['Created time'],
+  date: getLinkPostDate(entry.data),
   tags: entry.data.properties.Tags,
 }))
 

@@ -6,6 +6,7 @@ import {
   propertySchema,
   transformedPropertySchema,
 } from '@astro-notion/loader/schemas'
+import rehypeShiki from '@shikijs/rehype'
 
 export const linksSchema = notionPageSchema({
   properties: z.object({
@@ -14,13 +15,19 @@ export const linksSchema = notionPageSchema({
     Description: transformedPropertySchema.rich_text.optional(),
     Tags: transformedPropertySchema.multi_select,
     URL: transformedPropertySchema.url,
-    Published: transformedPropertySchema.checkbox,
+    'Published At': transformedPropertySchema.date,
     'Created time': transformedPropertySchema.created_time,
     'Last edited time': propertySchema.last_edited_time,
   }),
 })
 
 export type LinksEntry = z.infer<typeof linksSchema>
+
+export function getLinkPostDate(entry: LinksEntry): Date {
+  return (
+    entry.properties['Published At']?.start ?? entry.properties['Created time']
+  )
+}
 
 const notionToken = import.meta.env.NOTION_TOKEN
 // Notion view URLs include a `?v=<viewId>` suffix that the API rejects; strip it.
@@ -38,15 +45,17 @@ function createLinksLoader(): Loader {
     }
   }
 
+  const isProd = process.env.NODE_ENV === 'production'
   const inner = notionLoader({
     auth: notionToken,
     database_id: notionDatabaseId,
-    filter: import.meta.env.PROD
+    filter: isProd
       ? {
-          property: 'Published',
-          checkbox: { equals: true },
+          property: 'Published At',
+          date: { is_not_empty: true },
         }
       : undefined,
+    rehypePlugins: [[rehypeShiki, { theme: 'material-theme-lighter' }]],
   })
 
   return {

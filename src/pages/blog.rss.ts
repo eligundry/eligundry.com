@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content'
 import { Feed } from 'feed'
 import * as dateFns from 'date-fns'
 import { insertPrettyFeed } from '../lib/utils'
+import { getLinkPostDate } from '../content/links'
 import config from '../config'
 
 export const GET: APIRoute = async () => {
@@ -44,7 +45,7 @@ export const GET: APIRoute = async () => {
       author: [author],
       id: `${config.url}/blog/links/${slug}/`,
       link: `${config.url}/blog/links/${slug}/`,
-      date: link.data.properties['Created time'],
+      date: getLinkPostDate(link.data),
       description:
         link.data.properties.Description ?? link.data.properties.URL ?? '',
     })
