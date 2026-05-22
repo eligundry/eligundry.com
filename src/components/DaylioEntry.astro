@@ -70,12 +70,11 @@ const { entry, wrapInPaper = false } = Astro.props
       </div>
     </div>
     {
-      entry.notes && entry.notes.length > 0 && (
-        <ul class="my-0">
-          {entry.notes.map((n) => (
-            <li>{n}</li>
-          ))}
-        </ul>
+      entry.note && (
+        <div
+          class="daylio-note [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+          set:html={entry.note.html}
+        />
       )
     }
   </div>
