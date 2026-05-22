@@ -2,6 +2,7 @@ import * as dateFns from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
+import { marked } from 'marked'
 import {
   sql,
   eq,
@@ -200,11 +201,28 @@ const apiSchema = z
           : val,
       z.array(z.enum(ActivityNames))
     ),
-    notes: z.array(z.string()).or(z.null()),
+    notes: z
+      .array(
+        z.union([
+          z.string(),
+          z.object({ markdown: z.string(), html: z.string() }),
+        ])
+      )
+      .or(z.null()),
   })
   .transform((data) => {
     return {
       ...data,
+      notes:
+        data.notes?.map((note) => {
+          if (typeof note === 'string') {
+            return {
+              markdown: note,
+              html: marked.parseInline(note) as string,
+            }
+          }
+          return note
+        }) ?? null,
       slug: formatStubbornDateToISO601(data.time),
       emoji: MoodMapping[data.mood],
       activityEmojis: data.activities.map(

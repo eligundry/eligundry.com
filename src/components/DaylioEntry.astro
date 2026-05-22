@@ -73,7 +73,7 @@ const { entry, wrapInPaper = false } = Astro.props
       entry.notes && entry.notes.length > 0 && (
         <ul class="my-0">
           {entry.notes.map((n) => (
-            <li>{n}</li>
+            <li set:html={n.html} />
           ))}
         </ul>
       )

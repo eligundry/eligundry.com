@@ -104,7 +104,7 @@ export const POST: APIRoute = async ({ request }) => {
         let text = dedent(`
 ${daylio.tweetPrefix(post)}
 
-${post.notes?.map((note) => `${note}`).join('\n\n')}
+${post.notes?.map((note) => note.markdown).join('\n\n')}
       `)
         let message = text + '\n\n' + url
 
