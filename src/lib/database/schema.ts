@@ -6,7 +6,7 @@ import {
   blob,
   primaryKey,
 } from 'drizzle-orm/sqlite-core'
-import { MoodNames, ActivityNames, PrivateActivityNames } from '../enums'
+import { MoodNames } from '../enums'
 
 export const timestampSQL = sql`(cast(strftime('%s', 'now') as int))`
 
@@ -22,9 +22,7 @@ export const daylioEntries = sqliteTable('daylio_entries', {
 })
 
 export const daylioActivities = sqliteTable('daylio_activities', {
-  activity: text('activity', {
-    enum: [...ActivityNames, ...PrivateActivityNames],
-  }).primaryKey(),
+  activity: text('activity').primaryKey(),
   private: integer('private').default(0),
   createdAt: integer('createdAt', { mode: 'timestamp' }).default(timestampSQL),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),

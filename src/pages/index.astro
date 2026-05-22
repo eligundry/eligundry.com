@@ -8,8 +8,8 @@ import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
 import PostPreview from '../components/Post/Preview.astro'
 import { convertNumberToOrdinal } from '../lib/utils'
-import config from '../config'
 import Memoji from '../components/Memoji.astro'
+import SpotifyPlaylist from '../components/SpotifyPlaylist.astro'
 
 const latestEntry = await getCollection('feelings').then(
   (entries) => entries[0].data
@@ -32,9 +32,16 @@ const latestPost = await getCollection('blog').then(
   (posts) =>
     posts.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
 )
-const CodingSection = await getEntry('sections', 'do-you-code')
-  ?.then((section) => section.render())
-  .then(({ Content }) => Content)
+const currentPlaylist = await getCollection('seasonalPlaylists').then(
+  (playlists) =>
+    playlists.sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))[0]
+      .data
+)
+const codingEntry = await getEntry('sections', 'do-you-code')
+if (!codingEntry) {
+  throw new Error('No "do-you-code" section found')
+}
+const { Content: CodingSection } = await codingEntry.render()
 ---
 
 <Layout>
@@ -197,7 +204,12 @@ const CodingSection = await getEntry('sections', 'do-you-code')
             <div
               itemscope
               itemtype="https://schema.org/Book"
-              class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
+              class:list={[
+                'sm:tooltip',
+                'sm:tooltip-primary',
+                'font-sans',
+                i >= 12 && 'hidden md:block',
+              ]}
               data-tip={alt}
             >
               <meta itemprop="name" content={book.title} />
@@ -267,16 +279,17 @@ const CodingSection = await getEntry('sections', 'do-you-code')
     </p>
     <div class="flex flex-col sm:flex-row gap-y-4 sm:gap-4">
       <div class="sm:items-stretch flex flex-col">
-        <h3 class="mt-0">Seasonal Playlist</h3>
-        <iframe
-          title="Spotify playlist that I have on repeat"
-          data-src={config.spotifyPlaylist}
-          allow="encrypted-media"
-          loading="lazy"
-          width="300"
-          height="380"
-          class:list={['w-full', 'sm:w-[300px]', 'h-[380px]', 'sm:flex-1']}
-          loading="lazy"></iframe>
+        <h3 class="mt-0">
+          <a href="/seasonal-playlists">Seasonal Playlist</a>
+        </h3>
+        <SpotifyPlaylist
+          spotifyId={currentPlaylist.spotifyId}
+          name={currentPlaylist.name}
+          date={currentPlaylist.date}
+          description={currentPlaylist.description}
+          lazy
+          class="w-full sm:w-[300px] sm:flex-1 sm:h-full sm:[&>iframe]:h-full"
+        />
       </div>
       <div>
         <h3 class="mt-2 sm:mt-0">On Repeat</h3>
@@ -292,17 +305,28 @@ const CodingSection = await getEntry('sections', 'do-you-code')
                   data-tip={alt}
                   class:list={['sm:tooltip', 'sm:tooltip-primary', 'font-sans']}
                 >
-                  <Image
-                    alt={alt}
-                    src={album.cover}
-                    width={146}
-                    height={146}
-                    quality={90}
-                    format="webp"
-                    loading="lazy"
-                    decoding="async"
-                    style={{ backgroundColor: album.coverColor ?? undefined }}
-                  />
+                  {album.cover ? (
+                    <Image
+                      alt={alt}
+                      src={album.cover}
+                      width={146}
+                      height={146}
+                      quality={90}
+                      format="webp"
+                      loading="lazy"
+                      decoding="async"
+                      style={{ backgroundColor: album.coverColor ?? undefined }}
+                    />
+                  ) : (
+                    <div
+                      role="img"
+                      aria-label={alt}
+                      class:list={['w-full', 'aspect-square', 'bg-base-300']}
+                      style={{
+                        backgroundColor: album.coverColor ?? undefined,
+                      }}
+                    />
+                  )}
                 </picture>
               )
             })

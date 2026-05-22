@@ -1,4 +1,5 @@
 import { z, defineCollection } from 'astro:content'
+import { file } from 'astro/loaders'
 import { feelingsCollection } from './feelings'
 import { createGoodreadsCollection } from './goodreads'
 import config from '../config'
@@ -41,6 +42,13 @@ const sectionSchema = z.object({
   page: z.string(),
 })
 
+const seasonalPlaylistSchema = z.object({
+  spotifyId: z.string(),
+  name: z.string(),
+  description: z.string(),
+  date: z.coerce.date(),
+})
+
 export const collections = {
   blog: defineCollection({
     schema: ({ image }) =>
@@ -59,6 +67,10 @@ export const collections = {
   }),
   resumeExperiences: defineCollection({
     schema: resumeExperiencesSchema,
+  }),
+  seasonalPlaylists: defineCollection({
+    loader: file('src/content/seasonalPlaylists.yaml'),
+    schema: seasonalPlaylistSchema,
   }),
   feelings: feelingsCollection,
   links: linksCollection,

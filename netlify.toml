@@ -3,7 +3,7 @@ command = 'npm run build'
 publish = 'dist'
 
 [build.environment]
-NODE_VERSION = '22'
+NODE_VERSION = '24'
 
 [dev]
 command = "astro dev"
@@ -31,3 +31,7 @@ schedule = '00 17 1 * *'
 [functions."lastfm-yearly"]
 # New Years day at reasonable hour
 schedule = '00 17 1 1 *'
+
+[functions."nightly-rebuild"]
+# Every night at 11pm eastern (give or take an hour for DST)
+schedule = '00 04 * * *'

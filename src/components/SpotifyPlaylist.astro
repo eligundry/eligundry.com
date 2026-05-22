@@ -1,0 +1,37 @@
+---
+interface Props {
+  spotifyId: string
+  name: string
+  date: Date
+  description?: string
+  lazy?: boolean
+  class?: string
+}
+
+const {
+  spotifyId,
+  name,
+  date,
+  description,
+  lazy = false,
+  class: className,
+} = Astro.props
+const spotifyUrl = `https://open.spotify.com/playlist/${spotifyId}`
+const embedUrl = `https://open.spotify.com/embed/playlist/${spotifyId}?utm_source=generator`
+---
+
+<div class={className} itemscope itemtype="https://schema.org/MusicPlaylist">
+  <link itemprop="creator" href="#eli-gundry" />
+  <meta itemprop="name" content={name} />
+  <meta itemprop="url" content={spotifyUrl} />
+  <meta itemprop="datePublished" content={date.toISOString().split('T')[0]} />
+  {description && <meta itemprop="description" content={description} />}
+  <iframe
+    title={`Spotify playlist: ${name}`}
+    src={lazy ? undefined : embedUrl}
+    data-src={lazy ? embedUrl : undefined}
+    allow="encrypted-media"
+    width="100%"
+    height="380"
+    loading="lazy"></iframe>
+</div>

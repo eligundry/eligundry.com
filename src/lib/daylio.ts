@@ -2,6 +2,9 @@ import * as dateFns from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
+import { createMarkdownProcessor } from '@astrojs/markdown-remark'
+import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
+import remarkInlineLinks from 'remark-inline-links'
 import {
   sql,
   eq,
@@ -30,6 +33,16 @@ import {
 } from './database'
 import { formatStubbornDateToISO601 } from './utils'
 
+type KnownActivity =
+  | (typeof ActivityNames)[number]
+  | (typeof PrivateActivityNames)[number]
+// `string & {}` preserves autocomplete for known activity names while still
+// accepting new ones that Daylio introduces.
+type Activity = KnownActivity | (string & {})
+const activitySchema = z
+  .union([z.enum(ActivityNames), z.enum(PrivateActivityNames), z.string()])
+  .transform((val) => val as Activity)
+
 const csvSchema = z
   .object({
     full_date: z.string(),
@@ -37,22 +50,20 @@ const csvSchema = z
     weekday: z.string(),
     time: z.string(),
     mood: z.enum(MoodNames),
-    activities: z.preprocess(
-      (s) => {
-        if (typeof s !== 'string') {
-          return []
-        }
+    activities: z.preprocess((s) => {
+      if (typeof s !== 'string') {
+        return []
+      }
 
-        const activities = s.split(' | ').map((str) => str.trim())
+      const activities = s.split(' | ').map((str) => str.trim())
 
-        if (activities.length === 1 && activities[0] === '') {
-          return []
-        }
+      if (activities.length === 1 && activities[0] === '') {
+        return []
+      }
 
-        return activities
-      },
-      z.array(z.enum(ActivityNames).or(z.enum(PrivateActivityNames)))
-    ),
+      return activities
+    }, z.array(activitySchema)),
+    scales: z.string().optional(),
     note_title: z.string().optional(),
     note: z.preprocess((val): string[] => {
       if (!val || typeof val !== 'string') {
@@ -74,7 +85,7 @@ const csvSchema = z
     return {
       time,
       note: data.note as string[],
-      ...omit(data, ['full_date', 'time', 'weekday', 'date', 'note']),
+      ...omit(data, ['full_date', 'time', 'weekday', 'date', 'note', 'scales']),
     }
   })
 
@@ -87,23 +98,16 @@ const processCSV = async (buffer: Buffer) => {
       'time',
       'mood',
       'activities',
-      'node_title',
+      'scales',
+      'note_title',
       'note',
     ],
+    from_line: 2,
   })
   const entries: ReturnType<(typeof csvSchema)['parse']>[] = []
-  const activities = new Set<
-    (typeof ActivityNames | typeof PrivateActivityNames)[number]
-  >()
-  let idx = 0
+  const activities = new Set<Activity>()
 
   for await (const row of parser) {
-    idx++
-
-    if (idx === 1) {
-      continue
-    }
-
     const entry = csvSchema.parse(row)
 
     entries.push(entry)
@@ -112,37 +116,41 @@ const processCSV = async (buffer: Buffer) => {
     })
   }
 
+  if (entries.length === 0) {
+    return entries
+  }
+
   await db.transaction(async (tx) => {
+    if (activities.size > 0) {
+      await tx
+        .insert(daylioActivities)
+        .values(
+          Array.from(activities.values()).map((activity) => ({
+            activity,
+          }))
+        )
+        .onConflictDoNothing()
+        .run()
+    }
+
     await tx
-      .insert(daylioActivities)
+      .insert(daylioEntries)
       .values(
-        Array.from(activities.values()).map((activity) => ({
-          activity,
+        entries.map((entry) => ({
+          time: entry.time,
+          mood: entry.mood,
+          notes: entry.note,
         }))
       )
-      .onConflictDoNothing()
+      .onConflictDoUpdate({
+        target: daylioEntries.time,
+        set: {
+          mood: sql`excluded.mood`,
+          notes: sql`excluded.notes`,
+          updatedAt: timestampSQL,
+        },
+      })
       .run()
-
-    await Promise.all(
-      entries.map((entry) =>
-        tx
-          .insert(daylioEntries)
-          .values({
-            time: entry.time,
-            mood: entry.mood,
-            notes: entry.note,
-          })
-          .onConflictDoUpdate({
-            target: daylioEntries.time,
-            set: {
-              mood: entry.mood,
-              notes: entry.note,
-              updatedAt: timestampSQL,
-            },
-          })
-          .run()
-      )
-    )
 
     const entryActivities = entries.flatMap((entry) =>
       entry.activities.map((activity) => ({
@@ -151,11 +159,13 @@ const processCSV = async (buffer: Buffer) => {
       }))
     )
 
-    await tx
-      .insert(daylioEntryActivities)
-      .values(entryActivities)
-      .onConflictDoNothing()
-      .run()
+    if (entryActivities.length > 0) {
+      await tx
+        .insert(daylioEntryActivities)
+        .values(entryActivities)
+        .onConflictDoNothing()
+        .run()
+    }
   })
 
   return entries
@@ -170,12 +180,34 @@ const markAllEntriesAsPublished = async () =>
     .where(isNull(daylioEntries.publishedAt))
     .run()
 
+const markdownProcessor = await createMarkdownProcessor({
+  // @ts-ignore - plugin types are slightly mismatched but work at runtime
+  remarkPlugins: [remarkInlineLinks],
+  // @ts-ignore - plugin types are slightly mismatched but work at runtime
+  rehypePlugins: [rehypeAccessibleEmojis],
+})
+
+const renderNote = async (
+  markdown: string
+): Promise<{ markdown: string; html: string }> => ({
+  markdown,
+  html: (await markdownProcessor.render(markdown)).code,
+})
+
 const apiSchema = z
   .object({
     time: z.date(),
     mood: z.enum(MoodNames),
-    activities: z.array(z.enum(ActivityNames)),
-    notes: z.array(z.string()).or(z.null()),
+    activities: z.preprocess(
+      (val) =>
+        Array.isArray(val)
+          ? val.filter((a): a is (typeof ActivityNames)[number] =>
+              (ActivityNames as readonly string[]).includes(a)
+            )
+          : val,
+      z.array(z.enum(ActivityNames))
+    ),
+    note: z.object({ markdown: z.string(), html: z.string() }).or(z.null()),
   })
   .transform((data) => {
     return {
@@ -242,7 +274,19 @@ const getAll = async ({
     query = query.limit(limit)
   }
 
-  const entries = await query.all()
+  const rows = await query.all()
+
+  const entries = await Promise.all(
+    rows.map(async ({ notes, ...rest }) => {
+      const markdown = ((notes as string[] | null) ?? [])
+        .map((line) => `- ${line}`)
+        .join('\n')
+      return {
+        ...rest,
+        note: markdown ? await renderNote(markdown) : null,
+      }
+    })
+  )
 
   return z.array(apiSchema).parse(entries)
 }

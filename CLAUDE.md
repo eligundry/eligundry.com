@@ -49,6 +49,12 @@ This is a personal website built with **Astro** as the main framework, using **P
 - Database schema defined in `src/lib/database/schema.ts`
 - Migrations managed via `drizzle-kit`
 
+### Sitemap
+
+- Custom dynamic sitemap generated at `src/pages/sitemap.xml.ts` (not using `@astrojs/sitemap`)
+- Includes `.astro` pages, `.html` pages, blog posts, and talks
+- Last modified dates are derived from git commit history via `src/lib/lastModified.ts`
+
 ### Deployment
 
 - Configured for Netlify deployment with `@astrojs/netlify` adapter

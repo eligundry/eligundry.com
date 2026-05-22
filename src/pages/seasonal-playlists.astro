@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content'
+import * as dateFns from 'date-fns'
+import Layout from '../layouts/Layout.astro'
+import SpotifyPlaylist from '../components/SpotifyPlaylist.astro'
+
+const playlists = (await getCollection('seasonalPlaylists')).sort((a, b) =>
+  dateFns.compareDesc(a.data.date, b.data.date)
+)
+---
+
+<Layout
+  title="Seasonal Playlists"
+  description="Spotify playlists that I have on repeat throughout the seasons."
+  fancyBackgroundPoints={10}
+>
+  <div class:list={['flex', 'flex-col', 'gap-y-4', 'prose', 'paper']}>
+    <h1 class="mb-0">Seasonal Playlists</h1>
+    <p class="my-0">
+      Every season, I put together a playlist of what I'm listening to. Here
+      they all are.
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {
+        playlists.map((playlist) => (
+          <SpotifyPlaylist
+            spotifyId={playlist.data.spotifyId}
+            name={playlist.data.name}
+            date={playlist.data.date}
+            description={playlist.data.description}
+            lazy
+          />
+        ))
+      }
+    </div>
+  </div>
+</Layout>

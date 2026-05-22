@@ -7,7 +7,7 @@ import daylio from './daylio'
 
 const git = simpleGit()
 
-const getLastModFromFile = async (filePath: string): Promise<Date> => {
+export const getLastModFromFile = async (filePath: string): Promise<Date> => {
   return git
     .log({ file: filePath })
     .then((lg) => (lg.latest?.date ? new Date(lg.latest.date) : new Date()))
