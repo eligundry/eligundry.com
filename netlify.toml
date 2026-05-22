@@ -12,7 +12,7 @@ port = 8000
 [[plugins]]
 package = 'netlify-plugin-cache'
 [plugins.inputs]
-paths = ['.cache', 'public/astro-fontaine']
+paths = ['.cache', 'public/astro-fontaine', 'public/og-cache']
 
 [[headers]]
 for = "/*.rss"

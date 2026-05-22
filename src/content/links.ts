@@ -45,7 +45,7 @@ function createLinksLoader(): Loader {
     }
   }
 
-  const isProd = process.env.NODE_ENV === 'production'
+  const isProd = !!process.env.PROD
   const inner = notionLoader({
     auth: notionToken,
     database_id: notionDatabaseId,
