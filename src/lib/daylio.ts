@@ -2,7 +2,9 @@ import * as dateFns from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
-import { marked } from 'marked'
+import { createMarkdownProcessor } from '@astrojs/markdown-remark'
+import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
+import remarkInlineLinks from 'remark-inline-links'
 import {
   sql,
   eq,
@@ -188,6 +190,20 @@ const markAllEntriesAsPublished = async () =>
     .where(isNull(daylioEntries.publishedAt))
     .run()
 
+const markdownProcessor = await createMarkdownProcessor({
+  // @ts-ignore - plugin types are slightly mismatched but work at runtime
+  remarkPlugins: [remarkInlineLinks],
+  // @ts-ignore - plugin types are slightly mismatched but work at runtime
+  rehypePlugins: [rehypeAccessibleEmojis],
+})
+
+const renderNote = async (
+  markdown: string
+): Promise<{ markdown: string; html: string }> => ({
+  markdown,
+  html: (await markdownProcessor.render(markdown)).code,
+})
+
 const apiSchema = z
   .object({
     time: z.date(),
@@ -201,28 +217,13 @@ const apiSchema = z
           : val,
       z.array(z.enum(ActivityNames))
     ),
-    notes: z
-      .array(
-        z.union([
-          z.string(),
-          z.object({ markdown: z.string(), html: z.string() }),
-        ])
-      )
+    note: z
+      .object({ markdown: z.string(), html: z.string() })
       .or(z.null()),
   })
   .transform((data) => {
     return {
       ...data,
-      notes:
-        data.notes?.map((note) => {
-          if (typeof note === 'string') {
-            return {
-              markdown: note,
-              html: marked.parseInline(note) as string,
-            }
-          }
-          return note
-        }) ?? null,
       slug: formatStubbornDateToISO601(data.time),
       emoji: MoodMapping[data.mood],
       activityEmojis: data.activities.map(
@@ -285,7 +286,19 @@ const getAll = async ({
     query = query.limit(limit)
   }
 
-  const entries = await query.all()
+  const rows = await query.all()
+
+  const entries = await Promise.all(
+    rows.map(async ({ notes, ...rest }) => {
+      const markdown = ((notes as string[] | null) ?? [])
+        .map((line) => `- ${line}`)
+        .join('\n')
+      return {
+        ...rest,
+        note: markdown ? await renderNote(markdown) : null,
+      }
+    })
+  )
 
   return z.array(apiSchema).parse(entries)
 }
