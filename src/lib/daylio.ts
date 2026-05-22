@@ -50,22 +50,19 @@ const csvSchema = z
     weekday: z.string(),
     time: z.string(),
     mood: z.enum(MoodNames),
-    activities: z.preprocess(
-      (s) => {
-        if (typeof s !== 'string') {
-          return []
-        }
+    activities: z.preprocess((s) => {
+      if (typeof s !== 'string') {
+        return []
+      }
 
-        const activities = s.split(' | ').map((str) => str.trim())
+      const activities = s.split(' | ').map((str) => str.trim())
 
-        if (activities.length === 1 && activities[0] === '') {
-          return []
-        }
+      if (activities.length === 1 && activities[0] === '') {
+        return []
+      }
 
-        return activities
-      },
-      z.array(activitySchema)
-    ),
+      return activities
+    }, z.array(activitySchema)),
     scales: z.string().optional(),
     note_title: z.string().optional(),
     note: z.preprocess((val): string[] => {
@@ -88,14 +85,7 @@ const csvSchema = z
     return {
       time,
       note: data.note as string[],
-      ...omit(data, [
-        'full_date',
-        'time',
-        'weekday',
-        'date',
-        'note',
-        'scales',
-      ]),
+      ...omit(data, ['full_date', 'time', 'weekday', 'date', 'note', 'scales']),
     }
   })
 
@@ -217,9 +207,7 @@ const apiSchema = z
           : val,
       z.array(z.enum(ActivityNames))
     ),
-    note: z
-      .object({ markdown: z.string(), html: z.string() })
-      .or(z.null()),
+    note: z.object({ markdown: z.string(), html: z.string() }).or(z.null()),
   })
   .transform((data) => {
     return {

@@ -71,7 +71,10 @@ const { entry, wrapInPaper = false } = Astro.props
     </div>
     {
       entry.note && (
-        <div class="daylio-note [&>*:first-child]:mt-0 [&>*:last-child]:mb-0" set:html={entry.note.html} />
+        <div
+          class="daylio-note [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+          set:html={entry.note.html}
+        />
       )
     }
   </div>
