@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets'
 import { YouTube } from '@astro-community/astro-embed-youtube'
 import { fetchOpenGraphData, getYouTubeVideoId } from '../lib/opengraph'
 
@@ -9,6 +10,14 @@ interface Props {
 const { url } = Astro.props
 const youtubeId = getYouTubeVideoId(url)
 const ogData = youtubeId ? null : await fetchOpenGraphData(url)
+const ogImage = ogData?.imageUrl
+  ? await getImage({
+      src: ogData.imageUrl,
+      width: 224,
+      format: 'webp',
+      inferSize: true,
+    }).catch(() => null)
+  : null
 const displayUrl = (() => {
   try {
     return new URL(url).hostname.replace(/^www\./, '')
@@ -31,10 +40,10 @@ const displayUrl = (() => {
       class="not-prose card card-side card-compact bg-base-200 shadow-sm hover:shadow-md transition-shadow no-underline mt-4 mb-6 max-w-md"
       aria-label={`Visit ${ogData.title ?? url}`}
     >
-      {ogData.cachedImagePath && (
+      {ogImage && (
         <figure class="w-20 shrink-0 sm:w-28">
           <img
-            src={ogData.cachedImagePath}
+            src={ogImage.src}
             alt={ogData.title ?? ''}
             class="h-full w-full object-cover"
             loading="lazy"

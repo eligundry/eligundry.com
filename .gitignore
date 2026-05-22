@@ -23,7 +23,6 @@ pnpm-debug.log*
 .cache
 .astro
 public/astro-fontaine
-public/og-cache
 src/assets/images/notion
 .temp*
 dist

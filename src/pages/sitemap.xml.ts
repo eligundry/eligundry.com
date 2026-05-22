@@ -72,21 +72,16 @@ export const GET: APIRoute = async () => {
     })
   )
 
-  await Promise.all(
-    links.map(async (link) => {
-      const url = `/blog/links/${link.data.properties.Slug}/`
-      const lastEdited = new Date(
-        link.data.properties['Last edited time'].last_edited_time
-      )
-
-      sitemap.write({
-        url,
-        lastmod: dateFns.formatISO(lastEdited),
-        changefreq: 'daily',
-        priority: 0.7,
-      })
+  for (const link of links) {
+    sitemap.write({
+      url: `/blog/links/${link.data.properties.Slug}/`,
+      lastmod: dateFns.formatISO(
+        new Date(link.data.properties['Last edited time'].last_edited_time)
+      ),
+      changefreq: 'daily',
+      priority: 0.7,
     })
-  )
+  }
 
   sitemap.end()
 
