@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
 import BaseLayout from '../../../layouts/Layout.astro'
 import EmojiText from '../../../components/EmojiText.astro'
@@ -20,12 +20,15 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
-const { Content } = await entry.render()
+const { Content } = await render(entry)
 const props = entry.data.properties
 const url = `/blog/links/${props.Slug}/`
 ---
 
-<BaseLayout title={props.Name} description={props.Description ?? props.URL ?? ''}>
+<BaseLayout
+  title={props.Name}
+  description={props.Description ?? props.URL ?? ''}
+>
   <article
     class="paper prose"
     itemscope

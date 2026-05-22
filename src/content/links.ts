@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content'
+import type { Loader } from 'astro/loaders'
 import { notionLoader } from '@astro-notion/loader'
 import {
   notionPageSchema,
@@ -21,16 +22,49 @@ export const linksSchema = notionPageSchema({
 
 export type LinksEntry = z.infer<typeof linksSchema>
 
-export const linksCollection = defineCollection({
-  loader: notionLoader({
-    auth: import.meta.env.NOTION_TOKEN,
-    database_id: import.meta.env.NOTION_LINKS_DATABASE_ID,
+const notionToken = import.meta.env.NOTION_TOKEN
+// Notion view URLs include a `?v=<viewId>` suffix that the API rejects; strip it.
+const notionDatabaseId = import.meta.env.NOTION_LINKS_DATABASE_ID?.split('?')[0]
+
+function createLinksLoader(): Loader {
+  if (!notionToken || !notionDatabaseId) {
+    return {
+      name: 'notion-loader/links-noop',
+      async load({ logger }) {
+        logger.warn(
+          'NOTION_TOKEN or NOTION_LINKS_DATABASE_ID is not set; skipping link blog content.'
+        )
+      },
+    }
+  }
+
+  const inner = notionLoader({
+    auth: notionToken,
+    database_id: notionDatabaseId,
     filter: import.meta.env.PROD
       ? {
           property: 'Published',
           checkbox: { equals: true },
         }
       : undefined,
-  }),
+  })
+
+  return {
+    ...inner,
+    name: 'notion-loader/links',
+    async load(ctx) {
+      try {
+        await inner.load(ctx)
+      } catch (err) {
+        ctx.logger.warn(
+          `Failed to load Notion link blog (${(err as Error).message}); continuing without link posts.`
+        )
+      }
+    },
+  }
+}
+
+export const linksCollection = defineCollection({
+  loader: createLinksLoader(),
   schema: linksSchema,
 })

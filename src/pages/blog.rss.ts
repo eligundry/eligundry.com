@@ -45,7 +45,8 @@ export const GET: APIRoute = async () => {
       id: `${config.url}/blog/links/${slug}/`,
       link: `${config.url}/blog/links/${slug}/`,
       date: link.data.properties.Created,
-      description: link.data.properties.Description ?? link.data.properties.URL ?? '',
+      description:
+        link.data.properties.Description ?? link.data.properties.URL ?? '',
     })
   }
 

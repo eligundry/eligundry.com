@@ -58,7 +58,7 @@ async function cacheImage(
     if (!response.ok) return null
 
     const buffer = await response.arrayBuffer()
-    await fs.writeFile(filePath, Buffer.from(buffer))
+    await fs.writeFile(filePath, new Uint8Array(buffer))
     return publicPath
   } catch {
     return null
