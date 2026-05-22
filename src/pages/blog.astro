@@ -16,7 +16,7 @@ const blogPosts = (await getCollection('blog')).map((entry) => ({
 const linkPosts = (await getCollection('links')).map((entry) => ({
   type: 'links' as const,
   entry,
-  date: entry.data.properties.Created,
+  date: entry.data.properties['Created time'],
   tags: entry.data.properties.Tags,
 }))
 

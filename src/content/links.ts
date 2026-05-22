@@ -9,13 +9,13 @@ import {
 
 export const linksSchema = notionPageSchema({
   properties: z.object({
-    Name: transformedPropertySchema.title,
+    Title: transformedPropertySchema.title,
     Slug: transformedPropertySchema.rich_text,
     Description: transformedPropertySchema.rich_text.optional(),
     Tags: transformedPropertySchema.multi_select,
     URL: transformedPropertySchema.url,
     Published: transformedPropertySchema.checkbox,
-    Created: transformedPropertySchema.created_time,
+    'Created time': transformedPropertySchema.created_time,
     'Last edited time': propertySchema.last_edited_time,
   }),
 })

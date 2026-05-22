@@ -40,11 +40,11 @@ export const GET: APIRoute = async () => {
   for (const link of linkPosts) {
     const slug = link.data.properties.Slug
     feed.addItem({
-      title: link.data.properties.Name,
+      title: link.data.properties.Title,
       author: [author],
       id: `${config.url}/blog/links/${slug}/`,
       link: `${config.url}/blog/links/${slug}/`,
-      date: link.data.properties.Created,
+      date: link.data.properties['Created time'],
       description:
         link.data.properties.Description ?? link.data.properties.URL ?? '',
     })
