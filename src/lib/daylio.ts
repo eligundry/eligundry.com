@@ -6,7 +6,7 @@ import { createMarkdownProcessor } from '@astrojs/markdown-remark'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import remarkInlineLinks from 'remark-inline-links'
 import remarkStripPrivate from './remark-strip-private'
-import { sql, eq, and, or, notLike, desc, gte, isNull } from 'drizzle-orm'
+import { sql, eq, and, or, desc, gte, isNull } from 'drizzle-orm'
 import omit from 'lodash/omit'
 import {
   MoodMapping,
@@ -176,11 +176,21 @@ const markdownProcessor = await createMarkdownProcessor({
 })
 
 const renderNote = async (
-  markdown: string
-): Promise<{ markdown: string; html: string }> => ({
-  markdown,
-  html: (await markdownProcessor.render(markdown)).code,
-})
+  raw: string
+): Promise<{ markdown: string; html: string } | null> => {
+  const markdown = raw
+    .split('\n')
+    .filter((line) => !line.includes('#private'))
+    .join('\n')
+    .trim()
+
+  if (!markdown) return null
+
+  return {
+    markdown,
+    html: (await markdownProcessor.render(markdown)).code,
+  }
+}
 
 const apiSchema = z
   .object({
@@ -240,10 +250,6 @@ const getAll = async ({
     .where(
       and(
         or(eq(daylioActivities.private, 0), isNull(daylioActivities.activity)),
-        or(
-          isNull(daylioEntries.notes),
-          notLike(daylioEntries.notes, '%#private%')
-        ),
         start ? gte(daylioEntries.time, start) : undefined,
         unpublished ? isNull(daylioEntries.publishedAt) : undefined
       )
