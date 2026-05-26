@@ -61,7 +61,17 @@ const csvSchema = z
         return null
       }
 
-      return val
+      // Daylio CSV doesn't include newlines. List items are delimited
+      // by '- ' and paragraphs are delimited by double spaces.
+      if (val.startsWith('- ')) {
+        const lines = val
+          .split('- ')
+          .filter((line) => !!line)
+          .map((line) => line.trim())
+        return lines.map((line) => `- ${line}`).join('\n')
+      }
+
+      return val.replace(/  +/g, '\n\n')
     }, z.string().nullable()),
   })
   .transform((data) => {
