@@ -1,6 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
+  "id": "cf4a889c-ba24-4cfe-9df4-6cd86e0db6f7",
+  "prevId": "f55e3f27-9fec-4e21-9977-3447586e52f9",
   "tables": {
     "daylio_activities": {
       "name": "daylio_activities",
@@ -85,7 +87,7 @@
         },
         "notes": {
           "name": "notes",
-          "type": "blob",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -136,37 +138,40 @@
         "daylio_entry_activities_time_daylio_entries_time_fk": {
           "name": "daylio_entry_activities_time_daylio_entries_time_fk",
           "tableFrom": "daylio_entry_activities",
-          "columnsFrom": ["time"],
           "tableTo": "daylio_entries",
+          "columnsFrom": ["time"],
           "columnsTo": ["time"],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         },
         "daylio_entry_activities_activity_daylio_activities_activity_fk": {
           "name": "daylio_entry_activities_activity_daylio_activities_activity_fk",
           "tableFrom": "daylio_entry_activities",
-          "columnsFrom": ["activity"],
           "tableTo": "daylio_activities",
+          "columnsFrom": ["activity"],
           "columnsTo": ["activity"],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
         "daylio_entry_activities_time_activity_pk": {
-          "columns": ["activity", "time"]
+          "columns": ["time", "activity"],
+          "name": "daylio_entry_activities_time_activity_pk"
         }
       },
       "uniqueConstraints": {},
       "checkConstraints": {}
     }
   },
+  "views": {},
   "enums": {},
   "_meta": {
+    "schemas": {},
     "tables": {},
     "columns": {}
   },
-  "id": "f55e3f27-9fec-4e21-9977-3447586e52f9",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "views": {}
+  "internal": {
+    "indexes": {}
+  }
 }

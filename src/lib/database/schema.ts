@@ -1,11 +1,5 @@
 import { sql } from 'drizzle-orm'
-import {
-  sqliteTable,
-  integer,
-  text,
-  blob,
-  primaryKey,
-} from 'drizzle-orm/sqlite-core'
+import { sqliteTable, integer, text, primaryKey } from 'drizzle-orm/sqlite-core'
 import { MoodNames } from '../enums'
 
 export const timestampSQL = sql`(cast(strftime('%s', 'now') as int))`
@@ -16,9 +10,7 @@ export const daylioEntries = sqliteTable('daylio_entries', {
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
   publishedAt: integer('publishedAt', { mode: 'timestamp' }),
   mood: text('mood', { enum: MoodNames }).notNull(),
-  notes: blob('notes', {
-    mode: 'json',
-  }).$type<string[]>(),
+  notes: text('notes'),
 })
 
 export const daylioActivities = sqliteTable('daylio_activities', {

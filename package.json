@@ -71,6 +71,7 @@
     "lastfm-typed": "^2.1.0",
     "lodash": "^4.17.21",
     "markdown-to-txt": "^2.0.1",
+    "mdast-util-to-string": "^4.0.0",
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^13.0.1",
@@ -93,6 +94,7 @@
     "theme-change": "^2.5.0",
     "ts-dedent": "^2.2.0",
     "ts-node": "^10.9.2",
+    "unist-util-visit": "^5.1.0",
     "vite-plugin-webfont-dl": "^3.10.4",
     "zod": "^3.23.8"
   },

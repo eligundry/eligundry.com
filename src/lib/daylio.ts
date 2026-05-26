@@ -5,17 +5,8 @@ import { parse as csvParse } from 'csv-parse'
 import { createMarkdownProcessor } from '@astrojs/markdown-remark'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import remarkInlineLinks from 'remark-inline-links'
-import {
-  sql,
-  eq,
-  and,
-  or,
-  isNotNull,
-  notLike,
-  desc,
-  gte,
-  isNull,
-} from 'drizzle-orm'
+import remarkStripPrivate from './remark-strip-private'
+import { sql, eq, and, or, notLike, desc, gte, isNull } from 'drizzle-orm'
 import omit from 'lodash/omit'
 import {
   MoodMapping,
@@ -65,13 +56,13 @@ const csvSchema = z
     }, z.array(activitySchema)),
     scales: z.string().optional(),
     note_title: z.string().optional(),
-    note: z.preprocess((val): string[] => {
+    note: z.preprocess((val) => {
       if (!val || typeof val !== 'string') {
-        return []
+        return null
       }
 
-      return [val]
-    }, z.array(z.string().optional())),
+      return val
+    }, z.string().nullable()),
   })
   .transform((data) => {
     const time = toZonedTime(
@@ -81,7 +72,7 @@ const csvSchema = z
 
     return {
       time,
-      note: data.note as string[],
+      note: data.note,
       ...omit(data, ['full_date', 'time', 'weekday', 'date', 'note', 'scales']),
     }
   })
@@ -179,7 +170,7 @@ const markAllEntriesAsPublished = async () =>
 
 const markdownProcessor = await createMarkdownProcessor({
   // @ts-ignore - plugin types are slightly mismatched but work at runtime
-  remarkPlugins: [remarkInlineLinks],
+  remarkPlugins: [remarkInlineLinks, remarkStripPrivate],
   // @ts-ignore - plugin types are slightly mismatched but work at runtime
   rehypePlugins: [rehypeAccessibleEmojis],
 })
@@ -235,9 +226,7 @@ const getAll = async ({
         sql`json_group_array(distinct "daylio_activities"."activity")`.mapWith(
           (v) => JSON.parse(v).filter(Boolean)
         ),
-      notes: sql`json_group_array(distinct "notes"."value")`.mapWith((v) =>
-        JSON.parse(v).filter(Boolean)
-      ),
+      notes: daylioEntries.notes,
     })
     .from(daylioEntries)
     .leftJoin(
@@ -248,17 +237,13 @@ const getAll = async ({
       daylioActivities,
       eq(daylioEntryActivities.activity, daylioActivities.activity)
     )
-    .leftJoin(
-      sql`json_each(${daylioEntries.notes}) as notes`,
-      and(
-        // @ts-ignore
-        notLike(sql`"notes"."value"`, '%#private%'),
-        isNotNull(sql`"notes"."value"`)
-      )
-    )
     .where(
       and(
         or(eq(daylioActivities.private, 0), isNull(daylioActivities.activity)),
+        or(
+          isNull(daylioEntries.notes),
+          notLike(daylioEntries.notes, '%#private%')
+        ),
         start ? gte(daylioEntries.time, start) : undefined,
         unpublished ? isNull(daylioEntries.publishedAt) : undefined
       )
@@ -274,22 +259,10 @@ const getAll = async ({
   const rows = await query.all()
 
   const entries = await Promise.all(
-    rows.map(async ({ notes, ...rest }) => {
-      const noteArray = (notes as string[] | null) ?? []
-      let markdown: string
-      if (noteArray.length === 0) {
-        markdown = ''
-      } else if (noteArray.length === 1) {
-        markdown = noteArray[0]
-      } else {
-        // Legacy format: list items stored as separate array elements
-        markdown = noteArray.map((line) => `- ${line}`).join('\n')
-      }
-      return {
-        ...rest,
-        note: markdown ? await renderNote(markdown) : null,
-      }
-    })
+    rows.map(async ({ notes, ...rest }) => ({
+      ...rest,
+      note: notes ? await renderNote(notes) : null,
+    }))
   )
 
   return z.array(apiSchema).parse(entries)
