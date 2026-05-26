@@ -70,10 +70,7 @@ const csvSchema = z
         return []
       }
 
-      return val
-        .split('- ')
-        .filter((line) => !!line)
-        .map((line) => line.trim()) as string[]
+      return [val]
     }, z.array(z.string().optional())),
   })
   .transform((data) => {
@@ -278,9 +275,16 @@ const getAll = async ({
 
   const entries = await Promise.all(
     rows.map(async ({ notes, ...rest }) => {
-      const markdown = ((notes as string[] | null) ?? [])
-        .map((line) => `- ${line}`)
-        .join('\n')
+      const noteArray = (notes as string[] | null) ?? []
+      let markdown: string
+      if (noteArray.length === 0) {
+        markdown = ''
+      } else if (noteArray.length === 1) {
+        markdown = noteArray[0]
+      } else {
+        // Legacy format: list items stored as separate array elements
+        markdown = noteArray.map((line) => `- ${line}`).join('\n')
+      }
       return {
         ...rest,
         note: markdown ? await renderNote(markdown) : null,
