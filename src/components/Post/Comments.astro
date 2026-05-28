@@ -1,0 +1,52 @@
+---
+import BlueskyComments from '@bryanguffey/astro-standard-site/components/Comments.astro'
+import config from '../../config'
+
+interface Props {
+  /** Site-absolute path of the post, e.g. /blog/my-post/ */
+  canonicalPath: string
+  /** AT-URI of the Bluesky announcement post, if one exists. */
+  bskyPostUri?: string
+}
+
+const { canonicalPath, bskyPostUri } = Astro.props
+const canonicalUrl = config.url + canonicalPath
+---
+
+<footer>
+  {
+    /* Bluesky-powered comments via standard.site, only when there's a post to thread under. */
+  }
+  {
+    bskyPostUri && (
+      <BlueskyComments
+        bskyPostUri={bskyPostUri}
+        canonicalUrl={canonicalUrl}
+        title="✨💬✨ Comments from Bluesky"
+        class="standard-site-comments"
+      />
+    )
+  }
+
+  <script
+    is:inline
+    src="https://utteranc.es/client.js"
+    repo="eligundry/eligundry.com"
+    issue-term="pathname"
+    label="✨💬✨  Blog"
+    theme="preferred-color-scheme"
+    crossorigin="anonymous"
+    async></script>
+</footer>
+
+<style is:global>
+  /* Map standard.site's CSS variables onto the site's daisyUI theme tokens. */
+  .standard-site-comments {
+    --color-border-soft: var(--fallback-bc, oklch(var(--bc) / 0.2));
+    --color-text-primary: oklch(var(--bc));
+    --color-text-secondary: oklch(var(--bc) / 0.8);
+    --color-text-muted: oklch(var(--bc) / 0.6);
+    --color-text-link: oklch(var(--p));
+    --color-bg-elevated: oklch(var(--b2));
+  }
+</style>

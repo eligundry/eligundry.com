@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content'
 import PostLayout from '../../layouts/Post.astro'
 import { readingTimeToFancyBackgroundPoints } from '../../lib/utils'
 import { components } from '../../components/Post/components.astro'
+import { syncBlogPost, type SyncResult } from '../../lib/standardSite'
 
 interface Props {
   entry: CollectionEntry<'blog'>
@@ -21,6 +22,21 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const { Content, remarkPluginFrontmatter } = await entry.render()
+
+// Publish to ATProto (standard.site) on production builds. Best-effort: any
+// failure is swallowed inside syncBlogPost so it never breaks the build.
+let standardSite: SyncResult = {}
+if (import.meta.env.PROD && !entry.data.draft) {
+  standardSite = await syncBlogPost({
+    slug: entry.slug,
+    title: entry.data.title,
+    description: entry.data.description,
+    date: entry.data.date,
+    updated: remarkPluginFrontmatter.modified,
+    tags: entry.data.tags,
+    body: entry.body,
+  })
+}
 ---
 
 <PostLayout
@@ -29,6 +45,8 @@ const { Content, remarkPluginFrontmatter } = await entry.render()
   frontmatter={entry.data}
   remarkPluginFrontmatter={remarkPluginFrontmatter}
   showComments
+  documentRkey={standardSite.documentRkey}
+  bskyPostUri={standardSite.bskyPostUri}
   fancyBackgroundPoints={readingTimeToFancyBackgroundPoints(
     remarkPluginFrontmatter.readingTime
   )}
