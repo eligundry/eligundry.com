@@ -110,9 +110,9 @@ const url = `/${collection}/${slug}/`
         </EmojiText>
       </p>
     </header>
-    <main itemprop="text" class="post-body">
+    <div itemprop="text" class="post-body">
       <slot />
-    </main>
+    </div>
     {
       showComments && (
         <footer>

@@ -73,8 +73,8 @@ const date = getLinkPostDate(entry.data)
       }
     </header>
     {props.URL && <LinkEmbed url={props.URL} />}
-    <main itemprop="text">
+    <div itemprop="text">
       <Content />
-    </main>
+    </div>
   </article>
 </BaseLayout>
