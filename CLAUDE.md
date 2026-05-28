@@ -13,6 +13,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Format code**: `pnpm prettier`
 - **Astro type checking**: `pnpm astro-check`
 - **Generate database migration**: `pnpm drizzle:migration:generate`
+- **Create standard.site publication** (one-time setup): `pnpm standard-site:create-publication`
+- **Publish a static HTML page to standard.site**: `pnpm standard-site:publish-page <file.html>`
 
 ## Architecture Overview
 
@@ -54,6 +56,15 @@ This is a personal website built with **Astro** as the main framework, using **P
 - Custom dynamic sitemap generated at `src/pages/sitemap.xml.ts` (not using `@astrojs/sitemap`)
 - Includes `.astro` pages, `.html` pages, blog posts, and talks
 - Last modified dates are derived from git commit history via `src/lib/lastModified.ts`
+
+### standard.site (ATProto) Publishing
+
+- Publishes content to ATProto via [`@bryanguffey/astro-standard-site`](https://github.com/musicjunkieg/astro-standard-site) using the [standard.site](https://standard.site/) spec
+- Core logic in `src/lib/standardSite.ts`; publishing is triggered inside the prerendered page renders (`src/pages/blog/[...slug].astro`, `src/pages/blog/links/[slug].astro`, `src/pages/feelings.astro`), guarded by `import.meta.env.PROD` and best-effort/non-fatal
+- Blog + Notion link posts publish as `site.standard.document` records and (for recent posts) get a Bluesky announcement so replies render as comments via `src/components/Post/Comments.astro` alongside utteranc.es; feelings mirror the `/feelings.rss` feed
+- Published docs are tracked in the `standard_site_documents` table (Drizzle) and deduped via a content hash
+- Verification endpoint at `src/pages/.well-known/site.standard.publication.ts`; per-document `<link>` tags emitted in post heads
+- Credentials read via static `import.meta.env.*` literals (Astro) with `process.env.*` fallback (vite-node scripts): `BLUESKY_USERNAME`, `BLUESKY_PASSWORD`, `STANDARD_SITE_DID`, `STANDARD_SITE_PUBLICATION_RKEY`
 
 ### Deployment
 
