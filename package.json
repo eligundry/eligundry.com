@@ -15,6 +15,7 @@
     "astro-check": "astro check",
     "type-check": "tsc --noEmit",
     "test": "vitest",
+    "test:e2e": "playwright test",
     "drizzle:migration:generate": "drizzle-kit generate:sqlite --out ./migrations --schema ./src/lib/database/schema.ts",
     "prepare": "husky"
   },
@@ -103,6 +104,7 @@
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.20.0",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@playwright/test": "^1.60.0",
     "@shikijs/rehype": "^1.29.2",
     "@types/async-retry": "^1.4.9",
     "@types/basic-auth": "^1.1.8",
