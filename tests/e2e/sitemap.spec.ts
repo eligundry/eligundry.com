@@ -1,59 +1,49 @@
 import { test, expect, request } from '@playwright/test'
+import { JSDOM } from 'jsdom'
 
 const SITEMAP_HOSTNAME = 'https://eligundry.com'
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
 
-async function getSitemapUrls(baseURL: string): Promise<string[]> {
+async function getSitemapUrls(): Promise<string[]> {
   const ctx = await request.newContext()
   const res = await ctx.get(`${baseURL}/sitemap.xml`)
-  expect(res.ok(), `sitemap.xml returned ${res.status()}`).toBeTruthy()
+  if (!res.ok()) {
+    throw new Error(`sitemap.xml returned ${res.status()}`)
+  }
   const xml = await res.text()
   await ctx.dispose()
 
-  const urls = Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g)).map((m) =>
-    m[1].replace(SITEMAP_HOSTNAME, '')
-  )
-  expect(urls.length, 'sitemap should not be empty').toBeGreaterThan(0)
+  const dom = new JSDOM(xml, { contentType: 'text/xml' })
+  const urls = Array.from(dom.window.document.querySelectorAll('url > loc'))
+    .map((el) => el.textContent?.trim() ?? '')
+    .filter(Boolean)
+    .map((url) => url.replace(SITEMAP_HOSTNAME, ''))
+
+  if (urls.length === 0) {
+    throw new Error('sitemap is empty')
+  }
   return urls
 }
 
-test('sitemap pages load without redirects and have main content', async ({
-  page,
-  baseURL,
-}) => {
-  test.slow()
-  const urls = await getSitemapUrls(baseURL!)
-  const failures: string[] = []
+const urls = await getSitemapUrls()
 
+test.describe('sitemap', () => {
   for (const url of urls) {
-    const response = await page.goto(url, { waitUntil: 'domcontentloaded' })
-    if (!response) {
-      failures.push(`${url}: no response`)
-      continue
-    }
+    test(`${url} loads without redirects and has main content`, async ({
+      page,
+    }) => {
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded' })
+      expect(response, 'no response').not.toBeNull()
+      expect(response!.status(), 'expected 200').toBe(200)
+      expect(
+        response!.request().redirectedFrom(),
+        'expected no redirect'
+      ).toBeNull()
 
-    const status = response.status()
-    if (status !== 200) {
-      failures.push(`${url}: status ${status}`)
-      continue
-    }
-
-    if (response.request().redirectedFrom()) {
-      failures.push(`${url}: was redirected`)
-      continue
-    }
-
-    const main = page.locator('main')
-    const count = await main.count()
-    if (count !== 1) {
-      failures.push(`${url}: expected 1 <main>, found ${count}`)
-      continue
-    }
-
-    const text = (await main.innerText()).trim()
-    if (text.length === 0) {
-      failures.push(`${url}: <main> is empty`)
-    }
+      const main = page.locator('main')
+      await expect(main, 'expected exactly one <main>').toHaveCount(1)
+      const text = (await main.innerText()).trim()
+      expect(text.length, '<main> is empty').toBeGreaterThan(0)
+    })
   }
-
-  expect(failures, failures.join('\n')).toEqual([])
 })
