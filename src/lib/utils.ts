@@ -32,6 +32,55 @@ export function convertNumberToOrdinal(n: number) {
   return n + ord
 }
 
+export function convertNumberToWords(n: number) {
+  const ones = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'ten',
+    'eleven',
+    'twelve',
+    'thirteen',
+    'fourteen',
+    'fifteen',
+    'sixteen',
+    'seventeen',
+    'eighteen',
+    'nineteen',
+  ]
+  const tens = [
+    '',
+    '',
+    'twenty',
+    'thirty',
+    'forty',
+    'fifty',
+    'sixty',
+    'seventy',
+    'eighty',
+    'ninety',
+  ]
+
+  if (n < 20) {
+    return ones[n]
+  }
+
+  if (n < 100) {
+    const ten = tens[Math.floor(n / 10)]
+    const one = n % 10
+    return one ? `${ten}-${ones[one]}` : ten
+  }
+
+  return n.toString()
+}
+
 export function insertPrettyFeed(feedBody: string) {
   const lines = feedBody.split('\n')
   lines.splice(
