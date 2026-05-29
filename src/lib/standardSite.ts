@@ -115,13 +115,22 @@ interface PublishInput {
   title: string
   body: string
   description?: string
-  publishedAt: Date
-  updatedAt?: Date
+  // Accepts a Date, ISO string, or epoch — remark frontmatter (e.g. the
+  // git-last-modified date) can arrive as a string, so we coerce defensively.
+  publishedAt: Date | string | number
+  updatedAt?: Date | string | number
   tags?: string[]
   /** Path used to build the canonical URL; defaults to `path`. */
   canonicalPath?: string
   /** Post a Bluesky announcement (for comment threading) on first publish. */
   announce?: boolean
+}
+
+/** Coerce a Date | string | number into a valid Date, or undefined. */
+const toDate = (value?: Date | string | number): Date | undefined => {
+  if (value === undefined || value === null || value === '') return undefined
+  const date = value instanceof Date ? value : new Date(value)
+  return Number.isNaN(date.getTime()) ? undefined : date
 }
 
 /**
@@ -157,12 +166,14 @@ async function publishDocument(
 
   const publisher = await getPublisher()
 
+  const publishedAt = toDate(input.publishedAt) ?? new Date()
+  const updatedAt = toDate(input.updatedAt)
+
   // Reuse an existing announcement post; otherwise create one for recent posts.
   let bskyPostUri = existing?.bskyPostUri ?? null
   let bskyPostCid = existing?.bskyPostCid ?? null
   const recentEnoughToAnnounce =
-    dateFns.differenceInDays(new Date(), input.publishedAt) <=
-    ANNOUNCE_MAX_AGE_DAYS
+    dateFns.differenceInDays(new Date(), publishedAt) <= ANNOUNCE_MAX_AGE_DAYS
 
   if (input.announce && !bskyPostUri && recentEnoughToAnnounce) {
     const url = config.url + canonicalPath
@@ -174,10 +185,10 @@ async function publishDocument(
   const docInput = {
     site: config.url,
     title: input.title,
-    publishedAt: input.publishedAt.toISOString(),
+    publishedAt: publishedAt.toISOString(),
     path: canonicalPath,
     description: input.description,
-    updatedAt: input.updatedAt?.toISOString(),
+    updatedAt: updatedAt?.toISOString(),
     tags: input.tags,
     textContent,
     content: {
