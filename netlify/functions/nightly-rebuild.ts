@@ -17,9 +17,7 @@ export const handler: Handler = async () => {
 
     if (!resp.ok) {
       const text = await resp.text()
-      throw new Error(
-        `Failed to fetch /api/daylio: ${resp.status} ${text}`
-      )
+      throw new Error(`Failed to fetch /api/daylio: ${resp.status} ${text}`)
     }
 
     const entries: { time: string }[] = await resp.json()
