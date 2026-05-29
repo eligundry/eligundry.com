@@ -59,12 +59,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 
 ### standard.site (ATProto) Publishing
 
-- Publishes content to ATProto via [`@bryanguffey/astro-standard-site`](https://github.com/musicjunkieg/astro-standard-site) using the [standard.site](https://standard.site/) spec
-- Core logic in `src/lib/standardSite.ts`; publishing is triggered inside the prerendered page renders (`src/pages/blog/[...slug].astro`, `src/pages/blog/links/[slug].astro`, `src/pages/feelings.astro`), guarded by `import.meta.env.PROD` and best-effort/non-fatal
-- Blog + Notion link posts publish as `site.standard.document` records and (for recent posts) get a Bluesky announcement so replies render as comments via `src/components/Post/Comments.astro` alongside utteranc.es; feelings mirror the `/feelings.rss` feed
-- Published docs are tracked in the `standard_site_documents` table (Drizzle) and deduped via a content hash
-- Verification endpoint at `src/pages/.well-known/site.standard.publication.ts`; per-document `<link>` tags emitted in post heads
-- Credentials read via static `import.meta.env.*` literals (Astro) with `process.env.*` fallback (vite-node scripts): `BLUESKY_USERNAME`, `BLUESKY_PASSWORD`, `STANDARD_SITE_DID`, `STANDARD_SITE_PUBLICATION_RKEY`
+- Publishes blog/link/feelings content (and hand-made static pages) to ATProto via `src/lib/standardSite.ts`, triggered in prerendered page renders and deduped through the `standard_site_documents` table — see [`docs/standard-site.md`](./docs/standard-site.md)
 
 ### Deployment
 
