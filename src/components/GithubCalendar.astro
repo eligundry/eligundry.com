@@ -84,7 +84,11 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
             <rect
               y={(blockSize + blockMargin) * dayIdx}
               class={`level-${day.level}`}
-            />
+            >
+              <title>
+                {`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
+              </title>
+            </rect>
           ))}
         </g>
       )
