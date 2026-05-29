@@ -14,14 +14,17 @@ async function getAgent() {
   return agent
 }
 
-async function sendPost(text: string, extra?: any) {
+async function sendPost(
+  text: string,
+  extra?: any
+): Promise<{ uri: string; cid: string }> {
   const agent = await getAgent()
   const richText = new RichText({
     text: dedent(trim(text, ' \n')),
   })
   await richText.detectFacets(agent)
 
-  await agent.post({
+  return agent.post({
     ...extra,
     text: richText.text,
     facets: richText.facets,

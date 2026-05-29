@@ -4,7 +4,13 @@ import * as dateFns from 'date-fns'
 import BaseLayout from '../../../layouts/Layout.astro'
 import EmojiText from '../../../components/EmojiText.astro'
 import LinkEmbed from '../../../components/LinkEmbed.astro'
+import Comments from '../../../components/Post/Comments.astro'
 import { getLinkPostDate } from '../../../content/links'
+import {
+  syncLinkPost,
+  getVerificationLinkTag,
+  type SyncResult,
+} from '../../../lib/standardSite'
 
 interface Props {
   entry: CollectionEntry<'links'>
@@ -25,12 +31,33 @@ const { Content } = await render(entry)
 const props = entry.data.properties
 const url = `/blog/links/${props.Slug}/`
 const date = getLinkPostDate(entry.data)
+
+// Publish link posts to ATProto (standard.site) on production builds, mirroring
+// how regular blog posts are handled. Best-effort and non-fatal.
+let standardSite: SyncResult = {}
+if (import.meta.env.PROD) {
+  standardSite = await syncLinkPost({
+    slug: props.Slug,
+    title: props.Title,
+    description: props.Description ?? undefined,
+    url: props.URL ?? undefined,
+    date,
+    tags: Array.isArray(props.Tags) ? props.Tags : [],
+    body: entry.body ?? '',
+  })
+}
+const verificationLinkTag = getVerificationLinkTag(standardSite.documentRkey)
 ---
 
 <BaseLayout
   title={props.Title}
   description={props.Description ?? props.URL ?? ''}
 >
+  {
+    verificationLinkTag && (
+      <Fragment slot="head" set:html={verificationLinkTag} />
+    )
+  }
   <article
     class="paper prose"
     itemscope
@@ -76,5 +103,6 @@ const date = getLinkPostDate(entry.data)
     <div itemprop="text">
       <Content />
     </div>
+    <Comments canonicalPath={url} bskyPostUri={standardSite.bskyPostUri} />
   </article>
 </BaseLayout>

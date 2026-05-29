@@ -44,3 +44,24 @@ export const daylioEntryActivities = sqliteTable(
   },
   (table) => [primaryKey({ columns: [table.time, table.activity] })]
 )
+
+// Tracks content that has been published to ATProto via standard.site so we
+// don't re-publish unchanged documents on every build. Keyed by a stable path
+// (e.g. /blog/<slug>/, /blog/links/<slug>/, /feelings#<slug>, /horses).
+export const standardSiteDocuments = sqliteTable('standard_site_documents', {
+  path: text('path').primaryKey(),
+  kind: text('kind', { enum: ['blog', 'link', 'feeling', 'page'] }).notNull(),
+  documentUri: text('documentUri').notNull(),
+  documentRkey: text('documentRkey').notNull(),
+  documentCid: text('documentCid').notNull(),
+  // The Bluesky announcement post that comments are threaded under (blog/link
+  // posts only). Null for content we don't announce (e.g. feelings).
+  bskyPostUri: text('bskyPostUri'),
+  bskyPostCid: text('bskyPostCid'),
+  // sha256 of title + body; when it changes we update the ATProto record.
+  contentHash: text('contentHash').notNull(),
+  publishedAt: integer('publishedAt', { mode: 'timestamp' }).default(
+    timestampSQL
+  ),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
+})

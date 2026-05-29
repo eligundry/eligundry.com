@@ -17,3 +17,7 @@ My personal website.
 ## Deployment
 
 All pushes to main will trigger build on Netlify.
+
+## Documentation
+
+- [standard.site (ATProto) publishing](./docs/standard-site.md)

@@ -3,6 +3,8 @@ import type { CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
 import BaseLayout from './Layout.astro'
 import EmojiText from '../components/EmojiText.astro'
+import Comments from '../components/Post/Comments.astro'
+import { getVerificationLinkTag } from '../lib/standardSite'
 
 interface Props {
   collection: string
@@ -16,6 +18,10 @@ interface Props {
     readingTime: number
   }>
   fancyBackgroundPoints?: number
+  /** standard.site document record key, for the verification <link> tag. */
+  documentRkey?: string
+  /** Bluesky announcement post URI, for federated comments. */
+  bskyPostUri?: string
 }
 
 const {
@@ -25,10 +31,13 @@ const {
   collection,
   showComments,
   fancyBackgroundPoints,
+  documentRkey,
+  bskyPostUri,
 } = Astro.props
 const { title, description, cover, date } = frontmatter
 const { modified, readingTime = 0 } = remarkPluginFrontmatter
 const url = `/${collection}/${slug}/`
+const verificationLinkTag = getVerificationLinkTag(documentRkey)
 ---
 
 <style>
@@ -46,6 +55,11 @@ const url = `/${collection}/${slug}/`
   remarkPluginFrontmatter={remarkPluginFrontmatter}
   fancyBackgroundPoints={fancyBackgroundPoints}
 >
+  {
+    verificationLinkTag && (
+      <Fragment slot="head" set:html={verificationLinkTag} />
+    )
+  }
   <article
     class="paper prose"
     itemscope
@@ -113,21 +127,6 @@ const url = `/${collection}/${slug}/`
     <div itemprop="text" class="post-body">
       <slot />
     </div>
-    {
-      showComments && (
-        <footer>
-          <script
-            is:inline
-            src="https://utteranc.es/client.js"
-            repo="eligundry/eligundry.com"
-            issue-term="pathname"
-            label="✨💬✨  Blog"
-            theme="preferred-color-scheme"
-            crossorigin="anonymous"
-            async
-          />
-        </footer>
-      )
-    }
+    {showComments && <Comments canonicalPath={url} bskyPostUri={bskyPostUri} />}
   </article>
 </BaseLayout>

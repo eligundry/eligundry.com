@@ -13,6 +13,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Format code**: `pnpm prettier`
 - **Astro type checking**: `pnpm astro-check`
 - **Generate database migration**: `pnpm drizzle:migration:generate`
+- **Create standard.site publication** (one-time setup): `pnpm standard-site:create-publication`
+- **Publish a static HTML page to standard.site**: `pnpm standard-site:publish-page <file.html>`
 
 ## Architecture Overview
 
@@ -54,6 +56,10 @@ This is a personal website built with **Astro** as the main framework, using **P
 - Custom dynamic sitemap generated at `src/pages/sitemap.xml.ts` (not using `@astrojs/sitemap`)
 - Includes `.astro` pages, `.html` pages, blog posts, and talks
 - Last modified dates are derived from git commit history via `src/lib/lastModified.ts`
+
+### standard.site (ATProto) Publishing
+
+- Publishes blog/link/feelings content (and hand-made static pages) to ATProto via `src/lib/standardSite.ts`, triggered in prerendered page renders and deduped through the `standard_site_documents` table — see [`docs/standard-site.md`](./docs/standard-site.md)
 
 ### Deployment
 

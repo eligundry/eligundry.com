@@ -16,7 +16,9 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:e2e": "playwright test",
-    "drizzle:migration:generate": "drizzle-kit generate:sqlite --out ./migrations --schema ./src/lib/database/schema.ts",
+    "drizzle:migration:generate": "drizzle-kit generate",
+    "standard-site:create-publication": "vite-node scripts/standard-site/create-publication.ts",
+    "standard-site:publish-page": "vite-node scripts/standard-site/publish-page.ts",
     "prepare": "husky"
   },
   "prettier": {
@@ -47,6 +49,7 @@
     "@astrojs/preact": "^4.0.0",
     "@astrojs/tailwind": "^5.1.3",
     "@atproto/api": "^0.13.19",
+    "@bryanguffey/astro-standard-site": "^1.0.3",
     "@libsql/client": "^0.14.0",
     "@netlify/functions": "^3.0.0",
     "@react-hookz/web": "^24.0.4",
@@ -94,7 +97,6 @@
     "tailwindcss": "^3.4.16",
     "theme-change": "^2.5.0",
     "ts-dedent": "^2.2.0",
-    "ts-node": "^10.9.2",
     "unist-util-visit": "^5.1.0",
     "vite-plugin-webfont-dl": "^3.10.4",
     "zod": "^3.23.8"
@@ -128,6 +130,7 @@
     "prettier": "^3.5.0",
     "prettier-plugin-astro": "^0.14.1",
     "simple-git": "^3.27.0",
+    "vite-node": "^6.0.0",
     "vitest": "^2.1.8"
   },
   "overrides": {
