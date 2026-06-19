@@ -35,6 +35,22 @@ export const POST: APIRoute = async ({ request }) => {
     period
   )
 
+  if (topAlbums.length < 9) {
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        period,
+        skipped: true,
+        reason: `Not enough albums to post (got ${topAlbums.length}, need 9)`,
+      }),
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    )
+  }
+
   const alt = topAlbums
     .slice(0, 9)
     .map(
