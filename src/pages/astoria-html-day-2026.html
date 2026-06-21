@@ -252,7 +252,7 @@
       /* ---- Print: a single-page PDF to post around the neighborhood ---- */
       @page {
         size: letter portrait;
-        margin: 0.45in;
+        margin: 0.4in;
       }
 
       @media print {
@@ -298,21 +298,48 @@
           text-shadow: none;
         }
 
-        h1 {
-          font-size: 30pt;
-          margin: 0.15rem 0 0.3rem;
+        .masthead {
+          padding-bottom: 0.4rem;
+          margin-bottom: 0.55rem;
         }
 
-        h2 {
-          margin: 0.9rem 0 0.35rem;
+        .kicker {
+          font-size: 8pt;
+        }
+
+        /* The headline and big numbers use vw-based clamps for the screen;
+           on paper those balloon, so pin them to fixed point sizes. */
+        h1 {
+          font-size: 26pt;
+          margin: 0.1rem 0 0.2rem;
+        }
+
+        .subtitle {
+          font-size: 11pt;
+        }
+
+        .print-only p {
+          margin: 0 0 0.45rem;
+        }
+
+        .print-only .lede {
+          font-size: 12pt;
         }
 
         .banner {
           background: #fff;
           color: #000;
           border: 2px solid #000;
-          margin: 0.9rem 0;
-          padding: 0.5rem;
+          margin: 0.6rem 0;
+          padding: 0.4rem;
+        }
+
+        .banner .when {
+          font-size: 15pt;
+        }
+
+        .banner .where {
+          font-size: 11pt;
         }
 
         .banner .where a {
@@ -327,16 +354,26 @@
           border: 2px solid #000;
           text-shadow: none;
           overflow: visible;
-          margin-top: 0.9rem;
-          padding: 0.4rem;
+          margin-top: 0.6rem;
+          padding: 0.3rem;
         }
 
         .hell-gate pre {
-          font-size: 6pt;
+          font-size: 5pt;
+          line-height: 1.05;
         }
 
         .rsvp {
-          margin-top: 0.9rem;
+          margin-top: 0.6rem;
+          padding: 0.55rem;
+        }
+
+        .rsvp .number {
+          font-size: 18pt;
+        }
+
+        .tearoffs-label {
+          margin-top: 0.7rem;
         }
 
         .tearoffs,
@@ -497,18 +534,21 @@
         </p>
       </div>
 
-      <!-- Tight, CTA-focused copy for the printed flyer. -->
-      <p class="print-only">
-        Once a year, people everywhere gather to celebrate HTML Day — a day to
-        sit down together and write HTML by hand. We're hosting a community
-        <strong>freewrite</strong> on the South Hill of Astoria Park, under the
-        Hell Gate Bridge. Bring a blanket and a laptop and make something for
-        the web — a page, a poem, a love letter to the river. No experience
-        needed; we'll get you from blank file to live page. Come build something
-        with the neighborhood.
-      </p>
+      <!-- Fresh, flyer-only copy — written just for print, not reused from the web page. -->
+      <div class="print-only">
+        <p class="lede">
+          Hand-write a web page in the park. <strong>HTML Day</strong> is the
+          one Saturday a year when people everywhere make something small and
+          strange for the web — by hand, on purpose.
+        </p>
+        <p>
+          Bring a laptop, a blanket, and a full battery (there are no outlets
+          out here). New to code? I'll show you the ropes. Kids welcome and
+          poetry encouraged — or just come watch the bridge and say hello.
+        </p>
+      </div>
 
-      <section>
+      <section class="screen-only">
         <h2>Good to know</h2>
         <ul class="notes">
           <li><strong>Bring a blanket</strong> — we'll be on the grass.</li>
@@ -544,7 +584,7 @@
 
       <link itemprop="about" href="https://html.energy" />
 
-      <footer>
+      <footer class="screen-only">
         <span class="star" aria-hidden="true">✳️</span>
         part of <a href="https://html.energy">HTML Day 2026</a>
         <span class="star" aria-hidden="true">✳️</span>
