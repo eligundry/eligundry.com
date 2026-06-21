@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>✳️ HTML Day 2026 — Astoria Park Freewrite</title>
+    <meta
+      name="description"
+      content="Join Eli Gundry for an html.energy freewrite on HTML Day 2026 — Saturday, August 8th, 2-5pm in Astoria Park, under the Hell Gate Bridge. Bring a laptop, write some HTML by hand. Free, all welcome."
+    />
+    <meta name="author" content="Eli Gundry" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="HTML Day 2026 — Astoria Park Freewrite"
+    />
+    <meta
+      property="og:description"
+      content="An html.energy freewrite under the Hell Gate Bridge. Sat Aug 8, 2026, 2-5pm. Bring a laptop, write some HTML by hand. Free, all welcome."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✳️</text></svg>"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "HTML Day 2026 — Astoria Park Freewrite",
+        "description": "An html.energy freewrite for HTML Day 2026, hosted by Eli Gundry in Astoria Park beneath the Hell Gate Bridge. Gather IRL to write and learn HTML by hand — no JavaScript required. Bring a laptop and an idea. Free and open to everyone.",
+        "image": "https://eligundry.com/astoria-html-day-2026.html",
+        "startDate": "2026-08-08T14:00:00-04:00",
+        "endDate": "2026-08-08T17:00:00-04:00",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Astoria Park",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Shore Boulevard",
+            "addressLocality": "Astoria",
+            "addressRegion": "NY",
+            "postalCode": "11102",
+            "addressCountry": "US"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 40.7795,
+            "longitude": -73.9229
+          }
+        },
+        "organizer": {
+          "@type": "Person",
+          "name": "Eli Gundry",
+          "url": "https://eligundry.com"
+        },
+        "about": {
+          "@type": "Thing",
+          "name": "HTML Day",
+          "url": "https://html.energy"
+        },
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "name": "Free admission",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "url": "https://eligundry.com/astoria-html-day-2026.html",
+          "validFrom": "2026-06-21T00:00:00-04:00"
+        }
+      }
+    </script>
+    <style>
+      :root {
+        --energy-green: #39ff14;
+        --ink: #16170f;
+        --paper: #fbfbf3;
+      }
+
+      html {
+        box-sizing: border-box;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      body {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 4rem;
+        font-family:
+          ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: var(--ink);
+        background-color: var(--paper);
+      }
+
+      h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+        margin-bottom: 0.25rem;
+      }
+
+      h2 {
+        font-size: 1.35rem;
+        margin-top: 2.5rem;
+      }
+
+      a {
+        color: #0a7d2c;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 2px;
+      }
+
+      a:hover,
+      a:focus {
+        background-color: var(--energy-green);
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .star {
+        color: var(--energy-green);
+        text-shadow:
+          0 0 4px var(--energy-green),
+          0 0 12px var(--energy-green);
+      }
+
+      .tagline {
+        font-style: italic;
+        color: #555;
+        margin-top: 0;
+      }
+
+      .details {
+        border: 2px solid var(--ink);
+        border-radius: 6px;
+        padding: 1rem 1.5rem;
+        margin: 2rem 0;
+        background: #fff;
+      }
+
+      .details dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 0.4rem 1rem;
+      }
+
+      .details dt {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.06em;
+        align-self: center;
+      }
+
+      .details dd {
+        margin: 0;
+      }
+
+      footer {
+        margin-top: 2.5rem;
+        font-weight: bold;
+      }
+
+      /* The Hell Gate Bridge, glowing in html.energy green on black. */
+      .hell-gate {
+        margin-top: 3rem;
+        background: #000;
+        color: var(--energy-green);
+        padding: 1.25rem 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: clamp(0.42rem, 1.9vw, 0.8rem);
+        line-height: 1.15;
+        text-shadow: 0 0 6px rgba(57, 255, 20, 0.6);
+      }
+
+      .hell-gate pre {
+        margin: 0;
+      }
+
+      .caption {
+        text-align: center;
+        font-size: 0.85rem;
+        color: #555;
+        font-style: italic;
+        margin-top: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>
+        <span class="star">✳️</span>
+        <a href="https://html.energy">HTML Day 2026</a> in Astoria Park
+        <span class="star">✳️</span>
+      </h1>
+      <p class="tagline">
+        a freewrite under the Hell Gate Bridge — write some html by hand, by the
+        water.
+      </p>
+
+      <p>
+        On <strong>Saturday, August 8th, 2026</strong>, people all over the
+        world will gather to celebrate
+        <a href="https://html.energy">HTML Day</a>: a day to meet up IRL and
+        write and learn HTML together. I'm hosting one of those gatherings — a
+        <em>freewrite</em> — in <strong>Astoria Park</strong>, in the green
+        shade of the
+        <a href="https://en.wikipedia.org/wiki/Hell_Gate_Bridge"
+          >Hell Gate Bridge</a
+        >, where Queens meets the East River.
+      </p>
+
+      <p>
+        A freewrite is exactly what it sounds like. Bring a laptop, bring an
+        idea, and write a little HTML the way our forefathers &amp; foremothers
+        once did — no framework, no build step, no JavaScript required.
+        Hand-code a poem, a homepage, a love letter, a list of birds you can see
+        from the park. Then push it to a server and, boom, you're on the web.
+        That's the whole
+        <a href="https://html.energy">web0</a> dream.
+      </p>
+
+      <p>
+        No experience needed. If you've never written a tag in your life, come
+        anyway — I'll get you from blank file to live page before the sun gets
+        too low over the river.
+      </p>
+
+      <section class="details" aria-label="Event details">
+        <h2 style="margin-top: 0">The details</h2>
+        <dl>
+          <dt>What</dt>
+          <dd>An html.energy freewrite for HTML Day 2026</dd>
+          <dt>When</dt>
+          <dd>Saturday, August 8th, 2026 · 2:00–5:00 PM</dd>
+          <dt>Where</dt>
+          <dd>Astoria Park, by the Hell Gate Bridge · Astoria, Queens, NY</dd>
+          <dt>Cost</dt>
+          <dd>Free — all are welcome</dd>
+          <dt>Bring</dt>
+          <dd>A laptop, a charged battery, and an idea</dd>
+          <dt>Host</dt>
+          <dd><a href="https://eligundry.com">Eli Gundry</a></dd>
+        </dl>
+      </section>
+
+      <p>
+        Come write some HTML with me. I had a ball making this very page by hand
+        — won't you join me and the
+        <a href="https://html.energy">web0</a> movement?
+      </p>
+
+      <footer>
+        <p>
+          <span class="star">✳️</span>
+          <a href="https://eligundry.com">Eli Gundry</a>
+          <span class="star">✳️</span>
+        </p>
+      </footer>
+
+      <div
+        class="hell-gate"
+        role="img"
+        aria-label="ASCII art of the Hell Gate Bridge over the East River"
+      >
+        <pre>
+                        T H E   H E L L   G A T E   B R I D G E
+
+                          _.-=""""""""""""""""""""=-._
+                      _.-'                            '-._
+                   .-'                                    '-.
+                 .'                                          '.
+               .'                                              '.
+   ____      .'                                                  '.      ____
+  |####|   .'                                                      '.   |####|
+  |####|__.'________________________________________________________'.__|####|
+  |####||==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==||####|
+  |####||  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  ||####|
+  |####||  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  ||####|
+~~|####||~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~||####|~~
+~~~~~~~~~~~~~~~~~~~~~~~~~ E A S T   R I V E R ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   ASTORIA PARK  ✳        ✳        ✳        ✳        ✳        ✳   ASTORIA PARK
+</pre
+        >
+      </div>
+      <p class="caption">
+        Hell Gate Bridge — rendered in html.energy green, the way it glows over
+        the park at golden hour.
+      </p>
+    </main>
+  </body>
+</html>
