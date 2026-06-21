@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>✳️ HTML Day 2026 — Astoria Park Freewrite</title>
+    <title>✳️ HTML Day 2026 — Astoria Park Freewrite (Flyer)</title>
     <meta
       name="description"
-      content="Join Eli Gundry for an html.energy freewrite on HTML Day 2026 — Saturday, August 8th, 2-5pm in Astoria Park, under the Hell Gate Bridge. Bring a laptop, write some HTML by hand. Free, all welcome."
+      content="A flyer for an html.energy freewrite on HTML Day 2026 — Saturday, August 8th, 2-5pm at the South Hill of Astoria Park, under the Hell Gate Bridge. Bring a blanket and a laptop, write some HTML and poetry by hand. Free, all welcome. Text Eli to RSVP."
     />
     <meta name="author" content="Eli Gundry" />
     <meta property="og:type" content="website" />
@@ -16,7 +16,7 @@
     />
     <meta
       property="og:description"
-      content="An html.energy freewrite under the Hell Gate Bridge. Sat Aug 8, 2026, 2-5pm. Bring a laptop, write some HTML by hand. Free, all welcome."
+      content="An html.energy freewrite under the Hell Gate Bridge. Sat Aug 8, 2026, 2-5pm, South Hill of Astoria Park. Bring a blanket and a laptop. Free, all welcome."
     />
     <link
       rel="icon"
@@ -27,7 +27,7 @@
         "@context": "https://schema.org",
         "@type": "Event",
         "name": "HTML Day 2026 — Astoria Park Freewrite",
-        "description": "An html.energy freewrite for HTML Day 2026, hosted by Eli Gundry in Astoria Park beneath the Hell Gate Bridge. Gather IRL to write and learn HTML by hand — no JavaScript required. Bring a laptop and an idea. Free and open to everyone.",
+        "description": "An html.energy freewrite for HTML Day 2026, hosted by Eli Gundry on the South Hill of Astoria Park beneath the Hell Gate Bridge. Gather IRL to write and learn HTML by hand — no JavaScript required. Bring a blanket and a laptop; poetry encouraged. Free and open to everyone.",
         "image": "https://eligundry.com/astoria-html-day-2026.html",
         "startDate": "2026-08-08T14:00:00-04:00",
         "endDate": "2026-08-08T17:00:00-04:00",
@@ -35,10 +35,10 @@
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": {
           "@type": "Place",
-          "name": "Astoria Park",
+          "name": "Astoria Park — South Hill",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Shore Boulevard",
+            "streetAddress": "Astoria Park, South Hill",
             "addressLocality": "Astoria",
             "addressRegion": "NY",
             "postalCode": "11102",
@@ -46,14 +46,15 @@
           },
           "geo": {
             "@type": "GeoCoordinates",
-            "latitude": 40.7795,
-            "longitude": -73.9229
+            "latitude": 40.7803863,
+            "longitude": -73.9211527
           }
         },
         "organizer": {
           "@type": "Person",
           "name": "Eli Gundry",
-          "url": "https://eligundry.com"
+          "url": "https://eligundry.com",
+          "telephone": "+1-347-523-2652"
         },
         "about": {
           "@type": "Thing",
@@ -76,6 +77,7 @@
       :root {
         --energy-green: #39ff14;
         --ink: #16170f;
+        --link: #0a7d2c;
         --paper: #fbfbf3;
       }
 
@@ -90,30 +92,107 @@
       }
 
       body {
-        max-width: 46rem;
+        max-width: 44rem;
         margin: 0 auto;
-        padding: 2.5rem 1.25rem 4rem;
+        padding: 2.5rem 1.25rem 3rem;
         font-family:
           ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
         font-size: 1.2rem;
-        line-height: 1.6;
+        line-height: 1.55;
         color: var(--ink);
         background-color: var(--paper);
       }
 
+      .flyer {
+        border: 3px solid var(--ink);
+        border-radius: 8px;
+        padding: 2rem 1.75rem;
+        background: #fff;
+      }
+
+      /* ---- Masthead ---- */
+      .masthead {
+        text-align: center;
+        border-bottom: 3px double var(--ink);
+        padding-bottom: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .kicker {
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin: 0;
+      }
+
       h1 {
-        font-size: 2rem;
-        line-height: 1.2;
-        margin-bottom: 0.25rem;
+        font-size: clamp(2.1rem, 7vw, 3.25rem);
+        line-height: 1;
+        margin: 0.4rem 0 0.5rem;
+        letter-spacing: -0.01em;
+      }
+
+      h1 a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .subtitle {
+        font-style: italic;
+        font-size: 1.15rem;
+        margin: 0;
+        color: #444;
+      }
+
+      .star {
+        color: var(--energy-green);
+        text-shadow:
+          0 0 4px var(--energy-green),
+          0 0 12px var(--energy-green);
+      }
+
+      /* ---- The big when/where banner ---- */
+      .banner {
+        text-align: center;
+        background: var(--ink);
+        color: var(--paper);
+        border-radius: 6px;
+        padding: 1rem 1rem 1.1rem;
+        margin: 1.5rem 0;
+      }
+
+      .banner .when {
+        font-size: clamp(1.4rem, 5vw, 2rem);
+        font-weight: bold;
+        line-height: 1.1;
+        display: block;
+      }
+
+      .banner .where {
+        display: block;
+        margin-top: 0.35rem;
+        font-size: 1.05rem;
+      }
+
+      .banner .where a {
+        color: var(--energy-green);
+      }
+
+      p {
+        margin: 0 0 1rem;
       }
 
       h2 {
-        font-size: 1.35rem;
-        margin-top: 2.5rem;
+        font-size: 1.3rem;
+        margin: 1.75rem 0 0.6rem;
+        border-bottom: 2px solid var(--ink);
+        display: inline-block;
+        padding-bottom: 0.1rem;
       }
 
       a {
-        color: #0a7d2c;
+        color: var(--link);
         text-decoration-thickness: 2px;
         text-underline-offset: 2px;
       }
@@ -125,66 +204,66 @@
         text-decoration: none;
       }
 
-      .star {
-        color: var(--energy-green);
-        text-shadow:
-          0 0 4px var(--energy-green),
-          0 0 12px var(--energy-green);
+      ul.notes {
+        margin: 0;
+        padding-left: 1.2rem;
       }
 
-      .tagline {
-        font-style: italic;
-        color: #555;
-        margin-top: 0;
+      ul.notes li {
+        margin-bottom: 0.5rem;
       }
 
-      .details {
-        border: 2px solid var(--ink);
+      /* ---- RSVP call-to-action ---- */
+      .rsvp {
+        text-align: center;
+        border: 2px dashed var(--ink);
         border-radius: 6px;
-        padding: 1rem 1.5rem;
-        margin: 2rem 0;
-        background: #fff;
+        padding: 1rem;
+        margin: 1.75rem 0 0;
       }
 
-      .details dl {
-        margin: 0;
-        display: grid;
-        grid-template-columns: max-content 1fr;
-        gap: 0.4rem 1rem;
-      }
-
-      .details dt {
-        font-weight: bold;
+      .rsvp .label {
         text-transform: uppercase;
+        letter-spacing: 0.16em;
         font-size: 0.8rem;
-        letter-spacing: 0.06em;
-        align-self: center;
+        font-weight: bold;
+        margin: 0 0 0.25rem;
       }
 
-      .details dd {
-        margin: 0;
+      .rsvp .number {
+        font-size: clamp(1.5rem, 6vw, 2.25rem);
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      .rsvp .number a {
+        color: var(--ink);
+        text-decoration: none;
       }
 
       footer {
-        margin-top: 2.5rem;
+        text-align: center;
+        margin-top: 1.5rem;
         font-weight: bold;
       }
 
-      /* The Hell Gate Bridge, glowing in html.energy green on black. */
+      /* ---- The Hell Gate Bridge, glowing in html.energy green ---- */
       .hell-gate {
-        margin-top: 3rem;
+        margin-top: 1.75rem;
         background: #000;
         color: var(--energy-green);
-        padding: 1.25rem 1rem;
+        padding: 1.1rem 0.75rem;
         border-radius: 6px;
         overflow-x: auto;
-        font-size: clamp(0.42rem, 1.9vw, 0.8rem);
-        line-height: 1.15;
         text-shadow: 0 0 6px rgba(57, 255, 20, 0.6);
       }
 
       .hell-gate pre {
         margin: 0;
+        /* Sized so the full 78-column drawing fits the screen width down to
+           narrow phones, while capping out at a comfortable size on desktop. */
+        font-size: clamp(0.34rem, 1.85vw, 0.95rem);
+        line-height: 1.15;
       }
 
       .caption {
@@ -192,80 +271,202 @@
         font-size: 0.85rem;
         color: #555;
         font-style: italic;
-        margin-top: 0.75rem;
+        margin: 0.75rem 0 0;
+      }
+
+      /* ---- Tear-off phone strips (classic neighborhood flyer) ---- */
+      .tearoffs-label {
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.75rem;
+        margin: 1.75rem 0 0;
+        color: #555;
+      }
+
+      .tearoffs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-top: 2px dashed var(--ink);
+        margin-top: 0.4rem;
+      }
+
+      .tearoffs .tab {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        border-right: 1px dashed #aaa;
+        padding: 0.85rem 0.3rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      .tearoffs .tab:first-child {
+        border-left: 1px dashed #aaa;
+      }
+
+      .tearoffs .tab .num {
+        color: var(--link);
+        font-weight: bold;
+      }
+
+      /* ---- Mobile ---- */
+      @media (max-width: 480px) {
+        body {
+          padding: 1.25rem 0.75rem 2.5rem;
+        }
+
+        .flyer {
+          padding: 1.25rem 1rem;
+        }
+
+        .hell-gate {
+          padding: 0.85rem 0.4rem;
+        }
+      }
+
+      /* ---- Print: optimized for a single-page PDF to post around town ---- */
+      @page {
+        size: letter portrait;
+        margin: 0.5in;
+      }
+
+      @media print {
+        body {
+          max-width: none;
+          margin: 0;
+          padding: 0;
+          font-size: 11pt;
+          line-height: 1.4;
+          color: #000;
+          background: #fff;
+        }
+
+        .flyer {
+          border: 2px solid #000;
+          border-radius: 0;
+          padding: 0.4in 0.45in;
+        }
+
+        a {
+          color: #000;
+          text-decoration: none;
+        }
+
+        a:hover,
+        a:focus {
+          background: transparent;
+          color: #000;
+        }
+
+        /* Stars and headings print as solid black ink — no glow, no toner-hungry fills. */
+        .star {
+          color: #000;
+          text-shadow: none;
+        }
+
+        .banner {
+          background: #fff;
+          color: #000;
+          border: 2px solid #000;
+        }
+
+        .banner .where a {
+          color: #000;
+        }
+
+        /* The bridge prints as black ink on white so it stays crisp on a
+           photocopier and doesn't drink a cartridge of toner. */
+        .hell-gate {
+          background: #fff;
+          color: #000;
+          border: 2px solid #000;
+          text-shadow: none;
+          overflow: visible;
+        }
+
+        .hell-gate pre {
+          font-size: 6.5pt;
+        }
+
+        .tearoffs,
+        .rsvp,
+        .banner {
+          page-break-inside: avoid;
+        }
       }
     </style>
   </head>
   <body>
-    <main>
-      <h1>
-        <span class="star">✳️</span>
-        <a href="https://html.energy">HTML Day 2026</a> in Astoria Park
-        <span class="star">✳️</span>
-      </h1>
-      <p class="tagline">
-        a freewrite under the Hell Gate Bridge — write some html by hand, by the
-        water.
-      </p>
+    <article class="flyer">
+      <header class="masthead">
+        <p class="kicker">You're Invited · It's Free</p>
+        <h1>
+          <span class="star">✳️</span>
+          <a href="https://html.energy">HTML Day 2026</a>
+          <span class="star">✳️</span>
+        </h1>
+        <p class="subtitle">
+          a freewrite in Astoria Park, under the Hell Gate Bridge
+        </p>
+      </header>
+
+      <div class="banner">
+        <span class="when">Saturday, August 8th · 2–5 PM</span>
+        <span class="where">
+          South Hill, <strong>Astoria Park</strong> ·
+          <a
+            href="https://www.google.com/maps/search/?api=1&amp;query=40.7803863,-73.9211527"
+            >map ↗</a
+          >
+        </span>
+      </div>
 
       <p>
-        On <strong>Saturday, August 8th, 2026</strong>, people all over the
-        world will gather to celebrate
-        <a href="https://html.energy">HTML Day</a>: a day to meet up IRL and
-        write and learn HTML together. I'm hosting one of those gatherings — a
-        <em>freewrite</em> — in <strong>Astoria Park</strong>, in the green
-        shade of the
+        Once a year, people all over the world gather IRL to celebrate
+        <a href="https://html.energy">HTML Day</a> — a day to sit down together
+        and write HTML by hand. I'm hosting one of those gatherings, a
+        <em>freewrite</em>, on the grassy South Hill of Astoria Park, in the
+        green shade of the
         <a href="https://en.wikipedia.org/wiki/Hell_Gate_Bridge"
           >Hell Gate Bridge</a
-        >, where Queens meets the East River.
+        >.
       </p>
 
       <p>
-        A freewrite is exactly what it sounds like. Bring a laptop, bring an
-        idea, and write a little HTML the way our forefathers &amp; foremothers
-        once did — no framework, no build step, no JavaScript required.
-        Hand-code a poem, a homepage, a love letter, a list of birds you can see
-        from the park. Then push it to a server and, boom, you're on the web.
-        That's the whole
-        <a href="https://html.energy">web0</a> dream.
+        Bring a laptop and write a little HTML the way our forefathers &amp;
+        foremothers once did — no framework, no build step, no JavaScript
+        required. A poem, a homepage, a love letter to the river. I'll be
+        working on some <strong>poetry</strong>, so feel free to do the same.
+        Never written a tag in your life? Come anyway — I'll get you from blank
+        file to live page before the sun gets low.
       </p>
 
-      <p>
-        No experience needed. If you've never written a tag in your life, come
-        anyway — I'll get you from blank file to live page before the sun gets
-        too low over the river.
-      </p>
+      <h2>Good to know</h2>
+      <ul class="notes">
+        <li><strong>Bring a blanket</strong> — we'll be on the grass.</li>
+        <li>I'm bringing a sandwich; pack a snack or a picnic of your own.</li>
+        <li>
+          My kid will be hanging with us for part of the afternoon, so it's a
+          kid-friendly crowd.
+        </li>
+        <li>Poetry welcome and encouraged — HTML optional but lovely.</li>
+        <li>Charge your battery; there are no outlets in the park.</li>
+      </ul>
 
-      <section class="details" aria-label="Event details">
-        <h2 style="margin-top: 0">The details</h2>
-        <dl>
-          <dt>What</dt>
-          <dd>An html.energy freewrite for HTML Day 2026</dd>
-          <dt>When</dt>
-          <dd>Saturday, August 8th, 2026 · 2:00–5:00 PM</dd>
-          <dt>Where</dt>
-          <dd>Astoria Park, by the Hell Gate Bridge · Astoria, Queens, NY</dd>
-          <dt>Cost</dt>
-          <dd>Free — all are welcome</dd>
-          <dt>Bring</dt>
-          <dd>A laptop, a charged battery, and an idea</dd>
-          <dt>Host</dt>
-          <dd><a href="https://eligundry.com">Eli Gundry</a></dd>
-        </dl>
-      </section>
-
-      <p>
-        Come write some HTML with me. I had a ball making this very page by hand
-        — won't you join me and the
-        <a href="https://html.energy">web0</a> movement?
-      </p>
+      <div class="rsvp">
+        <p class="label">RSVP / questions — text Eli</p>
+        <div class="number">
+          <a href="tel:+13475232652">347.523.2652</a>
+        </div>
+      </div>
 
       <footer>
-        <p>
-          <span class="star">✳️</span>
-          <a href="https://eligundry.com">Eli Gundry</a>
-          <span class="star">✳️</span>
-        </p>
+        <span class="star">✳️</span>
+        hosted by <a href="https://eligundry.com">Eli Gundry</a>
+        <span class="star">✳️</span>
       </footer>
 
       <div
@@ -298,6 +499,20 @@
         Hell Gate Bridge — rendered in html.energy green, the way it glows over
         the park at golden hour.
       </p>
-    </main>
+
+      <p class="tearoffs-label">✂ — tear off my number — ✂</p>
+      <div class="tearoffs" aria-hidden="true">
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+      </div>
+    </article>
   </body>
 </html>
