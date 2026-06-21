@@ -6,7 +6,7 @@
     <title>✳️ HTML Day 2026 — Astoria Park Freewrite (Flyer)</title>
     <meta
       name="description"
-      content="A flyer for an html.energy freewrite on HTML Day 2026 — Saturday, August 8th, 2-5pm at the South Hill of Astoria Park, under the Hell Gate Bridge. Bring a blanket and a laptop, write some HTML and poetry by hand. Free, all welcome. Text Eli to RSVP."
+      content="A community freewrite for HTML Day 2026 — Saturday, August 8th, 2-5pm at the South Hill of Astoria Park, under the Hell Gate Bridge. Bring a blanket and a laptop, write some HTML and poetry by hand. Free, all welcome. Text Eli to RSVP."
     />
     <meta name="author" content="Eli Gundry" />
     <meta property="og:type" content="website" />
@@ -16,63 +16,12 @@
     />
     <meta
       property="og:description"
-      content="An html.energy freewrite under the Hell Gate Bridge. Sat Aug 8, 2026, 2-5pm, South Hill of Astoria Park. Bring a blanket and a laptop. Free, all welcome."
+      content="A community freewrite under the Hell Gate Bridge. Sat Aug 8, 2026, 2-5pm, South Hill of Astoria Park. Bring a blanket and a laptop. Free, all welcome."
     />
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✳️</text></svg>"
     />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": "HTML Day 2026 — Astoria Park Freewrite",
-        "description": "An html.energy freewrite for HTML Day 2026, hosted by Eli Gundry on the South Hill of Astoria Park beneath the Hell Gate Bridge. Gather IRL to write and learn HTML by hand — no JavaScript required. Bring a blanket and a laptop; poetry encouraged. Free and open to everyone.",
-        "image": "https://eligundry.com/astoria-html-day-2026.html",
-        "startDate": "2026-08-08T14:00:00-04:00",
-        "endDate": "2026-08-08T17:00:00-04:00",
-        "eventStatus": "https://schema.org/EventScheduled",
-        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-        "location": {
-          "@type": "Place",
-          "name": "Astoria Park — South Hill",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Astoria Park, South Hill",
-            "addressLocality": "Astoria",
-            "addressRegion": "NY",
-            "postalCode": "11102",
-            "addressCountry": "US"
-          },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": 40.7803863,
-            "longitude": -73.9211527
-          }
-        },
-        "organizer": {
-          "@type": "Person",
-          "name": "Eli Gundry",
-          "url": "https://eligundry.com",
-          "telephone": "+1-347-523-2652"
-        },
-        "about": {
-          "@type": "Thing",
-          "name": "HTML Day",
-          "url": "https://html.energy"
-        },
-        "isAccessibleForFree": true,
-        "offers": {
-          "@type": "Offer",
-          "name": "Free admission",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock",
-          "url": "https://eligundry.com/astoria-html-day-2026.html",
-          "validFrom": "2026-06-21T00:00:00-04:00"
-        }
-      }
-    </script>
     <style>
       :root {
         --energy-green: #39ff14;
@@ -101,6 +50,11 @@
         line-height: 1.55;
         color: var(--ink);
         background-color: var(--paper);
+      }
+
+      /* Anything meant only for the printed flyer is hidden on screen. */
+      .print-only {
+        display: none;
       }
 
       .flyer {
@@ -220,6 +174,7 @@
         border-radius: 6px;
         padding: 1rem;
         margin: 1.75rem 0 0;
+        font-style: normal;
       }
 
       .rsvp .label {
@@ -239,6 +194,11 @@
       .rsvp .number a {
         color: var(--ink);
         text-decoration: none;
+      }
+
+      .rsvp .site {
+        font-size: 0.95rem;
+        margin: 0.4rem 0 0;
       }
 
       footer {
@@ -274,44 +234,6 @@
         margin: 0.75rem 0 0;
       }
 
-      /* ---- Tear-off phone strips (classic neighborhood flyer) ---- */
-      .tearoffs-label {
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        font-size: 0.75rem;
-        margin: 1.75rem 0 0;
-        color: #555;
-      }
-
-      .tearoffs {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        border-top: 2px dashed var(--ink);
-        margin-top: 0.4rem;
-      }
-
-      .tearoffs .tab {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        border-right: 1px dashed #aaa;
-        padding: 0.85rem 0.3rem;
-        font-size: 0.8rem;
-        letter-spacing: 0.03em;
-        white-space: nowrap;
-        text-align: center;
-      }
-
-      .tearoffs .tab:first-child {
-        border-left: 1px dashed #aaa;
-      }
-
-      .tearoffs .tab .num {
-        color: var(--link);
-        font-weight: bold;
-      }
-
       /* ---- Mobile ---- */
       @media (max-width: 480px) {
         body {
@@ -327,10 +249,10 @@
         }
       }
 
-      /* ---- Print: optimized for a single-page PDF to post around town ---- */
+      /* ---- Print: a single-page PDF to post around the neighborhood ---- */
       @page {
         size: letter portrait;
-        margin: 0.5in;
+        margin: 0.45in;
       }
 
       @media print {
@@ -338,16 +260,25 @@
           max-width: none;
           margin: 0;
           padding: 0;
-          font-size: 11pt;
-          line-height: 1.4;
+          font-size: 10.5pt;
+          line-height: 1.35;
           color: #000;
           background: #fff;
+        }
+
+        /* Swap screen copy for the tighter, CTA-focused flyer copy. */
+        .screen-only {
+          display: none !important;
+        }
+
+        .print-only {
+          display: revert;
         }
 
         .flyer {
           border: 2px solid #000;
           border-radius: 0;
-          padding: 0.4in 0.45in;
+          padding: 0.3in 0.4in;
         }
 
         a {
@@ -367,10 +298,21 @@
           text-shadow: none;
         }
 
+        h1 {
+          font-size: 30pt;
+          margin: 0.15rem 0 0.3rem;
+        }
+
+        h2 {
+          margin: 0.9rem 0 0.35rem;
+        }
+
         .banner {
           background: #fff;
           color: #000;
           border: 2px solid #000;
+          margin: 0.9rem 0;
+          padding: 0.5rem;
         }
 
         .banner .where a {
@@ -385,28 +327,98 @@
           border: 2px solid #000;
           text-shadow: none;
           overflow: visible;
+          margin-top: 0.9rem;
+          padding: 0.4rem;
         }
 
         .hell-gate pre {
-          font-size: 6.5pt;
+          font-size: 6pt;
+        }
+
+        .rsvp {
+          margin-top: 0.9rem;
         }
 
         .tearoffs,
         .rsvp,
-        .banner {
+        .banner,
+        .hell-gate {
           page-break-inside: avoid;
         }
+      }
+
+      /* ---- Tear-off phone strips: only for the printed flyer ---- */
+      .tearoffs-label {
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.75rem;
+        margin: 1rem 0 0;
+        color: #000;
+      }
+
+      .tearoffs {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        border-top: 2px dashed #000;
+        margin-top: 0.3rem;
+      }
+
+      .tearoffs .tab {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        border-right: 1px dashed #888;
+        padding: 0.7rem 0.25rem;
+        font-size: 8pt;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      .tearoffs .tab:first-child {
+        border-left: 1px dashed #888;
+      }
+
+      .tearoffs .tab .num {
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <article class="flyer">
+    <article class="flyer" itemscope itemtype="https://schema.org/Event">
+      <!-- Schema.org Event, expressed as microdata in the markup itself. -->
+      <meta
+        itemprop="description"
+        content="A community freewrite for HTML Day 2026 on the South Hill of Astoria Park, beneath the Hell Gate Bridge. Gather IRL to write and learn HTML by hand — no JavaScript required. Bring a blanket and a laptop; poetry encouraged. Free and open to everyone."
+      />
+      <meta
+        itemprop="image"
+        content="https://eligundry.com/astoria-html-day-2026.html"
+      />
+      <meta
+        itemprop="eventStatus"
+        content="https://schema.org/EventScheduled"
+      />
+      <meta
+        itemprop="eventAttendanceMode"
+        content="https://schema.org/OfflineEventAttendanceMode"
+      />
+      <meta itemprop="isAccessibleForFree" content="true" />
+      <meta itemprop="endDate" content="2026-08-08T17:00:00-04:00" />
+      <link
+        itemprop="url"
+        href="https://eligundry.com/astoria-html-day-2026.html"
+      />
+
       <header class="masthead">
-        <p class="kicker">You're Invited · It's Free</p>
+        <p class="kicker">A Community Freewrite · Free · All Welcome</p>
         <h1>
-          <span class="star">✳️</span>
-          <a href="https://html.energy">HTML Day 2026</a>
-          <span class="star">✳️</span>
+          <span class="star" aria-hidden="true">✳️</span>
+          <span itemprop="name"
+            ><a href="https://html.energy">HTML Day 2026</a></span
+          >
+          <span class="star" aria-hidden="true">✳️</span>
         </h1>
         <p class="subtitle">
           a freewrite in Astoria Park, under the Hell Gate Bridge
@@ -414,59 +426,125 @@
       </header>
 
       <div class="banner">
-        <span class="when">Saturday, August 8th · 2–5 PM</span>
-        <span class="where">
-          South Hill, <strong>Astoria Park</strong> ·
-          <a
-            href="https://www.google.com/maps/search/?api=1&amp;query=40.7803863,-73.9211527"
-            >map ↗</a
+        <span class="when">
+          <time itemprop="startDate" datetime="2026-08-08T14:00:00-04:00"
+            >Saturday, August 8th · 2–5 PM</time
           >
+        </span>
+        <span
+          class="where"
+          itemprop="location"
+          itemscope
+          itemtype="https://schema.org/Place"
+        >
+          <span itemprop="name">South Hill, <strong>Astoria Park</strong></span>
+          <span
+            itemprop="address"
+            itemscope
+            itemtype="https://schema.org/PostalAddress"
+          >
+            <meta itemprop="streetAddress" content="Astoria Park, South Hill" />
+            <meta itemprop="addressLocality" content="Astoria" />
+            <meta itemprop="addressRegion" content="NY" />
+            <meta itemprop="postalCode" content="11102" />
+            <meta itemprop="addressCountry" content="US" />
+          </span>
+          <span
+            itemprop="geo"
+            itemscope
+            itemtype="https://schema.org/GeoCoordinates"
+          >
+            <meta itemprop="latitude" content="40.7803863" />
+            <meta itemprop="longitude" content="-73.9211527" />
+          </span>
+          <span class="screen-only">
+            ·
+            <a
+              itemprop="hasMap"
+              href="https://www.google.com/maps/search/?api=1&amp;query=40.7803863,-73.9211527"
+              >map ↗</a
+            >
+          </span>
         </span>
       </div>
 
-      <p>
-        Once a year, people all over the world gather IRL to celebrate
-        <a href="https://html.energy">HTML Day</a> — a day to sit down together
-        and write HTML by hand. I'm hosting one of those gatherings, a
-        <em>freewrite</em>, on the grassy South Hill of Astoria Park, in the
-        green shade of the
-        <a href="https://en.wikipedia.org/wiki/Hell_Gate_Bridge"
-          >Hell Gate Bridge</a
-        >.
-      </p>
+      <!-- Warm copy for the web (kept off the printed flyer). -->
+      <div class="screen-only">
+        <p>
+          Once a year, people all over the world gather IRL to celebrate
+          <a href="https://html.energy">HTML Day</a> — a day to sit down
+          together and write HTML by hand. We're hosting one of those gatherings
+          here in the neighborhood: a community <em>freewrite</em> on the grassy
+          South Hill of Astoria Park, in the green shade of the
+          <a href="https://en.wikipedia.org/wiki/Hell_Gate_Bridge"
+            >Hell Gate Bridge</a
+          >.
+        </p>
 
-      <p>
-        Bring a laptop and write a little HTML the way our forefathers &amp;
-        foremothers once did — no framework, no build step, no JavaScript
-        required. A poem, a homepage, a love letter to the river. I'll be
-        working on some <strong>poetry</strong>, so feel free to do the same.
-        Never written a tag in your life? Come anyway — I'll get you from blank
-        file to live page before the sun gets low.
-      </p>
+        <p>
+          Bring a laptop and write a little HTML by hand, the way the early web
+          was made — no framework, no build step, no JavaScript required. A
+          poem, a homepage, a love letter to the river. A few of us will be
+          working on <strong>poetry</strong>, so feel free to do the same. Never
+          written a tag in your life? Come anyway — we'll get you from blank
+          file to live page before the sun gets low.
+        </p>
 
-      <h2>Good to know</h2>
-      <ul class="notes">
-        <li><strong>Bring a blanket</strong> — we'll be on the grass.</li>
-        <li>I'm bringing a sandwich; pack a snack or a picnic of your own.</li>
-        <li>
-          My kid will be hanging with us for part of the afternoon, so it's a
-          kid-friendly crowd.
-        </li>
-        <li>Poetry welcome and encouraged — HTML optional but lovely.</li>
-        <li>Charge your battery; there are no outlets in the park.</li>
-      </ul>
-
-      <div class="rsvp">
-        <p class="label">RSVP / questions — text Eli</p>
-        <div class="number">
-          <a href="tel:+13475232652">347.523.2652</a>
-        </div>
+        <p>
+          However you find your way to the web, this is about making something
+          together and getting to know the people who build alongside you. Pull
+          up a patch of grass and join us.
+        </p>
       </div>
 
+      <!-- Tight, CTA-focused copy for the printed flyer. -->
+      <p class="print-only">
+        Once a year, people everywhere gather to celebrate HTML Day — a day to
+        sit down together and write HTML by hand. We're hosting a community
+        <strong>freewrite</strong> on the South Hill of Astoria Park, under the
+        Hell Gate Bridge. Bring a blanket and a laptop and make something for
+        the web — a page, a poem, a love letter to the river. No experience
+        needed; we'll get you from blank file to live page. Come build something
+        with the neighborhood.
+      </p>
+
+      <section>
+        <h2>Good to know</h2>
+        <ul class="notes">
+          <li><strong>Bring a blanket</strong> — we'll be on the grass.</li>
+          <li>Pack a snack or a picnic; there'll be sandwiches to share.</li>
+          <li>It's a kid-friendly crowd — little ones welcome.</li>
+          <li>Poetry welcome and encouraged — HTML optional but lovely.</li>
+          <li>Charge your battery; there are no outlets in the park.</li>
+        </ul>
+      </section>
+
+      <address
+        class="rsvp"
+        itemprop="organizer"
+        itemscope
+        itemtype="https://schema.org/Person"
+      >
+        <p class="label">RSVP / questions — text Eli</p>
+        <div class="number">
+          <a itemprop="telephone" href="tel:+13475232652">347.523.2652</a>
+        </div>
+        <p class="site">
+          <a
+            itemprop="url"
+            href="https://eligundry.com/astoria-html-day-2026.html"
+            >eligundry.com/astoria-html-day-2026</a
+          >
+        </p>
+        <meta itemprop="name" content="Eli Gundry" />
+      </address>
+
+      <link itemprop="about" href="https://html.energy" />
+
       <footer>
-        <span class="star">✳️</span>
-        hosted by <a href="https://eligundry.com">Eli Gundry</a>
-        <span class="star">✳️</span>
+        <span class="star" aria-hidden="true">✳️</span>
+        part of <a href="https://html.energy">HTML Day 2026</a>
+        <span class="star" aria-hidden="true">✳️</span>
       </footer>
 
       <div
@@ -495,13 +573,14 @@
 </pre
         >
       </div>
-      <p class="caption">
+      <p class="caption screen-only">
         Hell Gate Bridge — rendered in html.energy green, the way it glows over
         the park at golden hour.
       </p>
 
-      <p class="tearoffs-label">✂ — tear off my number — ✂</p>
-      <div class="tearoffs" aria-hidden="true">
+      <!-- Classic neighborhood tear-off strips: printed flyer only. -->
+      <p class="tearoffs-label print-only">✂ — tear off my number — ✂</p>
+      <div class="tearoffs print-only" aria-hidden="true">
         <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
         <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
         <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
