@@ -358,9 +358,12 @@
           overflow: visible;
           margin-top: 0.6rem;
           padding: 0.3rem;
+          text-align: center;
         }
 
         .hell-gate pre {
+          display: inline-block;
+          text-align: left;
           font-size: 5pt;
           line-height: 1.05;
         }
@@ -399,16 +402,17 @@
       .tearoffs {
         display: flex;
         flex-wrap: nowrap;
-        justify-content: center;
         border-top: 2px dashed #000;
         margin-top: 0.3rem;
       }
 
       .tearoffs .tab {
+        /* Each strip stretches to share the full width evenly. */
+        flex: 1 1 0;
         writing-mode: vertical-rl;
         text-orientation: mixed;
         border-right: 1px dashed #888;
-        padding: 0.7rem 0.25rem;
+        padding: 0.7rem 0;
         font-size: 8pt;
         letter-spacing: 0.03em;
         white-space: nowrap;
@@ -421,6 +425,7 @@
 
       .tearoffs .tab .num {
         font-weight: bold;
+        color: var(--link);
       }
     </style>
   </head>
@@ -598,23 +603,21 @@
         aria-label="ASCII art of the Hell Gate Bridge over the East River"
       >
         <pre>
-                        T H E   H E L L   G A T E   B R I D G E
+                T H E   H E L L   G A T E   B R I D G E
 
-                          _.-=""""""""""""""""""""=-._
-                      _.-'                            '-._
-                   .-'                                    '-.
-                 .'                                          '.
-               .'                                              '.
-   ____      .'                                                  '.      ____
-  |####|   .'                                                      '.   |####|
-  |####|__.'________________________________________________________'.__|####|
-  |####||==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==|==||####|
-  |####||  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  ||####|
-  |####||  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  ||####|
-~~|####||~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~|~~||####|~~
-~~~~~~~~~~~~~~~~~~~~~~~~~ E A S T   R I V E R ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   ASTORIA PARK  ✳        ✳        ✳        ✳        ✳        ✳   ASTORIA PARK
+  .=====._____________________________________________________.=====.
+  |#####|            /____________________________            |#####|
+  |#####|        /___  |  |  |  |  |  |  |  |  |  \___        |#####|
+  |#####|     /__|  |  |  |  |  |  |  |  |  |  |  |  |\__     |#####|
+  |#####|  /__|  |  |  |  |  |  |  |  |  |  |  |  |  |  |\__  |#####|
+  |#####|__|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |\_|#####|
+  |#####|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |#####|
+==|#####|=====================================================|#####|==
+  |#####|"""""""""""""""""""""""""""""""""""""""""""""""""""""|#####|
+~~|#####|~~~~~~~~~~~~~~~~ E A S T   R I V E R ~~~~~~~~~~~~~~~~|#####|~~
+~~|#####|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|#####|~~
+
+       ASTORIA PARK  ✳     ✳     ✳     ✳     ✳  ASTORIA PARK
 </pre
         >
       </div>
@@ -626,6 +629,12 @@
       <!-- Classic neighborhood tear-off strips: printed flyer only. -->
       <p class="tearoffs-label print-only">✂ — tear off my number — ✂</p>
       <div class="tearoffs print-only" aria-hidden="true">
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
+        <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
         <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
         <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
         <div class="tab">HTML Day ✳ <span class="num">347.523.2652</span></div>
