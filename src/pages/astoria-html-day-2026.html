@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>✳️ HTML Day 2026 — Astoria Park Freewrite (Flyer)</title>
+    <title>HTML Day 2026 — Astoria Park Freewrite</title>
     <meta
       name="description"
       content="A community freewrite for HTML Day 2026 — Saturday, August 8th, 2-5pm at the South Hill of Astoria Park, under the Hell Gate Bridge. Bring a blanket and a laptop, write some HTML and poetry by hand. Free, all welcome. Text Eli to RSVP."
@@ -41,7 +41,7 @@
       }
 
       body {
-        max-width: 44rem;
+        max-width: 50rem;
         margin: 0 auto;
         padding: 2.5rem 1.25rem 3rem;
         font-family:
@@ -303,12 +303,13 @@
         .masthead {
           margin-top: 0;
           padding-top: 0;
-          padding-bottom: 0.4rem;
+          padding-bottom: 1rem;
           margin-bottom: 0.55rem;
         }
 
         .kicker {
           font-size: 8pt;
+          margin-bottom: 0.55rem;
         }
 
         /* The headline and big numbers use vw-based clamps for the screen;
@@ -367,7 +368,7 @@
         .hell-gate pre {
           display: inline-block;
           text-align: left;
-          font-size: 5pt;
+          font-size: 11pt;
           line-height: 1.05;
         }
 
@@ -439,7 +440,7 @@
       .tearoffs {
         /* Hidden everywhere by default; only the print stylesheet turns these
            on (as a flex row). Keeps them off screen and out of the way. */
-        display: none;
+        /* display: none; */
         flex-wrap: nowrap;
         border-top: 2px dashed #000;
         margin-top: 0.3rem;
@@ -554,20 +555,18 @@
       <!-- Warm copy for the web (kept off the printed flyer). -->
       <div class="screen-only">
         <p>
-          Once a year, people all over the world gather IRL to celebrate
-          <a href="https://html.energy">HTML Day</a> — a day to sit down
+          Once a year, people all over the world  IRL to celebrate
+          <a href="https://html.energy">HTML Day</a> — a day to sit down outside
           together and write HTML by hand. We're hosting one of those gatherings
           here in the neighborhood: a community <em>freewrite</em> on the grassy
           South Hill of Astoria Park, in the green shade of the
-          <a href="https://en.wikipedia.org/wiki/Hell_Gate_Bridge"
-            >Hell Gate Bridge</a
-          >.
+          <a href="https://en.wikipedia.org/wiki/Hell_Gate_Bridge">Hell Gate Bridge</a>.
         </p>
 
         <p>
           Bring a laptop and write a little HTML by hand, the way the early web
           was made — no framework, no build step, no JavaScript required. A
-          poem, a homepage, a love letter to the river. A few of us will be
+          poem, a homepage, a love letter to the city. A few of us will be
           working on <strong>poetry</strong>, so feel free to do the same. Never
           written a tag in your life? Come anyway — we'll get you from blank
           file to live page before the sun gets low.
@@ -620,6 +619,7 @@
           </div>
           <p class="site">
             <a
+              class="print-only"
               itemprop="url"
               href="https://eligundry.com/astoria-html-day-2026.html"
               >eligundry.com/astoria-html-day-2026</a
@@ -649,7 +649,7 @@
 
       <footer class="screen-only">
         <span class="star" aria-hidden="true">✳️</span>
-        part of <a href="https://html.energy">HTML Day 2026</a>
+        part of <a href="https://2026.html.energy">HTML Day 2026</a>
         <span class="star" aria-hidden="true">✳️</span>
       </footer>
 
@@ -659,7 +659,7 @@
         aria-label="ASCII art of the Hell Gate Bridge over the East River"
       >
         <pre>
-                T H E   H E L L   G A T E   B R I D G E
+                H E L L   G A T E   B R I D G E
 
   .=====._____________________________________________________.=====.
   |#####|            /____________________________            |#####|
@@ -674,13 +674,8 @@
 ~~|#####|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|#####|~~
 
        ASTORIA PARK  ✳     ✳     ✳     ✳     ✳  ASTORIA PARK
-</pre
-        >
+</pre>
       </div>
-      <p class="caption screen-only">
-        Hell Gate Bridge — rendered in html.energy green, the way it glows over
-        the park at golden hour.
-      </p>
 
       <!-- Classic neighborhood tear-off strips: printed flyer only. -->
       <p class="tearoffs-label print-only">✂ — tear off my number — ✂</p>
