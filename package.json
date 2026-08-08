@@ -43,7 +43,7 @@
   "dependencies": {
     "@astro-community/astro-embed-youtube": "^0.5.6",
     "@astrojs/markdown-remark": "^6.1.0",
-    "@astrojs/mdx": "^4.0.8",
+    "@astrojs/mdx": "^4.3.14",
     "@astrojs/netlify": "^6.1.0",
     "@astrojs/partytown": "^2.1.2",
     "@astrojs/preact": "^4.0.0",
