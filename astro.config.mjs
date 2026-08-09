@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config'
-import tailwind from '@astrojs/tailwind'
+import tailwindcss from '@tailwindcss/vite'
 
 import mdx from '@astrojs/mdx'
 import mdxConfig from './src/lib/markdown.mjs'
@@ -34,6 +34,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [tailwindcss()],
     ssr: {
       external: ['better-sqlite3'],
       noExternal: [
@@ -45,7 +46,6 @@ export default defineConfig({
     },
   },
   integrations: [
-    tailwind(),
     mdx(mdxConfig),
     preact({
       compat: true,

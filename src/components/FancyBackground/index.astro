@@ -10,13 +10,13 @@ const { points = 30 } = Astro.props
 
 <div class:list={['flex', 'flex-row', 'min-h-[calc(100vh-14.25rem)]']}>
   <div
-    class:list={['fancy-bg', 'print:!hidden', 'hidden', 'sm:flex']}
+    class:list={['fancy-bg', 'print:hidden!', 'hidden', 'sm:flex']}
     style={{ '--fluid-pattern-points': points }}
   >
   </div>
   <slot />
   <div
-    class:list={['fancy-bg', 'print:!hidden', 'hidden', 'sm:flex']}
+    class:list={['fancy-bg', 'print:hidden!', 'hidden', 'sm:flex']}
     style={{ '--fluid-pattern-points': points }}
   >
   </div>
@@ -38,7 +38,7 @@ const { points = 30 } = Astro.props
       'hidden',
       'sm:flex',
       'cursor-pointer',
-      'print:!hidden',
+      'print:hidden!',
     ]}
     aria-label="Regenerate the background pattern"
     data-tip="Regenerate the background pattern"
@@ -51,12 +51,12 @@ const { points = 30 } = Astro.props
 <style>
   .fancy-bg {
     --fluid-pattern-bg-color: transparent;
-    --fluid-pattern-bg-color: theme('colors.transparent');
-    --fluid-pattern-color-1: theme('colors.accent');
-    --fluid-pattern-color-2: theme('colors.success');
-    --fluid-pattern-color-3: theme('colors.warning');
-    --fluid-pattern-color-4: theme('colors.error');
-    @apply grow mt-12;
+    --fluid-pattern-color-1: var(--color-accent);
+    --fluid-pattern-color-2: var(--color-success);
+    --fluid-pattern-color-3: var(--color-warning);
+    --fluid-pattern-color-4: var(--color-error);
+    flex-grow: 1;
+    margin-top: 3rem;
     background-image: paint(fluidPattern);
     z-index: -100000;
   }

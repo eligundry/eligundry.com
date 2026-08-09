@@ -89,7 +89,9 @@ for (const theme of THEMES) {
       await page.evaluate(() => document.fonts.ready)
       // Bounded settle: let in-viewport resources arrive without waiting on any
       // hanging external request forever.
-      await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => {})
+      await page
+        .waitForLoadState('networkidle', { timeout: 6000 })
+        .catch(() => {})
       await page.waitForTimeout(1000)
 
       const mask = [page.locator('canvas'), page.locator('iframe')]

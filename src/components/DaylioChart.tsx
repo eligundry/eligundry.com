@@ -39,9 +39,9 @@ const DaylioChart = () => {
               data,
               backgroundColor: 'transparent',
               pointStyle: 'rect',
-              borderColor: `oklch(${cssvar('--p')})`,
-              pointBorderColor: `oklch(${cssvar('--p')})`,
-              pointBackgroundColor: `oklch(${cssvar('--p')})`,
+              borderColor: cssvar('--color-primary'),
+              pointBorderColor: cssvar('--color-primary'),
+              pointBackgroundColor: cssvar('--color-primary'),
               pointRadius: 5,
             },
           ],
@@ -96,7 +96,9 @@ const DaylioChart = () => {
             y: {
               min: 0,
               grid: {
-                color: `oklch(${cssvar(darkMode ? '--n' : '--b3')})`,
+                color: cssvar(
+                  darkMode ? '--color-neutral' : '--color-base-300'
+                ),
               },
               ticks: {
                 // @ts-ignore

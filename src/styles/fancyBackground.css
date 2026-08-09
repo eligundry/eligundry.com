@@ -1,9 +1,9 @@
 #fancy-background-canvas[data-active='true'] {
-  --fluid-pattern-bg-color: theme('colors.transparent');
-  --fluid-pattern-color-1: theme('colors.primary');
-  --fluid-pattern-color-2: theme('colors.secondary');
-  --fluid-pattern-color-3: theme('colors.warning');
-  --fluid-pattern-color-4: theme('colors.error');
+  --fluid-pattern-bg-color: transparent;
+  --fluid-pattern-color-1: var(--color-primary);
+  --fluid-pattern-color-2: var(--color-secondary);
+  --fluid-pattern-color-3: var(--color-warning);
+  --fluid-pattern-color-4: var(--color-error);
 
   position: fixed;
   top: 0;

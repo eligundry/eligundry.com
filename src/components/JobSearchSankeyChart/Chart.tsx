@@ -15,17 +15,17 @@ const chartPallete = (value: string) => {
     case 'On Site':
     case 'Offer':
     case 'Offer Accepted':
-      return `oklch(${cssvar('--su')})`
+      return cssvar('--color-success')
     case 'Drop Out':
     case 'Offer Declined':
-      return `oklch(${cssvar('--wa')})`
+      return cssvar('--color-warning')
     case 'Rejection':
     case 'Not Offered':
-      return `oklch(${cssvar('--er')})`
+      return cssvar('--color-error')
     case 'Applied':
     case 'Callback':
     default:
-      return `oklch(${cssvar('--p')})`
+      return cssvar('--color-primary')
   }
 }
 
