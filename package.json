@@ -16,6 +16,7 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:e2e": "playwright test",
+    "test:visual": "playwright test --grep @visual",
     "drizzle:migration:generate": "drizzle-kit generate",
     "standard-site:create-publication": "vite-node scripts/standard-site/create-publication.ts",
     "standard-site:publish-page": "vite-node scripts/standard-site/publish-page.ts",

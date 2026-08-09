@@ -36,25 +36,19 @@ const THEMES = ['light', 'dark'] as const
 
 async function autoScroll(page: Page) {
   await page.evaluate(async () => {
-    await new Promise<void>((resolve) => {
-      let total = 0
-      const step = 400
-      const timer = setInterval(() => {
-        window.scrollBy(0, step)
-        total += step
-        if (total >= document.body.scrollHeight) {
-          clearInterval(timer)
-          window.scrollTo(0, 0)
-          resolve()
-        }
-      }, 40)
-    })
+    const step = 400
+    const wait = () => new Promise((resolve) => setTimeout(resolve, 40))
+    for (let y = 0; y < document.body.scrollHeight; y += step) {
+      window.scrollBy(0, step)
+      await wait()
+    }
+    window.scrollTo(0, 0)
   })
 }
 
 for (const theme of THEMES) {
   for (const p of PAGES) {
-    test(`${p.name} — ${theme}`, async ({ page }) => {
+    test(`${p.name} — ${theme} @visual`, async ({ page }) => {
       // Some pages embed slow/hanging external resources (Last.fm, Spotify), so
       // give navigation + settling room beyond the 30s default.
       test.setTimeout(90_000)

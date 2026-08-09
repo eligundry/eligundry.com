@@ -13,6 +13,9 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
+  // The @visual screenshot suite has environment-specific baselines (browser
+  // build + font rendering), so skip it in CI and run it locally instead.
+  grepInvert: process.env.CI ? /@visual/ : undefined,
   use: {
     baseURL,
     trace: 'retain-on-failure',
