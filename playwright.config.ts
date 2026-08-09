@@ -3,6 +3,10 @@ import { defineConfig, devices } from '@playwright/test'
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
 const isLocal = baseURL.startsWith('http://localhost')
 
+// Allow pointing at a pre-installed Chromium (e.g. a CI/container image that
+// ships its own browser) instead of Playwright's managed download.
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -16,7 +20,10 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: executablePath ? { executablePath } : {},
+      },
     },
   ],
   webServer: isLocal
