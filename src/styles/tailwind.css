@@ -110,6 +110,10 @@
 @layer base {
   html {
     @apply font-serif;
+    /* Safety net so stray wide content can never cause horizontal over-scroll.
+       Set on the scroll root (html); `clip` (not `hidden`) leaves vertical
+       scrolling untouched and can't be scrolled programmatically either. */
+    overflow-x: clip;
   }
 }
 
