@@ -1,11 +1,119 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss';
 @import './fancyBackground.css';
+
+@plugin '@tailwindcss/typography';
+/* themes:false disables the built-in themes so only the custom light/dark
+   below are emitted (matching the former config). */
+@plugin 'daisyui' {
+  themes: false;
+  logs: false;
+}
+
+/* Custom themes ported from the former tailwind.config.cjs `daisyui.themes`.
+   Exact hex values are kept so the palette does not shift. The design tokens
+   (radius/border/depth/noise) reproduce daisyUI v4's flat defaults. */
+@plugin 'daisyui/theme' {
+  name: 'light';
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-primary: #088cde;
+  --color-primary-content: #c7eaff;
+  --color-secondary: #7dd3fc;
+  --color-secondary-content: #00334b;
+  --color-accent: #98a0f2;
+  --color-accent-content: #00074f;
+  --color-neutral: #f4f4f5;
+  --color-neutral-content: #303032;
+  --color-base-100: #ffffff;
+  --color-base-200: #e6e6e6;
+  --color-base-300: #bebebe;
+  --color-base-content: #161616;
+  --color-info: #2563eb;
+  --color-info-content: #cfdeff;
+  --color-success: #10b981;
+  --color-success-content: #00281b;
+  --color-warning: #ffd53d;
+  --color-warning-content: #3f3200;
+  --color-error: #f94e5f;
+  --color-error-content: #ffdade;
+
+  --radius-selector: 1.9rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin 'daisyui/theme' {
+  name: 'dark';
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-primary: #088cde;
+  --color-primary-content: #c7eaff;
+  --color-secondary: #7dd3fc;
+  --color-secondary-content: #00334b;
+  --color-accent: #98a0f2;
+  --color-accent-content: #00074f;
+  --color-neutral: #78716c;
+  --color-neutral-content: #605a56;
+  --color-base-100: #1c1917;
+  --color-base-200: #191715;
+  --color-base-300: #171413;
+  --color-base-content: #d7d0cc;
+  --color-info: #2563eb;
+  --color-info-content: #cfdeff;
+  --color-success: #10b981;
+  --color-success-content: #00281b;
+  --color-warning: #ffd53d;
+  --color-warning-content: #3f3200;
+  --color-error: #f94e5f;
+  --color-error-content: #ffdade;
+
+  --radius-selector: 1.9rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+/* Custom fonts (with Fontaine metric fallbacks + emoji stacks). */
+@theme {
+  --font-sans:
+    'Lato', 'Lato fallback', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif:
+    'Arvo', 'Arvo fallback', serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    'Fira Code', 'Fira Code fallback', monospace, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Reproduces the former `theme.container` override: the container only caps its
+   width (at 786px) from the xl breakpoint up. */
+@utility container {
+  width: 100%;
+  @variant xl {
+    max-width: 786px;
+  }
+}
+
+/* Replaces the removed `safelist`. */
+@source inline('tooltip tooltip-primary');
 
 @layer base {
   html {
     @apply font-serif;
+    /* Safety net so stray wide content can never cause horizontal over-scroll.
+       Set on the scroll root (html); `clip` (not `hidden`) leaves vertical
+       scrolling untouched and can't be scrolled programmatically either. */
+    overflow-x: clip;
   }
 }
 
@@ -57,18 +165,35 @@
   }
 }
 
-@layer utilities {
-  .input-disabled {
-    pointer-events: none;
-  }
+@utility input-disabled {
+  pointer-events: none;
+}
 
-  .page-break-avoid {
-    page-break-inside: avoid;
-  }
+@utility page-break-avoid {
+  page-break-inside: avoid;
+}
+
+/* Tailwind v4 emits `@tailwindcss/typography`'s `prose` element margins into the
+   same `utilities` layer as the margin utilities, and later in source order, so
+   `prose` wins margin ties. The markup relies on margin utilities overriding
+   `prose` (as they did under v3), so redefine the block-margin utilities as
+   `!important`. Responsive/print variants inherit these definitions, so they
+   keep overriding as expected. */
+@utility m-* {
+  margin: calc(var(--spacing) * --value(integer)) !important;
+}
+@utility my-* {
+  margin-block: calc(var(--spacing) * --value(integer)) !important;
+}
+@utility mt-* {
+  margin-top: calc(var(--spacing) * --value(integer)) !important;
+}
+@utility mb-* {
+  margin-bottom: calc(var(--spacing) * --value(integer)) !important;
 }
 
 .prose {
-  @apply !max-w-none font-serif;
+  @apply max-w-none! font-serif;
 }
 
 .prose *:not(pre) > code {
@@ -94,7 +219,7 @@
 
 .btn,
 button {
-  @apply font-sans !cursor-pointer;
+  @apply font-sans cursor-pointer!;
 }
 
 .tooltip {

@@ -120,8 +120,8 @@ const links = [
                   'px-4',
                   'text-base',
                   'gap-3',
-                  'active:!bg-base-200',
-                  'focus:!bg-base-200',
+                  'active:bg-base-200!',
+                  'focus:bg-base-200!',
                 ]}
                 aria-current={
                   Astro.url.pathname === link.href ||
@@ -187,7 +187,7 @@ const links = [
 />
 <label
   for="mobile-nav-modal"
-  class:list={['modal', 'cursor-pointer', '!bg-transparent']}
+  class:list={['modal', 'cursor-pointer', 'bg-transparent!']}
   aria-label="toggles the mobile navigation dropdown"
 >
   <label

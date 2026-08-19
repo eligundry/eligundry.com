@@ -42,11 +42,23 @@ const canonicalUrl = config.url + canonicalPath
 <style is:global>
   /* Map standard.site's CSS variables onto the site's daisyUI theme tokens. */
   .standard-site-comments {
-    --color-border-soft: var(--fallback-bc, oklch(var(--bc) / 0.2));
-    --color-text-primary: oklch(var(--bc));
-    --color-text-secondary: oklch(var(--bc) / 0.8);
-    --color-text-muted: oklch(var(--bc) / 0.6);
-    --color-text-link: oklch(var(--p));
-    --color-bg-elevated: oklch(var(--b2));
+    --color-border-soft: color-mix(
+      in oklab,
+      var(--color-base-content) 20%,
+      transparent
+    );
+    --color-text-primary: var(--color-base-content);
+    --color-text-secondary: color-mix(
+      in oklab,
+      var(--color-base-content) 80%,
+      transparent
+    );
+    --color-text-muted: color-mix(
+      in oklab,
+      var(--color-base-content) 60%,
+      transparent
+    );
+    --color-text-link: var(--color-primary);
+    --color-bg-elevated: var(--color-base-200);
   }
 </style>

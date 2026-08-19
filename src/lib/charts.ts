@@ -27,22 +27,6 @@ export const cssvar = (
   element: Element | HTMLElement = document.documentElement
 ) => getComputedStyle(element).getPropertyValue(name).trim()
 
-const tooltipCssvar = (name: string) => {
-  let elm = document.querySelector('.tooltip.tooltip-primary')
-
-  if (!elm) {
-    elm = document.createElement('div')
-    elm.classList.add('tooltip', 'tooltip-primary')
-    document.body.append(elm)
-    const v = cssvar(name, elm)
-    elm.remove()
-
-    return v
-  }
-
-  return cssvar(name, elm)
-}
-
 export const tooltipTheme = (): Partial<TooltipOptions> => ({
   displayColors: false,
   titleFont: {
@@ -53,10 +37,12 @@ export const tooltipTheme = (): Partial<TooltipOptions> => ({
     family: "'Lato', sans-serif",
     size: 14,
   },
-  backgroundColor: tooltipCssvar('--tooltip-color'),
-  footerColor: tooltipCssvar('--tooltip-color'),
-  bodyColor: tooltipCssvar('--tooltip-text-color'),
-  titleColor: tooltipCssvar('--tooltip-text-color'),
+  // daisyUI v5 `tooltip-primary` renders on the primary color; read the theme
+  // colors directly (the v4 `--tooltip-color`/`--tooltip-text-color` vars are gone).
+  backgroundColor: cssvar('--color-primary'),
+  footerColor: cssvar('--color-primary'),
+  bodyColor: cssvar('--color-primary-content'),
+  titleColor: cssvar('--color-primary-content'),
 })
 
 ChartJS.defaults.font.family = theme.fontFamily.sans.join(', ')
