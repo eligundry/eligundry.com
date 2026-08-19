@@ -127,7 +127,7 @@
     "netlify-plugin-cache": "^1.0.3",
     "prettier": "^3.5.0",
     "prettier-plugin-astro": "^0.14.1",
-    "simple-git": "^3.27.0",
+    "simple-git": "^3.36.0",
     "vite-node": "^6.0.0",
     "vitest": "^2.1.8"
   },
