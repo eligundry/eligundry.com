@@ -160,9 +160,6 @@ importers:
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
-      theme-change:
-        specifier: ^2.5.0
-        version: 2.5.0
       ts-dedent:
         specifier: ^2.2.0
         version: 2.2.0
@@ -13545,12 +13542,6 @@ packages:
         integrity: sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==,
       }
 
-  theme-change@2.5.0:
-    resolution:
-      {
-        integrity: sha512-B/UdsgdHAGhSKHTAQnxg/etN0RaMDpehuJmZIjLMDVJ6DGIliRHGD6pODi1CXLQAN9GV0GSyB3G6yCuK05PkPQ==,
-      }
-
   thread-stream@3.1.0:
     resolution:
       {
@@ -23989,8 +23980,6 @@ snapshots:
       b4a: 1.6.7
 
   text-hex@1.0.0: {}
-
-  theme-change@2.5.0: {}
 
   thread-stream@3.1.0:
     dependencies:

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
+import kebabCase from 'lodash/kebabCase'
 import EmojiText from '../EmojiText.astro'
 import Excerpt from './Excerpt.astro'
 
@@ -21,7 +22,8 @@ const readingTime =
 let tags: string[] = []
 
 if ('tags' in entry.data) {
-  tags = entry.data.tags.map((tag) => `tag-${tag}`)
+  // Kebab-cased to match the tag filter's slugs on /blog.
+  tags = entry.data.tags.map((tag) => `tag-${kebabCase(tag)}`)
 }
 ---
 

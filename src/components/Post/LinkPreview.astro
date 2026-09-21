@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
+import kebabCase from 'lodash/kebabCase'
 import EmojiText from '../EmojiText.astro'
 import { getLinkPostDate } from '../../content/links'
 
@@ -12,7 +13,8 @@ const { entry } = Astro.props
 const props = entry.data.properties
 const slug = props.Slug
 const date = getLinkPostDate(entry.data)
-const tags = props.Tags.map((tag: string) => `tag-${tag}`)
+// Kebab-cased to match the tag filter's slugs on /blog.
+const tags = props.Tags.map((tag: string) => `tag-${kebabCase(tag)}`)
 const displayUrl = (() => {
   try {
     return new URL(props.URL ?? '').hostname.replace(/^www\./, '')

@@ -26,16 +26,25 @@ const allPosts = [...blogPosts, ...linkPosts].sort((a, b) =>
 )
 
 const tags = [
-  ...allPosts.reduce((acc, curr) => {
-    curr.tags?.forEach((tag: string) => acc.add(tag))
-    return acc
-  }, new Set<string>()),
-].sort((a, b) => (a < b ? -1 : 1))
+  ...allPosts
+    .reduce((acc, curr) => {
+      curr.tags?.forEach((tag: string) => acc.set(kebabCase(tag), tag))
+      return acc
+    }, new Map<string, string>())
+    .entries(),
+]
+  .map(([slug, name]) => ({ slug, name }))
+  .sort((a, b) => (a.name < b.name ? -1 : 1))
 
+/**
+ * Filtering is done entirely in CSS off the checked radio, so a tag stays
+ * applied without JavaScript having to re-run on every interaction. The tag
+ * list is dynamic, hence the generated stylesheet.
+ */
 const tagsCss = tags
   .map(
-    (tag) => `
-#post-list.selected-tag-${tag} > #posts  > *:not(.tag-${tag}) {
+    ({ slug }) => `
+#post-list:has(#tag-filter-${slug}:checked) > #posts > *:not(.tag-${slug}) {
   display: none;
 }
 `
@@ -43,58 +52,7 @@ const tagsCss = tags
   .join('\n')
 ---
 
-<script>
-  const postList = document.getElementById('post-list')
-  const tagFilterBtns = document.querySelectorAll('.tag-filter .btn')
-
-  // @ts-ignore
-  const updateTagFilter = (tag) => {
-    Array.from(postList?.classList.values() ?? []).forEach((cl) => {
-      if (cl.startsWith('selected-tag-')) {
-        postList?.classList.remove(cl)
-      }
-    })
-
-    if (tag) {
-      postList?.classList.add(`selected-tag-${tag}`, 'tag-selected')
-    } else {
-      postList?.classList.remove('tag-selected')
-    }
-
-    tagFilterBtns.forEach((btn) => {
-      if (btn.classList.contains(`tag-${tag}`)) {
-        btn.classList.add('btn-accent')
-      } else {
-        btn.classList.remove('btn-accent')
-      }
-    })
-  }
-
-  window.addEventListener('hashchange', (event) => {
-    const url = new URL(event.newURL)
-    const hash = url.hash.slice(1)
-    updateTagFilter(hash)
-  })
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const url = new URL(window.location.href)
-    const hash = url.hash.slice(1)
-    updateTagFilter(hash)
-  })
-</script>
-
 <style set:html={tagsCss}></style>
-
-<style>
-  #post-list:not(.tag-selected) .tag-filter .reset {
-    display: none;
-  }
-
-  #post-list:not(.tag-selected) .tag-filter .btn:nth-last-child(-n + 2) {
-    border-top-right-radius: var(--radius-field);
-    border-bottom-right-radius: var(--radius-field);
-  }
-</style>
 
 <Layout
   title="Blog"
@@ -107,40 +65,40 @@ const tagsCss = tags
       I have written down. I try to write four posts a year, but I'm not super
       strict about that.
     </p>
-    <h6>Filter by tag</h6>
-    <div class="tag-filter join">
-      {
-        tags.map((tag) => (
-          <a
-            href={`#${kebabCase(tag)}`}
-            class:list={[
-              'btn',
-              'btn-primary',
-              'btn-xs',
-              'sm:btn-md',
-              'join-item',
-              'normal-case',
-              `tag-${tag}`,
-            ]}
-          >
-            {tag}
-          </a>
-        ))
-      }
-      <a
-        href="#"
+    <h6 id="tag-filter-label">Filter by tag</h6>
+    <div
+      id="tag-filter"
+      class:list={['filter', 'not-prose', 'font-sans']}
+      role="group"
+      aria-labelledby="tag-filter-label"
+    >
+      <input
+        id="tag-filter-all"
         class:list={[
           'btn',
           'btn-primary',
           'btn-xs',
           'sm:btn-md',
-          'join-item',
-          'lowercase',
-          'reset',
+          'filter-reset',
         ]}
-      >
-        Reset
-      </a>
+        type="radio"
+        name="tag"
+        value=""
+        aria-label="All"
+        checked
+      />
+      {
+        tags.map((tag) => (
+          <input
+            id={`tag-filter-${tag.slug}`}
+            class:list={['btn', 'btn-primary', 'btn-xs', 'sm:btn-md']}
+            type="radio"
+            name="tag"
+            value={tag.slug}
+            aria-label={tag.name}
+          />
+        ))
+      }
     </div>
     <div id="posts" class:list={['flex', 'flex-col', 'gap-y-4', 'mt-4']}>
       {
@@ -155,3 +113,54 @@ const tagsCss = tags
     </div>
   </div>
 </Layout>
+
+<style>
+  /* daisyUI squares the reset control off for a bare "×"; this one is a word. */
+  #tag-filter .filter-reset:not(:checked) {
+    aspect-ratio: auto;
+  }
+</style>
+
+<script>
+  // The filter itself is CSS. This only keeps the `#<tag>` URLs working, which
+  // is how tag links have always been shared.
+  const filter = document.getElementById('tag-filter')
+  const radios = Array.from(
+    filter?.querySelectorAll<HTMLInputElement>('input[type="radio"]') ?? []
+  )
+  const reset = radios.find((radio) => !radio.value)
+
+  const currentTag = () => decodeURIComponent(window.location.hash.slice(1))
+
+  const applyHash = () => {
+    const tag = currentTag()
+    const match = radios.find((radio) => radio.value && radio.value === tag)
+
+    if (match) {
+      match.checked = true
+    } else if (reset) {
+      reset.checked = true
+    }
+  }
+
+  radios.forEach((radio) => {
+    radio.addEventListener('change', () => {
+      if (!radio.checked || radio.value === currentTag()) {
+        return
+      }
+
+      const { pathname, search } = window.location
+      // `pushState` rather than assigning `location.hash`: it keeps the back
+      // button stepping through filters the way the old anchors did, without
+      // the browser trying to scroll to an element named after the tag.
+      window.history.pushState(
+        null,
+        '',
+        radio.value ? `#${radio.value}` : `${pathname}${search}`
+      )
+    })
+  })
+
+  window.addEventListener('hashchange', applyHash)
+  applyHash()
+</script>
