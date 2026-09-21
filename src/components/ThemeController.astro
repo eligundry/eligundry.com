@@ -1,0 +1,81 @@
+---
+/**
+ * daisyUI 5 theme controller.
+ *
+ * Every theme registered through `@plugin 'daisyui/theme'` emits a
+ * `:root:has(input.theme-controller[value="<name>"]:checked)` selector next to
+ * its `[data-theme="<name>"]` one, so checking this input repaints the whole
+ * page in CSS — no JavaScript in the critical path, and it out-specifies the
+ * `data-theme` attribute that `Layout.astro` sets before first paint.
+ *
+ * The inline script below only covers what CSS cannot: mirroring the choice
+ * onto `<html data-theme>` (which `useTheme()` observes for chart colours) and
+ * persisting it to `localStorage` under the same `theme` key the pre-paint
+ * script in `Layout.astro` reads.
+ */
+interface Props {
+  class?: string | string[]
+  size?: 'xs' | 'sm' | 'md' | 'lg'
+}
+
+const { class: className, size = 'sm' } = Astro.props
+---
+
+<label
+  class:list={[
+    'swap',
+    'swap-flip',
+    'theme-controller-swap',
+    'btn',
+    'btn-ghost',
+    'btn-circle',
+    `btn-${size}`,
+    'text-2xl',
+    'print:hidden',
+    className,
+  ]}
+  title="Switch between light and dark mode"
+>
+  <input
+    type="checkbox"
+    class="theme-controller"
+    value="dark"
+    aria-label="Switch between light and dark mode"
+  />
+  <span class="swap-off" aria-hidden="true">🌞</span>
+  <span class="swap-on" aria-hidden="true">🌚</span>
+</label>
+
+<script is:inline>
+  ;(function () {
+    var root = document.documentElement
+    var inputs = document.querySelectorAll(
+      'input.theme-controller[value="dark"]'
+    )
+
+    function sync(checked) {
+      var theme = checked ? 'dark' : 'light'
+      root.setAttribute('data-theme', theme)
+
+      try {
+        localStorage.setItem('theme', theme)
+      } catch (err) {
+        // Private browsing/blocked storage: the theme still applies, it just
+        // won't survive a reload.
+      }
+
+      inputs.forEach(function (other) {
+        other.checked = checked
+      })
+    }
+
+    inputs.forEach(function (input) {
+      // Match the theme `Layout.astro` resolved before paint so the icon never
+      // disagrees with the page.
+      input.checked = root.getAttribute('data-theme') === 'dark'
+      input.addEventListener('change', function () {
+        sync(input.checked)
+      })
+    })
+  })()
+</script>

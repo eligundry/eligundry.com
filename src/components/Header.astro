@@ -1,38 +1,235 @@
 ---
-import EmojiText from '../components/EmojiText.astro'
+import { getCollection } from 'astro:content'
+import * as dateFns from 'date-fns'
+import EmojiText from './EmojiText.astro'
+import ThemeController from './ThemeController.astro'
+import { getLinkPostDate } from '../content/links'
 
-const links = [
+interface MenuLink {
+  name: string
+  href: string
+  emoji: string
+  emojiLabel: string
+  description: string
+}
+
+interface FeatureItem {
+  href: string
+  title: string
+  meta?: string
+  emoji?: string
+}
+
+interface MenuGroup {
+  /** Popover id, also used as the `popovertarget` of its trigger. */
+  id: string
+  name: string
+  emoji: string
+  emojiLabel: string
+  /** Pathnames that mark this group as the section being viewed. */
+  matches: string[]
+  links: MenuLink[]
+  feature?: {
+    heading: string
+    emptyText: string
+    items: FeatureItem[]
+  }
+}
+
+const [blogEntries, linkEntries, talkEntries, playlistEntries, feelingEntries] =
+  await Promise.all([
+    getCollection('blog'),
+    getCollection('links'),
+    getCollection('talks'),
+    getCollection('seasonalPlaylists'),
+    getCollection('feelings'),
+  ])
+
+const formatDate = (date: Date) => dateFns.format(date, 'MMM d, yyyy')
+
+const recentPosts: FeatureItem[] = [
+  ...blogEntries
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({
+      href: `/blog/${entry.slug}/`,
+      title: entry.data.title,
+      date: entry.data.date,
+    })),
+  ...linkEntries.map((entry) => ({
+    href: `/blog/links/${entry.data.properties.Slug}/`,
+    title: entry.data.properties.Title,
+    date: getLinkPostDate(entry.data),
+  })),
+]
+  .sort((a, b) => dateFns.compareDesc(a.date, b.date))
+  .slice(0, 3)
+  .map(({ href, title, date }) => ({ href, title, meta: formatDate(date) }))
+
+const recentTalks: FeatureItem[] = talkEntries
+  .sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))
+  .slice(0, 3)
+  .map((entry) => ({
+    href: `/talks/${entry.slug}/`,
+    title: entry.data.title,
+    meta: entry.data.location,
+  }))
+
+const currentPlaylist = playlistEntries.sort((a, b) =>
+  dateFns.compareDesc(a.data.date, b.data.date)
+)[0]?.data
+
+const latestFeeling = feelingEntries[0]?.data
+
+const groups: MenuGroup[] = [
   {
-    name: 'Home',
-    href: '/',
-    emoji: '🏠',
-    emojiLabel: 'little house to denote the home page',
-  },
-  {
-    name: 'Blog',
-    href: '/blog/',
+    id: 'nav-writing',
+    name: 'Writing',
     emoji: '📝',
     emojiLabel: 'note to denote my blog',
+    matches: ['/blog/'],
+    links: [
+      {
+        name: 'Blog',
+        href: '/blog/',
+        emoji: '📝',
+        emojiLabel: 'note to denote my blog',
+        description: 'Code, cooking, album reviews and everything between.',
+      },
+      {
+        name: 'Subscribe',
+        href: '/blog.rss',
+        emoji: '📡',
+        emojiLabel: 'satellite dish denoting an RSS feed',
+        description: 'The blog as an RSS feed, for your reader of choice.',
+      },
+    ],
+    feature: {
+      heading: 'Latest posts',
+      emptyText: 'Nothing published yet.',
+      items: recentPosts,
+    },
   },
   {
+    id: 'nav-feelings',
     name: 'Feelings',
-    href: '/feelings/',
     emoji: '🥺',
     emojiLabel: 'emotional looking emoji face to denote my feelings',
+    matches: ['/feelings/'],
+    links: [
+      {
+        name: 'Feelings journal',
+        href: '/feelings/',
+        emoji: '🥺',
+        emojiLabel: 'emotional looking emoji face to denote my feelings',
+        description: 'Every day I have logged how I felt, in public.',
+      },
+      {
+        name: 'Subscribe',
+        href: '/feelings.rss',
+        emoji: '📡',
+        emojiLabel: 'satellite dish denoting an RSS feed',
+        description: 'My feelings, delivered to your RSS reader.',
+      },
+      {
+        name: 'Feelings API',
+        href: '/api/daylio',
+        emoji: '🤖',
+        emojiLabel: 'robot denoting a machine readable API',
+        description: 'The JSON that powers all of the above.',
+      },
+    ],
+    feature: {
+      heading: 'Most recent entry',
+      emptyText: 'No entries logged yet.',
+      items: latestFeeling
+        ? [
+            {
+              href: `/feelings/#${latestFeeling.slug}`,
+              title: `I felt ${latestFeeling.mood}`,
+              meta: formatDate(latestFeeling.time),
+              emoji: latestFeeling.emoji,
+            },
+          ]
+        : [],
+    },
   },
   {
+    id: 'nav-talks',
     name: 'Talks',
-    href: '/talks/',
     emoji: '🗣',
     emojiLabel: 'silhouette of person speaking',
+    matches: ['/talks/'],
+    links: [
+      {
+        name: 'All talks',
+        href: '/talks/',
+        emoji: '🗣',
+        emojiLabel: 'silhouette of person speaking',
+        description: 'Meetup and conference talks, with slides and notes.',
+      },
+    ],
+    feature: {
+      heading: 'Recently on stage',
+      emptyText: 'No talks published yet.',
+      items: recentTalks,
+    },
   },
   {
-    name: 'Resume',
-    href: '/resume/',
-    emoji: '📄',
-    emojiLabel: 'piece of paper representing my resume',
+    id: 'nav-about',
+    name: 'About',
+    emoji: '🙋‍♂️',
+    emojiLabel: 'person raising their hand to introduce themselves',
+    matches: ['/', '/resume/', '/seasonal-playlists/'],
+    links: [
+      {
+        name: 'Home',
+        href: '/',
+        emoji: '🏠',
+        emojiLabel: 'little house to denote the home page',
+        description: 'The short version of who I am and what I am into.',
+      },
+      {
+        name: 'Resume',
+        href: '/resume/',
+        emoji: '📄',
+        emojiLabel: 'piece of paper representing my resume',
+        description: 'Where I have worked and what I worked on.',
+      },
+      {
+        name: 'Seasonal playlists',
+        href: '/seasonal-playlists/',
+        emoji: '🎧',
+        emojiLabel: 'headphones denoting the music I listen to',
+        description: 'A Spotify playlist for every season, going back years.',
+      },
+    ],
+    feature: currentPlaylist
+      ? {
+          heading: 'On repeat right now',
+          emptyText: 'No playlist yet.',
+          items: [
+            {
+              href: '/seasonal-playlists/',
+              title: currentPlaylist.name,
+              meta: formatDate(currentPlaylist.date),
+              emoji: '🎧',
+            },
+          ],
+        }
+      : undefined,
   },
 ]
+
+// Requests reach these pages with and without a trailing slash, so compare on
+// a normalised form rather than on whatever the URL happened to carry.
+const withTrailingSlash = (path: string) =>
+  path.endsWith('/') ? path : `${path}/`
+const pathname = withTrailingSlash(Astro.url.pathname)
+const isCurrentPage = (href: string) => {
+  const target = withTrailingSlash(href)
+  return pathname === target || (target !== '/' && pathname.startsWith(target))
+}
+const isCurrentSection = (group: MenuGroup) => group.matches.some(isCurrentPage)
 ---
 
 <a
@@ -82,194 +279,253 @@ const links = [
     'max-w-full',
     'font-sans',
     'print:hidden',
-    '[&_a]:hover:bg-transparent',
-    '[&_a]:focus:bg-transparent',
-    '[&_a]:hover:no-underline',
-    '[&_a]:focus:no-underline',
-    '[&_a[aria-current="page"]]:link-primary',
+    'min-h-16',
   ]}
 >
-  <div class="container mx-auto flex flex-wrap">
-    <div class="flex-1">
-      <a
-        href="/"
-        itemprop="sameAs"
-        class:list={[
-          'btn',
-          'btn-ghost',
-          'normal-case',
-          'text-xl',
-          'site-name',
-          'pl-0',
-        ]}
+  <div class="navbar-shell container mx-auto flex items-center gap-1">
+    <button
+      type="button"
+      class:list={[
+        'nav-toggle',
+        'btn',
+        'btn-ghost',
+        'btn-square',
+        'btn-sm',
+        'text-2xl',
+        'md:hidden',
+      ]}
+      popovertarget="site-nav"
+      aria-label="Toggle the navigation menu"
+    >
+      <span class="nav-toggle-open" aria-hidden="true">🍔</span>
+      <span class="nav-toggle-close" aria-hidden="true">🙅‍♂️</span>
+    </button>
+    <a
+      href="/"
+      itemprop="sameAs"
+      class:list={[
+        'btn',
+        'btn-ghost',
+        'normal-case',
+        'text-xl',
+        'site-name',
+        'px-2',
+        'md:pl-0',
+        'hover:bg-transparent',
+        'hover:no-underline',
+      ]}
+    >
+      Eli Gundry
+    </a>
+    <div class="grow"></div>
+    <nav aria-label="Site navigation" class="flex-none">
+      <div
+        id="site-nav"
+        popover
+        class:list={['megamenu', 'megamenu-md', 'max-md:megamenu-vertical']}
       >
-        Eli Gundry
-      </a>
-    </div>
-    <nav class="flex-none hidden md:flex">
-      <ul class:list={['menu', 'menu-horizontal', 'p-0', '[&_a]:text-current']}>
+        <span class="megamenu-active" aria-hidden="true"></span>
         {
-          links.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class:list={[
-                  'hover:link-accent',
-                  'focus:link-accent',
-                  'py-3',
-                  'px-4',
-                  'text-base',
-                  'gap-3',
-                  'active:bg-base-200!',
-                  'focus:bg-base-200!',
-                ]}
-                aria-current={
-                  Astro.url.pathname === link.href ||
-                  (link.href !== '/' &&
-                    Astro.url.pathname.startsWith(link.href))
-                    ? 'page'
-                    : undefined
-                }
+          groups.map((group) => (
+            <Fragment>
+              <button
+                type="button"
+                popovertarget={group.id}
+                class="nav-trigger"
+                data-current={isCurrentSection(group) ? 'true' : undefined}
               >
-                <EmojiText emoji={link.emoji} label={link.emojiLabel}>
-                  {link.name}
+                <EmojiText emoji={group.emoji} label={group.emojiLabel}>
+                  {group.name}
                 </EmojiText>
-              </a>
-            </li>
+              </button>
+              <div id={group.id} popover class="nav-panel">
+                <div class="nav-panel-grid">
+                  <ul class="menu w-full gap-1 p-0">
+                    {group.links.map((link) => (
+                      <li>
+                        <a
+                          href={link.href}
+                          class="items-start gap-3 py-2"
+                          aria-current={
+                            isCurrentPage(link.href) ? 'page' : undefined
+                          }
+                        >
+                          <span class="text-xl leading-none" aria-hidden="true">
+                            {link.emoji}
+                          </span>
+                          <span class="flex flex-col gap-0.5">
+                            <span class="font-sans font-bold">{link.name}</span>
+                            <span class="text-xs leading-snug opacity-60">
+                              {link.description}
+                            </span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  {group.feature && (
+                    <div class="nav-feature">
+                      <h2 class="mb-2 text-xs font-bold tracking-wide uppercase opacity-60">
+                        {group.feature.heading}
+                      </h2>
+                      {group.feature.items.length ? (
+                        <ul class="flex flex-col gap-2">
+                          {group.feature.items.map((item) => (
+                            <li>
+                              <a
+                                href={item.href}
+                                class="flex items-baseline gap-2 no-underline hover:underline"
+                              >
+                                {item.emoji && (
+                                  <span
+                                    class="text-lg leading-none"
+                                    aria-hidden="true"
+                                  >
+                                    {item.emoji}
+                                  </span>
+                                )}
+                                <span class="flex flex-col gap-0.5">
+                                  <span class="text-sm font-bold">
+                                    {item.title}
+                                  </span>
+                                  {item.meta && (
+                                    <span class="text-xs opacity-60">
+                                      {item.meta}
+                                    </span>
+                                  )}
+                                </span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p class="text-xs opacity-60">
+                          {group.feature.emptyText}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Fragment>
           ))
         }
-        <li class="items-center">
-          <label class="swap swap-flip btn-sm text-2xl">
-            <input
-              type="checkbox"
-              class="theme-toggle"
-              data-toggle-theme="dark,light"
-            />
-            <div class="swap-on">🌚</div>
-            <div class="swap-off">🌞</div>
-          </label>
-        </li>
-      </ul>
+      </div>
     </nav>
-    <div class="flex justify-end flex-none">
-      <nav class="navbar-end md:hidden join">
-        <label class="swap swap-flip btn btn-sm btn-ghost text-2xl join-item">
-          <input
-            type="checkbox"
-            class="theme-toggle"
-            data-toggle-theme="dark,light"
-          />
-          <div class="swap-on">🌚</div>
-          <div class="swap-off">🌞</div>
-        </label>
-        <label
-          class="swap swap-flip btn btn-sm btn-ghost text-2xl max-w-full join-item"
-          tabindex="0"
-          for="mobile-nav-modal-control"
-        >
-          <input
-            type="checkbox"
-            id="mobile-nav-modal-control"
-            class="modal-control-input"
-          />
-          <div class="swap-on">🙅‍♂️</div>
-          <div class="swap-off">🍔</div>
-        </label>
-      </nav>
-    </div>
+    <ThemeController />
   </div>
 </header>
 
-<input
-  type="checkbox"
-  id="mobile-nav-modal"
-  class="modal-toggle modal-control-input"
-/>
-<label
-  for="mobile-nav-modal"
-  class:list={['modal', 'cursor-pointer', 'bg-transparent!']}
-  aria-label="toggles the mobile navigation dropdown"
->
-  <label
-    class:list={[
-      'modal-box',
-      'w-full',
-      'max-w-full',
-      'absolute',
-      'top-[4rem]',
-      'rounded-t-none',
-      'bg-base-200',
-      'shadow-none',
-      'pt-0',
-      'pl-4',
-      '[&_a[aria-current="page"]]:btn-accent',
-    ]}
-    for=""
-  >
-    <ul class="flex flex-col gap-y-4">
-      {
-        links.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class:list={[
-                'btn',
-                'active:btn-primary',
-                'justify-start',
-                'text-left',
-                'w-full',
-              ]}
-              aria-current={
-                Astro.url.pathname === link.href ||
-                (link.href !== '/' && Astro.url.pathname.startsWith(link.href))
-                  ? 'page'
-                  : undefined
-              }
-            >
-              <EmojiText
-                emoji={link.emoji}
-                label={link.emojiLabel}
-                className="pr-2"
-              >
-                {link.name}
-              </EmojiText>
-            </a>
-          </li>
-        ))
+<style>
+  /* The trigger row reads as navigation, not as body copy. */
+  .megamenu {
+    --fontsize: 1rem;
+    font-family: var(--font-sans);
+  }
+
+  .nav-trigger {
+    font-weight: 700;
+    color: var(--color-base-content);
+  }
+
+  .nav-trigger[data-current] {
+    color: var(--color-primary);
+  }
+
+  .nav-panel {
+    inline-size: min(92vw, 34rem);
+    /* Reflow a panel that would otherwise run off the end of the viewport. */
+    position-try-fallbacks: flip-inline;
+  }
+
+  .nav-panel-grid {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .nav-feature {
+    border-radius: var(--radius-box);
+    background-color: var(--color-base-200);
+    padding: 0.75rem;
+  }
+
+  @media (width >= 48rem) {
+    .nav-panel-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+  }
+
+  /* Stacked sheet: every panel is laid out inline, so they drop the dropdown's
+     width, entrance transform and card chrome.
+
+     The sheet itself needs pinning too. A popover's implicit anchor is the
+     button that opened it, so daisyUI's `position-area: block-end` measures the
+     sheet from the hamburger rather than from the viewport; `position-area:
+     none` hands it back to `inset`. Sitting it below the navbar (instead of
+     daisyUI's `top: 0`) also keeps the button that closes it on screen. */
+  @media (width < 48rem) {
+    .megamenu:popover-open {
+      position: fixed;
+      position-area: none;
+      inset: 4rem 0 auto 0;
+      margin: 0;
+      width: 100%;
+      max-block-size: calc(100svh - 4rem);
+      box-shadow: var(--shadow-md, 0 4px 6px -1px oklch(0% 0 0 / 0.1));
+    }
+
+    .megamenu .nav-panel {
+      inline-size: 100%;
+      translate: 0;
+      scale: 1;
+    }
+
+    .nav-panel-grid {
+      padding-block: 0.5rem;
+    }
+  }
+
+  .nav-panel a[aria-current='page'] {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  /* Hamburger reflects the sheet's state. */
+  .nav-toggle-close {
+    display: none;
+  }
+
+  .navbar-shell:has(#site-nav:popover-open) .nav-toggle-open {
+    display: none;
+  }
+
+  .navbar-shell:has(#site-nav:popover-open) .nav-toggle-close {
+    display: inline;
+  }
+
+  /* Firefox (and Safari < 26) ship the popover API without CSS anchor
+     positioning, which is what daisyUI uses to pin each panel under its
+     trigger. Fall back to a centred sheet under the navbar so the menu is
+     still usable there. */
+  @supports not (anchor-name: --mm1) {
+    @media (width >= 48rem) {
+      .megamenu .nav-panel {
+        position: fixed;
+        inset-block: 4rem auto;
+        inset-inline: 0;
+        margin-inline: auto;
+        margin-block-start: 0;
       }
-    </ul>
-  </label>
-</label>
+    }
+
+    .megamenu-active {
+      display: none;
+    }
+  }
+</style>
 
 <script>
-  import { on } from 'delegated-events'
-  import { themeChange } from 'theme-change'
-
-  // Theme Changing
-  themeChange()
-
-  document.addEventListener('DOMContentLoaded', () => {
-    themeChange()
-
-    const themeCheckboxes =
-      document.querySelectorAll<HTMLInputElement>('.theme-toggle')
-
-    themeCheckboxes.forEach((cb) => {
-      if (!('checked' in cb)) {
-        return
-      }
-
-      cb.checked = document.documentElement.dataset?.theme === 'dark'
-    })
-
-    on('change', '.theme-toggle', (event) => {
-      themeCheckboxes.forEach((cb) => {
-        // @ts-ignore
-        cb.checked = event.target.checked
-      })
-    })
-  })
-
   // Scroll Progress
   const progress =
     document.querySelector<HTMLProgressElement>('#scroll-progress')
@@ -292,18 +548,4 @@ const links = [
   document.addEventListener('DOMContentLoaded', animateProgress)
   document.addEventListener('scroll', animateProgress)
   document.addEventListener('resize', animateProgress)
-
-  // Hamburger Menu
-  document.addEventListener('DOMContentLoaded', () => {
-    on('change', '.modal-control-input', (event) => {
-      const inputs = document.querySelectorAll<HTMLInputElement>(
-        '.modal-control-input'
-      )
-
-      inputs.forEach((i) => {
-        // @ts-ignore
-        i.checked = event.target.checked
-      })
-    })
-  })
 </script>

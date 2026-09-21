@@ -57,6 +57,11 @@ This is a personal website built with **Astro** as the main framework, using **P
 - Includes `.astro` pages, `.html` pages, blog posts, and talks
 - Last modified dates are derived from git commit history via `src/lib/lastModified.ts`
 
+### Post Components
+
+- MDX components available to blog posts and talks are registered in `src/components/Post/components.astro`
+- `<Carousel />` wraps daisyUI's carousel for image galleries — see [`docs/post-carousel.md`](./docs/post-carousel.md)
+
 ### standard.site (ATProto) Publishing
 
 - Publishes blog/link/feelings content (and hand-made static pages) to ATProto via `src/lib/standardSite.ts`, triggered in prerendered page renders and deduped through the `standard_site_documents` table — see [`docs/standard-site.md`](./docs/standard-site.md)

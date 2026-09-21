@@ -1,0 +1,567 @@
+---
+import { getImage } from 'astro:assets'
+
+export interface CarouselSlide {
+  /** Imported image, `/public` path, or absolute URL. */
+  src: ImageMetadata | string
+  alt: string
+  /** Rendered under the slide as a `<figcaption>`. */
+  caption?: string
+  /** Wraps the slide's image in a link. */
+  href?: string
+  /** Per slide override of the component's `loading` default. */
+  loading?: 'lazy' | 'eager'
+  /** Skips size inference when you already know the dimensions. */
+  width?: number
+  height?: number
+}
+
+export interface Props {
+  /**
+   * The slides. Each entry can be a full {@link CarouselSlide}, a bare
+   * imported image, or a bare path/URL string. Omit it and the default slot is
+   * used instead, in which case every direct child becomes a slide.
+   */
+  images?: (CarouselSlide | ImageMetadata | string)[]
+  /** Where slides come to rest when snapping. */
+  align?: 'start' | 'center' | 'end'
+  /** Scroll axis. `vertical` needs a `height`. */
+  direction?: 'horizontal' | 'vertical'
+  /** How many slides fit on screen at once, or any CSS length/percentage. */
+  slidesPerView?: number | string
+  /** Space between slides: a number of Tailwind spacing units, or CSS length. */
+  gap?: number | string
+  /** Previous/next controls. */
+  arrows?: boolean
+  /** Jump-to-slide controls rendered under the carousel. */
+  indicators?: false | 'dots' | 'numbers' | 'thumbnails'
+  /** "3 / 8" badge in the corner. Needs JavaScript. */
+  counter?: boolean
+  /** Wrap around at both ends. */
+  loop?: boolean
+  /** Arrow/Home/End key navigation once the carousel has focus. */
+  keyboard?: boolean
+  /** Advance every N milliseconds (`true` means 5000). Ignored when the reader
+   * prefers reduced motion, and paused on hover, focus and tab-out. */
+  autoplay?: number | boolean
+  /** Render `caption`s. */
+  captions?: boolean
+  /** Fixed track height, e.g. `24rem` or `70vh`. */
+  height?: string
+  /** Fixed slide aspect ratio, e.g. `16/9`. Ignored when `height` is set. */
+  aspect?: string
+  /** How images fill a slide that has a fixed `height`/`aspect`. */
+  fit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
+  /** Cap on the natural height of unconstrained slides. */
+  maxHeight?: string
+  rounded?: boolean
+  bordered?: boolean
+  shadow?: boolean
+  /** Let the carousel span the viewport instead of the prose column. */
+  fullBleed?: boolean
+  /** Show the native scrollbar instead of hiding it. */
+  scrollbar?: boolean
+  /** Format/quality/widths handed to `astro:assets`. */
+  format?: 'avif' | 'webp' | 'png' | 'jpeg' | 'jpg'
+  quality?: number
+  /** Generates a `srcset` at these widths. */
+  widths?: number[]
+  /** `sizes` attribute to go with `widths`. */
+  sizes?: string
+  loading?: 'lazy' | 'eager'
+  /** Base for the generated slide ids. Defaults to a per-instance id. */
+  id?: string
+  /** Accessible name for the whole carousel. */
+  label?: string
+  class?: string
+}
+
+const {
+  images,
+  align = 'center',
+  direction = 'horizontal',
+  slidesPerView = 1,
+  gap = 0,
+  arrows = true,
+  indicators = 'dots',
+  counter = false,
+  loop = true,
+  keyboard = true,
+  autoplay = false,
+  captions = true,
+  height,
+  aspect,
+  fit = 'contain',
+  maxHeight = '70vh',
+  rounded = true,
+  bordered = false,
+  shadow = false,
+  fullBleed = false,
+  scrollbar = false,
+  format = 'webp',
+  quality = 90,
+  widths,
+  sizes,
+  loading = 'lazy',
+  id,
+  label = 'Image carousel',
+  class: className,
+} = Astro.props
+
+const vertical = direction === 'vertical'
+const baseId = id ?? `carousel-${Math.random().toString(36).slice(2, 9)}`
+
+const normalize = (
+  image: CarouselSlide | ImageMetadata | string
+): CarouselSlide => {
+  if (typeof image === 'string') {
+    return { src: image, alt: '' }
+  }
+
+  if ('alt' in image) {
+    return image as CarouselSlide
+  }
+
+  return { src: image as ImageMetadata, alt: '' }
+}
+
+const slides = await Promise.all(
+  (images ?? []).map(normalize).map(async (slide) => {
+    const image = await getImage({
+      src: slide.src,
+      format,
+      quality,
+      ...(widths ? { widths } : {}),
+      ...(slide.width ? { width: slide.width } : {}),
+      ...(slide.height ? { height: slide.height } : {}),
+      ...(slide.width && slide.height ? {} : { inferSize: true }),
+    })
+
+    return {
+      ...slide,
+      image,
+      width: image.options.width,
+      height: image.options.height,
+    }
+  })
+)
+
+const count = slides.length || undefined
+// Per slide overlay arrows are pure CSS (they are just anchors), but they only
+// make sense when a slide fills the track. Multi-up carousels get a single pair
+// of buttons that step a page at a time, which needs JavaScript.
+const overlayArrows = arrows && slidesPerView === 1 && !!slides.length
+const steppedArrows = arrows && !overlayArrows
+
+const toLength = (value: number | string) =>
+  typeof value === 'number' ? `${value * 0.25}rem` : value
+
+const trackStyle = {
+  '--carousel-gap': toLength(gap),
+  '--carousel-slides':
+    typeof slidesPerView === 'number' ? `${slidesPerView}` : null,
+  '--carousel-slide-size':
+    typeof slidesPerView === 'string' ? slidesPerView : null,
+  '--carousel-max-height': maxHeight,
+  '--carousel-fit': fit,
+  ...(height ? { '--carousel-height': height } : {}),
+  ...(aspect && !height ? { '--carousel-aspect': aspect } : {}),
+}
+
+const slideIdFor = (index: number) => `${baseId}-slide-${index + 1}`
+const neighbour = (index: number, delta: number) => {
+  const next = index + delta
+
+  if (next < 0 || next >= slides.length) {
+    return loop ? (next + slides.length) % slides.length : null
+  }
+
+  return next
+}
+---
+
+<figure
+  class:list={[
+    'not-prose',
+    'carousel-wrapper',
+    'my-6',
+    'flex',
+    'flex-col',
+    'gap-2',
+    fullBleed && 'carousel-full-bleed',
+    className,
+  ]}
+  role="group"
+  aria-roledescription="carousel"
+  aria-label={label}
+  data-carousel
+  data-loop={loop ? 'true' : 'false'}
+  data-keyboard={keyboard ? 'true' : 'false'}
+  data-autoplay={autoplay ? (autoplay === true ? 5000 : autoplay) : undefined}
+  data-vertical={vertical ? 'true' : 'false'}
+  data-align={align}
+>
+  <div class="relative">
+    <div
+      class:list={[
+        'carousel',
+        `carousel-${align}`,
+        vertical ? 'carousel-vertical' : 'carousel-horizontal',
+        'carousel-track',
+        'w-full',
+        rounded && 'rounded-box',
+        bordered && 'border border-base-300',
+        shadow && 'shadow',
+        scrollbar && 'carousel-scrollbar',
+      ]}
+      style={trackStyle}
+      tabindex={keyboard ? 0 : undefined}
+      data-carousel-track
+      data-fixed-height={height ? 'true' : undefined}
+      data-fixed-aspect={aspect && !height ? 'true' : undefined}
+    >
+      {
+        slides.map((slide, index) => {
+          const previous = neighbour(index, -1)
+          const next = neighbour(index, 1)
+
+          return (
+            <div class="carousel-item carousel-slide" id={slideIdFor(index)}>
+              {slide.href ? (
+                <a href={slide.href} class="contents">
+                  <img
+                    src={slide.image.src}
+                    srcset={slide.image.srcSet?.attribute || undefined}
+                    sizes={sizes}
+                    width={slide.width}
+                    height={slide.height}
+                    alt={slide.alt}
+                    loading={slide.loading ?? loading}
+                    decoding="async"
+                  />
+                </a>
+              ) : (
+                <img
+                  src={slide.image.src}
+                  srcset={slide.image.srcSet?.attribute || undefined}
+                  sizes={sizes}
+                  width={slide.width}
+                  height={slide.height}
+                  alt={slide.alt}
+                  loading={slide.loading ?? loading}
+                  decoding="async"
+                />
+              )}
+              {overlayArrows && slides.length > 1 && (
+                <div class="carousel-arrows">
+                  <a
+                    href={
+                      previous === null ? undefined : `#${slideIdFor(previous)}`
+                    }
+                    class:list={[
+                      'btn',
+                      'btn-circle',
+                      'btn-sm',
+                      previous === null && 'btn-disabled',
+                    ]}
+                    aria-label="Previous slide"
+                    data-carousel-goto={previous ?? undefined}
+                  >
+                    ❮
+                  </a>
+                  <a
+                    href={next === null ? undefined : `#${slideIdFor(next)}`}
+                    class:list={[
+                      'btn',
+                      'btn-circle',
+                      'btn-sm',
+                      next === null && 'btn-disabled',
+                    ]}
+                    aria-label="Next slide"
+                    data-carousel-goto={next ?? undefined}
+                  >
+                    ❯
+                  </a>
+                </div>
+              )}
+            </div>
+          )
+        })
+      }
+      {!slides.length && <slot />}
+    </div>
+    {
+      steppedArrows && (
+        <div class="carousel-arrows" data-carousel-stepper hidden>
+          <button
+            type="button"
+            class="btn btn-circle btn-sm"
+            aria-label="Previous slide"
+            data-carousel-step="-1"
+          >
+            ❮
+          </button>
+          <button
+            type="button"
+            class="btn btn-circle btn-sm"
+            aria-label="Next slide"
+            data-carousel-step="1"
+          >
+            ❯
+          </button>
+        </div>
+      )
+    }
+    {
+      counter && (
+        <p
+          class:list={[
+            'badge',
+            'badge-sm',
+            'badge-neutral',
+            'absolute',
+            'top-2',
+            'right-2',
+            'm-0',
+            'font-sans',
+            'tabular-nums',
+          ]}
+          data-carousel-counter
+          aria-live="off"
+        >
+          <span data-carousel-current>1</span>&nbsp;/&nbsp;{count ?? '?'}
+        </p>
+      )
+    }
+  </div>
+
+  {
+    indicators && slides.length > 1 && (
+      <nav
+        class:list={[
+          'flex',
+          'w-full',
+          'justify-center',
+          'gap-2',
+          indicators === 'thumbnails' ? 'flex-wrap' : 'items-center',
+        ]}
+        aria-label={`${label} slide picker`}
+        data-carousel-indicators
+      >
+        {slides.map((slide, index) => (
+          <a
+            href={`#${slideIdFor(index)}`}
+            data-carousel-goto={index}
+            aria-label={`Go to slide ${index + 1}${slide.alt ? `: ${slide.alt}` : ''}`}
+            class:list={[
+              indicators === 'numbers' && ['btn', 'btn-xs'],
+              indicators === 'dots' && 'carousel-dot',
+              indicators === 'thumbnails' && 'carousel-thumb',
+            ]}
+          >
+            {indicators === 'numbers' && index + 1}
+            {indicators === 'thumbnails' && (
+              <img
+                src={slide.image.src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+          </a>
+        ))}
+      </nav>
+    )
+  }
+
+  {
+    captions && slides.some((slide) => slide.caption) && (
+      <figcaption
+        class:list={['text-center', 'text-sm', 'opacity-70', 'font-sans']}
+        data-carousel-captions
+      >
+        {slides.map((slide, index) => (
+          <span data-carousel-caption={index} hidden={index !== 0}>
+            {slide.caption}
+          </span>
+        ))}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .carousel-track {
+    gap: var(--carousel-gap, 0px);
+    scroll-padding: 0;
+  }
+
+  /* daisyUI hides the scrollbar by default; opt back in. */
+  .carousel-scrollbar {
+    scrollbar-width: thin;
+  }
+
+  .carousel-scrollbar::-webkit-scrollbar {
+    display: block;
+  }
+
+  .carousel-slide {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* `carousel-item` is `flex: none`, so the track is sized entirely by these. */
+  [data-vertical='false'] .carousel-slide {
+    width: var(
+      --carousel-slide-size,
+      calc(
+        (100% - (var(--carousel-slides, 1) - 1) * var(--carousel-gap, 0px)) /
+          var(--carousel-slides, 1)
+      )
+    );
+  }
+
+  [data-vertical='true'] .carousel-track {
+    height: var(--carousel-height, 24rem);
+  }
+
+  [data-vertical='true'] .carousel-slide {
+    width: 100%;
+    height: var(
+      --carousel-slide-size,
+      calc(
+        (100% - (var(--carousel-slides, 1) - 1) * var(--carousel-gap, 0px)) /
+          var(--carousel-slides, 1)
+      )
+    );
+  }
+
+  .carousel-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: var(--carousel-max-height, 70vh);
+    object-fit: var(--carousel-fit, contain);
+    margin: 0;
+  }
+
+  /* A declared height or aspect ratio pins every slide to the same box so the
+     track does not resize as the reader scrolls through it. Without either, the
+     track is as tall as its tallest slide and shorter ones are centred. */
+  [data-vertical='false'] .carousel-track:not([data-fixed-height]) {
+    align-items: center;
+  }
+
+  .carousel-track[data-fixed-height] {
+    height: var(--carousel-height);
+  }
+
+  .carousel-track[data-fixed-height] .carousel-slide img,
+  [data-vertical='true'] .carousel-slide img {
+    height: 100%;
+    max-height: none;
+  }
+
+  .carousel-track[data-fixed-aspect] .carousel-slide img {
+    aspect-ratio: var(--carousel-aspect);
+    max-height: none;
+  }
+
+  .carousel-arrows {
+    position: absolute;
+    inset-inline: 0.75rem;
+    top: 50%;
+    display: flex;
+    translate: 0 -50%;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  .carousel-arrows > * {
+    pointer-events: auto;
+  }
+
+  /* `display: flex` above would otherwise beat the user agent's `[hidden]`
+     rule, and the stepper starts hidden until its script wires it up. */
+  .carousel-arrows[hidden] {
+    display: none;
+  }
+
+  [data-vertical='true'] .carousel-arrows {
+    inset-inline: auto;
+    inset-block: 0.75rem;
+    left: 50%;
+    top: auto;
+    translate: -50% 0;
+    flex-direction: column;
+  }
+
+  .carousel-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: calc(infinity * 1px);
+    background-color: color-mix(
+      in oklab,
+      var(--color-base-content) 25%,
+      transparent
+    );
+    transition: background-color 0.2s ease-out;
+  }
+
+  .carousel-dot:hover,
+  .carousel-dot[aria-current='true'] {
+    background-color: var(--color-primary);
+  }
+
+  .carousel-thumb {
+    display: block;
+    width: 3.5rem;
+    border-radius: var(--radius-field);
+    overflow: hidden;
+    opacity: 0.5;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .carousel-thumb:hover,
+  .carousel-thumb[aria-current='true'] {
+    opacity: 1;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .carousel-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    margin: 0;
+  }
+
+  .carousel-full-bleed {
+    width: 100vw;
+    max-width: 100vw;
+    margin-inline-start: 50%;
+    translate: -50% 0;
+  }
+
+  .carousel-track:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Only the active caption is shown; the rest stay in the DOM so the JS can
+     swap them without a round trip. */
+  [data-carousel-captions] span[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  import { CAROUSEL_SELECTOR, initCarousel } from './carousel.ts'
+
+  document
+    .querySelectorAll<HTMLElement>(CAROUSEL_SELECTOR)
+    .forEach(initCarousel)
+</script>
