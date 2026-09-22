@@ -173,6 +173,102 @@
   page-break-inside: avoid;
 }
 
+/* `print:` styles also apply on screen under `html[data-print-preview]`, so the
+   resume's print layout can be previewed and measured without printing. */
+@custom-variant print {
+  @media print {
+    @slot;
+  }
+  &:where([data-print-preview], [data-print-preview] *) {
+    @slot;
+  }
+}
+
+/* Resume tailoring (see src/lib/resumeTailor). */
+@layer components {
+  .tailor-summary:not([data-filled]) {
+    display: none !important;
+  }
+
+  html:not([data-tailor-review]) .tailor-hidden {
+    display: none !important;
+  }
+  [data-tailor-review] .tailor-hidden {
+    opacity: 0.45;
+    text-decoration: line-through;
+  }
+
+  .tailor-del {
+    display: none;
+  }
+  .tailor-ins {
+    text-decoration: none;
+  }
+  [data-tailor-review] .tailor-del {
+    display: inline;
+    opacity: 0.6;
+  }
+  [data-tailor-review] .tailor-ins {
+    background: color-mix(in oklab, var(--color-success) 25%, transparent);
+  }
+
+  mark.tailor-mark {
+    color: inherit;
+    border-radius: 2px;
+    background: color-mix(in oklab, var(--color-warning) 40%, transparent);
+  }
+
+  html[data-print-preview] #main-content {
+    width: 7.7in !important;
+    max-width: 7.7in !important;
+    outline: 1px dashed var(--color-base-300);
+  }
+
+  .tailor-hidden,
+  .tailor-del {
+    @variant print {
+      display: none !important;
+    }
+  }
+  .tailor-ins,
+  mark.tailor-mark {
+    @variant print {
+      background: none !important;
+    }
+  }
+  .tailor-force-print {
+    @variant print {
+      display: flex !important;
+    }
+  }
+  [data-tailor-break-before] {
+    @variant print {
+      break-before: page;
+    }
+  }
+  [data-resume-root] {
+    @variant print {
+      zoom: var(--tailor-font-scale, 1);
+    }
+  }
+  html[data-tailor-density='compact'] [data-resume-root] {
+    @variant print {
+      gap: calc(var(--spacing) * 2);
+    }
+  }
+  html[data-tailor-density='compact'] [data-resume-root] .prose {
+    @variant print {
+      gap: calc(var(--spacing) * 1);
+      line-height: 1.4;
+    }
+  }
+  html[data-tailor-density='compact'] [data-resume-root] .prose li {
+    @variant print {
+      margin-block: 0.1em;
+    }
+  }
+}
+
 /* Tailwind v4 emits `@tailwindcss/typography`'s `prose` element margins into the
    same `utilities` layer as the margin utilities, and later in source order, so
    `prose` wins margin ties. The markup relies on margin utilities overriding

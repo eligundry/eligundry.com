@@ -1,0 +1,71 @@
+# Rendered on /resume/ under "Activities & Interests". `records` map each
+# bullet onto JSON Resume sections for /resume.json.
+- id: album-mode
+  markdown: >-
+    Created [Album Mode.party](https://album-mode.party), a
+    [Remix](https://remix.run/) application that recommends random
+    albums from Spotify.
+  records:
+    - section: projects
+      name: Album Mode.party
+      description: A Remix application that recommends random albums from Spotify.
+      url: https://album-mode.party
+      keywords: [Remix, Spotify]
+
+- id: code-nation
+  markdown: >-
+    Volunteered with [Code Nation](https://codenation.org/) to teach
+    web development to 10th graders during the 2022 school year.
+  records:
+    - section: volunteer
+      organization: Code Nation
+      position: Volunteer Instructor
+      url: https://codenation.org/
+      startDate: '2022'
+      endDate: '2022'
+      summary: Taught web development to 10th graders during the 2022 school year.
+
+- id: talks
+  markdown: >-
+    Presented [technical talks](/talks) at
+    [Remix NYC](/talks/remix-ab-testing),
+    [QueensJS](/talks/redux-hooks),
+    and [The New York City Vim Meetup](/talks/dots).
+  records:
+    - section: publications
+      talk: remix-ab-testing
+    - section: publications
+      talk: redux-hooks
+    - section: publications
+      talk: dots
+
+- id: hackathons
+  markdown: >-
+    Alumni of [HacKSU](http://hacksu.cs.kent.edu/), Kent State's hacker
+    community and [competed in numerous hackathons](https://devpost.com/eligundry)
+    including:
+  childrenClass: columns-2 text-sm print:text-xs
+  children:
+    - '[KHE](https://khe.io/) 2013 (2nd place), 2014, 2015'
+    - '[MHacks](https://mhacks.org/) 2013, 2014, 2015'
+    - '[PennApps](http://pennapps.com/) 2014 (1st place Intel XDK App)'
+    - '[HackIllinois](http://hackillinois.org/) 2014'
+  records:
+    - section: awards
+      title: 2nd Place
+      awarder: Kent Hack Enough (KHE)
+      date: '2013'
+    - section: awards
+      title: 1st Place Intel XDK App
+      awarder: PennApps
+      date: '2014'
+
+- id: eagle-scout
+  markdown: >-
+    Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout"
+    itemprop="award">Eagle Scout</a> in 2006.
+  records:
+    - section: awards
+      title: Eagle Scout
+      awarder: Boy Scouts of America
+      date: '2006'

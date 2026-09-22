@@ -1,24 +1,29 @@
 ---
 import * as dateFns from 'date-fns'
-import { experienceComponents } from './mdxComponents.tsx'
-import type { CollectionEntry } from 'astro:content'
+import type { ExperienceNode } from '../../lib/resume/model'
 
 export interface Props {
-  experience: CollectionEntry<'resumeExperiences'>
+  experience: ExperienceNode
+  // Rendered HTML for the experience's summary and highlights, keyed by id.
+  html: Record<string, string>
 }
 
-const { experience } = Astro.props
+const { experience, html } = Astro.props
 const {
+  id,
   type,
   organization,
   position,
   location,
-  website,
-  startDate,
-  endDate,
+  url: website,
+  summary,
+  highlights,
   printHide,
-} = experience.data
-const { Content } = await experience.render()
+} = experience
+const startDate = dateFns.parseISO(experience.startDate)
+const endDate = experience.endDate
+  ? dateFns.parseISO(experience.endDate)
+  : undefined
 ---
 
 <section
@@ -35,6 +40,8 @@ const { Content } = await experience.render()
     type == 'work' ? 'Organization' : 'CollegeOrUniversity'
   }`}
   itemprop={endDate ? 'alumniOf' : 'worksFor'}
+  data-resume-id={id}
+  data-print-unit={id}
 >
   <h3 itemprop="name" class="w-full sm:w-1/2 print:w-1/2 m-0 text-base order-1">
     <a href={website} itemprop="url">
@@ -128,5 +135,32 @@ const { Content } = await experience.render()
       class="hidden sm:inline">📍</span
     >
   </address>
-  <Content components={experienceComponents} />
+  {
+    summary && (
+      <p
+        itemprop="description"
+        class="order-5 my-2"
+        data-resume-id={summary.id}
+        data-resume-text={summary.id}
+        set:html={html[summary.id]}
+      />
+    )
+  }
+  {
+    highlights.length > 0 && (
+      <ul
+        itemprop="description"
+        class="order-5 my-0"
+        data-resume-container={id}
+      >
+        {highlights.map((highlight) => (
+          <li
+            data-resume-id={highlight.id}
+            data-resume-text={highlight.id}
+            set:html={html[highlight.id]}
+          />
+        ))}
+      </ul>
+    )
+  }
 </section>

@@ -62,6 +62,10 @@ This is a personal website built with **Astro** as the main framework, using **P
 - MDX components available to blog posts and talks are registered in `src/components/Post/components.astro`
 - `<Carousel />` wraps daisyUI's carousel for image galleries — see [`docs/post-carousel.md`](./docs/post-carousel.md)
 
+### Resume
+
+- `/resume/` and `/resume.json` (JSON Resume) are built from one model in `src/lib/resume/`; `/resume/` can be tailored to a job posting by in-browser agents via WebMCP tools in `src/lib/resumeTailor/` — see [`docs/resume-tailoring.md`](./docs/resume-tailoring.md)
+
 ### standard.site (ATProto) Publishing
 
 - Publishes blog/link/feelings content (and hand-made static pages) to ATProto via `src/lib/standardSite.ts`, triggered in prerendered page renders and deduped through the `standard_site_documents` table — see [`docs/standard-site.md`](./docs/standard-site.md)

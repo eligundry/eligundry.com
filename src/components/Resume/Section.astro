@@ -2,18 +2,31 @@
 interface Props {
   title?: any
   className?: string
+  // Resume model id (e.g. "section:work"). Lets tailoring hide, reorder and
+  // retitle the section; its `data-resume-id` children can be reordered.
+  id?: string
 }
 
-const { title, className } = Astro.props
+const { title, className, id } = Astro.props
 ---
 
-<section class:list={['prose', 'flex', 'flex-col', 'gap-2', className]}>
+<section
+  class:list={['prose', 'flex', 'flex-col', 'gap-2', className]}
+  data-resume-id={id}
+  data-resume-container={id}
+>
   {
     title && (
-      <header>
-        <h2 class="my-0 border-b-2 border-b-accent text-lg">{title}</h2>
+      <header data-print-unit={id && `${id}:title`} data-print-heading>
+        <h2
+          class="my-0 border-b-2 border-b-accent text-lg"
+          data-resume-text={id && `${id}:title`}
+        >
+          {title}
+        </h2>
       </header>
     )
   }
+  <slot name="header" />
   <slot />
 </section>

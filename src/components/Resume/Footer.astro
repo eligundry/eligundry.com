@@ -1,5 +1,9 @@
 ---
 import EmojiText from '../EmojiText.astro'
+import { resumeBasics as basics } from '../../lib/resume/basics'
+
+const github = basics.profiles.find((p) => p.network === 'GitHub')
+const site = new URL(basics.url)
 ---
 
 <footer
@@ -18,33 +22,34 @@ import EmojiText from '../EmojiText.astro'
     'pt-2',
     '[&_.emoji]:mt-1',
   ]}
+  data-print-footer
 >
   <span>
     <EmojiText
       emoji="💌"
       label="envelop with heart because you will love emailing me"
     >
-      <a href="mailto:eligundry@gmail.com">eligundry@gmail.com</a>
+      <a href={`mailto:${basics.email}`}>{basics.email}</a>
     </EmojiText>
   </span>
   <span>
     <EmojiText emoji="📞" label="call me maybe">
-      <a href="tel:3475232652">347.523.2652</a>
+      <a href={`tel:${basics.phone.replace(/\D/g, '')}`}>{basics.phone}</a>
     </EmojiText>
   </span>
   <address class="not-italic">
     <EmojiText emoji="📍" label="drop a pin cause I am in Astoria">
-      Astoria, NY
+      {basics.location.city}, {basics.location.region}
     </EmojiText>
   </address>
   <span>
     <EmojiText emoji="💾" label="floppy disk that my website is saved on">
-      <a href="https://eligundry.com"> eligundry.com</a>
+      <a href={basics.url}> {site.host}</a>
     </EmojiText>
   </span>
   <span>
     <EmojiText emoji="👨‍💻" label="lil man at computer because i'm coding">
-      <a href="https://github.com/eligundry">github/eligundry</a>
+      <a href={github?.url}>github/{github?.username}</a>
     </EmojiText>
   </span>
 </footer>

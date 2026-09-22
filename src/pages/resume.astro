@@ -3,40 +3,70 @@ import Layout from '../layouts/Layout.astro'
 import Experience from '../components/Resume/Experience.astro'
 import Section from '../components/Resume/Section.astro'
 import Footer from '../components/Resume/Footer.astro'
+import TailorPanel from '../components/Resume/TailorPanel.tsx'
 import { FaDownload } from 'react-icons/fa'
-import { getCollection, getEntry } from 'astro:content'
-import * as dateFns from 'date-fns'
-import { skillsComponents } from '../components/Resume/mdxComponents'
+import { getResumeSource, renderTrustedMarkdown } from '../lib/resume/build'
+import { skillLineHtml } from '../lib/resume/markdown'
+import type { ExperienceNode, TextNode } from '../lib/resume/model'
 
-const experiences = await getCollection('resumeExperiences').then(
-  (experiences) =>
-    experiences.sort((a, b) =>
-      dateFns.compareDesc(a.data.startDate, b.data.startDate)
+const source = await getResumeSource()
+const { basics } = source
+const sectionOf = <Id extends (typeof source.sections)[number]['id']>(id: Id) =>
+  source.sections.find(
+    (s): s is Extract<(typeof source.sections)[number], { id: Id }> =>
+      s.id === id
+  )!
+
+const work = sectionOf('section:work')
+const education = sectionOf('section:education')
+const skills = sectionOf('section:skills')
+const activities = sectionOf('section:activities')
+
+// Pre-render every bullet so tailoring can address each one by id.
+const html: Record<string, string> = {}
+const textNodes = [...work.items, ...education.items].flatMap(
+  (experience: ExperienceNode) =>
+    [experience.summary, ...experience.highlights].filter(
+      (node): node is TextNode => Boolean(node)
     )
 )
+await Promise.all([
+  ...textNodes.map(async (node) => {
+    html[node.id] = await renderTrustedMarkdown(node.markdown)
+  }),
+  ...activities.items.map(async (activity) => {
+    // Activity links open in a new tab, like the skill links.
+    html[activity.id] = (await renderTrustedMarkdown(activity.markdown))
+      .replace(/<a (?![^>]*itemprop)/g, '<a itemprop="knowsAbout" ')
+      .replace(/<a /g, '<a target="_blank" ')
+    await Promise.all(
+      (activity.children ?? []).map(async (child, i) => {
+        html[`${activity.id}:child:${i}`] = (
+          await renderTrustedMarkdown(child)
+        ).replace(/<a /g, '<a itemprop="knowsAbout" target="_blank" ')
+      })
+    )
+  }),
+])
 
-const skillsEntry = await getEntry('sections', 'resume-skills')
-if (!skillsEntry) {
-  throw new Error('No "resume-skills" section found')
-}
-const { Content: Skills } = await skillsEntry.render()
-
-const activitiesEntry = await getEntry('sections', 'resume-activities')
-if (!activitiesEntry) {
-  throw new Error('No "resume-activities" section found')
-}
-const { Content: Activities } = await activitiesEntry.render()
-
-const work = experiences.filter((experience) => experience.data.type === 'work')
-const education = experiences.filter(
-  (experience) => experience.data.type === 'education'
-)
+// The pristine model, for the tailoring runtime. Escape `<` so the JSON can't
+// close the script tag.
+const sourceJson = JSON.stringify(source).replace(/</g, '\\u003c')
 ---
 
 <Layout
   title="Resume"
   description="You should hire me! My resume is pretty nice and I can bring a lot to any team."
 >
+  <Fragment slot="head">
+    <link
+      rel="alternate"
+      type="application/json"
+      href="/resume.json"
+      title="JSON Resume"
+    />
+  </Fragment>
+  <TailorPanel client:only="preact" />
   <div
     class:list={[
       'paper',
@@ -51,88 +81,155 @@ const education = experiences.filter(
       '[&_.prose_ul_ul]:my-0',
       '[&_.prose]:print:text-sm',
     ]}
+    data-resume-root
   >
     <header
       class="hidden print:flex flex-row justify-between prose border-b-2 border-b-accent"
+      data-print-unit="basics"
     >
-      <h1 class="text-lg mb-0">Eli Gundry</h1>
+      <h1 class="text-lg mb-0">{basics.name}</h1>
       <h2 class="text-sm mt-0 font-mono! self-center">
-        <span class="text-primary">Full Stack Web Engineer</span>
+        <span class="text-primary" data-resume-text={basics.label.id}
+          >{basics.label.markdown}</span
+        >
         <span class="comment">
-          // <span class="font-normal">❤️</span> Typescript, AI and everything inbetween</span
+          // <span class="font-normal" data-resume-text={basics.tagline.id}
+            >{basics.tagline.markdown}</span
+          ></span
         >
       </h2>
     </header>
-    <Section>
-      <header class="flex justify-between border-b-2 border-b-accent">
-        <h2 class="my-0 text-lg block print:hidden">Work</h2>
-        <h2 class="my-0 text-lg hidden print:block">Selected Work History</h2>
-        <h6
-          class:list={[
-            'self-center',
-            'italic',
-            'text-neutral-900',
-            'text-xs',
-            'hidden',
-            'print:block!',
-          ]}
+    <Section
+      title="Summary"
+      id={basics.summary.id}
+      className="tailor-summary [&>p]:my-0"
+    >
+      <p data-resume-text={basics.summary.id} data-print-unit="basics:summary">
+      </p>
+    </Section>
+    <div class="contents" data-resume-container="sections">
+      <Section id={work.id}>
+        <header
+          slot="header"
+          class="flex justify-between border-b-2 border-b-accent"
+          data-print-unit={`${work.id}:title`}
+          data-print-heading
         >
-          View full resume at <a href="/resume/">eligundry.com/resume/</a>
-        </h6>
-        <button
-          class:list={[
-            'print-button',
-            'btn',
-            'btn-sm',
-            'btn-ghost',
-            'sm:tooltip',
-            'sm:tooltip-primary',
-            'sm:tooltip-left',
-            'self-start',
-            'normal-case',
-            'print:hidden!',
-            'sm:inline',
-          ]}
-          data-tip="Download this resume by printing it as a PDF"
-          aria-label="Download this resume by printing it as a PDF"
-        >
-          <FaDownload />
-        </button>
-      </header>
-      {work.map((job) => <Experience experience={job} />)}
-    </Section>
+          <h2
+            class="my-0 text-lg block print:hidden"
+            data-resume-text={`${work.id}:title`}
+          >
+            {work.title}
+          </h2>
+          <h2
+            class="my-0 text-lg hidden print:block"
+            data-resume-text={`${work.id}:title`}
+          >
+            {work.printTitle}
+          </h2>
+          <h6
+            class:list={[
+              'self-center',
+              'italic',
+              'text-neutral-900',
+              'text-xs',
+              'hidden',
+              'print:block!',
+            ]}
+          >
+            View full resume at <a href="/resume/">eligundry.com/resume/</a>
+          </h6>
+          <button
+            class:list={[
+              'print-button',
+              'btn',
+              'btn-sm',
+              'btn-ghost',
+              'sm:tooltip',
+              'sm:tooltip-primary',
+              'sm:tooltip-left',
+              'self-start',
+              'normal-case',
+              'print:hidden!',
+              'sm:inline',
+            ]}
+            data-tip="Download this resume by printing it as a PDF"
+            aria-label="Download this resume by printing it as a PDF"
+          >
+            <FaDownload />
+          </button>
+        </header>
+        {work.items.map((job) => <Experience experience={job} html={html} />)}
+      </Section>
 
-    <Section title="Education">
-      {education.map((school) => <Experience experience={school} />)}
-    </Section>
+      <Section title={education.title} id={education.id}>
+        {
+          education.items.map((school) => (
+            <Experience experience={school} html={html} />
+          ))
+        }
+      </Section>
 
-    <Section title="Skills & Technologies" className="[&>ul]:mt-0">
-      <Skills components={skillsComponents} />
-    </Section>
+      <Section title={skills.title} id={skills.id} className="[&>ul]:mt-0">
+        <ul data-resume-container={skills.id}>
+          {
+            skills.items.map((skill) => (
+              <li
+                data-resume-id={skill.id}
+                data-resume-text={skill.id}
+                data-print-unit={skill.id}
+                set:html={skillLineHtml(skill.lead, skill.keywords)}
+              />
+            ))
+          }
+        </ul>
+      </Section>
 
-    <Section title="Activities & Interests" className="[&>ul]:mt-0">
-      <Activities components={skillsComponents} />
-    </Section>
+      <Section
+        title={activities.title}
+        id={activities.id}
+        className="[&>ul]:mt-0"
+      >
+        <ul data-resume-container={activities.id}>
+          {
+            activities.items.map((activity) => (
+              <li data-resume-id={activity.id} data-print-unit={activity.id}>
+                <span
+                  data-resume-text={activity.id}
+                  set:html={html[activity.id]}
+                />
+                {activity.children && (
+                  <ul class={activity.childrenClass}>
+                    {activity.children.map((_, i) => (
+                      <li set:html={html[`${activity.id}:child:${i}`]} />
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </Section>
+    </div>
     <Footer />
   </div>
+  <script
+    type="application/json"
+    id="resume-source"
+    set:html={sourceJson}
+    is:inline
+  />
 </Layout>
 
 <style>
   @page {
-    margin-bottom: 0.5cm;
+    size: letter;
+    margin: 0.4in 0.4in 0.5cm;
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const printBtn = document.querySelector('.print-button')
+  import { bootResume } from '../lib/resumeTailor/boot'
 
-    if (!printBtn) {
-      return
-    }
-
-    printBtn.addEventListener('click', () => {
-      window.print()
-    })
-  })
+  bootResume()
 </script>

@@ -41,15 +41,13 @@ export async function getAllLastModifieds(): Promise<Record<string, Date>> {
 
         return new Date(log.latest.date)
       }),
-    git
-      .log({ file: path.join('src', 'content', 'sections', 'resume*') })
-      .then((log) => {
-        if (!log?.latest?.date) {
-          return undefined
-        }
+    git.log({ file: path.join('src', 'content', 'resume*') }).then((log) => {
+      if (!log?.latest?.date) {
+        return undefined
+      }
 
-        return new Date(log.latest.date)
-      }),
+      return new Date(log.latest.date)
+    }),
   ])
   let latestTalkDate = new Date(0)
   let latestBlogDate = new Date(0)
