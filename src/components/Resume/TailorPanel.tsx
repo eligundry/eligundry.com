@@ -1,44 +1,25 @@
+import lodashTruncate from 'lodash/truncate'
 import { useEffect, useState } from 'preact/hooks'
 import { markdownToPlain } from '../../lib/resume/markdown'
 import type { TailorSnapshot, TailorStore } from '../../lib/resumeTailor/store'
 
-const READY_EVENT = 'resume-tailor:ready'
-
-function useTailorStore() {
-  const [store, setStore] = useState<TailorStore | undefined>(
-    () => window.__resumeTailor
-  )
-  const [snapshot, setSnapshot] = useState<TailorSnapshot | undefined>()
-
-  useEffect(() => {
-    if (store) return
-    const onReady = () => setStore(window.__resumeTailor)
-    window.addEventListener(READY_EVENT, onReady)
-    onReady()
-    return () => window.removeEventListener(READY_EVENT, onReady)
-  }, [store])
-
-  useEffect(() => store?.subscribe(setSnapshot), [store])
-
-  return { store, snapshot }
-}
-
-function truncate(markdown: string | undefined, length = 160) {
-  if (!markdown) return markdown
-  const text = markdownToPlain(markdown)
-  return text.length > length ? `${text.slice(0, length)}…` : text
-}
+const truncate = (markdown: string | undefined) =>
+  markdown &&
+  lodashTruncate(markdownToPlain(markdown), {
+    length: 160,
+    separator: ' ',
+    omission: '…',
+  })
 
 /**
  * Review panel for a tailored resume: shows who it was tailored for, every
  * change with its reason (each revertable), and print preview/sharing tools.
- * Renders nothing on the plain resume.
+ * Mounted by the tailoring runtime above the resume.
  */
-export default function TailorPanel() {
-  const { store, snapshot } = useTailorStore()
+export default function TailorPanel({ store }: { store: TailorStore }) {
+  const [snapshot, setSnapshot] = useState<TailorSnapshot>(store.snapshot)
+  useEffect(() => store.subscribe(setSnapshot), [store])
   const [copied, setCopied] = useState(false)
-
-  if (!store || !snapshot) return null
 
   const { tailored, state, review, preview, layout, webmcp } = snapshot
   const { job } = tailored

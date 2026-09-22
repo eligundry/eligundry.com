@@ -3,10 +3,10 @@ import Layout from '../layouts/Layout.astro'
 import Experience from '../components/Resume/Experience.astro'
 import Section from '../components/Resume/Section.astro'
 import Footer from '../components/Resume/Footer.astro'
-import TailorPanel from '../components/Resume/TailorPanel.tsx'
 import { FaDownload } from 'react-icons/fa'
 import { getResumeSource, renderTrustedMarkdown } from '../lib/resume/build'
 import { skillLineHtml } from '../lib/resume/markdown'
+import { pageCss } from '../lib/resumeTailor/layout'
 import type { ExperienceNode, TextNode } from '../lib/resume/model'
 
 const source = await getResumeSource()
@@ -36,14 +36,14 @@ await Promise.all([
   }),
   ...activities.items.map(async (activity) => {
     // Activity links open in a new tab, like the skill links.
-    html[activity.id] = (await renderTrustedMarkdown(activity.markdown))
-      .replace(/<a (?![^>]*itemprop)/g, '<a itemprop="knowsAbout" ')
-      .replace(/<a /g, '<a target="_blank" ')
+    const links = { itemProp: 'knowsAbout', target: '_blank' }
+    html[activity.id] = await renderTrustedMarkdown(activity.markdown, links)
     await Promise.all(
       (activity.children ?? []).map(async (child, i) => {
-        html[`${activity.id}:child:${i}`] = (
-          await renderTrustedMarkdown(child)
-        ).replace(/<a /g, '<a itemprop="knowsAbout" target="_blank" ')
+        html[`${activity.id}:child:${i}`] = await renderTrustedMarkdown(
+          child,
+          links
+        )
       })
     )
   }),
@@ -65,8 +65,8 @@ const sourceJson = JSON.stringify(source).replace(/</g, '\\u003c')
       href="/resume.json"
       title="JSON Resume"
     />
+    <Fragment set:html={`<style>${pageCss}</style>`} />
   </Fragment>
-  <TailorPanel client:only="preact" />
   <div
     class:list={[
       'paper',
@@ -220,13 +220,6 @@ const sourceJson = JSON.stringify(source).replace(/</g, '\\u003c')
     is:inline
   />
 </Layout>
-
-<style>
-  @page {
-    size: letter;
-    margin: 0.4in 0.4in 0.5cm;
-  }
-</style>
 
 <script>
   import { bootResume } from '../lib/resumeTailor/boot'

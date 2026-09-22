@@ -1,7 +1,8 @@
 import { toJsonResume, toSuperset, type ResumeSource } from '../resume/model'
 import { ResumeDom } from './dom'
 import { measurePrintLayout, setPrintPreview, type PrintLayout } from './layout'
-import { encodeState, HASH_KEY } from './serialize'
+import { HASH_KEY } from './boot'
+import { encodeState } from './serialize'
 import {
   addChange,
   emptyState,
@@ -137,10 +138,24 @@ export class TailorStore {
     this.emit()
   }
 
-  async measure(): Promise<PrintLayout> {
-    this.layout = await measurePrintLayout(this.tailored.print.targetPages)
-    this.emit()
-    return this.layout
+  private measuring?: { tailored: Tailored; layout: Promise<PrintLayout> }
+
+  /** Measures the print layout, sharing one measurement per tailoring. */
+  measure(): Promise<PrintLayout> {
+    if (this.measuring?.tailored !== this.tailored) {
+      const tailored = this.tailored
+      const layout = measurePrintLayout(tailored.print.targetPages).then(
+        (layout) => {
+          if (this.tailored === tailored) {
+            this.layout = layout
+            this.emit()
+          }
+          return layout
+        }
+      )
+      this.measuring = { tailored, layout }
+    }
+    return this.measuring.layout
   }
 
   /** The tailored resume as JSON Resume plus `x-` extensions. */
@@ -159,5 +174,3 @@ declare global {
     __resumeTailor?: TailorStore
   }
 }
-
-export const READY_EVENT = 'resume-tailor:ready'

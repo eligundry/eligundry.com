@@ -1,9 +1,14 @@
+import { h, render } from 'preact'
+import TailorPanel from '../../components/Resume/TailorPanel'
 import type { ResumeSource } from '../resume/model'
 import { readHash } from './serialize'
-import { READY_EVENT, TailorStore } from './store'
+import { TailorStore } from './store'
 import { registerTools } from './webmcp'
 
-/** Boots tailoring on /resume/: restores a shared link and registers tools. */
+/**
+ * Boots tailoring on /resume/: restores a shared link, registers the WebMCP
+ * tools and mounts the review panel above the resume.
+ */
 export async function start(): Promise<TailorStore | undefined> {
   if (window.__resumeTailor) {
     return window.__resumeTailor
@@ -16,10 +21,12 @@ export async function start(): Promise<TailorStore | undefined> {
   }
 
   const base = JSON.parse(data.textContent) as ResumeSource
-  const initial = await readHash(location.hash)
-  const store = new TailorStore(base, root, initial ?? undefined)
+  const store = new TailorStore(base, root, await readHash(location.hash))
   store.webmcp = registerTools(store)
   window.__resumeTailor = store
-  window.dispatchEvent(new CustomEvent(READY_EVENT))
+
+  const panel = document.createElement('div')
+  root.before(panel)
+  render(h(TailorPanel, { store }), panel)
   return store
 }

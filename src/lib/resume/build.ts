@@ -1,5 +1,7 @@
 import { createMarkdownProcessor } from '@astrojs/markdown-remark'
 import { getCollection, getEntry } from 'astro:content'
+import type { Node } from 'unist'
+import { visit } from 'unist-util-visit'
 import config from '../../config'
 import { resumeBasics } from './basics'
 import {
@@ -112,15 +114,43 @@ export async function getResumeSource(): Promise<ResumeSource> {
   }
 }
 
-let processor: Awaited<ReturnType<typeof createMarkdownProcessor>> | undefined
+type LinkProperties = Record<string, string>
+
+/** Adds properties to every link that doesn't already set them. */
+const rehypeLinkProperties =
+  (properties: LinkProperties) => () => (tree: Node) => {
+    visit(tree, 'element', (node) => {
+      const element = node as Node & {
+        tagName: string
+        properties: Record<string, unknown>
+      }
+      if (element.tagName === 'a') {
+        element.properties = { ...properties, ...element.properties }
+      }
+    })
+  }
+
+const processors = new Map<string, ReturnType<typeof createMarkdownProcessor>>()
 
 /**
  * Renders trusted, build-time markdown (inline HTML allowed) to HTML without
- * the wrapping paragraph.
+ * the wrapping paragraph. `linkProperties` are added to every link.
  */
-export async function renderTrustedMarkdown(markdown: string): Promise<string> {
-  processor ??= await createMarkdownProcessor({ syntaxHighlight: false })
-  const { code } = await processor.render(markdown)
+export async function renderTrustedMarkdown(
+  markdown: string,
+  linkProperties: LinkProperties = {}
+): Promise<string> {
+  const key = JSON.stringify(linkProperties)
+  if (!processors.has(key)) {
+    processors.set(
+      key,
+      createMarkdownProcessor({
+        syntaxHighlight: false,
+        rehypePlugins: [rehypeLinkProperties(linkProperties)],
+      })
+    )
+  }
+  const { code } = await (await processors.get(key)!).render(markdown)
   const html = code.trim()
   const single = html.match(/^<p>([\s\S]*)<\/p>$/)
   return single && !single[1].includes('<p>') ? single[1] : html

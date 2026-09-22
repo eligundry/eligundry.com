@@ -4,8 +4,8 @@
 // The tailored page is cloned (without scripts) into an off-screen iframe
 // that's as wide as a sheet of paper and padded by the page margins. That's
 // how Chrome prints: media queries see the full page width while content is
-// laid out inside the margins. `html[data-print-preview]` switches on every
-// `print:` style. Each `data-print-unit` block is measured, then Chrome's
+// laid out inside the margins. `emulatePrint()` copies the page's
+// `@media print` rules into an `@media all` block so they apply on screen. Each `data-print-unit` block is measured, then Chrome's
 // fragmentation is simulated: blocks with `break-inside: avoid` move to the
 // next page when they don't fit, `data-tailor-break-before` forces a new page,
 // and anything else splits across the boundary. The fixed print footer is
@@ -23,8 +23,7 @@ export const PAGE = {
 
 const PX_PER_IN = 96
 
-export const printableWidthPx = () =>
-  (PAGE.widthIn - PAGE.marginSideIn * 2) * PX_PER_IN
+const printableWidthIn = PAGE.widthIn - PAGE.marginSideIn * 2
 export const printableHeightPx = () =>
   (PAGE.heightIn - PAGE.marginTopIn - PAGE.marginBottomIn) * PX_PER_IN
 
@@ -213,9 +212,82 @@ export function paginate(
 const nextFrame = (win: Window = window) =>
   new Promise<void>((resolve) => win.requestAnimationFrame(() => resolve()))
 
-/** Switches the page into (or out of) the on-screen print preview. */
+/** The `@page` rule for the resume, so the page size lives in one place. */
+export const pageCss = `@page { size: ${PAGE.widthIn}in ${PAGE.heightIn}in; margin: ${PAGE.marginTopIn}in ${PAGE.marginSideIn}in ${PAGE.marginBottomIn}in; }`
+
+/** `@media print` rules from a rule list, rewritten to apply to all media. */
+function printRules(
+  rules: CSSRuleList,
+  // The document's own window: an iframe's rules aren't instances of this
+  // window's CSSOM classes.
+  win: typeof globalThis,
+  layers: string[] = []
+): string[] {
+  const out: string[] = []
+  const wrap = (css: string) =>
+    layers.reduceRight((inner, layer) => `@layer ${layer} { ${inner} }`, css)
+
+  for (const rule of rules) {
+    if (rule instanceof win.CSSMediaRule) {
+      const inner = [...rule.cssRules].map((r) => r.cssText).join('\n')
+      if (/\bprint\b/.test(rule.conditionText)) {
+        const media = rule.conditionText.replace(/\b(only\s+)?print\b/, 'all')
+        const parent = rule.parentRule
+        out.push(
+          wrap(
+            parent instanceof win.CSSStyleRule
+              ? `@media ${media} { ${parent.selectorText} { ${inner} } }`
+              : `@media ${media} { ${inner} }`
+          )
+        )
+      } else {
+        out.push(...printRules(rule.cssRules, win, layers))
+      }
+    } else if (rule instanceof win.CSSLayerBlockRule) {
+      out.push(...printRules(rule.cssRules, win, [...layers, rule.name]))
+    } else if (
+      rule instanceof win.CSSSupportsRule ||
+      (rule instanceof win.CSSStyleRule && rule.cssRules.length)
+    ) {
+      out.push(...printRules(rule.cssRules, win, layers))
+    }
+  }
+  return out
+}
+
+const PREVIEW_STYLE_ID = 'print-preview-styles'
+
+/**
+ * Applies a document's print styles on screen by appending its `@media print`
+ * rules as `@media all`. Returns the added `<style>`.
+ */
+function emulatePrint(doc: Document, extraCss = ''): HTMLStyleElement {
+  const rules: string[] = []
+  for (const sheet of doc.styleSheets) {
+    try {
+      rules.push(
+        ...printRules(sheet.cssRules, doc.defaultView as typeof globalThis)
+      )
+    } catch {
+      // Cross-origin stylesheets can't be read; they don't style the resume.
+    }
+  }
+  const style = doc.createElement('style')
+  style.id = PREVIEW_STYLE_ID
+  style.textContent = `${rules.join('\n')}\n${extraCss}`
+  doc.head.append(style)
+  return style
+}
+
+/** Switches the page into (or out of) an on-screen print preview. */
 export function setPrintPreview(on: boolean) {
-  document.documentElement.toggleAttribute('data-print-preview', on)
+  document.getElementById(PREVIEW_STYLE_ID)?.remove()
+  if (on) {
+    emulatePrint(
+      document,
+      `#main-content { width: ${printableWidthIn}in !important; max-width: ${printableWidthIn}in !important; outline: 1px dashed var(--color-base-300); }`
+    )
+  }
 }
 
 /** Clones the page, as currently tailored, into an iframe laid out like paper. */
@@ -224,7 +296,7 @@ async function createPrintFrame(): Promise<HTMLIFrameElement> {
   clone
     .querySelectorAll('script, iframe, astro-dev-toolbar, astro-island')
     .forEach((el) => el.remove())
-  clone.setAttribute('data-print-preview', '')
+  clone.querySelector(`#${PREVIEW_STYLE_ID}`)?.remove()
   const base = document.createElement('base')
   base.href = location.href
   clone.querySelector('head')?.prepend(base)
@@ -248,10 +320,6 @@ async function createPrintFrame(): Promise<HTMLIFrameElement> {
   doc.write(`<!doctype html>${clone.outerHTML}`)
   doc.close()
 
-  const style = doc.createElement('style')
-  style.textContent = `html { padding: 0 ${PAGE.marginSideIn}in !important; overflow: hidden !important; } html, body { background: none !important; }`
-  doc.head.append(style)
-
   await Promise.all(
     [...doc.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].map(
       (link) =>
@@ -262,6 +330,10 @@ async function createPrintFrame(): Promise<HTMLIFrameElement> {
               link.addEventListener('error', resolve, { once: true })
             })
     )
+  )
+  emulatePrint(
+    doc,
+    `html { padding: 0 ${PAGE.marginSideIn}in !important; overflow: hidden !important; }`
   )
   await doc.fonts?.ready
   await nextFrame(frame.contentWindow!)

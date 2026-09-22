@@ -1,4 +1,5 @@
-import { HASH_KEY } from './serialize'
+/** URL hash parameter holding the tailoring, e.g. `/resume/#t=…`. */
+export const HASH_KEY = 't'
 
 /**
  * Wires up /resume/. The tailoring runtime is only downloaded when it's

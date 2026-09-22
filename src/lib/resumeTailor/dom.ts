@@ -6,6 +6,11 @@ import {
   type SkillNode,
   type TextNode,
 } from '../resume/model'
+import escapeRegExp from 'lodash/escapeRegExp'
+import {
+  EXPERIENCE_LIST_CLASS,
+  EXPERIENCE_SUMMARY_CLASS,
+} from '../../components/Resume/classes'
 import { renderInlineMarkdown, skillLineHtml } from '../resume/markdown'
 import type { Tailored } from './state'
 
@@ -27,13 +32,17 @@ interface Snapshot {
 const ADDED = 'data-tailor-added'
 const MARK = 'tailor-mark'
 
+type ResumeIndex = ReturnType<typeof indexResume>
+
 export class ResumeDom {
   private snapshot: Snapshot
+  private baseIndex: ResumeIndex
 
   constructor(
     private root: HTMLElement,
     private base: ResumeSource
   ) {
+    this.baseIndex = indexResume(base)
     this.snapshot = {
       text: new Map(
         [...root.querySelectorAll('[data-resume-text]')].map((el) => [
@@ -74,6 +83,10 @@ export class ResumeDom {
     for (const el of this.root.querySelectorAll(`[${ADDED}]`)) {
       el.remove()
     }
+    for (const el of this.root.querySelectorAll('[data-tailor-print-shown]')) {
+      el.classList.add('print:hidden')
+      el.removeAttribute('data-tailor-print-shown')
+    }
     for (const [el, html] of this.snapshot.text) {
       el.innerHTML = html
       el.classList.remove('tailor-changed')
@@ -82,7 +95,7 @@ export class ResumeDom {
       container.append(...children)
     }
     for (const el of this.root.querySelectorAll('[data-resume-id]')) {
-      el.classList.remove('tailor-hidden', 'tailor-force-print')
+      el.classList.remove('tailor-hidden')
       el.removeAttribute('data-tailor-break-before')
     }
     document.title = this.snapshot.title
@@ -92,7 +105,6 @@ export class ResumeDom {
     this.restore()
 
     const { source } = tailored
-    const baseIndex = indexResume(this.base)
 
     // Sections and their order
     this.reorder(
@@ -101,24 +113,19 @@ export class ResumeDom {
     )
     for (const section of source.sections) {
       this.setHidden(section.id, section.hidden)
-      this.setText(
-        `${section.id}:title`,
-        section.title,
-        this.base.sections.find((s) => s.id === section.id)?.title
-      )
+      const baseSection = this.baseIndex.get(section.id)?.node as
+        | { title: string }
+        | undefined
+      this.setText(`${section.id}:title`, section.title, baseSection?.title)
 
       if (section.id === 'section:work' || section.id === 'section:education') {
-        for (const experience of section.items) {
-          this.renderExperience(experience, baseIndex)
-        }
+        section.items.forEach((experience) => this.renderExperience(experience))
       } else if (section.id === 'section:skills') {
-        for (const skill of section.items) {
-          this.renderSkill(skill, section.id)
-        }
+        section.items.forEach((skill) => this.renderSkill(skill, section.id))
       } else {
-        for (const activity of section.items) {
-          this.renderActivity(activity, section.id, baseIndex)
-        }
+        section.items.forEach((activity) =>
+          this.renderActivity(activity, section.id)
+        )
       }
 
       this.reorder(
@@ -129,17 +136,9 @@ export class ResumeDom {
 
     // Basics
     const { label, tagline, summary } = source.basics
-    this.setText(label.id, label.markdown, this.base.basics.label.markdown)
-    this.setText(
-      tagline.id,
-      tagline.markdown,
-      this.base.basics.tagline.markdown
-    )
-    this.setText(
-      summary.id,
-      summary.markdown,
-      this.base.basics.summary.markdown
-    )
+    for (const node of [label, tagline, summary]) {
+      this.renderTextNode(node)
+    }
     for (const el of this.all('data-resume-id', summary.id)) {
       el.toggleAttribute('data-filled', Boolean(summary.markdown.trim()))
     }
@@ -167,84 +166,61 @@ export class ResumeDom {
     }
   }
 
-  private renderExperience(
-    experience: ExperienceNode,
-    baseIndex: ReturnType<typeof indexResume>
-  ) {
+  private renderExperience(experience: ExperienceNode) {
     this.setHidden(experience.id, experience.hidden)
-    const baseExperience = baseIndex.get(experience.id)?.node as
+    const base = this.baseIndex.get(experience.id)?.node as
       | ExperienceNode
       | undefined
-    if (experience.printHide === false && baseExperience?.printHide) {
+    if (experience.printHide === false && base?.printHide) {
+      // Put a job that's normally left off the printed resume back in print.
       for (const el of this.all('data-resume-id', experience.id)) {
-        el.classList.add('tailor-force-print')
+        el.classList.remove('print:hidden')
+        el.setAttribute('data-tailor-print-shown', '')
       }
     }
 
+    const section = this.all('data-resume-id', experience.id)[0]
     if (experience.summary) {
-      if (experience.summary.added) {
-        const section = this.all('data-resume-id', experience.id)[0]
-        const p = document.createElement('p')
-        p.setAttribute('itemprop', 'description')
-        p.className = 'order-5 my-2'
-        p.setAttribute(ADDED, '')
-        p.dataset.resumeId = experience.summary.id
-        p.dataset.resumeText = experience.summary.id
-        section?.append(p)
+      if (experience.summary.added && section) {
+        this.addElement(section, 'p', experience.summary.id, {
+          itemprop: 'description',
+          class: EXPERIENCE_SUMMARY_CLASS,
+        })
       }
-      this.renderTextNode(experience.summary, baseIndex)
+      this.renderTextNode(experience.summary)
     }
 
-    if (experience.highlights.some((h) => h.added)) {
-      this.ensureList(experience.id)
+    const added = experience.highlights.filter((h) => h.added)
+    if (added.length && section) {
+      const list =
+        this.all('data-resume-container', experience.id)[0] ??
+        this.addElement(section, 'ul', undefined, {
+          itemprop: 'description',
+          class: EXPERIENCE_LIST_CLASS,
+          'data-resume-container': experience.id,
+        })
+      added.forEach((highlight) => this.addElement(list, 'li', highlight.id))
     }
-    for (const highlight of experience.highlights) {
-      if (highlight.added) {
-        const li = document.createElement('li')
-        li.setAttribute(ADDED, '')
-        li.dataset.resumeId = highlight.id
-        li.dataset.resumeText = highlight.id
-        this.all('data-resume-container', experience.id)[0]?.append(li)
-      }
-      this.renderTextNode(highlight, baseIndex)
-    }
+    experience.highlights.forEach((highlight) => this.renderTextNode(highlight))
     this.reorder(
       experience.id,
       experience.highlights.map((h) => h.id)
     )
   }
 
-  private ensureList(experienceId: string) {
-    if (this.all('data-resume-container', experienceId).length) {
-      return
-    }
-    const section = this.all('data-resume-id', experienceId)[0]
-    const ul = document.createElement('ul')
-    ul.setAttribute('itemprop', 'description')
-    ul.className = 'order-5 my-0'
-    ul.setAttribute(ADDED, '')
-    ul.dataset.resumeContainer = experienceId
-    section?.append(ul)
-  }
-
-  private renderTextNode(
-    node: TextNode,
-    baseIndex: ReturnType<typeof indexResume>
-  ) {
+  private renderTextNode(node: TextNode) {
     this.setHidden(node.id, node.hidden)
-    const base = baseIndex.get(node.id)?.node as TextNode | undefined
+    const base = this.baseIndex.get(node.id)?.node as TextNode | undefined
     this.setText(node.id, node.markdown, base?.markdown)
   }
 
   private renderSkill(skill: SkillNode, sectionId: string) {
     if (skill.added) {
-      this.appendItem(sectionId, skill.id, 'li')
+      this.appendItem(sectionId, skill.id)
     }
     this.setHidden(skill.id, skill.hidden)
 
-    const base = indexResume(this.base).get(skill.id)?.node as
-      | SkillNode
-      | undefined
+    const base = this.baseIndex.get(skill.id)?.node as SkillNode | undefined
     const html =
       skill.markdown !== undefined
         ? renderInlineMarkdown(skill.markdown)
@@ -256,38 +232,54 @@ export class ResumeDom {
     }
   }
 
-  private renderActivity(
-    activity: ActivityNode,
-    sectionId: string,
-    baseIndex: ReturnType<typeof indexResume>
-  ) {
+  private renderActivity(activity: ActivityNode, sectionId: string) {
     if (activity.added) {
-      const li = this.appendItem(sectionId, activity.id, 'li', false)
-      const span = document.createElement('span')
-      span.dataset.resumeText = activity.id
-      li?.append(span)
+      const li = this.appendItem(sectionId, activity.id, false)
+      if (li) {
+        this.addElement(li, 'span', undefined, {
+          'data-resume-text': activity.id,
+        })
+      }
     }
     this.setHidden(activity.id, activity.hidden)
-    const base = baseIndex.get(activity.id)?.node as ActivityNode | undefined
+    const base = this.baseIndex.get(activity.id)?.node as
+      | ActivityNode
+      | undefined
     this.setText(activity.id, activity.markdown, base?.markdown)
   }
 
+  /** Creates an element that `restore()` removes again. */
+  private addElement(
+    parent: Element,
+    tag: string,
+    id: string | undefined,
+    attributes: Record<string, string> = {}
+  ): HTMLElement {
+    const el = document.createElement(tag)
+    el.setAttribute(ADDED, '')
+    if (id) {
+      el.dataset.resumeId = id
+      el.dataset.resumeText = id
+    }
+    for (const [name, value] of Object.entries(attributes)) {
+      el.setAttribute(name, value)
+    }
+    parent.append(el)
+    return el
+  }
+
+  /** Adds an `<li>` for a new item to a container. */
   private appendItem(
     containerId: string,
     id: string,
-    tag: string,
     isText = true
   ): HTMLElement | undefined {
     const container = this.all('data-resume-container', containerId)[0]
     if (!container) return undefined
-    const el = document.createElement(tag)
-    el.setAttribute(ADDED, '')
+    const el = this.addElement(container, 'li', isText ? id : undefined, {
+      'data-print-unit': id,
+    })
     el.dataset.resumeId = id
-    el.dataset.printUnit = id
-    if (isText) {
-      el.dataset.resumeText = id
-    }
-    container.append(el)
     return el
   }
 
@@ -340,9 +332,7 @@ export class ResumeDom {
     if (!words.length) return
 
     const pattern = new RegExp(
-      `\\b(${words
-        .map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-        .join('|')})(?![\\w])`,
+      `\\b(${words.map(escapeRegExp).join('|')})(?![\\w])`,
       'gi'
     )
     const walker = document.createTreeWalker(this.root, NodeFilter.SHOW_TEXT, {

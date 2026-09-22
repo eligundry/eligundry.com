@@ -47,11 +47,11 @@ next to each rewrite) and print tools.
 ## Print layout
 
 `get_print_layout` (`layout.ts`) clones the tailored page into an off-screen
-iframe that is sized like a sheet of paper, with `print:` styles switched on,
-and simulates Chrome's pagination. It reports which blocks start each page,
-jobs pushed to the next page, blocks split across pages, headings stranded at
-the bottom of a page, and blocks running under the fixed print footer. Tailwind's
-`print:` variant also matches `html[data-print-preview]` (see
-`src/styles/tailwind.css`), which makes this possible.
-`tests/e2e/resume-tailor.spec.ts` checks the estimate against a real
-`page.pdf()`.
+iframe the size of a sheet of paper, copies the page's `@media print` rules
+into an `@media all` block so they apply there, and simulates Chrome's
+pagination. It reports which blocks start each page, jobs pushed to the next
+page, blocks split across pages, headings stranded at the bottom of a page, and
+blocks running under the fixed print footer. The page size and margins are
+defined once in `PAGE` there, which also emits the `@page` rule for
+`/resume/`. `tests/e2e/resume-tailor.spec.ts` checks the estimate against a
+real `page.pdf()`.

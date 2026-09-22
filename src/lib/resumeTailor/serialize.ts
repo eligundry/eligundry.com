@@ -6,7 +6,7 @@ import type { Change, JobContext, Op, PrintOptions, TailorState } from './state'
 // storage and stay out of request logs. Anything read from the hash is
 // untrusted, so every op is validated on the way in.
 
-export const HASH_KEY = 't'
+import { HASH_KEY } from './boot'
 
 const MAX_TEXT = 2000
 
@@ -216,15 +216,15 @@ export async function decodeState(encoded: string): Promise<TailorState> {
 }
 
 /** Reads the tailoring state out of a URL hash like `#t=…`. */
-export async function readHash(hash: string): Promise<TailorState | null> {
+export async function readHash(hash: string): Promise<TailorState | undefined> {
   const encoded = new URLSearchParams(hash.replace(/^#/, '')).get(HASH_KEY)
   if (!encoded) {
-    return null
+    return undefined
   }
   try {
     return await decodeState(encoded)
   } catch (error) {
     console.warn('Ignoring invalid resume tailoring link', error)
-    return null
+    return undefined
   }
 }

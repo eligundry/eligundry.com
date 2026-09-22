@@ -38,8 +38,8 @@ describe('serialize', () => {
   })
 
   test('ignores missing or garbage hashes', async () => {
-    expect(await readHash('')).toBeNull()
-    expect(await readHash('#t=not-valid')).toBeNull()
+    expect(await readHash('')).toBeUndefined()
+    expect(await readHash('#t=not-valid')).toBeUndefined()
   })
 
   test('drops malformed changes but keeps valid ones', () => {

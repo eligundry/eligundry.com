@@ -1,6 +1,7 @@
 ---
 import * as dateFns from 'date-fns'
 import type { ExperienceNode } from '../../lib/resume/model'
+import { EXPERIENCE_LIST_CLASS, EXPERIENCE_SUMMARY_CLASS } from './classes'
 
 export interface Props {
   experience: ExperienceNode
@@ -139,7 +140,7 @@ const endDate = experience.endDate
     summary && (
       <p
         itemprop="description"
-        class="order-5 my-2"
+        class={EXPERIENCE_SUMMARY_CLASS}
         data-resume-id={summary.id}
         data-resume-text={summary.id}
         set:html={html[summary.id]}
@@ -150,7 +151,7 @@ const endDate = experience.endDate
     highlights.length > 0 && (
       <ul
         itemprop="description"
-        class="order-5 my-0"
+        class={EXPERIENCE_LIST_CLASS}
         data-resume-container={id}
       >
         {highlights.map((highlight) => (

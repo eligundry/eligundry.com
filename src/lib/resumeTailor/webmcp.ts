@@ -1,6 +1,6 @@
 import { indexResume } from '../resume/model'
 import { parseOp } from './serialize'
-import { newItemId, TailorError, type Op } from './state'
+import { newItemId, type Op } from './state'
 import type { TailorStore } from './store'
 
 // Exposes resume tailoring to in-browser agents through WebMCP
@@ -337,10 +337,7 @@ export function createTools(store: TailorStore) {
       try {
         return await tool.execute(input ?? {})
       } catch (error) {
-        if (error instanceof TailorError || error instanceof Error) {
-          return fail(error.message)
-        }
-        return fail(String(error))
+        return fail(error instanceof Error ? error.message : String(error))
       }
     },
   }))

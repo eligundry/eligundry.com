@@ -173,17 +173,6 @@
   page-break-inside: avoid;
 }
 
-/* `print:` styles also apply on screen under `html[data-print-preview]`, so the
-   resume's print layout can be previewed and measured without printing. */
-@custom-variant print {
-  @media print {
-    @slot;
-  }
-  &:where([data-print-preview], [data-print-preview] *) {
-    @slot;
-  }
-}
-
 /* Resume tailoring (see src/lib/resumeTailor). */
 @layer components {
   .tailor-summary:not([data-filled]) {
@@ -218,52 +207,29 @@
     background: color-mix(in oklab, var(--color-warning) 40%, transparent);
   }
 
-  html[data-print-preview] #main-content {
-    width: 7.7in !important;
-    max-width: 7.7in !important;
-    outline: 1px dashed var(--color-base-300);
-  }
-
-  .tailor-hidden,
-  .tailor-del {
-    @variant print {
+  @media print {
+    .tailor-hidden,
+    .tailor-del {
       display: none !important;
     }
-  }
-  .tailor-ins,
-  mark.tailor-mark {
-    @variant print {
+    .tailor-ins,
+    mark.tailor-mark {
       background: none !important;
     }
-  }
-  .tailor-force-print {
-    @variant print {
-      display: flex !important;
-    }
-  }
-  [data-tailor-break-before] {
-    @variant print {
+    [data-tailor-break-before] {
       break-before: page;
     }
-  }
-  [data-resume-root] {
-    @variant print {
+    [data-resume-root] {
       zoom: var(--tailor-font-scale, 1);
     }
-  }
-  html[data-tailor-density='compact'] [data-resume-root] {
-    @variant print {
+    html[data-tailor-density='compact'] [data-resume-root] {
       gap: calc(var(--spacing) * 2);
     }
-  }
-  html[data-tailor-density='compact'] [data-resume-root] .prose {
-    @variant print {
+    html[data-tailor-density='compact'] [data-resume-root] .prose {
       gap: calc(var(--spacing) * 1);
       line-height: 1.4;
     }
-  }
-  html[data-tailor-density='compact'] [data-resume-root] .prose li {
-    @variant print {
+    html[data-tailor-density='compact'] [data-resume-root] .prose li {
       margin-block: 0.1em;
     }
   }

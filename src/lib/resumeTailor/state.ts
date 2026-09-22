@@ -67,10 +67,7 @@ export interface TailorState {
   changes: Change[]
 }
 
-export interface ChangeRecord extends Change {
-  target: string
-  before?: string
-  after?: string
+export interface ChangeRecord extends Change, Applied {
   error?: string
 }
 
@@ -85,8 +82,6 @@ export interface Tailored {
 export const emptyState = (): TailorState => ({ v: 1, changes: [] })
 
 export class TailorError extends Error {}
-
-const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value))
 
 // ---------------------------------------------------------------------------
 // Containers: things whose children can be reordered.
@@ -142,10 +137,6 @@ interface Applied {
   target: string
   before?: string
   after?: string
-}
-
-function describeText(markdown: string | undefined): string | undefined {
-  return markdown === undefined ? undefined : markdown
 }
 
 function applyOp(tailored: Tailored, op: Op): Applied {
@@ -256,7 +247,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         case 'summary':
         case 'basics': {
           const node = ref.node as TextNode | ActivityNode
-          const before = describeText(node.markdown)
+          const before = node.markdown
           node.markdown = markdown
           return { target: op.id, before, after: markdown }
         }
@@ -316,12 +307,9 @@ function applyOp(tailored: Tailored, op: Op): Applied {
       const before = ref.node.keywords.map((k) => k.name).join(', ')
       // Keep the known link for keywords that were already listed anywhere.
       const known = new Map<string, string | undefined>()
-      for (const section of source.sections) {
-        if (section.id !== 'section:skills') continue
-        for (const skill of section.items) {
-          for (const keyword of skill.keywords) {
-            known.set(keyword.name.toLowerCase(), keyword.url)
-          }
+      for (const skill of ref.section.items as SkillNode[]) {
+        for (const keyword of skill.keywords) {
+          known.set(keyword.name.toLowerCase(), keyword.url)
         }
       }
       ref.node.keywords = op.keywords.map(({ name, url }) => ({
@@ -364,7 +352,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
 /** Replays the change log over a copy of the pristine resume. */
 export function tailor(base: ResumeSource, state: TailorState): Tailored {
   const tailored: Tailored = {
-    source: clone(base),
+    source: structuredClone(base),
     highlightTerms: [],
     print: { ...DEFAULT_PRINT },
     log: [],
