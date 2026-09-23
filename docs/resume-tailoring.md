@@ -71,6 +71,14 @@ size and margins are defined once in `PAGE` there, which also emits the
 - `pnpm test`: model, state, serialization and pagination unit tests, plus
   Testing Library component tests in `src/components/Resume/*.test.tsx` that
   drive the WebMCP tools through a stubbed `document.modelContext`.
-- `tests/e2e/resume-tailor.spec.ts` (Playwright): hydration, a tailored link
+- `tests/e2e/resume-tailor.spec.ts` (Playwright `webmcp` project) runs in
+  Google Chrome with `--enable-features=WebMCP` (tested with Chrome 154; 141
+  doesn't have WebMCP). It calls the
+  tools the way an agent does, through Chrome's own `document.modelContext`
+  (`getTools()` / `executeTool()`), and covers hydration, a tailored link
   surviving a reload, and `get_print_layout` matching real `page.pdf()` page
-  counts.
+  counts. Install Chrome with `pnpm exec playwright install chrome`, or point
+  `PLAYWRIGHT_WEBMCP_CHROME_PATH` at another build such as Chrome for Testing.
+
+`/resume/` carries a WebMCP origin trial token, so Chrome enables WebMCP on
+`https://eligundry.com` without the flag until the token expires (2026-11-17).

@@ -1,58 +1,70 @@
 import { test, expect, type Page } from '@playwright/test'
 
 /**
- * Covers what needs a real browser: hydrating the server-rendered resume, a
- * tailored link surviving a reload, and print pagination estimates matching
- * Chrome's PDFs. Component behaviour is tested with Testing Library in
- * src/components/Resume.
+ * Covers what needs a real browser: hydrating the server-rendered resume, the
+ * tools working through Chrome's own WebMCP implementation, a tailored link
+ * surviving a reload, and print pagination estimates matching Chrome's PDFs.
+ * Component behaviour is tested with Testing Library in src/components/Resume.
  *
- * Browsers don't ship WebMCP by default yet, so a minimal
- * `document.modelContext` shim captures the registered tools.
+ * Runs in the `webmcp` Playwright project: Google Chrome with the WebMCP
+ * feature enabled.
  */
 
 type ToolResult = { content: { text: string }[]; isError?: boolean }
 
-declare global {
-  interface Window {
-    __tools: Record<
-      string,
-      { execute: (input: unknown) => Promise<ToolResult> }
-    >
-  }
-}
-
-async function stubModelContext(page: Page) {
-  await page.addInitScript(() => {
-    window.__tools = {}
-    Object.defineProperty(document, 'modelContext', {
-      value: {
-        registerTool(
-          tool: { name: string; execute: () => Promise<ToolResult> },
-          { signal }: { signal: AbortSignal }
-        ) {
-          window.__tools[tool.name] = tool
-          signal.addEventListener(
-            'abort',
-            () => delete window.__tools[tool.name]
-          )
-        },
-      },
-    })
-  })
-}
+const TOOLS = [
+  'add_item',
+  'export_json_resume',
+  'get_changes',
+  'get_print_layout',
+  'get_resume',
+  'get_share_url',
+  'highlight_keywords',
+  'open_print_dialog',
+  'reorder',
+  'reset_tailoring',
+  'revert_change',
+  'rewrite',
+  'set_job_context',
+  'set_print_options',
+  'set_skill_keywords',
+  'set_summary',
+  'set_visibility',
+]
 
 async function openResume(page: Page, url = '/resume/') {
   await page.goto(url)
-  await page.waitForFunction(() => 'get_resume' in (window.__tools ?? {}))
+  expect(
+    await page.evaluate(() => 'modelContext' in document),
+    'this browser has no WebMCP; run the webmcp Playwright project'
+  ).toBe(true)
+  // Tools register after hydration, and Chrome registers them asynchronously
+  await expect
+    .poll(() =>
+      page.evaluate(
+        async () => (await document.modelContext!.getTools()).length
+      )
+    )
+    .toBe(TOOLS.length)
 }
 
+/** Calls a tool the way an agent would, through `document.modelContext`. */
 async function call(page: Page, name: string, input: unknown = {}) {
   const result = await page.evaluate(
-    ([name, input]) => window.__tools[name as string].execute(input),
+    async ([name, input]) => {
+      // executeTool is Chrome's addition to the standard ModelContext
+      const modelContext = document.modelContext as NonNullable<
+        Document['modelContext']
+      > & { executeTool(tool: unknown, input: string): Promise<string> }
+      const tool = (await modelContext.getTools()).find((t) => t.name === name)
+      if (!tool) throw new Error(`Tool ${name} is not registered`)
+      return modelContext.executeTool(tool, JSON.stringify(input))
+    },
     [name, input] as const
   )
-  if (result.isError) throw new Error(result.content[0].text)
-  return JSON.parse(result.content[0].text)
+  const { content, isError } = JSON.parse(result) as ToolResult
+  if (isError) throw new Error(content[0].text)
+  return JSON.parse(content[0].text)
 }
 
 const item = (page: Page, id: string) =>
@@ -87,8 +99,18 @@ test('hydrates the resume without errors', async ({ page }) => {
   expect(errors).toEqual([])
 })
 
+test('registers every tool with the browser', async ({ page }) => {
+  await openResume(page)
+  const names = await page.evaluate(async () =>
+    (await document.modelContext!.getTools()).map((tool) => tool.name).sort()
+  )
+  expect(names).toEqual(TOOLS)
+  await expect(
+    call(page, 'rewrite', { id: 'chord', markdown: 'CTO', reason: 'x' })
+  ).rejects.toThrow(/locked/)
+})
+
 test('restores a tailored link after a reload', async ({ page }) => {
-  await stubModelContext(page)
   await openResume(page)
 
   await call(page, 'set_visibility', {
@@ -114,7 +136,6 @@ test('restores a tailored link after a reload', async ({ page }) => {
 })
 
 test('estimates print pagination that matches the PDF', async ({ page }) => {
-  await stubModelContext(page)
   await openResume(page)
 
   const countPdfPages = async () => {

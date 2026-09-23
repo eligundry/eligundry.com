@@ -23,7 +23,8 @@ jobs:
         run: pnpm install
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+        # Chromium for most specs; Google Chrome for the resume's WebMCP tools
+        run: pnpm exec playwright install --with-deps chromium chrome
 
       - name: Run Playwright tests
         env:
