@@ -64,7 +64,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 
 ### Resume
 
-- `/resume/` and `/resume.json` (JSON Resume) are built from one model in `src/lib/resume/`; `/resume/` can be tailored to a job posting by in-browser agents via WebMCP tools in `src/lib/resumeTailor/` — see [`docs/resume-tailoring.md`](./docs/resume-tailoring.md)
+- `/resume/` is a Preact island (`src/components/Resume/`) rendered from a resume model in `src/lib/resume/`, which also produces `/resume.json` (JSON Resume). In-browser agents can tailor it to a job posting through WebMCP tools — see [`docs/resume-tailoring.md`](./docs/resume-tailoring.md)
 
 ### standard.site (ATProto) Publishing
 

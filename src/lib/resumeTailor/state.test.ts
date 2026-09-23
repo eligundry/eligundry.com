@@ -104,6 +104,19 @@ describe('tailor', () => {
     })
   })
 
+  test('renders rewritten text as escaped HTML', () => {
+    const { tailored } = apply([
+      {
+        type: 'rewrite',
+        id: 'chord:0',
+        markdown: 'Built **SDKs** <script>alert(1)</script>',
+      },
+    ])
+    expect(node<{ html: string }>(tailored, 'chord:0').html).toBe(
+      'Built <strong>SDKs</strong> &lt;script&gt;alert(1)&lt;/script&gt;'
+    )
+  })
+
   test('adds a summary to a job that lacks one', () => {
     const { tailored } = apply([
       {

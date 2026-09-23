@@ -1,4 +1,4 @@
-import type { SkillKeyword } from '../resume/markdown'
+import type { SkillKeyword } from '../resume/model'
 import type { Change, JobContext, Op, PrintOptions, TailorState } from './state'
 
 // The tailoring log lives in the URL hash (`#t=…`), deflated and base64url
@@ -6,7 +6,7 @@ import type { Change, JobContext, Op, PrintOptions, TailorState } from './state'
 // storage and stay out of request logs. Anything read from the hash is
 // untrusted, so every op is validated on the way in.
 
-import { HASH_KEY } from './boot'
+import { HASH_KEY } from './hash'
 
 const MAX_TEXT = 2000
 

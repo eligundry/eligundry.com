@@ -41,6 +41,27 @@ const resumeExperiencesSchema = z.object({
   studyType: z.string().optional(),
 })
 
+const resumeBasicsSchema = z.object({
+  name: z.string(),
+  label: z.string(),
+  tagline: z.string(),
+  email: z.string().email(),
+  phone: z.string(),
+  url: z.string().url(),
+  location: z.object({
+    city: z.string(),
+    region: z.string(),
+    countryCode: z.string(),
+  }),
+  profiles: z.array(
+    z.object({
+      network: z.string(),
+      username: z.string(),
+      url: z.string().url(),
+    })
+  ),
+})
+
 const resumeSkillSchema = z.object({
   name: z.string(),
   level: z.string().optional(),
@@ -117,6 +138,10 @@ export const collections = {
   }),
   resumeExperiences: defineCollection({
     schema: resumeExperiencesSchema,
+  }),
+  resumeBasics: defineCollection({
+    loader: file('src/content/resumeBasics.yaml'),
+    schema: resumeBasicsSchema,
   }),
   resumeSkills: defineCollection({
     loader: file('src/content/resumeSkills.yaml'),

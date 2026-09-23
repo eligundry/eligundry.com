@@ -1,0 +1,17 @@
+# Name and contact details for /resume/ and /resume.json (JSON Resume
+# `basics`). A single entry, read with getEntry('resumeBasics', 'eli').
+- id: eli
+  name: Eli Gundry
+  label: Full Stack Web Engineer
+  tagline: ❤️ Typescript, AI and everything inbetween
+  email: eligundry@gmail.com
+  phone: 347.523.2652
+  url: https://eligundry.com
+  location:
+    city: Astoria
+    region: NY
+    countryCode: US
+  profiles:
+    - network: GitHub
+      username: eligundry
+      url: https://github.com/eligundry

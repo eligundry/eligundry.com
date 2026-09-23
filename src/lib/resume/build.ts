@@ -1,12 +1,9 @@
-import { createMarkdownProcessor } from '@astrojs/markdown-remark'
 import { getCollection, getEntry } from 'astro:content'
-import type { Node } from 'unist'
-import { visit } from 'unist-util-visit'
 import config from '../../config'
-import { resumeBasics } from './basics'
 import {
   parseExperienceBody,
   toIsoDate,
+  trustedText,
   type ActivityNode,
   type ActivityRecord,
   type ExperienceNode,
@@ -16,7 +13,8 @@ import {
 
 /** Builds the resume from the content collections. */
 export async function getResumeSource(): Promise<ResumeSource> {
-  const [experiences, skills, activities] = await Promise.all([
+  const [basics, experiences, skills, activities] = await Promise.all([
+    getEntry('resumeBasics', 'eli'),
     getCollection('resumeExperiences'),
     getCollection('resumeSkills'),
     getCollection('resumeActivities'),
@@ -53,9 +51,10 @@ export async function getResumeSource(): Promise<ResumeSource> {
 
   const activityNodes: ActivityNode[] = await Promise.all(
     activities.map(async ({ id, data }) => ({
-      id: `activities:${id}`,
-      markdown: data.markdown,
-      children: data.children,
+      ...trustedText(`activities:${id}`, data.markdown),
+      children: data.children?.map((child, i) =>
+        trustedText(`activities:${id}:child:${i}`, child)
+      ),
       childrenClass: data.childrenClass,
       records: await Promise.all(
         data.records.map(async (record): Promise<ActivityRecord> => {
@@ -81,12 +80,17 @@ export async function getResumeSource(): Promise<ResumeSource> {
     }))
   )
 
+  if (!basics) {
+    throw new Error('Missing "eli" entry in src/content/resumeBasics.yaml')
+  }
+  const { label, tagline, ...contact } = basics.data
+
   return {
     basics: {
-      ...resumeBasics,
-      label: { id: 'basics:label', markdown: resumeBasics.label },
-      tagline: { id: 'basics:tagline', markdown: resumeBasics.tagline },
-      summary: { id: 'basics:summary', markdown: '' },
+      ...contact,
+      label: trustedText('basics:label', label),
+      tagline: trustedText('basics:tagline', tagline),
+      summary: trustedText('basics:summary', ''),
     },
     sections: [
       {
@@ -112,46 +116,4 @@ export async function getResumeSource(): Promise<ResumeSource> {
       },
     ],
   }
-}
-
-type LinkProperties = Record<string, string>
-
-/** Adds properties to every link that doesn't already set them. */
-const rehypeLinkProperties =
-  (properties: LinkProperties) => () => (tree: Node) => {
-    visit(tree, 'element', (node) => {
-      const element = node as Node & {
-        tagName: string
-        properties: Record<string, unknown>
-      }
-      if (element.tagName === 'a') {
-        element.properties = { ...properties, ...element.properties }
-      }
-    })
-  }
-
-const processors = new Map<string, ReturnType<typeof createMarkdownProcessor>>()
-
-/**
- * Renders trusted, build-time markdown (inline HTML allowed) to HTML without
- * the wrapping paragraph. `linkProperties` are added to every link.
- */
-export async function renderTrustedMarkdown(
-  markdown: string,
-  linkProperties: LinkProperties = {}
-): Promise<string> {
-  const key = JSON.stringify(linkProperties)
-  if (!processors.has(key)) {
-    processors.set(
-      key,
-      createMarkdownProcessor({
-        syntaxHighlight: false,
-        rehypePlugins: [rehypeLinkProperties(linkProperties)],
-      })
-    )
-  }
-  const { code } = await (await processors.get(key)!).render(markdown)
-  const html = code.trim()
-  const single = html.match(/^<p>([\s\S]*)<\/p>$/)
-  return single && !single[1].includes('<p>') ? single[1] : html
 }

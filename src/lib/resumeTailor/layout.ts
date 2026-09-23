@@ -294,7 +294,8 @@ export function setPrintPreview(on: boolean) {
 async function createPrintFrame(): Promise<HTMLIFrameElement> {
   const clone = document.documentElement.cloneNode(true) as HTMLElement
   clone
-    .querySelectorAll('script, iframe, astro-dev-toolbar, astro-island')
+    // The resume is inside an astro-island, so only scripts are removed.
+    .querySelectorAll('script, iframe, astro-dev-toolbar')
     .forEach((el) => el.remove())
   clone.querySelector(`#${PREVIEW_STYLE_ID}`)?.remove()
   const base = document.createElement('base')
@@ -375,7 +376,7 @@ export async function measurePrintLayout(
       }
     })
 
-    const footer = root.querySelector<HTMLElement>('[data-print-footer]')
+    const footer = doc.querySelector<HTMLElement>('[data-print-footer]')
     return paginate(units, printableHeightPx(), {
       targetPages,
       footerHeight: footer?.getBoundingClientRect().height ?? 0,

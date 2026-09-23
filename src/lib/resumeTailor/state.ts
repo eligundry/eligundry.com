@@ -4,14 +4,11 @@ import {
   type ActivityNode,
   type ResumeSection,
   type ResumeSource,
+  type SkillKeyword,
   type SkillNode,
   type TextNode,
 } from '../resume/model'
-import {
-  isSafeUrl,
-  markdownToPlain,
-  type SkillKeyword,
-} from '../resume/markdown'
+import { markdownToPlain, renderMarkdown } from '../resume/markdown'
 
 // Tailoring is an append-only log of operations replayed over the pristine
 // resume. Reverting a change drops it from the log and replays the rest, so
@@ -82,6 +79,18 @@ export interface Tailored {
 export const emptyState = (): TailorState => ({ v: 1, changes: [] })
 
 export class TailorError extends Error {}
+
+/** Tailored text comes from agents or shared links, so it's never trusted. */
+const untrustedHtml = (markdown: string) =>
+  renderMarkdown(markdown, { trusted: false })
+
+const isWebUrl = (url: string) => {
+  try {
+    return ['http:', 'https:'].includes(new URL(url).protocol)
+  } catch {
+    return false
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Containers: things whose children can be reordered.
@@ -219,7 +228,12 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         if (ref.kind !== 'experience') {
           throw new TailorError(`Unknown id "${op.id}"`)
         }
-        ref.node.summary = { id: op.id, markdown, added: true }
+        ref.node.summary = {
+          id: op.id,
+          markdown,
+          html: untrustedHtml(markdown),
+          added: true,
+        }
         return { target: op.id, after: markdown }
       }
 
@@ -240,6 +254,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         case 'skill': {
           const before = skillMarkdown(ref.node)
           ref.node.markdown = markdown
+          ref.node.html = untrustedHtml(markdown)
           return { target: op.id, before, after: markdown }
         }
         case 'activity':
@@ -249,6 +264,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
           const node = ref.node as TextNode | ActivityNode
           const before = node.markdown
           node.markdown = markdown
+          node.html = untrustedHtml(markdown)
           return { target: op.id, before, after: markdown }
         }
       }
@@ -260,13 +276,14 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         throw new TailorError(`"${op.id}" already exists`)
       }
       const markdown = op.markdown.trim()
+      const html = untrustedHtml(markdown)
       const ref = lookup(op.parentId)
       let list: { id: string }[]
       let item: TextNode | SkillNode | ActivityNode
 
       if (ref.kind === 'experience') {
         list = ref.node.highlights
-        item = { id: op.id, markdown, added: true }
+        item = { id: op.id, markdown, html, added: true }
       } else if (ref.kind === 'section' && ref.node.id === 'section:skills') {
         list = ref.node.items
         item = {
@@ -275,6 +292,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
           lead: '',
           keywords: [],
           markdown,
+          html,
           added: true,
         }
       } else if (
@@ -282,7 +300,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         ref.node.id === 'section:activities'
       ) {
         list = ref.node.items
-        item = { id: op.id, markdown, records: [], added: true }
+        item = { id: op.id, markdown, html, records: [], added: true }
       } else {
         throw new TailorError(
           `Items can only be added to an experience id, "section:skills" or "section:activities"`
@@ -314,9 +332,10 @@ function applyOp(tailored: Tailored, op: Op): Applied {
       }
       ref.node.keywords = op.keywords.map(({ name, url }) => ({
         name,
-        url: url && isSafeUrl(url) ? url : known.get(name.toLowerCase()),
+        url: url && isWebUrl(url) ? url : known.get(name.toLowerCase()),
       }))
       ref.node.markdown = undefined
+      ref.node.html = undefined
       return {
         target: op.id,
         before,

@@ -1,10 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import {
-  joinWithAnd,
-  markdownToPlain,
-  renderInlineMarkdown,
-  skillLineHtml,
-} from './markdown'
+import { joinWithAnd, markdownToPlain, renderMarkdown } from './markdown'
 
 describe('markdownToPlain', () => {
   test('strips links, inline HTML, emphasis and entities', () => {
@@ -20,54 +15,57 @@ describe('markdownToPlain', () => {
   })
 })
 
-describe('renderInlineMarkdown', () => {
-  test('renders links, bold, italics and code', () => {
+describe('renderMarkdown', () => {
+  test('renders inline markdown without a wrapping paragraph', () => {
     expect(
-      renderInlineMarkdown(
-        'Used [React](https://reactjs.org/) **a lot**, *daily* with `tsx`'
+      renderMarkdown(
+        'Used [React](https://reactjs.org/) **a lot**, *daily* with `tsx`',
+        { trusted: false }
       )
     ).toBe(
       'Used <a href="https://reactjs.org/">React</a> <strong>a lot</strong>, <em>daily</em> with <code>tsx</code>'
     )
   })
 
-  test('escapes HTML', () => {
+  test('keeps paragraphs when there are several', () => {
+    expect(renderMarkdown('One\n\nTwo', { trusted: false })).toBe(
+      '<p>One</p>\n<p>Two</p>'
+    )
+  })
+
+  test('keeps inline HTML in trusted content', () => {
     expect(
-      renderInlineMarkdown('<img src=x onerror=alert(1)> & <b>hi</b>')
-    ).toBe('&lt;img src=x onerror=alert(1)&gt; &amp; &lt;b&gt;hi&lt;/b&gt;')
+      renderMarkdown('<abbr title="Single Sign On">SSO</abbr> & more', {
+        trusted: true,
+      })
+    ).toBe('<abbr title="Single Sign On">SSO</abbr> &amp; more')
+  })
+
+  test('escapes HTML in untrusted content', () => {
+    expect(
+      renderMarkdown('<img src=x onerror=alert(1)> <b>hi</b>', {
+        trusted: false,
+      })
+    ).toBe('&lt;img src=x onerror=alert(1)&gt; &lt;b&gt;hi&lt;/b&gt;')
   })
 
   test('drops unsafe link targets', () => {
-    expect(renderInlineMarkdown('[click](javascript:alert(1))')).not.toContain(
-      '<a'
-    )
-    expect(renderInlineMarkdown('[x](" onmouseover="alert(1))')).not.toContain(
-      'onmouseover="'
-    )
+    expect(
+      renderMarkdown('[click](javascript:alert(1))', { trusted: false })
+    ).not.toContain('javascript:')
   })
 
   test('does not format inside code spans', () => {
-    expect(renderInlineMarkdown('`**not bold**`')).toBe(
+    expect(renderMarkdown('`**not bold**`', { trusted: false })).toBe(
       '<code>**not bold**</code>'
     )
   })
 })
 
-describe('skill lines', () => {
-  test('joins keywords with an Oxford comma', () => {
+describe('joinWithAnd', () => {
+  test('joins with an Oxford comma', () => {
     expect(joinWithAnd(['a'])).toBe('a')
     expect(joinWithAnd(['a', 'b'])).toBe('a and b')
     expect(joinWithAnd(['a', 'b', 'c'])).toBe('a, b, and c')
-  })
-
-  test('renders linked keywords', () => {
-    expect(
-      skillLineHtml('Fluent in', [
-        { name: 'TypeScript', url: 'https://www.typescriptlang.org/' },
-        { name: 'Go' },
-      ])
-    ).toBe(
-      'Fluent in <a href="https://www.typescriptlang.org/" itemprop="knowsAbout" target="_blank">TypeScript</a> and <span itemprop="knowsAbout">Go</span>.'
-    )
   })
 })

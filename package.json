@@ -76,7 +76,9 @@
     "lastfm-typed": "^2.1.0",
     "lodash": "^4.17.21",
     "markdown-to-txt": "^2.0.1",
+    "mdast-util-from-markdown": "^2.0.3",
     "mdast-util-to-string": "^4.0.0",
+    "micromark": "^4.0.2",
     "preact": "^10.25.1",
     "pureimage": "^0.4.18",
     "react-chartjs-2": "^5.2.0",
@@ -95,6 +97,7 @@
     "tailwindcss": "^4.3.3",
     "ts-dedent": "^2.2.0",
     "unist-util-visit": "^5.1.0",
+    "usewebmcp": "5.1.0",
     "vite-plugin-webfont-dl": "^3.10.4",
     "zod": "^3.23.8"
   },
@@ -106,6 +109,7 @@
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@playwright/test": "^1.60.0",
     "@shikijs/rehype": "^1.29.2",
+    "@testing-library/preact": "^3.2.4",
     "@types/async-retry": "^1.4.9",
     "@types/basic-auth": "^1.1.8",
     "@types/jsdom": "^21.1.7",
@@ -129,7 +133,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "simple-git": "^3.27.0",
     "vite-node": "^6.0.0",
-    "vitest": "^2.1.8"
+    "vitest": "^3.2.7"
   },
   "overrides": {
     "react": "npm:@preact/compat@latest",

@@ -1,7 +1,8 @@
 ---
 import EmojiText from '../EmojiText.astro'
-import { resumeBasics as basics } from '../../lib/resume/basics'
+import { getEntry } from 'astro:content'
 
+const basics = (await getEntry('resumeBasics', 'eli'))!.data
 const github = basics.profiles.find((p) => p.network === 'GitHub')
 const site = new URL(basics.url)
 ---

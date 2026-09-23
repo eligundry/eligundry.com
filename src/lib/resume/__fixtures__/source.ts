@@ -1,12 +1,12 @@
-import type { ResumeSource } from '../model'
+import { trustedText, type ResumeSource } from '../model'
 
 /** A small resume for tests, shaped like getResumeSource()'s output. */
 export const fixtureSource = (): ResumeSource => ({
   basics: {
     name: 'Eli Gundry',
-    label: { id: 'basics:label', markdown: 'Full Stack Web Engineer' },
-    tagline: { id: 'basics:tagline', markdown: 'Typescript' },
-    summary: { id: 'basics:summary', markdown: '' },
+    label: trustedText('basics:label', 'Full Stack Web Engineer'),
+    tagline: trustedText('basics:tagline', 'Typescript'),
+    summary: trustedText('basics:summary', ''),
     email: 'eligundry@gmail.com',
     phone: '347.523.2652',
     url: 'https://eligundry.com',
@@ -35,11 +35,11 @@ export const fixtureSource = (): ResumeSource => ({
           startDate: '2022-02-07',
           endDate: '2023-11-27',
           highlights: [
-            { id: 'chord:0', markdown: 'Built a [React SDK](https://x.dev).' },
-            {
-              id: 'chord:1',
-              markdown: 'Wrote <abbr title="docs">docs</abbr> &amp; more.',
-            },
+            trustedText('chord:0', 'Built a [React SDK](https://x.dev).'),
+            trustedText(
+              'chord:1',
+              'Wrote <abbr title="docs">docs</abbr> &amp; more.'
+            ),
           ],
         },
         {
@@ -52,7 +52,7 @@ export const fixtureSource = (): ResumeSource => ({
           startDate: '2009-06-01',
           endDate: '2010-03-01',
           printHide: true,
-          summary: { id: 'radioshack:summary', markdown: 'Sold electronics.' },
+          summary: trustedText('radioshack:summary', 'Sold electronics.'),
           highlights: [],
         },
       ],
@@ -72,10 +72,7 @@ export const fixtureSource = (): ResumeSource => ({
           endDate: '2015-05-01',
           area: 'Computer Science',
           studyType: 'Coursework Towards BS',
-          summary: {
-            id: 'kent-state-university:summary',
-            markdown: 'Studied.',
-          },
+          summary: trustedText('kent-state-university:summary', 'Studied.'),
           highlights: [],
         },
       ],
@@ -108,8 +105,10 @@ export const fixtureSource = (): ResumeSource => ({
       title: 'Activities & Interests',
       items: [
         {
-          id: 'activities:album-mode',
-          markdown: 'Created [Album Mode.party](https://album-mode.party).',
+          ...trustedText(
+            'activities:album-mode',
+            'Created [Album Mode.party](https://album-mode.party).'
+          ),
           records: [
             {
               section: 'projects',
@@ -119,8 +118,7 @@ export const fixtureSource = (): ResumeSource => ({
           ],
         },
         {
-          id: 'activities:talks',
-          markdown: 'Presented talks.',
+          ...trustedText('activities:talks', 'Presented talks.'),
           records: [
             {
               section: 'publications',
@@ -132,8 +130,7 @@ export const fixtureSource = (): ResumeSource => ({
           ],
         },
         {
-          id: 'activities:eagle-scout',
-          markdown: 'Eagle Scout',
+          ...trustedText('activities:eagle-scout', 'Eagle Scout'),
           records: [{ section: 'awards', title: 'Eagle Scout', date: '2006' }],
         },
       ],

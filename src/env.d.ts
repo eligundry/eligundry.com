@@ -35,27 +35,3 @@ declare namespace astroHTML.JSX {
     theme?: string
   }
 }
-
-// WebMCP (https://github.com/webmachinelearning/webmcp). Only in browsers or
-// extensions that support it, so everything is optional.
-interface ModelContextTool {
-  name: string
-  description: string
-  inputSchema: Record<string, unknown>
-  annotations?: {
-    readOnlyHint?: boolean
-    destructiveHint?: boolean
-  }
-  execute: (input: any, client?: unknown) => Promise<unknown>
-}
-
-interface ModelContext {
-  registerTool?: (tool: ModelContextTool) => unknown
-  unregisterTool?: (name: string) => void
-  provideContext?: (context: { tools: ModelContextTool[] }) => void
-  clearContext?: () => void
-}
-
-interface Navigator {
-  readonly modelContext?: ModelContext
-}

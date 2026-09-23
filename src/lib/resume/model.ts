@@ -1,7 +1,6 @@
-import { remark } from 'remark'
 import type { List, ListItem, RootContent } from 'mdast'
-import type { ResumeBasics } from './basics'
-import { markdownToPlain, skillLinePlain, type SkillKeyword } from './markdown'
+import { fromMarkdown } from 'mdast-util-from-markdown'
+import { joinWithAnd, markdownToPlain, renderMarkdown } from './markdown'
 
 // The resume is modelled in two layers:
 //
@@ -21,6 +20,8 @@ export type SectionId = 'work' | 'education' | 'skills' | 'activities'
 export interface TextNode {
   id: string
   markdown: string
+  /** `markdown` rendered to HTML: trusted at build time, escaped if tailored. */
+  html: string
   hidden?: boolean
   /** Added by tailoring rather than written in the content files. */
   added?: boolean
@@ -43,14 +44,20 @@ export interface ExperienceNode {
   highlights: TextNode[]
 }
 
+export interface SkillKeyword {
+  name: string
+  url?: string
+}
+
 export interface SkillNode {
   id: string
   name: string
   level?: string
   lead: string
   keywords: SkillKeyword[]
-  /** Freeform replacement for the rendered sentence. */
+  /** Freeform replacement for the "lead keyword, keyword, and keyword." line. */
   markdown?: string
+  html?: string
   hidden?: boolean
   added?: boolean
 }
@@ -91,7 +98,8 @@ export type ActivityRecord =
 export interface ActivityNode {
   id: string
   markdown: string
-  children?: string[]
+  html: string
+  children?: TextNode[]
   childrenClass?: string
   records: ActivityRecord[]
   hidden?: boolean
@@ -113,12 +121,20 @@ export type ResumeSection =
   | SectionBase<'skills', SkillNode>
   | SectionBase<'activities', ActivityNode>
 
+export interface ResumeBasics {
+  name: string
+  label: TextNode
+  tagline: TextNode
+  summary: TextNode
+  email: string
+  phone: string
+  url: string
+  location: { city: string; region: string; countryCode: string }
+  profiles: { network: string; username: string; url: string }[]
+}
+
 export interface ResumeSource {
-  basics: Omit<ResumeBasics, 'tagline' | 'label'> & {
-    tagline: TextNode
-    label: TextNode
-    summary: TextNode
-  }
+  basics: ResumeBasics
   sections: ResumeSection[]
 }
 
@@ -147,6 +163,11 @@ function sliceNode(
     .trim()
 }
 
+/** A text node for trusted (build-time) markdown. */
+export function trustedText(id: string, markdown: string): TextNode {
+  return { id, markdown, html: renderMarkdown(markdown, { trusted: true }) }
+}
+
 /**
  * Splits an experience's markdown body into a summary (paragraphs) and
  * highlights (top-level list items), keeping each item's original markdown.
@@ -155,19 +176,21 @@ export function parseExperienceBody(
   id: string,
   body: string
 ): Pick<ExperienceNode, 'summary' | 'highlights'> {
-  const tree = remark().parse(body)
+  const tree = fromMarkdown(body)
   const paragraphs: string[] = []
   const highlights: TextNode[] = []
 
   for (const node of tree.children) {
     if (node.type === 'list') {
       for (const item of (node as List).children) {
-        highlights.push({
-          id: `${id}:${highlights.length}`,
-          markdown: sliceNode(body, item.children),
-        })
+        highlights.push(
+          trustedText(
+            `${id}:${highlights.length}`,
+            sliceNode(body, item.children)
+          )
+        )
       }
-    } else if (node.type !== 'yaml') {
+    } else {
       const markdown = sliceNode(body, [node])
       if (markdown) {
         paragraphs.push(markdown)
@@ -177,7 +200,7 @@ export function parseExperienceBody(
 
   return {
     summary: paragraphs.length
-      ? { id: `${id}:summary`, markdown: paragraphs.join('\n\n') }
+      ? trustedText(`${id}:summary`, paragraphs.join('\n\n'))
       : undefined,
     highlights,
   }
@@ -250,7 +273,7 @@ export function skillMarkdown(skill: SkillNode): string {
   if (skill.markdown !== undefined) {
     return skill.markdown
   }
-  return skillLinePlain(skill.lead, skill.keywords)
+  return `${skill.lead} ${joinWithAnd(skill.keywords.map((k) => k.name))}.`
 }
 
 // ---------------------------------------------------------------------------
@@ -280,7 +303,6 @@ export type EliResume = JsonResume & XKeys
 export interface ResumeMeta {
   canonical?: string
   version?: string
-  lastModified?: string
 }
 
 function compact<T extends Record<string, unknown>>(value: T): T {

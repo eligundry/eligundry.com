@@ -1,7 +1,7 @@
 import lodashTruncate from 'lodash/truncate'
-import { useEffect, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { markdownToPlain } from '../../lib/resume/markdown'
-import type { TailorSnapshot, TailorStore } from '../../lib/resumeTailor/store'
+import type { Tailoring } from './useTailoring'
 
 const truncate = (markdown: string | undefined) =>
   markdown &&
@@ -14,14 +14,16 @@ const truncate = (markdown: string | undefined) =>
 /**
  * Review panel for a tailored resume: shows who it was tailored for, every
  * change with its reason (each revertable), and print preview/sharing tools.
- * Mounted by the tailoring runtime above the resume.
  */
-export default function TailorPanel({ store }: { store: TailorStore }) {
-  const [snapshot, setSnapshot] = useState<TailorSnapshot>(store.snapshot)
-  useEffect(() => store.subscribe(setSnapshot), [store])
+export default function TailorPanel({
+  tailoring,
+  webmcp,
+}: {
+  tailoring: Tailoring
+  webmcp: boolean
+}) {
   const [copied, setCopied] = useState(false)
-
-  const { tailored, state, review, preview, layout, webmcp } = snapshot
+  const { tailored, state, review, preview, layout } = tailoring
   const { job } = tailored
   const changes = tailored.log.filter(
     (c) => c.op.type !== 'setJob' && c.op.type !== 'highlight'
@@ -45,7 +47,7 @@ export default function TailorPanel({ store }: { store: TailorStore }) {
   }
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(snapshot.shareUrl)
+    await navigator.clipboard.writeText(tailoring.shareUrl)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -84,7 +86,7 @@ export default function TailorPanel({ store }: { store: TailorStore }) {
             <button
               class="btn btn-xs btn-ghost"
               onClick={() => {
-                if (confirm('Undo every tailoring change?')) void store.reset()
+                if (confirm('Undo every tailoring change?')) tailoring.reset()
               }}
             >
               Reset
@@ -98,7 +100,7 @@ export default function TailorPanel({ store }: { store: TailorStore }) {
               type="checkbox"
               class="toggle toggle-sm"
               checked={review}
-              onChange={(e) => store.setReview(e.currentTarget.checked)}
+              onChange={(e) => tailoring.setReview(e.currentTarget.checked)}
             />
             Show changes on the page
           </label>
@@ -107,7 +109,7 @@ export default function TailorPanel({ store }: { store: TailorStore }) {
               type="checkbox"
               class="toggle toggle-sm"
               checked={preview}
-              onChange={(e) => void store.setPreview(e.currentTarget.checked)}
+              onChange={(e) => tailoring.setPreview(e.currentTarget.checked)}
             />
             Print preview
           </label>
@@ -146,7 +148,7 @@ export default function TailorPanel({ store }: { store: TailorStore }) {
                   </span>
                   <button
                     class="btn btn-xs btn-ghost"
-                    onClick={() => void store.revert(change.id)}
+                    onClick={() => tailoring.revert(change.id)}
                   >
                     Revert
                   </button>
