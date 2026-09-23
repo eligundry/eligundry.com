@@ -20,6 +20,11 @@ const source = await getResumeSource()
       title="JSON Resume"
     />
     <Fragment set:html={`<style>${pageCss}</style>`} />
+    <!-- Chrome WebMCP origin trial for eligundry.com, expires 2026-11-17 -->
+    <meta
+      http-equiv="origin-trial"
+      content="A/UWzGZ1JWR/mB8FJKaptuDr8Z7J48cDSzuMIGxXWlf6kxaGdNDg6mXfzkilkGeFMkBSahmEiTB93KdE+JY7uAEAAABheyJvcmlnaW4iOiJodHRwczovL2VsaWd1bmRyeS5jb206NDQzIiwiZmVhdHVyZSI6IldlYk1DUCIsImV4cGlyeSI6MTc5NDg3MzYwMCwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="
+    />
   </Fragment>
   <ResumeIsland client:load source={source} />
   <Footer />
