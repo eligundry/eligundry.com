@@ -173,6 +173,57 @@
   page-break-inside: avoid;
 }
 
+/* Resume tailoring (see src/components/Resume). Review mode strikes through
+   hidden items and shows rewrites next to the original. */
+@layer components {
+  .tailor-hidden {
+    opacity: 0.45;
+    text-decoration: line-through;
+  }
+  .tailor-del {
+    opacity: 0.6;
+  }
+  .tailor-ins {
+    text-decoration: none;
+    background: color-mix(in oklab, var(--color-success) 25%, transparent);
+  }
+
+  @media print {
+    .tailor-hidden,
+    .tailor-del {
+      display: none !important;
+    }
+    .tailor-ins {
+      background: none;
+    }
+    [data-tailor-break-before] {
+      break-before: page;
+    }
+    [data-resume-root] {
+      zoom: var(--tailor-font-scale, 1);
+    }
+    [data-resume-root][data-tailor-density='compact'] {
+      gap: calc(var(--spacing) * 2);
+    }
+    [data-tailor-density='compact'] .prose {
+      gap: calc(var(--spacing) * 1);
+      line-height: 1.4;
+    }
+    [data-tailor-density='compact'] .prose li {
+      margin-block: 0.1em;
+    }
+  }
+}
+
+::highlight(tailor) {
+  background-color: color-mix(in oklab, var(--color-warning) 40%, transparent);
+}
+@media print {
+  ::highlight(tailor) {
+    background-color: transparent;
+  }
+}
+
 /* Tailwind v4 emits `@tailwindcss/typography`'s `prose` element margins into the
    same `utilities` layer as the margin utilities, and later in source order, so
    `prose` wins margin ties. The markup relies on margin utilities overriding

@@ -1,0 +1,84 @@
+# Rendered on /resume/ as "<lead> <keyword>, <keyword>, and <keyword>." and
+# exported to /resume.json as JSON Resume `skills`.
+- id: languages
+  name: Languages
+  level: Fluent
+  lead: Fluent in
+  keywords:
+    - name: TypeScript
+      url: https://www.typescriptlang.org/
+    - name: JavaScript
+      url: https://en.wikipedia.org/wiki/JavaScript
+    - name: Python
+      url: https://www.python.org/
+    - name: Go
+      url: https://golang.org/
+    - name: PHP
+      url: https://www.php.net/
+    - name: SQL
+      url: https://en.wikipedia.org/wiki/SQL
+    - name: HTML
+      url: https://en.wikipedia.org/wiki/HTML5
+    - name: CSS
+      url: https://www.w3.org/Style/CSS/Overview.en.html
+
+- id: frameworks
+  name: Frameworks
+  lead: Built complex web applications using
+  keywords:
+    - name: React
+      url: https://reactjs.org/
+    - name: Next.js
+      url: https://nextjs.org/
+    - name: Remix
+      url: https://remix.run/
+    - name: Flask
+      url: https://www.palletsprojects.com/p/flask/
+    - name: Django
+      url: https://www.djangoproject.com/
+    - name: Gin
+      url: https://gin-gonic.com/
+    - name: WordPress
+      url: https://wordpress.org/
+
+- id: favorites
+  name: Favorite Tools
+  lead: Loves using
+  keywords:
+    - name: OpenAI
+      url: https://openai.com
+    - name: AWS
+      url: https://aws.amazon.com/
+    - name: Astro
+      url: https://astro.build/
+    - name: GitHub Actions
+      url: https://github.com/features/actions
+    - name: Linux
+      url: https://en.wikipedia.org/wiki/Linux
+    - name: SQLite
+      url: https://sqlite.org/index.html
+    - name: Tailwind CSS
+      url: https://tailwindcss.com/
+    - name: Vim
+      url: https://www.vim.org/
+
+- id: love-hate
+  name: Other Tools
+  lead: Has a love-hate relationship (that I will happily defend) with
+  keywords:
+    - name: Ansible
+      url: https://www.ansible.com/
+    - name: Cypress
+      url: https://www.cypress.io/
+    - name: Docker
+      url: https://www.docker.com/
+    - name: Google Tag Manager
+      url: https://tagmanager.google.com/
+    - name: Jenkins
+      url: https://jenkins.io/
+    - name: Okta
+      url: https://www.okta.com/
+    - name: MySQL
+      url: https://www.mysql.com/
+    - name: SQLAlchemy
+      url: https://www.sqlalchemy.org/

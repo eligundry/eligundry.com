@@ -7,6 +7,14 @@ const isLocal = baseURL.startsWith('http://localhost')
 // ships its own browser) instead of Playwright's managed download.
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined
 
+// The resume's WebMCP tools are tested against Chrome's own WebMCP
+// implementation, which needs a recent Chrome (tested with 154) with the
+// WebMCP feature on. By default that's the installed Google Chrome
+// (`playwright install chrome`); PLAYWRIGHT_WEBMCP_CHROME_PATH points at
+// another build, e.g. Chrome for Testing.
+const webmcpChromePath = process.env.PLAYWRIGHT_WEBMCP_CHROME_PATH || undefined
+const webmcpSpecs = /resume-tailor\.spec\.ts/
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -23,9 +31,22 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      testIgnore: webmcpSpecs,
       use: {
         ...devices['Desktop Chrome'],
         launchOptions: executablePath ? { executablePath } : {},
+      },
+    },
+    {
+      name: 'webmcp',
+      testMatch: webmcpSpecs,
+      use: {
+        ...devices['Desktop Chrome'],
+        ...(webmcpChromePath ? {} : { channel: 'chrome' }),
+        launchOptions: {
+          executablePath: webmcpChromePath,
+          args: ['--enable-features=WebMCP'],
+        },
       },
     },
   ],

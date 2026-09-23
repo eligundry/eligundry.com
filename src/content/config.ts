@@ -36,6 +36,77 @@ const resumeExperiencesSchema = z.object({
   startDate: z.coerce.date(),
   endDate: z.coerce.date().optional(),
   printHide: z.boolean().optional(),
+  // JSON Resume education fields (https://jsonresume.org/schema)
+  area: z.string().optional(),
+  studyType: z.string().optional(),
+})
+
+const resumeBasicsSchema = z.object({
+  name: z.string(),
+  label: z.string(),
+  tagline: z.string(),
+  email: z.string().email(),
+  phone: z.string(),
+  url: z.string().url(),
+  location: z.object({
+    city: z.string(),
+    region: z.string(),
+    countryCode: z.string(),
+  }),
+  profiles: z.array(
+    z.object({
+      network: z.string(),
+      username: z.string(),
+      url: z.string().url(),
+    })
+  ),
+})
+
+const resumeSkillSchema = z.object({
+  name: z.string(),
+  level: z.string().optional(),
+  // Leading phrase of the sentence rendered on the page, e.g. "Fluent in"
+  lead: z.string(),
+  keywords: z.array(z.object({ name: z.string(), url: z.string().url() })),
+})
+
+const resumeActivityRecordSchema = z.discriminatedUnion('section', [
+  z.object({
+    section: z.literal('projects'),
+    name: z.string(),
+    description: z.string().optional(),
+    url: z.string().url().optional(),
+    keywords: z.array(z.string()).optional(),
+  }),
+  z.object({
+    section: z.literal('volunteer'),
+    organization: z.string(),
+    position: z.string().optional(),
+    url: z.string().url().optional(),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+    summary: z.string().optional(),
+  }),
+  z.object({
+    section: z.literal('awards'),
+    title: z.string(),
+    date: z.string().optional(),
+    awarder: z.string().optional(),
+    summary: z.string().optional(),
+  }),
+  z.object({
+    section: z.literal('publications'),
+    // Slug of an entry in the talks collection
+    talk: z.string(),
+  }),
+])
+
+const resumeActivitySchema = z.object({
+  // Markdown shown on the page. Trusted, so inline HTML is allowed.
+  markdown: z.string(),
+  children: z.array(z.string()).optional(),
+  childrenClass: z.string().optional(),
+  records: z.array(resumeActivityRecordSchema).default([]),
 })
 
 const sectionSchema = z.object({
@@ -67,6 +138,18 @@ export const collections = {
   }),
   resumeExperiences: defineCollection({
     schema: resumeExperiencesSchema,
+  }),
+  resumeBasics: defineCollection({
+    loader: file('src/content/resumeBasics.yaml'),
+    schema: resumeBasicsSchema,
+  }),
+  resumeSkills: defineCollection({
+    loader: file('src/content/resumeSkills.yaml'),
+    schema: resumeSkillSchema,
+  }),
+  resumeActivities: defineCollection({
+    loader: file('src/content/resumeActivities.yaml'),
+    schema: resumeActivitySchema,
   }),
   seasonalPlaylists: defineCollection({
     loader: file('src/content/seasonalPlaylists.yaml'),
