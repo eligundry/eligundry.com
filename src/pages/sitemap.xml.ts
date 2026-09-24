@@ -31,7 +31,7 @@ export const GET: APIRoute = async () => {
 
   await Promise.all(
     posts.map(async (post) => {
-      const url = `/${post.collection}/${post.slug}/`
+      const url = `/${post.collection}/${post.id}/`
 
       sitemap.write({
         url,
@@ -44,7 +44,7 @@ export const GET: APIRoute = async () => {
 
   await Promise.all(
     talks.map(async (talk) => {
-      const url = `/${talk.collection}/${talk.slug}/`
+      const url = `/${talk.collection}/${talk.id}/`
 
       sitemap.write({
         url,
@@ -85,7 +85,7 @@ export const GET: APIRoute = async () => {
 
   sitemap.end()
 
-  return new Response(await streamToPromise(sitemap), {
+  return new Response((await streamToPromise(sitemap)).toString(), {
     headers: {
       'content-type': 'application/xml',
     },

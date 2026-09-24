@@ -3,7 +3,7 @@ command = 'npm run build'
 publish = 'dist'
 
 [build.environment]
-NODE_VERSION = '24'
+NODE_VERSION = '26'
 
 [dev]
 command = "astro dev"
@@ -12,7 +12,7 @@ port = 8000
 [[plugins]]
 package = 'netlify-plugin-cache'
 [plugins.inputs]
-paths = ['.cache', 'public/astro-fontaine']
+paths = ['.cache', 'public/astro-fontaine', 'src/assets/images/notion']
 
 [[headers]]
 for = "/*.rss"

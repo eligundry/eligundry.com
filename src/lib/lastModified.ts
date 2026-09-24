@@ -1,6 +1,6 @@
 import path from 'node:path'
 import type { AstroInstance } from 'astro'
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import * as dateFns from 'date-fns'
 import { simpleGit } from 'simple-git'
 import daylio from './daylio'
@@ -17,7 +17,18 @@ export const getLastModFromFile = async (filePath: string): Promise<Date> => {
     })
 }
 
-export async function getAllLastModifieds(): Promise<Record<string, Date>> {
+let allLastModifieds: Promise<Record<string, Date>> | undefined
+
+/**
+ * Last modified dates for every page, computed once per process since it
+ * renders every post and queries the database.
+ */
+export function getAllLastModifieds(): Promise<Record<string, Date>> {
+  allLastModifieds ??= computeAllLastModifieds()
+  return allLastModifieds
+}
+
+async function computeAllLastModifieds(): Promise<Record<string, Date>> {
   const lastModifieds = {}
 
   const [
@@ -54,8 +65,8 @@ export async function getAllLastModifieds(): Promise<Record<string, Date>> {
 
   await Promise.all(
     posts.map(async (post) => {
-      const path = `/${post.collection}/${post.slug}/`
-      const { remarkPluginFrontmatter } = await post.render()
+      const path = `/${post.collection}/${post.id}/`
+      const { remarkPluginFrontmatter } = await render(post)
       // @ts-ignore
       lastModifieds[path] = new Date(remarkPluginFrontmatter.modified)
       latestBlogDate = dateFns.max([latestBlogDate, post.data.date])
@@ -64,8 +75,8 @@ export async function getAllLastModifieds(): Promise<Record<string, Date>> {
 
   await Promise.all(
     talks.map(async (talk) => {
-      const path = `/${talk.collection}/${talk.slug}/`
-      const { remarkPluginFrontmatter } = await talk.render()
+      const path = `/${talk.collection}/${talk.id}/`
+      const { remarkPluginFrontmatter } = await render(talk)
       // @ts-ignore
       lastModifieds[path] = new Date(remarkPluginFrontmatter.modified)
       latestTalkDate = dateFns.max([latestTalkDate, talk.data.date])

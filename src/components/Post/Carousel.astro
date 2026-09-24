@@ -135,6 +135,8 @@ const slides = await Promise.all(
       ...(slide.width ? { width: slide.width } : {}),
       ...(slide.height ? { height: slide.height } : {}),
       ...(slide.width && slide.height ? {} : { inferSize: true }),
+      // Resize without cropping, keeping the image's aspect ratio
+      fit: 'inside',
     })
 
     return {

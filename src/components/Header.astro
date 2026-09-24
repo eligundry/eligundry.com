@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
+import { getFeelings } from '../lib/collections'
 import * as dateFns from 'date-fns'
 import EmojiText from './EmojiText.astro'
 import ThemeController from './ThemeController.astro'
@@ -42,7 +43,7 @@ const [blogEntries, linkEntries, talkEntries, playlistEntries, feelingEntries] =
     getCollection('links'),
     getCollection('talks'),
     getCollection('seasonalPlaylists'),
-    getCollection('feelings'),
+    getFeelings(),
   ])
 
 const formatDate = (date: Date) => dateFns.format(date, 'MMM d, yyyy')
@@ -51,7 +52,7 @@ const recentPosts: FeatureItem[] = [
   ...blogEntries
     .filter((entry) => !entry.data.draft)
     .map((entry) => ({
-      href: `/blog/${entry.slug}/`,
+      href: `/blog/${entry.id}/`,
       title: entry.data.title,
       date: entry.data.date,
     })),
@@ -69,7 +70,7 @@ const recentTalks: FeatureItem[] = talkEntries
   .sort((a, b) => dateFns.compareDesc(a.data.date, b.data.date))
   .slice(0, 3)
   .map((entry) => ({
-    href: `/talks/${entry.slug}/`,
+    href: `/talks/${entry.id}/`,
     title: entry.data.title,
     meta: entry.data.location,
   }))

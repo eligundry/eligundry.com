@@ -1,9 +1,10 @@
 ---
-import type { CollectionEntry } from 'astro:content'
+import { render, type CollectionEntry } from 'astro:content'
 import * as dateFns from 'date-fns'
 import kebabCase from 'lodash/kebabCase'
 import EmojiText from '../EmojiText.astro'
 import Excerpt from './Excerpt.astro'
+import { components } from './components.astro'
 
 interface Props {
   entry: CollectionEntry<'blog'> | CollectionEntry<'talks'>
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const { entry, badge } = Astro.props
-const { Content, remarkPluginFrontmatter } = await entry.render()
+const { Content, remarkPluginFrontmatter } = await render(entry)
 const readingTime =
   'readingTime' in remarkPluginFrontmatter
     ? (remarkPluginFrontmatter.readingTime ?? 1)
@@ -46,7 +47,7 @@ if ('tags' in entry.data) {
   }
   {badge && <span class:list={['badge', badge.className]}>{badge.text}</span>}
   <h2 itemprop="name headline" class="my-0">
-    <a href={`/${entry.collection}/${entry.slug}/`} itemprop="url">
+    <a href={`/${entry.collection}/${entry.id}/`} itemprop="url">
       {entry.data.title}
     </a>
   </h2>
@@ -89,6 +90,6 @@ if ('tags' in entry.data) {
     </EmojiText>
   </p>
   <Excerpt>
-    <Content />
+    <Content components={components} />
   </Excerpt>
 </article>

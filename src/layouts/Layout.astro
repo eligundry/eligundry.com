@@ -9,7 +9,7 @@ import Tracking from '../components/Tracking.astro'
 import config from '../config'
 import { getLastModifiedForPath } from '../lib/lastModified'
 import '../styles/tailwind.css'
-import { getCollection } from 'astro:content'
+import { getFeelings } from '../lib/collections'
 
 export interface Props {
   title?: string
@@ -25,10 +25,13 @@ export interface Props {
 }
 
 const [latestFeeling, modified, about] = await Promise.all([
-  getCollection('feelings').then((c) => c[0].data),
+  getFeelings().then((c) => c[0].data),
   getLastModifiedForPath(Astro.url.pathname),
   getEntry('sections', 'about')?.then((section) =>
-    markdownToTxt(section.body).split('\n').slice(2).join(' ')
+    markdownToTxt(section.body ?? '')
+      .split('\n')
+      .slice(2)
+      .join(' ')
   ),
 ])
 

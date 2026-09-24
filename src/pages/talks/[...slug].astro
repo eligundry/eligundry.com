@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { readingTimeToFancyBackgroundPoints } from '../../lib/utils'
 import PostLayout from '../../layouts/Post.astro'
 import { components } from '../../components/Post/components.astro'
@@ -11,7 +11,7 @@ interface Props {
 export async function getStaticPaths() {
   return (await getCollection('talks')).map((entry) => ({
     params: {
-      slug: entry.slug,
+      slug: entry.id,
     },
     props: {
       entry,
@@ -20,12 +20,12 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
-const { Content, remarkPluginFrontmatter } = await entry.render()
+const { Content, remarkPluginFrontmatter } = await render(entry)
 ---
 
 <PostLayout
   collection={entry.collection}
-  slug={entry.slug}
+  slug={entry.id}
   frontmatter={entry.data}
   remarkPluginFrontmatter={remarkPluginFrontmatter}
   showComments

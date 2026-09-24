@@ -2,10 +2,10 @@
 import Layout from '../layouts/Layout.astro'
 import DaylioEntry from '../components/DaylioEntry.astro'
 import DaylioChart from '../components/DaylioChart'
-import { getCollection } from 'astro:content'
+import { getFeelings } from '../lib/collections'
 import { syncFeelings } from '../lib/standardSite'
 
-const allEntries = await getCollection('feelings').then((records) =>
+const allEntries = await getFeelings().then((records) =>
   records.map((record) => record.data)
 )
 const entries = allEntries.slice(0, 100)

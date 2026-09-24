@@ -10,13 +10,10 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "strict": true,
-    "importsNotUsedAsValues": "error",
     "jsx": "react-jsx",
-    "jsxImportSource": "preact",
-    "paths": {
-      "react": ["./node_modules/preact/compat"],
-      "react-dom": ["./node_modules/preact/compat"]
-    }
+    "jsxImportSource": "preact"
   },
-  "extends": "astro/tsconfigs/strict"
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
 }

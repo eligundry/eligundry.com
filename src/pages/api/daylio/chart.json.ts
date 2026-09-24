@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro'
-import { getCollection } from 'astro:content'
+import { getFeelings } from '../../../lib/collections'
 
 export const GET: APIRoute = async () => {
-  const entries = await getCollection('feelings').then((entries) =>
+  const entries = await getFeelings().then((entries) =>
     entries.slice(0, 30).map(({ data }) => ({ x: data.slug, y: data.score }))
   )
 

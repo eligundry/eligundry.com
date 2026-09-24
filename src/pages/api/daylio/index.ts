@@ -5,12 +5,12 @@ import daylio from '../../../lib/daylio'
 import blueSky from '../../../lib/bluesky'
 import netlify from '../../../lib/netlify'
 import { dedent } from '../../../lib/utils'
-import { getCollection } from 'astro:content'
+import { getFeelings } from '../../../lib/collections'
 
 export const prerender = false
 
 export const GET: APIRoute = async () => {
-  const entries = await getCollection('feelings').then((records) =>
+  const entries = await getFeelings().then((records) =>
     records.map((record) => record.data)
   )
 

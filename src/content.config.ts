@@ -1,10 +1,13 @@
-import { z, defineCollection } from 'astro:content'
-import { file } from 'astro/loaders'
-import { feelingsCollection } from './feelings'
-import { createGoodreadsCollection } from './goodreads'
-import config from '../config'
-import { createLastFmCoverCollection } from './lastfm'
-import { linksCollection } from './links'
+import { defineCollection } from 'astro:content'
+import { z } from 'astro/zod'
+import { file, glob } from 'astro/loaders'
+import { parse as parseYaml } from 'yaml'
+import { withOrder } from './lib/collections'
+import { feelingsCollection } from './content/feelings'
+import { createGoodreadsCollection } from './content/goodreads'
+import config from './config'
+import { createLastFmCoverCollection } from './content/lastfm'
+import { linksCollection } from './content/links'
 
 const commonFrontmatterSchema = z.object({
   title: z.string(),
@@ -27,7 +30,7 @@ const resumeExperiencesSchema = z.object({
   type: z.enum(['work', 'education']),
   position: z.string(),
   organization: z.string(),
-  website: z.string().url(),
+  website: z.url(),
   location: z.object({
     city: z.string(),
     region: z.string(),
@@ -45,9 +48,9 @@ const resumeBasicsSchema = z.object({
   name: z.string(),
   label: z.string(),
   tagline: z.string(),
-  email: z.string().email(),
+  email: z.email(),
   phone: z.string(),
-  url: z.string().url(),
+  url: z.url(),
   location: z.object({
     city: z.string(),
     region: z.string(),
@@ -57,7 +60,7 @@ const resumeBasicsSchema = z.object({
     z.object({
       network: z.string(),
       username: z.string(),
-      url: z.string().url(),
+      url: z.url(),
     })
   ),
 })
@@ -67,7 +70,8 @@ const resumeSkillSchema = z.object({
   level: z.string().optional(),
   // Leading phrase of the sentence rendered on the page, e.g. "Fluent in"
   lead: z.string(),
-  keywords: z.array(z.object({ name: z.string(), url: z.string().url() })),
+  keywords: z.array(z.object({ name: z.string(), url: z.url() })),
+  order: z.number(),
 })
 
 const resumeActivityRecordSchema = z.discriminatedUnion('section', [
@@ -75,14 +79,14 @@ const resumeActivityRecordSchema = z.discriminatedUnion('section', [
     section: z.literal('projects'),
     name: z.string(),
     description: z.string().optional(),
-    url: z.string().url().optional(),
+    url: z.url().optional(),
     keywords: z.array(z.string()).optional(),
   }),
   z.object({
     section: z.literal('volunteer'),
     organization: z.string(),
     position: z.string().optional(),
-    url: z.string().url().optional(),
+    url: z.url().optional(),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
     summary: z.string().optional(),
@@ -107,6 +111,7 @@ const resumeActivitySchema = z.object({
   children: z.array(z.string()).optional(),
   childrenClass: z.string().optional(),
   records: z.array(resumeActivityRecordSchema).default([]),
+  order: z.number(),
 })
 
 const sectionSchema = z.object({
@@ -120,23 +125,34 @@ const seasonalPlaylistSchema = z.object({
   date: z.coerce.date(),
 })
 
+// For YAML lists whose order matters; see withOrder
+const orderedYamlLoader = (fileName: string) =>
+  file(fileName, { parser: (text) => withOrder(parseYaml(text)) })
+
+const mdxLoader = (collection: string) =>
+  glob({ pattern: '**/[^_]*.mdx', base: `./src/content/${collection}` })
+
 export const collections = {
   blog: defineCollection({
+    loader: mdxLoader('blog'),
     schema: ({ image }) =>
       blogSchema.extend({
         cover: image().optional(),
       }),
   }),
   talks: defineCollection({
+    loader: mdxLoader('talks'),
     schema: ({ image }) =>
       talksSchema.extend({
         cover: image().optional(),
       }),
   }),
   sections: defineCollection({
+    loader: mdxLoader('sections'),
     schema: sectionSchema,
   }),
   resumeExperiences: defineCollection({
+    loader: mdxLoader('resumeExperiences'),
     schema: resumeExperiencesSchema,
   }),
   resumeBasics: defineCollection({
@@ -144,11 +160,11 @@ export const collections = {
     schema: resumeBasicsSchema,
   }),
   resumeSkills: defineCollection({
-    loader: file('src/content/resumeSkills.yaml'),
+    loader: orderedYamlLoader('src/content/resumeSkills.yaml'),
     schema: resumeSkillSchema,
   }),
   resumeActivities: defineCollection({
-    loader: file('src/content/resumeActivities.yaml'),
+    loader: orderedYamlLoader('src/content/resumeActivities.yaml'),
     schema: resumeActivitySchema,
   }),
   seasonalPlaylists: defineCollection({

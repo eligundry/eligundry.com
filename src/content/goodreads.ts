@@ -1,6 +1,8 @@
-import { defineCollection, z } from 'astro:content'
+import { defineCollection } from 'astro:content'
+import { z } from 'astro/zod'
 import { JSDOM } from 'jsdom'
 import { averageColorFromURL } from '../lib/images'
+import { withOrder } from '../lib/collections'
 
 interface GoodreadsCollectionOptions {
   userID: string
@@ -93,7 +95,11 @@ export const createGoodreadsCollection = (
         })
       )
 
-      return augmentedBooks
+      // A remote image that fails to load fails the build. averageColorFromURL
+      // returns null when it couldn't fetch the cover, so drop those books.
+      return withOrder(
+        augmentedBooks.filter((book) => book.coverColor !== null)
+      )
     },
     schema: z.object({
       title: z.string(),
@@ -102,6 +108,7 @@ export const createGoodreadsCollection = (
       url: z.string(),
       rating: z.number(),
       coverColor: z.string().nullable(),
+      order: z.number(),
     }),
   })
 }
