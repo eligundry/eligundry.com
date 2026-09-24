@@ -2,7 +2,7 @@
 # `basics`). A single entry, read with getEntry('resumeBasics', 'eli').
 - id: eli
   name: Eli Gundry
-  label: Full Stack Web Engineer
+  label: Builder // Shipping without writing code
   tagline: ❤️ Typescript, AI and everything inbetween
   email: eligundry@gmail.com
   phone: 347.523.2652
