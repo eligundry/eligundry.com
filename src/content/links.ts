@@ -7,6 +7,8 @@ import {
   propertySchema,
   transformedPropertySchema,
 } from '@astro-notion/loader/schemas'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import rehypeShiki from '@shikijs/rehype'
 
 export const linksSchema = notionPageSchema({
@@ -65,6 +67,15 @@ function createLinksLoader(): Loader {
     ...inner,
     name: 'notion-loader/links',
     async load(ctx) {
+      // The loader skips re-rendering pages that haven't changed since the
+      // cached data store, but the images it downloaded for them aren't part
+      // of that cache. If any are missing, start over so they're downloaded
+      // again rather than failing the build.
+      if (hasMissingNotionImages(ctx.store.values())) {
+        ctx.logger.info('Notion images are missing; re-rendering all pages')
+        ctx.store.clear()
+      }
+
       try {
         await inner.load(ctx)
       } catch (err) {
@@ -74,6 +85,22 @@ function createLinksLoader(): Loader {
       }
     },
   }
+}
+
+const notionImagePattern = /assets\/images\/notion\/([^"&\\]+)/g
+
+function hasMissingNotionImages(entries: unknown[]): boolean {
+  for (const entry of entries) {
+    for (const [, image] of JSON.stringify(entry).matchAll(
+      notionImagePattern
+    )) {
+      if (!existsSync(path.join('src/assets/images/notion', image))) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 export const linksCollection = defineCollection({
