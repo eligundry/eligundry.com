@@ -76,6 +76,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 - Configured for Netlify deployment with `@astrojs/netlify` adapter
 - All pushes to main branch trigger automatic builds
 - Uses Netlify Functions for serverless API endpoints
+- Runs on Node 26: `.nvmrc` pins CI, `netlify.toml` pins Netlify builds, and the `AWS_LAMBDA_JS_RUNTIME=nodejs26.x` Netlify site env var pins the functions runtime (a preview Lambda runtime until its GA, targeted for November 2026; without it functions fall back to Node 24)
 
 ## Package Manager
 
