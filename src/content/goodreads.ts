@@ -95,7 +95,11 @@ export const createGoodreadsCollection = (
         })
       )
 
-      return withOrder(augmentedBooks)
+      // A remote image that fails to load fails the build. averageColorFromURL
+      // returns null when it couldn't fetch the cover, so drop those books.
+      return withOrder(
+        augmentedBooks.filter((book) => book.coverColor !== null)
+      )
     },
     schema: z.object({
       title: z.string(),

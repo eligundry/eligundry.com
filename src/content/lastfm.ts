@@ -10,7 +10,11 @@ export const createLastFmCoverCollection = (
   return defineCollection({
     loader: async () => {
       const covers = await lastfm.getTopAlbumsCover(username, period)
-      return withOrder(covers).map((album) => ({
+      // Last.fm's CDN intermittently 404s covers, and a remote image that
+      // fails to load fails the build. averageColorFromURL returns null when
+      // it couldn't fetch the cover, so drop those albums.
+      const loadable = covers.filter((album) => album.coverColor !== null)
+      return withOrder(loadable).map((album) => ({
         ...album,
         id: album.url,
       }))
