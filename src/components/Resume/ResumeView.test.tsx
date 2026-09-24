@@ -170,3 +170,26 @@ describe('ResumeView', () => {
     ).toBe(true)
   })
 })
+
+describe('promotions', () => {
+  test('lists each title on one line with its dates in superscript', () => {
+    const source = fixtureSource()
+    Object.assign(source.sections[0].items[0], {
+      position: 'Principal Engineer',
+      roles: [
+        { position: 'Principal Engineer', startDate: '2023-01-01' },
+        {
+          position: 'Staff Software Engineer',
+          startDate: '2022-02-07',
+          endDate: '2023-01-01',
+        },
+      ],
+    })
+    const { container } = render(<ResumeView resume={source} />)
+    const titles = container.querySelector('[data-print-unit="chord"] h4')!
+    expect(titles.textContent).toBe(
+      'Principal EngineerJan 2023–Present, Staff Software EngineerFeb 2022–Jan 2023'
+    )
+    expect(titles.querySelectorAll('sup')).toHaveLength(2)
+  })
+})

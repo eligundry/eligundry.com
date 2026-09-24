@@ -27,11 +27,20 @@ export interface TextNode {
   added?: boolean
 }
 
+export interface ExperienceRole {
+  position: string
+  startDate: string
+  endDate?: string
+}
+
 export interface ExperienceNode {
   id: string
   type: 'work' | 'education'
   organization: string
+  /** The latest title held. */
   position: string
+  /** Every title held here, newest first, if there's been a promotion. */
+  roles?: ExperienceRole[]
   url: string
   location: { city: string; region: string; countryCode: string }
   startDate: string
@@ -368,6 +377,7 @@ export function toSuperset(
       'x-id': job.id,
       'x-hidden': job.hidden || sectionHidden('work') || undefined,
       'x-printHide': job.printHide || undefined,
+      'x-roles': job.roles,
       'x-summary': job.summary,
       'x-highlights': job.highlights,
     })

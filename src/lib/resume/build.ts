@@ -7,9 +7,30 @@ import {
   type ActivityNode,
   type ActivityRecord,
   type ExperienceNode,
+  type ExperienceRole,
   type ResumeSource,
   type SkillNode,
 } from './model'
+
+/** Every title held at a job, newest first. */
+function experienceRoles(
+  position: string,
+  startDate: Date,
+  promotions: { position: string; startDate: Date }[],
+  endDate?: Date
+): ExperienceRole[] {
+  const roles = [{ position, startDate }, ...promotions]
+  return roles
+    .map((role, i) => {
+      const roleEnd = roles[i + 1]?.startDate ?? endDate
+      return {
+        position: role.position,
+        startDate: toIsoDate(role.startDate),
+        endDate: roleEnd ? toIsoDate(roleEnd) : undefined,
+      }
+    })
+    .reverse()
+}
 
 /** Builds the resume from the content collections. */
 export async function getResumeSource(): Promise<ResumeSource> {
@@ -26,7 +47,15 @@ export async function getResumeSource(): Promise<ResumeSource> {
       id: slug,
       type: data.type,
       organization: data.organization,
-      position: data.position,
+      position: data.promotions?.at(-1)?.position ?? data.position,
+      roles: data.promotions?.length
+        ? experienceRoles(
+            data.position,
+            data.startDate,
+            data.promotions,
+            data.endDate
+          )
+        : undefined,
       url: data.website,
       location: {
         city: data.location.city,

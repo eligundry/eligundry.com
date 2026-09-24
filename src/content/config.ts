@@ -23,23 +23,39 @@ const talksSchema = commonFrontmatterSchema.extend({
   location: z.string(),
 })
 
-const resumeExperiencesSchema = z.object({
-  type: z.enum(['work', 'education']),
-  position: z.string(),
-  organization: z.string(),
-  website: z.string().url(),
-  location: z.object({
-    city: z.string(),
-    region: z.string(),
-    country: z.string(),
-  }),
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date().optional(),
-  printHide: z.boolean().optional(),
-  // JSON Resume education fields (https://jsonresume.org/schema)
-  area: z.string().optional(),
-  studyType: z.string().optional(),
-})
+const resumeExperiencesSchema = z
+  .object({
+    type: z.enum(['work', 'education']),
+    position: z.string(),
+    organization: z.string(),
+    website: z.string().url(),
+    location: z.object({
+      city: z.string(),
+      region: z.string(),
+      country: z.string(),
+    }),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date().optional(),
+    // Later titles at the same place, oldest first. `position` and `startDate`
+    // are the first role.
+    promotions: z
+      .array(z.object({ position: z.string(), startDate: z.coerce.date() }))
+      .optional(),
+    printHide: z.boolean().optional(),
+    // JSON Resume education fields (https://jsonresume.org/schema)
+    area: z.string().optional(),
+    studyType: z.string().optional(),
+  })
+  .refine(
+    ({ startDate, promotions = [] }) =>
+      promotions.every(
+        (promotion, i) =>
+          promotion.startDate > (promotions[i - 1]?.startDate ?? startDate)
+      ),
+    {
+      message: 'Promotions must start after the role before them, oldest first',
+    }
+  )
 
 const resumeBasicsSchema = z.object({
   name: z.string(),

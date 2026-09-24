@@ -1,15 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, test } from 'vitest'
-// @ts-expect-error - untyped CommonJS module
-import { validate } from '@jsonresume/schema'
+import { jsonResumeSchema } from './__fixtures__/jsonResumeSchema'
 import { fixtureSource } from './__fixtures__/source'
-import {
-  parseExperienceBody,
-  toJsonResume,
-  toSuperset,
-  type JsonResume,
-} from './model'
+import { parseExperienceBody, toJsonResume, toSuperset } from './model'
 
 const experiencesDir = path.resolve(
   __dirname,
@@ -19,14 +13,6 @@ const experiencesDir = path.resolve(
 function readBody(slug: string): string {
   const file = fs.readFileSync(path.join(experiencesDir, `${slug}.mdx`), 'utf8')
   return file.replace(/^---\n[\s\S]*?\n---\n/, '')
-}
-
-function validateResume(resume: JsonResume): unknown[] | null {
-  let errors: unknown[] | null = null
-  validate(resume, (err: unknown[] | null) => {
-    errors = err
-  })
-  return errors
 }
 
 function collectKeys(value: unknown, keys = new Set<string>()): Set<string> {
@@ -103,7 +89,7 @@ describe('JSON Resume', () => {
     const resume = toJsonResume(
       toSuperset(fixtureSource(), { version: 'v1.0.0' })
     )
-    expect(validateResume(resume)).toBeNull()
+    expect(resume).toEqual(expect.schemaMatching(jsonResumeSchema))
     expect([...collectKeys(resume)].filter((k) => k.startsWith('x-'))).toEqual(
       []
     )
@@ -129,6 +115,6 @@ describe('JSON Resume', () => {
     const resume = toJsonResume(toSuperset(source))
     expect(resume.work?.map((w) => w.name)).toEqual(['RadioShack'])
     expect(resume.skills).toBeUndefined()
-    expect(validateResume(resume)).toBeNull()
+    expect(resume).toEqual(expect.schemaMatching(jsonResumeSchema))
   })
 })

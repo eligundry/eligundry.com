@@ -24,6 +24,11 @@ build-time content may contain inline HTML; tailored text is escaped.
 `toSuperset()` produces JSON Resume plus `x-` extension keys, and
 `toJsonResume()` strips the extensions and hidden entries for `/resume.json`.
 
+An experience's `promotions` (`{ position, startDate }`, oldest first) become
+`roles` on its node, newest first. `position` is the latest title, which is what
+JSON Resume gets; the full history is in the `x-roles` extension. The page shows
+every title on one line, each with its date range in a `<sup>`.
+
 ## Rendering
 
 `src/pages/resume.astro` renders `<Resume client:load />`
@@ -71,6 +76,12 @@ size and margins are defined once in `PAGE` there, which also emits the
 - `pnpm test`: model, state, serialization and pagination unit tests, plus
   Testing Library component tests in `src/components/Resume/*.test.tsx` that
   drive the WebMCP tools through a stubbed `document.modelContext`.
+- `tests/e2e/resume-json.spec.ts` (Playwright `chromium` project) fetches the
+  real `/resume.json`, built from the content collections, and checks it against
+  the JSON Resume schema with Vitest's `expect.schemaMatching()` (from
+  `@vitest/expect`, run standalone). The schema is wrapped as a Standard Schema
+  in `src/lib/resume/__fixtures__/jsonResumeSchema.ts`. It also checks that
+  promotions render on `/resume/`.
 - `tests/e2e/resume-tailor.spec.ts` (Playwright `webmcp` project) runs in
   Google Chrome with `--enable-features=WebMCP` (tested with Chrome 154; 141
   doesn't have WebMCP). It calls the

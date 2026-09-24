@@ -109,6 +109,7 @@
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@playwright/test": "^1.60.0",
     "@shikijs/rehype": "^1.29.2",
+    "@standard-schema/spec": "^1.1.0",
     "@testing-library/preact": "^3.2.4",
     "@types/async-retry": "^1.4.9",
     "@types/basic-auth": "^1.1.8",
@@ -118,6 +119,7 @@
     "@types/react": "^19.0.1",
     "@types/unist": "^3.0.3",
     "@typescript-eslint/parser": "^8.17.0",
+    "@vitest/expect": "^4.1.11",
     "drizzle-kit": "^0.29.1",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^10.0.1",
@@ -133,7 +135,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "simple-git": "^3.27.0",
     "vite-node": "^6.0.0",
-    "vitest": "^3.2.7"
+    "vitest": "^4.1.11"
   },
   "overrides": {
     "react": "npm:@preact/compat@latest",

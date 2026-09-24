@@ -1,16 +1,50 @@
 import * as dateFns from 'date-fns'
-import type { ExperienceNode, TextNode } from '../../lib/resume/model'
+import { Fragment } from 'preact'
+import type {
+  ExperienceNode,
+  ExperienceRole,
+  TextNode,
+} from '../../lib/resume/model'
 import { cx, Rich, useItemProps } from './ResumeView'
 
-function Time({ date, itemProp }: { date: Date; itemProp: string }) {
+function Time({
+  date,
+  itemProp,
+  format = 'MMMM yyyy',
+}: {
+  date: Date
+  itemProp?: string
+  format?: string
+}) {
   return (
     <time
       itemProp={itemProp}
       dateTime={dateFns.formatISO(date, { representation: 'date' })}
     >
-      {dateFns.format(date, 'MMMM yyyy')}
+      {dateFns.format(date, format)}
     </time>
   )
+}
+
+/** Each title held, newest first, with its dates in superscript. */
+function Roles({ roles }: { roles: ExperienceRole[] }) {
+  return roles.map((role, i) => (
+    <Fragment key={role.startDate}>
+      {i > 0 && ', '}
+      <span class="whitespace-nowrap">
+        {role.position}
+        <sup class="ml-0.5 font-mono font-normal">
+          <Time date={dateFns.parseISO(role.startDate)} format="MMM yyyy" />
+          &ndash;
+          {role.endDate ? (
+            <Time date={dateFns.parseISO(role.endDate)} format="MMM yyyy" />
+          ) : (
+            'Present'
+          )}
+        </sup>
+      </span>
+    </Fragment>
+  ))
 }
 
 /** A job or school, with its dates, location, summary and bullets. */
@@ -19,7 +53,7 @@ export default function Experience({
 }: {
   experience: ExperienceNode
 }) {
-  const { id, type, organization, position, location, url, printHide } =
+  const { id, type, organization, position, roles, location, url, printHide } =
     experience
   const { visible, props } = useItemProps(
     experience,
@@ -80,7 +114,7 @@ export default function Experience({
         </span>
       </span>
       <h4 class="w-full sm:w-1/2 print:w-1/2 m-0 order-2 print:order-3 sm:order-3">
-        {position}
+        {roles ? <Roles roles={roles} /> : position}
       </h4>
       <address
         itemScope
