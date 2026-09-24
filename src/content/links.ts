@@ -47,7 +47,9 @@ function createLinksLoader(): Loader {
   }
 
   const isProd = !!process.env.PROD
-  const inner = notionLoader({
+  // Drop the loader's function schema, which Astro no longer supports, in
+  // favor of the collection's linksSchema
+  const { schema: _schema, ...inner } = notionLoader({
     auth: notionToken,
     database_id: notionDatabaseId,
     filter: isProd
@@ -57,7 +59,7 @@ function createLinksLoader(): Loader {
         }
       : undefined,
     rehypePlugins: [[rehypeShiki, { theme: 'material-theme-lighter' }]],
-  })
+  }) as Loader & { schema?: unknown }
 
   return {
     ...inner,

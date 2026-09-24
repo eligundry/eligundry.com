@@ -14,6 +14,8 @@ const ogImage = ogData?.imageUrl
   ? await getImage({
       src: ogData.imageUrl,
       width: 224,
+      // Scale to the width instead of cropping to the inferred height
+      fit: 'inside',
       format: 'webp',
       quality: 90,
       inferSize: true,

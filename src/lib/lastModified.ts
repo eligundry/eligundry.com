@@ -17,7 +17,18 @@ export const getLastModFromFile = async (filePath: string): Promise<Date> => {
     })
 }
 
-export async function getAllLastModifieds(): Promise<Record<string, Date>> {
+let allLastModifieds: Promise<Record<string, Date>> | undefined
+
+/**
+ * Last modified dates for every page, computed once per process since it
+ * renders every post and queries the database.
+ */
+export function getAllLastModifieds(): Promise<Record<string, Date>> {
+  allLastModifieds ??= computeAllLastModifieds()
+  return allLastModifieds
+}
+
+async function computeAllLastModifieds(): Promise<Record<string, Date>> {
   const lastModifieds = {}
 
   const [

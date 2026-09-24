@@ -22,7 +22,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 
 ### Key Technologies
 
-- **Astro 5.x**: Static site generator with islands architecture
+- **Astro 7.x**: Static site generator with islands architecture. Markdown/MDX run through the remark/rehype `unified()` processor (not Astro 7's default Sätteri) so the plugins in `src/lib/markdown.mjs` keep working
 - **Preact**: React alternative for interactive components (configured with React compatibility via @preact/compat)
 - **Tailwind CSS**: Utility-first CSS framework with DaisyUI components
 - **TypeScript**: Full TypeScript support throughout
@@ -43,6 +43,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 
 - Uses Astro Content Collections for type-safe content management
 - Blog posts, talks, and resume experiences are stored as Markdown/MDX files in `src/content/`
+- Collections are defined in `src/content.config.ts`. `getCollection` returns entries sorted by ID, not loader order: use `getFeelings()` or sort by the `order` field (`byOrder`) from `src/lib/collections.ts` when order matters
 - Dynamic data integrations with Last.fm, Goodreads, and other APIs
 
 ### Database
