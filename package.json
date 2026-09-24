@@ -130,7 +130,7 @@
     "fontaine": "^0.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",
-    "netlify-cli": "^17.38.0",
+    "netlify-cli": "^27.9.0",
     "netlify-plugin-cache": "^1.0.3",
     "prettier": "^3.5.0",
     "prettier-plugin-astro": "^0.14.1",
