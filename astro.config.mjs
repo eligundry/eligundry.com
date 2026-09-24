@@ -17,6 +17,39 @@ import { FontaineTransform } from 'fontaine'
 // https://astro.build/config
 import netlify from '@astrojs/netlify'
 
+/**
+ * Astro renders pages in both the `ssr` and `prerender` Vite environments, and
+ * the top level `vite.ssr` options only reach the former, so set them on each.
+ * React-based packages must be bundled so the react -> preact/compat alias
+ * applies to them.
+ *
+ * @returns {import('vite').Plugin}
+ */
+const serverDependencies = () => ({
+  name: 'eligundry:server-dependencies',
+  configEnvironment(name) {
+    if (name !== 'ssr' && name !== 'prerender') {
+      return
+    }
+
+    return {
+      resolve: {
+        external: ['better-sqlite3'],
+        noExternal: [
+          '@astro-community/astro-embed-youtube',
+          '@react-hookz/web',
+          'chartjs-adapter-date-fns',
+          'react-icons',
+          // @astrojs/preact only adds these when nothing else sets noExternal
+          'react',
+          'react-dom',
+          'react/jsx-runtime',
+        ],
+      },
+    }
+  },
+})
+
 // https://astro.build/config
 export default defineConfig({
   security: {
@@ -34,16 +67,7 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
-    ssr: {
-      external: ['better-sqlite3'],
-      noExternal: [
-        '@astro-community/astro-embed-youtube',
-        '@react-hookz/web',
-        'chartjs-adapter-date-fns',
-        'react-icons',
-      ],
-    },
+    plugins: [tailwindcss(), serverDependencies()],
   },
   integrations: [
     mdx(mdxConfig),

@@ -1,4 +1,4 @@
-import type React from 'react'
+import type { FunctionComponent } from 'preact'
 import { Chart as ChartJS, type SankeyDataPoint } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
 import { SankeyController, Flow } from 'chartjs-chart-sankey'
@@ -29,7 +29,7 @@ const chartPallete = (value: string) => {
   }
 }
 
-const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
+const JobSearchSankeyChart: FunctionComponent<{ data: SankeyDataPoint[] }> = ({
   data,
 }) => {
   console.log(chartPallete(data[0].from))
@@ -65,9 +65,9 @@ const JobSearchSankeyChart: React.FC<{ data: SankeyDataPoint[] }> = ({
   )
 }
 
-export const JobSearchSankeyChartByYear: React.FC<{ year: number }> = ({
-  year,
-}) => {
+export const JobSearchSankeyChartByYear: FunctionComponent<{
+  year: number
+}> = ({ year }) => {
   switch (year) {
     case 2022:
       return (

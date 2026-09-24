@@ -1,6 +1,8 @@
-import { defineCollection, z } from 'astro:content'
+import { defineCollection } from 'astro:content'
+import { z } from 'astro/zod'
 import { JSDOM } from 'jsdom'
 import { averageColorFromURL } from '../lib/images'
+import { withOrder } from '../lib/collections'
 
 interface GoodreadsCollectionOptions {
   userID: string
@@ -93,7 +95,7 @@ export const createGoodreadsCollection = (
         })
       )
 
-      return augmentedBooks
+      return withOrder(augmentedBooks)
     },
     schema: z.object({
       title: z.string(),
@@ -102,6 +104,7 @@ export const createGoodreadsCollection = (
       url: z.string(),
       rating: z.number(),
       coverColor: z.string().nullable(),
+      order: z.number(),
     }),
   })
 }

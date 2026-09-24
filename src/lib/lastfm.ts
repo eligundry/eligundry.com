@@ -151,7 +151,6 @@ const getCollage = async (username: string, period: LastFMPeriod = '7day') => {
       },
       final(callback) {
         callback()
-        // @ts-expect-error Node's various streams and buffer types are mess
         resolve(Buffer.concat(chunks))
       },
     })

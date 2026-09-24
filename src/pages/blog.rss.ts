@@ -31,8 +31,8 @@ export const GET: APIRoute = async () => {
     feed.addItem({
       title: post.data.title,
       author: [author],
-      id: `${config.url}/${post.collection}/${post.slug}/`,
-      link: `${config.url}/${post.collection}/${post.slug}/`,
+      id: `${config.url}/${post.collection}/${post.id}/`,
+      link: `${config.url}/${post.collection}/${post.id}/`,
       date: post.data.date,
       description: post.data.description,
     })

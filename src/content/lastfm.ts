@@ -1,5 +1,7 @@
-import { defineCollection, z } from 'astro:content'
+import { defineCollection } from 'astro:content'
+import { z } from 'astro/zod'
 import lastfm, { type LastFMPeriod } from '../lib/lastfm'
+import { withOrder } from '../lib/collections'
 
 export const createLastFmCoverCollection = (
   username: string,
@@ -8,7 +10,7 @@ export const createLastFmCoverCollection = (
   return defineCollection({
     loader: async () => {
       const covers = await lastfm.getTopAlbumsCover(username, period)
-      return covers.map((album) => ({
+      return withOrder(covers).map((album) => ({
         ...album,
         id: album.url,
       }))
@@ -19,7 +21,8 @@ export const createLastFmCoverCollection = (
       count: z.number(),
       cover: z.string(),
       coverColor: z.string().nullable(),
-      url: z.string().url(),
+      url: z.url(),
+      order: z.number(),
     }),
   })
 }

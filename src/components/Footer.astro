@@ -1,5 +1,5 @@
 ---
-import { getEntry } from 'astro:content'
+import { getEntry, render } from 'astro:content'
 import { FaGithubAlt, FaMastodon } from 'react-icons/fa'
 import { ImLastfm } from 'react-icons/im'
 import { MdRssFeed, MdOutlineEmail } from 'react-icons/md'
@@ -13,7 +13,7 @@ if (!about) {
   throw new Error('No about section found')
 }
 
-const { Content } = await about.render()
+const { Content } = await render(about)
 
 const social = [
   {

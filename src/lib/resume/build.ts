@@ -1,5 +1,6 @@
 import { getCollection, getEntry } from 'astro:content'
 import config from '../../config'
+import { byOrder } from '../collections'
 import {
   parseExperienceBody,
   toIsoDate,
@@ -22,8 +23,8 @@ export async function getResumeSource(): Promise<ResumeSource> {
 
   const experienceNodes: ExperienceNode[] = experiences
     .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
-    .map(({ slug, data, body }) => ({
-      id: slug,
+    .map(({ id, data, body }) => ({
+      id,
       type: data.type,
       organization: data.organization,
       position: data.position,
@@ -38,10 +39,10 @@ export async function getResumeSource(): Promise<ResumeSource> {
       area: data.area,
       studyType: data.studyType,
       printHide: data.printHide,
-      ...parseExperienceBody(slug, body),
+      ...parseExperienceBody(id, body ?? ''),
     }))
 
-  const skillNodes: SkillNode[] = skills.map(({ id, data }) => ({
+  const skillNodes: SkillNode[] = skills.sort(byOrder).map(({ id, data }) => ({
     id: `skills:${id}`,
     name: data.name,
     level: data.level,
@@ -50,7 +51,7 @@ export async function getResumeSource(): Promise<ResumeSource> {
   }))
 
   const activityNodes: ActivityNode[] = await Promise.all(
-    activities.map(async ({ id, data }) => ({
+    activities.sort(byOrder).map(async ({ id, data }) => ({
       ...trustedText(`activities:${id}`, data.markdown),
       children: data.children?.map((child, i) =>
         trustedText(`activities:${id}:child:${i}`, child)
@@ -72,7 +73,7 @@ export async function getResumeSource(): Promise<ResumeSource> {
             name: talk.data.title,
             publisher: talk.data.location,
             releaseDate: toIsoDate(talk.data.date),
-            url: new URL(`/talks/${talk.slug}/`, config.url).toString(),
+            url: new URL(`/talks/${talk.id}/`, config.url).toString(),
             summary: talk.data.description,
           }
         })

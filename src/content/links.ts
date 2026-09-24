@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content'
+import { defineCollection } from 'astro:content'
+import { z } from 'astro/zod'
 import type { Loader } from 'astro/loaders'
 import { notionLoader } from '@astro-notion/loader'
 import {

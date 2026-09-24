@@ -197,7 +197,8 @@ async function pipe(
   stream: CompressionStream | DecompressionStream
 ): Promise<Uint8Array> {
   const body = (
-    new Response(bytes).body as ReadableStream<Uint8Array>
+    new Response(bytes as Uint8Array<ArrayBuffer>)
+      .body as ReadableStream<Uint8Array>
   ).pipeThrough(stream as unknown as TransformStream<Uint8Array, Uint8Array>)
   return new Uint8Array(await new Response(body).arrayBuffer())
 }

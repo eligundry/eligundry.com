@@ -31,7 +31,7 @@ export const GET: APIRoute = async ({ request }) => {
 
   const { collage } = await lastfm.getCollage(config.lastFmUsername, period)
 
-  return new Response(collage, {
+  return new Response(new Uint8Array(collage), {
     headers: {
       'content-type': 'image/jpeg',
     },

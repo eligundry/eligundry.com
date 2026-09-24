@@ -4,12 +4,10 @@ import { toZonedTime } from 'date-fns-tz'
 import daylio from '../lib/daylio'
 import { insertPrettyFeed } from '../lib/utils'
 import config from '../config'
-import { getCollection } from 'astro:content'
+import { getFeelings } from '../lib/collections'
 
 export const GET: APIRoute = async () => {
-  const entries = await getCollection('feelings').then((c) =>
-    c.map((e) => e.data)
-  )
+  const entries = await getFeelings().then((c) => c.map((e) => e.data))
   const author = {
     name: 'Eli Gundry',
     email: 'eligundry@gmail.com',

@@ -1,6 +1,6 @@
 import path from 'node:path'
 import type { AstroInstance } from 'astro'
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import * as dateFns from 'date-fns'
 import { simpleGit } from 'simple-git'
 import daylio from './daylio'
@@ -54,8 +54,8 @@ export async function getAllLastModifieds(): Promise<Record<string, Date>> {
 
   await Promise.all(
     posts.map(async (post) => {
-      const path = `/${post.collection}/${post.slug}/`
-      const { remarkPluginFrontmatter } = await post.render()
+      const path = `/${post.collection}/${post.id}/`
+      const { remarkPluginFrontmatter } = await render(post)
       // @ts-ignore
       lastModifieds[path] = new Date(remarkPluginFrontmatter.modified)
       latestBlogDate = dateFns.max([latestBlogDate, post.data.date])
@@ -64,8 +64,8 @@ export async function getAllLastModifieds(): Promise<Record<string, Date>> {
 
   await Promise.all(
     talks.map(async (talk) => {
-      const path = `/${talk.collection}/${talk.slug}/`
-      const { remarkPluginFrontmatter } = await talk.render()
+      const path = `/${talk.collection}/${talk.id}/`
+      const { remarkPluginFrontmatter } = await render(talk)
       // @ts-ignore
       lastModifieds[path] = new Date(remarkPluginFrontmatter.modified)
       latestTalkDate = dateFns.max([latestTalkDate, talk.data.date])

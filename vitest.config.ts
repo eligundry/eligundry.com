@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 import { configDefaults } from 'vitest/config'
 import { getViteConfig } from 'astro/config'
 
@@ -11,7 +11,7 @@ export default getViteConfig({
     exclude: [...configDefaults.exclude, 'tests/**'],
     // Bundle React-based dependencies so Astro's react -> preact/compat alias
     // applies to them, like it does in the browser.
-    server: { deps: { inline: ['usewebmcp'] } },
+    server: { deps: { inline: ['usewebmcp', 'react-icons'] } },
     env: {
       // Modules that import the database client need a URL to load; tests
       // never connect to it.
