@@ -30,7 +30,7 @@ export interface TextNode {
 
 /** One title held at an organization. */
 export interface ExperienceRole {
-  position: string
+  title: string
   startDate: string
   endDate?: string
 }
@@ -49,7 +49,7 @@ export interface ExperienceNode {
   printHide?: boolean
   hidden?: boolean
   /**
-   * Every title held there, newest first, when there was a promotion.
+   * Every title held there, newest first, when there was more than one.
    * `position` is the current one and `startDate` the first one's.
    */
   roles?: ExperienceRole[]
@@ -222,23 +222,18 @@ export function parseExperienceBody(
 }
 
 /**
- * The roles held at an organization, newest first, given the first title and
- * any promotions. Each role ends when the next begins.
+ * The titles held at an organization, newest first. A title without an end
+ * date that isn't the newest ends when the next one begins.
  */
-export function buildRoles(
-  first: ExperienceRole,
-  promotions: { position: string; date: string }[]
-): ExperienceRole[] {
-  const starts = [
-    { position: first.position, startDate: first.startDate },
-    ...promotions.map((p) => ({ position: p.position, startDate: p.date })),
-  ].sort((a, b) => a.startDate.localeCompare(b.startDate))
-  return starts
-    .map((role, i) => ({
-      ...role,
-      endDate: starts[i + 1]?.startDate ?? first.endDate,
-    }))
-    .reverse()
+export function normalizeRoles(roles: ExperienceRole[]): ExperienceRole[] {
+  const sorted = [...roles].sort((a, b) =>
+    b.startDate.localeCompare(a.startDate)
+  )
+  return sorted.map((role, i) => {
+    const endDate =
+      role.endDate ?? (i > 0 ? sorted[i - 1].startDate : undefined)
+    return endDate ? { ...role, endDate } : { ...role }
+  })
 }
 
 /** Re-renders build-time text so links to technologies carry microdata. */
@@ -448,11 +443,13 @@ export function toSuperset(
       'x-hidden': job.hidden || sectionHidden('work') || undefined,
       'x-printHide': job.printHide || undefined,
     }
-    const [current, ...earlier] = job.roles ?? [job]
+    const [current, ...earlier] = job.roles ?? [
+      { title: job.position, startDate: job.startDate, endDate: job.endDate },
+    ]
     return [
       compact({
         ...shared,
-        position: current.position,
+        position: current.title,
         startDate: current.startDate,
         endDate: current.endDate,
         summary: plainText(job.summary),
@@ -464,7 +461,7 @@ export function toSuperset(
       ...earlier.map((role) =>
         compact({
           ...shared,
-          position: role.position,
+          position: role.title,
           startDate: role.startDate,
           endDate: role.endDate,
           'x-earlierRole': true,

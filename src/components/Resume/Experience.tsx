@@ -17,7 +17,13 @@ function Time({ date, itemProp }: { date: Date; itemProp: string }) {
   )
 }
 
-function Tenure({ role, endDate }: { role: ExperienceRole; endDate?: Date }) {
+function Tenure({
+  role,
+  endDate,
+}: {
+  role: Pick<ExperienceRole, 'startDate'>
+  endDate?: Date
+}) {
   return (
     <>
       <Time date={dateFns.parseISO(role.startDate)} itemProp="startDate" />{' '}
@@ -50,7 +56,7 @@ function Roles({ roles }: { roles: ExperienceRole[] }) {
           class="flex flex-wrap justify-between"
         >
           <h4 itemProp="roleName" class="w-full sm:w-1/2 print:w-1/2 m-0">
-            {role.position}
+            {role.title}
           </h4>
           <span class="w-full sm:w-1/2 print:w-1/2 m-0 sm:text-right print:text-right text-xs font-mono self-center">
             {calendar('sm:hidden')}{' '}

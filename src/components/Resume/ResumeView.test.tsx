@@ -177,12 +177,12 @@ describe('promotions', () => {
     Object.assign(source.sections[0].items[0], {
       roles: [
         {
-          position: 'Staff Software Engineer',
+          title: 'Staff Software Engineer',
           startDate: '2023-01-01',
           endDate: '2023-11-27',
         },
         {
-          position: 'Senior Software Engineer',
+          title: 'Senior Software Engineer',
           startDate: '2022-02-07',
           endDate: '2023-01-01',
         },

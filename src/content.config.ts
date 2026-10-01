@@ -26,27 +26,46 @@ const talksSchema = commonFrontmatterSchema.extend({
   location: z.string(),
 })
 
-const resumeExperiencesSchema = z.object({
-  type: z.enum(['work', 'education']),
-  position: z.string(),
-  organization: z.string(),
-  website: z.url(),
-  location: z.object({
-    city: z.string(),
-    region: z.string(),
-    country: z.string(),
-  }),
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date().optional(),
-  // Later titles at the same place; `position` and `startDate` are the first.
-  promotions: z
-    .array(z.object({ position: z.string(), date: z.coerce.date() }))
-    .optional(),
-  printHide: z.boolean().optional(),
-  // JSON Resume education fields (https://jsonresume.org/schema)
-  area: z.string().optional(),
-  studyType: z.string().optional(),
-})
+const resumeExperiencesSchema = z
+  .object({
+    type: z.enum(['work', 'education']),
+    // A title, or every title held there with its dates (e.g. promotions).
+    position: z.union([
+      z.string(),
+      z
+        .array(
+          z.object({
+            title: z.string(),
+            startDate: z.coerce.date(),
+            endDate: z.coerce.date().optional(),
+          })
+        )
+        .min(1),
+    ]),
+    organization: z.string(),
+    website: z.url(),
+    location: z.object({
+      city: z.string(),
+      region: z.string(),
+      country: z.string(),
+    }),
+    // Required with a single title; taken from the titles' dates otherwise.
+    startDate: z.coerce.date().optional(),
+    endDate: z.coerce.date().optional(),
+    printHide: z.boolean().optional(),
+    // JSON Resume education fields (https://jsonresume.org/schema)
+    area: z.string().optional(),
+    studyType: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (typeof data.position === 'string' && !data.startDate) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['startDate'],
+        message: 'startDate is required when position is a single title',
+      })
+    }
+  })
 
 const resumeBasicsSchema = z.object({
   name: z.string(),

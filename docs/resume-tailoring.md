@@ -7,12 +7,12 @@ published as [JSON Resume](https://jsonresume.org/schema) at `/resume.json`.
 
 ## Content
 
-| Source                                | Becomes                                                                                                             |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `src/content/resumeBasics.yaml`       | `basics` (name, label, tagline, contact info), also used by the print footer                                        |
-| `src/content/resumeExperiences/*.mdx` | `work` / `education`; each top-level list item is a highlight, paragraphs a summary. `promotions` adds later titles |
-| `src/content/resumeSkills.yaml`       | `skills`; rendered as "`lead` A, B, and C."                                                                         |
-| `src/content/resumeActivities.yaml`   | "Activities & Interests" bullets; `records` map to `projects`, `volunteer`, `awards`, `publications`                |
+| Source                                | Becomes                                                                                                                 |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `src/content/resumeBasics.yaml`       | `basics` (name, label, tagline, contact info), also used by the print footer                                            |
+| `src/content/resumeExperiences/*.mdx` | `work` / `education`; each top-level list item is a highlight, paragraphs a summary. `position` can list several titles |
+| `src/content/resumeSkills.yaml`       | `skills`; rendered as "`lead` A, B, and C."                                                                             |
+| `src/content/resumeActivities.yaml`   | "Activities & Interests" bullets; `records` map to `projects`, `volunteer`, `awards`, `publications`                    |
 
 `getResumeSource()` (`src/lib/resume/build.ts`) turns the collections into a
 `ResumeSource` (`src/lib/resume/model.ts`) with a stable id on everything
@@ -26,21 +26,23 @@ build-time content may contain inline HTML; tailored text is escaped.
 
 ### Promotions
 
-An experience's frontmatter `position` and `startDate` are the first title held
-there; later ones go in `promotions`:
+An experience's `position` is a title, or a list of every title held there
+with its dates. With a list, the top-level `startDate`/`endDate` are left out:
 
 ```yaml
-position: Product Engineer
-startDate: 2025-03-31T05:00
-promotions:
-  - position: Senior Product Engineer
-    date: 2026-03-01T05:00
+position:
+  - title: Senior Product Engineer
+    startDate: 2026-03-01T05:00
+  - title: Product Engineer
+    startDate: 2025-03-31T05:00
+    endDate: 2026-03-01T05:00
 ```
 
-`buildRoles()` turns these into `roles` (newest first, each ending when the
-next starts) and `position` becomes the current title. The page lists every
+`normalizeRoles()` sorts them newest first; a title without an end date ends
+when the next one begins. The experience's `position` is the newest title and
+its dates run from the oldest start to the newest end. The page lists every
 title with its own dates under the organization. JSON Resume has no roles, so
-each title is its own `work` entry with the same `x-id`. The current one carries
+each title is its own `work` entry with the same `x-id`; the current one carries
 the summary and highlights. Titles are facts, so tailoring can't rewrite them.
 
 ### Technologies

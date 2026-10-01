@@ -3,8 +3,8 @@ import config from '../../config'
 import { byOrder } from '../collections'
 import { collectTechnologies } from './technologies'
 import {
-  buildRoles,
   markTechnologies,
+  normalizeRoles,
   parseExperienceBody,
   toIsoDate,
   trustedText,
@@ -25,24 +25,29 @@ export async function getResumeSource(): Promise<ResumeSource> {
   ])
 
   const experienceNodes: ExperienceNode[] = experiences
-    .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
-    .map(({ id, data, body }) => {
-      const startDate = toIsoDate(data.startDate)
-      const endDate = data.endDate ? toIsoDate(data.endDate) : undefined
-      const roles = data.promotions?.length
-        ? buildRoles(
-            { position: data.position, startDate, endDate },
-            data.promotions.map((p) => ({
-              position: p.position,
-              date: toIsoDate(p.date),
-            }))
-          )
-        : undefined
+    .map(({ id, data, body }): ExperienceNode => {
+      const roles =
+        typeof data.position === 'string'
+          ? undefined
+          : normalizeRoles(
+              data.position.map((role) => ({
+                title: role.title,
+                startDate: toIsoDate(role.startDate),
+                endDate: role.endDate ? toIsoDate(role.endDate) : undefined,
+              }))
+            )
+      const newest = roles?.[0]
+      const oldest = roles?.[roles.length - 1]
+      // The schema requires startDate when position is a single title.
+      const startDate = oldest?.startDate ?? toIsoDate(data.startDate!)
+      const endDate = newest
+        ? newest.endDate
+        : data.endDate && toIsoDate(data.endDate)
       return {
         id,
         type: data.type,
         organization: data.organization,
-        position: roles?.[0].position ?? data.position,
+        position: newest?.title ?? (data.position as string),
         url: data.website,
         location: {
           city: data.location.city,
@@ -54,10 +59,11 @@ export async function getResumeSource(): Promise<ResumeSource> {
         area: data.area,
         studyType: data.studyType,
         printHide: data.printHide,
-        roles,
+        roles: roles && roles.length > 1 ? roles : undefined,
         ...parseExperienceBody(id, body ?? ''),
       }
     })
+    .sort((a, b) => b.startDate.localeCompare(a.startDate))
 
   const skillNodes: SkillNode[] = skills.sort(byOrder).map(({ id, data }) => ({
     id: `skills:${id}`,

@@ -5,9 +5,9 @@ import { describe, expect, test } from 'vitest'
 import { validate } from '@jsonresume/schema'
 import { fixtureSource } from './__fixtures__/source'
 import {
-  buildRoles,
   editableMarkdown,
   markTechnologies,
+  normalizeRoles,
   parseExperienceBody,
   toJsonResume,
   toSuperset,
@@ -93,33 +93,43 @@ describe('parseExperienceBody', () => {
 })
 
 describe('promotions', () => {
-  test('builds roles newest first, each ending when the next begins', () => {
+  test('sorts roles newest first, ending each when the next begins', () => {
     expect(
-      buildRoles({ position: 'Product Engineer', startDate: '2025-03-31' }, [
-        { position: 'Senior Product Engineer', date: '2026-03-01' },
+      normalizeRoles([
+        { title: 'Product Engineer', startDate: '2025-03-31' },
+        { title: 'Senior Product Engineer', startDate: '2026-03-01' },
       ])
     ).toEqual([
-      { position: 'Senior Product Engineer', startDate: '2026-03-01' },
+      { title: 'Senior Product Engineer', startDate: '2026-03-01' },
       {
-        position: 'Product Engineer',
+        title: 'Product Engineer',
         startDate: '2025-03-31',
         endDate: '2026-03-01',
       },
     ])
   })
 
+  test('keeps explicit end dates', () => {
+    expect(
+      normalizeRoles([
+        { title: 'B', startDate: '2024-01-01', endDate: '2024-06-01' },
+        { title: 'A', startDate: '2020-01-01', endDate: '2021-01-01' },
+      ]).map((role) => role.endDate)
+    ).toEqual(['2024-06-01', '2021-01-01'])
+  })
+
   test('a promotion is its own JSON Resume work entry', () => {
     const source = fixtureSource()
     const chord = source.sections[0].items[0] as ExperienceNode
     chord.position = 'Staff Software Engineer'
-    chord.roles = buildRoles(
+    chord.roles = normalizeRoles([
       {
-        position: 'Senior Software Engineer',
-        startDate: '2022-02-07',
+        title: 'Staff Software Engineer',
+        startDate: '2023-01-01',
         endDate: '2023-11-27',
       },
-      [{ position: 'Staff Software Engineer', date: '2023-01-01' }]
-    )
+      { title: 'Senior Software Engineer', startDate: '2022-02-07' },
+    ])
     const resume = toJsonResume(toSuperset(source))
     expect(validateResume(resume)).toBeNull()
     expect(resume.work?.slice(0, 2)).toEqual([
