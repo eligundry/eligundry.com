@@ -12,6 +12,7 @@ import {
   emptyState,
   newItemId,
   removeManualBullet,
+  reorderManually,
   revertChange,
   tailor,
   TailorError,
@@ -359,5 +360,46 @@ describe('adding and removing bullets by hand', () => {
       'Wrote <abbr title="docs">docs</abbr> &amp; more.',
     ])
     expect(bullets(revertChange(state, state.changes[0].id))).toHaveLength(2)
+  })
+})
+
+describe('reorderManually', () => {
+  const order = (state: TailorState) =>
+    node<ExperienceNode>(tailor(base, state), 'chord').highlights.map(
+      (h) => h.id
+    )
+
+  test('records a hand reorder, replacing the last one in the same job', () => {
+    let { state } = reorderManually(base, emptyState(), 'chord', [
+      'chord:1',
+      'chord:0',
+    ])
+    ;({ state } = reorderManually(base, state, 'chord', ['chord:0', 'chord:1']))
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        id: 'c1',
+        op: {
+          type: 'reorder',
+          container: 'chord',
+          ids: ['chord:0', 'chord:1'],
+        },
+        reason: 'Reordered by hand',
+        manual: true,
+      }),
+    ])
+  })
+
+  test('dropping a reordered bullet added by hand keeps the rest of the order', () => {
+    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    ;({ state } = addManualEdit(base, state, id, 'New.'))
+    ;({ state } = reorderManually(base, state, 'chord', [
+      id,
+      'chord:1',
+      'chord:0',
+    ]))
+    ;({ state } = removeManualBullet(base, state, id))
+
+    expect(tailor(base, state).log.filter((c) => c.error)).toEqual([])
+    expect(order(state)).toEqual(['chord:1', 'chord:0'])
   })
 })

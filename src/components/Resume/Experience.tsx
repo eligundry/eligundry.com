@@ -5,7 +5,9 @@ import type {
   TextNode,
 } from '../../lib/resume/model'
 import { useContext } from 'preact/hooks'
+import type { JSX } from 'preact'
 import { cx, Rich, ResumeViewContext, useItemProps } from './ResumeView'
+import { useBulletDrag } from './useBulletDrag'
 
 function Time({ date, itemProp }: { date: Date; itemProp: string }) {
   return (
@@ -91,6 +93,12 @@ export default function Experience({
     )
   )
   const { edit } = useContext(ResumeViewContext)
+  const shown = experience.highlights.filter((h) => !h.hidden).map((h) => h.id)
+  const drag = useBulletDrag(
+    experience.highlights.map((h) => h.id),
+    shown,
+    edit && ((ids) => edit.moveBullets(id, ids))
+  )
   if (!visible) return null
 
   const endDate = experience.endDate && dateFns.parseISO(experience.endDate)
@@ -172,7 +180,16 @@ export default function Experience({
       {experience.highlights.length > 0 && (
         <ul class="order-5 w-full my-0">
           {experience.highlights.map((highlight) => (
-            <Bullet key={highlight.id} bullet={highlight} />
+            <Bullet
+              key={highlight.id}
+              bullet={highlight}
+              handle={drag.handleProps(highlight.id)}
+              dragging={drag.dragging === highlight.id}
+              dropBefore={drag.drop === highlight.id}
+              dropAfter={
+                drag.drop === 'end' && highlight.id === shown[shown.length - 1]
+              }
+            />
           ))}
         </ul>
       )}
@@ -189,14 +206,42 @@ export default function Experience({
   )
 }
 
-function Bullet({ bullet }: { bullet: TextNode }) {
+function Bullet({
+  bullet,
+  handle,
+  dragging,
+  dropBefore,
+  dropAfter,
+}: {
+  bullet: TextNode
+  /** Props for the marker that drags the bullet, in edit mode. */
+  handle: JSX.HTMLAttributes<HTMLButtonElement>
+  dragging: boolean
+  dropBefore: boolean
+  dropAfter: boolean
+}) {
   const { visible, props } = useItemProps(bullet)
   const { edit } = useContext(ResumeViewContext)
   if (!visible) return null
   if (!edit || bullet.hidden) return <Rich as="li" {...props} node={bullet} />
 
+  // The list marker becomes a handle: CSS markers can't be dragged, so it's
+  // drawn by a button in the same place.
   return (
-    <li {...props}>
+    <li
+      {...props}
+      class={cx(props.class, 'tailor-bullet')}
+      data-dragging={dragging || undefined}
+      data-drop-before={dropBefore || undefined}
+      data-drop-after={dropAfter || undefined}
+    >
+      <button
+        type="button"
+        class="tailor-handle print:hidden"
+        aria-label="Move bullet"
+        title="Drag to reorder (or use the arrow keys)"
+        {...handle}
+      />
       <Rich node={bullet} />
       <button
         type="button"

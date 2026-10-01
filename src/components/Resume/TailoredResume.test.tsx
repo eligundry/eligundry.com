@@ -311,6 +311,37 @@ describe('TailoredResume', () => {
     )
   })
 
+  test('reorders bullets with their handles', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const order = () =>
+      [...document.querySelectorAll('[data-resume-id^="chord:"]')].map((li) =>
+        li.getAttribute('data-resume-id')
+      )
+    const handle = (id: string) =>
+      document.querySelector<HTMLElement>(
+        `[data-resume-id="${id}"] .tailor-handle`
+      )!
+    await waitFor(() => expect(handle('chord:0')).toBeTruthy())
+
+    fireEvent.keyDown(handle('chord:0'), { key: 'ArrowDown' })
+    await waitFor(() => expect(order()).toEqual(['chord:1', 'chord:0']))
+    fireEvent.click(screen.getByText(/1 change/))
+    expect(screen.getByText('Reordered by hand')).toBeTruthy()
+
+    // Moving again updates the same change.
+    fireEvent.keyDown(handle('chord:1'), { key: 'ArrowDown' })
+    await waitFor(() => expect(order()).toEqual(['chord:0', 'chord:1']))
+    expect(screen.getByText(/1 change/)).toBeTruthy()
+
+    // Nowhere to go: nothing changes.
+    fireEvent.keyDown(handle('chord:0'), { key: 'ArrowUp' })
+    expect(order()).toEqual(['chord:0', 'chord:1'])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Revert' }))
+    await waitFor(() => expect(screen.getByText('0 changes')).toBeTruthy())
+    expect(order()).toEqual(['chord:0', 'chord:1'])
+  })
+
   test('returns invalid changes as tool errors', async () => {
     await renderTailored()
     await expect(

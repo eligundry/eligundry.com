@@ -21,6 +21,7 @@ import {
   addManualEdit,
   emptyState,
   removeManualBullet,
+  reorderManually,
   revertChange,
   tailor,
   type ChangeRecord,
@@ -156,6 +157,11 @@ export function useTailoring(
       )
       update(next)
       return id
+    },
+
+    /** Puts a job's bullets in a new order by hand. */
+    moveBullets(parentId: string, ids: string[]) {
+      update(reorderManually(base, stateRef.current, parentId, ids).state)
     },
 
     /** Removes a bullet by hand: hides it, or drops it if added by hand. */

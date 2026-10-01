@@ -52,6 +52,8 @@ export default function TailoredResume({
             addBullet: (parentId: string) =>
               setFocusId(tailoring.addBullet(parentId)),
             removeBullet: (id: string) => tailoring.removeBullet(id),
+            moveBullets: (parentId: string, ids: string[]) =>
+              tailoring.moveBullets(parentId, ids),
             focusId,
             clearFocus: () => setFocusId(undefined),
           }

@@ -114,6 +114,14 @@ it empty drops it. A bullet's "×", or saving it empty, removes it
 one from the content is hidden by a manual `setVisibility`, which "Revert"
 undoes.
 
+In edit mode a bullet's list marker is a drag handle (`useBulletDrag.ts`).
+CSS markers can't take pointer events, so the native marker is swapped for a
+button drawn in the same place. Drag it with a mouse, touch or pen (pointer
+events), or focus it and press ArrowUp/ArrowDown. A move is a manual `reorder`
+of the job (`reorderManually()`); moving bullets in the same job again updates
+that change. Dropping a bullet added by hand also removes it from later
+reorders.
+
 preact/compat listens for `focusin`/`focusout` rather than `focus`/`blur`, so
 the tests dispatch those.
 

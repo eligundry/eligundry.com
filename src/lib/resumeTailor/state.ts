@@ -430,13 +430,24 @@ const manualAddition = (state: TailorState, id: string) =>
     (c) => c.manual && c.op.type === 'addItem' && c.op.id === id
   )
 
-/** Drops a bullet added by hand, with every change that targets it. */
+/**
+ * Drops a bullet added by hand, with every change that targets it. Reorders
+ * that listed it keep the rest of their order.
+ */
 function dropAddition(state: TailorState, id: string): TailorState {
   const targets = (op: Op) =>
     (op.type === 'addItem' && op.id === id) ||
     (op.type === 'rewrite' && op.id === id) ||
     (op.type === 'setVisibility' && op.ids.includes(id))
-  return { ...state, changes: state.changes.filter((c) => !targets(c.op)) }
+  const changes = state.changes
+    .filter((c) => !targets(c.op))
+    .map((c) =>
+      c.op.type === 'reorder' && c.op.ids.includes(id)
+        ? { ...c, op: { ...c.op, ids: c.op.ids.filter((i) => i !== id) } }
+        : c
+    )
+    .filter((c) => c.op.type !== 'reorder' || c.op.ids.length > 0)
+  return { ...state, changes }
 }
 
 /** Replays `state` to check it, throwing a `TailorError` if a change fails. */
@@ -525,6 +536,40 @@ export function removeManualBullet(
     'Removed by hand'
   )
   return { state: markLastManual(next) }
+}
+
+/**
+ * Reorders a job's bullets by hand. Moving bullets in the same job again
+ * replaces the previous hand reorder instead of adding another change.
+ */
+export function reorderManually(
+  base: ResumeSource,
+  state: TailorState,
+  container: string,
+  ids: string[]
+): { state: TailorState } {
+  const last = state.changes[state.changes.length - 1]
+  const replacing =
+    last?.manual &&
+    last.op.type === 'reorder' &&
+    last.op.container === container
+  const previous = replacing
+    ? { ...state, changes: state.changes.slice(0, -1) }
+    : state
+  const { state: next, change } = addChange(
+    base,
+    previous,
+    { type: 'reorder', container, ids },
+    'Reordered by hand'
+  )
+  const stored: Change = {
+    id: replacing ? last.id : change.id,
+    op: change.op,
+    reason: change.reason,
+    at: change.at,
+    manual: true,
+  }
+  return { state: { ...next, changes: [...next.changes.slice(0, -1), stored] } }
 }
 
 function markLastManual(state: TailorState): TailorState {

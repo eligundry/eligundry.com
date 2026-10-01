@@ -195,6 +195,55 @@
     outline-offset: 2px;
     cursor: text;
   }
+  /* Edit mode: a bullet's marker is a handle for dragging it up and down. */
+  .tailor-bullet {
+    position: relative;
+    list-style: none;
+  }
+  .tailor-handle {
+    position: absolute;
+    top: 0;
+    left: -1.25em;
+    width: 1.25em;
+    height: 1lh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    touch-action: none;
+  }
+  .tailor-handle::before {
+    content: '';
+    width: 0.375em;
+    height: 0.375em;
+    border-radius: 50%;
+    background: var(--tw-prose-bullets, currentColor);
+    transition: transform 0.1s;
+  }
+  .tailor-handle:hover::before,
+  .tailor-handle:focus-visible::before {
+    transform: scale(1.6);
+    background: var(--color-accent);
+  }
+  .tailor-bullet[data-dragging] {
+    opacity: 0.4;
+  }
+  .tailor-bullet[data-dragging] .tailor-handle {
+    cursor: grabbing;
+  }
+  .tailor-bullet[data-drop-before]::before,
+  .tailor-bullet[data-drop-after]::after {
+    content: '';
+    position: absolute;
+    inset-inline: -1.25em 0;
+    border-top: 2px solid var(--color-accent);
+  }
+  .tailor-bullet[data-drop-before]::before {
+    top: -0.3em;
+  }
+  .tailor-bullet[data-drop-after]::after {
+    bottom: -0.3em;
+  }
   /* Edit mode: remove a bullet, add one to a job. */
   .tailor-remove {
     margin-inline-start: 0.4em;

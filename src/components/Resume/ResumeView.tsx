@@ -35,6 +35,8 @@ export interface ResumeViewOptions {
     save: (id: string, markdown: string) => void
     addBullet: (parentId: string) => void
     removeBullet: (id: string) => void
+    /** Puts a job's bullets (`parentId`) in the order of `ids`. */
+    moveBullets: (parentId: string, ids: string[]) => void
     /** Text to start editing as soon as it's rendered, e.g. a new bullet. */
     focusId?: string
     clearFocus: () => void
