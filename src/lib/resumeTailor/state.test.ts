@@ -7,8 +7,12 @@ import {
 } from '../resume/model'
 import {
   addChange,
+  addManualBullet,
+  addManualEdit,
   emptyState,
   newItemId,
+  removeManualBullet,
+  reorderManually,
   revertChange,
   tailor,
   TailorError,
@@ -272,5 +276,130 @@ describe('tailor', () => {
     }
     state = revertChange(state, 'c1')
     expect(newItemId('chord', state)).toBe('chord:+3')
+  })
+})
+
+describe('addManualEdit', () => {
+  test('records hand edits, replacing one made just before in the same place', () => {
+    let { state } = addManualEdit(base, emptyState(), 'chord:0', 'One')
+    ;({ state } = addManualEdit(base, state, 'chord:0', 'Two'))
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        id: 'c1',
+        op: { type: 'rewrite', id: 'chord:0', markdown: 'Two' },
+        reason: 'Edited by hand',
+        manual: true,
+      }),
+    ])
+    ;({ state } = addManualEdit(base, state, 'chord:1', 'Three'))
+    ;({ state } = addManualEdit(base, state, 'chord:0', 'Four'))
+    expect(tailor(base, state).log.at(-1)).toMatchObject({
+      id: 'c3',
+      before: 'Two',
+      after: 'Four',
+      manual: true,
+    })
+  })
+
+  test("doesn't replace an agent's change", () => {
+    const { state } = apply([{ type: 'rewrite', id: 'chord:0', markdown: 'A' }])
+    const next = addManualEdit(base, state, 'chord:0', 'B').state
+    expect(next.changes.map((c) => c.manual)).toEqual([undefined, true])
+  })
+
+  test('throws without recording anything for text that can not be edited', () => {
+    expect(() => addManualEdit(base, emptyState(), 'chord', 'CTO')).toThrow(
+      TailorError
+    )
+  })
+})
+
+describe('adding and removing bullets by hand', () => {
+  const bullets = (state: TailorState) =>
+    node<ExperienceNode>(tailor(base, state), 'chord')
+      .highlights.filter((h) => !h.hidden)
+      .map((h) => h.markdown)
+
+  test('adds a bullet, and editing it updates the change that added it', () => {
+    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    expect(id).toBe('chord:+1')
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        op: { type: 'addItem', parentId: 'chord', id, markdown: '' },
+        reason: 'Added by hand',
+        manual: true,
+      }),
+    ])
+    ;({ state } = addManualEdit(base, state, id, 'Shipped it.'))
+    ;({ state } = addManualEdit(base, state, id, 'Shipped it fast.'))
+    expect(state.changes).toHaveLength(1)
+    expect(bullets(state).at(-1)).toBe('Shipped it fast.')
+  })
+
+  test('a bullet added by hand and left empty is dropped', () => {
+    const { state, id } = addManualBullet(base, emptyState(), 'chord')
+    expect(addManualEdit(base, state, id, '').state.changes).toEqual([])
+  })
+
+  test('removing a bullet added by hand drops it and its changes', () => {
+    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    ;({ state } = addManualEdit(base, state, id, 'Shipped it.'))
+    expect(removeManualBullet(base, state, id).state.changes).toEqual([])
+  })
+
+  test('removing a bullet from the content hides it, which can be reverted', () => {
+    const { state } = removeManualBullet(base, emptyState(), 'chord:0')
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        op: { type: 'setVisibility', ids: ['chord:0'], visible: false },
+        reason: 'Removed by hand',
+        manual: true,
+      }),
+    ])
+    expect(bullets(state)).toEqual([
+      'Wrote <abbr title="docs">docs</abbr> &amp; more.',
+    ])
+    expect(bullets(revertChange(state, state.changes[0].id))).toHaveLength(2)
+  })
+})
+
+describe('reorderManually', () => {
+  const order = (state: TailorState) =>
+    node<ExperienceNode>(tailor(base, state), 'chord').highlights.map(
+      (h) => h.id
+    )
+
+  test('records a hand reorder, replacing the last one in the same job', () => {
+    let { state } = reorderManually(base, emptyState(), 'chord', [
+      'chord:1',
+      'chord:0',
+    ])
+    ;({ state } = reorderManually(base, state, 'chord', ['chord:0', 'chord:1']))
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        id: 'c1',
+        op: {
+          type: 'reorder',
+          container: 'chord',
+          ids: ['chord:0', 'chord:1'],
+        },
+        reason: 'Reordered by hand',
+        manual: true,
+      }),
+    ])
+  })
+
+  test('dropping a reordered bullet added by hand keeps the rest of the order', () => {
+    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    ;({ state } = addManualEdit(base, state, id, 'New.'))
+    ;({ state } = reorderManually(base, state, 'chord', [
+      id,
+      'chord:1',
+      'chord:0',
+    ]))
+    ;({ state } = removeManualBullet(base, state, id))
+
+    expect(tailor(base, state).log.filter((c) => c.error)).toEqual([])
+    expect(order(state)).toEqual(['chord:1', 'chord:0'])
   })
 })

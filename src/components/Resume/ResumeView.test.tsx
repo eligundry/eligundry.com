@@ -170,3 +170,37 @@ describe('ResumeView', () => {
     ).toBe(true)
   })
 })
+
+describe('promotions', () => {
+  test('shows every title held at a job', () => {
+    const source = fixtureSource()
+    Object.assign(source.sections[0].items[0], {
+      roles: [
+        {
+          title: 'Staff Software Engineer',
+          startDate: '2023-01-01',
+          endDate: '2023-11-27',
+        },
+        {
+          title: 'Senior Software Engineer',
+          startDate: '2022-02-07',
+          endDate: '2023-01-01',
+        },
+      ],
+    })
+    const { container } = render(<ResumeView resume={source} />)
+    const roles = [
+      ...item(container, 'chord')!.querySelectorAll(
+        '[itemtype="https://schema.org/OrganizationRole"]'
+      ),
+    ]
+    expect(roles.map((role) => role.textContent)).toEqual([
+      expect.stringMatching(
+        /^Staff Software Engineer.*January 2023 — November 2023/
+      ),
+      expect.stringMatching(
+        /^Senior Software Engineer.*February 2022 — January 2023/
+      ),
+    ])
+  })
+})

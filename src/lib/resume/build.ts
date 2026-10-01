@@ -1,7 +1,10 @@
 import { getCollection, getEntry } from 'astro:content'
 import config from '../../config'
 import { byOrder } from '../collections'
+import { collectTechnologies } from './technologies'
 import {
+  markTechnologies,
+  normalizeRoles,
   parseExperienceBody,
   toIsoDate,
   trustedText,
@@ -22,25 +25,45 @@ export async function getResumeSource(): Promise<ResumeSource> {
   ])
 
   const experienceNodes: ExperienceNode[] = experiences
-    .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
-    .map(({ id, data, body }) => ({
-      id,
-      type: data.type,
-      organization: data.organization,
-      position: data.position,
-      url: data.website,
-      location: {
-        city: data.location.city,
-        region: data.location.region,
-        countryCode: data.location.country,
-      },
-      startDate: toIsoDate(data.startDate),
-      endDate: data.endDate ? toIsoDate(data.endDate) : undefined,
-      area: data.area,
-      studyType: data.studyType,
-      printHide: data.printHide,
-      ...parseExperienceBody(id, body ?? ''),
-    }))
+    .map(({ id, data, body }): ExperienceNode => {
+      const roles =
+        typeof data.position === 'string'
+          ? undefined
+          : normalizeRoles(
+              data.position.map((role) => ({
+                title: role.title,
+                startDate: toIsoDate(role.startDate),
+                endDate: role.endDate ? toIsoDate(role.endDate) : undefined,
+              }))
+            )
+      const newest = roles?.[0]
+      const oldest = roles?.[roles.length - 1]
+      // The schema requires startDate when position is a single title.
+      const startDate = oldest?.startDate ?? toIsoDate(data.startDate!)
+      const endDate = newest
+        ? newest.endDate
+        : data.endDate && toIsoDate(data.endDate)
+      return {
+        id,
+        type: data.type,
+        organization: data.organization,
+        position: newest?.title ?? (data.position as string),
+        url: data.website,
+        location: {
+          city: data.location.city,
+          region: data.location.region,
+          countryCode: data.location.country,
+        },
+        startDate,
+        endDate,
+        area: data.area,
+        studyType: data.studyType,
+        printHide: data.printHide,
+        roles: roles && roles.length > 1 ? roles : undefined,
+        ...parseExperienceBody(id, body ?? ''),
+      }
+    })
+    .sort((a, b) => b.startDate.localeCompare(a.startDate))
 
   const skillNodes: SkillNode[] = skills.sort(byOrder).map(({ id, data }) => ({
     id: `skills:${id}`,
@@ -86,7 +109,7 @@ export async function getResumeSource(): Promise<ResumeSource> {
   }
   const { label, tagline, ...contact } = basics.data
 
-  return {
+  const source: ResumeSource = {
     basics: {
       ...contact,
       label: trustedText('basics:label', label),
@@ -117,4 +140,9 @@ export async function getResumeSource(): Promise<ResumeSource> {
       },
     ],
   }
+
+  return markTechnologies(
+    source,
+    collectTechnologies({ skills: skillNodes, experiences: experienceNodes })
+  )
 }

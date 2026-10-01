@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest'
-import { joinWithAnd, markdownToPlain, renderMarkdown } from './markdown'
+import {
+  inlineHtmlToMarkdown,
+  joinWithAnd,
+  markdownToPlain,
+  renderMarkdown,
+} from './markdown'
 
 describe('markdownToPlain', () => {
   test('strips links, inline HTML, emphasis and entities', () => {
@@ -67,5 +72,15 @@ describe('joinWithAnd', () => {
     expect(joinWithAnd(['a'])).toBe('a')
     expect(joinWithAnd(['a', 'b'])).toBe('a and b')
     expect(joinWithAnd(['a', 'b', 'c'])).toBe('a, b, and c')
+  })
+})
+
+describe('inlineHtmlToMarkdown', () => {
+  test('turns links into markdown links and drops other tags', () => {
+    expect(
+      inlineHtmlToMarkdown(
+        'Used <a href="http://php.net">PHP</a> &\n<a target="_blank" href=\'https://x.dev\'>X</a> for <abbr title="Search Engine Optimization">SEO</abbr>.'
+      )
+    ).toBe('Used [PHP](http://php.net) &\n[X](https://x.dev) for SEO.')
   })
 })

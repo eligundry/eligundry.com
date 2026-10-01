@@ -57,6 +57,8 @@ export interface Change {
   op: Op
   reason: string
   at: string
+  /** Typed on the page by hand rather than made by an agent. */
+  manual?: true
 }
 
 export interface TailorState {
@@ -81,8 +83,11 @@ export const emptyState = (): TailorState => ({ v: 1, changes: [] })
 export class TailorError extends Error {}
 
 /** Tailored text comes from agents or shared links, so it's never trusted. */
-const untrustedHtml = (markdown: string) =>
-  renderMarkdown(markdown, { trusted: false })
+const untrustedHtml = (markdown: string, source: ResumeSource) =>
+  renderMarkdown(markdown, {
+    trusted: false,
+    technologies: source.technologies,
+  })
 
 const isWebUrl = (url: string) => {
   try {
@@ -231,7 +236,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         ref.node.summary = {
           id: op.id,
           markdown,
-          html: untrustedHtml(markdown),
+          html: untrustedHtml(markdown, source),
           added: true,
         }
         return { target: op.id, after: markdown }
@@ -254,7 +259,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         case 'skill': {
           const before = skillMarkdown(ref.node)
           ref.node.markdown = markdown
-          ref.node.html = untrustedHtml(markdown)
+          ref.node.html = untrustedHtml(markdown, source)
           return { target: op.id, before, after: markdown }
         }
         case 'activity':
@@ -264,7 +269,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
           const node = ref.node as TextNode | ActivityNode
           const before = node.markdown
           node.markdown = markdown
-          node.html = untrustedHtml(markdown)
+          node.html = untrustedHtml(markdown, source)
           return { target: op.id, before, after: markdown }
         }
       }
@@ -276,7 +281,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         throw new TailorError(`"${op.id}" already exists`)
       }
       const markdown = op.markdown.trim()
-      const html = untrustedHtml(markdown)
+      const html = untrustedHtml(markdown, source)
       const ref = lookup(op.parentId)
       let list: { id: string }[]
       let item: TextNode | SkillNode | ActivityNode
@@ -417,6 +422,160 @@ export function addChange(
   }
 
   return { state: next, change: record, tailored }
+}
+
+/** The manual `addItem` change that created `id`, if it was added by hand. */
+const manualAddition = (state: TailorState, id: string) =>
+  state.changes.find(
+    (c) => c.manual && c.op.type === 'addItem' && c.op.id === id
+  )
+
+/**
+ * Drops a bullet added by hand, with every change that targets it. Reorders
+ * that listed it keep the rest of their order.
+ */
+function dropAddition(state: TailorState, id: string): TailorState {
+  const targets = (op: Op) =>
+    (op.type === 'addItem' && op.id === id) ||
+    (op.type === 'rewrite' && op.id === id) ||
+    (op.type === 'setVisibility' && op.ids.includes(id))
+  const changes = state.changes
+    .filter((c) => !targets(c.op))
+    .map((c) =>
+      c.op.type === 'reorder' && c.op.ids.includes(id)
+        ? { ...c, op: { ...c.op, ids: c.op.ids.filter((i) => i !== id) } }
+        : c
+    )
+    .filter((c) => c.op.type !== 'reorder' || c.op.ids.length > 0)
+  return { ...state, changes }
+}
+
+/** Replays `state` to check it, throwing a `TailorError` if a change fails. */
+function validated(base: ResumeSource, state: TailorState): TailorState {
+  const failed = tailor(base, state).log.find((record) => record.error)
+  if (failed) throw new TailorError(failed.error)
+  return state
+}
+
+/**
+ * Records a hand edit of some text. Typing in the same place again replaces
+ * the previous hand edit instead of adding another change. Editing a bullet
+ * added by hand updates the change that added it, and saving it empty
+ * removes it.
+ */
+export function addManualEdit(
+  base: ResumeSource,
+  state: TailorState,
+  id: string,
+  markdown: string
+): { state: TailorState } {
+  const addition = manualAddition(state, id)
+  if (addition && addition.op.type === 'addItem') {
+    if (!markdown.trim()) return { state: dropAddition(state, id) }
+    const op = { ...addition.op, markdown }
+    return {
+      state: validated(base, {
+        ...state,
+        changes: state.changes.map((c) => (c === addition ? { ...c, op } : c)),
+      }),
+    }
+  }
+
+  const last = state.changes[state.changes.length - 1]
+  const replacing =
+    last?.manual && last.op.type === 'rewrite' && last.op.id === id
+  const previous = replacing
+    ? { ...state, changes: state.changes.slice(0, -1) }
+    : state
+  const { state: next, change } = addChange(
+    base,
+    previous,
+    { type: 'rewrite', id, markdown },
+    'Edited by hand'
+  )
+  const stored: Change = {
+    id: replacing ? last.id : change.id,
+    op: change.op,
+    reason: change.reason,
+    at: change.at,
+    manual: true,
+  }
+  return { state: { ...next, changes: [...next.changes.slice(0, -1), stored] } }
+}
+
+/** Adds an empty bullet to a job by hand, to be filled in with `addManualEdit`. */
+export function addManualBullet(
+  base: ResumeSource,
+  state: TailorState,
+  parentId: string
+): { state: TailorState; id: string } {
+  const id = newItemId(parentId, state)
+  const { state: next } = addChange(
+    base,
+    state,
+    { type: 'addItem', parentId, id, markdown: '' },
+    'Added by hand'
+  )
+  return { state: markLastManual(next), id }
+}
+
+/**
+ * Removes a bullet by hand. One added by hand is dropped entirely; one from
+ * the resume's content is hidden, which can be reverted.
+ */
+export function removeManualBullet(
+  base: ResumeSource,
+  state: TailorState,
+  id: string
+): { state: TailorState } {
+  if (manualAddition(state, id)) return { state: dropAddition(state, id) }
+  const { state: next } = addChange(
+    base,
+    state,
+    { type: 'setVisibility', ids: [id], visible: false },
+    'Removed by hand'
+  )
+  return { state: markLastManual(next) }
+}
+
+/**
+ * Reorders a job's bullets by hand. Moving bullets in the same job again
+ * replaces the previous hand reorder instead of adding another change.
+ */
+export function reorderManually(
+  base: ResumeSource,
+  state: TailorState,
+  container: string,
+  ids: string[]
+): { state: TailorState } {
+  const last = state.changes[state.changes.length - 1]
+  const replacing =
+    last?.manual &&
+    last.op.type === 'reorder' &&
+    last.op.container === container
+  const previous = replacing
+    ? { ...state, changes: state.changes.slice(0, -1) }
+    : state
+  const { state: next, change } = addChange(
+    base,
+    previous,
+    { type: 'reorder', container, ids },
+    'Reordered by hand'
+  )
+  const stored: Change = {
+    id: replacing ? last.id : change.id,
+    op: change.op,
+    reason: change.reason,
+    at: change.at,
+    manual: true,
+  }
+  return { state: { ...next, changes: [...next.changes.slice(0, -1), stored] } }
+}
+
+function markLastManual(state: TailorState): TailorState {
+  const changes = [...state.changes]
+  changes[changes.length - 1] = { ...changes[changes.length - 1], manual: true }
+  return { ...state, changes }
 }
 
 export function revertChange(

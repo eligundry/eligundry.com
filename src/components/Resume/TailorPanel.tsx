@@ -23,13 +23,13 @@ export default function TailorPanel({
   webmcp: boolean
 }) {
   const [copied, setCopied] = useState(false)
-  const { tailored, state, review, preview, layout } = tailoring
+  const { tailored, state, review, preview, layout, edit } = tailoring
   const { job } = tailored
   const changes = tailored.log.filter(
     (c) => c.op.type !== 'setJob' && c.op.type !== 'highlight'
   )
 
-  if (!state.changes.length) {
+  if (!state.changes.length && !edit) {
     if (!webmcp) return null
     return (
       <aside class="paper print:hidden! text-sm opacity-70">
@@ -58,10 +58,11 @@ export default function TailorPanel({
         <div class="flex flex-wrap items-center justify-between gap-2">
           <p class="m-0">
             <strong>
-              Tailored
               {job?.company || job?.title
-                ? ` for ${[job.title, job.company].filter(Boolean).join(' at ')}`
-                : ''}
+                ? `Tailored for ${[job.title, job.company].filter(Boolean).join(' at ')}`
+                : state.changes.length
+                  ? 'Tailored'
+                  : 'Editing'}
             </strong>
             {job?.url && (
               <>
@@ -99,6 +100,15 @@ export default function TailorPanel({
             <input
               type="checkbox"
               class="toggle toggle-sm"
+              checked={edit}
+              onChange={(e) => tailoring.setEdit(e.currentTarget.checked)}
+            />
+            Edit text
+          </label>
+          <label class="label cursor-pointer gap-2">
+            <input
+              type="checkbox"
+              class="toggle toggle-sm"
               checked={review}
               onChange={(e) => tailoring.setReview(e.currentTarget.checked)}
             />
@@ -114,6 +124,13 @@ export default function TailorPanel({
             Print preview
           </label>
         </div>
+
+        {edit && (
+          <p class="m-0 opacity-70">
+            Click any text to edit it as markdown. Enter saves, Shift+Enter adds
+            a line, Escape cancels. Edits show up below and stay in the link.
+          </p>
+        )}
 
         {preview && layout && (
           <div>
@@ -142,6 +159,11 @@ export default function TailorPanel({
                 <div class="flex justify-between gap-2">
                   <span>
                     <code>{change.op.type}</code> {change.target}
+                    {change.manual && (
+                      <span class="badge badge-xs badge-accent ml-1">
+                        by hand
+                      </span>
+                    )}
                     {change.error && (
                       <span class="text-error"> — {change.error}</span>
                     )}

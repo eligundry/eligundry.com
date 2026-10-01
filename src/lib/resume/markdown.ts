@@ -1,6 +1,7 @@
 import { micromark } from 'micromark'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { toString } from 'mdast-util-to-string'
+import { markTechnologyLinks, type Technology } from './technologies'
 
 /**
  * Renders markdown to HTML. Trusted (build-time) content may contain inline
@@ -8,16 +9,38 @@ import { toString } from 'mdast-util-to-string'
  * HTML escaped and unsafe link protocols (e.g. `javascript:`) removed.
  *
  * A single paragraph is unwrapped so it can sit inside an `<li>` or `<span>`.
+ * Links to known technologies are marked as `knowsAbout` microdata.
  */
 export function renderMarkdown(
   markdown: string,
-  { trusted }: { trusted: boolean }
+  {
+    trusted,
+    technologies = [],
+  }: { trusted: boolean; technologies?: Technology[] }
 ): string {
-  const html = micromark(markdown, { allowDangerousHtml: trusted }).trim()
+  const html = markTechnologyLinks(
+    micromark(markdown, { allowDangerousHtml: trusted }).trim(),
+    technologies
+  )
   const inner = html.slice('<p>'.length, -'</p>'.length)
   const isSingleParagraph =
     html.startsWith('<p>') && html.endsWith('</p>') && !inner.includes('<p>')
   return isSingleParagraph ? inner : html
+}
+
+/**
+ * Rewrites the inline HTML used in the resume's content as markdown, so it can
+ * be edited by hand: links become markdown links and other tags (such as
+ * `<abbr>`) are reduced to their text. Edits are rendered as untrusted
+ * markdown, where inline HTML would be escaped.
+ */
+export function inlineHtmlToMarkdown(markdown: string): string {
+  return markdown
+    .replace(
+      /<a\b[^>]*?\bhref\s*=\s*(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gi,
+      (_, _quote, href: string, text: string) => `[${text}](${href})`
+    )
+    .replace(/<\/?(?:abbr|span|em|strong|b|i)\b[^>]*>/gi, '')
 }
 
 /** The text of some markdown, without formatting, links or inline HTML. */

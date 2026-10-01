@@ -1,6 +1,7 @@
 import type { Tailoring } from './useTailoring'
-import { indexResume } from '../../lib/resume/model'
+import { editableMarkdown, indexResume } from '../../lib/resume/model'
 import { newItemId } from '../../lib/resumeTailor/state'
+import { checkAgentMarkdown, STYLE_GUIDE } from '../../lib/resumeTailor/voice'
 
 // WebMCP tools (https://github.com/webmachinelearning/webmcp) for tailoring
 // the resume to a job posting. An agent reads the posting, calls get_resume,
@@ -28,7 +29,7 @@ const REASON = {
 
 const NO_INPUT = { type: 'object', properties: {} }
 
-const ID_GUIDE = `Ids come from get_resume: sections are "section:work", "section:education", "section:skills" and "section:activities"; jobs and schools use their "x-id" (e.g. "chord"); bullets are "<job>:<n>" (e.g. "chord:0"); a job's paragraph is "<job>:summary"; skill lines are "skills:<id>"; activities are "activities:<id>"; the headline pieces are "basics:label", "basics:tagline" and "basics:summary"; section titles are "<section id>:title".`
+const ID_GUIDE = `Ids come from get_resume: sections are "section:work", "section:education", "section:skills" and "section:activities"; jobs and schools use their "x-id" (e.g. "chord"; a job with a promotion appears once per title, all with the same "x-id"); bullets are "<job>:<n>" (e.g. "chord:0"); a job's paragraph is "<job>:summary"; skill lines are "skills:<id>"; activities are "activities:<id>"; the headline pieces are "basics:label", "basics:tagline" and "basics:summary"; section titles are "<section id>:title".`
 
 /** Applies a change and describes it for the agent. */
 function change(tailoring: Tailoring, op: Input, reason: unknown) {
@@ -43,15 +44,34 @@ function change(tailoring: Tailoring, op: Input, reason: unknown) {
 const effective = (tailoring: Tailoring, id: string) =>
   indexResume(tailoring.current().source).get(id)?.node
 
+const WRITING = `Inline markdown with links only: no bold, italics, code or HTML. Follow the writing guidelines from get_resume: a light touch in Eli's own voice, outcomes over duties, and every technology linked.`
+
+/**
+ * Rejects bold and italics in an agent's text and returns warnings about
+ * anything that doesn't sound like the rest of the resume.
+ */
+function checkWriting(tailoring: Tailoring, markdown: unknown, id?: string) {
+  const { source } = tailoring.current()
+  return checkAgentMarkdown(String(markdown ?? ''), {
+    original: id ? editableMarkdown(source, id) : undefined,
+    technologies: source.technologies,
+  })
+}
+
+/** Leaves `warnings` out of a result when there are none. */
+const withWarnings = <T extends object>(result: T, warnings: string[]) =>
+  warnings.length ? { ...result, warnings } : result
+
 export const resumeTools: ResumeTool[] = [
   {
     name: 'get_resume',
-    description: `Returns Eli Gundry's resume as it's currently tailored, as a JSON Resume (https://jsonresume.org/schema) document with "x-" extensions: "x-id" on every item, "x-highlights"/"x-summary" with the markdown shown on the page, "x-hidden" for hidden content, "x-sections" for section order and titles, and "x-activities" for the Activities & Interests bullets. Also returns the job context and print options. ${ID_GUIDE} Start here before making changes.`,
+    description: `Returns Eli Gundry's resume as it's currently tailored, as a JSON Resume (https://jsonresume.org/schema) document with "x-" extensions: "x-id" on every item, "x-highlights"/"x-summary" with the markdown shown on the page, "x-hidden" for hidden content, "x-sections" for section order and titles, "x-activities" for the Activities & Interests bullets, "x-roles" for the titles held at a job with a promotion and "x-technologies" for the technologies the resume links to and their URLs. Also returns the job context, print options and "guidelines" for writing on the resume. ${ID_GUIDE} Start here before making changes, and follow the guidelines.\n\n${STYLE_GUIDE}`,
     inputSchema: NO_INPUT,
     annotations: { readOnlyHint: true },
     execute: (_, tailoring) => {
       const { job, highlightTerms, print } = tailoring.current()
       return {
+        guidelines: STYLE_GUIDE,
         resume: tailoring.superset(),
         job: job ?? null,
         highlightTerms,
@@ -134,7 +154,7 @@ export const resumeTools: ResumeTool[] = [
   },
   {
     name: 'rewrite',
-    description: `Replaces the text of a bullet, job summary, skill line, activity, section title or headline piece with new inline markdown (links, **bold**, *italics* and \`code\` are supported; HTML is not). Organization names, positions, dates and locations are facts and can't be changed. Keep claims truthful: rephrase and emphasize, don't invent experience. ${ID_GUIDE}`,
+    description: `Replaces the text of a bullet, job summary, skill line, activity, section title or headline piece. ${WRITING} Organization names, positions (including promotions), dates and locations are facts and can't be changed. Keep claims truthful: rephrase and emphasize, don't invent experience. Returns "warnings" when the text doesn't fit the guidelines; fix them with another rewrite. ${ID_GUIDE}`,
     inputSchema: {
       type: 'object',
       properties: {
@@ -144,15 +164,20 @@ export const resumeTools: ResumeTool[] = [
       },
       required: ['id', 'markdown', 'reason'],
     },
-    execute: ({ id, markdown, reason }, tailoring) => ({
-      ...change(tailoring, { type: 'rewrite', id, markdown }, reason),
-      effective: effective(tailoring, id),
-    }),
+    execute: ({ id, markdown, reason }, tailoring) => {
+      const warnings = checkWriting(tailoring, markdown, id)
+      return withWarnings(
+        {
+          ...change(tailoring, { type: 'rewrite', id, markdown }, reason),
+          effective: effective(tailoring, id),
+        },
+        warnings
+      )
+    },
   },
   {
     name: 'set_summary',
-    description:
-      'Adds (or replaces) a short professional summary at the top of the resume, written for this job. Inline markdown only. Pass an empty string to remove it.',
+    description: `Adds (or replaces) a short professional summary at the top of the resume. Only add one when the user asks for it. ${WRITING} Pass an empty string to remove it.`,
     inputSchema: {
       type: 'object',
       properties: {
@@ -161,17 +186,21 @@ export const resumeTools: ResumeTool[] = [
       },
       required: ['markdown', 'reason'],
     },
-    execute: ({ markdown, reason }, tailoring) =>
-      change(
-        tailoring,
-        { type: 'rewrite', id: 'basics:summary', markdown },
-        reason
-      ),
+    execute: ({ markdown, reason }, tailoring) => {
+      const warnings = checkWriting(tailoring, markdown)
+      return withWarnings(
+        change(
+          tailoring,
+          { type: 'rewrite', id: 'basics:summary', markdown },
+          reason
+        ),
+        warnings
+      )
+    },
   },
   {
     name: 'add_item',
-    description:
-      'Adds a new bullet to a job (parentId is the job id), a new skill line (parentId "section:skills") or a new activity (parentId "section:activities"). Inline markdown only. Only add things that are true; prefer rewriting existing bullets.',
+    description: `Adds a new bullet to a job (parentId is the job id), a new skill line (parentId "section:skills") or a new activity (parentId "section:activities"). ${WRITING} Only add things that are true, and only when the user asks; prefer showing, reordering or lightly rewriting existing bullets.`,
     inputSchema: {
       type: 'object',
       properties: {
@@ -186,13 +215,17 @@ export const resumeTools: ResumeTool[] = [
       required: ['parentId', 'markdown', 'reason'],
     },
     execute: ({ parentId, markdown, after, reason }, tailoring) => {
+      const warnings = checkWriting(tailoring, markdown)
       const id = newItemId(String(parentId), tailoring.getState())
       const op = { type: 'addItem', parentId, id, markdown, after }
-      return {
-        ...change(tailoring, op, reason),
-        id,
-        effective: effective(tailoring, id),
-      }
+      return withWarnings(
+        {
+          ...change(tailoring, op, reason),
+          id,
+          effective: effective(tailoring, id),
+        },
+        warnings
+      )
     },
   },
   {

@@ -172,6 +172,7 @@ export function parseState(value: unknown): TailorState {
         op: parseOp(change.op),
         reason: str(change.reason ?? '', 'reason'),
         at: str(change.at ?? '', 'at', 40),
+        ...(change.manual === true && { manual: true }),
       })
     } catch {
       // Skip anything malformed rather than rejecting the whole link.

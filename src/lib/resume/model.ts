@@ -1,6 +1,12 @@
 import type { List, ListItem, RootContent } from 'mdast'
 import { fromMarkdown } from 'mdast-util-from-markdown'
-import { joinWithAnd, markdownToPlain, renderMarkdown } from './markdown'
+import {
+  inlineHtmlToMarkdown,
+  joinWithAnd,
+  markdownToPlain,
+  renderMarkdown,
+} from './markdown'
+import type { Technology } from './technologies'
 
 // The resume is modelled in two layers:
 //
@@ -27,6 +33,13 @@ export interface TextNode {
   added?: boolean
 }
 
+/** One title held at an organization. */
+export interface ExperienceRole {
+  title: string
+  startDate: string
+  endDate?: string
+}
+
 export interface ExperienceNode {
   id: string
   type: 'work' | 'education'
@@ -40,6 +53,11 @@ export interface ExperienceNode {
   studyType?: string
   printHide?: boolean
   hidden?: boolean
+  /**
+   * Every title held there, newest first, when there was more than one.
+   * `position` is the current one and `startDate` the first one's.
+   */
+  roles?: ExperienceRole[]
   summary?: TextNode
   highlights: TextNode[]
 }
@@ -136,6 +154,8 @@ export interface ResumeBasics {
 export interface ResumeSource {
   basics: ResumeBasics
   sections: ResumeSection[]
+  /** Technologies the resume links to; see `collectTechnologies`. */
+  technologies?: Technology[]
 }
 
 // ---------------------------------------------------------------------------
@@ -206,6 +226,48 @@ export function parseExperienceBody(
   }
 }
 
+/**
+ * The titles held at an organization, newest first. A title without an end
+ * date that isn't the newest ends when the next one begins.
+ */
+export function normalizeRoles(roles: ExperienceRole[]): ExperienceRole[] {
+  const sorted = [...roles].sort((a, b) =>
+    b.startDate.localeCompare(a.startDate)
+  )
+  return sorted.map((role, i) => {
+    const endDate =
+      role.endDate ?? (i > 0 ? sorted[i - 1].startDate : undefined)
+    return endDate ? { ...role, endDate } : { ...role }
+  })
+}
+
+/** Re-renders build-time text so links to technologies carry microdata. */
+export function markTechnologies(
+  source: ResumeSource,
+  technologies: Technology[]
+): ResumeSource {
+  const render = (node: TextNode) => {
+    node.html = renderMarkdown(node.markdown, { trusted: true, technologies })
+  }
+  const { label, tagline, summary } = source.basics
+  ;[label, tagline, summary].forEach(render)
+  for (const section of source.sections) {
+    for (const item of section.items) {
+      if (section.id === 'section:work' || section.id === 'section:education') {
+        const experience = item as ExperienceNode
+        if (experience.summary) render(experience.summary)
+        experience.highlights.forEach(render)
+      } else if (section.id === 'section:activities') {
+        const activity = item as ActivityNode
+        render(activity)
+        activity.children?.forEach(render)
+      }
+    }
+  }
+  source.technologies = technologies
+  return source
+}
+
 // ---------------------------------------------------------------------------
 // Lookup helpers
 
@@ -266,6 +328,26 @@ export function indexResume(source: ResumeSource): Map<string, ResumeNodeRef> {
   }
 
   return index
+}
+
+/** The markdown a text node is edited as, or undefined if it isn't editable. */
+export function editableMarkdown(
+  source: ResumeSource,
+  id: string
+): string | undefined {
+  const ref = indexResume(source).get(id)
+  switch (ref?.kind) {
+    case 'basics':
+    case 'highlight':
+    case 'summary':
+    case 'activity':
+      return inlineHtmlToMarkdown(ref.node.markdown)
+    case 'skill':
+      return skillMarkdown(ref.node)
+    case 'sectionTitle':
+      return ref.node.title
+  }
+  return undefined
 }
 
 /** Markdown for a skill line, whether it's been rewritten or not. */
@@ -355,23 +437,43 @@ export function toSuperset(
   const sectionHidden = (id: SectionId) =>
     Boolean(source.sections.find((s) => s.id === `section:${id}`)?.hidden)
 
-  const work = sectionItems(source, 'work').map((job) =>
-    compact({
+  // A promotion is its own work entry, as JSON Resume has no roles. The
+  // current role carries the summary and highlights.
+  const work = sectionItems(source, 'work').flatMap((job) => {
+    const shared = {
       name: job.organization,
-      position: job.position,
       url: job.url,
       location: formatLocation(job.location),
-      startDate: job.startDate,
-      endDate: job.endDate,
-      summary: plainText(job.summary),
-      highlights: visibleHighlights(job),
       'x-id': job.id,
       'x-hidden': job.hidden || sectionHidden('work') || undefined,
       'x-printHide': job.printHide || undefined,
-      'x-summary': job.summary,
-      'x-highlights': job.highlights,
-    })
-  )
+    }
+    const [current, ...earlier] = job.roles ?? [
+      { title: job.position, startDate: job.startDate, endDate: job.endDate },
+    ]
+    return [
+      compact({
+        ...shared,
+        position: current.title,
+        startDate: current.startDate,
+        endDate: current.endDate,
+        summary: plainText(job.summary),
+        highlights: visibleHighlights(job),
+        'x-summary': job.summary,
+        'x-highlights': job.highlights,
+        'x-roles': job.roles,
+      }),
+      ...earlier.map((role) =>
+        compact({
+          ...shared,
+          position: role.title,
+          startDate: role.startDate,
+          endDate: role.endDate,
+          'x-earlierRole': true,
+        })
+      ),
+    ]
+  })
 
   const education = sectionItems(source, 'education').map((school) =>
     compact({
@@ -449,6 +551,7 @@ export function toSuperset(
       })
     ),
     'x-activities': activities,
+    'x-technologies': source.technologies,
   }) as EliResume
 }
 

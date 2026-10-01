@@ -1,5 +1,9 @@
-import { useMemo } from 'preact/hooks'
-import { indexResume, type ResumeSource } from '../../lib/resume/model'
+import { useMemo, useState } from 'preact/hooks'
+import {
+  editableMarkdown,
+  indexResume,
+  type ResumeSource,
+} from '../../lib/resume/model'
 import ResumeTools from './ResumeTools'
 import ResumeView, { ResumeViewContext } from './ResumeView'
 import TailorPanel from './TailorPanel'
@@ -12,12 +16,20 @@ const hasModelContext = () =>
 /**
  * The resume with tailoring: the review panel, the tailored resume and, when
  * the browser supports WebMCP, the tools agents use to tailor it. Loaded only
- * for tailored links and WebMCP browsers.
+ * for tailored links, editing and WebMCP browsers.
  */
-export default function TailoredResume({ source }: { source: ResumeSource }) {
-  const tailoring = useTailoring(source)
-  const { tailored, review } = tailoring
+export default function TailoredResume({
+  source,
+  editing = false,
+}: {
+  source: ResumeSource
+  editing?: boolean
+}) {
+  const tailoring = useTailoring(source, { editing })
+  const { tailored, review, edit } = tailoring
   const webmcp = useMemo(hasModelContext, [])
+  // A bullet just added by hand, to start editing once it's rendered.
+  const [focusId, setFocusId] = useState<string>()
 
   const originals = useMemo(() => indexResume(source), [source])
   const view = useMemo(
@@ -26,8 +38,28 @@ export default function TailoredResume({ source }: { source: ResumeSource }) {
       breakBefore: tailored.print.breakBefore,
       original: (id: string) =>
         (originals.get(id)?.node as { html?: string } | undefined)?.html,
+      edit: edit
+        ? {
+            markdown: (id: string) => editableMarkdown(tailored.source, id),
+            save: (id: string, markdown: string) => {
+              if (markdown) tailoring.editText(id, markdown)
+              // Emptying a bullet removes it; other text can't be empty.
+              else if (
+                indexResume(tailored.source).get(id)?.kind === 'highlight'
+              )
+                tailoring.removeBullet(id)
+            },
+            addBullet: (parentId: string) =>
+              setFocusId(tailoring.addBullet(parentId)),
+            removeBullet: (id: string) => tailoring.removeBullet(id),
+            moveBullets: (parentId: string, ids: string[]) =>
+              tailoring.moveBullets(parentId, ids),
+            focusId,
+            clearFocus: () => setFocusId(undefined),
+          }
+        : undefined,
     }),
-    [review, tailored.print.breakBefore, originals]
+    [review, edit, tailored, originals, focusId]
   )
 
   useHighlights(tailored.highlightTerms, [tailored, review])
@@ -40,6 +72,7 @@ export default function TailoredResume({ source }: { source: ResumeSource }) {
           resume={tailored.source}
           density={tailored.print.density}
           fontScale={tailored.print.fontScale}
+          onStartEdit={edit ? undefined : () => tailoring.setEdit(true)}
         />
       </ResumeViewContext.Provider>
       {webmcp && <ResumeTools tailoring={tailoring} />}
