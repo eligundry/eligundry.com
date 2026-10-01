@@ -1,6 +1,11 @@
 import type { List, ListItem, RootContent } from 'mdast'
 import { fromMarkdown } from 'mdast-util-from-markdown'
-import { joinWithAnd, markdownToPlain, renderMarkdown } from './markdown'
+import {
+  inlineHtmlToMarkdown,
+  joinWithAnd,
+  markdownToPlain,
+  renderMarkdown,
+} from './markdown'
 import type { Technology } from './technologies'
 
 // The resume is modelled in two layers:
@@ -336,7 +341,7 @@ export function editableMarkdown(
     case 'highlight':
     case 'summary':
     case 'activity':
-      return ref.node.markdown
+      return inlineHtmlToMarkdown(ref.node.markdown)
     case 'skill':
       return skillMarkdown(ref.node)
     case 'sectionTitle':

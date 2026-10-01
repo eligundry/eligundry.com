@@ -101,16 +101,31 @@ export function Rich({ as = 'span', node, children, ...props }: RichProps) {
   )
 }
 
+const placeCaretAtEnd = (element: HTMLElement) => {
+  const range = document.createRange()
+  range.selectNodeContents(element)
+  range.collapse(false)
+  getSelection()?.removeAllRanges()
+  getSelection()?.addRange(range)
+}
+
 /**
  * Text that shows its markdown source while focused and saves it as a hand
  * edit when it loses focus. Enter saves, Shift+Enter adds a line break and
  * Escape cancels.
+ *
+ * It's only contenteditable while being edited: browsers render
+ * `plaintext-only` text with `white-space: pre-wrap`, which would turn the
+ * line breaks in the content's source into visible ones.
  */
 function EditableText({ as = 'span', node, children, ...props }: RichProps) {
   const Tag = as as 'span'
   const { edit } = useContext(ResumeViewContext)
   const ref = useRef<HTMLElement>(null)
   const cancelled = useRef(false)
+  // A click that starts editing would put the caret where the rendered text
+  // was, which means nothing in the markdown, so it goes to the end instead.
+  const started = useRef(false)
   // The markdown being edited, while focused.
   const [draft, setDraft] = useState<string>()
   const editing = draft !== undefined
@@ -118,17 +133,18 @@ function EditableText({ as = 'span', node, children, ...props }: RichProps) {
   useLayoutEffect(() => {
     const element = ref.current
     if (!editing || !element) return
-    const range = document.createRange()
-    range.selectNodeContents(element)
-    range.collapse(false)
-    getSelection()?.removeAllRanges()
-    getSelection()?.addRange(range)
+    // Focus may have started on a link inside, which the markdown replaced.
+    if (document.activeElement !== element) element.focus()
+    placeCaretAtEnd(element)
   }, [editing])
 
   const finish = (event: FocusEvent) => {
+    // Ignore a link inside losing focus; only leaving this text finishes.
+    if (event.target !== event.currentTarget) return
     const text = (event.currentTarget as HTMLElement).textContent ?? ''
     const save = !cancelled.current && editing && text.trim() !== draft.trim()
     cancelled.current = false
+    started.current = false
     setDraft(undefined)
     if (save) edit?.save(node.id, text.trim())
   }
@@ -145,12 +161,32 @@ function EditableText({ as = 'span', node, children, ...props }: RichProps) {
       {...content}
       ref={ref}
       class={cx(props.class, 'tailor-editable')}
-      contenteditable="plaintext-only"
-      spellcheck
+      tabIndex={0}
+      contenteditable={editing ? 'plaintext-only' : undefined}
+      spellcheck={editing}
       title="Edit (markdown)"
-      onFocus={() => setDraft(edit?.markdown(node.id) ?? '')}
+      onFocus={() => {
+        if (editing) return
+        started.current = true
+        setDraft(edit?.markdown(node.id) ?? '')
+      }}
+      // In edit mode a click on a link edits the text instead of following it.
+      onMouseDown={(event) => {
+        if (editing || !(event.target as Element).closest('a')) return
+        event.preventDefault()
+        event.currentTarget.focus()
+      }}
+      onClick={(event) => {
+        if ((event.target as Element).closest('a')) event.preventDefault()
+      }}
+      onMouseUp={(event) => {
+        if (!started.current) return
+        started.current = false
+        placeCaretAtEnd(event.currentTarget)
+      }}
       onBlur={finish}
       onKeyDown={(event) => {
+        started.current = false
         if (event.key === 'Escape') cancelled.current = true
         if (
           event.key === 'Escape' ||

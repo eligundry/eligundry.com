@@ -187,11 +187,15 @@ describe('TailoredResume', () => {
     )
     const bullet = await waitFor(() => {
       const element = item('chord:0')
-      expect(element?.getAttribute('contenteditable')).toBe('plaintext-only')
+      expect(element?.classList).toContain('tailor-editable')
       return element!
     })
+    // Only the text being edited is contenteditable.
+    expect(bullet.getAttribute('tabindex')).toBe('0')
+    expect(bullet.hasAttribute('contenteditable')).toBe(false)
 
     focus(bullet)
+    expect(bullet.getAttribute('contenteditable')).toBe('plaintext-only')
     expect(bullet.textContent).toBe('Built a [React SDK](https://x.dev).')
     bullet.textContent = 'Built a [React SDK](https://x.dev) for 40 stores.'
     leave(bullet)
@@ -201,6 +205,7 @@ describe('TailoredResume', () => {
         'Built a <a href="https://x.dev">React SDK</a> for 40 stores.'
       )
     )
+    expect(bullet.hasAttribute('contenteditable')).toBe(false)
     expect(screen.getByText('by hand')).toBeTruthy()
 
     // Editing the same text again updates that change instead of adding one.
@@ -224,6 +229,26 @@ describe('TailoredResume', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Revert' }))
     await waitFor(() =>
       expect(item('chord:0')?.textContent).toBe('Built a React SDK.')
+    )
+  })
+
+  test('edits inline HTML from the content as markdown', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const bullet = await waitFor(() => {
+      const element = item('chord:1')
+      expect(element?.classList).toContain('tailor-editable')
+      return element!
+    })
+
+    focus(bullet)
+    expect(bullet.textContent).toBe('Wrote docs &amp; more.')
+    bullet.textContent = 'Wrote [docs](https://docs.dev) &amp; more.'
+    leave(bullet)
+
+    await waitFor(() =>
+      expect(bullet.innerHTML).toBe(
+        'Wrote <a href="https://docs.dev">docs</a> &amp; more.'
+      )
     )
   })
 
@@ -284,9 +309,7 @@ describe('Resume', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Edit this resume' }))
     expect(await screen.findByText('Editing')).toBeTruthy()
     await waitFor(() =>
-      expect(item('chord:0')?.getAttribute('contenteditable')).toBe(
-        'plaintext-only'
-      )
+      expect(item('chord:0')?.classList).toContain('tailor-editable')
     )
     expect(
       screen.queryByRole('button', { name: 'Edit this resume' })

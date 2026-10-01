@@ -28,6 +28,21 @@ export function renderMarkdown(
   return isSingleParagraph ? inner : html
 }
 
+/**
+ * Rewrites the inline HTML used in the resume's content as markdown, so it can
+ * be edited by hand: links become markdown links and other tags (such as
+ * `<abbr>`) are reduced to their text. Edits are rendered as untrusted
+ * markdown, where inline HTML would be escaped.
+ */
+export function inlineHtmlToMarkdown(markdown: string): string {
+  return markdown
+    .replace(
+      /<a\b[^>]*?\bhref\s*=\s*(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gi,
+      (_, _quote, href: string, text: string) => `[${text}](${href})`
+    )
+    .replace(/<\/?(?:abbr|span|em|strong|b|i)\b[^>]*>/gi, '')
+}
+
 /** The text of some markdown, without formatting, links or inline HTML. */
 export function markdownToPlain(markdown: string): string {
   return toString(fromMarkdown(markdown), { includeHtml: false })

@@ -168,7 +168,7 @@ export default function Experience({
       </div>
       {experience.summary && <SummaryParagraph summary={experience.summary} />}
       {experience.highlights.length > 0 && (
-        <ul class="order-5 my-0">
+        <ul class="order-5 w-full my-0">
           {experience.highlights.map((highlight) => (
             <Bullet key={highlight.id} bullet={highlight} />
           ))}
@@ -184,6 +184,6 @@ function Bullet({ bullet }: { bullet: TextNode }) {
 }
 
 function SummaryParagraph({ summary }: { summary: TextNode }) {
-  const { visible, props } = useItemProps(summary, 'order-5 my-2')
+  const { visible, props } = useItemProps(summary, 'order-5 w-full my-2')
   return visible ? <Rich as="p" {...props} node={summary} /> : null
 }
