@@ -106,6 +106,14 @@ edit is a `rewrite` change marked `manual`, so it appears in the change log
 same text again straight away updates that change instead of adding another.
 Shared links drop `edit` from the hash, so they open read-only.
 
+Edit mode can also add and remove job bullets. "+ Add bullet" adds an empty
+bullet by hand (`addManualBullet()`, a manual `addItem`) and starts editing it.
+Editing it updates that `addItem` instead of logging a `rewrite`, and leaving
+it empty drops it. A bullet's "×", or saving it empty, removes it
+(`removeManualBullet()`): a bullet added by hand is dropped with its changes;
+one from the content is hidden by a manual `setVisibility`, which "Revert"
+undoes.
+
 preact/compat listens for `focusin`/`focusout` rather than `focus`/`blur`, so
 the tests dispatch those.
 

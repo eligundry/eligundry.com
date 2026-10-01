@@ -17,8 +17,10 @@ import {
 } from '../../lib/resumeTailor/serialize'
 import {
   addChange,
+  addManualBullet,
   addManualEdit,
   emptyState,
+  removeManualBullet,
   revertChange,
   tailor,
   type ChangeRecord,
@@ -141,15 +143,24 @@ export function useTailoring(
     },
 
     /** Records text typed on the page, replacing a hand edit just made there. */
-    editText(id: string, markdown: string): ChangeRecord {
-      const { state: next, change } = addManualEdit(
+    editText(id: string, markdown: string) {
+      update(addManualEdit(base, stateRef.current, id, markdown).state)
+    },
+
+    /** Adds an empty bullet to a job by hand and returns its id. */
+    addBullet(parentId: string): string {
+      const { state: next, id } = addManualBullet(
         base,
         stateRef.current,
-        id,
-        markdown
+        parentId
       )
       update(next)
-      return change
+      return id
+    },
+
+    /** Removes a bullet by hand: hides it, or drops it if added by hand. */
+    removeBullet(id: string) {
+      update(removeManualBullet(base, stateRef.current, id).state)
     },
 
     revert: (changeId: string) =>

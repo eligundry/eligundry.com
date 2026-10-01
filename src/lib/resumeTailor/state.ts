@@ -424,16 +424,52 @@ export function addChange(
   return { state: next, change: record, tailored }
 }
 
+/** The manual `addItem` change that created `id`, if it was added by hand. */
+const manualAddition = (state: TailorState, id: string) =>
+  state.changes.find(
+    (c) => c.manual && c.op.type === 'addItem' && c.op.id === id
+  )
+
+/** Drops a bullet added by hand, with every change that targets it. */
+function dropAddition(state: TailorState, id: string): TailorState {
+  const targets = (op: Op) =>
+    (op.type === 'addItem' && op.id === id) ||
+    (op.type === 'rewrite' && op.id === id) ||
+    (op.type === 'setVisibility' && op.ids.includes(id))
+  return { ...state, changes: state.changes.filter((c) => !targets(c.op)) }
+}
+
+/** Replays `state` to check it, throwing a `TailorError` if a change fails. */
+function validated(base: ResumeSource, state: TailorState): TailorState {
+  const failed = tailor(base, state).log.find((record) => record.error)
+  if (failed) throw new TailorError(failed.error)
+  return state
+}
+
 /**
  * Records a hand edit of some text. Typing in the same place again replaces
- * the previous hand edit instead of adding another change.
+ * the previous hand edit instead of adding another change. Editing a bullet
+ * added by hand updates the change that added it, and saving it empty
+ * removes it.
  */
 export function addManualEdit(
   base: ResumeSource,
   state: TailorState,
   id: string,
   markdown: string
-): { state: TailorState; change: ChangeRecord } {
+): { state: TailorState } {
+  const addition = manualAddition(state, id)
+  if (addition && addition.op.type === 'addItem') {
+    if (!markdown.trim()) return { state: dropAddition(state, id) }
+    const op = { ...addition.op, markdown }
+    return {
+      state: validated(base, {
+        ...state,
+        changes: state.changes.map((c) => (c === addition ? { ...c, op } : c)),
+      }),
+    }
+  }
+
   const last = state.changes[state.changes.length - 1]
   const replacing =
     last?.manual && last.op.type === 'rewrite' && last.op.id === id
@@ -453,10 +489,48 @@ export function addManualEdit(
     at: change.at,
     manual: true,
   }
-  return {
-    state: { ...next, changes: [...next.changes.slice(0, -1), stored] },
-    change: { ...change, ...stored },
-  }
+  return { state: { ...next, changes: [...next.changes.slice(0, -1), stored] } }
+}
+
+/** Adds an empty bullet to a job by hand, to be filled in with `addManualEdit`. */
+export function addManualBullet(
+  base: ResumeSource,
+  state: TailorState,
+  parentId: string
+): { state: TailorState; id: string } {
+  const id = newItemId(parentId, state)
+  const { state: next } = addChange(
+    base,
+    state,
+    { type: 'addItem', parentId, id, markdown: '' },
+    'Added by hand'
+  )
+  return { state: markLastManual(next), id }
+}
+
+/**
+ * Removes a bullet by hand. One added by hand is dropped entirely; one from
+ * the resume's content is hidden, which can be reverted.
+ */
+export function removeManualBullet(
+  base: ResumeSource,
+  state: TailorState,
+  id: string
+): { state: TailorState } {
+  if (manualAddition(state, id)) return { state: dropAddition(state, id) }
+  const { state: next } = addChange(
+    base,
+    state,
+    { type: 'setVisibility', ids: [id], visible: false },
+    'Removed by hand'
+  )
+  return { state: markLastManual(next) }
+}
+
+function markLastManual(state: TailorState): TailorState {
+  const changes = [...state.changes]
+  changes[changes.length - 1] = { ...changes[changes.length - 1], manual: true }
+  return { ...state, changes }
 }
 
 export function revertChange(

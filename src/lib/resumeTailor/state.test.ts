@@ -7,9 +7,11 @@ import {
 } from '../resume/model'
 import {
   addChange,
+  addManualBullet,
   addManualEdit,
   emptyState,
   newItemId,
+  removeManualBullet,
   revertChange,
   tailor,
   TailorError,
@@ -289,8 +291,8 @@ describe('addManualEdit', () => {
       }),
     ])
     ;({ state } = addManualEdit(base, state, 'chord:1', 'Three'))
-    const { change } = addManualEdit(base, state, 'chord:0', 'Four')
-    expect(change).toMatchObject({
+    ;({ state } = addManualEdit(base, state, 'chord:0', 'Four'))
+    expect(tailor(base, state).log.at(-1)).toMatchObject({
       id: 'c3',
       before: 'Two',
       after: 'Four',
@@ -308,5 +310,54 @@ describe('addManualEdit', () => {
     expect(() => addManualEdit(base, emptyState(), 'chord', 'CTO')).toThrow(
       TailorError
     )
+  })
+})
+
+describe('adding and removing bullets by hand', () => {
+  const bullets = (state: TailorState) =>
+    node<ExperienceNode>(tailor(base, state), 'chord')
+      .highlights.filter((h) => !h.hidden)
+      .map((h) => h.markdown)
+
+  test('adds a bullet, and editing it updates the change that added it', () => {
+    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    expect(id).toBe('chord:+1')
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        op: { type: 'addItem', parentId: 'chord', id, markdown: '' },
+        reason: 'Added by hand',
+        manual: true,
+      }),
+    ])
+    ;({ state } = addManualEdit(base, state, id, 'Shipped it.'))
+    ;({ state } = addManualEdit(base, state, id, 'Shipped it fast.'))
+    expect(state.changes).toHaveLength(1)
+    expect(bullets(state).at(-1)).toBe('Shipped it fast.')
+  })
+
+  test('a bullet added by hand and left empty is dropped', () => {
+    const { state, id } = addManualBullet(base, emptyState(), 'chord')
+    expect(addManualEdit(base, state, id, '').state.changes).toEqual([])
+  })
+
+  test('removing a bullet added by hand drops it and its changes', () => {
+    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    ;({ state } = addManualEdit(base, state, id, 'Shipped it.'))
+    expect(removeManualBullet(base, state, id).state.changes).toEqual([])
+  })
+
+  test('removing a bullet from the content hides it, which can be reverted', () => {
+    const { state } = removeManualBullet(base, emptyState(), 'chord:0')
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        op: { type: 'setVisibility', ids: ['chord:0'], visible: false },
+        reason: 'Removed by hand',
+        manual: true,
+      }),
+    ])
+    expect(bullets(state)).toEqual([
+      'Wrote <abbr title="docs">docs</abbr> &amp; more.',
+    ])
+    expect(bullets(revertChange(state, state.changes[0].id))).toHaveLength(2)
   })
 })

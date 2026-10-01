@@ -1,5 +1,11 @@
 import { createContext, type ComponentChildren, type JSX } from 'preact'
-import { useContext, useLayoutEffect, useRef, useState } from 'preact/hooks'
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'preact/hooks'
 import { FaDownload, FaPen } from 'react-icons/fa'
 import type {
   ActivityNode,
@@ -25,7 +31,13 @@ export interface ResumeViewOptions {
   edit?: {
     /** The markdown a node is edited as, or undefined if it isn't editable. */
     markdown: (id: string) => string | undefined
+    /** Saves edited markdown. Empty markdown removes a bullet. */
     save: (id: string, markdown: string) => void
+    addBullet: (parentId: string) => void
+    removeBullet: (id: string) => void
+    /** Text to start editing as soon as it's rendered, e.g. a new bullet. */
+    focusId?: string
+    clearFocus: () => void
   }
 }
 
@@ -130,6 +142,12 @@ function EditableText({ as = 'span', node, children, ...props }: RichProps) {
   const [draft, setDraft] = useState<string>()
   const editing = draft !== undefined
 
+  useEffect(() => {
+    if (!edit?.focusId || edit.focusId !== node.id) return
+    edit.clearFocus()
+    ref.current?.focus()
+  }, [edit?.focusId])
+
   useLayoutEffect(() => {
     const element = ref.current
     if (!editing || !element) return
@@ -141,12 +159,17 @@ function EditableText({ as = 'span', node, children, ...props }: RichProps) {
   const finish = (event: FocusEvent) => {
     // Ignore a link inside losing focus; only leaving this text finishes.
     if (event.target !== event.currentTarget) return
-    const text = (event.currentTarget as HTMLElement).textContent ?? ''
-    const save = !cancelled.current && editing && text.trim() !== draft.trim()
+    if (!editing) return
+    const text = cancelled.current
+      ? draft
+      : ((event.currentTarget as HTMLElement).textContent ?? '')
     cancelled.current = false
     started.current = false
     setDraft(undefined)
-    if (save) edit?.save(node.id, text.trim())
+    // Saving nothing removes the text (a new bullet left empty, say).
+    if (!text.trim() || text.trim() !== draft.trim()) {
+      edit?.save(node.id, text.trim())
+    }
   }
 
   const content = editing

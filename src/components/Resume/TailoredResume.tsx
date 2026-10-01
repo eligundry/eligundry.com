@@ -1,4 +1,4 @@
-import { useMemo } from 'preact/hooks'
+import { useMemo, useState } from 'preact/hooks'
 import {
   editableMarkdown,
   indexResume,
@@ -28,6 +28,8 @@ export default function TailoredResume({
   const tailoring = useTailoring(source, { editing })
   const { tailored, review, edit } = tailoring
   const webmcp = useMemo(hasModelContext, [])
+  // A bullet just added by hand, to start editing once it's rendered.
+  const [focusId, setFocusId] = useState<string>()
 
   const originals = useMemo(() => indexResume(source), [source])
   const view = useMemo(
@@ -39,12 +41,23 @@ export default function TailoredResume({
       edit: edit
         ? {
             markdown: (id: string) => editableMarkdown(tailored.source, id),
-            save: (id: string, markdown: string) =>
-              tailoring.editText(id, markdown),
+            save: (id: string, markdown: string) => {
+              if (markdown) tailoring.editText(id, markdown)
+              // Emptying a bullet removes it; other text can't be empty.
+              else if (
+                indexResume(tailored.source).get(id)?.kind === 'highlight'
+              )
+                tailoring.removeBullet(id)
+            },
+            addBullet: (parentId: string) =>
+              setFocusId(tailoring.addBullet(parentId)),
+            removeBullet: (id: string) => tailoring.removeBullet(id),
+            focusId,
+            clearFocus: () => setFocusId(undefined),
           }
         : undefined,
     }),
-    [review, edit, tailored, originals]
+    [review, edit, tailored, originals, focusId]
   )
 
   useHighlights(tailored.highlightTerms, [tailored, review])

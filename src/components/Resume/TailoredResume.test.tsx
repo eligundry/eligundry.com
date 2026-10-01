@@ -55,6 +55,12 @@ const focus = (element: HTMLElement) =>
 const leave = (element: HTMLElement) =>
   fireEvent(element, new FocusEvent('focusout', { bubbles: true }))
 
+/** In edit mode, the editable text of a bullet (beside its remove button). */
+const editable = (id: string) =>
+  document.querySelector<HTMLElement>(
+    `[data-resume-id="${id}"] .tailor-editable`
+  )
+
 const item = (id: string) =>
   document.querySelector<HTMLElement>(`[data-resume-id="${id}"]`)
 
@@ -186,8 +192,8 @@ describe('TailoredResume', () => {
       await screen.findByRole('button', { name: 'Edit this resume' })
     )
     const bullet = await waitFor(() => {
-      const element = item('chord:0')
-      expect(element?.classList).toContain('tailor-editable')
+      const element = editable('chord:0')
+      expect(element).toBeTruthy()
       return element!
     })
     // Only the text being edited is contenteditable.
@@ -228,15 +234,68 @@ describe('TailoredResume', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Revert' }))
     await waitFor(() =>
-      expect(item('chord:0')?.textContent).toBe('Built a React SDK.')
+      expect(editable('chord:0')?.textContent).toBe('Built a React SDK.')
     )
+  })
+
+  test('adds a bullet by hand', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    fireEvent.click((await screen.findAllByText('+ Add bullet'))[0])
+
+    // The new bullet starts out being edited.
+    const bullet = await waitFor(() => {
+      const element = editable('chord:+1')
+      expect(element?.getAttribute('contenteditable')).toBe('plaintext-only')
+      return element!
+    })
+    bullet.textContent = 'Cut checkout time in half.'
+    leave(bullet)
+
+    await waitFor(() =>
+      expect(bullet.textContent).toBe('Cut checkout time in half.')
+    )
+    fireEvent.click(screen.getByText(/1 change/))
+    expect(screen.getByText('Added by hand')).toBeTruthy()
+    expect(
+      [...document.querySelectorAll('[data-resume-id^="chord:"]')].map((li) =>
+        li.getAttribute('data-resume-id')
+      )
+    ).toEqual(['chord:0', 'chord:1', 'chord:+1'])
+  })
+
+  test('drops a new bullet left empty', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    fireEvent.click((await screen.findAllByText('+ Add bullet'))[0])
+    const bullet = await waitFor(() => {
+      const element = editable('chord:+1')
+      expect(element?.getAttribute('contenteditable')).toBe('plaintext-only')
+      return element!
+    })
+    leave(bullet)
+    await waitFor(() => expect(item('chord:+1')).toBeNull())
+    expect(screen.getByText('0 changes')).toBeTruthy()
+  })
+
+  test('removes a bullet by hand and reverts it', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const [remove] = await screen.findAllByRole('button', {
+      name: 'Remove bullet',
+    })
+    fireEvent.click(remove)
+
+    await waitFor(() => expect(item('chord:0')).toBeNull())
+    fireEvent.click(screen.getByText(/1 change/))
+    expect(screen.getByText('Removed by hand')).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Revert' }))
+    await waitFor(() => expect(item('chord:0')).toBeTruthy())
   })
 
   test('edits inline HTML from the content as markdown', async () => {
     render(<TailoredResume source={fixtureSource()} editing />)
     const bullet = await waitFor(() => {
-      const element = item('chord:1')
-      expect(element?.classList).toContain('tailor-editable')
+      const element = editable('chord:1')
+      expect(element).toBeTruthy()
       return element!
     })
 
@@ -308,9 +367,7 @@ describe('Resume', () => {
     render(<Resume source={fixtureSource()} />)
     fireEvent.click(screen.getByRole('button', { name: 'Edit this resume' }))
     expect(await screen.findByText('Editing')).toBeTruthy()
-    await waitFor(() =>
-      expect(item('chord:0')?.classList).toContain('tailor-editable')
-    )
+    await waitFor(() => expect(editable('chord:0')).toBeTruthy())
     expect(
       screen.queryByRole('button', { name: 'Edit this resume' })
     ).toBeNull()

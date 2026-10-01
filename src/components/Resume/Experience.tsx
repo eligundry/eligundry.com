@@ -4,7 +4,8 @@ import type {
   ExperienceRole,
   TextNode,
 } from '../../lib/resume/model'
-import { cx, Rich, useItemProps } from './ResumeView'
+import { useContext } from 'preact/hooks'
+import { cx, Rich, ResumeViewContext, useItemProps } from './ResumeView'
 
 function Time({ date, itemProp }: { date: Date; itemProp: string }) {
   return (
@@ -89,6 +90,7 @@ export default function Experience({
       printHide && 'print:hidden'
     )
   )
+  const { edit } = useContext(ResumeViewContext)
   if (!visible) return null
 
   const endDate = experience.endDate && dateFns.parseISO(experience.endDate)
@@ -174,13 +176,39 @@ export default function Experience({
           ))}
         </ul>
       )}
+      {edit && (
+        <button
+          type="button"
+          class="tailor-add order-5 print:hidden"
+          onClick={() => edit.addBullet(id)}
+        >
+          + Add bullet
+        </button>
+      )}
     </section>
   )
 }
 
 function Bullet({ bullet }: { bullet: TextNode }) {
   const { visible, props } = useItemProps(bullet)
-  return visible ? <Rich as="li" {...props} node={bullet} /> : null
+  const { edit } = useContext(ResumeViewContext)
+  if (!visible) return null
+  if (!edit || bullet.hidden) return <Rich as="li" {...props} node={bullet} />
+
+  return (
+    <li {...props}>
+      <Rich node={bullet} />
+      <button
+        type="button"
+        class="tailor-remove print:hidden"
+        aria-label="Remove bullet"
+        title="Remove bullet"
+        onClick={() => edit.removeBullet(bullet.id)}
+      >
+        ×
+      </button>
+    </li>
+  )
 }
 
 function SummaryParagraph({ summary }: { summary: TextNode }) {
