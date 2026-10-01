@@ -7,12 +7,12 @@ published as [JSON Resume](https://jsonresume.org/schema) at `/resume.json`.
 
 ## Content
 
-| Source                                | Becomes                                                                                              |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `src/content/resumeBasics.yaml`       | `basics` (name, label, tagline, contact info), also used by the print footer                         |
-| `src/content/resumeExperiences/*.mdx` | `work` / `education`; each top-level list item is a highlight, paragraphs a summary                  |
-| `src/content/resumeSkills.yaml`       | `skills`; rendered as "`lead` A, B, and C."                                                          |
-| `src/content/resumeActivities.yaml`   | "Activities & Interests" bullets; `records` map to `projects`, `volunteer`, `awards`, `publications` |
+| Source                                | Becomes                                                                                                             |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `src/content/resumeBasics.yaml`       | `basics` (name, label, tagline, contact info), also used by the print footer                                        |
+| `src/content/resumeExperiences/*.mdx` | `work` / `education`; each top-level list item is a highlight, paragraphs a summary. `promotions` adds later titles |
+| `src/content/resumeSkills.yaml`       | `skills`; rendered as "`lead` A, B, and C."                                                                         |
+| `src/content/resumeActivities.yaml`   | "Activities & Interests" bullets; `records` map to `projects`, `volunteer`, `awards`, `publications`                |
 
 `getResumeSource()` (`src/lib/resume/build.ts`) turns the collections into a
 `ResumeSource` (`src/lib/resume/model.ts`) with a stable id on everything
@@ -23,6 +23,35 @@ build-time content may contain inline HTML; tailored text is escaped.
 
 `toSuperset()` produces JSON Resume plus `x-` extension keys, and
 `toJsonResume()` strips the extensions and hidden entries for `/resume.json`.
+
+### Promotions
+
+An experience's frontmatter `position` and `startDate` are the first title held
+there; later ones go in `promotions`:
+
+```yaml
+position: Product Engineer
+startDate: 2025-03-31T05:00
+promotions:
+  - position: Senior Product Engineer
+    date: 2026-03-01T05:00
+```
+
+`buildRoles()` turns these into `roles` (newest first, each ending when the
+next starts) and `position` becomes the current title. The page lists every
+title with its own dates under the organization. JSON Resume has no roles, so
+each title is its own `work` entry with the same `x-id`. The current one carries
+the summary and highlights. Titles are facts, so tailoring can't rewrite them.
+
+### Technologies
+
+`collectTechnologies()` (`src/lib/resume/technologies.ts`) lists what the resume
+links to as a technology: every skill keyword plus every markdown link in a job
+that isn't to the employer's own site. It's on the source as `technologies`
+and in the superset as `x-technologies`. Rendered links to those URLs, both
+build-time and tailored, get `itemprop="knowsAbout"`. Only an experience's
+heading is the organization's microdata, so these links describe the page's
+schema.org `Person`.
 
 ## Rendering
 
@@ -47,6 +76,13 @@ build-time content may contain inline HTML; tailored text is escaped.
 - `src/lib/resumeTailor/serialize.ts`: the log is validated and stored,
   deflated, in the URL hash, so links are shareable and nothing is stored on a
   server.
+- `src/lib/resumeTailor/voice.ts`: how agents should write (`STYLE_GUIDE`):
+  a light touch in Eli's voice, outcomes over duties ("achiever, not doer")
+  without invented numbers, no bold or italics, and every technology linked.
+  The guide is in the `get_resume` description and result. `rewrite`,
+  `add_item` and `set_summary` reject bold and italics, and return `warnings`
+  for unlinked technologies, filler words and rewrites that grow by more than
+  40%. These checks apply only to agents, not to hand edits.
 - `src/components/Resume/tools.ts`: the WebMCP tools (`get_resume`,
   `export_json_resume`, `get_changes`, `set_job_context`, `set_visibility`,
   `reorder`, `rewrite`, `set_summary`, `add_item`, `set_skill_keywords`,
@@ -54,6 +90,22 @@ build-time content may contain inline HTML; tailored text is escaped.
   `set_print_options`, `get_share_url`, `open_print_dialog`). Each is plain data
   with an `execute` that returns JSON or throws; `ResumeTools` registers them
   with [`usewebmcp`](https://www.npmjs.com/package/usewebmcp).
+
+## Hand edits
+
+The pencil button next to the download button, or a `/resume/#edit` link,
+loads `TailoredResume` in edit mode. You can also turn it on with "Edit text"
+in the panel. In edit mode, `Rich` renders each editable piece of text
+(bullets, summaries, skill lines, activities, section titles) as
+`contenteditable="plaintext-only"`. Focusing it shows its markdown, and leaving
+it, or pressing Enter, saves it with `addManualEdit()`. Escape cancels. A hand
+edit is a `rewrite` change marked `manual`, so it appears in the change log
+(with a "by hand" badge), can be reverted and is saved in the link. Editing the
+same text again straight away updates that change instead of adding another.
+Shared links drop `edit` from the hash, so they open read-only.
+
+preact/compat listens for `focusin`/`focusout` rather than `focus`/`blur`, so
+the tests dispatch those.
 
 ## Print layout
 

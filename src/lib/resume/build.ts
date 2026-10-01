@@ -1,7 +1,10 @@
 import { getCollection, getEntry } from 'astro:content'
 import config from '../../config'
 import { byOrder } from '../collections'
+import { collectTechnologies } from './technologies'
 import {
+  buildRoles,
+  markTechnologies,
   parseExperienceBody,
   toIsoDate,
   trustedText,
@@ -23,24 +26,38 @@ export async function getResumeSource(): Promise<ResumeSource> {
 
   const experienceNodes: ExperienceNode[] = experiences
     .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
-    .map(({ id, data, body }) => ({
-      id,
-      type: data.type,
-      organization: data.organization,
-      position: data.position,
-      url: data.website,
-      location: {
-        city: data.location.city,
-        region: data.location.region,
-        countryCode: data.location.country,
-      },
-      startDate: toIsoDate(data.startDate),
-      endDate: data.endDate ? toIsoDate(data.endDate) : undefined,
-      area: data.area,
-      studyType: data.studyType,
-      printHide: data.printHide,
-      ...parseExperienceBody(id, body ?? ''),
-    }))
+    .map(({ id, data, body }) => {
+      const startDate = toIsoDate(data.startDate)
+      const endDate = data.endDate ? toIsoDate(data.endDate) : undefined
+      const roles = data.promotions?.length
+        ? buildRoles(
+            { position: data.position, startDate, endDate },
+            data.promotions.map((p) => ({
+              position: p.position,
+              date: toIsoDate(p.date),
+            }))
+          )
+        : undefined
+      return {
+        id,
+        type: data.type,
+        organization: data.organization,
+        position: roles?.[0].position ?? data.position,
+        url: data.website,
+        location: {
+          city: data.location.city,
+          region: data.location.region,
+          countryCode: data.location.country,
+        },
+        startDate,
+        endDate,
+        area: data.area,
+        studyType: data.studyType,
+        printHide: data.printHide,
+        roles,
+        ...parseExperienceBody(id, body ?? ''),
+      }
+    })
 
   const skillNodes: SkillNode[] = skills.sort(byOrder).map(({ id, data }) => ({
     id: `skills:${id}`,
@@ -86,7 +103,7 @@ export async function getResumeSource(): Promise<ResumeSource> {
   }
   const { label, tagline, ...contact } = basics.data
 
-  return {
+  const source: ResumeSource = {
     basics: {
       ...contact,
       label: trustedText('basics:label', label),
@@ -117,4 +134,9 @@ export async function getResumeSource(): Promise<ResumeSource> {
       },
     ],
   }
+
+  return markTechnologies(
+    source,
+    collectTechnologies({ skills: skillNodes, experiences: experienceNodes })
+  )
 }

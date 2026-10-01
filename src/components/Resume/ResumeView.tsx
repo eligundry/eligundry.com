@@ -1,6 +1,6 @@
 import { createContext, type ComponentChildren, type JSX } from 'preact'
-import { useContext } from 'preact/hooks'
-import { FaDownload } from 'react-icons/fa'
+import { useContext, useLayoutEffect, useRef, useState } from 'preact/hooks'
+import { FaDownload, FaPen } from 'react-icons/fa'
 import type {
   ActivityNode,
   ResumeSection,
@@ -21,6 +21,12 @@ export interface ResumeViewOptions {
   original: (id: string) => string | undefined
   /** Ids that start a new printed page. */
   breakBefore: string[]
+  /** Set while text can be edited on the page. */
+  edit?: {
+    /** The markdown a node is edited as, or undefined if it isn't editable. */
+    markdown: (id: string) => string | undefined
+    save: (id: string, markdown: string) => void
+  }
 }
 
 export const ResumeViewContext = createContext<ResumeViewOptions>({
@@ -52,17 +58,31 @@ export function useItemProps(
 }
 
 type RichProps = {
-  as?: 'li' | 'p' | 'span'
-  node: Pick<TextNode, 'id' | 'html'>
+  as?: 'li' | 'p' | 'span' | 'h2'
+  /** Rendered markdown. Without it, `children` are shown instead. */
+  node: { id: string; html?: string }
 } & Omit<JSX.HTMLAttributes<HTMLElement>, 'as'>
 
-/** Rendered markdown, with the original alongside it in review mode. */
-export function Rich({ as = 'span', node, ...props }: RichProps) {
+/**
+ * Rendered markdown, with the original alongside it in review mode. In edit
+ * mode it can be clicked to edit its markdown.
+ */
+export function Rich({ as = 'span', node, children, ...props }: RichProps) {
   // The tags share the attributes used here, so type them as one.
   const Tag = as as 'span'
-  const { review, original } = useContext(ResumeViewContext)
+  const { review, original, edit } = useContext(ResumeViewContext)
   const before = original(node.id)
 
+  if (edit?.markdown(node.id) !== undefined) {
+    return (
+      <EditableText as={as} node={node} {...props}>
+        {children}
+      </EditableText>
+    )
+  }
+  if (node.html === undefined) {
+    return <Tag {...props}>{children}</Tag>
+  }
   if (!review || before === node.html) {
     return <Tag {...props} dangerouslySetInnerHTML={{ __html: node.html }} />
   }
@@ -78,6 +98,69 @@ export function Rich({ as = 'span', node, ...props }: RichProps) {
       )}
       <ins class="tailor-ins" dangerouslySetInnerHTML={{ __html: node.html }} />
     </Tag>
+  )
+}
+
+/**
+ * Text that shows its markdown source while focused and saves it as a hand
+ * edit when it loses focus. Enter saves, Shift+Enter adds a line break and
+ * Escape cancels.
+ */
+function EditableText({ as = 'span', node, children, ...props }: RichProps) {
+  const Tag = as as 'span'
+  const { edit } = useContext(ResumeViewContext)
+  const ref = useRef<HTMLElement>(null)
+  const cancelled = useRef(false)
+  // The markdown being edited, while focused.
+  const [draft, setDraft] = useState<string>()
+  const editing = draft !== undefined
+
+  useLayoutEffect(() => {
+    const element = ref.current
+    if (!editing || !element) return
+    const range = document.createRange()
+    range.selectNodeContents(element)
+    range.collapse(false)
+    getSelection()?.removeAllRanges()
+    getSelection()?.addRange(range)
+  }, [editing])
+
+  const finish = (event: FocusEvent) => {
+    const text = (event.currentTarget as HTMLElement).textContent ?? ''
+    const save = !cancelled.current && editing && text.trim() !== draft.trim()
+    cancelled.current = false
+    setDraft(undefined)
+    if (save) edit?.save(node.id, text.trim())
+  }
+
+  const content = editing
+    ? { children: draft }
+    : node.html !== undefined
+      ? { dangerouslySetInnerHTML: { __html: node.html } }
+      : { children }
+
+  return (
+    <Tag
+      {...props}
+      {...content}
+      ref={ref}
+      class={cx(props.class, 'tailor-editable')}
+      contenteditable="plaintext-only"
+      spellcheck
+      title="Edit (markdown)"
+      onFocus={() => setDraft(edit?.markdown(node.id) ?? '')}
+      onBlur={finish}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') cancelled.current = true
+        if (
+          event.key === 'Escape' ||
+          (event.key === 'Enter' && !event.shiftKey)
+        ) {
+          event.preventDefault()
+          event.currentTarget.blur()
+        }
+      }}
+    />
   )
 }
 
@@ -101,11 +184,19 @@ function Section({
   const titleId = `${section.id}:title`
   const title = section.printTitle ? (
     <>
-      <h2 class="my-0 text-lg block print:hidden">{section.title}</h2>
+      <Rich
+        as="h2"
+        class="my-0 text-lg block print:hidden"
+        node={{ id: titleId }}
+      >
+        {section.title}
+      </Rich>
       <h2 class="my-0 text-lg hidden print:block">{section.printTitle}</h2>
     </>
   ) : (
-    <h2 class="my-0 text-lg">{section.title}</h2>
+    <Rich as="h2" class="my-0 text-lg" node={{ id: titleId }}>
+      {section.title}
+    </Rich>
   )
 
   return (
@@ -137,17 +228,6 @@ function SkillLine({ skill }: { skill: SkillNode }) {
   const { visible, props } = useItemProps(skill)
   if (!visible) return null
 
-  if (skill.html !== undefined) {
-    return (
-      <Rich
-        as="li"
-        {...props}
-        node={{ id: skill.id, html: skill.html }}
-        data-print-unit={skill.id}
-      />
-    )
-  }
-
   const keywords = skill.keywords.map((keyword) =>
     keyword.url ? (
       <a href={keyword.url} itemProp="knowsAbout" target="_blank">
@@ -158,9 +238,14 @@ function SkillLine({ skill }: { skill: SkillNode }) {
     )
   )
   return (
-    <li {...props} data-print-unit={skill.id}>
+    <Rich
+      as="li"
+      {...props}
+      node={{ id: skill.id, html: skill.html }}
+      data-print-unit={skill.id}
+    >
       {skill.lead} {joinWithAnd(keywords)}.
-    </li>
+    </Rich>
   )
 }
 
@@ -182,19 +267,31 @@ function Activity({ activity }: { activity: ActivityNode }) {
   )
 }
 
-const printButton = (
+const actions = (onStartEdit?: () => void) => (
   <>
     <h6 class="self-center italic text-neutral-900 text-xs hidden print:block!">
       View full resume at <a href="/resume/">eligundry.com/resume/</a>
     </h6>
-    <button
-      class="print-button btn btn-sm btn-ghost sm:tooltip sm:tooltip-primary sm:tooltip-left self-start normal-case print:hidden! sm:inline"
-      data-tip="Download this resume by printing it as a PDF"
-      aria-label="Download this resume by printing it as a PDF"
-      onClick={() => window.print()}
-    >
-      <FaDownload />
-    </button>
+    <span class="flex print:hidden!">
+      {onStartEdit && (
+        <button
+          class="btn btn-sm btn-ghost sm:tooltip sm:tooltip-primary sm:tooltip-left self-start normal-case print:hidden!"
+          data-tip="Edit this resume. Changes stay in your browser and its link."
+          aria-label="Edit this resume"
+          onClick={onStartEdit}
+        >
+          <FaPen />
+        </button>
+      )}
+      <button
+        class="print-button btn btn-sm btn-ghost sm:tooltip sm:tooltip-primary sm:tooltip-left self-start normal-case print:hidden! sm:inline"
+        data-tip="Download this resume by printing it as a PDF"
+        aria-label="Download this resume by printing it as a PDF"
+        onClick={() => window.print()}
+      >
+        <FaDownload />
+      </button>
+    </span>
   </>
 )
 
@@ -202,10 +299,13 @@ export default function ResumeView({
   resume,
   density = 'normal',
   fontScale = 1,
+  onStartEdit,
 }: {
   resume: ResumeSource
   density?: 'normal' | 'compact'
   fontScale?: number
+  /** Shows an edit button that calls this. */
+  onStartEdit?: () => void
 }) {
   const { basics } = resume
 
@@ -252,7 +352,7 @@ export default function ResumeView({
               <Section
                 key={section.id}
                 section={section}
-                header={section.id === 'section:work' && printButton}
+                header={section.id === 'section:work' && actions(onStartEdit)}
               >
                 {section.items.map((experience) => (
                   <Experience key={experience.id} experience={experience} />

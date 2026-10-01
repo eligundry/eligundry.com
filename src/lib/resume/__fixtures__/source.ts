@@ -136,4 +136,8 @@ export const fixtureSource = (): ResumeSource => ({
       ],
     },
   ],
+  technologies: [
+    { name: 'TypeScript', url: 'https://www.typescriptlang.org/' },
+    { name: 'React', url: 'https://reactjs.org/' },
+  ],
 })

@@ -57,6 +57,8 @@ export interface Change {
   op: Op
   reason: string
   at: string
+  /** Typed on the page by hand rather than made by an agent. */
+  manual?: true
 }
 
 export interface TailorState {
@@ -81,8 +83,11 @@ export const emptyState = (): TailorState => ({ v: 1, changes: [] })
 export class TailorError extends Error {}
 
 /** Tailored text comes from agents or shared links, so it's never trusted. */
-const untrustedHtml = (markdown: string) =>
-  renderMarkdown(markdown, { trusted: false })
+const untrustedHtml = (markdown: string, source: ResumeSource) =>
+  renderMarkdown(markdown, {
+    trusted: false,
+    technologies: source.technologies,
+  })
 
 const isWebUrl = (url: string) => {
   try {
@@ -231,7 +236,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         ref.node.summary = {
           id: op.id,
           markdown,
-          html: untrustedHtml(markdown),
+          html: untrustedHtml(markdown, source),
           added: true,
         }
         return { target: op.id, after: markdown }
@@ -254,7 +259,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         case 'skill': {
           const before = skillMarkdown(ref.node)
           ref.node.markdown = markdown
-          ref.node.html = untrustedHtml(markdown)
+          ref.node.html = untrustedHtml(markdown, source)
           return { target: op.id, before, after: markdown }
         }
         case 'activity':
@@ -264,7 +269,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
           const node = ref.node as TextNode | ActivityNode
           const before = node.markdown
           node.markdown = markdown
-          node.html = untrustedHtml(markdown)
+          node.html = untrustedHtml(markdown, source)
           return { target: op.id, before, after: markdown }
         }
       }
@@ -276,7 +281,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         throw new TailorError(`"${op.id}" already exists`)
       }
       const markdown = op.markdown.trim()
-      const html = untrustedHtml(markdown)
+      const html = untrustedHtml(markdown, source)
       const ref = lookup(op.parentId)
       let list: { id: string }[]
       let item: TextNode | SkillNode | ActivityNode
@@ -417,6 +422,41 @@ export function addChange(
   }
 
   return { state: next, change: record, tailored }
+}
+
+/**
+ * Records a hand edit of some text. Typing in the same place again replaces
+ * the previous hand edit instead of adding another change.
+ */
+export function addManualEdit(
+  base: ResumeSource,
+  state: TailorState,
+  id: string,
+  markdown: string
+): { state: TailorState; change: ChangeRecord } {
+  const last = state.changes[state.changes.length - 1]
+  const replacing =
+    last?.manual && last.op.type === 'rewrite' && last.op.id === id
+  const previous = replacing
+    ? { ...state, changes: state.changes.slice(0, -1) }
+    : state
+  const { state: next, change } = addChange(
+    base,
+    previous,
+    { type: 'rewrite', id, markdown },
+    'Edited by hand'
+  )
+  const stored: Change = {
+    id: replacing ? last.id : change.id,
+    op: change.op,
+    reason: change.reason,
+    at: change.at,
+    manual: true,
+  }
+  return {
+    state: { ...next, changes: [...next.changes.slice(0, -1), stored] },
+    change: { ...change, ...stored },
+  }
 }
 
 export function revertChange(

@@ -38,6 +38,10 @@ const resumeExperiencesSchema = z.object({
   }),
   startDate: z.coerce.date(),
   endDate: z.coerce.date().optional(),
+  // Later titles at the same place; `position` and `startDate` are the first.
+  promotions: z
+    .array(z.object({ position: z.string(), date: z.coerce.date() }))
+    .optional(),
   printHide: z.boolean().optional(),
   // JSON Resume education fields (https://jsonresume.org/schema)
   area: z.string().optional(),

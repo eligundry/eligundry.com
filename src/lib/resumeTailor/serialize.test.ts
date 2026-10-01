@@ -16,6 +16,7 @@ const state: TailorState = {
       op: { type: 'rewrite', id: 'chord:0', markdown: 'Shipped **fast** – 🚀' },
       reason: 'Matches "velocity"',
       at: '2026-09-22T00:00:00.000Z',
+      manual: true,
     },
     {
       id: 'c2',

@@ -1,6 +1,7 @@
 import { micromark } from 'micromark'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { toString } from 'mdast-util-to-string'
+import { markTechnologyLinks, type Technology } from './technologies'
 
 /**
  * Renders markdown to HTML. Trusted (build-time) content may contain inline
@@ -8,12 +9,19 @@ import { toString } from 'mdast-util-to-string'
  * HTML escaped and unsafe link protocols (e.g. `javascript:`) removed.
  *
  * A single paragraph is unwrapped so it can sit inside an `<li>` or `<span>`.
+ * Links to known technologies are marked as `knowsAbout` microdata.
  */
 export function renderMarkdown(
   markdown: string,
-  { trusted }: { trusted: boolean }
+  {
+    trusted,
+    technologies = [],
+  }: { trusted: boolean; technologies?: Technology[] }
 ): string {
-  const html = micromark(markdown, { allowDangerousHtml: trusted }).trim()
+  const html = markTechnologyLinks(
+    micromark(markdown, { allowDangerousHtml: trusted }).trim(),
+    technologies
+  )
   const inner = html.slice('<p>'.length, -'</p>'.length)
   const isSingleParagraph =
     html.startsWith('<p>') && html.endsWith('</p>') && !inner.includes('<p>')

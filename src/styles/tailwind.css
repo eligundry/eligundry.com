@@ -187,8 +187,25 @@
     text-decoration: none;
     background: color-mix(in oklab, var(--color-success) 25%, transparent);
   }
+  /* Edit mode: text that can be clicked to edit its markdown. */
+  .tailor-editable {
+    border-radius: var(--radius-field);
+    outline: 1px dashed
+      color-mix(in oklab, var(--color-accent) 50%, transparent);
+    outline-offset: 2px;
+    cursor: text;
+  }
+  .tailor-editable:focus {
+    outline: 2px solid var(--color-accent);
+    white-space: pre-wrap;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
 
   @media print {
+    .tailor-editable {
+      outline: none !important;
+    }
     .tailor-hidden,
     .tailor-del {
       display: none !important;

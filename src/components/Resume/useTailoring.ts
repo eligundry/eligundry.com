@@ -4,7 +4,7 @@ import {
   toSuperset,
   type ResumeSource,
 } from '../../lib/resume/model'
-import { HASH_KEY } from '../../lib/resumeTailor/hash'
+import { EDIT_KEY, HASH_KEY } from '../../lib/resumeTailor/hash'
 import {
   measurePrintLayout,
   setPrintPreview,
@@ -17,6 +17,7 @@ import {
 } from '../../lib/resumeTailor/serialize'
 import {
   addChange,
+  addManualEdit,
   emptyState,
   revertChange,
   tailor,
@@ -33,13 +34,17 @@ const nextPaint = () =>
  * produces, and the actions the review panel and WebMCP tools use. The log is
  * kept in the URL hash so a tailored resume can be shared or reopened.
  */
-export function useTailoring(base: ResumeSource) {
+export function useTailoring(
+  base: ResumeSource,
+  { editing = false }: { editing?: boolean } = {}
+) {
   const [state, setState] = useState<TailorState>(emptyState)
   // Tools can run several changes before the next render, so they read and
   // write the latest state through a ref.
   const stateRef = useRef(state)
   const tailored = useMemo(() => tailor(base, state), [base, state])
   const [review, setReview] = useState(false)
+  const [edit, setEdit] = useState(editing)
   const [preview, setPreview] = useState(false)
   const [layout, setLayout] = useState<PrintLayout>()
   const [shareUrl, setShareUrl] = useState('')
@@ -61,6 +66,8 @@ export function useTailoring(base: ResumeSource) {
     const write = (encoded?: string) => {
       if (encoded) params.set(HASH_KEY, encoded)
       else params.delete(HASH_KEY)
+      // Links open the resume to read, not to edit.
+      params.delete(EDIT_KEY)
       url.hash = params.toString()
       history.replaceState(history.state, '', url)
       setShareUrl(url.toString())
@@ -97,6 +104,8 @@ export function useTailoring(base: ResumeSource) {
     tailored,
     review,
     setReview,
+    edit,
+    setEdit,
     preview,
     setPreview,
     layout,
@@ -114,6 +123,7 @@ export function useTailoring(base: ResumeSource) {
       const url = new URL(location.href)
       const params = new URLSearchParams(url.hash.slice(1))
       params.set(HASH_KEY, await encodeState(stateRef.current))
+      params.delete(EDIT_KEY)
       url.hash = params.toString()
       return url.toString()
     },
@@ -125,6 +135,18 @@ export function useTailoring(base: ResumeSource) {
         stateRef.current,
         parseOp(op),
         reason
+      )
+      update(next)
+      return change
+    },
+
+    /** Records text typed on the page, replacing a hand edit just made there. */
+    editText(id: string, markdown: string): ChangeRecord {
+      const { state: next, change } = addManualEdit(
+        base,
+        stateRef.current,
+        id,
+        markdown
       )
       update(next)
       return change

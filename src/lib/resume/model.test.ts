@@ -5,9 +5,13 @@ import { describe, expect, test } from 'vitest'
 import { validate } from '@jsonresume/schema'
 import { fixtureSource } from './__fixtures__/source'
 import {
+  buildRoles,
+  editableMarkdown,
+  markTechnologies,
   parseExperienceBody,
   toJsonResume,
   toSuperset,
+  type ExperienceNode,
   type JsonResume,
 } from './model'
 
@@ -85,6 +89,84 @@ describe('parseExperienceBody', () => {
       const { summary, highlights } = parseExperienceBody(slug, readBody(slug))
       expect(summary || highlights.length, slug).toBeTruthy()
     }
+  })
+})
+
+describe('promotions', () => {
+  test('builds roles newest first, each ending when the next begins', () => {
+    expect(
+      buildRoles({ position: 'Product Engineer', startDate: '2025-03-31' }, [
+        { position: 'Senior Product Engineer', date: '2026-03-01' },
+      ])
+    ).toEqual([
+      { position: 'Senior Product Engineer', startDate: '2026-03-01' },
+      {
+        position: 'Product Engineer',
+        startDate: '2025-03-31',
+        endDate: '2026-03-01',
+      },
+    ])
+  })
+
+  test('a promotion is its own JSON Resume work entry', () => {
+    const source = fixtureSource()
+    const chord = source.sections[0].items[0] as ExperienceNode
+    chord.position = 'Staff Software Engineer'
+    chord.roles = buildRoles(
+      {
+        position: 'Senior Software Engineer',
+        startDate: '2022-02-07',
+        endDate: '2023-11-27',
+      },
+      [{ position: 'Staff Software Engineer', date: '2023-01-01' }]
+    )
+    const resume = toJsonResume(toSuperset(source))
+    expect(validateResume(resume)).toBeNull()
+    expect(resume.work?.slice(0, 2)).toEqual([
+      expect.objectContaining({
+        name: 'Chord Commerce',
+        position: 'Staff Software Engineer',
+        startDate: '2023-01-01',
+        endDate: '2023-11-27',
+        highlights: ['Built a React SDK.', 'Wrote docs & more.'],
+      }),
+      {
+        name: 'Chord Commerce',
+        url: 'https://chord.co',
+        location: 'New York, NY',
+        position: 'Senior Software Engineer',
+        startDate: '2022-02-07',
+        endDate: '2023-01-01',
+      },
+    ])
+  })
+})
+
+describe('technologies', () => {
+  test('marks links to technologies in build-time text', () => {
+    const source = markTechnologies(fixtureSource(), [
+      { name: 'React SDK', url: 'https://x.dev' },
+    ])
+    expect(
+      (source.sections[0].items[0] as ExperienceNode).highlights[0].html
+    ).toBe(
+      'Built a <a href="https://x.dev" itemprop="knowsAbout">React SDK</a>.'
+    )
+    expect(toSuperset(source)['x-technologies']).toEqual([
+      { name: 'React SDK', url: 'https://x.dev' },
+    ])
+  })
+
+  test('editable text is edited as markdown', () => {
+    const source = fixtureSource()
+    expect(editableMarkdown(source, 'chord:0')).toBe(
+      'Built a [React SDK](https://x.dev).'
+    )
+    expect(editableMarkdown(source, 'skills:frameworks')).toBe(
+      'Built apps using React.'
+    )
+    expect(editableMarkdown(source, 'section:work:title')).toBe('Work')
+    expect(editableMarkdown(source, 'chord')).toBeUndefined()
   })
 })
 

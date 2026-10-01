@@ -7,6 +7,7 @@ import {
 } from '../resume/model'
 import {
   addChange,
+  addManualEdit,
   emptyState,
   newItemId,
   revertChange,
@@ -272,5 +273,40 @@ describe('tailor', () => {
     }
     state = revertChange(state, 'c1')
     expect(newItemId('chord', state)).toBe('chord:+3')
+  })
+})
+
+describe('addManualEdit', () => {
+  test('records hand edits, replacing one made just before in the same place', () => {
+    let { state } = addManualEdit(base, emptyState(), 'chord:0', 'One')
+    ;({ state } = addManualEdit(base, state, 'chord:0', 'Two'))
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        id: 'c1',
+        op: { type: 'rewrite', id: 'chord:0', markdown: 'Two' },
+        reason: 'Edited by hand',
+        manual: true,
+      }),
+    ])
+    ;({ state } = addManualEdit(base, state, 'chord:1', 'Three'))
+    const { change } = addManualEdit(base, state, 'chord:0', 'Four')
+    expect(change).toMatchObject({
+      id: 'c3',
+      before: 'Two',
+      after: 'Four',
+      manual: true,
+    })
+  })
+
+  test("doesn't replace an agent's change", () => {
+    const { state } = apply([{ type: 'rewrite', id: 'chord:0', markdown: 'A' }])
+    const next = addManualEdit(base, state, 'chord:0', 'B').state
+    expect(next.changes.map((c) => c.manual)).toEqual([undefined, true])
+  })
+
+  test('throws without recording anything for text that can not be edited', () => {
+    expect(() => addManualEdit(base, emptyState(), 'chord', 'CTO')).toThrow(
+      TailorError
+    )
   })
 })

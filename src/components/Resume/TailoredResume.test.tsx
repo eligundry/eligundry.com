@@ -48,6 +48,13 @@ async function renderTailored() {
   return view
 }
 
+// preact/compat listens for focusin and focusout, which browsers fire along
+// with focus and blur but Testing Library's focus() and blur() don't.
+const focus = (element: HTMLElement) =>
+  fireEvent(element, new FocusEvent('focusin', { bubbles: true }))
+const leave = (element: HTMLElement) =>
+  fireEvent(element, new FocusEvent('focusout', { bubbles: true }))
+
 const item = (id: string) =>
   document.querySelector<HTMLElement>(`[data-resume-id="${id}"]`)
 
@@ -83,15 +90,16 @@ describe('TailoredResume', () => {
     })
     const rewrite = await call('rewrite', {
       id: 'chord:0',
-      markdown: 'Shipped a **React SDK**',
+      markdown: 'Shipped a [React](https://reactjs.org/) SDK.',
       reason: 'Lead with SDKs',
     })
 
-    expect(rewrite.effective.html).toBe('Shipped a <strong>React SDK</strong>')
+    const html =
+      'Shipped a <a href="https://reactjs.org/" itemprop="knowsAbout">React</a> SDK.'
+    expect(rewrite.effective.html).toBe(html)
+    expect(rewrite.warnings).toBeUndefined()
     await waitFor(() => expect(item('radioshack')).toBeNull())
-    expect(item('chord:0')?.innerHTML).toBe(
-      'Shipped a <strong>React SDK</strong>'
-    )
+    expect(item('chord:0')?.innerHTML).toBe(html)
     expect(screen.getByText('Tailored for Staff Engineer at Acme')).toBeTruthy()
     expect(screen.getByText('Lead with SDKs')).toBeTruthy()
     expect(document.title).toContain('Acme Staff Engineer')
@@ -129,6 +137,94 @@ describe('TailoredResume', () => {
       )
     )
     expect(item('chord:0')?.querySelector('ins')?.textContent).toBe('New')
+  })
+
+  test('gives agents the writing guidelines and technologies', async () => {
+    await renderTailored()
+    const { guidelines, resume } = await call('get_resume')
+    expect(guidelines).toMatch(/Light touch/)
+    expect(guidelines).toMatch(/No bold or italics/)
+    expect(resume['x-technologies']).toContainEqual({
+      name: 'React',
+      url: 'https://reactjs.org/',
+    })
+  })
+
+  test('rejects bold and italics from agents', async () => {
+    await renderTailored()
+    for (const markdown of ['Built a **React SDK**.', 'Built a *React SDK*.']) {
+      await expect(
+        call('rewrite', { id: 'chord:0', markdown, reason: 'x' })
+      ).rejects.toThrow(/Bold and italics/)
+    }
+    await expect(
+      call('add_item', { parentId: 'chord', markdown: '__New__', reason: 'x' })
+    ).rejects.toThrow(/Bold and italics/)
+    expect((await call('get_resume')).changeCount).toBe(0)
+  })
+
+  test('warns about writing that does not sound like the resume', async () => {
+    await renderTailored()
+    const { warnings } = await call('rewrite', {
+      id: 'chord:0',
+      markdown:
+        'Spearheaded a robust React SDK in TypeScript that was adopted by every client team.',
+      reason: 'x',
+    })
+    expect(warnings).toEqual([
+      expect.stringMatching(
+        /^Link these technologies: TypeScript \(https:\/\/www\.typescriptlang\.org\/\), React/
+      ),
+      expect.stringMatching(/"spearheaded", "robust" reads as filler/),
+      expect.stringMatching(/longer than the original/),
+    ])
+  })
+
+  test('edits text by hand', async () => {
+    await renderTailored()
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Edit this resume' })
+    )
+    const bullet = await waitFor(() => {
+      const element = item('chord:0')
+      expect(element?.getAttribute('contenteditable')).toBe('plaintext-only')
+      return element!
+    })
+
+    focus(bullet)
+    expect(bullet.textContent).toBe('Built a [React SDK](https://x.dev).')
+    bullet.textContent = 'Built a [React SDK](https://x.dev) for 40 stores.'
+    leave(bullet)
+
+    await waitFor(() =>
+      expect(bullet.innerHTML).toBe(
+        'Built a <a href="https://x.dev">React SDK</a> for 40 stores.'
+      )
+    )
+    expect(screen.getByText('by hand')).toBeTruthy()
+
+    // Editing the same text again updates that change instead of adding one.
+    focus(bullet)
+    bullet.textContent = 'Built a React SDK for 40 stores.'
+    leave(bullet)
+    await waitFor(() =>
+      expect(bullet.textContent).toBe('Built a React SDK for 40 stores.')
+    )
+    expect((await call('get_changes')).length).toBe(1)
+
+    // Escape cancels.
+    focus(bullet)
+    bullet.textContent = 'Nope'
+    fireEvent.keyDown(bullet, { key: 'Escape' })
+    leave(bullet)
+    await waitFor(() =>
+      expect(bullet.textContent).toBe('Built a React SDK for 40 stores.')
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Revert' }))
+    await waitFor(() =>
+      expect(item('chord:0')?.textContent).toBe('Built a React SDK.')
+    )
   })
 
   test('returns invalid changes as tool errors', async () => {
@@ -180,6 +276,29 @@ describe('Resume', () => {
     await new Promise((resolve) => setTimeout(resolve, 50))
     expect(screen.queryByText(/This resume supports/)).toBeNull()
     expect(screen.queryByLabelText('Tailoring')).toBeNull()
+  })
+
+  test('opens for editing from the edit button', async () => {
+    delete (document as { modelContext?: unknown }).modelContext
+    render(<Resume source={fixtureSource()} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Edit this resume' }))
+    expect(await screen.findByText('Editing')).toBeTruthy()
+    await waitFor(() =>
+      expect(item('chord:0')?.getAttribute('contenteditable')).toBe(
+        'plaintext-only'
+      )
+    )
+    expect(
+      screen.queryByRole('button', { name: 'Edit this resume' })
+    ).toBeNull()
+  })
+
+  test('opens for editing from an #edit link', async () => {
+    delete (document as { modelContext?: unknown }).modelContext
+    history.replaceState(null, '', '/resume/#edit')
+    render(<Resume source={fixtureSource()} />)
+    expect(await screen.findByText('Editing')).toBeTruthy()
+    await waitFor(() => expect(location.hash).toBe(''))
   })
 
   test('loads tailoring when the browser supports WebMCP', async () => {
