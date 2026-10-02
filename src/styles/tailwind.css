@@ -82,6 +82,21 @@
   --noise: 0;
 }
 
+/* Paper is white, so print in the light theme's colors whatever the screen
+   theme is. Only the colors that differ between the themes are repeated. */
+@media print {
+  :root,
+  [data-theme] {
+    color-scheme: light;
+    --color-neutral: #f4f4f5;
+    --color-neutral-content: #303032;
+    --color-base-100: #ffffff;
+    --color-base-200: #e6e6e6;
+    --color-base-300: #bebebe;
+    --color-base-content: #161616;
+  }
+}
+
 /* Custom fonts (with Fontaine metric fallbacks + emoji stacks). */
 @theme {
   --font-sans:
@@ -123,7 +138,7 @@
   }
 
   .paper {
-    @apply w-full p-4 print:py-0;
+    @apply w-full p-4 print:p-0;
   }
 
   .code-wrapper {
@@ -273,6 +288,37 @@
   .tailor-add:focus-visible {
     opacity: 1;
   }
+  /* A sub-list's add button stays out of the way until its item is hovered. */
+  .tailor-add-nested {
+    display: none;
+    width: auto;
+    border-style: none;
+  }
+  li:hover > .tailor-add-nested,
+  li:focus-within > .tailor-add-nested {
+    display: block;
+  }
+  /* Edit mode: whether a job or school is on the printed resume. */
+  .tailor-print-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    margin-block: 0.15em;
+    padding: 0.1em 0.5em;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 50%, transparent);
+    border-radius: var(--radius-field);
+    font-size: 0.75em;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  .tailor-print-toggle:hover,
+  .tailor-print-toggle:focus-visible {
+    opacity: 1;
+  }
+  .tailor-print-off {
+    border-style: dashed;
+    text-decoration: line-through;
+  }
   /* Empty text (a new bullet) would otherwise have no width to click or type in. */
   .tailor-editable:empty::before {
     content: 'Type a bullet (markdown)…';
@@ -285,34 +331,46 @@
     font-family: var(--font-mono);
     font-size: 0.9em;
   }
+}
 
-  @media print {
-    .tailor-editable {
-      outline: none !important;
-    }
-    .tailor-hidden,
-    .tailor-del {
-      display: none !important;
-    }
-    .tailor-ins {
-      background: none;
-    }
-    [data-tailor-break-before] {
-      break-before: page;
-    }
-    [data-resume-root] {
-      zoom: var(--tailor-font-scale, 1);
-    }
-    [data-resume-root][data-tailor-density='compact'] {
-      gap: calc(var(--spacing) * 2);
-    }
-    [data-tailor-density='compact'] .prose {
-      gap: calc(var(--spacing) * 1);
-      line-height: 1.4;
-    }
-    [data-tailor-density='compact'] .prose li {
-      margin-block: 0.1em;
-    }
+/* Printed resume. Outside the layers so it overrides `prose`, which Tailwind
+   puts in the utilities layer. */
+@media print {
+  .tailor-editable {
+    outline: none !important;
+  }
+  /* The drag handle that stands in for the marker isn't printed. */
+  .tailor-bullet {
+    list-style: inherit;
+  }
+  .tailor-hidden,
+  .tailor-del {
+    display: none !important;
+  }
+  .tailor-ins {
+    background: none;
+  }
+  [data-tailor-break-before] {
+    break-before: page;
+  }
+  [data-resume-root] {
+    zoom: var(--tailor-font-scale, 1);
+  }
+  [data-resume-root] .prose {
+    line-height: 1.375;
+  }
+  [data-resume-root] .prose li {
+    margin-block: 0.25em;
+  }
+  [data-resume-root][data-tailor-density='compact'] {
+    gap: calc(var(--spacing) * 2);
+  }
+  [data-tailor-density='compact'] .prose {
+    gap: calc(var(--spacing) * 1);
+    line-height: 1.3;
+  }
+  [data-tailor-density='compact'] .prose li {
+    margin-block: 0.1em;
   }
 }
 

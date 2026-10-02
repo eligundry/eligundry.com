@@ -8,6 +8,7 @@ import { EDIT_KEY, HASH_KEY } from '../../lib/resumeTailor/hash'
 import {
   measurePrintLayout,
   setPrintPreview,
+  showPageBreaks,
   type PrintLayout,
 } from '../../lib/resumeTailor/layout'
 import {
@@ -17,12 +18,13 @@ import {
 } from '../../lib/resumeTailor/serialize'
 import {
   addChange,
-  addManualBullet,
+  addManualItem,
   addManualEdit,
   emptyState,
-  removeManualBullet,
+  removeManualItem,
   reorderManually,
   revertChange,
+  setPrintedManually,
   tailor,
   type ChangeRecord,
   type Tailored,
@@ -97,7 +99,7 @@ export function useTailoring(
 
   useEffect(() => {
     setPrintPreview(preview)
-    if (preview) void measure()
+    if (preview) void measure().then(showPageBreaks)
     else setLayout(undefined)
   }, [preview, tailored])
 
@@ -148,9 +150,12 @@ export function useTailoring(
       update(addManualEdit(base, stateRef.current, id, markdown).state)
     },
 
-    /** Adds an empty bullet to a job by hand and returns its id. */
-    addBullet(parentId: string): string {
-      const { state: next, id } = addManualBullet(
+    /**
+     * Adds an empty item by hand and returns its id: a bullet to a job, a
+     * skill line or activity to its section, or a sub-item to an activity.
+     */
+    addItem(parentId: string): string {
+      const { state: next, id } = addManualItem(
         base,
         stateRef.current,
         parentId
@@ -159,14 +164,19 @@ export function useTailoring(
       return id
     },
 
-    /** Puts a job's bullets in a new order by hand. */
-    moveBullets(parentId: string, ids: string[]) {
+    /** Puts a list's items in a new order by hand. */
+    moveItems(parentId: string, ids: string[]) {
       update(reorderManually(base, stateRef.current, parentId, ids).state)
     },
 
-    /** Removes a bullet by hand: hides it, or drops it if added by hand. */
-    removeBullet(id: string) {
-      update(removeManualBullet(base, stateRef.current, id).state)
+    /** Removes an item by hand: hides it, or drops it if added by hand. */
+    removeItem(id: string) {
+      update(removeManualItem(base, stateRef.current, id).state)
+    },
+
+    /** Puts a job or school on the printed resume, or leaves it off. */
+    setPrinted(id: string, printed: boolean) {
+      update(setPrintedManually(base, stateRef.current, id, printed).state)
     },
 
     revert: (changeId: string) =>

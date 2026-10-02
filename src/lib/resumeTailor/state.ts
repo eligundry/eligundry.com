@@ -38,7 +38,13 @@ export const DEFAULT_PRINT: PrintOptions = {
 
 export type Op =
   | { type: 'setJob'; job: JobContext }
-  | { type: 'setVisibility'; ids: string[]; visible: boolean }
+  | {
+      type: 'setVisibility'
+      ids: string[]
+      visible: boolean
+      /** Only show or hide jobs and schools in print, not on the page. */
+      print?: true
+    }
   | { type: 'reorder'; container: string; ids: string[] }
   | { type: 'rewrite'; id: string; markdown: string }
   | {
@@ -138,9 +144,21 @@ function getContainer(source: ResumeSource, id: string): Container {
       },
     }
   }
+  if (ref?.kind === 'activity' && ref.node.children?.length) {
+    const activity = ref.node
+    const children = activity.children!
+    return {
+      ids: () => children.map((child) => child.id),
+      set: (ids) => {
+        activity.children = ids.map(
+          (cid) => children.find((child) => child.id === cid)!
+        )
+      },
+    }
+  }
 
   throw new TailorError(
-    `"${id}" can't be reordered. Use "sections", a section id (e.g. "section:work") or an experience id.`
+    `"${id}" can't be reordered. Use "sections", a section id (e.g. "section:work"), an experience id or an activity with sub-items.`
   )
 }
 
@@ -182,19 +200,29 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         throw new TailorError('ids must not be empty')
       }
       const refs = op.ids.map(lookup)
+      if (op.print) {
+        // Leaving a job off the printed resume keeps it on the page.
+        for (const ref of refs) {
+          if (ref.kind !== 'experience') {
+            throw new TailorError(
+              `Only jobs and schools can be left off the printed resume, not "${ref.node.id}".`
+            )
+          }
+          ref.node.printHide = !op.visible
+        }
+        return {
+          target: op.ids.join(', '),
+          before: undefined,
+          after: op.visible ? 'printed' : 'left off print',
+        }
+      }
       for (const ref of refs) {
         if (ref.kind === 'sectionTitle' || ref.kind === 'basics') {
           throw new TailorError(
             `"${ref.node.id}" can't be hidden; rewrite it instead.`
           )
         }
-        const node = ref.node as { hidden?: boolean; printHide?: boolean }
-        node.hidden = !op.visible
-        // Explicitly showing a job that's normally left off the printed
-        // resume puts it back in print too.
-        if (op.visible && ref.kind === 'experience') {
-          node.printHide = false
-        }
+        ;(ref.node as { hidden?: boolean }).hidden = !op.visible
       }
       return {
         target: op.ids.join(', '),
@@ -263,6 +291,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
           return { target: op.id, before, after: markdown }
         }
         case 'activity':
+        case 'subItem':
         case 'highlight':
         case 'summary':
         case 'basics': {
@@ -306,9 +335,13 @@ function applyOp(tailored: Tailored, op: Op): Applied {
       ) {
         list = ref.node.items
         item = { id: op.id, markdown, html, records: [], added: true }
+      } else if (ref.kind === 'activity') {
+        // A sub-item of an activity, e.g. one of the hackathons.
+        list = ref.node.children ??= []
+        item = { id: op.id, markdown, html, added: true }
       } else {
         throw new TailorError(
-          `Items can only be added to an experience id, "section:skills" or "section:activities"`
+          `Items can only be added to an experience id, "section:skills", "section:activities" or an activity id (for a sub-item)`
         )
       }
 
@@ -431,19 +464,27 @@ const manualAddition = (state: TailorState, id: string) =>
   )
 
 /**
- * Drops a bullet added by hand, with every change that targets it. Reorders
- * that listed it keep the rest of their order.
+ * Drops an item added by hand, with every change that targets it and any
+ * sub-items added to it. Reorders that listed it keep the rest of their order.
  */
 function dropAddition(state: TailorState, id: string): TailorState {
+  const dropped = new Set([id])
+  for (const { op } of state.changes) {
+    if (op.type === 'addItem' && dropped.has(op.parentId)) dropped.add(op.id)
+  }
   const targets = (op: Op) =>
-    (op.type === 'addItem' && op.id === id) ||
-    (op.type === 'rewrite' && op.id === id) ||
-    (op.type === 'setVisibility' && op.ids.includes(id))
+    (op.type === 'addItem' && dropped.has(op.id)) ||
+    (op.type === 'rewrite' && dropped.has(op.id)) ||
+    (op.type === 'reorder' && dropped.has(op.container)) ||
+    (op.type === 'setVisibility' && op.ids.some((i) => dropped.has(i)))
   const changes = state.changes
     .filter((c) => !targets(c.op))
     .map((c) =>
-      c.op.type === 'reorder' && c.op.ids.includes(id)
-        ? { ...c, op: { ...c.op, ids: c.op.ids.filter((i) => i !== id) } }
+      c.op.type === 'reorder' && c.op.ids.some((i) => dropped.has(i))
+        ? {
+            ...c,
+            op: { ...c.op, ids: c.op.ids.filter((i) => !dropped.has(i)) },
+          }
         : c
     )
     .filter((c) => c.op.type !== 'reorder' || c.op.ids.length > 0)
@@ -503,8 +544,11 @@ export function addManualEdit(
   return { state: { ...next, changes: [...next.changes.slice(0, -1), stored] } }
 }
 
-/** Adds an empty bullet to a job by hand, to be filled in with `addManualEdit`. */
-export function addManualBullet(
+/**
+ * Adds an empty item by hand (a job's bullet, a skill line, an activity or an
+ * activity's sub-item), to be filled in with `addManualEdit`.
+ */
+export function addManualItem(
   base: ResumeSource,
   state: TailorState,
   parentId: string
@@ -520,10 +564,10 @@ export function addManualBullet(
 }
 
 /**
- * Removes a bullet by hand. One added by hand is dropped entirely; one from
+ * Removes an item by hand. One added by hand is dropped entirely; one from
  * the resume's content is hidden, which can be reverted.
  */
-export function removeManualBullet(
+export function removeManualItem(
   base: ResumeSource,
   state: TailorState,
   id: string
@@ -539,8 +583,9 @@ export function removeManualBullet(
 }
 
 /**
- * Reorders a job's bullets by hand. Moving bullets in the same job again
- * replaces the previous hand reorder instead of adding another change.
+ * Reorders a list by hand (a job's bullets, a section's items or an
+ * activity's sub-items). Moving items in the same list again replaces the
+ * previous hand reorder instead of adding another change.
  */
 export function reorderManually(
   base: ResumeSource,
@@ -570,6 +615,36 @@ export function reorderManually(
     manual: true,
   }
   return { state: { ...next, changes: [...next.changes.slice(0, -1), stored] } }
+}
+
+/**
+ * Puts a job or school on the printed resume, or leaves it off, by hand.
+ * Undoing the previous hand toggle of the same item drops that change.
+ */
+export function setPrintedManually(
+  base: ResumeSource,
+  state: TailorState,
+  id: string,
+  printed: boolean
+): { state: TailorState } {
+  const last = state.changes[state.changes.length - 1]
+  if (
+    last?.manual &&
+    last.op.type === 'setVisibility' &&
+    last.op.print &&
+    last.op.ids.length === 1 &&
+    last.op.ids[0] === id &&
+    last.op.visible !== printed
+  ) {
+    return { state: { ...state, changes: state.changes.slice(0, -1) } }
+  }
+  const { state: next } = addChange(
+    base,
+    state,
+    { type: 'setVisibility', ids: [id], visible: printed, print: true },
+    printed ? 'Printed by hand' : 'Left off print by hand'
+  )
+  return { state: markLastManual(next) }
 }
 
 function markLastManual(state: TailorState): TailorState {

@@ -10,6 +10,14 @@ import TailorPanel from './TailorPanel'
 import { useHighlights } from './useHighlights'
 import { useTailoring } from './useTailoring'
 
+/** Kinds of text that are items in a list, so saving them empty removes them. */
+const LIST_ITEMS = new Set<string | undefined>([
+  'highlight',
+  'skill',
+  'activity',
+  'subItem',
+])
+
 const hasModelContext = () =>
   Boolean(document.modelContext ?? navigator.modelContext)
 
@@ -43,17 +51,19 @@ export default function TailoredResume({
             markdown: (id: string) => editableMarkdown(tailored.source, id),
             save: (id: string, markdown: string) => {
               if (markdown) tailoring.editText(id, markdown)
-              // Emptying a bullet removes it; other text can't be empty.
+              // Emptying a list item removes it; other text can't be empty.
               else if (
-                indexResume(tailored.source).get(id)?.kind === 'highlight'
+                LIST_ITEMS.has(indexResume(tailored.source).get(id)?.kind)
               )
-                tailoring.removeBullet(id)
+                tailoring.removeItem(id)
             },
-            addBullet: (parentId: string) =>
-              setFocusId(tailoring.addBullet(parentId)),
-            removeBullet: (id: string) => tailoring.removeBullet(id),
-            moveBullets: (parentId: string, ids: string[]) =>
-              tailoring.moveBullets(parentId, ids),
+            addItem: (parentId: string) =>
+              setFocusId(tailoring.addItem(parentId)),
+            removeItem: (id: string) => tailoring.removeItem(id),
+            moveItems: (parentId: string, ids: string[]) =>
+              tailoring.moveItems(parentId, ids),
+            setPrinted: (id: string, printed: boolean) =>
+              tailoring.setPrinted(id, printed),
             focusId,
             clearFocus: () => setFocusId(undefined),
           }

@@ -118,7 +118,11 @@ export const fixtureSource = (): ResumeSource => ({
           ],
         },
         {
-          ...trustedText('activities:talks', 'Presented talks.'),
+          ...trustedText('activities:talks', 'Presented talks at:'),
+          children: [
+            trustedText('activities:talks:child:0', 'Remix NYC'),
+            trustedText('activities:talks:child:1', 'QueensJS'),
+          ],
           records: [
             {
               section: 'publications',

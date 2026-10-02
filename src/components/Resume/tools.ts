@@ -29,7 +29,7 @@ const REASON = {
 
 const NO_INPUT = { type: 'object', properties: {} }
 
-const ID_GUIDE = `Ids come from get_resume: sections are "section:work", "section:education", "section:skills" and "section:activities"; jobs and schools use their "x-id" (e.g. "chord"; a job with a promotion appears once per title, all with the same "x-id"); bullets are "<job>:<n>" (e.g. "chord:0"); a job's paragraph is "<job>:summary"; skill lines are "skills:<id>"; activities are "activities:<id>"; the headline pieces are "basics:label", "basics:tagline" and "basics:summary"; section titles are "<section id>:title".`
+const ID_GUIDE = `Ids come from get_resume: sections are "section:work", "section:education", "section:skills" and "section:activities"; jobs and schools use their "x-id" (e.g. "chord"; a job with a promotion appears once per title, all with the same "x-id"); bullets are "<job>:<n>" (e.g. "chord:0"); a job's paragraph is "<job>:summary"; skill lines are "skills:<id>"; activities are "activities:<id>" and their sub-items "activities:<id>:child:<n>"; the headline pieces are "basics:label", "basics:tagline" and "basics:summary"; section titles are "<section id>:title".`
 
 /** Applies a change and describes it for the agent. */
 function change(tailoring: Tailoring, op: Input, reason: unknown) {
@@ -65,7 +65,7 @@ const withWarnings = <T extends object>(result: T, warnings: string[]) =>
 export const resumeTools: ResumeTool[] = [
   {
     name: 'get_resume',
-    description: `Returns Eli Gundry's resume as it's currently tailored, as a JSON Resume (https://jsonresume.org/schema) document with "x-" extensions: "x-id" on every item, "x-highlights"/"x-summary" with the markdown shown on the page, "x-hidden" for hidden content, "x-sections" for section order and titles, "x-activities" for the Activities & Interests bullets, "x-roles" for the titles held at a job with a promotion and "x-technologies" for the technologies the resume links to and their URLs. Also returns the job context, print options and "guidelines" for writing on the resume. ${ID_GUIDE} Start here before making changes, and follow the guidelines.\n\n${STYLE_GUIDE}`,
+    description: `Returns Eli Gundry's resume as it's currently tailored, as a JSON Resume (https://jsonresume.org/schema) document with "x-" extensions: "x-id" on every item, "x-highlights"/"x-summary" with the markdown shown on the page, "x-hidden" for hidden content, "x-sections" for section order and titles, "x-activities" for the Activities & Interests bullets, "x-printHide" for jobs and schools shown on the page but left off the printed resume, "x-roles" for the titles held at a job with a promotion and "x-technologies" for the technologies the resume links to and their URLs. Also returns the job context, print options and "guidelines" for writing on the resume. ${ID_GUIDE} Start here before making changes, and follow the guidelines.\n\n${STYLE_GUIDE}`,
     inputSchema: NO_INPUT,
     annotations: { readOnlyHint: true },
     execute: (_, tailoring) => {
@@ -123,23 +123,32 @@ export const resumeTools: ResumeTool[] = [
   },
   {
     name: 'set_visibility',
-    description: `Hides or shows sections, jobs, schools, bullets, skill lines or activities. Hidden content is left out of the page, the printed PDF and export_json_resume. Showing a job that's normally left off the printed resume puts it back in print. ${ID_GUIDE}`,
+    description: `Hides or shows sections, jobs, schools, bullets, skill lines, activities or sub-items. Hidden content is left out of the page, the printed PDF and export_json_resume. Older jobs and schools ("x-printHide") stay on the page but are left off the printed resume; showing them doesn't change that. With print: true, only jobs and schools are affected, and only in print: visible: true puts one on the printed resume, visible: false leaves it off while keeping it on the page. ${ID_GUIDE}`,
     inputSchema: {
       type: 'object',
       properties: {
         ids: { type: 'array', items: { type: 'string' }, minItems: 1 },
         visible: { type: 'boolean' },
+        print: {
+          type: 'boolean',
+          description:
+            'Only change whether these jobs or schools are on the printed resume.',
+        },
         reason: REASON,
       },
       required: ['ids', 'visible', 'reason'],
     },
-    execute: ({ ids, visible, reason }, tailoring) =>
-      change(tailoring, { type: 'setVisibility', ids, visible }, reason),
+    execute: ({ ids, visible, print, reason }, tailoring) =>
+      change(
+        tailoring,
+        { type: 'setVisibility', ids, visible, ...(print ? { print } : {}) },
+        reason
+      ),
   },
   {
     name: 'reorder',
     description:
-      'Reorders the children of a container. Containers are "sections" (the section order), a section id (its jobs, schools, skill lines or activities) or a job id (its bullets). List the ids in the new order; ids left out keep their relative order after the listed ones.',
+      'Reorders the children of a container. Containers are "sections" (the section order), a section id (its jobs, schools, skill lines or activities), a job id (its bullets) or an activity id (its sub-items). List the ids in the new order; ids left out keep their relative order after the listed ones.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -200,7 +209,7 @@ export const resumeTools: ResumeTool[] = [
   },
   {
     name: 'add_item',
-    description: `Adds a new bullet to a job (parentId is the job id), a new skill line (parentId "section:skills") or a new activity (parentId "section:activities"). ${WRITING} Only add things that are true, and only when the user asks; prefer showing, reordering or lightly rewriting existing bullets.`,
+    description: `Adds a new bullet to a job (parentId is the job id), a new skill line (parentId "section:skills"), a new activity (parentId "section:activities") or a sub-item to an activity (parentId is the activity id). ${WRITING} Only add things that are true, and only when the user asks; prefer showing, reordering or lightly rewriting existing bullets.`,
     inputSchema: {
       type: 'object',
       properties: {

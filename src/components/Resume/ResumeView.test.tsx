@@ -97,7 +97,7 @@ describe('ResumeView', () => {
     const { container } = renderView([
       { type: 'rewrite', id: 'chord:0', markdown: 'Shipped **an SDK**' },
     ])
-    expect(item(container, 'chord:0')?.innerHTML).toBe(
+    expect(item(container, 'chord:0')?.firstElementChild?.innerHTML).toBe(
       'Shipped <strong>an SDK</strong>'
     )
   })
