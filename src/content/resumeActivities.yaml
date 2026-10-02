@@ -1,28 +1,16 @@
 # Rendered on /resume/ under "Activities & Interests". `records` map each
 # bullet onto JSON Resume sections for /resume.json.
-- id: album-mode
-  markdown: >-
-    Created [Album Mode.party](https://album-mode.party), a
-    [Remix](https://remix.run/) application that recommends random
-    albums from Spotify.
-  records:
-    - section: projects
-      name: Album Mode.party
-      description: A Remix application that recommends random albums from Spotify.
-      url: https://album-mode.party
-      keywords: [Remix, Spotify]
-
 - id: code-nation
   markdown: >-
     Volunteered with [Code Nation](https://codenation.org/) to teach
-    web development to 10th graders during the 2022 school year.
+    web development to 10th graders in 2022.
   records:
     - section: volunteer
       organization: Code Nation
       position: Volunteer Instructor
       url: https://codenation.org/
-      startDate: '2022'
-      endDate: '2022'
+      startDate: '2022-08-01T05:00'
+      endDate: '2023-06-01T05:00'
       summary: Taught web development to 10th graders during the 2022 school year.
 
 - id: talks

@@ -1,5 +1,18 @@
 # Rendered on /resume/ as "<lead> <keyword>, <keyword>, and <keyword>." and
 # exported to /resume.json as JSON Resume `skills`.
+- id: ai-pilled
+  name: AI Pilled
+  lead: AI pilled on
+  keywords:
+    - name: Claude Code
+      url: https://claude.com/product/claude-code
+    - name: Codex
+      url: https://openai.com/codex/
+    - name: Mastra
+      url: https://mastra.ai/
+    - name: n8n
+      url: https://n8n.io/
+
 - id: languages
   name: Languages
   level: Fluent
@@ -24,7 +37,7 @@
 
 - id: frameworks
   name: Frameworks
-  lead: Built complex web applications using
+  lead: Built complex web applications with
   keywords:
     - name: React
       url: https://reactjs.org/
@@ -32,8 +45,6 @@
       url: https://nextjs.org/
     - name: Remix
       url: https://remix.run/
-    - name: Flask
-      url: https://www.palletsprojects.com/p/flask/
     - name: Django
       url: https://www.djangoproject.com/
     - name: Gin
