@@ -121,7 +121,8 @@ In edit mode an item's list marker is a drag handle (`useBulletDrag.ts`).
 CSS markers can't take pointer events, so the native marker is swapped for a
 button drawn in the same place. Drag it with a mouse, touch or pen (pointer
 events), or focus it and press ArrowUp/ArrowDown. Items move within their own
-list. A move is a manual `reorder` of the list (`reorderManually()`); moving
+list. Jobs and schools have a grip (⠿) beside their name that moves them
+within their section the same way. A move is a manual `reorder` of the list (`reorderManually()`); moving
 items in the same list again updates that change. Dropping an item added by
 hand also removes it from later reorders.
 

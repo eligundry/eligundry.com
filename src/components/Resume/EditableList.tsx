@@ -120,6 +120,7 @@ function ListItem({
     <li
       {...props}
       data-print-unit={unit}
+      data-drag-item
       class={cx(props.class, 'tailor-bullet')}
       data-dragging={dragging || undefined}
       data-drop-before={dropBefore || undefined}

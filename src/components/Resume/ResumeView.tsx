@@ -16,6 +16,7 @@ import type {
 } from '../../lib/resume/model'
 import EditableList from './EditableList'
 import Experience from './Experience'
+import { useBulletDrag } from './useBulletDrag'
 
 // Renders the resume from the resume model. The plain resume and a tailored
 // one share this: tailoring only changes the model it's given and, through
@@ -279,6 +280,39 @@ function Section({
   )
 }
 
+/** A section's jobs or schools, which can be dragged into a new order. */
+function ExperienceList({
+  section,
+}: {
+  section: Extract<ResumeSection, { id: 'section:work' | 'section:education' }>
+}) {
+  const { edit } = useContext(ResumeViewContext)
+  const items = section.items
+  const shown = items.filter((item) => !item.hidden).map((item) => item.id)
+  const drag = useBulletDrag(
+    items.map((item) => item.id),
+    shown,
+    edit && ((ids) => edit.moveItems(section.id, ids))
+  )
+  return (
+    <>
+      {items.map((experience) => (
+        <Experience
+          key={experience.id}
+          experience={experience}
+          drag={{
+            handle: drag.handleProps(experience.id),
+            dragging: drag.dragging === experience.id,
+            dropBefore: drag.drop === experience.id,
+            dropAfter:
+              drag.drop === 'end' && experience.id === shown[shown.length - 1],
+          }}
+        />
+      ))}
+    </>
+  )
+}
+
 /** "a", "a and b" or "a, b, and c". */
 function joinWithAnd(items: ComponentChildren[]): ComponentChildren[] {
   return items.flatMap((item, i) => {
@@ -413,9 +447,7 @@ export default function ResumeView({
                 section={section}
                 header={section.id === 'section:work' && actions(onStartEdit)}
               >
-                {section.items.map((experience) => (
-                  <Experience key={experience.id} experience={experience} />
-                ))}
+                <ExperienceList section={section} />
               </Section>
             )
           case 'section:skills':

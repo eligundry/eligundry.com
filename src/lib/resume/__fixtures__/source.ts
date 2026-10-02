@@ -23,7 +23,7 @@ export const fixtureSource = (): ResumeSource => ({
     {
       id: 'section:work',
       title: 'Work',
-      printTitle: 'Selected Work History',
+      printTitle: 'Curated Work History',
       items: [
         {
           id: 'chord',

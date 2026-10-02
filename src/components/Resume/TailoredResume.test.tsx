@@ -381,6 +381,26 @@ describe('TailoredResume', () => {
     expect(screen.getByText('Removed by hand')).toBeTruthy()
   })
 
+  test('reorders jobs with their grips', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const jobs = () =>
+      [
+        ...document.querySelectorAll(
+          '[data-resume-id="section:work"] > section[data-resume-id]'
+        ),
+      ].map((job) => job.getAttribute('data-resume-id'))
+    const grip = (id: string) =>
+      document.querySelector<HTMLElement>(
+        `[data-resume-id="${id}"] > .tailor-handle-grip`
+      )!
+    await waitFor(() => expect(grip('chord')).toBeTruthy())
+
+    fireEvent.keyDown(grip('chord'), { key: 'ArrowDown' })
+    await waitFor(() => expect(jobs()).toEqual(['radioshack', 'chord']))
+    fireEvent.click(screen.getByText(/1 change/))
+    expect(screen.getByText('Reordered by hand')).toBeTruthy()
+  })
+
   test('adds a sub-item to an activity', async () => {
     render(<TailoredResume source={fixtureSource()} editing />)
     const [add] = await screen.findAllByText('+ Add sub-item')

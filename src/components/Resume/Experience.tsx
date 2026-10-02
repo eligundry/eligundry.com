@@ -5,6 +5,7 @@ import type {
   TextNode,
 } from '../../lib/resume/model'
 import { useContext } from 'preact/hooks'
+import type { JSX } from 'preact'
 import { FaPrint } from 'react-icons/fa'
 import EditableList from './EditableList'
 import { cx, Rich, ResumeViewContext, useItemProps } from './ResumeView'
@@ -80,8 +81,16 @@ function Roles({ roles }: { roles: ExperienceRole[] }) {
 /** A job or school, with its dates, location, summary and bullets. */
 export default function Experience({
   experience,
+  drag,
 }: {
   experience: ExperienceNode
+  /** In edit mode, how this job is dragged within its section. */
+  drag?: {
+    handle: JSX.HTMLAttributes<HTMLButtonElement>
+    dragging: boolean
+    dropBefore: boolean
+    dropAfter: boolean
+  }
 }) {
   const { id, type, organization, position, location, url, printHide } =
     experience
@@ -94,6 +103,7 @@ export default function Experience({
   )
   const { edit } = useContext(ResumeViewContext)
   if (!visible) return null
+  const draggable = edit && drag && !experience.hidden
 
   const endDate = experience.endDate && dateFns.parseISO(experience.endDate)
 
@@ -102,7 +112,24 @@ export default function Experience({
   // Only the heading is the organization's microdata, so links in the
   // bullets describe the page's Person (see collectTechnologies).
   return (
-    <section {...props} data-print-unit={id}>
+    <section
+      {...props}
+      class={cx(props.class, draggable && 'tailor-bullet')}
+      data-print-unit={id}
+      data-drag-item={draggable || undefined}
+      data-dragging={(draggable && drag.dragging) || undefined}
+      data-drop-before={(draggable && drag.dropBefore) || undefined}
+      data-drop-after={(draggable && drag.dropAfter) || undefined}
+    >
+      {draggable && (
+        <button
+          type="button"
+          class="tailor-handle tailor-handle-grip print:hidden"
+          aria-label={`Move ${organization}`}
+          title="Drag to reorder (or use the arrow keys)"
+          {...drag.handle}
+        />
+      )}
       <div
         class="contents"
         itemScope

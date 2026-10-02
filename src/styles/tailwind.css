@@ -248,6 +248,26 @@
     transform: scale(1.6);
     background: var(--color-accent);
   }
+  /* A job's or school's handle is a grip beside its name. */
+  .tailor-handle-grip {
+    left: -1.5em;
+    width: 1.5em;
+  }
+  .tailor-handle-grip::before {
+    content: '⠿';
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
+    opacity: 0.5;
+  }
+  .tailor-handle-grip:hover::before,
+  .tailor-handle-grip:focus-visible::before {
+    transform: none;
+    background: none;
+    color: var(--color-accent);
+    opacity: 1;
+  }
   .tailor-bullet[data-dragging] {
     opacity: 0.4;
   }
