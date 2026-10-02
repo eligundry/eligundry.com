@@ -120,7 +120,7 @@ export async function getResumeSource(): Promise<ResumeSource> {
       {
         id: 'section:work',
         title: 'Work',
-        printTitle: 'Selected Work History',
+        printTitle: 'Curated Work History',
         items: experienceNodes.filter((e) => e.type === 'work'),
       },
       {

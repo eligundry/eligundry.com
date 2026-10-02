@@ -1,9 +1,10 @@
 import { useRef, useState } from 'preact/hooks'
 import type { JSX } from 'preact'
 
-// Reordering a job's bullets in edit mode. Each bullet's marker is a handle
-// that can be dragged (mouse, touch or pen, through pointer events) or moved
-// with the arrow keys.
+// Reordering a list in edit mode: a job's bullets, the skill lines, the jobs
+// in a section… Each item (marked `data-drag-item`) has a handle that can be
+// dragged (mouse, touch or pen, through pointer events) or moved with the
+// arrow keys.
 
 /** Where a dragged bullet would land: before a bullet, or at the end. */
 type Drop = string | 'end'
@@ -19,11 +20,11 @@ export function moveBefore(ids: string[], id: string, before: Drop): string[] {
 
 const sameOrder = (a: string[], b: string[]) => a.join('\n') === b.join('\n')
 
-/** The bullet in the same list that a pointer at `y` would drop before. */
+/** The item in the same list that a pointer at `y` would drop before. */
 function dropAt(handle: Element, y: number): Drop {
   const items = handle
-    .closest('ul')
-    ?.querySelectorAll<HTMLElement>(':scope > li[data-resume-id]')
+    .closest('[data-drag-item]')
+    ?.parentElement?.querySelectorAll<HTMLElement>(':scope > [data-drag-item]')
   for (const item of items ?? []) {
     const { top, height } = item.getBoundingClientRect()
     if (y < top + height / 2) return item.dataset.resumeId!
@@ -34,7 +35,7 @@ function dropAt(handle: Element, y: number): Drop {
 const focusHandle = (id: string) =>
   requestAnimationFrame(() =>
     document
-      .querySelector<HTMLElement>(`[data-resume-id="${id}"] .tailor-handle`)
+      .querySelector<HTMLElement>(`[data-resume-id="${id}"] > .tailor-handle`)
       ?.focus()
   )
 

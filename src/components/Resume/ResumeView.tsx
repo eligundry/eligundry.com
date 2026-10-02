@@ -14,7 +14,9 @@ import type {
   SkillNode,
   TextNode,
 } from '../../lib/resume/model'
+import EditableList from './EditableList'
 import Experience from './Experience'
+import { useBulletDrag } from './useBulletDrag'
 
 // Renders the resume from the resume model. The plain resume and a tailored
 // one share this: tailoring only changes the model it's given and, through
@@ -31,12 +33,15 @@ export interface ResumeViewOptions {
   edit?: {
     /** The markdown a node is edited as, or undefined if it isn't editable. */
     markdown: (id: string) => string | undefined
-    /** Saves edited markdown. Empty markdown removes a bullet. */
+    /** Saves edited markdown. Empty markdown removes a list item. */
     save: (id: string, markdown: string) => void
-    addBullet: (parentId: string) => void
-    removeBullet: (id: string) => void
-    /** Puts a job's bullets (`parentId`) in the order of `ids`. */
-    moveBullets: (parentId: string, ids: string[]) => void
+    /** Adds an empty item to a job, section or activity. */
+    addItem: (parentId: string) => void
+    removeItem: (id: string) => void
+    /** Puts a list's items (`parentId`'s) in the order of `ids`. */
+    moveItems: (parentId: string, ids: string[]) => void
+    /** Puts a job or school on the printed resume, or leaves it off. */
+    setPrinted: (id: string, printed: boolean) => void
     /** Text to start editing as soon as it's rendered, e.g. a new bullet. */
     focusId?: string
     clearFocus: () => void
@@ -275,6 +280,39 @@ function Section({
   )
 }
 
+/** A section's jobs or schools, which can be dragged into a new order. */
+function ExperienceList({
+  section,
+}: {
+  section: Extract<ResumeSection, { id: 'section:work' | 'section:education' }>
+}) {
+  const { edit } = useContext(ResumeViewContext)
+  const items = section.items
+  const shown = items.filter((item) => !item.hidden).map((item) => item.id)
+  const drag = useBulletDrag(
+    items.map((item) => item.id),
+    shown,
+    edit && ((ids) => edit.moveItems(section.id, ids))
+  )
+  return (
+    <>
+      {items.map((experience) => (
+        <Experience
+          key={experience.id}
+          experience={experience}
+          drag={{
+            handle: drag.handleProps(experience.id),
+            dragging: drag.dragging === experience.id,
+            dropBefore: drag.drop === experience.id,
+            dropAfter:
+              drag.drop === 'end' && experience.id === shown[shown.length - 1],
+          }}
+        />
+      ))}
+    </>
+  )
+}
+
 /** "a", "a and b" or "a, b, and c". */
 function joinWithAnd(items: ComponentChildren[]): ComponentChildren[] {
   return items.flatMap((item, i) => {
@@ -286,9 +324,6 @@ function joinWithAnd(items: ComponentChildren[]): ComponentChildren[] {
 }
 
 function SkillLine({ skill }: { skill: SkillNode }) {
-  const { visible, props } = useItemProps(skill)
-  if (!visible) return null
-
   const keywords = skill.keywords.map((keyword) =>
     keyword.url ? (
       <a href={keyword.url} itemProp="knowsAbout" target="_blank">
@@ -299,32 +334,27 @@ function SkillLine({ skill }: { skill: SkillNode }) {
     )
   )
   return (
-    <Rich
-      as="li"
-      {...props}
-      node={{ id: skill.id, html: skill.html }}
-      data-print-unit={skill.id}
-    >
+    <Rich node={{ id: skill.id, html: skill.html }}>
       {skill.lead} {joinWithAnd(keywords)}.
     </Rich>
   )
 }
 
-function Activity({ activity }: { activity: ActivityNode }) {
-  const { visible, props } = useItemProps(activity)
-  if (!visible) return null
-
+/** An activity's sub-items, e.g. the hackathons. */
+function SubItems({ activity }: { activity: ActivityNode }) {
   return (
-    <li {...props} data-print-unit={activity.id}>
-      <Rich node={activity} />
-      {activity.children && (
-        <ul class={activity.childrenClass}>
-          {activity.children.map((child) => (
-            <Rich as="li" key={child.id} node={child} />
-          ))}
-        </ul>
+    <EditableList
+      parentId={activity.id}
+      items={activity.children ?? []}
+      class={cx(
+        activity.childrenClass,
+        // Columns would otherwise start at different heights.
+        '[&>li]:my-0 [&>li]:break-inside-avoid'
       )}
-    </li>
+      addLabel="Add sub-item"
+      nested
+      renderItem={(child) => <Rich node={child} />}
+    />
   )
 }
 
@@ -372,20 +402,22 @@ export default function ResumeView({
 
   return (
     <div
-      class="paper gap-4 flex flex-col [&_.prose_ul]:list-outside [&_.prose_ul]:pl-1 [&_.prose_ul]:sm:pl-0 [&_.prose_ul_li]:pl-0 [&_.prose_ul_ul]:pl-4 [&_.prose_ul_ul]:my-0 [&_.prose]:print:text-sm"
+      class="paper gap-4 print:gap-3 flex flex-col [&_.prose_ul]:list-outside [&_.prose_ul]:pl-1 [&_.prose_ul]:sm:pl-0 [&_.prose_ul]:print:pl-4 [&_.prose_ul_li]:pl-0 [&_.prose_ul_ul]:pl-4 [&_.prose_ul_ul]:my-0 [&_.prose]:print:text-sm"
       data-resume-root
       data-tailor-density={density}
       style={fontScale === 1 ? undefined : { '--tailor-font-scale': fontScale }}
     >
       <header
-        class="hidden print:flex flex-row justify-between prose border-b-2 border-b-accent"
+        class="hidden print:flex flex-row items-baseline justify-between gap-4 prose border-b-2 border-b-accent"
         data-print-unit="basics"
       >
-        <h1 class="text-lg mb-0">{basics.name}</h1>
-        <h2 class="text-sm mt-0 font-mono! self-center">
+        <h1 class="text-lg mb-0 whitespace-nowrap">{basics.name}</h1>
+        {/* The headline is styled like code: the label, then the tagline as a
+            comment. It stays on one line. */}
+        <h2 class="text-base my-0 font-mono! whitespace-nowrap">
           <Rich class="text-primary" node={basics.label} />{' '}
-          <span class="comment">
-            // <Rich class="font-normal" node={basics.tagline} />
+          <span class="font-normal text-gray-500">
+            // <Rich node={basics.tagline} />
           </span>
         </h2>
       </header>
@@ -415,9 +447,7 @@ export default function ResumeView({
                 section={section}
                 header={section.id === 'section:work' && actions(onStartEdit)}
               >
-                {section.items.map((experience) => (
-                  <Experience key={experience.id} experience={experience} />
-                ))}
+                <ExperienceList section={section} />
               </Section>
             )
           case 'section:skills':
@@ -425,13 +455,15 @@ export default function ResumeView({
               <Section
                 key={section.id}
                 section={section}
-                className="[&>ul]:mt-0"
+                className="[&>ul]:my-0"
               >
-                <ul>
-                  {section.items.map((skill) => (
-                    <SkillLine key={skill.id} skill={skill} />
-                  ))}
-                </ul>
+                <EditableList
+                  parentId={section.id}
+                  items={section.items}
+                  addLabel="Add skill line"
+                  printUnits
+                  renderItem={(skill) => <SkillLine skill={skill} />}
+                />
               </Section>
             )
           case 'section:activities':
@@ -439,13 +471,16 @@ export default function ResumeView({
               <Section
                 key={section.id}
                 section={section}
-                className="[&>ul]:mt-0"
+                className="[&>ul]:my-0"
               >
-                <ul>
-                  {section.items.map((activity) => (
-                    <Activity key={activity.id} activity={activity} />
-                  ))}
-                </ul>
+                <EditableList
+                  parentId={section.id}
+                  items={section.items}
+                  addLabel="Add activity"
+                  printUnits
+                  renderItem={(activity) => <Rich node={activity} />}
+                  renderSublist={(activity) => <SubItems activity={activity} />}
+                />
               </Section>
             )
         }

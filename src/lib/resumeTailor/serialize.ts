@@ -117,10 +117,14 @@ export function parseOp(value: unknown): Op {
       if (typeof op.visible !== 'boolean') {
         throw new InvalidOp('visible must be a boolean')
       }
+      if (op.print !== undefined && typeof op.print !== 'boolean') {
+        throw new InvalidOp('print must be a boolean')
+      }
       return {
         type: 'setVisibility',
         ids: strArray(op.ids, 'ids'),
         visible: op.visible,
+        ...(op.print ? { print: true as const } : {}),
       }
     case 'reorder':
       return {

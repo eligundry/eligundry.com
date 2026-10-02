@@ -105,7 +105,7 @@ describe('TailoredResume', () => {
     expect(rewrite.effective.html).toBe(html)
     expect(rewrite.warnings).toBeUndefined()
     await waitFor(() => expect(item('radioshack')).toBeNull())
-    expect(item('chord:0')?.innerHTML).toBe(html)
+    expect(item('chord:0')?.firstElementChild?.innerHTML).toBe(html)
     expect(screen.getByText('Tailored for Staff Engineer at Acme')).toBeTruthy()
     expect(screen.getByText('Lead with SDKs')).toBeTruthy()
     expect(document.title).toContain('Acme Staff Engineer')
@@ -279,7 +279,7 @@ describe('TailoredResume', () => {
   test('removes a bullet by hand and reverts it', async () => {
     render(<TailoredResume source={fixtureSource()} editing />)
     const [remove] = await screen.findAllByRole('button', {
-      name: 'Remove bullet',
+      name: 'Remove item',
     })
     fireEvent.click(remove)
 
@@ -340,6 +340,104 @@ describe('TailoredResume', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Revert' }))
     await waitFor(() => expect(screen.getByText('0 changes')).toBeTruthy())
     expect(order()).toEqual(['chord:0', 'chord:1'])
+  })
+
+  test('reorders and removes skill lines, activities and sub-items', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const ids = (prefix: string) =>
+      [...document.querySelectorAll(`li[data-resume-id^="${prefix}"]`)].map(
+        (li) => li.getAttribute('data-resume-id')
+      )
+    const handle = (id: string) =>
+      document.querySelector<HTMLElement>(
+        `[data-resume-id="${id}"] > .tailor-handle`
+      )!
+    const remove = (id: string) =>
+      document.querySelector<HTMLElement>(
+        `[data-resume-id="${id}"] > .tailor-remove`
+      )!
+    await waitFor(() => expect(handle('skills:languages')).toBeTruthy())
+
+    fireEvent.keyDown(handle('skills:languages'), { key: 'ArrowDown' })
+    await waitFor(() =>
+      expect(ids('skills:')).toEqual(['skills:frameworks', 'skills:languages'])
+    )
+
+    fireEvent.keyDown(handle('activities:talks:child:1'), { key: 'ArrowUp' })
+    await waitFor(() =>
+      expect(ids('activities:talks:')).toEqual([
+        'activities:talks:child:1',
+        'activities:talks:child:0',
+      ])
+    )
+
+    fireEvent.click(remove('activities:eagle-scout'))
+    await waitFor(() =>
+      expect(
+        document.querySelector('[data-resume-id="activities:eagle-scout"]')
+      ).toBeNull()
+    )
+    fireEvent.click(screen.getByText(/3 changes/))
+    expect(screen.getByText('Removed by hand')).toBeTruthy()
+  })
+
+  test('reorders jobs with their grips', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const jobs = () =>
+      [
+        ...document.querySelectorAll(
+          '[data-resume-id="section:work"] > section[data-resume-id]'
+        ),
+      ].map((job) => job.getAttribute('data-resume-id'))
+    const grip = (id: string) =>
+      document.querySelector<HTMLElement>(
+        `[data-resume-id="${id}"] > .tailor-handle-grip`
+      )!
+    await waitFor(() => expect(grip('chord')).toBeTruthy())
+
+    fireEvent.keyDown(grip('chord'), { key: 'ArrowDown' })
+    await waitFor(() => expect(jobs()).toEqual(['radioshack', 'chord']))
+    fireEvent.click(screen.getByText(/1 change/))
+    expect(screen.getByText('Reordered by hand')).toBeTruthy()
+  })
+
+  test('adds a sub-item to an activity', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const [add] = await screen.findAllByText('+ Add sub-item')
+    fireEvent.click(add)
+    const sub = await waitFor(() => {
+      const element = editable('activities:album-mode:+1')
+      expect(element?.getAttribute('contenteditable')).toBe('plaintext-only')
+      return element!
+    })
+    sub.textContent = 'Built with Remix'
+    leave(sub)
+    await waitFor(() =>
+      expect(
+        document.querySelector('[data-resume-id="activities:album-mode:+1"]')
+          ?.textContent
+      ).toContain('Built with Remix')
+    )
+  })
+
+  test('leaves a job off the printed resume and puts it back', async () => {
+    render(<TailoredResume source={fixtureSource()} editing />)
+    const toggle = () =>
+      document.querySelector<HTMLElement>(
+        '[data-resume-id="chord"] > .tailor-print-toggle'
+      )!
+    await waitFor(() => expect(toggle()).toBeTruthy())
+    expect(toggle().getAttribute('aria-pressed')).toBe('true')
+
+    fireEvent.click(toggle())
+    await waitFor(() =>
+      expect(
+        document.querySelector('[data-resume-id="chord"]')?.className
+      ).toContain('print:hidden')
+    )
+    expect(toggle().getAttribute('aria-pressed')).toBe('false')
+    fireEvent.click(toggle())
+    await waitFor(() => expect(screen.getByText('0 changes')).toBeTruthy())
   })
 
   test('returns invalid changes as tool errors', async () => {

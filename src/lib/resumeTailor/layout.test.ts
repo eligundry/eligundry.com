@@ -38,6 +38,7 @@ describe('paginate', () => {
     ])
     expect(layout.lastPageFillPercent).toBe(50)
     expect(layout.hints.join(' ')).toMatch(/b was pushed to page 2/)
+    expect(layout.breaks).toEqual([{ page: 2, id: 'b', offsetPx: 0 }])
   })
 
   test('splits breakable blocks', () => {
@@ -47,6 +48,8 @@ describe('paginate', () => {
     )
     expect(layout.splits).toEqual([{ id: 'b', page: 1, continuesOnPage: 2 }])
     expect(layout.pageCount).toBe(2)
+    // The page starts 100px into b.
+    expect(layout.breaks).toEqual([{ page: 2, id: 'b', offsetPx: 100 }])
   })
 
   test('honors forced breaks', () => {

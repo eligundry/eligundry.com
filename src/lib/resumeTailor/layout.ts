@@ -19,13 +19,22 @@ export const PAGE = {
   marginTopIn: 0.4,
   marginSideIn: 0.4,
   marginBottomIn: 0.5 / 2.54,
+  // Space kept free at the bottom of every page for the fixed print footer.
+  // The resume's bottom padding is cloned onto each page fragment
+  // (`box-decoration-break: clone`), so content stops above the footer.
+  footerReserveIn: 0.4,
 }
 
 const PX_PER_IN = 96
 
 const printableWidthIn = PAGE.widthIn - PAGE.marginSideIn * 2
+/** The height of a page that content can fill, above the footer. */
 export const printableHeightPx = () =>
-  (PAGE.heightIn - PAGE.marginTopIn - PAGE.marginBottomIn) * PX_PER_IN
+  (PAGE.heightIn -
+    PAGE.marginTopIn -
+    PAGE.marginBottomIn -
+    PAGE.footerReserveIn) *
+  PX_PER_IN
 
 export interface Unit {
   id: string
@@ -53,6 +62,11 @@ export interface PrintLayout {
   footerOverlaps: { id: string; page: number; overlapPx: number }[]
   /** Y offsets (px, relative to the first block) where each page starts. */
   pageStarts: number[]
+  /**
+   * Where each page after the first starts on screen: `offsetPx` below the
+   * top of block `id` (negative when the page starts in the gap above it).
+   */
+  breaks: { page: number; id: string; offsetPx: number }[]
   hints: string[]
 }
 
@@ -80,15 +94,21 @@ export function paginate(
     }
   }
   const pageStarts = [0]
+  const breaks: PrintLayout['breaks'] = []
   const unitPage = new Map<string, number>()
   let shift = 0
   let pageEnd = usable
   let lastBottom = 0
 
-  const newPage = (at: number) => {
+  const newPage = (at: number, unit: Unit, offsetPx: number) => {
     pageStarts.push(at)
     pageEnd = at + usable
     pages.push({ page: pages.length + 1, ids: [] })
+    breaks.push({
+      page: pages.length,
+      id: unit.id,
+      offsetPx: Math.round(offsetPx),
+    })
   }
 
   for (const unit of units) {
@@ -98,10 +118,10 @@ export function paginate(
     if (unit.breakBefore && top > pageStart + 0.5) {
       shift += pageEnd - top
       top = pageEnd
-      newPage(pageEnd)
+      newPage(pageEnd, unit, 0)
     }
     while (top >= pageEnd) {
-      newPage(pageEnd)
+      newPage(pageEnd, unit, pageEnd - top)
     }
 
     const bottom = top + unit.height
@@ -113,7 +133,7 @@ export function paginate(
       ) {
         const gap = pageEnd - top
         shift += gap
-        newPage(pageEnd)
+        newPage(pageEnd, unit, 0)
         top = pageEnd - usable
         pushed.push({
           id: unit.id,
@@ -127,7 +147,7 @@ export function paginate(
         unitPage.set(unit.id, startPage)
         checkFooter(unit.id, pageEnd)
         while (bottom > pageEnd + 0.5) {
-          newPage(pageEnd)
+          newPage(pageEnd, unit, pageEnd - top)
         }
         splits.push({
           id: unit.id,
@@ -205,6 +225,7 @@ export function paginate(
     orphanedHeadings,
     footerOverlaps,
     pageStarts: pageStarts.map(Math.round),
+    breaks,
     hints,
   }
 }
@@ -212,8 +233,12 @@ export function paginate(
 const nextFrame = (win: Window = window) =>
   new Promise<void>((resolve) => win.requestAnimationFrame(() => resolve()))
 
-/** The `@page` rule for the resume, so the page size lives in one place. */
-export const pageCss = `@page { size: ${PAGE.widthIn}in ${PAGE.heightIn}in; margin: ${PAGE.marginTopIn}in ${PAGE.marginSideIn}in ${PAGE.marginBottomIn}in; }`
+/**
+ * The `@page` rule and the footer reserve for the resume, so the page size
+ * lives in one place.
+ */
+export const pageCss = `@page { size: ${PAGE.widthIn}in ${PAGE.heightIn}in; margin: ${PAGE.marginTopIn}in ${PAGE.marginSideIn}in ${PAGE.marginBottomIn}in; }
+@media print { [data-resume-root] { padding-bottom: ${PAGE.footerReserveIn}in; box-decoration-break: clone; -webkit-box-decoration-break: clone; } }`
 
 /** `@media print` rules from a rule list, rewritten to apply to all media. */
 function printRules(
@@ -282,11 +307,39 @@ function emulatePrint(doc: Document, extraCss = ''): HTMLStyleElement {
 /** Switches the page into (or out of) an on-screen print preview. */
 export function setPrintPreview(on: boolean) {
   document.getElementById(PREVIEW_STYLE_ID)?.remove()
+  showPageBreaks(undefined)
   if (on) {
     emulatePrint(
       document,
-      `#main-content { width: ${printableWidthIn}in !important; max-width: ${printableWidthIn}in !important; outline: 1px dashed var(--color-base-300); }`
+      `#main-content { width: ${printableWidthIn}in !important; max-width: ${printableWidthIn}in !important; outline: 1px dashed var(--color-base-300); }
+[data-resume-root] { position: relative; }
+.print-page-break { position: absolute; inset-inline: -0.5in; height: 0; border-top: 2px dashed var(--color-error); pointer-events: none; z-index: 10; }
+.print-page-break::after { content: attr(data-label); position: absolute; right: 0; top: 0; padding: 0 0.5em; font: 600 0.7rem/1.4 var(--font-sans); color: var(--color-error-content); background: var(--color-error); border-radius: 0 0 0.25rem 0.25rem; }
+@media print { .print-page-break { display: none; } }`
     )
+  }
+}
+
+const BREAK_CLASS = 'print-page-break'
+
+/**
+ * Draws a dashed line across the on-screen print preview wherever `layout`
+ * says a new printed page starts, or removes them without a layout.
+ */
+export function showPageBreaks(layout: PrintLayout | undefined) {
+  document.querySelectorAll(`.${BREAK_CLASS}`).forEach((el) => el.remove())
+  const root = document.querySelector<HTMLElement>('[data-resume-root]')
+  if (!layout || !root) return
+  const rootTop = root.getBoundingClientRect().top
+  for (const { page, id, offsetPx } of layout.breaks) {
+    const unit = root.querySelector(`[data-print-unit="${CSS.escape(id)}"]`)
+    if (!unit) continue
+    const line = document.createElement('div')
+    line.className = BREAK_CLASS
+    line.setAttribute('aria-hidden', 'true')
+    line.dataset.label = `Page ${page} of ${layout.pageCount}`
+    line.style.top = `${unit.getBoundingClientRect().top - rootTop + offsetPx}px`
+    root.append(line)
   }
 }
 
@@ -295,7 +348,7 @@ async function createPrintFrame(): Promise<HTMLIFrameElement> {
   const clone = document.documentElement.cloneNode(true) as HTMLElement
   clone
     // The resume is inside an astro-island, so only scripts are removed.
-    .querySelectorAll('script, iframe, astro-dev-toolbar')
+    .querySelectorAll(`script, iframe, astro-dev-toolbar, .${BREAK_CLASS}`)
     .forEach((el) => el.remove())
   clone.querySelector(`#${PREVIEW_STYLE_ID}`)?.remove()
   const base = document.createElement('base')
@@ -376,10 +429,16 @@ export async function measurePrintLayout(
       }
     })
 
+    // Content stops at the footer reserve, so the footer only covers it if
+    // it's taller than the reserve.
     const footer = doc.querySelector<HTMLElement>('[data-print-footer]')
+    const footerHeight = footer?.getBoundingClientRect().height ?? 0
     return paginate(units, printableHeightPx(), {
       targetPages,
-      footerHeight: footer?.getBoundingClientRect().height ?? 0,
+      footerHeight: Math.max(
+        0,
+        footerHeight - PAGE.footerReserveIn * PX_PER_IN
+      ),
     })
   } finally {
     frame.remove()

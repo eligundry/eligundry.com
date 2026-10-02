@@ -279,6 +279,7 @@ export type ResumeNodeRef =
   | { kind: 'summary'; node: TextNode; parent: ExperienceNode }
   | { kind: 'skill'; node: SkillNode; section: ResumeSection }
   | { kind: 'activity'; node: ActivityNode; section: ResumeSection }
+  | { kind: 'subItem'; node: TextNode; parent: ActivityNode }
   | { kind: 'basics'; node: TextNode }
 
 export function indexResume(source: ResumeSource): Map<string, ResumeNodeRef> {
@@ -318,11 +319,15 @@ export function indexResume(source: ResumeSource): Map<string, ResumeNodeRef> {
       } else if (section.id === 'section:skills') {
         index.set(item.id, { kind: 'skill', node: item as SkillNode, section })
       } else {
-        index.set(item.id, {
-          kind: 'activity',
-          node: item as ActivityNode,
-          section,
-        })
+        const activity = item as ActivityNode
+        index.set(activity.id, { kind: 'activity', node: activity, section })
+        for (const child of activity.children ?? []) {
+          index.set(child.id, {
+            kind: 'subItem',
+            node: child,
+            parent: activity,
+          })
+        }
       }
     }
   }
@@ -341,6 +346,7 @@ export function editableMarkdown(
     case 'highlight':
     case 'summary':
     case 'activity':
+    case 'subItem':
       return inlineHtmlToMarkdown(ref.node.markdown)
     case 'skill':
       return skillMarkdown(ref.node)

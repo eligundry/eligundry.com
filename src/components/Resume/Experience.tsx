@@ -6,8 +6,9 @@ import type {
 } from '../../lib/resume/model'
 import { useContext } from 'preact/hooks'
 import type { JSX } from 'preact'
+import { FaPrint } from 'react-icons/fa'
+import EditableList from './EditableList'
 import { cx, Rich, ResumeViewContext, useItemProps } from './ResumeView'
-import { useBulletDrag } from './useBulletDrag'
 
 function Time({ date, itemProp }: { date: Date; itemProp: string }) {
   return (
@@ -80,8 +81,16 @@ function Roles({ roles }: { roles: ExperienceRole[] }) {
 /** A job or school, with its dates, location, summary and bullets. */
 export default function Experience({
   experience,
+  drag,
 }: {
   experience: ExperienceNode
+  /** In edit mode, how this job is dragged within its section. */
+  drag?: {
+    handle: JSX.HTMLAttributes<HTMLButtonElement>
+    dragging: boolean
+    dropBefore: boolean
+    dropAfter: boolean
+  }
 }) {
   const { id, type, organization, position, location, url, printHide } =
     experience
@@ -93,13 +102,8 @@ export default function Experience({
     )
   )
   const { edit } = useContext(ResumeViewContext)
-  const shown = experience.highlights.filter((h) => !h.hidden).map((h) => h.id)
-  const drag = useBulletDrag(
-    experience.highlights.map((h) => h.id),
-    shown,
-    edit && ((ids) => edit.moveBullets(id, ids))
-  )
   if (!visible) return null
+  const draggable = edit && drag && !experience.hidden
 
   const endDate = experience.endDate && dateFns.parseISO(experience.endDate)
 
@@ -108,7 +112,24 @@ export default function Experience({
   // Only the heading is the organization's microdata, so links in the
   // bullets describe the page's Person (see collectTechnologies).
   return (
-    <section {...props} data-print-unit={id}>
+    <section
+      {...props}
+      class={cx(props.class, draggable && 'tailor-bullet')}
+      data-print-unit={id}
+      data-drag-item={draggable || undefined}
+      data-dragging={(draggable && drag.dragging) || undefined}
+      data-drop-before={(draggable && drag.dropBefore) || undefined}
+      data-drop-after={(draggable && drag.dropAfter) || undefined}
+    >
+      {draggable && (
+        <button
+          type="button"
+          class="tailor-handle tailor-handle-grip print:hidden"
+          aria-label={`Move ${organization}`}
+          title="Drag to reorder (or use the arrow keys)"
+          {...drag.handle}
+        />
+      )}
       <div
         class="contents"
         itemScope
@@ -176,87 +197,40 @@ export default function Experience({
           </span>
         </address>
       </div>
-      {experience.summary && <SummaryParagraph summary={experience.summary} />}
-      {experience.highlights.length > 0 && (
-        <ul class="order-5 w-full my-0">
-          {experience.highlights.map((highlight) => (
-            <Bullet
-              key={highlight.id}
-              bullet={highlight}
-              handle={drag.handleProps(highlight.id)}
-              dragging={drag.dragging === highlight.id}
-              dropBefore={drag.drop === highlight.id}
-              dropAfter={
-                drag.drop === 'end' && highlight.id === shown[shown.length - 1]
-              }
-            />
-          ))}
-        </ul>
-      )}
       {edit && (
         <button
           type="button"
-          class="tailor-add order-5 print:hidden"
-          onClick={() => edit.addBullet(id)}
+          class={cx(
+            'tailor-print-toggle order-5 print:hidden',
+            printHide && 'tailor-print-off'
+          )}
+          aria-pressed={!printHide}
+          title={
+            printHide
+              ? 'Left off the printed resume. Click to print it.'
+              : 'On the printed resume. Click to leave it off.'
+          }
+          onClick={() => edit.setPrinted(id, Boolean(printHide))}
         >
-          + Add bullet
+          <FaPrint aria-hidden /> {printHide ? 'Not printed' : 'Printed'}
         </button>
       )}
+      {experience.summary && <SummaryParagraph summary={experience.summary} />}
+      <EditableList
+        parentId={id}
+        items={experience.highlights}
+        class="order-5 w-full my-0"
+        addLabel="Add bullet"
+        renderItem={(bullet) => <Rich node={bullet} />}
+      />
     </section>
   )
 }
 
-function Bullet({
-  bullet,
-  handle,
-  dragging,
-  dropBefore,
-  dropAfter,
-}: {
-  bullet: TextNode
-  /** Props for the marker that drags the bullet, in edit mode. */
-  handle: JSX.HTMLAttributes<HTMLButtonElement>
-  dragging: boolean
-  dropBefore: boolean
-  dropAfter: boolean
-}) {
-  const { visible, props } = useItemProps(bullet)
-  const { edit } = useContext(ResumeViewContext)
-  if (!visible) return null
-  if (!edit || bullet.hidden) return <Rich as="li" {...props} node={bullet} />
-
-  // The list marker becomes a handle: CSS markers can't be dragged, so it's
-  // drawn by a button in the same place.
-  return (
-    <li
-      {...props}
-      class={cx(props.class, 'tailor-bullet')}
-      data-dragging={dragging || undefined}
-      data-drop-before={dropBefore || undefined}
-      data-drop-after={dropAfter || undefined}
-    >
-      <button
-        type="button"
-        class="tailor-handle print:hidden"
-        aria-label="Move bullet"
-        title="Drag to reorder (or use the arrow keys)"
-        {...handle}
-      />
-      <Rich node={bullet} />
-      <button
-        type="button"
-        class="tailor-remove print:hidden"
-        aria-label="Remove bullet"
-        title="Remove bullet"
-        onClick={() => edit.removeBullet(bullet.id)}
-      >
-        ×
-      </button>
-    </li>
-  )
-}
-
 function SummaryParagraph({ summary }: { summary: TextNode }) {
-  const { visible, props } = useItemProps(summary, 'order-5 w-full my-2')
+  const { visible, props } = useItemProps(
+    summary,
+    'order-5 w-full my-2 print:my-1'
+  )
   return visible ? <Rich as="p" {...props} node={summary} /> : null
 }

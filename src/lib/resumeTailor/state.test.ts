@@ -1,19 +1,22 @@
 import { describe, expect, test } from 'vitest'
 import { fixtureSource } from '../resume/__fixtures__/source'
 import {
+  editableMarkdown,
   indexResume,
+  type ActivityNode,
   type ExperienceNode,
   type SkillNode,
 } from '../resume/model'
 import {
   addChange,
-  addManualBullet,
+  addManualItem,
   addManualEdit,
   emptyState,
   newItemId,
-  removeManualBullet,
+  removeManualItem,
   reorderManually,
   revertChange,
+  setPrintedManually,
   tailor,
   TailorError,
   type Op,
@@ -52,11 +55,36 @@ describe('tailor', () => {
     expect(tailored.source.sections[2].hidden).toBe(true)
   })
 
-  test('showing a print-hidden job puts it back in print', () => {
+  test('showing a print-hidden job keeps it off the printed resume', () => {
     const { tailored } = apply([
       { type: 'setVisibility', ids: ['radioshack'], visible: true },
     ])
+    expect(node<ExperienceNode>(tailored, 'radioshack').printHide).toBe(true)
+  })
+
+  test('puts a job on the printed resume, or leaves it off', () => {
+    let { tailored } = apply([
+      {
+        type: 'setVisibility',
+        ids: ['radioshack'],
+        visible: true,
+        print: true,
+      },
+      { type: 'setVisibility', ids: ['chord'], visible: false, print: true },
+    ])
     expect(node<ExperienceNode>(tailored, 'radioshack').printHide).toBe(false)
+    expect(node<ExperienceNode>(tailored, 'chord').printHide).toBe(true)
+    expect(node<ExperienceNode>(tailored, 'chord').hidden).toBeUndefined()
+    expect(() =>
+      apply([
+        {
+          type: 'setVisibility',
+          ids: ['chord:0'],
+          visible: false,
+          print: true,
+        },
+      ])
+    ).toThrow(/Only jobs and schools/)
   })
 
   test('reorders, keeping unlisted ids after the listed ones', () => {
@@ -321,7 +349,7 @@ describe('adding and removing bullets by hand', () => {
       .map((h) => h.markdown)
 
   test('adds a bullet, and editing it updates the change that added it', () => {
-    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    let { state, id } = addManualItem(base, emptyState(), 'chord')
     expect(id).toBe('chord:+1')
     expect(state.changes).toEqual([
       expect.objectContaining({
@@ -337,18 +365,18 @@ describe('adding and removing bullets by hand', () => {
   })
 
   test('a bullet added by hand and left empty is dropped', () => {
-    const { state, id } = addManualBullet(base, emptyState(), 'chord')
+    const { state, id } = addManualItem(base, emptyState(), 'chord')
     expect(addManualEdit(base, state, id, '').state.changes).toEqual([])
   })
 
   test('removing a bullet added by hand drops it and its changes', () => {
-    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    let { state, id } = addManualItem(base, emptyState(), 'chord')
     ;({ state } = addManualEdit(base, state, id, 'Shipped it.'))
-    expect(removeManualBullet(base, state, id).state.changes).toEqual([])
+    expect(removeManualItem(base, state, id).state.changes).toEqual([])
   })
 
   test('removing a bullet from the content hides it, which can be reverted', () => {
-    const { state } = removeManualBullet(base, emptyState(), 'chord:0')
+    const { state } = removeManualItem(base, emptyState(), 'chord:0')
     expect(state.changes).toEqual([
       expect.objectContaining({
         op: { type: 'setVisibility', ids: ['chord:0'], visible: false },
@@ -390,16 +418,114 @@ describe('reorderManually', () => {
   })
 
   test('dropping a reordered bullet added by hand keeps the rest of the order', () => {
-    let { state, id } = addManualBullet(base, emptyState(), 'chord')
+    let { state, id } = addManualItem(base, emptyState(), 'chord')
     ;({ state } = addManualEdit(base, state, id, 'New.'))
     ;({ state } = reorderManually(base, state, 'chord', [
       id,
       'chord:1',
       'chord:0',
     ]))
-    ;({ state } = removeManualBullet(base, state, id))
+    ;({ state } = removeManualItem(base, state, id))
 
     expect(tailor(base, state).log.filter((c) => c.error)).toEqual([])
     expect(order(state)).toEqual(['chord:1', 'chord:0'])
+  })
+})
+
+describe('editing skills, activities and sub-items by hand', () => {
+  const ids = (state: TailorState, sectionId: string) =>
+    tailor(base, state)
+      .source.sections.find((s) => s.id === sectionId)!
+      .items.filter((item) => !item.hidden)
+      .map((item) => item.id)
+  const children = (state: TailorState) =>
+    node<ActivityNode>(tailor(base, state), 'activities:talks')
+      .children!.filter((c) => !c.hidden)
+      .map((c) => c.markdown)
+
+  test('reorders and removes skill lines and activities', () => {
+    let { state } = reorderManually(base, emptyState(), 'section:skills', [
+      'skills:frameworks',
+      'skills:languages',
+    ])
+    ;({ state } = removeManualItem(base, state, 'activities:eagle-scout'))
+    expect(ids(state, 'section:skills')).toEqual([
+      'skills:frameworks',
+      'skills:languages',
+    ])
+    expect(ids(state, 'section:activities')).toEqual([
+      'activities:album-mode',
+      'activities:talks',
+    ])
+  })
+
+  test('adds, edits, reorders and removes sub-items', () => {
+    let { state, id } = addManualItem(base, emptyState(), 'activities:talks')
+    expect(id).toBe('activities:talks:+1')
+    ;({ state } = addManualEdit(base, state, id, 'The NYC Vim Meetup'))
+    ;({ state } = addManualEdit(
+      base,
+      state,
+      'activities:talks:child:0',
+      '[Remix NYC](https://remix.run/)'
+    ))
+    expect(editableMarkdown(tailor(base, state).source, id)).toBe(
+      'The NYC Vim Meetup'
+    )
+    ;({ state } = reorderManually(base, state, 'activities:talks', [
+      id,
+      'activities:talks:child:1',
+    ]))
+    ;({ state } = removeManualItem(base, state, 'activities:talks:child:1'))
+    expect(children(state)).toEqual([
+      'The NYC Vim Meetup',
+      '[Remix NYC](https://remix.run/)',
+    ])
+  })
+
+  test('starts a sub-list under an activity without one', () => {
+    let { state, id } = addManualItem(
+      base,
+      emptyState(),
+      'activities:album-mode'
+    )
+    ;({ state } = addManualEdit(base, state, id, 'Built with Remix'))
+    expect(
+      node<ActivityNode>(
+        tailor(base, state),
+        'activities:album-mode'
+      ).children?.map((c) => c.markdown)
+    ).toEqual(['Built with Remix'])
+  })
+
+  test('dropping an activity added by hand drops its sub-items', () => {
+    let { state, id } = addManualItem(base, emptyState(), 'section:activities')
+    ;({ state } = addManualEdit(base, state, id, 'Ran a meetup'))
+    const sub = addManualItem(base, state, id)
+    ;({ state } = addManualEdit(base, sub.state, sub.id, 'Monthly'))
+    expect(removeManualItem(base, state, id).state.changes).toEqual([])
+  })
+})
+
+describe('setPrintedManually', () => {
+  test('toggles a job on and off the printed resume', () => {
+    let { state } = setPrintedManually(base, emptyState(), 'radioshack', true)
+    expect(state.changes).toEqual([
+      expect.objectContaining({
+        op: {
+          type: 'setVisibility',
+          ids: ['radioshack'],
+          visible: true,
+          print: true,
+        },
+        manual: true,
+      }),
+    ])
+    expect(
+      node<ExperienceNode>(tailor(base, state), 'radioshack').printHide
+    ).toBe(false)
+    // Toggling straight back undoes it.
+    ;({ state } = setPrintedManually(base, state, 'radioshack', false))
+    expect(state.changes).toEqual([])
   })
 })

@@ -98,7 +98,7 @@ schema.org `Person`.
 The pencil button next to the download button, or a `/resume/#edit` link,
 loads `TailoredResume` in edit mode. You can also turn it on with "Edit text"
 in the panel. In edit mode, `Rich` renders each editable piece of text
-(bullets, summaries, skill lines, activities, section titles) as
+(bullets, summaries, skill lines, activities and their sub-items, section titles) as
 `contenteditable="plaintext-only"`. Focusing it shows its markdown, and leaving
 it, or pressing Enter, saves it with `addManualEdit()`. Escape cancels. A hand
 edit is a `rewrite` change marked `manual`, so it appears in the change log
@@ -106,21 +106,35 @@ edit is a `rewrite` change marked `manual`, so it appears in the change log
 same text again straight away updates that change instead of adding another.
 Shared links drop `edit` from the hash, so they open read-only.
 
-Edit mode can also add and remove job bullets. "+ Add bullet" adds an empty
-bullet by hand (`addManualBullet()`, a manual `addItem`) and starts editing it.
-Editing it updates that `addItem` instead of logging a `rewrite`, and leaving
-it empty drops it. A bullet's "×", or saving it empty, removes it
-(`removeManualBullet()`): a bullet added by hand is dropped with its changes;
-one from the content is hidden by a manual `setVisibility`, which "Revert"
-undoes.
+Every list is an `EditableList`: a job's bullets, the skill lines, the
+activities and an activity's sub-items (`activities:<id>:child:<n>`, such as
+the hackathons). In edit mode its "+ Add …" button adds an empty item by hand
+(`addManualItem()`, a manual `addItem`) and starts editing it. Editing it
+updates that `addItem` instead of logging a `rewrite`, and leaving it empty
+drops it. An item's "×", or saving it empty, removes it
+(`removeManualItem()`): an item added by hand is dropped with its changes (and
+any sub-items added to it); one from the content is hidden by a manual
+`setVisibility`, which "Revert" undoes. Any activity can get sub-items: its
+"+ Add sub-item" shows while it's hovered or focused.
 
-In edit mode a bullet's list marker is a drag handle (`useBulletDrag.ts`).
+In edit mode an item's list marker is a drag handle (`useBulletDrag.ts`).
 CSS markers can't take pointer events, so the native marker is swapped for a
 button drawn in the same place. Drag it with a mouse, touch or pen (pointer
-events), or focus it and press ArrowUp/ArrowDown. A move is a manual `reorder`
-of the job (`reorderManually()`); moving bullets in the same job again updates
-that change. Dropping a bullet added by hand also removes it from later
-reorders.
+events), or focus it and press ArrowUp/ArrowDown. Items move within their own
+list. Jobs and schools have a grip (⠿) beside their name that moves them
+within their section the same way. A move is a manual `reorder` of the list (`reorderManually()`); moving
+items in the same list again updates that change. Dropping an item added by
+hand also removes it from later reorders.
+
+### Print-only visibility
+
+Older jobs and schools have `printHide: true` in their frontmatter: they're on
+the page but left off the printed resume. In edit mode each job's
+"Printed"/"Not printed" button toggles that (`setPrintedManually()`, a manual
+`setVisibility` with `print: true`); toggling straight back drops the change.
+Agents do the same with `set_visibility` and `print: true`. Plain
+`set_visibility` only hides or shows content everywhere; showing a job doesn't
+put it back in print.
 
 preact/compat listens for `focusin`/`focusout` rather than `focus`/`blur`, so
 the tests dispatch those.
@@ -135,6 +149,26 @@ pushed to the next page, blocks split across pages, headings stranded at the
 bottom of a page, and blocks running under the fixed print footer. The page
 size and margins are defined once in `PAGE` there, which also emits the
 `@page` rule for `/resume/`.
+
+The print footer is `position: fixed`, so Chrome draws it on every page
+without reserving space for it. `PAGE.footerReserveIn` is bottom padding on
+the resume with `box-decoration-break: clone`, which repeats it at the bottom
+of every page so content stops above the footer; the simulation takes it off
+each page's usable height.
+
+"Print preview" in the panel shows the page with its print styles at the
+printed width, and `showPageBreaks()` draws a dashed "Page N of M" line where
+each page starts (`breaks` in the layout: a block and an offset into it, so
+breaks inside a split block land in the right place).
+
+Print always uses the light theme's colors, whatever the screen theme. The
+resume's print rules in `src/styles/tailwind.css` are outside the CSS layers
+so they win over `prose`, which Tailwind puts in the utilities layer.
+
+There's no browser API for the PDF the print dialog makes, so the tools can't
+check it. `open_print_dialog` (and the download button) call
+`window.print()`; Chrome suggests `document.title` as the file name, which
+includes the job when there's job context.
 
 ## Tests
 
