@@ -97,6 +97,14 @@
   }
 }
 
+/* Netlify's deploy preview toolbar is injected into a fixed container with
+   inline styles, so it takes !important to keep it off printed pages. */
+@media print {
+  [data-netlify-site-id] {
+    display: none !important;
+  }
+}
+
 /* Custom fonts (with Fontaine metric fallbacks + emoji stacks). */
 @theme {
   --font-sans:
