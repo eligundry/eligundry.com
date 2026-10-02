@@ -10,11 +10,14 @@ import config from '../config'
 import { getLastModifiedForPath } from '../lib/lastModified'
 import '../styles/tailwind.css'
 import { getFeelings } from '../lib/collections'
+import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '../lib/ogImage'
 
 export interface Props {
   title?: string
   description?: string
   fancyBackgroundPoints?: number
+  /** A generated OpenGraph image (see src/lib/ogImage.ts), used over the cover. */
+  ogImage?: string
   frontmatter?:
     | CollectionEntry<'blog'>['data']
     | CollectionEntry<'talks'>['data']
@@ -40,9 +43,10 @@ const {
   description = about,
   frontmatter,
   fancyBackgroundPoints,
+  ogImage,
 } = Astro.props
 let opengraphImage = ''
-const opengraphImagePath = frontmatter?.cover?.src ?? config.seoImage
+const opengraphImagePath = ogImage ?? frontmatter?.cover?.src ?? config.seoImage
 
 if (opengraphImagePath) {
   opengraphImage = new URL(opengraphImagePath, config.url).toString()
@@ -75,6 +79,14 @@ if (opengraphImage === config.url) {
           type: 'website',
           url: config.url + Astro.url.pathname,
         },
+        image: ogImage
+          ? {
+              type: 'image/png',
+              width: OG_IMAGE_WIDTH,
+              height: OG_IMAGE_HEIGHT,
+              alt: title,
+            }
+          : undefined,
         article: {
           publishedTime: frontmatter?.date?.toISOString() ?? '',
           modifiedTime: modified.toISOString(),
