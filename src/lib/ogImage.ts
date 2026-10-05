@@ -6,14 +6,16 @@ import * as dateFns from 'date-fns'
 
 /**
  * Generates the OpenGraph images for blog posts and talks: the title set in the
- * site's title font (Arvo) on a white "paper" column, flanked by the same kind
- * of shapes the FancyBackground paint worklet scatters down the page gutters.
+ * site's title font (Arvo) on a white "paper" column, next to a gutter of the
+ * same kind of shapes the FancyBackground paint worklet scatters down the page.
  */
 
 export const OG_IMAGE_WIDTH = 1200
 export const OG_IMAGE_HEIGHT = 630
 
-const GUTTER_WIDTH = 210
+// Shapes only fill a gutter down the right side, like the site's
+const GUTTER_WIDTH = 300
+const SHAPE_COUNT = 9
 
 // Light theme colors from src/styles/tailwind.css
 const colors = {
@@ -89,16 +91,15 @@ function card({ title, description, kicker, date }: OgImageOptions) {
     {
       width: '100%',
       height: '100%',
-      justifyContent: 'center',
     },
     h(
       'div',
       {
-        width: OG_IMAGE_WIDTH - GUTTER_WIDTH * 2,
+        width: OG_IMAGE_WIDTH - GUTTER_WIDTH,
         height: '100%',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        padding: '56px 52px 48px',
+        padding: '56px 64px 48px',
         backgroundColor: colors.base100,
         color: colors.baseContent,
       },
@@ -253,54 +254,58 @@ function background(seed: string) {
     : ['circle']
   const shapes: string[] = []
 
-  for (const offsetX of [0, OG_IMAGE_WIDTH - GUTTER_WIDTH]) {
-    const points = relaxedPoints(random, 15, GUTTER_WIDTH, OG_IMAGE_HEIGHT)
+  const offsetX = OG_IMAGE_WIDTH - GUTTER_WIDTH
+  const points = relaxedPoints(
+    random,
+    SHAPE_COUNT,
+    GUTTER_WIDTH,
+    OG_IMAGE_HEIGHT
+  )
 
-    points.forEach((point, i) => {
-      // After relaxation the cell's edge sits about halfway to the nearest
-      // neighbor, which stands in for the worklet's inner circle radius.
-      const nearest = Math.min(
-        ...points
-          .filter((_, j) => j !== i)
-          .map((other) => Math.hypot(other.x - point.x, other.y - point.y)),
-        point.x * 2,
-        (GUTTER_WIDTH - point.x) * 2
-      )
-      const innerRadius = (nearest / 2) * 0.75
-      const radius = random.between(innerRadius / 1.5, innerRadius)
-      const color = random.pick(colors.shapes)
-      const x = offsetX + point.x
-      const { y } = point
-      const rotation = random.between(0, 360)
-      const ring = random.between(0, 1) > 0.5
-      let shape = ''
+  points.forEach((point, i) => {
+    // After relaxation the cell's edge sits about halfway to the nearest
+    // neighbor, which stands in for the worklet's inner circle radius.
+    const nearest = Math.min(
+      ...points
+        .filter((_, j) => j !== i)
+        .map((other) => Math.hypot(other.x - point.x, other.y - point.y)),
+      point.x * 2,
+      (GUTTER_WIDTH - point.x) * 2
+    )
+    const innerRadius = (nearest / 2) * 0.75
+    const radius = random.between(innerRadius / 1.5, innerRadius)
+    const color = random.pick(colors.shapes)
+    const x = offsetX + point.x
+    const { y } = point
+    const rotation = random.between(0, 360)
+    const ring = random.between(0, 1) > 0.5
+    let shape = ''
 
-      switch (random.pick(bias)) {
-        case 'circle':
-          shape = `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" />`
-          if (ring) {
-            shape += `<circle cx="${x}" cy="${y}" r="${radius / 2}" fill="${colors.base100}" />`
-          }
-          break
-        case 'arc':
-          shape = halfCircle(x, y, radius, color)
-          if (ring) {
-            shape += halfCircle(x, y - 1, radius / 2, colors.base100)
-          }
-          break
-        case 'line': {
-          const length = radius * 0.5
-          shape = `<line x1="${x - length / 2}" y1="${y - length / 2}" x2="${x + length}" y2="${y + length}" stroke="${color}" stroke-width="${Math.min(innerRadius, 40)}" stroke-linecap="round" />`
-          break
+    switch (random.pick(bias)) {
+      case 'circle':
+        shape = `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" />`
+        if (ring) {
+          shape += `<circle cx="${x}" cy="${y}" r="${radius / 2}" fill="${colors.base100}" />`
         }
-        case 'rectangle':
-          shape = `<rect x="${x - radius / 2}" y="${y - radius / 2}" width="${radius}" height="${radius}" fill="${color}" />`
-          break
+        break
+      case 'arc':
+        shape = halfCircle(x, y, radius, color)
+        if (ring) {
+          shape += halfCircle(x, y - 1, radius / 2, colors.base100)
+        }
+        break
+      case 'line': {
+        const length = radius * 0.5
+        shape = `<line x1="${x - length / 2}" y1="${y - length / 2}" x2="${x + length}" y2="${y + length}" stroke="${color}" stroke-width="${Math.min(innerRadius, 40)}" stroke-linecap="round" />`
+        break
       }
+      case 'rectangle':
+        shape = `<rect x="${x - radius / 2}" y="${y - radius / 2}" width="${radius}" height="${radius}" fill="${color}" />`
+        break
+    }
 
-      shapes.push(`<g transform="rotate(${rotation} ${x} ${y})">${shape}</g>`)
-    })
-  }
+    shapes.push(`<g transform="rotate(${rotation} ${x} ${y})">${shape}</g>`)
+  })
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_IMAGE_WIDTH}" height="${OG_IMAGE_HEIGHT}" viewBox="0 0 ${OG_IMAGE_WIDTH} ${OG_IMAGE_HEIGHT}"><rect width="100%" height="100%" fill="${colors.base100}" />${shapes.join('')}</svg>`
 }
