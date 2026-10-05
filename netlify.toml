@@ -20,6 +20,14 @@ for = "/*.rss"
 Content-Type = "application/xml; charset=utf-8"
 x-content-type-options = "nosniff"
 
+# Generated OpenGraph images (src/pages/og). They're prerendered files, so the
+# endpoint's own response headers never reach the CDN. Their URLs don't change
+# when a post's title does, so cache for a day rather than forever.
+[[headers]]
+for = "/og/*"
+[headers.values]
+Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
 [functions."lastfm-weekly"]
 # Every Friday at 12pm eastern (give or take an hour)
 schedule = '00 17 * * 5'
