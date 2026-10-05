@@ -16,7 +16,7 @@ export interface Props {
   title?: string
   description?: string
   fancyBackgroundPoints?: number
-  /** A generated OpenGraph image (see src/lib/ogImage.ts), used over the cover. */
+  /** A generated OpenGraph image (see src/lib/ogImage.ts), for pages without a cover. */
   ogImage?: string
   frontmatter?:
     | CollectionEntry<'blog'>['data']
@@ -46,7 +46,9 @@ const {
   ogImage,
 } = Astro.props
 let opengraphImage = ''
-const opengraphImagePath = ogImage ?? frontmatter?.cover?.src ?? config.seoImage
+const generatedOgImage = frontmatter?.cover ? undefined : ogImage
+const opengraphImagePath =
+  frontmatter?.cover?.src ?? generatedOgImage ?? config.seoImage
 
 if (opengraphImagePath) {
   opengraphImage = new URL(opengraphImagePath, config.url).toString()
@@ -79,7 +81,7 @@ if (opengraphImage === config.url) {
           type: 'website',
           url: config.url + Astro.url.pathname,
         },
-        image: ogImage
+        image: generatedOgImage
           ? {
               type: 'image/png',
               width: OG_IMAGE_WIDTH,

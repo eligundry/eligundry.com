@@ -10,10 +10,13 @@ export const getStaticPaths = (async () => {
     ...(await getCollection('talks')),
   ]
 
-  return entries.map((entry) => ({
-    params: { collection: entry.collection, slug: entry.id },
-    props: { entry },
-  }))
+  // Posts with a cover use it as their OpenGraph image instead
+  return entries
+    .filter((entry) => !entry.data.cover)
+    .map((entry) => ({
+      params: { collection: entry.collection, slug: entry.id },
+      props: { entry },
+    }))
 }) satisfies GetStaticPaths
 
 export const GET: APIRoute<{ entry: Entry }> = async ({ props: { entry } }) => {
