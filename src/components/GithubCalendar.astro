@@ -73,49 +73,67 @@ const levelClasses: Record<number, string> = {
 }
 
 const total = contributions.reduce((sum, c) => sum + c.count, 0)
+
+// Geometry of the SVG this replaced, in px at full size: 12px days with a 4px
+// gap, a 1px stroke centered on each day's edge, and 1px of padding on either
+// side. Below full width it scaled down to fit, so every length here is a
+// multiple of --u, which is 1px at full width and shrinks with the container.
+const blockSize = 12
+const blockMargin = 4
+const height = (blockSize + blockMargin) * 7 - blockMargin
+const width = weeks * (blockSize + blockMargin) - blockMargin + 2
 ---
 
 <div
-  role="img"
-  aria-label={`${total} GitHub contributions in the last year`}
   class:list={[
     'not-prose',
-    'grid',
-    'grid-flow-col',
-    'grid-rows-7',
-    'gap-0.5',
-    'sm:gap-1',
+    'flex',
+    'items-center',
     'w-full',
-    'max-w-[846px]',
+    '@container',
     Astro.props.className,
   ]}
-  style={{ gridTemplateColumns: `repeat(${weeks}, minmax(0, 1fr))` }}
+  style={{ maxWidth: `${width}px`, height: `${height}px` }}
 >
-  {
-    contributions.map((day) => {
-      const week = dateFns.differenceInCalendarWeeks(day.date, firstDay)
+  <div
+    role="img"
+    aria-label={`${total} GitHub contributions in the last year`}
+    class="grid grid-flow-col"
+    style={{
+      '--u': `calc(100cqw / ${width})`,
+      paddingInline: 'var(--u)',
+      gap: `calc(${blockMargin} * var(--u))`,
+      gridTemplateColumns: `repeat(${weeks}, calc(${blockSize} * var(--u)))`,
+      gridTemplateRows: `repeat(7, calc(${blockSize} * var(--u)))`,
+    }}
+  >
+    {
+      contributions.map((day) => {
+        const week = dateFns.differenceInCalendarWeeks(day.date, firstDay)
 
-      return (
-        <div
-          data-tip={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
-          class:list={[
-            'tooltip',
-            'tooltip-primary',
-            tooltipPlacement(week),
-            'block',
-            'aspect-square',
-            'rounded-[2px]',
-            'border',
-            'border-base-300',
-            'font-sans',
-            levelClasses[day.level] ?? levelClasses[0],
-          ]}
-          style={{
-            gridColumn: week + 1,
-            gridRow: dateFns.getDay(day.date) + 1,
-          }}
-        />
-      )
-    })
-  }
+        return (
+          <div
+            data-tip={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
+            class:list={[
+              'tooltip',
+              'tooltip-primary',
+              tooltipPlacement(week),
+              'block',
+              'font-sans',
+              'rounded-[calc(2*var(--u))]',
+              // The stroke straddles the day's edge like an SVG stroke. It's a
+              // pair of shadows rather than an outline or border because those
+              // round up to 1px, which reads as a heavy grid on small screens.
+              '[box-shadow:0_0_0_calc(var(--u)/2)_var(--color-base-300),inset_0_0_0_calc(var(--u)/2)_var(--color-base-300)]',
+              levelClasses[day.level] ?? levelClasses[0],
+            ]}
+            style={{
+              gridColumn: week + 1,
+              gridRow: dateFns.getDay(day.date) + 1,
+            }}
+          />
+        )
+      })
+    }
+  </div>
 </div>
