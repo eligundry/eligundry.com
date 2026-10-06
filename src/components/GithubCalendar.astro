@@ -6,7 +6,6 @@
 import * as dateFns from 'date-fns'
 import retry from 'async-retry'
 import config from '../config'
-import axios from 'axios'
 
 interface Props {
   className?: string
@@ -27,16 +26,21 @@ interface GithubApiResponse {
 // the page rather than failing the whole build.
 const contributions = await retry(
   async () => {
-    const resp = await axios.get<GithubApiResponse>(
-      `https://github-contributions-api.jogruber.de/v4/${config.github}`,
-      {
-        params: {
-          y: 'last',
-        },
-      }
+    const url = new URL(
+      `https://github-contributions-api.jogruber.de/v4/${config.github}`
     )
+    url.searchParams.set('y', 'last')
 
-    return resp.data.contributions.map((c) => ({
+    const resp = await fetch(url)
+
+    // fetch doesn't reject on HTTP errors, so throw to trigger a retry
+    if (!resp.ok) {
+      throw new Error(`${resp.status} ${resp.statusText}`)
+    }
+
+    const data: GithubApiResponse = await resp.json()
+
+    return data.contributions.map((c) => ({
       ...c,
       date: dateFns.parseISO(c.date),
     }))
