@@ -1,9 +1,10 @@
 ---
 // This code is adapted from  https://github.com/grubersjoe/react-activity-calendar
-// I wanted to be able to do the data fetching server side and just serve an
-// inline svg in the HTML.
+// I wanted to be able to do the data fetching server side and just serve the
+// calendar as static HTML. Each day is a grid cell so it can use daisyUI's
+// tooltip, which SVG elements can't.
 import * as dateFns from 'date-fns'
-import groupBy from 'lodash/groupBy'
+import retry from 'async-retry'
 import config from '../config'
 import axios from 'axios'
 
@@ -22,76 +23,99 @@ interface GithubApiResponse {
   }[]
 }
 
-const contributions = await axios
-  .get<GithubApiResponse>(
-    `https://github-contributions-api.jogruber.de/v4/${config.github}`,
-    {
-      params: {
-        y: 'last',
-      },
-    }
-  )
-  .then((resp) => {
+const contributions = await retry(
+  async () => {
+    const resp = await axios.get<GithubApiResponse>(
+      `https://github-contributions-api.jogruber.de/v4/${config.github}`,
+      {
+        params: {
+          y: 'last',
+        },
+      }
+    )
+
     return resp.data.contributions.map((c) => ({
       ...c,
       date: dateFns.parseISO(c.date),
     }))
-  })
-
-const contributionsGroupedByWeek = groupBy(contributions, (c) =>
-  dateFns.differenceInCalendarWeeks(contributions[0].date, c.date)
+  },
+  {
+    retries: 3,
+    minTimeout: 500,
+  }
 )
 
-const blockMargin = 4
-const blockSize = 12
-const width =
-  Object.keys(contributionsGroupedByWeek).length * (blockSize + blockMargin) -
-  blockMargin
-const height = (blockSize + blockMargin) * 7 - blockMargin
+const firstDay = contributions[0].date
+const weeks =
+  dateFns.differenceInCalendarWeeks(contributions.at(-1)!.date, firstDay) + 1
+
+// Tooltips are centered over their day by default, which runs off the edge of
+// the page for the first and last few weeks, so those open inwards instead.
+const edgeWeeks = 6
+const tooltipPlacement = (week: number) => {
+  if (week < edgeWeeks) {
+    return 'tooltip-right'
+  }
+
+  if (week >= weeks - edgeWeeks) {
+    return 'tooltip-left'
+  }
+
+  return null
+}
+
+const levelClasses: Record<number, string> = {
+  0: 'bg-neutral',
+  1: 'bg-primary/[.44]',
+  2: 'bg-primary/[.60]',
+  3: 'bg-primary/[.76]',
+  4: 'bg-primary',
+}
+
+const total = contributions.reduce((sum, c) => sum + c.count, 0)
 ---
 
-<svg
-  width={width + 2}
-  height={height}
-  viewBox={`0 0 ${width + 2} ${height}`}
+<div
+  role="img"
+  aria-label={`${total} GitHub contributions in the last year`}
   class:list={[
     'not-prose',
-    'max-w-full',
-    '[&_rect]:stroke-base-300',
-    '[&_rect]:stroke-1',
-    '[&_rect]:overflow-visible',
-    '[&_rect]:w-[12px]',
-    '[&_rect]:h-[12px]',
-    '[&_rect]:[rx:2]',
-    '[&_rect]:[ry:2]',
-    '[&_rect]:[x:0]',
-    '[&_rect.level-0]:fill-neutral',
-    '[&_rect.level-1]:fill-primary/[.44]',
-    '[&_rect.level-2]:fill-primary/[.60]',
-    '[&_rect.level-3]:fill-primary/[.76]',
-    '[&_rect.level-4]:fill-primary',
-    '[&_g]:overflow-visible',
+    'grid',
+    'grid-flow-col',
+    'grid-rows-7',
+    'gap-0.5',
+    'sm:gap-1',
+    'w-full',
+    'max-w-[846px]',
     Astro.props.className,
   ]}
+  style={{ gridTemplateColumns: `repeat(${weeks}, minmax(0, 1fr))` }}
 >
   {
-    Object.values(contributionsGroupedByWeek).map((week, weekIdx) => {
+    contributions.map((day) => {
+      const week = dateFns.differenceInCalendarWeeks(day.date, firstDay)
+
       return (
-        <g
-          transform={`translate(${1 + (blockSize + blockMargin) * weekIdx}, 0)`}
-        >
-          {week.map((day, dayIdx) => (
-            <rect
-              y={(blockSize + blockMargin) * dayIdx}
-              class={`level-${day.level}`}
-            >
-              <title>
-                {`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
-              </title>
-            </rect>
-          ))}
-        </g>
+        <div
+          data-tip={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
+          class:list={[
+            'tooltip',
+            'tooltip-primary',
+            tooltipPlacement(week),
+            'block',
+            'aspect-square',
+            'rounded-[2px]',
+            'border',
+            'border-base-300',
+            'font-sans',
+            levelClasses[day.level] ?? levelClasses[0],
+          ]}
+          style={{
+            gridColumn: week + 1,
+            gridRow: dateFns.getDay(day.date) + 1,
+          }}
+        />
       )
     })
   }
-</svg>
+</div>
