@@ -1,11 +1,11 @@
 ---
 // This code is adapted from  https://github.com/grubersjoe/react-activity-calendar
-// I wanted to be able to do the data fetching server side and just serve an
-// inline svg in the HTML.
+// I wanted to be able to do the data fetching server side and just serve the
+// calendar as static HTML. Each day is a grid cell so it can use daisyUI's
+// tooltip, which SVG elements can't.
 import * as dateFns from 'date-fns'
-import groupBy from 'lodash/groupBy'
+import retry from 'async-retry'
 import config from '../config'
-import axios from 'axios'
 
 interface Props {
   className?: string
@@ -22,76 +22,130 @@ interface GithubApiResponse {
   }[]
 }
 
-const contributions = await axios
-  .get<GithubApiResponse>(
-    `https://github-contributions-api.jogruber.de/v4/${config.github}`,
-    {
-      params: {
-        y: 'last',
-      },
+// This renders at build time, so a failed request leaves the calendar out of
+// the page rather than failing the whole build.
+const contributions = await retry(
+  async () => {
+    const url = new URL(
+      `https://github-contributions-api.jogruber.de/v4/${config.github}`
+    )
+    url.searchParams.set('y', 'last')
+
+    const resp = await fetch(url)
+
+    // fetch doesn't reject on HTTP errors, so throw to trigger a retry
+    if (!resp.ok) {
+      throw new Error(`${resp.status} ${resp.statusText}`)
     }
-  )
-  .then((resp) => {
-    return resp.data.contributions.map((c) => ({
+
+    const data: GithubApiResponse = await resp.json()
+
+    return data.contributions.map((c) => ({
       ...c,
       date: dateFns.parseISO(c.date),
     }))
-  })
+  },
+  {
+    retries: 3,
+    minTimeout: 500,
+  }
+).catch((e) => {
+  console.warn('could not fetch GitHub contributions', e)
+  return []
+})
 
-const contributionsGroupedByWeek = groupBy(contributions, (c) =>
-  dateFns.differenceInCalendarWeeks(contributions[0].date, c.date)
-)
+const firstDay = contributions[0]?.date
+const weeks = firstDay
+  ? dateFns.differenceInCalendarWeeks(contributions.at(-1)!.date, firstDay) + 1
+  : 0
 
-const blockMargin = 4
+// Tooltips are centered over their day by default, which runs off the edge of
+// the page for the first and last few weeks, so those open inwards instead.
+const edgeWeeks = 6
+const tooltipPlacement = (week: number) => {
+  if (week < edgeWeeks) {
+    return 'tooltip-right'
+  }
+
+  if (week >= weeks - edgeWeeks) {
+    return 'tooltip-left'
+  }
+
+  return null
+}
+
+const levelClasses: Record<number, string> = {
+  0: 'bg-neutral',
+  1: 'bg-primary/[.44]',
+  2: 'bg-primary/[.60]',
+  3: 'bg-primary/[.76]',
+  4: 'bg-primary',
+}
+
+const total = contributions.reduce((sum, c) => sum + c.count, 0)
+
+// Geometry of the SVG this replaced, in px at full size: 12px days with a 4px
+// gap, a 1px stroke centered on each day's edge, and 1px of padding on either
+// side. Below full width it scaled down to fit, so every length here is a
+// multiple of --u, which is 1px at full width and shrinks with the container.
 const blockSize = 12
-const width =
-  Object.keys(contributionsGroupedByWeek).length * (blockSize + blockMargin) -
-  blockMargin
+const blockMargin = 4
 const height = (blockSize + blockMargin) * 7 - blockMargin
+const width = weeks * (blockSize + blockMargin) - blockMargin + 2
 ---
 
-<svg
-  width={width + 2}
-  height={height}
-  viewBox={`0 0 ${width + 2} ${height}`}
-  class:list={[
-    'not-prose',
-    'max-w-full',
-    '[&_rect]:stroke-base-300',
-    '[&_rect]:stroke-1',
-    '[&_rect]:overflow-visible',
-    '[&_rect]:w-[12px]',
-    '[&_rect]:h-[12px]',
-    '[&_rect]:[rx:2]',
-    '[&_rect]:[ry:2]',
-    '[&_rect]:[x:0]',
-    '[&_rect.level-0]:fill-neutral',
-    '[&_rect.level-1]:fill-primary/[.44]',
-    '[&_rect.level-2]:fill-primary/[.60]',
-    '[&_rect.level-3]:fill-primary/[.76]',
-    '[&_rect.level-4]:fill-neutral/[.92]',
-    '[&_g]:overflow-visible',
-    Astro.props.className,
-  ]}
->
-  {
-    Object.values(contributionsGroupedByWeek).map((week, weekIdx) => {
-      return (
-        <g
-          transform={`translate(${1 + (blockSize + blockMargin) * weekIdx}, 0)`}
-        >
-          {week.map((day, dayIdx) => (
-            <rect
-              y={(blockSize + blockMargin) * dayIdx}
-              class={`level-${day.level}`}
-            >
-              <title>
-                {`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
-              </title>
-            </rect>
-          ))}
-        </g>
-      )
-    })
-  }
-</svg>
+{
+  contributions.length > 0 && (
+    <div
+      class:list={[
+        'not-prose',
+        'flex',
+        'items-center',
+        'w-full',
+        '@container',
+        Astro.props.className,
+      ]}
+      style={{ maxWidth: `${width}px`, height: `${height}px` }}
+    >
+      <div
+        role="img"
+        aria-label={`${total} GitHub contributions in the last year`}
+        class="grid grid-flow-col"
+        style={{
+          '--u': `calc(100cqw / ${width})`,
+          paddingInline: 'var(--u)',
+          gap: `calc(${blockMargin} * var(--u))`,
+          gridTemplateColumns: `repeat(${weeks}, calc(${blockSize} * var(--u)))`,
+          gridTemplateRows: `repeat(7, calc(${blockSize} * var(--u)))`,
+        }}
+      >
+        {contributions.map((day) => {
+          const week = dateFns.differenceInCalendarWeeks(day.date, firstDay)
+
+          return (
+            <div
+              data-tip={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
+              class:list={[
+                'tooltip',
+                'tooltip-primary',
+                tooltipPlacement(week),
+                'block',
+                'font-sans',
+                'rounded-[calc(2*var(--u))]',
+                // The stroke straddles the day's edge like an SVG stroke. It's a
+                // pair of shadows rather than an outline or border because those
+                // round up to 1px, which reads as a heavy grid on small screens.
+                '[box-shadow:0_0_0_calc(var(--u)/2)_var(--color-base-300),inset_0_0_0_calc(var(--u)/2)_var(--color-base-300)]',
+                levelClasses[day.level] ?? levelClasses[0],
+              ]}
+              style={{
+                gridColumn: week + 1,
+                gridRow: dateFns.getDay(day.date) + 1,
+              }}
+            />
+          )
+        })}
+      </div>
+    </div>
+  )
+}
