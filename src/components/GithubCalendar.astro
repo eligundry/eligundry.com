@@ -23,6 +23,8 @@ interface GithubApiResponse {
   }[]
 }
 
+// This renders at build time, so a failed request leaves the calendar out of
+// the page rather than failing the whole build.
 const contributions = await retry(
   async () => {
     const resp = await axios.get<GithubApiResponse>(
@@ -43,11 +45,15 @@ const contributions = await retry(
     retries: 3,
     minTimeout: 500,
   }
-)
+).catch((e) => {
+  console.warn('could not fetch GitHub contributions', e)
+  return []
+})
 
-const firstDay = contributions[0].date
-const weeks =
-  dateFns.differenceInCalendarWeeks(contributions.at(-1)!.date, firstDay) + 1
+const firstDay = contributions[0]?.date
+const weeks = firstDay
+  ? dateFns.differenceInCalendarWeeks(contributions.at(-1)!.date, firstDay) + 1
+  : 0
 
 // Tooltips are centered over their day by default, which runs off the edge of
 // the page for the first and last few weeks, so those open inwards instead.
@@ -84,56 +90,58 @@ const height = (blockSize + blockMargin) * 7 - blockMargin
 const width = weeks * (blockSize + blockMargin) - blockMargin + 2
 ---
 
-<div
-  class:list={[
-    'not-prose',
-    'flex',
-    'items-center',
-    'w-full',
-    '@container',
-    Astro.props.className,
-  ]}
-  style={{ maxWidth: `${width}px`, height: `${height}px` }}
->
-  <div
-    role="img"
-    aria-label={`${total} GitHub contributions in the last year`}
-    class="grid grid-flow-col"
-    style={{
-      '--u': `calc(100cqw / ${width})`,
-      paddingInline: 'var(--u)',
-      gap: `calc(${blockMargin} * var(--u))`,
-      gridTemplateColumns: `repeat(${weeks}, calc(${blockSize} * var(--u)))`,
-      gridTemplateRows: `repeat(7, calc(${blockSize} * var(--u)))`,
-    }}
-  >
-    {
-      contributions.map((day) => {
-        const week = dateFns.differenceInCalendarWeeks(day.date, firstDay)
+{
+  contributions.length > 0 && (
+    <div
+      class:list={[
+        'not-prose',
+        'flex',
+        'items-center',
+        'w-full',
+        '@container',
+        Astro.props.className,
+      ]}
+      style={{ maxWidth: `${width}px`, height: `${height}px` }}
+    >
+      <div
+        role="img"
+        aria-label={`${total} GitHub contributions in the last year`}
+        class="grid grid-flow-col"
+        style={{
+          '--u': `calc(100cqw / ${width})`,
+          paddingInline: 'var(--u)',
+          gap: `calc(${blockMargin} * var(--u))`,
+          gridTemplateColumns: `repeat(${weeks}, calc(${blockSize} * var(--u)))`,
+          gridTemplateRows: `repeat(7, calc(${blockSize} * var(--u)))`,
+        }}
+      >
+        {contributions.map((day) => {
+          const week = dateFns.differenceInCalendarWeeks(day.date, firstDay)
 
-        return (
-          <div
-            data-tip={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
-            class:list={[
-              'tooltip',
-              'tooltip-primary',
-              tooltipPlacement(week),
-              'block',
-              'font-sans',
-              'rounded-[calc(2*var(--u))]',
-              // The stroke straddles the day's edge like an SVG stroke. It's a
-              // pair of shadows rather than an outline or border because those
-              // round up to 1px, which reads as a heavy grid on small screens.
-              '[box-shadow:0_0_0_calc(var(--u)/2)_var(--color-base-300),inset_0_0_0_calc(var(--u)/2)_var(--color-base-300)]',
-              levelClasses[day.level] ?? levelClasses[0],
-            ]}
-            style={{
-              gridColumn: week + 1,
-              gridRow: dateFns.getDay(day.date) + 1,
-            }}
-          />
-        )
-      })
-    }
-  </div>
-</div>
+          return (
+            <div
+              data-tip={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${dateFns.format(day.date, 'MMMM d, yyyy')}`}
+              class:list={[
+                'tooltip',
+                'tooltip-primary',
+                tooltipPlacement(week),
+                'block',
+                'font-sans',
+                'rounded-[calc(2*var(--u))]',
+                // The stroke straddles the day's edge like an SVG stroke. It's a
+                // pair of shadows rather than an outline or border because those
+                // round up to 1px, which reads as a heavy grid on small screens.
+                '[box-shadow:0_0_0_calc(var(--u)/2)_var(--color-base-300),inset_0_0_0_calc(var(--u)/2)_var(--color-base-300)]',
+                levelClasses[day.level] ?? levelClasses[0],
+              ]}
+              style={{
+                gridColumn: week + 1,
+                gridRow: dateFns.getDay(day.date) + 1,
+              }}
+            />
+          )
+        })}
+      </div>
+    </div>
+  )
+}
