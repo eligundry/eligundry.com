@@ -1,0 +1,113 @@
+---
+title: WebMCP is pretty fun!
+description: I built an MCP server to update my HTML resume!
+slug: webmcp-is-pretty-fun
+date: 2026-10-07T05:00
+tags:
+  - code
+---
+
+As I get ready to maybe do another job search, it is time, yet again, to update
+my resume. I don't think I have written much about my resume, but it's something
+I've thought a lot about, what with [working at a resume writing startup for
+4 years](/blog/what-i-learned-working-at-my-first-startup).
+
+Put simply, it's a static HTML resume that has a print stylesheet that is used
+to print it to PDF. I have it as static HTML so I can give the elements semantic
+meaning through [schema.org's `Person` type](https://schema.org/Person), which can
+represent education and employment through it's [`alumniOf`](https://schema.org/alumniOf)
+property. You can check out how it parses [here](https://validator.schema.org/#url=https%3A%2F%2Feligundry.com%2Fresume).
+The resume started out as a handwritten HTML file, but is now backed by multiple
+[Astro collections](https://docs.astro.build/en/guides/content-collections/) in
+order to make laying out this semantic data easier (and I can write Markdown,
+which is more fun).
+
+In order to tailor this resume in previous job searches I've either:
+
+1. Edited the page locally to match the job
+2. Just not tailored it as I don't like to lie or exaggerate
+
+But those were less competitive markets and agents/LLMs should allow me to
+continue to be stubborn with my semantic HTML and get the job of my dreams!
+
+## Enter WebMCP
+
+[WebMCP](https://developer.chrome.com/docs/ai/webmcp) is a web standard that
+Google is pushing that allows computer use agents to be able to make well
+defined function calls on a webpage. The main use cases they are putting forward
+are booking trips and making purchases, which is (sadly) on brand for what
+Google Ads needs, but let's not get too depressed by that lack of imagination.
+
+I prompted Claude to update my resume page to:
+
+1. Convert it's internal representation of my resume to [JSON Resume](https://jsonresume.org/)
+2. Register WebMCP tools to:
+   - Update that state in such a way that it doesn't exaggerate my experience
+     by editing, hiding, and reordering items. Each edit has diff tracking that
+     is stored in the hash of the URL so it can be copied around.
+   - Determine if the content exceeds two pages so it can make further edits to
+     be concise
+3. Show the tool calls made such that they can be individually reverted
+4. Make each bullet point `contenteditable` such that I can drop in and make
+   small edits. These diffs are tracked in the same way the WebMCP calls are
+   made.
+
+With this, I can give ChatGPT/Codex, as they support WebMCP, this prompt:
+
+> Go to https://eligundry.com/resume/ and use WebMCP to update my resume to
+> highlight my leadership and hide the section on my love-hate relationships.
+> Hide the 3rd bullet point for Chord and update Code Climate's description to
+> be something that me and an early stage founder can talk about.
+
+Below is a video of ChatGPT doing it's magic and here's the [link to the edited
+resume](https://eligundry.com/resume/#t=lVRdj9MwEPwrK0tIIKW5Nr3jI2-AhJCAF0AgcbqHrb1NrDq2Wa8byun-O7IrdO2he-Axk1lnZnbiW7VX_apRekQ_UFL99a2yRvVKr1SjQlT9rZJDJNWrRPLNJruxzspBNcqaQldpZ51LvQt7WowopMphgU3fqZtG7cuEI9Vv0SW6axQTpuBVrz4QRZCRgCnliWAbdE5kIHhwhIY4jTYCelNJU0gCTI726AXID9YTsfUDzIF3rWoUiupVt-yeL1bLxfLF19VVv173l-v2VXf1Q901f311D30xzWyr7iMhGFpoZycU6peqURPyzoS5aP5IBhCEcIKwBRmZCDbZOlOEIHiaIYWtzMh0phE9uoNYnSA6lG3gCbYcpups4JC9gRwbiBw0pVQmDAoeOVN2YqMjeBdYsie4Wi5Bhymit5RgtjLC9WdCLfA5ZCG-eTqKxNRfXHBBuYKtDtPFswauX3__Am9Q9HhPwzm1OOHv4CtrU95W7ltn9e59yInuybpgY8GOR9YNXZuN3FPmeW4HErORI6VVp3v_hDuqxmuMD1ZdHC-S5iKhxGGylrph0I6QQQKgB0J2B0iCQ6lN9ob4sQZc9quXbbfsThuw_p8GrP5twDH8w2K2hsBOkcOeJvKSirwyvMFEoIMX-iXHBlMS64cGNqUOtREDebEaYnYOmH5mSsf5V8sndachCyAYDhGsh0S8t5ogcP0A_MxY_sLzZN_bYXR2GOVhqljEaCY5b2XIosNE5fzo0Hpw6IeMAz0eZveiXV9dnoZ5-W-YgQ1xuQaCF7SeuF4eyHpcROSzu-MErf_aGdA9BFbq5tTvm-qiVKmWoDz8tVdtl52EyqFfkdiS1wQSBpKRapVoiiMm-5tOAnvc-_pl-7xb_1B3N3d_AA).
+
+<video controls alt="ChatGPT editing my resume">
+  <source src="/video/webmcp/resume-edit.mp4" />
+</video>
+
+## I'm Extremely Excited About This!!!
+
+I have long maintained that the Google Bot is your user #1 for accessibility.
+It does not have human vision and mainly relies on markup and code to understand
+things. **A11y benefits everything, from your users that need assistance and
+Google to understand things.**
+
+Now, everyone has a Googlebot with all the AI chatbots essentially becoming
+coding agents with computer use (and in the case of ChatGPT, able to sync your
+Chrome cookies to it's browser). There is absolutely no reason to not register
+WebMCP tools to assist the agents.
+
+In fact, adding WebMCP is as simple as adding `aria` tags because it has
+a [declarative API](https://developer.chrome.com/docs/ai/webmcp/declarative-api)
+that allows you to annotate a `<form />` so an agent can more easily fill it
+out. From their docs:
+
+```html
+<form
+  toolname="supportRequestTool"
+  tooldescription="Submit a request for support."
+  action="/submit"
+>
+  <label for="firstName">First Name</label>
+  <input type="text" name="firstName" />
+
+  <label for="lastName">Last Name</label>
+  <input type="text" name="lastName" />
+
+  <select
+    name="select"
+    required
+    toolparamdescription="Determines what team this request is routed to."
+  >
+    <option value="Customer happiness team">Return my purchase.</option>
+    <option value="Distribution team">Check where my package is.</option>
+    <option value="Website support team">Get help on the website.</option>
+  </select>
+
+  <button type="submit">Submit</button>
+</form>
+```
+
+I suspect that Google's Gemini integration in the browser will support WebMCP
+once it becomes a standard.
