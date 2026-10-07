@@ -434,8 +434,10 @@
   @apply max-w-none! font-serif;
 }
 
+/* daisyUI rounds inline code with --radius-selector (1.9rem), which is sized
+   for pills and block code, so give inline code a small radius instead. */
 .prose *:not(pre) > code {
-  @apply p-0;
+  @apply py-0 px-1 rounded-sm;
 }
 
 .prose a:not(.btn) {
