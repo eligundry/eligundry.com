@@ -160,7 +160,9 @@ describe('technologies', () => {
     expect(
       (source.sections[0].items[0] as ExperienceNode).highlights[0].html
     ).toBe(
-      'Built a <a href="https://x.dev" itemprop="knowsAbout">React SDK</a>.'
+      'Built a ' +
+        '<a href="https://x.dev" itemprop="knowsAbout" itemscope itemtype="https://schema.org/Thing"><link itemprop="url" href="https://x.dev"><span itemprop="name">React SDK</span></a>' +
+        '.'
     )
     expect(toSuperset(source)['x-technologies']).toEqual([
       { name: 'React SDK', url: 'https://x.dev' },
@@ -211,7 +213,9 @@ describe('JSON Resume', () => {
     })
     expect(resume.projects).toHaveLength(1)
     expect(resume.publications).toHaveLength(1)
-    expect(resume.awards).toHaveLength(1)
+    expect(resume.awards).toEqual([
+      { title: 'Eagle Scout', awarder: 'Boy Scouts of America', date: '2006' },
+    ])
   })
 
   test('hidden content is left out of the export', () => {

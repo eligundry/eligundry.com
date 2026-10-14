@@ -9,7 +9,8 @@ import { markTechnologyLinks, type Technology } from './technologies'
  * HTML escaped and unsafe link protocols (e.g. `javascript:`) removed.
  *
  * A single paragraph is unwrapped so it can sit inside an `<li>` or `<span>`.
- * Links to known technologies are marked as `knowsAbout` microdata.
+ * Links to known technologies are marked up as schema.org `Thing`s the
+ * Person `knowsAbout`, so tailored text carries the same microdata.
  */
 export function renderMarkdown(
   markdown: string,

@@ -40,7 +40,7 @@ describe('technologies', () => {
     ])
   })
 
-  test('marks links to technologies as knowsAbout', () => {
+  test('marks links to technologies as Things the Person knowsAbout', () => {
     const technologies = [{ name: 'React', url: 'https://reactjs.org/' }]
     expect(
       markTechnologyLinks(
@@ -48,7 +48,7 @@ describe('technologies', () => {
         technologies
       )
     ).toBe(
-      '<a href="https://www.reactjs.org" itemprop="knowsAbout">React</a> <a href="https://x.dev">X</a> <a itemprop="url" href="https://reactjs.org/">R</a>'
+      '<a href="https://www.reactjs.org" itemprop="knowsAbout" itemscope itemtype="https://schema.org/Thing"><link itemprop="url" href="https://www.reactjs.org"><span itemprop="name">React</span></a> <a href="https://x.dev">X</a> <a itemprop="url" href="https://reactjs.org/">R</a>'
     )
   })
 })

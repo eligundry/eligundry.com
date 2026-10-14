@@ -1,5 +1,7 @@
 # Rendered on /resume/ under "Activities & Interests". `records` map each
-# bullet onto JSON Resume sections for /resume.json.
+# bullet onto JSON Resume sections for /resume.json. `awards` records are also
+# the page's schema.org Person `award`s, and one with a `credentialCategory` is
+# a `hasCredential` too, so keep schema.org microdata out of the markdown.
 - id: code-nation
   markdown: >-
     Volunteered with [Code Nation](https://codenation.org/) to teach
@@ -50,10 +52,13 @@
 
 - id: eagle-scout
   markdown: >-
-    Earned the rank of <a href="https://en.wikipedia.org/wiki/Eagle_Scout"
-    itemprop="award">Eagle Scout</a> in 2006.
+    Earned the rank of [Eagle Scout](https://en.wikipedia.org/wiki/Eagle_Scout)
+    in 2006.
   records:
     - section: awards
       title: Eagle Scout
       awarder: Boy Scouts of America
+      awarderUrl: https://www.scouting.org/
+      url: https://en.wikipedia.org/wiki/Eagle_Scout
+      credentialCategory: rank
       date: '2006'

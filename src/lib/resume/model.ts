@@ -103,6 +103,14 @@ export type ActivityRecord =
       date?: string
       awarder?: string
       summary?: string
+      /** A page about the award. */
+      url?: string
+      awarderUrl?: string
+      /**
+       * Set for an award that is also a credential, such as a rank, so the
+       * page marks it up as a schema.org `EducationalOccupationalCredential`.
+       */
+      credentialCategory?: string
     }
   | {
       section: 'publications'
@@ -517,10 +525,10 @@ export function toSuperset(
   const activities = sectionItems(source, 'activities')
   for (const activity of activities) {
     const hidden = activity.hidden || sectionHidden('activities')
-    for (const { section, ...record } of activity.records) {
-      records[section].push(
+    for (const record of activity.records) {
+      records[record.section].push(
         compact({
-          ...record,
+          ...jsonResumeRecord(record),
           'x-activity': activity.id,
           'x-hidden': hidden || undefined,
         })
@@ -581,6 +589,21 @@ function stripExtensions(value: unknown): unknown {
 }
 
 /** Schema-compliant JSON Resume, without extensions or hidden entries. */
+/** A record in JSON Resume; an award's other keys become `x-` extensions. */
+function jsonResumeRecord(record: ActivityRecord): Record<string, unknown> {
+  if (record.section !== 'awards') {
+    const { section: _, ...rest } = record
+    return rest
+  }
+  const { section: _, url, awarderUrl, credentialCategory, ...award } = record
+  return {
+    ...award,
+    'x-url': url,
+    'x-awarderUrl': awarderUrl,
+    'x-credentialCategory': credentialCategory,
+  }
+}
+
 export function toJsonResume(resume: EliResume): JsonResume {
   const stripped = stripExtensions(resume) as JsonResume
   // Drop sections that ended up empty after hiding everything in them.

@@ -1,4 +1,9 @@
-import { createContext, type ComponentChildren, type JSX } from 'preact'
+import {
+  createContext,
+  Fragment,
+  type ComponentChildren,
+  type JSX,
+} from 'preact'
 import {
   useContext,
   useEffect,
@@ -323,20 +328,84 @@ function joinWithAnd(items: ComponentChildren[]): ComponentChildren[] {
   })
 }
 
+const knowsAbout = {
+  itemProp: 'knowsAbout',
+  itemScope: true,
+  itemType: 'https://schema.org/Thing',
+}
+
 function SkillLine({ skill }: { skill: SkillNode }) {
+  // Each keyword is a schema.org Thing the Person knowsAbout, marked up the
+  // same way as technology links in text (see markTechnologyLinks).
   const keywords = skill.keywords.map((keyword) =>
     keyword.url ? (
-      <a href={keyword.url} itemProp="knowsAbout" target="_blank">
-        {keyword.name}
+      <a href={keyword.url} target="_blank" {...knowsAbout}>
+        <link itemProp="url" href={keyword.url} />
+        <span itemProp="name">{keyword.name}</span>
       </a>
     ) : (
-      <span itemProp="knowsAbout">{keyword.name}</span>
+      <span {...knowsAbout}>
+        <span itemProp="name">{keyword.name}</span>
+      </span>
     )
   )
   return (
     <Rich node={{ id: skill.id, html: skill.html }}>
       {skill.lead} {joinWithAnd(keywords)}.
     </Rich>
+  )
+}
+
+/**
+ * An activity's awards as schema.org microdata of the page's Person. They come
+ * from the activity's records rather than its text, so rewriting the text keeps
+ * them. `award` is Text; an award that's also a credential, like a rank, is a
+ * structured `hasCredential` as well.
+ */
+function Awards({ activity }: { activity: ActivityNode }) {
+  return (
+    <>
+      {activity.records.map((record, i) => {
+        if (record.section !== 'awards') return null
+        const award = [record.title, record.awarder, record.date]
+          .filter(Boolean)
+          .join(', ')
+        return (
+          <Fragment key={i}>
+            <meta itemProp="award" content={award} />
+            {record.credentialCategory && (
+              <span
+                itemProp="hasCredential"
+                itemScope
+                itemType="https://schema.org/EducationalOccupationalCredential"
+              >
+                <meta itemProp="name" content={record.title} />
+                <meta
+                  itemProp="credentialCategory"
+                  content={record.credentialCategory}
+                />
+                {record.url && <link itemProp="url" href={record.url} />}
+                {record.date && (
+                  <meta itemProp="dateCreated" content={record.date} />
+                )}
+                {record.awarder && (
+                  <span
+                    itemProp="recognizedBy"
+                    itemScope
+                    itemType="https://schema.org/Organization"
+                  >
+                    <meta itemProp="name" content={record.awarder} />
+                    {record.awarderUrl && (
+                      <link itemProp="url" href={record.awarderUrl} />
+                    )}
+                  </span>
+                )}
+              </span>
+            )}
+          </Fragment>
+        )
+      })}
+    </>
   )
 }
 
@@ -478,7 +547,12 @@ export default function ResumeView({
                   items={section.items}
                   addLabel="Add activity"
                   printUnits
-                  renderItem={(activity) => <Rich node={activity} />}
+                  renderItem={(activity) => (
+                    <>
+                      <Rich node={activity} />
+                      {!activity.hidden && <Awards activity={activity} />}
+                    </>
+                  )}
                   renderSublist={(activity) => <SubItems activity={activity} />}
                 />
               </Section>

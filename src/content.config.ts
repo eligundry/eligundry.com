@@ -120,6 +120,10 @@ const resumeActivityRecordSchema = z.discriminatedUnion('section', [
     date: z.string().optional(),
     awarder: z.string().optional(),
     summary: z.string().optional(),
+    url: z.url().optional(),
+    awarderUrl: z.url().optional(),
+    // Marks the award up as a schema.org EducationalOccupationalCredential
+    credentialCategory: z.string().optional(),
   }),
   z.object({
     section: z.literal('publications'),

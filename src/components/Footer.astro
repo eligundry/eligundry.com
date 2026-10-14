@@ -15,6 +15,9 @@ if (!about) {
 
 const { Content } = await render(about)
 
+// schema.org `email` is Text, so it's a <meta> rather than the mailto: link
+const email = 'eligundry@gmail.com'
+
 const social = [
   {
     name: 'github',
@@ -61,8 +64,7 @@ const social = [
   {
     name: 'email',
     label: 'Shoot me an email',
-    url: 'mailto:eligundry@gmail.com',
-    itemProp: 'email',
+    url: `mailto:${email}`,
     Icon: MdOutlineEmail,
   },
   {
@@ -92,6 +94,7 @@ const social = [
     </div>
     <div class="w-full">
       <h4 class="footer-title">Social</h4>
+      <meta itemprop="email" content={email} />
       <div
         class:list={[
           'flex',

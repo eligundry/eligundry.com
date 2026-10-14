@@ -101,11 +101,19 @@ describe('TailoredResume', () => {
     })
 
     const html =
-      'Shipped a <a href="https://reactjs.org/" itemprop="knowsAbout">React</a> SDK.'
+      'Shipped a ' +
+      '<a href="https://reactjs.org/" itemprop="knowsAbout" itemscope itemtype="https://schema.org/Thing"><link itemprop="url" href="https://reactjs.org/"><span itemprop="name">React</span></a>' +
+      ' SDK.'
     expect(rewrite.effective.html).toBe(html)
     expect(rewrite.warnings).toBeUndefined()
     await waitFor(() => expect(item('radioshack')).toBeNull())
-    expect(item('chord:0')?.firstElementChild?.innerHTML).toBe(html)
+    // The DOM serializes the boolean itemscope attribute as itemscope=""
+    expect(
+      item('chord:0')?.firstElementChild?.innerHTML.replace(
+        'itemscope=""',
+        'itemscope'
+      )
+    ).toBe(html)
     expect(screen.getByText('Tailored for Staff Engineer at Acme')).toBeTruthy()
     expect(screen.getByText('Lead with SDKs')).toBeTruthy()
     expect(document.title).toContain('Acme Staff Engineer')
