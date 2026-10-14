@@ -101,6 +101,8 @@ interface Term {
   isClass: boolean
   isDataType: boolean
   parents: string[]
+  /** For an enumeration member such as EventScheduled, its enumerations. */
+  memberOf: string[]
   domains: string[]
   ranges: string[]
   supersededBy?: string
@@ -124,6 +126,11 @@ export class Vocabulary {
         isClass: types.includes('rdfs:Class'),
         isDataType: types.includes('schema:DataType'),
         parents: ids(node['rdfs:subClassOf']),
+        memberOf: ids(
+          types
+            .filter((t) => String(t).startsWith('schema:'))
+            .map((t) => ({ '@id': t }))
+        ),
         domains: ids(node['schema:domainIncludes']),
         ranges: ids(node['schema:rangeIncludes']),
         supersededBy: ids(node['schema:supersededBy'])[0],
@@ -232,6 +239,16 @@ export class Vocabulary {
       return
     }
 
+    // An enumeration member, such as https://schema.org/EventScheduled
+    const name = value.value.match(/^https?:\/\/schema\.org\/(\w+)$/)?.[1]
+    const member = name ? this.terms.get(name) : undefined
+    if (member && !member.isClass && member.memberOf.length) {
+      if (!member.memberOf.some(rangeHas)) {
+        problems.push(`${path}: ${name} given, ${expects}`)
+      }
+      return
+    }
+
     if (value.kind === 'url') {
       // A URL can name a thing as well as be one
       if (!ranges.includes('URL') && !classRanges.length) {
@@ -248,6 +265,11 @@ export class Vocabulary {
     const fitsRange = (range: string) => {
       const ancestors = this.ancestors(range)
       if (range === 'URL') return /^[a-z][a-z\d+.-]*:/i.test(text)
+      if (range === 'Duration') {
+        return /^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+(\.\d+)?S)?)?$/.test(
+          text
+        )
+      }
       if (ancestors.has('DateTime'))
         return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(text)
       if (ancestors.has('Date'))

@@ -54,7 +54,9 @@ and in the superset as `x-technologies`. Rendered links to those URLs, both
 build-time and tailored, and every skill keyword are a schema.org `Thing` the
 page's `Person` `knowsAbout`, with the link text as its `name` and the URL as
 its `url` (`markTechnologyLinks()`). Only an experience's heading is the
-organization's microdata, so these describe the `Person`.
+organization's microdata, so these describe the `Person`. A job's or school's
+current `OrganizationRole` repeats its summary and visible bullets, tailored or
+not, as plain-text `description`s.
 
 ### Awards
 
@@ -195,6 +197,8 @@ includes the job when there's job context.
   counts. Install Chrome with `pnpm exec playwright install chrome`, or point
   `PLAYWRIGHT_WEBMCP_CHROME_PATH` at another build such as Chrome for Testing.
 
+- `tests/e2e/sitemap.spec.ts` runs the same schema.org check on every page in
+  the sitemap.
 - `tests/e2e/structured-data.spec.ts` (Playwright `chromium` project) checks
   the page's microdata, as published and tailored, against the schema.org
   vocabulary (`tests/e2e/schemaOrg.ts`, fetched from schema.org): types and

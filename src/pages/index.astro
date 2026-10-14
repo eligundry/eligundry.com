@@ -222,7 +222,13 @@ const { Content: CodingSection } = await render(codingEntry)
               data-tip={alt}
             >
               <meta itemprop="name" content={book.title} />
-              <meta itemprop="author" content={authorName} />
+              <span
+                itemprop="author"
+                itemscope
+                itemtype="https://schema.org/Person"
+              >
+                <meta itemprop="name" content={authorName} />
+              </span>
               <a
                 href={book.url}
                 target="_blank"

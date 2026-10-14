@@ -64,6 +64,15 @@ function expectStructuredPerson(eli: MicrodataItem) {
     types: ['https://schema.org/EducationalOccupationalCredential'],
   })
   expect(prop(eagleScout, 'name')).toEqual(['Eagle Scout'])
+
+  // Each job's current role carries its accomplishments
+  const jobs = items(eli.properties.worksFor).concat(
+    items(eli.properties.alumniOf)
+  )
+  const roles = jobs.flatMap((job) => items(job.properties.member))
+  expect(
+    roles.filter((role) => prop(role, 'description').length).length
+  ).toBeGreaterThan(5)
   expect(prop(items(eagleScout.properties.recognizedBy)[0], 'name')).toEqual([
     'Boy Scouts of America',
   ])
