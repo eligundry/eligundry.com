@@ -1,18 +1,78 @@
 name: Playwright (Netlify Preview)
+
+# Netlify reports deploy previews to GitHub as a commit status
+# (`netlify/<site>/deploy-preview`) whose target_url is the preview, not as a
+# GitHub deployment, so this listens for `status` rather than
+# `deployment_status`. `status` workflows always run from the default branch's
+# copy of this file, and their runs aren't attached to the PR, so the result is
+# posted back to the PR's commit as its own status.
 on:
-  deployment_status:
+  status:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Preview URL to test (e.g. https://deploy-preview-123--eligundry.netlify.app)
+        required: true
+      sha:
+        description: Commit to check out the tests from (defaults to the branch's head)
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-preview-${{ github.event.sha || inputs.sha || github.ref }}
+  cancel-in-progress: true
+
+env:
+  STATUS_CONTEXT: playwright/deploy-preview
 
 jobs:
+  # Runs separately from e2e so the job that executes the PR's code never holds
+  # a token that can write statuses.
+  pending:
+    name: Mark commit as pending
+    if: |
+      github.event_name == 'status' &&
+      github.event.state == 'success' &&
+      startsWith(github.event.context, 'netlify/') &&
+      endsWith(github.event.context, '/deploy-preview')
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          PREVIEW_SHA: ${{ github.event.sha }}
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.PREVIEW_SHA,
+              state: 'pending',
+              context: process.env.STATUS_CONTEXT,
+              description: 'Running Playwright against the deploy preview',
+              target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            })
+
   e2e:
     name: Run e2e tests against preview
     if: |
-      github.event.deployment_status.state == 'success' &&
-      startsWith(github.event.deployment.environment, 'Deploy Preview')
+      github.event_name == 'workflow_dispatch' || (
+        github.event.state == 'success' &&
+        startsWith(github.event.context, 'netlify/') &&
+        endsWith(github.event.context, '/deploy-preview')
+      )
     runs-on: ubuntu-latest
+    env:
+      PREVIEW_URL: ${{ github.event.target_url || inputs.url }}
+      PREVIEW_SHA: ${{ github.event.sha || inputs.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.deployment.sha }}
+          ref: ${{ env.PREVIEW_SHA }}
+          persist-credentials: false
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -20,7 +80,7 @@ jobs:
           node-version-file: '.nvmrc'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         # Chromium for most specs; Google Chrome for the resume's WebMCP tools
@@ -28,7 +88,7 @@ jobs:
 
       - name: Run Playwright tests
         env:
-          PLAYWRIGHT_BASE_URL: ${{ github.event.deployment_status.environment_url }}
+          PLAYWRIGHT_BASE_URL: ${{ env.PREVIEW_URL }}
         run: pnpm test:e2e
 
       - name: Upload Playwright report
@@ -36,5 +96,38 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: playwright-report/
+          path: |
+            playwright-report/
+            test-results/
           retention-days: 7
+
+  report:
+    name: Report result to the commit
+    needs: [pending, e2e]
+    if: ${{ always() && github.event_name == 'status' && needs.e2e.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          RESULT: ${{ needs.e2e.result }}
+          PREVIEW_SHA: ${{ github.event.sha }}
+        with:
+          script: |
+            const result = process.env.RESULT
+            const state = result === 'success' ? 'success' : result === 'cancelled' ? 'error' : 'failure'
+            const description = {
+              success: 'Playwright passed against the deploy preview',
+              failure: 'Playwright failed against the deploy preview',
+              error: 'Playwright run was cancelled',
+            }[state]
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.PREVIEW_SHA,
+              state,
+              context: process.env.STATUS_CONTEXT,
+              description,
+              target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            })

@@ -20,7 +20,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  reporter: process.env.CI ? 'github' : 'list',
+  // GitHub annotations in CI, plus an HTML report the preview workflow uploads
+  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   // The @visual screenshot suite has environment-specific baselines (browser
   // build + font rendering), so skip it in CI and run it locally instead.
   grepInvert: process.env.CI ? /@visual/ : undefined,
