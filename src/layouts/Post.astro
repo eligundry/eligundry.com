@@ -38,6 +38,10 @@ const { title, description, cover, date } = frontmatter
 const { modified, readingTime = 0 } = remarkPluginFrontmatter
 const url = `/${collection}/${slug}/`
 const verificationLinkTag = getVerificationLinkTag(documentRkey)
+
+// A talk can be only an embedded slide deck; schema.org `text` can't be empty
+const body = await Astro.slots.render('default')
+const hasText = body.replace(/<[^>]*>/g, '').trim().length > 0
 ---
 
 <style>
@@ -70,7 +74,7 @@ const verificationLinkTag = getVerificationLinkTag(documentRkey)
   >
     <link itemprop="author publisher" href="#eli-gundry" />
     {modified && <meta itemprop="dateModified" content={modified.toString()} />}
-    {cover && <meta itemprop="image" content={cover.src} />}
+    {cover && <link itemprop="image" href={cover.src} />}
     {
       !!readingTime && (
         <meta itemprop="timeRequired" content={`PT${readingTime}M`} />
@@ -125,8 +129,8 @@ const verificationLinkTag = getVerificationLinkTag(documentRkey)
         </EmojiText>
       </p>
     </header>
-    <div itemprop="text" class="post-body">
-      <slot />
+    <div itemprop={hasText ? 'text' : undefined} class="post-body">
+      <Fragment set:html={body} />
     </div>
     {showComments && <Comments canonicalPath={url} bskyPostUri={bskyPostUri} />}
   </article>

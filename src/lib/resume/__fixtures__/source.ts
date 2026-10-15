@@ -135,7 +135,17 @@ export const fixtureSource = (): ResumeSource => ({
         },
         {
           ...trustedText('activities:eagle-scout', 'Eagle Scout'),
-          records: [{ section: 'awards', title: 'Eagle Scout', date: '2006' }],
+          records: [
+            {
+              section: 'awards',
+              title: 'Eagle Scout',
+              awarder: 'Boy Scouts of America',
+              awarderUrl: 'https://www.scouting.org/',
+              url: 'https://en.wikipedia.org/wiki/Eagle_Scout',
+              credentialCategory: 'rank',
+              date: '2006',
+            },
+          ],
         },
       ],
     },

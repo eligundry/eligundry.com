@@ -89,7 +89,7 @@ export const emptyState = (): TailorState => ({ v: 1, changes: [] })
 export class TailorError extends Error {}
 
 /** Tailored text comes from agents or shared links, so it's never trusted. */
-const untrustedHtml = (markdown: string, source: ResumeSource) =>
+const untrusted = (markdown: string, source: ResumeSource) =>
   renderMarkdown(markdown, {
     trusted: false,
     technologies: source.technologies,
@@ -264,7 +264,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         ref.node.summary = {
           id: op.id,
           markdown,
-          html: untrustedHtml(markdown, source),
+          ...untrusted(markdown, source),
           added: true,
         }
         return { target: op.id, after: markdown }
@@ -287,7 +287,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         case 'skill': {
           const before = skillMarkdown(ref.node)
           ref.node.markdown = markdown
-          ref.node.html = untrustedHtml(markdown, source)
+          ref.node.html = untrusted(markdown, source).html
           return { target: op.id, before, after: markdown }
         }
         case 'activity':
@@ -297,8 +297,7 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         case 'basics': {
           const node = ref.node as TextNode | ActivityNode
           const before = node.markdown
-          node.markdown = markdown
-          node.html = untrustedHtml(markdown, source)
+          Object.assign(node, { markdown, ...untrusted(markdown, source) })
           return { target: op.id, before, after: markdown }
         }
       }
@@ -310,14 +309,14 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         throw new TailorError(`"${op.id}" already exists`)
       }
       const markdown = op.markdown.trim()
-      const html = untrustedHtml(markdown, source)
+      const { html, text } = untrusted(markdown, source)
       const ref = lookup(op.parentId)
       let list: { id: string }[]
       let item: TextNode | SkillNode | ActivityNode
 
       if (ref.kind === 'experience') {
         list = ref.node.highlights
-        item = { id: op.id, markdown, html, added: true }
+        item = { id: op.id, markdown, html, text, added: true }
       } else if (ref.kind === 'section' && ref.node.id === 'section:skills') {
         list = ref.node.items
         item = {
@@ -334,11 +333,11 @@ function applyOp(tailored: Tailored, op: Op): Applied {
         ref.node.id === 'section:activities'
       ) {
         list = ref.node.items
-        item = { id: op.id, markdown, html, records: [], added: true }
+        item = { id: op.id, markdown, html, text, records: [], added: true }
       } else if (ref.kind === 'activity') {
         // A sub-item of an activity, e.g. one of the hackathons.
         list = ref.node.children ??= []
-        item = { id: op.id, markdown, html, added: true }
+        item = { id: op.id, markdown, html, text, added: true }
       } else {
         throw new TailorError(
           `Items can only be added to an experience id, "section:skills", "section:activities" or an activity id (for a sub-item)`

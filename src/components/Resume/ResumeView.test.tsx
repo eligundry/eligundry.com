@@ -159,6 +159,78 @@ describe('ResumeView', () => {
     )
   })
 
+  test('marks up skill keywords as Things the Person knowsAbout', () => {
+    const { container } = renderView()
+    const skills = item(container, 'skills:languages')!
+    const things = [...skills.querySelectorAll('[itemprop="knowsAbout"]')]
+    expect(things.map((thing) => thing.getAttribute('itemtype'))).toEqual([
+      'https://schema.org/Thing',
+      'https://schema.org/Thing',
+      'https://schema.org/Thing',
+    ])
+    expect(
+      things.map((thing) => [
+        thing.querySelector('[itemprop="name"]')?.textContent,
+        thing.querySelector('[itemprop="url"]')?.getAttribute('href'),
+      ])
+    ).toEqual([
+      ['TypeScript', 'https://www.typescriptlang.org/'],
+      ['Go', 'https://golang.org/'],
+      ['PHP', 'https://www.php.net/'],
+    ])
+  })
+
+  test("gives a job's role its summary and visible bullets as descriptions", () => {
+    const { container } = renderView([
+      {
+        type: 'rewrite',
+        id: 'chord:0',
+        markdown: 'Built a [Go](https://golang.org/) & React SDK.',
+      },
+    ])
+    const role = item(container, 'chord')!.querySelector(
+      '[itemtype="https://schema.org/OrganizationRole"]'
+    )!
+    const descriptions = [
+      ...role.querySelectorAll('meta[itemprop="description"]'),
+    ].map((meta) => meta.getAttribute('content'))
+    expect(descriptions).toContain('Built a Go & React SDK.')
+    // The bullets themselves stay the Person's, for their knowsAbout links
+    expect(item(container, 'chord:0')!.closest('[itemscope]')).toBeNull()
+  })
+
+  test('marks up awards from their records, even after a rewrite', () => {
+    const { container } = renderView([
+      {
+        type: 'rewrite',
+        id: 'activities:eagle-scout',
+        markdown: 'Became an Eagle Scout.',
+      },
+    ])
+    const activity = item(container, 'activities:eagle-scout')!
+    expect(
+      activity.querySelector('meta[itemprop="award"]')?.getAttribute('content')
+    ).toBe('Eagle Scout, Boy Scouts of America, 2006')
+    const credential = activity.querySelector('[itemprop="hasCredential"]')!
+    expect(credential.getAttribute('itemtype')).toBe(
+      'https://schema.org/EducationalOccupationalCredential'
+    )
+    expect(
+      [...credential.querySelectorAll('[itemprop]')].map((el) => [
+        el.getAttribute('itemprop'),
+        el.getAttribute('content') ?? el.getAttribute('href'),
+      ])
+    ).toEqual([
+      ['name', 'Eagle Scout'],
+      ['credentialCategory', 'rank'],
+      ['url', 'https://en.wikipedia.org/wiki/Eagle_Scout'],
+      ['dateCreated', '2006'],
+      ['recognizedBy', null],
+      ['name', 'Boy Scouts of America'],
+      ['url', 'https://www.scouting.org/'],
+    ])
+  })
+
   test('marks forced page breaks', () => {
     const { container } = renderView([
       { type: 'setPrint', print: { breakBefore: ['section:education'] } },

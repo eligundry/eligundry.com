@@ -1,5 +1,6 @@
 import { test, expect, request } from '@playwright/test'
 import { JSDOM } from 'jsdom'
+import { loadVocabulary, validateMicrodata } from './schemaOrg'
 
 const SITEMAP_HOSTNAME = 'https://eligundry.com'
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
@@ -26,6 +27,7 @@ async function getSitemapUrls(): Promise<string[]> {
 }
 
 const urls = await getSitemapUrls()
+const vocabulary = await loadVocabulary()
 
 test.describe('sitemap', () => {
   for (const url of urls) {
@@ -44,6 +46,11 @@ test.describe('sitemap', () => {
       await expect(main, 'expected exactly one <main>').toHaveCount(1)
       const text = (await main.innerText()).trim()
       expect(text.length, '<main> is empty').toBeGreaterThan(0)
+    })
+
+    test(`${url} passes schema.org validation`, async ({ page }) => {
+      await page.goto(url, { waitUntil: 'domcontentloaded' })
+      expect(await validateMicrodata(page, vocabulary)).toEqual([])
     })
   }
 })

@@ -50,10 +50,26 @@ the summary and highlights. Titles are facts, so tailoring can't rewrite them.
 `collectTechnologies()` (`src/lib/resume/technologies.ts`) lists what the resume
 links to as a technology: every skill keyword plus every markdown link in a job
 that isn't to the employer's own site. It's on the source as `technologies`
-and in the superset as `x-technologies`. Rendered links to those URLs, both
-build-time and tailored, get `itemprop="knowsAbout"`. Only an experience's
-heading is the organization's microdata, so these links describe the page's
-schema.org `Person`.
+and in the superset as `x-technologies`. Rendered markdown links to those URLs,
+both build-time and tailored, and every skill keyword are a schema.org `Thing`
+the page's `Person` `knowsAbout`, with the link text as its `name` and the URL
+as its `url`. `renderMarkdown()` parses markdown into a hast tree, where
+`markTechnologyLinks()` marks the links up. Inline HTML links in the content
+are neither technologies nor marked up, so use them for links that aren't
+skills, like clients. Only an experience's heading is the
+organization's microdata, so these describe the `Person`. A job's or school's
+current `OrganizationRole` repeats its summary and visible bullets, tailored or
+not, as plain-text `description`s (each text node's `text`).
+
+### Awards
+
+An activity's `awards` records are the `Person`'s `award`s (Text, as
+"title, awarder, date"). One with a `credentialCategory`, like the Eagle Scout
+rank, is also a `hasCredential`: an `EducationalOccupationalCredential`
+`recognizedBy` its awarder. The markup comes from the records, not the
+activity's markdown, so tailoring the text keeps it; keep microdata out of the
+markdown. `url`, `awarderUrl` and `credentialCategory` are `x-` extensions in
+`/resume.json`.
 
 ## Rendering
 
@@ -183,6 +199,17 @@ includes the job when there's job context.
   surviving a reload, and `get_print_layout` matching real `page.pdf()` page
   counts. Install Chrome with `pnpm exec playwright install chrome`, or point
   `PLAYWRIGHT_WEBMCP_CHROME_PATH` at another build such as Chrome for Testing.
+
+- `tests/e2e/sitemap.spec.ts` runs the same schema.org check on every page in
+  the sitemap.
+- `tests/e2e/structured-data.spec.ts` (Playwright `chromium` project) checks
+  the page's microdata, as published and tailored, with Adobe's
+  [structured data validator](https://github.com/adobe/structured-data-validator)
+  against schema.org's vocabulary (`tests/e2e/schemaOrg.ts`), reading the page
+  with its extractor, `@marbec/web-auto-extractor`. Its warnings fail too, and
+  an extra handler makes it check values: they must fit their property's
+  range, so a `mailto:` link can't be an `email`. The extractor ignores
+  `<time datetime>`, so dates go in `<meta itemprop content>` tags.
 
 `/resume/` carries a WebMCP origin trial token, so Chrome enables WebMCP on
 `https://eligundry.com` without the flag until the token expires (2026-11-17).

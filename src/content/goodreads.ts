@@ -18,6 +18,8 @@ interface GoodreadsBook {
   cover: string
   url: string
   rating: number
+  /** When it was read (or shelved, if Goodreads has no read date), as YYYY-MM-DD. */
+  reviewedAt: string | null
 }
 
 function upgradeCoverUrl(url: string): string {
@@ -25,6 +27,14 @@ function upgradeCoverUrl(url: string): string {
   // that constrains the image dimensions. Strip it so we fetch the original
   // full-resolution image and let our own resize pipeline downscale.
   return url.replace(/\._S[XY]\d+_/i, '')
+}
+
+/** An RSS date such as "Sat, 12 Oct 2024 00:00:00 -0700" as YYYY-MM-DD. */
+function isoDate(rssDate: string | null | undefined): string | null {
+  const date = rssDate?.trim() ? new Date(rssDate) : undefined
+  return date && !Number.isNaN(date.getTime())
+    ? date.toISOString().slice(0, 10)
+    : null
 }
 
 async function fetchGoodreadsShelf({
@@ -63,9 +73,13 @@ async function fetchGoodreadsShelf({
     const url = item.querySelector('link')?.textContent?.trim()
     const ratingStr = item.querySelector('user_rating')?.textContent?.trim()
     const rating = ratingStr ? parseInt(ratingStr, 10) : 0
+    const reviewedAt = isoDate(
+      item.querySelector('user_read_at')?.textContent ||
+        item.querySelector('user_date_added')?.textContent
+    )
 
     if (title && author && cover && url) {
-      books.push({ title, author, cover, url, rating })
+      books.push({ title, author, cover, url, rating, reviewedAt })
     }
   }
 
@@ -107,6 +121,7 @@ export const createGoodreadsCollection = (
       cover: z.string(),
       url: z.string(),
       rating: z.number(),
+      reviewedAt: z.string().nullable(),
       coverColor: z.string().nullable(),
       order: z.number(),
     }),

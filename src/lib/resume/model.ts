@@ -28,6 +28,8 @@ export interface TextNode {
   markdown: string
   /** `markdown` rendered to HTML: trusted at build time, escaped if tailored. */
   html: string
+  /** `markdown` as plain text. */
+  text: string
   hidden?: boolean
   /** Added by tailoring rather than written in the content files. */
   added?: boolean
@@ -103,6 +105,14 @@ export type ActivityRecord =
       date?: string
       awarder?: string
       summary?: string
+      /** A page about the award. */
+      url?: string
+      awarderUrl?: string
+      /**
+       * Set for an award that is also a credential, such as a rank, so the
+       * page marks it up as a schema.org `EducationalOccupationalCredential`.
+       */
+      credentialCategory?: string
     }
   | {
       section: 'publications'
@@ -117,6 +127,7 @@ export interface ActivityNode {
   id: string
   markdown: string
   html: string
+  text: string
   children?: TextNode[]
   childrenClass?: string
   records: ActivityRecord[]
@@ -185,7 +196,7 @@ function sliceNode(
 
 /** A text node for trusted (build-time) markdown. */
 export function trustedText(id: string, markdown: string): TextNode {
-  return { id, markdown, html: renderMarkdown(markdown, { trusted: true }) }
+  return { id, markdown, ...renderMarkdown(markdown, { trusted: true }) }
 }
 
 /**
@@ -247,7 +258,10 @@ export function markTechnologies(
   technologies: Technology[]
 ): ResumeSource {
   const render = (node: TextNode) => {
-    node.html = renderMarkdown(node.markdown, { trusted: true, technologies })
+    node.html = renderMarkdown(node.markdown, {
+      trusted: true,
+      technologies,
+    }).html
   }
   const { label, tagline, summary } = source.basics
   ;[label, tagline, summary].forEach(render)
@@ -517,10 +531,10 @@ export function toSuperset(
   const activities = sectionItems(source, 'activities')
   for (const activity of activities) {
     const hidden = activity.hidden || sectionHidden('activities')
-    for (const { section, ...record } of activity.records) {
-      records[section].push(
+    for (const record of activity.records) {
+      records[record.section].push(
         compact({
-          ...record,
+          ...jsonResumeRecord(record),
           'x-activity': activity.id,
           'x-hidden': hidden || undefined,
         })
@@ -581,6 +595,21 @@ function stripExtensions(value: unknown): unknown {
 }
 
 /** Schema-compliant JSON Resume, without extensions or hidden entries. */
+/** A record in JSON Resume; an award's other keys become `x-` extensions. */
+function jsonResumeRecord(record: ActivityRecord): Record<string, unknown> {
+  if (record.section !== 'awards') {
+    const { section: _, ...rest } = record
+    return rest
+  }
+  const { section: _, url, awarderUrl, credentialCategory, ...award } = record
+  return {
+    ...award,
+    'x-url': url,
+    'x-awarderUrl': awarderUrl,
+    'x-credentialCategory': credentialCategory,
+  }
+}
+
 export function toJsonResume(resume: EliResume): JsonResume {
   const stripped = stripExtensions(resume) as JsonResume
   // Drop sections that ended up empty after hiding everything in them.

@@ -10,14 +10,14 @@ import { FaPrint } from 'react-icons/fa'
 import EditableList from './EditableList'
 import { cx, Rich, ResumeViewContext, useItemProps } from './ResumeView'
 
+/** A date, with its schema.org value in a meta tag (extractors skip `datetime`). */
 function Time({ date, itemProp }: { date: Date; itemProp: string }) {
+  const iso = dateFns.formatISO(date, { representation: 'date' })
   return (
-    <time
-      itemProp={itemProp}
-      dateTime={dateFns.formatISO(date, { representation: 'date' })}
-    >
-      {dateFns.format(date, 'MMMM yyyy')}
-    </time>
+    <>
+      <meta itemProp={itemProp} content={iso} />
+      <time dateTime={iso}>{dateFns.format(date, 'MMMM yyyy')}</time>
+    </>
   )
 }
 
@@ -47,11 +47,32 @@ const calendar = (className: string) => (
   </span>
 )
 
+/**
+ * A role's summary and bullets as its schema.org `description`s. The bullets
+ * themselves stay outside the role's microdata, so the technologies they link
+ * remain things the Person `knowsAbout`.
+ */
+function Descriptions({ texts }: { texts: string[] }) {
+  return (
+    <>
+      {texts.map((text, i) => (
+        <meta key={i} itemProp="description" content={text} />
+      ))}
+    </>
+  )
+}
+
 /** Each title held at a job with a promotion, newest first. */
-function Roles({ roles }: { roles: ExperienceRole[] }) {
+function Roles({
+  roles,
+  accomplishments,
+}: {
+  roles: ExperienceRole[]
+  accomplishments: string[]
+}) {
   return (
     <div class="w-full order-3 flex flex-col">
-      {roles.map((role) => (
+      {roles.map((role, i) => (
         <div
           key={role.startDate}
           itemScope
@@ -62,6 +83,7 @@ function Roles({ roles }: { roles: ExperienceRole[] }) {
           <h4 itemProp="roleName" class="w-full sm:w-1/2 print:w-1/2 m-0">
             {role.title}
           </h4>
+          {i === 0 && <Descriptions texts={accomplishments} />}
           <span class="w-full sm:w-1/2 print:w-1/2 m-0 sm:text-right print:text-right text-xs font-mono self-center">
             {calendar('sm:hidden')}{' '}
             <Tenure
@@ -108,9 +130,14 @@ export default function Experience({
   const endDate = experience.endDate && dateFns.parseISO(experience.endDate)
 
   const roles = experience.roles?.length ? experience.roles : undefined
+  // The current title carries the summary and bullets, like in JSON Resume
+  const accomplishments = [experience.summary, ...experience.highlights]
+    .filter((node): node is TextNode => !!node?.text && !node.hidden)
+    .map((node) => node.text)
 
   // Only the heading is the organization's microdata, so links in the
-  // bullets describe the page's Person (see collectTechnologies).
+  // bullets describe the page's Person (see collectTechnologies). The role
+  // repeats the summary and bullets as text descriptions.
   return (
     <section
       {...props}
@@ -133,8 +160,8 @@ export default function Experience({
       <div
         class="contents"
         itemScope
-        itemType={`http://schema.org/${
-          type == 'work' ? 'Organization' : 'CollegeOrUniversity'
+        itemType={`https://schema.org/${
+          type == 'work' ? 'Organization' : 'EducationalOrganization'
         }`}
         itemProp={endDate ? 'alumniOf' : 'worksFor'}
       >
@@ -147,7 +174,7 @@ export default function Experience({
           </a>
         </h3>
         {roles ? (
-          <Roles roles={roles} />
+          <Roles roles={roles} accomplishments={accomplishments} />
         ) : (
           <>
             <span
@@ -157,6 +184,7 @@ export default function Experience({
               class="w-full sm:w-1/2 print:w-1/2 m-0 order-3 sm:order-2 print:order-2 sm:text-right print:text-right text-xs font-mono self-center"
             >
               <meta itemProp="roleName" content={position} />
+              <Descriptions texts={accomplishments} />
               {calendar('sm:hidden')}{' '}
               <Tenure role={experience} endDate={endDate || undefined} />{' '}
               {calendar('hidden sm:inline')}

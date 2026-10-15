@@ -222,7 +222,13 @@ const { Content: CodingSection } = await render(codingEntry)
               data-tip={alt}
             >
               <meta itemprop="name" content={book.title} />
-              <meta itemprop="author" content={authorName} />
+              <span
+                itemprop="author"
+                itemscope
+                itemtype="https://schema.org/Person"
+              >
+                <meta itemprop="name" content={authorName} />
+              </span>
               <a
                 href={book.url}
                 target="_blank"
@@ -260,9 +266,13 @@ const { Content: CodingSection } = await render(codingEntry)
                       itemprop="ratingValue"
                       content={book.rating.toString()}
                     />
+                    <meta itemprop="worstRating" content="1" />
                     <meta itemprop="bestRating" content="5" />
                   </div>
                   <link itemprop="author" href="#eli-gundry" />
+                  {book.reviewedAt && (
+                    <meta itemprop="datePublished" content={book.reviewedAt} />
+                  )}
                 </div>
               )}
             </div>
