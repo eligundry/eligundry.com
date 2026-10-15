@@ -203,6 +203,9 @@ importers:
         specifier: ^4.6.5
         version: 4.6.5
     devDependencies:
+      '@adobe/structured-data-validator':
+        specifier: ^1.7.0
+        version: 1.7.0
       '@astro-notion/loader':
         specifier: ^1.1.2
         version: 1.1.2(astro@7.3.5(@astrojs/markdown-remark@7.3.1)(@netlify/blobs@11.1.1)(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -313,6 +316,13 @@ importers:
         version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.6.2)(jsdom@25.0.1)(vite@8.0.14(@types/node@26.6.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
 packages:
+  '@adobe/structured-data-validator@1.7.0':
+    resolution:
+      {
+        integrity: sha512-7z4MDfbYUBeMW2XyDzcpEh5FtDYaXmuERBCdmeDOkcsrOuLe0NJb97tAKoqoe+qll17fX9C5V8zgU1z+7hIWMg==,
+      }
+    engines: { node: '>=18.0.0' }
+
   '@ampproject/remapping@2.3.0':
     resolution:
       {
@@ -15354,6 +15364,8 @@ packages:
       }
 
 snapshots:
+  '@adobe/structured-data-validator@1.7.0': {}
+
   '@ampproject/remapping@2.3.0':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13

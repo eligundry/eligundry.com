@@ -109,6 +109,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@adobe/structured-data-validator": "^1.7.0",
     "@astro-notion/loader": "^1.1.2",
     "@astrojs/check": "^0.9.10",
     "@eslint/eslintrc": "^3.2.0",

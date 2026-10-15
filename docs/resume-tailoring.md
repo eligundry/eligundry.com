@@ -203,10 +203,11 @@ includes the job when there's job context.
 - `tests/e2e/sitemap.spec.ts` runs the same schema.org check on every page in
   the sitemap.
 - `tests/e2e/structured-data.spec.ts` (Playwright `chromium` project) checks
-  the page's microdata, as published and tailored, against the schema.org
-  vocabulary (`tests/e2e/schemaOrg.ts`, fetched from schema.org): types and
-  properties exist, properties fit their item's type and values fit their
-  range, so a `mailto:` link can't be an `email`.
+  the page's microdata, as published and tailored, with Adobe's
+  [structured data validator](https://github.com/adobe/structured-data-validator)
+  against schema.org's vocabulary (`tests/e2e/schemaOrg.ts`). Its warnings
+  fail too, and an extra handler makes it check values: they must fit their
+  property's range, so a `mailto:` link can't be an `email`.
 
 `/resume/` carries a WebMCP origin trial token, so Chrome enables WebMCP on
 `https://eligundry.com` without the flag until the token expires (2026-11-17).

@@ -1,11 +1,20 @@
+import Validator from '@adobe/structured-data-validator'
 import type { Page } from '@playwright/test'
 
 /**
- * Checks a page's schema.org microdata against the schema.org vocabulary, the
- * way validator.schema.org does, plus what it only hints at: every type and
- * property exists, each property applies to its item's type, and each value
- * fits the property's range. A link's `href` is a URL, so it can't be the value
- * of a Text-only property like `email` or `award`.
+ * Validates a page's schema.org microdata with Adobe's structured data
+ * validator (@adobe/structured-data-validator), made stricter:
+ *
+ * - Adobe checks that types exist, that properties apply to their type
+ *   (reported as warnings, which fail here too) and Google's rich result
+ *   requirements for the types it knows.
+ * - It doesn't check values yet (a TODO in its schema.org handler), so
+ *   `ValueRanges` is added as another of its handlers: each value must fit
+ *   its property's range, superseded terms are reported, and a link's `href`
+ *   can't be the value of a Text-only property like `email` or `award`.
+ * - Microdata is read from the rendered page by `extractMicrodata()` rather
+ *   than @marbec/web-auto-extractor, which ignores `<time datetime>` and
+ *   `<link href>` values and can't tell links from text.
  */
 
 /** Includes pending terms such as `Credential`, like validator.schema.org. */
@@ -103,51 +112,195 @@ interface Term {
   parents: string[]
   /** For an enumeration member such as EventScheduled, its enumerations. */
   memberOf: string[]
-  domains: string[]
   ranges: string[]
   supersededBy?: string
 }
+
+type Kind = MicrodataValue['kind']
+type Json = Record<string, unknown>
+type Vocabulary = { '@graph': Json[] }
 
 const ids = (value: unknown): string[] =>
   (Array.isArray(value) ? value : value ? [value] : []).map((v) =>
     String((v as { '@id': string })['@id']).replace(/^schema:/, '')
   )
 
-export class Vocabulary {
-  private terms = new Map<string, Term>()
+const typeName = (itemtype: string) =>
+  itemtype.replace(/^https?:\/\/schema\.org\//, '')
 
-  constructor(jsonld: { '@graph': Record<string, unknown>[] }) {
-    for (const node of jsonld['@graph']) {
-      const id = String(node['@id'])
-      if (!id.startsWith('schema:')) continue
-      const types = ([] as unknown[]).concat(node['@type'])
-      this.terms.set(id.replace(/^schema:/, ''), {
-        id: id.replace(/^schema:/, ''),
-        isClass: types.includes('rdfs:Class'),
-        isDataType: types.includes('schema:DataType'),
-        parents: ids(node['rdfs:subClassOf']),
-        memberOf: ids(
-          types
-            .filter((t) => String(t).startsWith('schema:'))
-            .map((t) => ({ '@id': t }))
-        ),
-        domains: ids(node['schema:domainIncludes']),
-        ranges: ids(node['schema:rangeIncludes']),
-        supersededBy: ids(node['schema:supersededBy'])[0],
+/** How each item's values were given, which Adobe's data format loses. */
+const kinds = new WeakMap<Json, Record<string, Kind[]>>()
+
+/**
+ * Converts items to the format Adobe's validator takes (that of
+ * @marbec/web-auto-extractor): one value or an array of them per property.
+ */
+function toValidatorData(items: MicrodataItem[]) {
+  const convert = (item: MicrodataItem): Json => {
+    const data: Json = { '@type': item.types.map(typeName) }
+    if (item.types.length === 1) data['@type'] = typeName(item.types[0])
+    if (item.id) data['@id'] = item.id
+    const itemKinds: Record<string, Kind[]> = {}
+    for (const [name, values] of Object.entries(item.properties)) {
+      const converted = values.map((value) =>
+        value.kind === 'item' ? convert(value.item) : value.value
+      )
+      data[name] = converted.length === 1 ? converted[0] : converted
+      itemKinds[name] = values.map((value) => value.kind)
+    }
+    kinds.set(data, itemKinds)
+    return data
+  }
+  const microdata: Record<string, Json[]> = {}
+  for (const item of items) {
+    const data = convert(item)
+    const [type] = ([] as unknown[]).concat(data['@type'])
+    ;(microdata[String(type ?? 'untyped')] ??= []).push(data)
+  }
+  return { microdata }
+}
+
+/** Problems with a page's microdata, as "path: message". */
+export async function validateMicrodata(
+  items: MicrodataItem[],
+  vocabulary: Vocabulary
+): Promise<string[]> {
+  const problems: string[] = []
+  // Adobe skips items without a type, so they're reported here
+  const untyped = (item: MicrodataItem, path: string) => {
+    if (!item.types.length) problems.push(`${path}: has no itemtype`)
+    for (const [name, values] of Object.entries(item.properties)) {
+      values.forEach((value, i) => {
+        if (value.kind === 'item') untyped(value.item, `${path}.${name}[${i}]`)
       })
     }
   }
+  items.forEach((item, i) => untyped(item, `item[${i}]`))
 
-  static async load(url = VOCABULARY_URL): Promise<Vocabulary> {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`Fetching ${url} failed: ${response.status}`)
+  const validator = new Validator(vocabulary)
+  validator.globalHandlers.push(async () => ({ default: ValueRanges }))
+  for (const issue of await validator.validate(toValidatorData(items))) {
+    const path = (issue.path ?? [])
+      .map((part) =>
+        [
+          part.property,
+          part.type && `<${part.type}>`,
+          (part.length ?? 0) > 1 && `[${part.index}]`,
+        ]
+          .filter(Boolean)
+          .join('')
+      )
+      .join('.')
+    problems.push(`${path}: ${issue.issueMessage}`)
+  }
+  return problems
+}
+
+export async function loadVocabulary(
+  url = VOCABULARY_URL
+): Promise<Vocabulary> {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Fetching ${url} failed: ${response.status}`)
+  }
+  return response.json()
+}
+
+/** The schema.org terms, indexed once per vocabulary. */
+const termsCache = new WeakMap<Vocabulary, Map<string, Term>>()
+
+function termsOf(vocabulary: Vocabulary) {
+  let terms = termsCache.get(vocabulary)
+  if (terms) return terms
+  terms = new Map()
+  for (const node of vocabulary['@graph']) {
+    const id = String(node['@id'])
+    if (!id.startsWith('schema:')) continue
+    const types = ([] as unknown[]).concat(node['@type'])
+    terms.set(id.replace(/^schema:/, ''), {
+      id: id.replace(/^schema:/, ''),
+      isClass: types.includes('rdfs:Class'),
+      isDataType: types.includes('schema:DataType'),
+      parents: ids(node['rdfs:subClassOf']),
+      memberOf: ids(
+        types
+          .filter((t) => String(t).startsWith('schema:'))
+          .map((t) => ({ '@id': t }))
+      ),
+      ranges: ids(node['schema:rangeIncludes']),
+      supersededBy: ids(node['schema:supersededBy'])[0],
+    })
+  }
+  termsCache.set(vocabulary, terms)
+  return terms
+}
+
+interface Issue {
+  issueMessage: string
+  severity: 'ERROR' | 'WARNING'
+  path: unknown[]
+  fieldNames: string[]
+}
+
+/**
+ * An extra handler for Adobe's validator, run on every typed item: checks
+ * each value against its property's range.
+ */
+class ValueRanges {
+  private terms: Map<string, Term>
+  private path: unknown[]
+  private type: string
+
+  constructor({
+    path,
+    type,
+    schemaOrgJson,
+  }: {
+    path: unknown[]
+    type: string
+    schemaOrgJson: Vocabulary
+  }) {
+    this.terms = termsOf(schemaOrgJson)
+    this.path = path
+    this.type = typeName(type)
+  }
+
+  validate(data: Json): Issue[] {
+    const issues: Issue[] = []
+    const issue = (property: string, message: string) =>
+      issues.push({
+        issueMessage: message,
+        severity: 'ERROR',
+        path: this.path,
+        fieldNames: [property],
+      })
+
+    const type = this.terms.get(this.type)
+    if (type?.supersededBy) {
+      issue('@type', `Type "${type.id}" is superseded by ${type.supersededBy}`)
     }
-    return new Vocabulary(await response.json())
+    const itemKinds = kinds.get(data) ?? {}
+    for (const [name, raw] of Object.entries(data)) {
+      if (name.startsWith('@')) continue
+      const property = this.terms.get(name)
+      if (!property || property.isClass) continue // Adobe reports these
+      if (property.supersededBy) {
+        issue(
+          name,
+          `Property "${name}" is superseded by ${property.supersededBy}`
+        )
+      }
+      const values = ([] as unknown[]).concat(raw)
+      values.forEach((value, i) => {
+        const problem = this.checkValue(property, value, itemKinds[name]?.[i])
+        if (problem) issue(name, `Property "${name}": ${problem}`)
+      })
+    }
+    return issues
   }
 
   /** `type` and every class it is a subclass of. */
-  ancestors(type: string): Set<string> {
+  private ancestors(type: string): Set<string> {
     const seen = new Set<string>()
     const visit = (id: string) => {
       if (seen.has(id)) return
@@ -159,109 +312,50 @@ export class Vocabulary {
   }
 
   private isDataType(id: string) {
-    const ancestors = this.ancestors(id)
-    return [...ancestors].some((a) => this.terms.get(a)?.isDataType)
+    return [...this.ancestors(id)].some((a) => this.terms.get(a)?.isDataType)
   }
 
-  /** Problems with the items, each with a path to where it is. */
-  check(items: MicrodataItem[]): string[] {
-    const problems: string[] = []
-    items.forEach((item, i) => this.checkItem(item, `item[${i}]`, problems))
-    return problems
-  }
-
-  private checkItem(item: MicrodataItem, path: string, problems: string[]) {
-    if (!item.types.length) {
-      problems.push(`${path}: has no itemtype`)
-      return
-    }
-    const types: string[] = []
-    for (const itemtype of item.types) {
-      const match = itemtype.match(/^https?:\/\/schema\.org\/(\w+)$/)
-      const term = match && this.terms.get(match[1])
-      if (!term?.isClass || this.isDataType(term.id)) {
-        problems.push(`${path}: ${itemtype} is not a schema.org type`)
-        continue
-      }
-      if (term.supersededBy) {
-        problems.push(
-          `${path}: ${term.id} is superseded by ${term.supersededBy}`
-        )
-      }
-      types.push(term.id)
-    }
-    if (!types.length) return
-    path = `${path}<${types.join(' ')}>`
-    const ancestors = new Set(types.flatMap((t) => [...this.ancestors(t)]))
-
-    for (const [name, values] of Object.entries(item.properties)) {
-      const property = this.terms.get(name)
-      if (!property || property.isClass) {
-        problems.push(`${path}.${name}: not a schema.org property`)
-        continue
-      }
-      if (property.supersededBy) {
-        problems.push(`${path}.${name}: superseded by ${property.supersededBy}`)
-      }
-      if (!property.domains.some((d) => ancestors.has(d))) {
-        problems.push(
-          `${path}.${name}: not a property of ${types.join(' or ')} (expects ${property.domains.join(', ')})`
-        )
-      }
-      values.forEach((value, i) =>
-        this.checkValue(property, value, `${path}.${name}[${i}]`, problems)
-      )
-    }
-  }
-
+  /** What's wrong with a value, if anything. */
   private checkValue(
     property: Term,
-    value: MicrodataValue,
-    path: string,
-    problems: string[]
-  ) {
+    value: unknown,
+    kind: Kind = typeof value === 'object' ? 'item' : 'text'
+  ): string | undefined {
     const ranges = property.ranges
     const expects = `expects ${ranges.join(', ')}`
     const rangeHas = (type: string) =>
       ranges.some((range) => this.ancestors(type).has(range))
     const classRanges = ranges.filter((r) => !this.isDataType(r))
 
-    if (value.kind === 'item') {
-      this.checkItem(value.item, path, problems)
-      const types = value.item.types.map((t) =>
-        t.replace(/^https?:\/\/schema\.org\//, '')
-      )
+    if (kind === 'item') {
+      const types = ([] as unknown[])
+        .concat((value as Json)['@type'])
+        .map(String)
       // Role subclasses may stand in for any value (schema.org's Role pattern)
       const fits = types.some(
         (t) => rangeHas(t) || this.ancestors(t).has('Role')
       )
-      if (!fits) problems.push(`${path}: ${types.join(' ')} given, ${expects}`)
-      return
+      return fits ? undefined : `${types.join(' ')} given, ${expects}`
     }
 
+    const text = String(value)
     // An enumeration member, such as https://schema.org/EventScheduled
-    const name = value.value.match(/^https?:\/\/schema\.org\/(\w+)$/)?.[1]
+    const name = text.match(/^https?:\/\/schema\.org\/(\w+)$/)?.[1]
     const member = name ? this.terms.get(name) : undefined
     if (member && !member.isClass && member.memberOf.length) {
-      if (!member.memberOf.some(rangeHas)) {
-        problems.push(`${path}: ${name} given, ${expects}`)
-      }
-      return
+      return member.memberOf.some(rangeHas)
+        ? undefined
+        : `${name} given, ${expects}`
     }
 
-    if (value.kind === 'url') {
+    if (kind === 'url') {
       // A URL can name a thing as well as be one
-      if (!ranges.includes('URL') && !classRanges.length) {
-        problems.push(`${path}: URL ${value.value} given, ${expects}`)
-      }
-      return
+      return ranges.includes('URL') || classRanges.length
+        ? undefined
+        : `URL ${text} given, ${expects}`
     }
 
-    const text = value.value
-    if (!text) {
-      problems.push(`${path}: is empty`)
-      return
-    }
+    if (!text) return 'is empty'
     const fitsRange = (range: string) => {
       const ancestors = this.ancestors(range)
       if (range === 'URL') return /^[a-z][a-z\d+.-]*:/i.test(text)
@@ -279,7 +373,6 @@ export class Vocabulary {
       if (ancestors.has('Boolean')) return /^(?:True|False)$/i.test(text)
       return ancestors.has('Text')
     }
-    const ok = ranges.some(fitsRange)
-    if (!ok) problems.push(`${path}: "${text}" given, ${expects}`)
+    return ranges.some(fitsRange) ? undefined : `"${text}" given, ${expects}`
   }
 }

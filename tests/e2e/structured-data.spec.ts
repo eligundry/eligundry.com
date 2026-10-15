@@ -3,7 +3,8 @@ import { encodeState } from '../../src/lib/resumeTailor/serialize'
 import { HASH_KEY } from '../../src/lib/resumeTailor/hash'
 import {
   extractMicrodata,
-  Vocabulary,
+  loadVocabulary,
+  validateMicrodata,
   type MicrodataItem,
   type MicrodataValue,
 } from './schemaOrg'
@@ -14,10 +15,10 @@ import {
  * with the same technology markup.
  */
 
-let vocabulary: Vocabulary
+let vocabulary: Awaited<ReturnType<typeof loadVocabulary>>
 
 test.beforeAll(async () => {
-  vocabulary = await Vocabulary.load()
+  vocabulary = await loadVocabulary()
 })
 
 test.beforeEach(async ({ page }) => {
@@ -35,7 +36,7 @@ const prop = (item: MicrodataItem, name: string) =>
 
 async function person(page: Page) {
   const microdata = await extractMicrodata(page)
-  expect(vocabulary.check(microdata)).toEqual([])
+  expect(await validateMicrodata(microdata, vocabulary)).toEqual([])
   const people = microdata.filter((item) =>
     item.types.includes('https://schema.org/Person')
   )
