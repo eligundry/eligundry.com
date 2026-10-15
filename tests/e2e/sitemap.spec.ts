@@ -9,17 +9,11 @@ const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
 const COLOR_SCHEMES = ['light', 'dark'] as const
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
-// Known failures, skipped so the rest of the checks can guard against new
-// ones. Remove an entry once it's fixed.
-//
-// Site-wide: the brand blue (#088cde) is under 4.5:1 on the light theme's
-// white and grey backgrounds, the material-theme-lighter code highlighting
-// fails on both themes, and footer links in dark mode are told apart from the
-// surrounding text by colour alone. All three need palette decisions.
-const KNOWN_VIOLATIONS = ['color-contrast', 'link-in-text-block']
-// Per page: content that lives outside this repo.
+// Known failures, skipped per page so the rest of the checks still run. Remove
+// an entry once it's fixed.
 const KNOWN_PAGE_VIOLATIONS: Record<string, string[]> = {
-  // The photo comes from Notion with no caption to use as alt text.
+  // The photo's alt text is set in Notion, but Notion's API doesn't return
+  // image alt text, so it can't reach the page.
   '/blog/links/changes-2k26/': ['image-alt'],
 }
 
@@ -118,10 +112,7 @@ test.describe('sitemap', () => {
 
         const { violations } = await new AxeBuilder({ page })
           .withTags(AXE_TAGS)
-          .disableRules([
-            ...KNOWN_VIOLATIONS,
-            ...(KNOWN_PAGE_VIOLATIONS[url] ?? []),
-          ])
+          .disableRules(KNOWN_PAGE_VIOLATIONS[url] ?? [])
           .analyze()
 
         expect(withoutFrameContents(violations).map(formatViolation)).toEqual(

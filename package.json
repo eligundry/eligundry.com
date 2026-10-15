@@ -55,6 +55,7 @@
     "@libsql/client": "^0.14.0",
     "@netlify/functions": "^3.0.0",
     "@react-hookz/web": "^24.0.4",
+    "@shikijs/themes": "4.4.3",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",

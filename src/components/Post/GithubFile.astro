@@ -4,6 +4,7 @@ import path from 'node:path'
 import axios from 'axios'
 import { FaGithub } from 'react-icons/fa'
 import CodeWrapper from '../CodeWrapper.astro'
+import { codeThemes } from '../../lib/codeThemes'
 
 interface Props {
   url: string
@@ -84,6 +85,6 @@ if (range) {
     </a>
   </div>
   <div slot="code" class="astro-code">
-    <Code code={file} lang={extension as any} theme="material-theme-lighter" />
+    <Code code={file} lang={extension as any} themes={codeThemes} />
   </div>
 </CodeWrapper>
