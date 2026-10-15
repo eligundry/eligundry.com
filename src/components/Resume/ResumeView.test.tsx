@@ -10,7 +10,6 @@ import {
   type Op,
 } from '../../lib/resumeTailor/state'
 import ResumeView, { ResumeViewContext } from './ResumeView'
-import { htmlToText } from './Experience'
 
 afterEach(cleanup)
 
@@ -198,12 +197,6 @@ describe('ResumeView', () => {
     expect(descriptions).toContain('Built a Go & React SDK.')
     // The bullets themselves stay the Person's, for their knowsAbout links
     expect(item(container, 'chord:0')!.closest('[itemscope]')).toBeNull()
-  })
-
-  test('htmlToText decodes rendered markdown', () => {
-    expect(htmlToText('<a href="x">A</a> &amp; B &lt;3 &#x27;s')).toBe(
-      "A & B <3 's"
-    )
   })
 
   test('marks up awards from their records, even after a rewrite', () => {

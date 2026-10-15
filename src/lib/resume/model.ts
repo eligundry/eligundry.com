@@ -28,6 +28,8 @@ export interface TextNode {
   markdown: string
   /** `markdown` rendered to HTML: trusted at build time, escaped if tailored. */
   html: string
+  /** `markdown` as plain text. */
+  text: string
   hidden?: boolean
   /** Added by tailoring rather than written in the content files. */
   added?: boolean
@@ -125,6 +127,7 @@ export interface ActivityNode {
   id: string
   markdown: string
   html: string
+  text: string
   children?: TextNode[]
   childrenClass?: string
   records: ActivityRecord[]
@@ -193,7 +196,7 @@ function sliceNode(
 
 /** A text node for trusted (build-time) markdown. */
 export function trustedText(id: string, markdown: string): TextNode {
-  return { id, markdown, html: renderMarkdown(markdown, { trusted: true }) }
+  return { id, markdown, ...renderMarkdown(markdown, { trusted: true }) }
 }
 
 /**
@@ -255,7 +258,10 @@ export function markTechnologies(
   technologies: Technology[]
 ): ResumeSource {
   const render = (node: TextNode) => {
-    node.html = renderMarkdown(node.markdown, { trusted: true, technologies })
+    node.html = renderMarkdown(node.markdown, {
+      trusted: true,
+      technologies,
+    }).html
   }
   const { label, tagline, summary } = source.basics
   ;[label, tagline, summary].forEach(render)

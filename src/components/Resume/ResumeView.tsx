@@ -19,6 +19,7 @@ import type {
   SkillNode,
   TextNode,
 } from '../../lib/resume/model'
+import { KNOWS_ABOUT } from '../../lib/resume/microdata'
 import EditableList from './EditableList'
 import Experience from './Experience'
 import { useBulletDrag } from './useBulletDrag'
@@ -328,23 +329,17 @@ function joinWithAnd(items: ComponentChildren[]): ComponentChildren[] {
   })
 }
 
-const knowsAbout = {
-  itemProp: 'knowsAbout',
-  itemScope: true,
-  itemType: 'https://schema.org/Thing',
-}
-
 function SkillLine({ skill }: { skill: SkillNode }) {
   // Each keyword is a schema.org Thing the Person knowsAbout, marked up the
   // same way as technology links in text (see markTechnologyLinks).
   const keywords = skill.keywords.map((keyword) =>
     keyword.url ? (
-      <a href={keyword.url} target="_blank" {...knowsAbout}>
+      <a href={keyword.url} target="_blank" {...KNOWS_ABOUT}>
         <link itemProp="url" href={keyword.url} />
         <span itemProp="name">{keyword.name}</span>
       </a>
     ) : (
-      <span {...knowsAbout}>
+      <span {...KNOWS_ABOUT}>
         <span itemProp="name">{keyword.name}</span>
       </span>
     )

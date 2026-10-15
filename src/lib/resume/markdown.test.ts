@@ -26,14 +26,14 @@ describe('renderMarkdown', () => {
       renderMarkdown(
         'Used [React](https://reactjs.org/) **a lot**, *daily* with `tsx`',
         { trusted: false }
-      )
+      ).html
     ).toBe(
       'Used <a href="https://reactjs.org/">React</a> <strong>a lot</strong>, <em>daily</em> with <code>tsx</code>'
     )
   })
 
   test('keeps paragraphs when there are several', () => {
-    expect(renderMarkdown('One\n\nTwo', { trusted: false })).toBe(
+    expect(renderMarkdown('One\n\nTwo', { trusted: false }).html).toBe(
       '<p>One</p>\n<p>Two</p>'
     )
   })
@@ -42,7 +42,7 @@ describe('renderMarkdown', () => {
     expect(
       renderMarkdown('<abbr title="Single Sign On">SSO</abbr> & more', {
         trusted: true,
-      })
+      }).html
     ).toBe('<abbr title="Single Sign On">SSO</abbr> &amp; more')
   })
 
@@ -50,8 +50,8 @@ describe('renderMarkdown', () => {
     expect(
       renderMarkdown('<img src=x onerror=alert(1)> <b>hi</b>', {
         trusted: false,
-      })
-    ).toBe('&lt;img src=x onerror=alert(1)&gt; &lt;b&gt;hi&lt;/b&gt;')
+      }).html
+    ).toBe('&lt;img src=x onerror=alert(1)> &lt;b>hi&lt;/b>')
   })
 
   test('drops unsafe link targets', () => {
@@ -61,9 +61,22 @@ describe('renderMarkdown', () => {
   })
 
   test('does not format inside code spans', () => {
-    expect(renderMarkdown('`**not bold**`', { trusted: false })).toBe(
+    expect(renderMarkdown('`**not bold**`', { trusted: false }).html).toBe(
       '<code>**not bold**</code>'
     )
+  })
+})
+
+describe('renderMarkdown text', () => {
+  test('is the plain text', () => {
+    expect(
+      renderMarkdown(
+        'Shipped **[React](https://reactjs.org/)** &amp; <b>Go</b>',
+        {
+          trusted: false,
+        }
+      ).text
+    ).toBe('Shipped React & <b>Go</b>')
   })
 })
 

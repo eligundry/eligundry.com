@@ -1,6 +1,9 @@
 import type { Link, Nodes } from 'mdast'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { toString } from 'mdast-util-to-string'
+import type { Element, ElementContent, Properties, Root } from 'hast'
+import { SKIP, visit } from 'unist-util-visit'
+import { KNOWS_ABOUT } from './microdata'
 
 // Technologies are the things the resume links to as skills: every keyword in
 // resumeSkills.yaml plus every markdown link in a job's bullets that doesn't
@@ -26,6 +29,12 @@ export function technologyKey(url: string): string | undefined {
 }
 
 const hostOf = (url: string) => technologyKey(url)?.split('/')[0]
+
+const h = (
+  tagName: string,
+  properties: Properties,
+  children: ElementContent[] = []
+): Element => ({ type: 'element', tagName, properties, children })
 
 function collectLinks(node: Nodes, links: Link[] = []): Link[] {
   if (node.type === 'link') links.push(node)
@@ -85,15 +94,9 @@ export function collectTechnologies({
   return [...byKey.values()]
 }
 
-/** Microdata attributes for an element that is a technology the Person knows. */
-export const KNOWS_ABOUT_ATTRIBUTES =
-  'itemprop="knowsAbout" itemscope itemtype="https://schema.org/Thing"'
-
-const decodeHref = (href: string) => href.replace(/&amp;/g, '&')
-
 /**
- * Marks links in `html` that point at a technology as a schema.org `Thing` the
- * page's Person `knowsAbout`, named by the link's text:
+ * Marks links in a hast tree that point at a technology as a schema.org
+ * `Thing` the page's Person `knowsAbout`, named by the link's text:
  *
  * ```html
  * <a href="…" itemprop="knowsAbout" itemscope itemtype="https://schema.org/Thing">
@@ -102,21 +105,24 @@ const decodeHref = (href: string) => href.replace(/&amp;/g, '&')
  * ```
  */
 export function markTechnologyLinks(
-  html: string,
+  tree: Root,
   technologies: Technology[]
-): string {
-  if (!technologies.length) return html
+): void {
+  if (!technologies.length) return
   const keys = new Set(technologies.map((t) => technologyKey(t.url)))
-  return html.replace(
-    /<a\b([^>]*)>([\s\S]*?)<\/a>/gi,
-    (link, attributes: string, text: string) => {
-      const href = attributes.match(/\bhref\s*=\s*"([^"]*)"/i)?.[1]
-      if (!href || /\bitem(?:prop|scope)\b/i.test(attributes)) return link
-      return keys.has(technologyKey(decodeHref(href)))
-        ? `<a${attributes} ${KNOWS_ABOUT_ATTRIBUTES}>` +
-            `<link itemprop="url" href="${href}">` +
-            `<span itemprop="name">${text}</span></a>`
-        : link
-    }
-  )
+  visit(tree, 'element', (link) => {
+    const { href, itemProp, itemScope } = link.properties
+    if (link.tagName !== 'a' || typeof href !== 'string') return
+    if (itemProp || itemScope || !keys.has(technologyKey(href))) return
+    Object.assign(link.properties, {
+      itemProp: [KNOWS_ABOUT.itemProp],
+      itemScope: KNOWS_ABOUT.itemScope,
+      itemType: [KNOWS_ABOUT.itemType],
+    })
+    link.children = [
+      h('link', { itemProp: ['url'], href }),
+      h('span', { itemProp: ['name'] }, link.children),
+    ]
+    return SKIP
+  })
 }

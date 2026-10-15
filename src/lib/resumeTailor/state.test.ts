@@ -145,7 +145,7 @@ describe('tailor', () => {
       },
     ])
     expect(node<{ html: string }>(tailored, 'chord:0').html).toBe(
-      'Built <strong>SDKs</strong> &lt;script&gt;alert(1)&lt;/script&gt;'
+      'Built <strong>SDKs</strong> &lt;script>alert(1)&lt;/script>'
     )
   })
 

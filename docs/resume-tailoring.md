@@ -50,13 +50,16 @@ the summary and highlights. Titles are facts, so tailoring can't rewrite them.
 `collectTechnologies()` (`src/lib/resume/technologies.ts`) lists what the resume
 links to as a technology: every skill keyword plus every markdown link in a job
 that isn't to the employer's own site. It's on the source as `technologies`
-and in the superset as `x-technologies`. Rendered links to those URLs, both
-build-time and tailored, and every skill keyword are a schema.org `Thing` the
-page's `Person` `knowsAbout`, with the link text as its `name` and the URL as
-its `url` (`markTechnologyLinks()`). Only an experience's heading is the
+and in the superset as `x-technologies`. Rendered markdown links to those URLs,
+both build-time and tailored, and every skill keyword are a schema.org `Thing`
+the page's `Person` `knowsAbout`, with the link text as its `name` and the URL
+as its `url`. `renderMarkdown()` parses markdown into a hast tree, where
+`markTechnologyLinks()` marks the links up. Inline HTML links in the content
+are neither technologies nor marked up, so use them for links that aren't
+skills, like clients. Only an experience's heading is the
 organization's microdata, so these describe the `Person`. A job's or school's
 current `OrganizationRole` repeats its summary and visible bullets, tailored or
-not, as plain-text `description`s.
+not, as plain-text `description`s (each text node's `text`).
 
 ### Awards
 

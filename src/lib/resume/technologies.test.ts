@@ -1,9 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import {
-  collectTechnologies,
-  markTechnologyLinks,
-  technologyKey,
-} from './technologies'
+import { renderMarkdown } from './markdown'
+import { collectTechnologies, technologyKey } from './technologies'
 
 describe('technologies', () => {
   test('ignores www, protocol, case and trailing slashes', () => {
@@ -43,12 +40,12 @@ describe('technologies', () => {
   test('marks links to technologies as Things the Person knowsAbout', () => {
     const technologies = [{ name: 'React', url: 'https://reactjs.org/' }]
     expect(
-      markTechnologyLinks(
-        '<a href="https://www.reactjs.org">React</a> <a href="https://x.dev">X</a> <a itemprop="url" href="https://reactjs.org/">R</a>',
-        technologies
-      )
+      renderMarkdown('[React](https://www.reactjs.org) [X](https://x.dev)', {
+        trusted: false,
+        technologies,
+      }).html
     ).toBe(
-      '<a href="https://www.reactjs.org" itemprop="knowsAbout" itemscope itemtype="https://schema.org/Thing"><link itemprop="url" href="https://www.reactjs.org"><span itemprop="name">React</span></a> <a href="https://x.dev">X</a> <a itemprop="url" href="https://reactjs.org/">R</a>'
+      '<a href="https://www.reactjs.org" itemprop="knowsAbout" itemscope itemtype="https://schema.org/Thing"><link itemprop="url" href="https://www.reactjs.org"><span itemprop="name">React</span></a> <a href="https://x.dev">X</a>'
     )
   })
 })
