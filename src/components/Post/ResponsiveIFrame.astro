@@ -1,12 +1,14 @@
 ---
 interface Props {
   src: string
+  // Screen readers announce this as the frame's name.
+  title: string
   width: number
   height: number
   className?: string
 }
 
-const { src, width, height, className } = Astro.props
+const { src, title, width, height, className } = Astro.props
 ---
 
 <div
@@ -15,6 +17,7 @@ const { src, width, height, className } = Astro.props
 >
   <iframe
     src={src}
+    title={title}
     class:list={['absolute', 'w-full', 'h-full', 'top-0', 'left-0']}
     allowfullscreen="true"></iframe>
 </div>

@@ -32,6 +32,7 @@ const DaylioChart = () => {
     <div style={{ minHeight: '153px' }}>
       <Line
         height={60}
+        aria-label="Line chart of my daily mood over recent days"
         data={{
           labels: Object.values(MoodMapping).map((_, i) => i),
           datasets: [

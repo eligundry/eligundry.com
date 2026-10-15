@@ -212,6 +212,9 @@ importers:
       '@astrojs/check':
         specifier: ^0.9.10
         version: 0.9.10(@emnapi/runtime@1.11.1)(prettier-plugin-astro@0.14.1)(prettier@3.5.0)(typescript@5.7.2)
+      '@axe-core/playwright':
+        specifier: ^4.13.0
+        version: 4.13.0(playwright-core@1.60.0)
       '@eslint/eslintrc':
         specifier: ^3.2.0
         version: 3.2.0
@@ -652,6 +655,14 @@ packages:
       {
         integrity: sha512-K1ZyO/BU8JNtXX5dmPp7b5UrkLMMqpsIa/Lrj5D3Su+j1Xwq1m6QJ2XJ1AgjEjkI1v4Muzm7klianLE6XGxtmA==,
       }
+
+  '@axe-core/playwright@4.13.0':
+    resolution:
+      {
+        integrity: sha512-6YLx+kxXu5GJceG4ozFg+33a2EMTdjYwWGloJ3sb9Kta5pp+ZNS53uxGVog5JetIY8s++P5UrtX+cri+u0VAVg==,
+      }
+    peerDependencies:
+      playwright-core: '>= 1.0.0'
 
   '@babel/code-frame@7.26.2':
     resolution:
@@ -5710,6 +5721,13 @@ packages:
       {
         integrity: sha512-aDczADvlvTGajTDjcjpJMqRkOF6Qdz3YbPZm/PyW6tKPkx2hlYBzxMhEywM/tU72HrVZjgl5VCdRuMlA7pZ8Gw==,
       }
+
+  axe-core@4.13.0:
+    resolution:
+      {
+        integrity: sha512-UzGt8zg7Ny8djbYMhxl2zuEevVa7r2gJjYY5Lwr1xM7+XU2nd6CkIWFTVcCIbAP63vSz71NaVyyuSk9lHKcy0A==,
+      }
+    engines: { node: '>=4' }
 
   axios@1.20.0:
     resolution:
@@ -15741,6 +15759,11 @@ snapshots:
       '@atproto/lexicon': 0.6.2
       zod: 3.24.1
 
+  '@axe-core/playwright@4.13.0(playwright-core@1.60.0)':
+    dependencies:
+      axe-core: 4.13.0
+      playwright-core: 1.60.0
+
   '@babel/code-frame@7.26.2':
     dependencies:
       '@babel/helper-validator-identifier': 7.25.9
@@ -19125,6 +19148,8 @@ snapshots:
       fastq: 1.17.1
 
   await-lock@2.2.2: {}
+
+  axe-core@4.13.0: {}
 
   axios@1.20.0:
     dependencies:

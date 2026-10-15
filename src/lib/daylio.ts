@@ -6,6 +6,7 @@ import { createMarkdownProcessor } from '@astrojs/markdown-remark'
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
 import remarkInlineLinks from 'remark-inline-links'
 import remarkStripPrivate from './remark-strip-private'
+import rehypeUnwrapUnlabeledEmojis from './rehype-unwrap-unlabeled-emojis'
 import { sql, eq, and, or, desc, gte, isNull } from 'drizzle-orm'
 import omit from 'lodash/omit'
 import {
@@ -182,7 +183,7 @@ const markdownProcessor = await createMarkdownProcessor({
   // @ts-ignore - plugin types are slightly mismatched but work at runtime
   remarkPlugins: [remarkInlineLinks, remarkStripPrivate],
   // @ts-ignore - plugin types are slightly mismatched but work at runtime
-  rehypePlugins: [rehypeAccessibleEmojis],
+  rehypePlugins: [rehypeAccessibleEmojis, rehypeUnwrapUnlabeledEmojis],
 })
 
 const renderNote = async (
