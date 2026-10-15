@@ -1,10 +1,6 @@
 import { test, expect, request } from '@playwright/test'
 import { JSDOM } from 'jsdom'
-import {
-  extractMicrodata,
-  loadVocabulary,
-  validateMicrodata,
-} from './schemaOrg'
+import { loadVocabulary, validateMicrodata } from './schemaOrg'
 
 const SITEMAP_HOSTNAME = 'https://eligundry.com'
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
@@ -54,9 +50,7 @@ test.describe('sitemap', () => {
 
     test(`${url} passes schema.org validation`, async ({ page }) => {
       await page.goto(url, { waitUntil: 'domcontentloaded' })
-      expect(
-        await validateMicrodata(await extractMicrodata(page), vocabulary)
-      ).toEqual([])
+      expect(await validateMicrodata(page, vocabulary)).toEqual([])
     })
   }
 })

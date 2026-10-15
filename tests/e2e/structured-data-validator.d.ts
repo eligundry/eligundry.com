@@ -23,3 +23,19 @@ declare module '@adobe/structured-data-validator' {
     validate(data: unknown): Promise<ValidationIssue[]>
   }
 }
+
+// @marbec/web-auto-extractor ships JavaScript without types
+declare module '@marbec/web-auto-extractor' {
+  export default class WebAutoExtractor {
+    constructor(options?: {
+      addLocation?: boolean
+      embedSource?: boolean | string[]
+    })
+    parse(html: string): {
+      microdata: Record<string, Record<string, unknown>[]>
+      rdfa: Record<string, Record<string, unknown>[]>
+      jsonld: Record<string, Record<string, unknown>[]>
+      errors?: unknown[]
+    }
+  }
+}

@@ -10,14 +10,14 @@ import { FaPrint } from 'react-icons/fa'
 import EditableList from './EditableList'
 import { cx, Rich, ResumeViewContext, useItemProps } from './ResumeView'
 
+/** A date, with its schema.org value in a meta tag (extractors skip `datetime`). */
 function Time({ date, itemProp }: { date: Date; itemProp: string }) {
+  const iso = dateFns.formatISO(date, { representation: 'date' })
   return (
-    <time
-      itemProp={itemProp}
-      dateTime={dateFns.formatISO(date, { representation: 'date' })}
-    >
-      {dateFns.format(date, 'MMMM yyyy')}
-    </time>
+    <>
+      <meta itemProp={itemProp} content={iso} />
+      <time dateTime={iso}>{dateFns.format(date, 'MMMM yyyy')}</time>
+    </>
   )
 }
 

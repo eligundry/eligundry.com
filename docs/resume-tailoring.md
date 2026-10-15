@@ -205,9 +205,11 @@ includes the job when there's job context.
 - `tests/e2e/structured-data.spec.ts` (Playwright `chromium` project) checks
   the page's microdata, as published and tailored, with Adobe's
   [structured data validator](https://github.com/adobe/structured-data-validator)
-  against schema.org's vocabulary (`tests/e2e/schemaOrg.ts`). Its warnings
-  fail too, and an extra handler makes it check values: they must fit their
-  property's range, so a `mailto:` link can't be an `email`.
+  against schema.org's vocabulary (`tests/e2e/schemaOrg.ts`), reading the page
+  with its extractor, `@marbec/web-auto-extractor`. Its warnings fail too, and
+  an extra handler makes it check values: they must fit their property's
+  range, so a `mailto:` link can't be an `email`. The extractor ignores
+  `<time datetime>`, so dates go in `<meta itemprop content>` tags.
 
 `/resume/` carries a WebMCP origin trial token, so Chrome enables WebMCP on
 `https://eligundry.com` without the flag until the token expires (2026-11-17).

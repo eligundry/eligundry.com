@@ -5,8 +5,7 @@ import {
   extractMicrodata,
   loadVocabulary,
   validateMicrodata,
-  type MicrodataItem,
-  type MicrodataValue,
+  type Json,
 } from './schemaOrg'
 
 /**
@@ -26,57 +25,40 @@ test.beforeEach(async ({ page }) => {
   await page.routeWebSocket(/\/\?token=|vite-hmr/, () => {})
 })
 
-const items = (values: MicrodataValue[] = []) =>
-  values.flatMap((v) => (v.kind === 'item' ? [v.item] : []))
-
-const prop = (item: MicrodataItem, name: string) =>
-  (item.properties[name] ?? []).map((v) =>
-    v.kind === 'item' ? undefined : v.value
-  )
+/** A property's values, which the extractor gives bare when there's one. */
+const all = (value: unknown) => ([] as unknown[]).concat(value ?? [])
+const items = (value: unknown) => all(value) as Json[]
 
 async function person(page: Page) {
-  const microdata = await extractMicrodata(page)
-  expect(await validateMicrodata(microdata, vocabulary)).toEqual([])
-  const people = microdata.filter((item) =>
-    item.types.includes('https://schema.org/Person')
-  )
+  expect(await validateMicrodata(page, vocabulary)).toEqual([])
+  const people = (await extractMicrodata(page)).Person ?? []
   expect(people).toHaveLength(1)
   return people[0]
 }
 
-function expectStructuredPerson(eli: MicrodataItem) {
+function expectStructuredPerson(eli: Json) {
   // Every skill is a named Thing, not bare text or a URL
-  const knowsAbout = eli.properties.knowsAbout ?? []
+  const knowsAbout = items(eli.knowsAbout)
   expect(knowsAbout.length).toBeGreaterThan(10)
-  for (const value of knowsAbout) {
-    expect(value.kind).toBe('item')
-    const thing = (value as Extract<MicrodataValue, { kind: 'item' }>).item
-    expect(thing.types).toEqual(['https://schema.org/Thing'])
-    expect(prop(thing, 'name')[0]).toBeTruthy()
+  for (const thing of knowsAbout) {
+    expect(thing['@type']).toBe('Thing')
+    expect(thing.name).toBeTruthy()
   }
 
-  expect(prop(eli, 'email')).toEqual(['eligundry@gmail.com'])
-  expect(prop(eli, 'award')).toContain(
-    'Eagle Scout, Boy Scouts of America, 2006'
-  )
+  expect(eli.email).toBe('eligundry@gmail.com')
+  expect(all(eli.award)).toContain('Eagle Scout, Boy Scouts of America, 2006')
 
-  const [eagleScout] = items(eli.properties.hasCredential)
-  expect(eagleScout).toMatchObject({
-    types: ['https://schema.org/EducationalOccupationalCredential'],
+  expect(items(eli.hasCredential)[0]).toMatchObject({
+    '@type': 'EducationalOccupationalCredential',
+    name: 'Eagle Scout',
+    recognizedBy: { '@type': 'Organization', name: 'Boy Scouts of America' },
   })
-  expect(prop(eagleScout, 'name')).toEqual(['Eagle Scout'])
 
   // Each job's current role carries its accomplishments
-  const jobs = items(eli.properties.worksFor).concat(
-    items(eli.properties.alumniOf)
+  const roles = [...items(eli.worksFor), ...items(eli.alumniOf)].flatMap(
+    (job) => items(job.member)
   )
-  const roles = jobs.flatMap((job) => items(job.properties.member))
-  expect(
-    roles.filter((role) => prop(role, 'description').length).length
-  ).toBeGreaterThan(5)
-  expect(prop(items(eagleScout.properties.recognizedBy)[0], 'name')).toEqual([
-    'Boy Scouts of America',
-  ])
+  expect(roles.filter((role) => role.description).length).toBeGreaterThan(5)
 }
 
 test('the resume passes schema.org validation', async ({ page }) => {
@@ -103,7 +85,11 @@ test('a tailored resume keeps its schema.org markup', async ({ page }) => {
     page.locator('[data-resume-id="activities:eagle-scout"]')
   ).toContainText('long before writing TypeScript')
 
-  expectStructuredPerson(await person(page))
+  const eli = await person(page)
+  expectStructuredPerson(eli)
+  expect(items(eli.knowsAbout).map((thing) => thing.name)).toContain(
+    'TypeScript'
+  )
   await expect(
     page.locator(
       '[data-resume-id="activities:eagle-scout"] [itemprop="knowsAbout"][itemscope] [itemprop="name"]'
