@@ -55,10 +55,17 @@ async function call(page: Page, name: string, input: unknown = {}) {
       // executeTool is Chrome's addition to the standard ModelContext
       const modelContext = document.modelContext as NonNullable<
         Document['modelContext']
-      > & { executeTool(tool: unknown, input: string): Promise<string> }
+      > & { executeTool(tool: unknown, input: unknown): Promise<string> }
       const tool = (await modelContext.getTools()).find((t) => t.name === name)
       if (!tool) throw new Error(`Tool ${name} is not registered`)
-      return modelContext.executeTool(tool, JSON.stringify(input))
+      // Chrome 155 takes the input as an object; older builds took it as a
+      // JSON string and reject an object with a TypeError.
+      try {
+        return await modelContext.executeTool(tool, input)
+      } catch (err) {
+        if (!(err instanceof TypeError)) throw err
+        return modelContext.executeTool(tool, JSON.stringify(input))
+      }
     },
     [name, input] as const
   )
@@ -120,7 +127,7 @@ test('restores a tailored link after a reload', async ({ page }) => {
   })
   await call(page, 'rewrite', {
     id: 'chord:0',
-    markdown: 'Shipped a **React SDK**',
+    markdown: 'Shipped a React SDK',
     reason: 'Lead with SDKs',
   })
   await call(page, 'highlight_keywords', { terms: ['React'] })
