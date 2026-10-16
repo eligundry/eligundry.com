@@ -1,5 +1,5 @@
 import { Line } from 'react-chartjs-2'
-import { parseISO, formatISO, subDays } from 'date-fns'
+import { parseISO, format, formatISO, subDays } from 'date-fns'
 import { useAsync, useMountEffect } from '@react-hookz/web'
 
 // import { toolTipTheme } from '@/utils/charts'
@@ -32,6 +32,7 @@ const DaylioChart = () => {
     <div style={{ minHeight: '153px' }}>
       <Line
         height={60}
+        aria-label="Line chart of my daily mood over recent days. The same data follows as a table."
         data={{
           labels: Object.values(MoodMapping).map((_, i) => i),
           datasets: [
@@ -111,6 +112,25 @@ const DaylioChart = () => {
           },
         }}
       />
+      <table class="sr-only">
+        <caption>My daily mood over recent days</caption>
+        <thead>
+          <tr>
+            <th scope="col">When</th>
+            <th scope="col">Mood</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((entry) => (
+            <tr key={entry.x}>
+              <th scope="row">
+                {format(parseISO(entry.x), 'MMMM d, yyyy, h:mm a')}
+              </th>
+              <td>{Object.keys(MoodMapping)[entry.y]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

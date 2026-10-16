@@ -58,6 +58,7 @@ const showExpandButton = !expanded && expandable
   {!expanded && <input type="checkbox" hidden id={id} class="peer" />}
   <div
     set:html={newLines}
+    tabindex="0"
     class:list={[
       'not-prose',
       'astro-code',

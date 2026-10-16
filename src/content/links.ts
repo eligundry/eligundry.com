@@ -10,6 +10,7 @@ import {
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import rehypeShiki from '@shikijs/rehype'
+import { codeThemes } from '../lib/codeThemes'
 
 export const linksSchema = notionPageSchema({
   properties: z.object({
@@ -60,7 +61,7 @@ function createLinksLoader(): Loader {
           date: { is_not_empty: true },
         }
       : undefined,
-    rehypePlugins: [[rehypeShiki, { theme: 'material-theme-lighter' }]],
+    rehypePlugins: [[rehypeShiki, { themes: codeThemes }]],
   }) as Loader & { schema?: unknown }
 
   return {
@@ -76,6 +77,14 @@ function createLinksLoader(): Loader {
         ctx.store.clear()
       }
 
+      // Cached pages keep the HTML they were rendered with, so a change to
+      // how pages render (like the code themes) needs them all re-rendered.
+      if (ctx.meta.get('render-version') !== RENDER_VERSION) {
+        ctx.logger.info('Notion rendering changed; re-rendering all pages')
+        ctx.store.clear()
+        ctx.meta.set('render-version', RENDER_VERSION)
+      }
+
       try {
         await inner.load(ctx)
       } catch (err) {
@@ -86,6 +95,9 @@ function createLinksLoader(): Loader {
     },
   }
 }
+
+// Bump when rendering changes in a way cached pages should pick up.
+const RENDER_VERSION = '2'
 
 const notionImagePattern = /assets\/images\/notion\/([^"&\\]+)/g
 

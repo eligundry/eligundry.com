@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import mdx from '@astrojs/mdx'
 import { unified } from '@astrojs/markdown-remark'
 import mdxConfig from './src/lib/markdown.mjs'
+import { codeThemes } from './src/lib/codeThemes'
 
 // https://astro.build/config
 import preact from '@astrojs/preact'
@@ -70,7 +71,7 @@ export default defineConfig({
     // can't run our remark and rehype plugins.
     processor: unified(),
     shikiConfig: {
-      theme: 'material-theme-lighter',
+      themes: codeThemes,
     },
   },
   vite: {

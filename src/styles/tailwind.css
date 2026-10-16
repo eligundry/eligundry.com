@@ -10,7 +10,8 @@
 }
 
 /* Custom themes ported from the former tailwind.config.cjs `daisyui.themes`.
-   Exact hex values are kept so the palette does not shift. The design tokens
+   Exact hex values are kept, apart from the light primary, darkened for WCAG AA
+   contrast (see tests/e2e/sitemap.spec.ts). The design tokens
    (radius/border/depth/noise) reproduce daisyUI v4's flat defaults. */
 @plugin 'daisyui/theme' {
   name: 'light';
@@ -18,7 +19,9 @@
   prefersdark: false;
   color-scheme: light;
 
-  --color-primary: #088cde;
+  /* Darker than the dark theme's #088cde so it reads at 4.5:1 on the
+     base-200 footer and nav, and under primary-content on buttons. */
+  --color-primary: #0667a5;
   --color-primary-content: #c7eaff;
   --color-secondary: #7dd3fc;
   --color-secondary-content: #00334b;
@@ -88,6 +91,7 @@
   :root,
   [data-theme] {
     color-scheme: light;
+    --color-primary: #0667a5;
     --color-neutral: #f4f4f5;
     --color-neutral-content: #303032;
     --color-base-100: #ffffff;
@@ -441,7 +445,54 @@
 }
 
 .prose a:not(.btn) {
-  @apply link link-primary link-hover;
+  @apply link link-primary;
+}
+
+/* Text that daisyUI fades to 50-60% falls under 4.5:1, so fade it less. */
+.prose {
+  --tw-prose-captions: color-mix(
+    in oklab,
+    var(--color-base-content) 70%,
+    #0000
+  );
+}
+
+.footer-title {
+  opacity: 0.7;
+}
+
+/* Code blocks are highlighted with a light and a dark theme (see
+   src/lib/codeThemes.ts). Shiki writes the light colours inline and the dark
+   ones as --shiki-dark variables, so swap them in for the dark theme. Font
+   styles (italic comments) come only as variables for both themes. */
+.astro-code span,
+.shiki span {
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+}
+
+[data-theme='dark'] {
+  & .prose {
+    --tw-prose-pre-bg: #292524;
+    --tw-prose-pre-code: var(--color-base-content);
+  }
+
+  & .astro-code,
+  & .astro-code span,
+  & .shiki,
+  & .shiki span {
+    color: var(--shiki-dark) !important;
+  }
+
+  & .astro-code span,
+  & .shiki span {
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+  }
+
+  & .shiki {
+    background-color: var(--shiki-dark-bg) !important;
+  }
 }
 
 .prose h1,

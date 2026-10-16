@@ -1,9 +1,45 @@
 import { test, expect, request } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
 import { JSDOM } from 'jsdom'
 import { loadVocabulary, validateMicrodata } from './schemaOrg'
 
 const SITEMAP_HOSTNAME = 'https://eligundry.com'
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
+
+const COLOR_SCHEMES = ['light', 'dark'] as const
+const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
+
+// Known failures, skipped per page so the rest of the checks still run. Remove
+// an entry once it's fixed.
+const KNOWN_PAGE_VIOLATIONS: Record<string, string[]> = {
+  // The photo's alt text is set in Notion, but Notion's API doesn't return
+  // image alt text, so it can't reach the page.
+  '/blog/links/changes-2k26/': ['image-alt'],
+}
+
+type AxeViolation = Awaited<
+  ReturnType<AxeBuilder['analyze']>
+>['violations'][number]
+
+// Third-party embeds (Spotify, Bandcamp, Twitter, Utterances) aren't ours to
+// fix, so drop results from inside iframes. Axe reports those with one
+// selector per frame, so they're the targets longer than one. The <iframe>
+// elements themselves (e.g. their titles) are still checked.
+function withoutFrameContents(violations: AxeViolation[]) {
+  return violations
+    .map((v) => ({ ...v, nodes: v.nodes.filter((n) => n.target.length === 1) }))
+    .filter((v) => v.nodes.length > 0)
+}
+
+// Keep failures readable: the rule, why it matters, and where it fired.
+function formatViolation(v: AxeViolation) {
+  return {
+    rule: v.id,
+    impact: v.impact,
+    help: `${v.help} (${v.helpUrl})`,
+    nodes: v.nodes.map((n) => n.target.join(' ')),
+  }
+}
 
 async function getSitemapUrls(): Promise<string[]> {
   const ctx = await request.newContext()
@@ -52,5 +88,37 @@ test.describe('sitemap', () => {
       await page.goto(url, { waitUntil: 'domcontentloaded' })
       expect(await validateMicrodata(page, vocabulary)).toEqual([])
     })
+
+    for (const colorScheme of COLOR_SCHEMES) {
+      test(`${url} has no accessibility violations in ${colorScheme} mode`, async ({
+        page,
+      }) => {
+        // Axe takes a while on the longer pages (feelings, playlists).
+        test.setTimeout(90_000)
+
+        // With no saved preference, the inline script in Layout.astro picks the
+        // theme from prefers-color-scheme, the same path a first-time visitor
+        // takes. Hand-made static pages skip Layout.astro and style themselves
+        // with the media query directly.
+        await page.emulateMedia({ colorScheme })
+        await page.goto(url, { waitUntil: 'domcontentloaded' })
+        const theme = await page.locator('html').getAttribute('data-theme')
+        if (theme !== null) {
+          expect(theme, 'page rendered in the wrong theme').toBe(colorScheme)
+        }
+        await page
+          .waitForLoadState('networkidle', { timeout: 5000 })
+          .catch(() => {})
+
+        const { violations } = await new AxeBuilder({ page })
+          .withTags(AXE_TAGS)
+          .disableRules(KNOWN_PAGE_VIOLATIONS[url] ?? [])
+          .analyze()
+
+        expect(withoutFrameContents(violations).map(formatViolation)).toEqual(
+          []
+        )
+      })
+    }
   }
 })

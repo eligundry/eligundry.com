@@ -6,11 +6,17 @@ import rehypeUnwrapImages from 'rehype-unwrap-images'
 import remarkParse from 'remark-parse'
 import remarkComment from 'remark-comment'
 import remarkInlineLinks from 'remark-inline-links'
+import rehypeUnwrapUnlabeledEmojis from './rehype-unwrap-unlabeled-emojis'
 
 const git = SimpleGit()
 
 const mdxConfig = {
-  rehypePlugins: [rehypeAccessibleEmojis, rehypeSlug, rehypeUnwrapImages],
+  rehypePlugins: [
+    rehypeAccessibleEmojis,
+    rehypeUnwrapUnlabeledEmojis,
+    rehypeSlug,
+    rehypeUnwrapImages,
+  ],
   remarkPlugins: [
     remarkReadingTime,
     remarkInlineLinks,
