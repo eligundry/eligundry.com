@@ -388,6 +388,10 @@
   [data-resume-root] {
     zoom: var(--tailor-font-scale, 1);
   }
+  [data-resume-root] a,
+  [data-print-footer] a {
+    text-decoration: none;
+  }
   [data-resume-root] .prose {
     line-height: 1.375;
   }
