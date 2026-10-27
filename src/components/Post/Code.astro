@@ -1,22 +1,11 @@
 ---
 // Code blocks scroll sideways when lines run long, so they take tabindex="0"
-// (like Shiki's own <pre>) to be scrollable from the keyboard.
+// (like Shiki's own <pre>) to be scrollable from the keyboard. Whitespace
+// inside <pre> renders, so the slot sits right against the tags.
+const { class: className } = Astro.props
+const attrs = className
+  ? { class: ['astro-code', 'astro-code-compact', className].join(' ') }
+  : {}
 ---
 
-{
-  Astro.props.class && (
-    <pre
-      class:list={['astro-code', 'astro-code-compact', Astro.props.class]}
-      tabindex="0"
-    >
-      <slot />
-    </pre>
-  )
-}
-{
-  !Astro.props.class && (
-    <pre tabindex="0">
-      <slot />
-    </pre>
-  )
-}
+<pre {...attrs} tabindex="0"><slot /></pre>
