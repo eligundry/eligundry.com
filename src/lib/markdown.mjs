@@ -1,61 +1,50 @@
+import { fileURLToPath } from 'node:url'
 import SimpleGit from 'simple-git'
 import readingTime from 'reading-time'
-import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
-import rehypeSlug from 'rehype-slug'
-import rehypeUnwrapImages from 'rehype-unwrap-images'
-import remarkParse from 'remark-parse'
-import remarkComment from 'remark-comment'
-import remarkInlineLinks from 'remark-inline-links'
-import rehypeUnwrapUnlabeledEmojis from './rehype-unwrap-unlabeled-emojis'
+import { defineMdastPlugin } from 'satteri'
+import hastAccessibleEmojis from './satteri/hast-accessible-emojis'
+import hastUnwrapImages from './satteri/hast-unwrap-images'
 
 const git = SimpleGit()
 
-const mdxConfig = {
-  rehypePlugins: [
-    rehypeAccessibleEmojis,
-    rehypeUnwrapUnlabeledEmojis,
-    rehypeSlug,
-    rehypeUnwrapImages,
-  ],
-  remarkPlugins: [
-    remarkReadingTime,
-    remarkInlineLinks,
-    remarkParse,
-    [
-      remarkComment,
-      {
-        ast: true,
-      },
-    ],
-    remarkGitLastModified,
-  ],
-}
+export const mdastGitLastModified = defineMdastPlugin({
+  name: 'git-last-modified',
+  async before(_root, ctx) {
+    const frontmatter = ctx.data.astro.frontmatter
+    frontmatter.modified = new Date()
 
-export default mdxConfig
+    if (!ctx.fileURL) return
 
-export function remarkGitLastModified() {
-  return async function (_tree, file) {
     try {
-      const commits = await git.log({
-        file: file.history[0],
-      })
+      const commits = await git.log({ file: fileURLToPath(ctx.fileURL) })
 
-      if (!commits.latest) {
-        file.data.astro.frontmatter.modified = new Date()
+      if (commits.latest) {
+        frontmatter.modified = new Date(commits.latest.date)
       }
-
-      file.data.astro.frontmatter.modified = new Date(commits.latest.date)
     } catch (e) {
-      file.data.astro.frontmatter.modified = new Date()
+      // Not in git yet, keep the current date
     }
-  }
+  },
+})
+
+export const mdastReadingTime = defineMdastPlugin({
+  name: 'reading-time',
+  before(_root, ctx) {
+    ctx.data.astro.frontmatter.readingTime = Math.max(
+      1,
+      Math.round(readingTime(ctx.source).minutes)
+    )
+  },
+})
+
+/**
+ * Options for the Sätteri markdown processor. Astro adds heading IDs (what
+ * rehype-slug did) and Shiki highlighting itself, and Sätteri resolves
+ * reference links (what remark-inline-links did) when it parses.
+ */
+const markdownConfig = {
+  mdastPlugins: [mdastReadingTime, mdastGitLastModified],
+  hastPlugins: [hastAccessibleEmojis, hastUnwrapImages],
 }
 
-export function remarkReadingTime() {
-  return function (_tree, file) {
-    file.data.astro.frontmatter.readingTime = Math.max(
-      1,
-      Math.round(readingTime(file.value).minutes)
-    )
-  }
-}
+export default markdownConfig

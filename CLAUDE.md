@@ -22,7 +22,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 
 ### Key Technologies
 
-- **Astro 7.x**: Static site generator with islands architecture. Markdown/MDX run through the remark/rehype `unified()` processor (not Astro 7's default Sätteri) so the plugins in `src/lib/markdown.mjs` keep working
+- **Astro 7.x**: Static site generator with islands architecture. Markdown/MDX run through Astro 7's Sätteri processor with the mdast/hast plugins in `src/lib/markdown.mjs` and `src/lib/satteri/` (Sätteri plugins, not remark/rehype ones). Shiki highlights code blocks
 - **Preact**: React alternative for interactive components (configured with React compatibility via @preact/compat)
 - **Tailwind CSS**: Utility-first CSS framework with DaisyUI components
 - **TypeScript**: Full TypeScript support throughout

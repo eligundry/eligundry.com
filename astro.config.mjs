@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
 
 import mdx from '@astrojs/mdx'
-import { unified } from '@astrojs/markdown-remark'
-import mdxConfig from './src/lib/markdown.mjs'
+import { satteri } from '@astrojs/markdown-satteri'
+import markdownConfig from './src/lib/markdown.mjs'
 import { codeThemes } from './src/lib/codeThemes'
 
 // https://astro.build/config
@@ -67,9 +67,8 @@ export default defineConfig({
   // 'jsx' mode strips
   compressHTML: true,
   markdown: {
-    // The remark/rehype based pipeline. Astro 7 defaults to Sätteri, which
-    // can't run our remark and rehype plugins.
-    processor: unified(),
+    // MDX inherits this processor and its plugins
+    processor: satteri(markdownConfig),
     shikiConfig: {
       themes: codeThemes,
     },
@@ -78,7 +77,7 @@ export default defineConfig({
     plugins: [tailwindcss(), serverDependencies()],
   },
   integrations: [
-    mdx({ processor: unified(mdxConfig) }),
+    mdx(),
     preact({
       compat: true,
     }),

@@ -2,11 +2,9 @@ import * as dateFns from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
-import { createMarkdownProcessor } from '@astrojs/markdown-remark'
-import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis'
-import remarkInlineLinks from 'remark-inline-links'
-import remarkStripPrivate from './remark-strip-private'
-import rehypeUnwrapUnlabeledEmojis from './rehype-unwrap-unlabeled-emojis'
+import { createSatteriMarkdownProcessor } from '@astrojs/markdown-satteri'
+import mdastStripPrivate from './satteri/mdast-strip-private'
+import hastAccessibleEmojis from './satteri/hast-accessible-emojis'
 import { sql, eq, and, or, desc, gte, isNull } from 'drizzle-orm'
 import omit from 'lodash/omit'
 import {
@@ -179,11 +177,9 @@ const markAllEntriesAsPublished = async () =>
     .where(isNull(daylioEntries.publishedAt))
     .run()
 
-const markdownProcessor = await createMarkdownProcessor({
-  // @ts-ignore - plugin types are slightly mismatched but work at runtime
-  remarkPlugins: [remarkInlineLinks, remarkStripPrivate],
-  // @ts-ignore - plugin types are slightly mismatched but work at runtime
-  rehypePlugins: [rehypeAccessibleEmojis, rehypeUnwrapUnlabeledEmojis],
+const markdownProcessor = await createSatteriMarkdownProcessor({
+  mdastPlugins: [mdastStripPrivate],
+  hastPlugins: [hastAccessibleEmojis],
 })
 
 const renderNote = async (
