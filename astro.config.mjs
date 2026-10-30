@@ -75,6 +75,10 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss(), serverDependencies()],
+    define: {
+      // When the site was built, for the build-time meta tag in Layout.astro
+      __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+    },
   },
   integrations: [
     mdx(),

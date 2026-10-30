@@ -5,6 +5,9 @@ interface ImportMetaEnv {
   readonly NOTION_LINKS_DATABASE_ID: string
 }
 
+/** When the site was built, as an ISO 8601 timestamp. Set in astro.config.mjs. */
+declare const __BUILD_TIME__: string
+
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
