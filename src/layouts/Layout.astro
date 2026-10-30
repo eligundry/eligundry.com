@@ -102,6 +102,7 @@ if (opengraphImage === config.url) {
         meta: [
           { name: 'viewport', content: 'width=device-width, initial-scale=1' },
           { name: 'generator', content: Astro.generator },
+          { name: 'build-time', content: __BUILD_TIME__ },
         ],
         link: [
           {

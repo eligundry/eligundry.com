@@ -18,8 +18,6 @@ interface GoodreadsBook {
   cover: string
   url: string
   rating: number
-  /** When it was read, as YYYY-MM-DD. The shelf widget doesn't say, so null. */
-  reviewedAt: string | null
 }
 
 function upgradeCoverUrl(url: string): string {
@@ -98,7 +96,7 @@ async function fetchGoodreadsShelf({
     ).length
 
     if (title && author && cover && url) {
-      books.push({ title, author, cover, url, rating, reviewedAt: null })
+      books.push({ title, author, cover, url, rating })
     }
   }
 
@@ -110,14 +108,7 @@ export const createGoodreadsCollection = (
 ) => {
   return defineCollection({
     loader: async () => {
-      // Build without books rather than failing the build if Goodreads
-      // changes the widget too.
-      const books = await fetchGoodreadsShelf(params).catch((error) => {
-        console.warn(
-          `Skipping Goodreads shelf "${params.shelf}": ${error.message}`
-        )
-        return []
-      })
+      const books = await fetchGoodreadsShelf(params)
 
       // Augment with coverColor
       const augmentedBooks = await Promise.all(
@@ -147,7 +138,6 @@ export const createGoodreadsCollection = (
       cover: z.string(),
       url: z.string(),
       rating: z.number(),
-      reviewedAt: z.string().nullable(),
       coverColor: z.string().nullable(),
       order: z.number(),
     }),
