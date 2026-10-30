@@ -1,3 +1,4 @@
+import { globSync } from 'node:fs'
 import { test, expect, request } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { JSDOM } from 'jsdom'
@@ -9,6 +10,16 @@ const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
 const COLOR_SCHEMES = ['light', 'dark'] as const
 // A small phone, a typical phone, a tablet and a laptop
 const VIEWPORT_WIDTHS = [320, 375, 768, 1280]
+
+// Hand-made static pages (src/pages/**/*.html) are art pieces with their own
+// layouts, so they're left out of the sideways-scroll check. Their URLs are
+// derived the same way as in sitemap.xml.ts.
+const HTML_PAGE_URLS = new Set(
+  globSync('**/*.html', { cwd: 'src/pages' }).map((file) =>
+    `/${file}`.replace(/\/index\.html$/, '/').replace(/\.html$/, '/')
+  )
+)
+
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
 // Known failures, skipped per page so the rest of the checks still run. Remove
@@ -114,6 +125,7 @@ test.describe('sitemap', () => {
     })
 
     test(`${url} doesn't scroll sideways`, async ({ page }) => {
+      test.skip(HTML_PAGE_URLS.has(url), 'hand-made static page')
       await page.goto(url, { waitUntil: 'domcontentloaded' })
       await page
         .waitForLoadState('networkidle', { timeout: 5000 })
