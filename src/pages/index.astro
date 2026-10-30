@@ -250,7 +250,7 @@ const { Content: CodingSection } = await render(codingEntry)
                   itemprop="image"
                 />
               </a>
-              {book.rating > 0 && (
+              {book.rating > 0 && book.ratedAt && (
                 <div
                   itemprop="review"
                   itemscope
@@ -270,9 +270,7 @@ const { Content: CodingSection } = await render(codingEntry)
                     <meta itemprop="bestRating" content="5" />
                   </div>
                   <link itemprop="author" href="#eli-gundry" />
-                  {book.reviewedAt && (
-                    <meta itemprop="datePublished" content={book.reviewedAt} />
-                  )}
+                  <meta itemprop="datePublished" content={book.ratedAt} />
                 </div>
               )}
             </div>

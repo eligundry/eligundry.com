@@ -18,8 +18,8 @@ interface GoodreadsBook {
   cover: string
   url: string
   rating: number
-  /** When it was read (or shelved, if Goodreads has no read date), as YYYY-MM-DD. */
-  reviewedAt: string | null
+  /** Goodreads' ID for the book, taken from its cover image's file name. */
+  coverID: string | null
 }
 
 function upgradeCoverUrl(url: string): string {
@@ -29,14 +29,26 @@ function upgradeCoverUrl(url: string): string {
   return url.replace(/\._S[XY]\d+_/i, '')
 }
 
-/** An RSS date such as "Sat, 12 Oct 2024 00:00:00 -0700" as YYYY-MM-DD. */
-function isoDate(rssDate: string | null | undefined): string | null {
-  const date = rssDate?.trim() ? new Date(rssDate) : undefined
-  return date && !Number.isNaN(date.getTime())
-    ? date.toISOString().slice(0, 10)
-    : null
+/** The book ID in a cover URL like `.../books/1761194644l/243042929._SX98_.jpg`. */
+function coverID(url: string): string | null {
+  return url.match(/\/(\d+)(?:\._[^/]*)?\.\w+$/)?.[1] ?? null
 }
 
+/**
+ * The HTML that a Goodreads custom widget script writes into the page. The
+ * script is `var widget_code = '<html>'` followed by code that inserts it, with
+ * the HTML escaped as a single-quoted JavaScript string.
+ */
+function widgetHTML(script: string): string | null {
+  const literal = script.match(/var widget_code = '([\s\S]*?)'\n/)?.[1]
+  return literal ? literal.replace(/\\n/g, '\n').replace(/\\(.)/g, '$1') : null
+}
+
+/**
+ * Goodreads retired its shelf RSS feeds in October 2026, and shelf pages need
+ * a sign-in, so this reads the public custom shelf widget that Goodreads offers
+ * for embedding on other sites.
+ */
 async function fetchGoodreadsShelf({
   userID,
   shelf,
@@ -44,46 +56,118 @@ async function fetchGoodreadsShelf({
   sort,
   order,
 }: GoodreadsCollectionOptions): Promise<GoodreadsBook[]> {
-  const url = new URL(`https://www.goodreads.com/review/list_rss/${userID}`)
+  const url = new URL(
+    `https://www.goodreads.com/review/custom_widget/${userID}`
+  )
   url.searchParams.set('shelf', shelf)
+  url.searchParams.set('num_books', limit.toString())
   if (sort) url.searchParams.set('sort', sort)
   if (order) url.searchParams.set('order', order)
+  // Goodreads caches a widget's books by widget_id and ignores the other
+  // parameters on later requests for the same ID, so use a new one each build.
+  url.searchParams.set('widget_id', `${shelf}-${Date.now()}`)
 
   const response = await fetch(url)
   if (!response.ok) {
-    throw new Error(`Failed to fetch Goodreads RSS: ${response.statusText}`)
+    throw new Error(
+      `Failed to fetch Goodreads shelf widget: ${response.statusText}`
+    )
   }
 
-  const xml = await response.text()
-  const dom = new JSDOM(xml, { contentType: 'text/xml' })
-  const doc = dom.window.document
+  const html = widgetHTML(await response.text())
+  if (!html) {
+    throw new Error('Goodreads shelf widget had no widget_code')
+  }
 
-  const items = doc.querySelectorAll('item')
+  const doc = new JSDOM(html).window.document
   const books: GoodreadsBook[] = []
 
-  for (const item of items) {
+  for (const item of doc.querySelectorAll(
+    '[class^="gr_custom_each_container"]'
+  )) {
     if (books.length >= limit) break
 
-    const title = item.querySelector('title')?.textContent?.trim()
-    const author = item.querySelector('author_name')?.textContent?.trim()
-    const rawCover = item
-      .querySelector('book_large_image_url')
-      ?.textContent?.trim()
-    const cover = rawCover ? upgradeCoverUrl(rawCover) : undefined
-    const url = item.querySelector('link')?.textContent?.trim()
-    const ratingStr = item.querySelector('user_rating')?.textContent?.trim()
-    const rating = ratingStr ? parseInt(ratingStr, 10) : 0
-    const reviewedAt = isoDate(
-      item.querySelector('user_read_at')?.textContent ||
-        item.querySelector('user_date_added')?.textContent
+    const coverLink = item.querySelector(
+      '[class^="gr_custom_book_container"] a'
     )
+    const title = coverLink?.getAttribute('title')?.trim()
+    const author = item
+      .querySelector('[class^="gr_custom_author"] a')
+      ?.textContent?.trim()
+    const rawCover = coverLink?.querySelector('img')?.getAttribute('src')
+    const cover = rawCover ? upgradeCoverUrl(rawCover) : undefined
+    const href = coverLink?.getAttribute('href')
+    const url = href ? href.split('?')[0] : undefined
+    const rating = item.querySelectorAll(
+      '.staticStars img[src*="star_active"]'
+    ).length
 
     if (title && author && cover && url) {
-      books.push({ title, author, cover, url, rating, reviewedAt })
+      books.push({
+        title,
+        author,
+        cover,
+        url,
+        rating,
+        coverID: rawCover ? coverID(rawCover) : null,
+      })
     }
   }
 
   return books
+}
+
+/** A date like "October 29" or "December 12, 2025" from the updates widget, as YYYY-MM-DD. */
+function updateDate(text: string, now = new Date()): string | null {
+  const hasYear = /\d{4}/.test(text)
+  const date = new Date(hasYear ? text : `${text}, ${now.getFullYear()}`)
+  if (Number.isNaN(date.getTime())) return null
+  // Dates without a year are this year's, unless that's still to come
+  if (!hasYear && date > now) date.setFullYear(date.getFullYear() - 1)
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0'),
+  ].join('-')
+}
+
+/**
+ * When each recently rated book was rated, keyed by coverID, from the public
+ * updates widget. The shelf widget has no dates and review pages need a
+ * sign-in, so this is the only public source. It only lists the user's last
+ * 10 updates, so older books have no date.
+ */
+async function fetchRatingDates(userID: string): Promise<Map<string, string>> {
+  const url = new URL('https://www.goodreads.com/widgets/user_update_widget')
+  url.searchParams.set('user', userID)
+  url.searchParams.set('num_updates', '10')
+
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch Goodreads updates widget: ${response.statusText}`
+    )
+  }
+
+  const doc = new JSDOM(await response.text()).window.document
+  const dates = new Map<string, string>()
+  // Only the first update of each day has a date
+  let date: string | null = null
+
+  for (const update of doc.querySelectorAll('.update')) {
+    const dateText = update.querySelector(':scope > p')?.textContent?.trim()
+    if (dateText) date = updateDate(dateText)
+
+    const action = update.querySelector('.updateAction')?.textContent ?? ''
+    const cover = update.querySelector('.updateImage img')?.getAttribute('src')
+    const id = cover ? coverID(cover) : null
+
+    if (date && id && action.includes('rated a book') && !dates.has(id)) {
+      dates.set(id, date)
+    }
+  }
+
+  return dates
 }
 
 export const createGoodreadsCollection = (
@@ -91,7 +175,10 @@ export const createGoodreadsCollection = (
 ) => {
   return defineCollection({
     loader: async () => {
-      const books = await fetchGoodreadsShelf(params)
+      const [books, ratingDates] = await Promise.all([
+        fetchGoodreadsShelf(params),
+        fetchRatingDates(params.userID),
+      ])
 
       // Augment with coverColor
       const augmentedBooks = await Promise.all(
@@ -101,10 +188,12 @@ export const createGoodreadsCollection = (
             coverColor = await averageColorFromURL(book.cover).catch(() => null)
           }
 
+          const { coverID, ...rest } = book
           return {
             id: book.url,
-            ...book,
+            ...rest,
             coverColor,
+            ratedAt: (coverID && ratingDates.get(coverID)) || null,
           }
         })
       )
@@ -121,8 +210,9 @@ export const createGoodreadsCollection = (
       cover: z.string(),
       url: z.string(),
       rating: z.number(),
-      reviewedAt: z.string().nullable(),
       coverColor: z.string().nullable(),
+      /** When it was rated, as YYYY-MM-DD, for books rated recently enough. */
+      ratedAt: z.string().nullable(),
       order: z.number(),
     }),
   })
