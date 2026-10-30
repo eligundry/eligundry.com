@@ -91,7 +91,14 @@ export const createGoodreadsCollection = (
 ) => {
   return defineCollection({
     loader: async () => {
-      const books = await fetchGoodreadsShelf(params)
+      // Goodreads retired its shelf RSS feeds in October 2026 and now answers
+      // 404 for every user. Build without books rather than failing the build.
+      const books = await fetchGoodreadsShelf(params).catch((error) => {
+        console.warn(
+          `Skipping Goodreads shelf "${params.shelf}": ${error.message}`
+        )
+        return []
+      })
 
       // Augment with coverColor
       const augmentedBooks = await Promise.all(
