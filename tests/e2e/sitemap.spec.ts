@@ -1,3 +1,4 @@
+import { globSync } from 'node:fs'
 import { test, expect, request } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { JSDOM } from 'jsdom'
@@ -7,6 +8,18 @@ const SITEMAP_HOSTNAME = 'https://eligundry.com'
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
 
 const COLOR_SCHEMES = ['light', 'dark'] as const
+// A small phone, a typical phone, a tablet and a laptop
+const VIEWPORT_WIDTHS = [320, 375, 768, 1280]
+
+// Hand-made static pages (src/pages/**/*.html) are left out of the
+// sideways-scroll check. Their URLs are derived the same way as in
+// sitemap.xml.ts.
+const HTML_PAGE_URLS = new Set(
+  globSync('**/*.html', { cwd: 'src/pages' }).map((file) =>
+    `/${file}`.replace(/\/index\.html$/, '/').replace(/\.html$/, '/')
+  )
+)
+
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
 // Known failures, skipped per page so the rest of the checks still run. Remove
@@ -41,6 +54,33 @@ function formatViolation(v: AxeViolation) {
   }
 }
 
+// Elements that stick out past the right edge of the page while their parent
+// doesn't, which are where horizontal overflow starts. Content inside a
+// scrolling or clipping box (like a code block) is left out, since it doesn't
+// widen the page. Pseudo-elements (like tooltips) can't be selected.
+function overflowingElements() {
+  const width = document.documentElement.clientWidth
+  const overflows = (el: Element | null) =>
+    !!el && el.getBoundingClientRect().right > width + 0.5
+  const clipped = (el: Element) => {
+    for (
+      let a = el.parentElement;
+      a && a !== document.body;
+      a = a.parentElement
+    ) {
+      if (getComputedStyle(a).overflowX !== 'visible') return true
+    }
+    return false
+  }
+  return Array.from(document.body.querySelectorAll('*'))
+    .filter((el) => overflows(el) && !overflows(el.parentElement))
+    .filter((el) => !clipped(el))
+    .map((el) => {
+      const classes = Array.from(el.classList).slice(0, 4).join('.')
+      return `<${el.tagName.toLowerCase()}${classes ? `.${classes}` : ''}> ends at ${Math.round(el.getBoundingClientRect().right)}px`
+    })
+}
+
 async function getSitemapUrls(): Promise<string[]> {
   const ctx = await request.newContext()
   const res = await ctx.get(`${baseURL}/sitemap.xml`)
@@ -67,26 +107,58 @@ const vocabulary = await loadVocabulary()
 
 test.describe('sitemap', () => {
   for (const url of urls) {
-    test(`${url} loads without redirects and has main content`, async ({
+    // These only read the page, so they share one page load. Each is a step
+    // with soft assertions, so one failing doesn't hide the others.
+    test(`${url} loads, validates and doesn't scroll sideways`, async ({
       page,
     }) => {
+      // Three checks' worth of work, and the longer pages are slow to render
+      test.setTimeout(60_000)
       const response = await page.goto(url, { waitUntil: 'domcontentloaded' })
-      expect(response, 'no response').not.toBeNull()
-      expect(response!.status(), 'expected 200').toBe(200)
-      expect(
-        response!.request().redirectedFrom(),
-        'expected no redirect'
-      ).toBeNull()
 
-      const main = page.locator('main')
-      await expect(main, 'expected exactly one <main>').toHaveCount(1)
-      const text = (await main.innerText()).trim()
-      expect(text.length, '<main> is empty').toBeGreaterThan(0)
-    })
+      await test.step('loads without redirects and has main content', async () => {
+        expect(response, 'no response').not.toBeNull()
+        expect.soft(response!.status(), 'expected 200').toBe(200)
+        expect
+          .soft(response!.request().redirectedFrom(), 'expected no redirect')
+          .toBeNull()
 
-    test(`${url} passes schema.org validation`, async ({ page }) => {
-      await page.goto(url, { waitUntil: 'domcontentloaded' })
-      expect(await validateMicrodata(page, vocabulary)).toEqual([])
+        const main = page.locator('main')
+        await expect.soft(main, 'expected exactly one <main>').toHaveCount(1)
+        const text = (await main.first().innerText()).trim()
+        expect.soft(text.length, '<main> is empty').toBeGreaterThan(0)
+      })
+
+      await test.step('passes schema.org validation', async () => {
+        expect.soft(await validateMicrodata(page, vocabulary)).toEqual([])
+      })
+
+      // Hand-made static pages are art pieces with their own layouts
+      if (HTML_PAGE_URLS.has(url)) {
+        return
+      }
+
+      await test.step("doesn't scroll sideways", async () => {
+        await page
+          .waitForLoadState('networkidle', { timeout: 5000 })
+          .catch(() => {})
+
+        for (const width of VIEWPORT_WIDTHS) {
+          await page.setViewportSize({ width, height: 800 })
+          const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+            scrollWidth: document.documentElement.scrollWidth,
+            clientWidth: document.documentElement.clientWidth,
+          }))
+          const culprits =
+            scrollWidth > clientWidth
+              ? (await page.evaluate(overflowingElements)).join(', ') ||
+                'nothing sticks out, so likely a pseudo-element'
+              : ''
+          expect
+            .soft(scrollWidth, `${clientWidth}px wide viewport: ${culprits}`)
+            .toBeLessThanOrEqual(clientWidth)
+        }
+      })
     })
 
     for (const colorScheme of COLOR_SCHEMES) {

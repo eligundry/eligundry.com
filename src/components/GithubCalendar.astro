@@ -59,16 +59,32 @@ const weeks = firstDay
   ? dateFns.differenceInCalendarWeeks(contributions.at(-1)!.date, firstDay) + 1
   : 0
 
+// Phones only show the last six months, so the days are big enough to tap.
+// Earlier weeks are hidden there and every day shifts left by --skip weeks.
+const phoneWeeks = 26
+const phoneSkip = Math.max(weeks - phoneWeeks, 0)
+
 // Tooltips are centered over their day by default, which runs off the edge of
-// the page for the first and last few weeks, so those open inwards instead.
-const edgeWeeks = 6
-const tooltipPlacement = (week: number) => {
-  if (week < edgeWeeks) {
-    return 'tooltip-right'
+// the page near either end of the calendar. The calendar shrinks to fit narrow
+// screens while tooltips don't, so the outer thirds of the weeks shown open
+// inwards instead, and tooltips wrap narrowly enough to fit beside a day.
+const placements = {
+  phone: { right: 'max-sm:tooltip-right', left: 'max-sm:tooltip-left' },
+  desktop: { right: 'sm:tooltip-right', left: 'sm:tooltip-left' },
+}
+const tooltipPlacement = (
+  week: number,
+  first: number,
+  { right, left }: (typeof placements)['phone']
+) => {
+  const shown = weeks - first
+
+  if (week - first < shown / 3) {
+    return right
   }
 
-  if (week >= weeks - edgeWeeks) {
-    return 'tooltip-left'
+  if (week - first >= (shown * 2) / 3) {
+    return left
   }
 
   return null
@@ -88,10 +104,12 @@ const total = contributions.reduce((sum, c) => sum + c.count, 0)
 // gap, a 1px stroke centered on each day's edge, and 1px of padding on either
 // side. Below full width it scaled down to fit, so every length here is a
 // multiple of --u, which is 1px at full width and shrinks with the container.
+// The width depends on how many weeks are shown, so it's worked out in CSS
+// from --weeks and --skip.
 const blockSize = 12
 const blockMargin = 4
 const height = (blockSize + blockMargin) * 7 - blockMargin
-const width = weeks * (blockSize + blockMargin) - blockMargin + 2
+const width = `((var(--weeks) - var(--skip)) * ${blockSize + blockMargin} - ${blockMargin} + 2)`
 ---
 
 {
@@ -103,9 +121,16 @@ const width = weeks * (blockSize + blockMargin) - blockMargin + 2
         'items-center',
         'w-full',
         '@container',
+        '[--skip:0]',
+        'max-sm:[--skip:var(--phone-skip)]',
         Astro.props.className,
       ]}
-      style={{ maxWidth: `${width}px`, height: `${height}px` }}
+      style={{
+        '--weeks': weeks,
+        '--phone-skip': phoneSkip,
+        maxWidth: `calc(${width} * 1px)`,
+        height: `${height}px`,
+      }}
     >
       <div
         role="img"
@@ -115,7 +140,7 @@ const width = weeks * (blockSize + blockMargin) - blockMargin + 2
           '--u': `calc(100cqw / ${width})`,
           paddingInline: 'var(--u)',
           gap: `calc(${blockMargin} * var(--u))`,
-          gridTemplateColumns: `repeat(${weeks}, calc(${blockSize} * var(--u)))`,
+          gridAutoColumns: `calc(${blockSize} * var(--u))`,
           gridTemplateRows: `repeat(7, calc(${blockSize} * var(--u)))`,
         }}
       >
@@ -128,7 +153,10 @@ const width = weeks * (blockSize + blockMargin) - blockMargin + 2
               class:list={[
                 'tooltip',
                 'tooltip-primary',
-                tooltipPlacement(week),
+                'before:max-w-40',
+                tooltipPlacement(week, phoneSkip, placements.phone),
+                tooltipPlacement(week, 0, placements.desktop),
+                week < phoneSkip && 'max-sm:hidden',
                 'block',
                 'font-sans',
                 'rounded-[calc(2*var(--u))]',
@@ -139,7 +167,7 @@ const width = weeks * (blockSize + blockMargin) - blockMargin + 2
                 levelClasses[day.level] ?? levelClasses[0],
               ]}
               style={{
-                gridColumn: week + 1,
+                gridColumn: `calc(${week + 1} - var(--skip))`,
                 gridRow: dateFns.getDay(day.date) + 1,
               }}
             />

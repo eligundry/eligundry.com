@@ -97,27 +97,24 @@ const social = [
     <div class="w-full">
       <h4 class="footer-title">Social</h4>
       <meta itemprop="email" content={email} />
-      <div
-        class:list={[
-          'flex',
-          'flex-row',
-          'gap-2',
-          '[&>a]:tooltip',
-          '[&>a]:tooltip-primary',
-          '[&>a]:normal-case',
-          '[&>a]:inline-flex',
-          '[&>a]:w-8',
-          'overflow-hidden',
-          'sm:overflow-visible',
-        ]}
-      >
+      <div class:list={['flex', 'flex-row', 'flex-wrap', 'gap-2']}>
         {
           social.map((link) => (
             <a
               href={link.url}
               data-tip={link.label}
               aria-label={link.label}
-              class:list={['btn', 'btn-sm', 'btn-square', 'btn-primary']}
+              class:list={[
+                'btn',
+                'btn-sm',
+                'btn-square',
+                'btn-primary',
+                'tooltip',
+                'tooltip-primary',
+                'normal-case',
+                'inline-flex',
+                'w-8',
+              ]}
               itemprop={link.itemProp}
             >
               <link.Icon size="1.75rem" />

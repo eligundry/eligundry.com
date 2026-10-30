@@ -112,25 +112,28 @@ const DaylioChart = () => {
           },
         }}
       />
-      <table class="sr-only">
-        <caption>My daily mood over recent days</caption>
-        <thead>
-          <tr>
-            <th scope="col">When</th>
-            <th scope="col">Mood</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((entry) => (
-            <tr key={entry.x}>
-              <th scope="row">
-                {format(parseISO(entry.x), 'MMMM d, yyyy, h:mm a')}
-              </th>
-              <td>{Object.keys(MoodMapping)[entry.y]}</td>
+      {/* sr-only can't hide a <table>, since overflow doesn't apply to one */}
+      <div class="sr-only">
+        <table>
+          <caption>My daily mood over recent days</caption>
+          <thead>
+            <tr>
+              <th scope="col">When</th>
+              <th scope="col">Mood</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((entry) => (
+              <tr key={entry.x}>
+                <th scope="row">
+                  {format(parseISO(entry.x), 'MMMM d, yyyy, h:mm a')}
+                </th>
+                <td>{Object.keys(MoodMapping)[entry.y]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
