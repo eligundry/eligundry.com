@@ -11,9 +11,9 @@ const COLOR_SCHEMES = ['light', 'dark'] as const
 // A small phone, a typical phone, a tablet and a laptop
 const VIEWPORT_WIDTHS = [320, 375, 768, 1280]
 
-// Hand-made static pages (src/pages/**/*.html) are art pieces with their own
-// layouts, so they're left out of the sideways-scroll check. Their URLs are
-// derived the same way as in sitemap.xml.ts.
+// Hand-made static pages (src/pages/**/*.html) are left out of the
+// sideways-scroll check. Their URLs are derived the same way as in
+// sitemap.xml.ts.
 const HTML_PAGE_URLS = new Set(
   globSync('**/*.html', { cwd: 'src/pages' }).map((file) =>
     `/${file}`.replace(/\/index\.html$/, '/').replace(/\.html$/, '/')
@@ -107,50 +107,58 @@ const vocabulary = await loadVocabulary()
 
 test.describe('sitemap', () => {
   for (const url of urls) {
-    test(`${url} loads without redirects and has main content`, async ({
+    // These only read the page, so they share one page load. Each is a step
+    // with soft assertions, so one failing doesn't hide the others.
+    test(`${url} loads, validates and doesn't scroll sideways`, async ({
       page,
     }) => {
+      // Three checks' worth of work, and the longer pages are slow to render
+      test.setTimeout(60_000)
       const response = await page.goto(url, { waitUntil: 'domcontentloaded' })
-      expect(response, 'no response').not.toBeNull()
-      expect(response!.status(), 'expected 200').toBe(200)
-      expect(
-        response!.request().redirectedFrom(),
-        'expected no redirect'
-      ).toBeNull()
 
-      const main = page.locator('main')
-      await expect(main, 'expected exactly one <main>').toHaveCount(1)
-      const text = (await main.innerText()).trim()
-      expect(text.length, '<main> is empty').toBeGreaterThan(0)
-    })
-
-    test(`${url} doesn't scroll sideways`, async ({ page }) => {
-      test.skip(HTML_PAGE_URLS.has(url), 'hand-made static page')
-      await page.goto(url, { waitUntil: 'domcontentloaded' })
-      await page
-        .waitForLoadState('networkidle', { timeout: 5000 })
-        .catch(() => {})
-
-      for (const width of VIEWPORT_WIDTHS) {
-        await page.setViewportSize({ width, height: 800 })
-        const { scrollWidth, clientWidth } = await page.evaluate(() => ({
-          scrollWidth: document.documentElement.scrollWidth,
-          clientWidth: document.documentElement.clientWidth,
-        }))
-        const culprits =
-          scrollWidth > clientWidth
-            ? (await page.evaluate(overflowingElements)).join(', ') ||
-              'nothing sticks out, so likely a pseudo-element'
-            : ''
+      await test.step('loads without redirects and has main content', async () => {
+        expect(response, 'no response').not.toBeNull()
+        expect.soft(response!.status(), 'expected 200').toBe(200)
         expect
-          .soft(scrollWidth, `${clientWidth}px wide viewport: ${culprits}`)
-          .toBeLessThanOrEqual(clientWidth)
-      }
-    })
+          .soft(response!.request().redirectedFrom(), 'expected no redirect')
+          .toBeNull()
 
-    test(`${url} passes schema.org validation`, async ({ page }) => {
-      await page.goto(url, { waitUntil: 'domcontentloaded' })
-      expect(await validateMicrodata(page, vocabulary)).toEqual([])
+        const main = page.locator('main')
+        await expect.soft(main, 'expected exactly one <main>').toHaveCount(1)
+        const text = (await main.first().innerText()).trim()
+        expect.soft(text.length, '<main> is empty').toBeGreaterThan(0)
+      })
+
+      await test.step('passes schema.org validation', async () => {
+        expect.soft(await validateMicrodata(page, vocabulary)).toEqual([])
+      })
+
+      // Hand-made static pages are art pieces with their own layouts
+      if (HTML_PAGE_URLS.has(url)) {
+        return
+      }
+
+      await test.step("doesn't scroll sideways", async () => {
+        await page
+          .waitForLoadState('networkidle', { timeout: 5000 })
+          .catch(() => {})
+
+        for (const width of VIEWPORT_WIDTHS) {
+          await page.setViewportSize({ width, height: 800 })
+          const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+            scrollWidth: document.documentElement.scrollWidth,
+            clientWidth: document.documentElement.clientWidth,
+          }))
+          const culprits =
+            scrollWidth > clientWidth
+              ? (await page.evaluate(overflowingElements)).join(', ') ||
+                'nothing sticks out, so likely a pseudo-element'
+              : ''
+          expect
+            .soft(scrollWidth, `${clientWidth}px wide viewport: ${culprits}`)
+            .toBeLessThanOrEqual(clientWidth)
+        }
+      })
     })
 
     for (const colorScheme of COLOR_SCHEMES) {
