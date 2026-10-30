@@ -18,6 +18,8 @@ interface GoodreadsBook {
   cover: string
   url: string
   rating: number
+  /** Goodreads' ID for the book, taken from its cover image's file name. */
+  coverID: string | null
 }
 
 function upgradeCoverUrl(url: string): string {
@@ -25,6 +27,11 @@ function upgradeCoverUrl(url: string): string {
   // that constrains the image dimensions. Strip it so we fetch the original
   // full-resolution image and let our own resize pipeline downscale.
   return url.replace(/\._S[XY]\d+_/i, '')
+}
+
+/** The book ID in a cover URL like `.../books/1761194644l/243042929._SX98_.jpg`. */
+function coverID(url: string): string | null {
+  return url.match(/\/(\d+)(?:\._[^/]*)?\.\w+$/)?.[1] ?? null
 }
 
 /**
@@ -96,11 +103,71 @@ async function fetchGoodreadsShelf({
     ).length
 
     if (title && author && cover && url) {
-      books.push({ title, author, cover, url, rating })
+      books.push({
+        title,
+        author,
+        cover,
+        url,
+        rating,
+        coverID: rawCover ? coverID(rawCover) : null,
+      })
     }
   }
 
   return books
+}
+
+/** A date like "October 29" or "December 12, 2025" from the updates widget, as YYYY-MM-DD. */
+function updateDate(text: string, now = new Date()): string | null {
+  const hasYear = /\d{4}/.test(text)
+  const date = new Date(hasYear ? text : `${text}, ${now.getFullYear()}`)
+  if (Number.isNaN(date.getTime())) return null
+  // Dates without a year are this year's, unless that's still to come
+  if (!hasYear && date > now) date.setFullYear(date.getFullYear() - 1)
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0'),
+  ].join('-')
+}
+
+/**
+ * When each recently rated book was rated, keyed by coverID, from the public
+ * updates widget. The shelf widget has no dates and review pages need a
+ * sign-in, so this is the only public source. It only lists the user's last
+ * 10 updates, so older books have no date.
+ */
+async function fetchRatingDates(userID: string): Promise<Map<string, string>> {
+  const url = new URL('https://www.goodreads.com/widgets/user_update_widget')
+  url.searchParams.set('user', userID)
+  url.searchParams.set('num_updates', '10')
+
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch Goodreads updates widget: ${response.statusText}`
+    )
+  }
+
+  const doc = new JSDOM(await response.text()).window.document
+  const dates = new Map<string, string>()
+  // Only the first update of each day has a date
+  let date: string | null = null
+
+  for (const update of doc.querySelectorAll('.update')) {
+    const dateText = update.querySelector(':scope > p')?.textContent?.trim()
+    if (dateText) date = updateDate(dateText)
+
+    const action = update.querySelector('.updateAction')?.textContent ?? ''
+    const cover = update.querySelector('.updateImage img')?.getAttribute('src')
+    const id = cover ? coverID(cover) : null
+
+    if (date && id && action.includes('rated a book') && !dates.has(id)) {
+      dates.set(id, date)
+    }
+  }
+
+  return dates
 }
 
 export const createGoodreadsCollection = (
@@ -108,7 +175,10 @@ export const createGoodreadsCollection = (
 ) => {
   return defineCollection({
     loader: async () => {
-      const books = await fetchGoodreadsShelf(params)
+      const [books, ratingDates] = await Promise.all([
+        fetchGoodreadsShelf(params),
+        fetchRatingDates(params.userID),
+      ])
 
       // Augment with coverColor
       const augmentedBooks = await Promise.all(
@@ -118,10 +188,12 @@ export const createGoodreadsCollection = (
             coverColor = await averageColorFromURL(book.cover).catch(() => null)
           }
 
+          const { coverID, ...rest } = book
           return {
             id: book.url,
-            ...book,
+            ...rest,
             coverColor,
+            ratedAt: (coverID && ratingDates.get(coverID)) || null,
           }
         })
       )
@@ -139,6 +211,8 @@ export const createGoodreadsCollection = (
       url: z.string(),
       rating: z.number(),
       coverColor: z.string().nullable(),
+      /** When it was rated, as YYYY-MM-DD, for books rated recently enough. */
+      ratedAt: z.string().nullable(),
       order: z.number(),
     }),
   })

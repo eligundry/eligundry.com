@@ -250,6 +250,29 @@ const { Content: CodingSection } = await render(codingEntry)
                   itemprop="image"
                 />
               </a>
+              {book.rating > 0 && book.ratedAt && (
+                <div
+                  itemprop="review"
+                  itemscope
+                  itemtype="https://schema.org/Review"
+                  class="hidden"
+                >
+                  <div
+                    itemprop="reviewRating"
+                    itemscope
+                    itemtype="https://schema.org/Rating"
+                  >
+                    <meta
+                      itemprop="ratingValue"
+                      content={book.rating.toString()}
+                    />
+                    <meta itemprop="worstRating" content="1" />
+                    <meta itemprop="bestRating" content="5" />
+                  </div>
+                  <link itemprop="author" href="#eli-gundry" />
+                  <meta itemprop="datePublished" content={book.ratedAt} />
+                </div>
+              )}
             </div>
           )
         })
