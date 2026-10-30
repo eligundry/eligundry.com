@@ -18,7 +18,7 @@ interface GoodreadsBook {
   cover: string
   url: string
   rating: number
-  /** When it was read (or shelved, if Goodreads has no read date), as YYYY-MM-DD. */
+  /** When it was read, as YYYY-MM-DD. The shelf widget doesn't say, so null. */
   reviewedAt: string | null
 }
 
@@ -29,14 +29,21 @@ function upgradeCoverUrl(url: string): string {
   return url.replace(/\._S[XY]\d+_/i, '')
 }
 
-/** An RSS date such as "Sat, 12 Oct 2024 00:00:00 -0700" as YYYY-MM-DD. */
-function isoDate(rssDate: string | null | undefined): string | null {
-  const date = rssDate?.trim() ? new Date(rssDate) : undefined
-  return date && !Number.isNaN(date.getTime())
-    ? date.toISOString().slice(0, 10)
-    : null
+/**
+ * The HTML that a Goodreads custom widget script writes into the page. The
+ * script is `var widget_code = '<html>'` followed by code that inserts it, with
+ * the HTML escaped as a single-quoted JavaScript string.
+ */
+function widgetHTML(script: string): string | null {
+  const literal = script.match(/var widget_code = '([\s\S]*?)'\n/)?.[1]
+  return literal ? literal.replace(/\\n/g, '\n').replace(/\\(.)/g, '$1') : null
 }
 
+/**
+ * Goodreads retired its shelf RSS feeds in October 2026, and shelf pages need
+ * a sign-in, so this reads the public custom shelf widget that Goodreads offers
+ * for embedding on other sites.
+ */
 async function fetchGoodreadsShelf({
   userID,
   shelf,
@@ -44,42 +51,54 @@ async function fetchGoodreadsShelf({
   sort,
   order,
 }: GoodreadsCollectionOptions): Promise<GoodreadsBook[]> {
-  const url = new URL(`https://www.goodreads.com/review/list_rss/${userID}`)
+  const url = new URL(
+    `https://www.goodreads.com/review/custom_widget/${userID}`
+  )
   url.searchParams.set('shelf', shelf)
+  url.searchParams.set('num_books', limit.toString())
   if (sort) url.searchParams.set('sort', sort)
   if (order) url.searchParams.set('order', order)
+  // Goodreads caches a widget's books by widget_id and ignores the other
+  // parameters on later requests for the same ID, so use a new one each build.
+  url.searchParams.set('widget_id', `${shelf}-${Date.now()}`)
 
   const response = await fetch(url)
   if (!response.ok) {
-    throw new Error(`Failed to fetch Goodreads RSS: ${response.statusText}`)
+    throw new Error(
+      `Failed to fetch Goodreads shelf widget: ${response.statusText}`
+    )
   }
 
-  const xml = await response.text()
-  const dom = new JSDOM(xml, { contentType: 'text/xml' })
-  const doc = dom.window.document
+  const html = widgetHTML(await response.text())
+  if (!html) {
+    throw new Error('Goodreads shelf widget had no widget_code')
+  }
 
-  const items = doc.querySelectorAll('item')
+  const doc = new JSDOM(html).window.document
   const books: GoodreadsBook[] = []
 
-  for (const item of items) {
+  for (const item of doc.querySelectorAll(
+    '[class^="gr_custom_each_container"]'
+  )) {
     if (books.length >= limit) break
 
-    const title = item.querySelector('title')?.textContent?.trim()
-    const author = item.querySelector('author_name')?.textContent?.trim()
-    const rawCover = item
-      .querySelector('book_large_image_url')
-      ?.textContent?.trim()
-    const cover = rawCover ? upgradeCoverUrl(rawCover) : undefined
-    const url = item.querySelector('link')?.textContent?.trim()
-    const ratingStr = item.querySelector('user_rating')?.textContent?.trim()
-    const rating = ratingStr ? parseInt(ratingStr, 10) : 0
-    const reviewedAt = isoDate(
-      item.querySelector('user_read_at')?.textContent ||
-        item.querySelector('user_date_added')?.textContent
+    const coverLink = item.querySelector(
+      '[class^="gr_custom_book_container"] a'
     )
+    const title = coverLink?.getAttribute('title')?.trim()
+    const author = item
+      .querySelector('[class^="gr_custom_author"] a')
+      ?.textContent?.trim()
+    const rawCover = coverLink?.querySelector('img')?.getAttribute('src')
+    const cover = rawCover ? upgradeCoverUrl(rawCover) : undefined
+    const href = coverLink?.getAttribute('href')
+    const url = href ? href.split('?')[0] : undefined
+    const rating = item.querySelectorAll(
+      '.staticStars img[src*="star_active"]'
+    ).length
 
     if (title && author && cover && url) {
-      books.push({ title, author, cover, url, rating, reviewedAt })
+      books.push({ title, author, cover, url, rating, reviewedAt: null })
     }
   }
 
@@ -91,8 +110,8 @@ export const createGoodreadsCollection = (
 ) => {
   return defineCollection({
     loader: async () => {
-      // Goodreads retired its shelf RSS feeds in October 2026 and now answers
-      // 404 for every user. Build without books rather than failing the build.
+      // Build without books rather than failing the build if Goodreads
+      // changes the widget too.
       const books = await fetchGoodreadsShelf(params).catch((error) => {
         console.warn(
           `Skipping Goodreads shelf "${params.shelf}": ${error.message}`

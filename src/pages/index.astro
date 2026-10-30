@@ -174,123 +174,113 @@ const { Content: CodingSection } = await render(codingEntry)
     </div>
   </section>
 
-  {
-    (currentlyReading.length > 0 || recentlyRead.length > 0) && (
-      <section class="reading paper prose">
-        <h2 class="mb-4">What I'm Reading</h2>
-        <p>
-          I am an avid reader and here's what I've been reading. You can find me
-          on{' '}
-          <a
-            href="https://www.goodreads.com/user/show/29665939-eli-gundry"
-            itemprop="sameAs"
-          >
-            Goodreads
-          </a>
-          .
-        </p>
-        <div
-          class:list={[
-            'not-prose',
-            'grid',
-            'items-center',
-            ['grid-cols-4', 'md:grid-cols-6'],
-            'md:gap-y-2',
-          ]}
-        >
-          {[...currentlyReading, ...recentlyRead].map((book, i) => {
-            const authorName = book.author?.split(', ').reverse().join(' ')
-            let alt = book.title
+  <section class="reading paper prose">
+    <h2 class="mb-4">What I'm Reading</h2>
+    <p>
+      I am an avid reader and here's what I've been reading. You can find me on <a
+        href="https://www.goodreads.com/user/show/29665939-eli-gundry"
+        itemprop="sameAs">Goodreads</a
+      >.
+    </p>
+    <div
+      class:list={[
+        'not-prose',
+        'grid',
+        'items-center',
+        ['grid-cols-4', 'md:grid-cols-6'],
+        'md:gap-y-2',
+      ]}
+    >
+      {
+        [...currentlyReading, ...recentlyRead].map((book, i) => {
+          const authorName = book.author?.split(', ').reverse().join(' ')
+          let alt = book.title
 
-            if (authorName) {
-              alt += ` by ${authorName}`
-            }
+          if (authorName) {
+            alt += ` by ${authorName}`
+          }
 
-            const isCurrentlyReading = i < currentlyReading.length
-            if (isCurrentlyReading) {
-              alt = `Currently Reading: ${alt}`
-            } else if (book.rating > 0) {
-              alt += ` ${'★'.repeat(book.rating)}${'☆'.repeat(5 - book.rating)}`
-            }
+          const isCurrentlyReading = i < currentlyReading.length
+          if (isCurrentlyReading) {
+            alt = `Currently Reading: ${alt}`
+          } else if (book.rating > 0) {
+            alt += ` ${'★'.repeat(book.rating)}${'☆'.repeat(5 - book.rating)}`
+          }
 
-            if (!alt || !book.cover) return null
+          if (!alt || !book.cover) return null
 
-            return (
-              <div
+          return (
+            <div
+              itemscope
+              itemtype="https://schema.org/Book"
+              class:list={[
+                'sm:tooltip',
+                'sm:tooltip-primary',
+                'font-sans',
+                i >= 12 && 'hidden md:block',
+              ]}
+              data-tip={alt}
+            >
+              <meta itemprop="name" content={book.title} />
+              <span
+                itemprop="author"
                 itemscope
-                itemtype="https://schema.org/Book"
-                class:list={[
-                  'sm:tooltip',
-                  'sm:tooltip-primary',
-                  'font-sans',
-                  i >= 12 && 'hidden md:block',
-                ]}
-                data-tip={alt}
+                itemtype="https://schema.org/Person"
               >
-                <meta itemprop="name" content={book.title} />
-                <span
-                  itemprop="author"
+                <meta itemprop="name" content={authorName} />
+              </span>
+              <a
+                href={book.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                itemprop="url"
+              >
+                <Image
+                  alt={alt}
+                  src={book.cover}
+                  loading="lazy"
+                  width={100}
+                  height={160}
+                  fit="inside"
+                  densities={[1, 2]}
+                  quality={90}
+                  format="webp"
+                  decoding="async"
+                  style={{ backgroundColor: book.coverColor }}
+                  itemprop="image"
+                />
+              </a>
+              {book.rating > 0 && (
+                <div
+                  itemprop="review"
                   itemscope
-                  itemtype="https://schema.org/Person"
+                  itemtype="https://schema.org/Review"
+                  class="hidden"
                 >
-                  <meta itemprop="name" content={authorName} />
-                </span>
-                <a
-                  href={book.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  itemprop="url"
-                >
-                  <Image
-                    alt={alt}
-                    src={book.cover}
-                    loading="lazy"
-                    width={100}
-                    height={160}
-                    fit="inside"
-                    densities={[1, 2]}
-                    quality={90}
-                    format="webp"
-                    decoding="async"
-                    style={{ backgroundColor: book.coverColor }}
-                    itemprop="image"
-                  />
-                </a>
-                {book.rating > 0 && (
                   <div
-                    itemprop="review"
+                    itemprop="reviewRating"
                     itemscope
-                    itemtype="https://schema.org/Review"
-                    class="hidden"
+                    itemtype="https://schema.org/Rating"
                   >
-                    <div
-                      itemprop="reviewRating"
-                      itemscope
-                      itemtype="https://schema.org/Rating"
-                    >
-                      <meta
-                        itemprop="ratingValue"
-                        content={book.rating.toString()}
-                      />
-                      <meta itemprop="worstRating" content="1" />
-                      <meta itemprop="bestRating" content="5" />
-                    </div>
-                    <link itemprop="author" href="#eli-gundry" />
-                    {book.reviewedAt && (
-                      <meta
-                        itemprop="datePublished"
-                        content={book.reviewedAt}
-                      />
-                    )}
+                    <meta
+                      itemprop="ratingValue"
+                      content={book.rating.toString()}
+                    />
+                    <meta itemprop="worstRating" content="1" />
+                    <meta itemprop="bestRating" content="5" />
                   </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </section>
-    )
-  }
+                  <link itemprop="author" href="#eli-gundry" />
+                  {book.reviewedAt && (
+                    <meta itemprop="datePublished" content={book.reviewedAt} />
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })
+      }
+    </div>
+  </section>
 
   <section class="listening paper prose">
     <h2 class="mb-4">What I'm Listening To</h2>
