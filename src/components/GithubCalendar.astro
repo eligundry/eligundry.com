@@ -60,14 +60,15 @@ const weeks = firstDay
   : 0
 
 // Tooltips are centered over their day by default, which runs off the edge of
-// the page for the first and last few weeks, so those open inwards instead.
-const edgeWeeks = 6
+// the page near either end of the calendar. The calendar shrinks to fit narrow
+// screens while tooltips don't, so the outer thirds open inwards instead, and
+// tooltips wrap narrowly enough to fit beside a day on a phone.
 const tooltipPlacement = (week: number) => {
-  if (week < edgeWeeks) {
+  if (week < weeks / 3) {
     return 'tooltip-right'
   }
 
-  if (week >= weeks - edgeWeeks) {
+  if (week >= (weeks * 2) / 3) {
     return 'tooltip-left'
   }
 
@@ -128,6 +129,7 @@ const width = weeks * (blockSize + blockMargin) - blockMargin + 2
               class:list={[
                 'tooltip',
                 'tooltip-primary',
+                'before:max-w-40',
                 tooltipPlacement(week),
                 'block',
                 'font-sans',

@@ -14,6 +14,12 @@ main > * {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Let the columns shrink past their content on narrow screens */
+  min-width: 0;
+}
+
+figure img {
+  max-width: 100%;
 }
 
 .poem {
@@ -31,6 +37,7 @@ main > * {
   display: block;
   position: absolute;
   top: 0;
+  box-sizing: border-box;
   padding-left: 1rem;
   padding-top: 0.5rem;
 }
@@ -41,6 +48,8 @@ main > * {
   background-color: rgb(255, 255, 255);
   font-weight: 400;
   font-size: 3rem;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 #random-wiki {

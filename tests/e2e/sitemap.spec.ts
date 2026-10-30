@@ -7,6 +7,8 @@ const SITEMAP_HOSTNAME = 'https://eligundry.com'
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321'
 
 const COLOR_SCHEMES = ['light', 'dark'] as const
+// A small phone, a typical phone, a tablet and a laptop
+const VIEWPORT_WIDTHS = [320, 375, 768, 1280]
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
 // Known failures, skipped per page so the rest of the checks still run. Remove
@@ -39,6 +41,33 @@ function formatViolation(v: AxeViolation) {
     help: `${v.help} (${v.helpUrl})`,
     nodes: v.nodes.map((n) => n.target.join(' ')),
   }
+}
+
+// Elements that stick out past the right edge of the page while their parent
+// doesn't, which are where horizontal overflow starts. Content inside a
+// scrolling or clipping box (like a code block) is left out, since it doesn't
+// widen the page. Pseudo-elements (like tooltips) can't be selected.
+function overflowingElements() {
+  const width = document.documentElement.clientWidth
+  const overflows = (el: Element | null) =>
+    !!el && el.getBoundingClientRect().right > width + 0.5
+  const clipped = (el: Element) => {
+    for (
+      let a = el.parentElement;
+      a && a !== document.body;
+      a = a.parentElement
+    ) {
+      if (getComputedStyle(a).overflowX !== 'visible') return true
+    }
+    return false
+  }
+  return Array.from(document.body.querySelectorAll('*'))
+    .filter((el) => overflows(el) && !overflows(el.parentElement))
+    .filter((el) => !clipped(el))
+    .map((el) => {
+      const classes = Array.from(el.classList).slice(0, 4).join('.')
+      return `<${el.tagName.toLowerCase()}${classes ? `.${classes}` : ''}> ends at ${Math.round(el.getBoundingClientRect().right)}px`
+    })
 }
 
 async function getSitemapUrls(): Promise<string[]> {
@@ -82,6 +111,29 @@ test.describe('sitemap', () => {
       await expect(main, 'expected exactly one <main>').toHaveCount(1)
       const text = (await main.innerText()).trim()
       expect(text.length, '<main> is empty').toBeGreaterThan(0)
+    })
+
+    test(`${url} doesn't scroll sideways`, async ({ page }) => {
+      await page.goto(url, { waitUntil: 'domcontentloaded' })
+      await page
+        .waitForLoadState('networkidle', { timeout: 5000 })
+        .catch(() => {})
+
+      for (const width of VIEWPORT_WIDTHS) {
+        await page.setViewportSize({ width, height: 800 })
+        const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+          scrollWidth: document.documentElement.scrollWidth,
+          clientWidth: document.documentElement.clientWidth,
+        }))
+        const culprits =
+          scrollWidth > clientWidth
+            ? (await page.evaluate(overflowingElements)).join(', ') ||
+              'nothing sticks out, so likely a pseudo-element'
+            : ''
+        expect
+          .soft(scrollWidth, `${clientWidth}px wide viewport: ${culprits}`)
+          .toBeLessThanOrEqual(clientWidth)
+      }
     })
 
     test(`${url} passes schema.org validation`, async ({ page }) => {

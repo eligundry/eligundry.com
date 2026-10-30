@@ -440,6 +440,8 @@
 
 .prose {
   @apply max-w-none! font-serif;
+  /* Long URLs and inline code would otherwise run off a phone's screen */
+  overflow-wrap: break-word;
 }
 
 /* daisyUI rounds inline code with --radius-selector (1.9rem), which is sized
@@ -519,6 +521,25 @@ button {
 
 .tooltip {
   cursor: default;
+}
+
+/* daisyUI keeps every closed tooltip in the layout at opacity 0, so one near
+   the edge of the page (like the GitHub calendar's) widens it and lets it
+   scroll sideways. Only render a tooltip while it's open, and fade it in from
+   there. This goes by `data-tip` rather than `.tooltip` so it covers tooltips
+   behind a variant too, like `sm:tooltip`. */
+[data-tip]:not(.tooltip-open, :hover, :has(:focus-visible)) {
+  &::before,
+  &::after {
+    display: none;
+  }
+}
+
+[data-tip]::before,
+[data-tip]::after {
+  @starting-style {
+    opacity: 0;
+  }
 }
 
 .mockup-code {
