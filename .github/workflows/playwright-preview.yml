@@ -64,7 +64,9 @@ jobs:
         startsWith(github.event.context, 'netlify/') &&
         endsWith(github.event.context, '/deploy-preview')
       )
-    runs-on: ubuntu-latest
+    # Playwright does not support Ubuntu 26.04, which ubuntu-latest became in
+    # November 2026, so pin the release it supports.
+    runs-on: ubuntu-24.04
     env:
       PREVIEW_URL: ${{ github.event.target_url || inputs.url }}
       PREVIEW_SHA: ${{ github.event.sha || inputs.sha || github.sha }}
