@@ -13,8 +13,14 @@ const { saveWidgetBooks, saveCSVRows } = await import('./goodreads')
 const { db } = await import('./database')
 
 beforeAll(async () => {
-  const sql = readFileSync('migrations/0003_tense_dormammu.sql', 'utf-8')
-  await client.executeMultiple(sql)
+  for (const migration of [
+    '0003_tense_dormammu.sql',
+    '0004_fancy_killer_shrike.sql',
+  ]) {
+    await client.executeMultiple(
+      readFileSync(`migrations/${migration}`, 'utf-8')
+    )
+  }
 })
 
 const widgetBook = {
@@ -28,7 +34,7 @@ const widgetBook = {
   ratedAt: null,
 }
 
-test('widget saves and CSV imports merge without losing each other’s fields', async () => {
+test('the export wins over the widgets, which only fill in what it lacks', async () => {
   await saveWidgetBooks([widgetBook])
   await saveWidgetBooks([
     { ...widgetBook, shelf: 'read', rating: 5, ratedAt: '2026-10-29' },
@@ -47,30 +53,58 @@ test('widget saves and CSV imports merge without losing each other’s fields', 
     { bookId: '1', title: 'Old Book', author: 'Someone', shelf: 'read' },
   ])
 
-  // A later build, after the book fell out of the updates widget
-  await saveWidgetBooks([{ ...widgetBook, shelf: 'read', rating: 4 }])
+  // A later build, after the book fell out of the updates widget, with
+  // widget data that disagrees with the export
+  await saveWidgetBooks([
+    { ...widgetBook, title: 'Cool Machine', shelf: 'read', rating: 4 },
+    {
+      ...widgetBook,
+      bookId: '2',
+      reviewId: null,
+      title: 'Widget Only',
+      shelf: 'read',
+      rating: 3,
+    },
+  ])
+  await saveWidgetBooks([
+    {
+      ...widgetBook,
+      bookId: '2',
+      title: 'Widget Only',
+      shelf: 'read',
+      rating: 2,
+    },
+  ])
 
   const rows = await db
     .select()
     .from(schema.goodreadsReviews)
     .orderBy(schema.goodreadsReviews.bookId)
 
-  expect(rows).toHaveLength(2)
-  expect(rows[1]).toMatchObject({
+  expect(rows).toHaveLength(3)
+  expect(rows[2]).toMatchObject({
     bookId: '243042929',
     reviewId: '9054277513',
+    title: 'Cool Machine (The Harlem Trilogy, #3)',
     cover: 'https://example.com/243042929.jpg',
     shelf: 'read',
-    rating: 4,
+    rating: 5,
     ratedAt: '2026-10-29',
     review: 'So good.',
     dateRead: '2026-10-29',
     spoiler: false,
   })
+  expect(rows[2].importedAt).toBeInstanceOf(Date)
   expect(rows[0]).toMatchObject({
     bookId: '1',
     cover: null,
     rating: 0,
     review: null,
+  })
+  // Books the export hasn't covered keep following the widget
+  expect(rows[1]).toMatchObject({
+    bookId: '2',
+    rating: 2,
+    importedAt: null,
   })
 })

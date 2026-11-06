@@ -90,6 +90,9 @@ export const goodreadsReviews = sqliteTable('goodreads_reviews', {
   isbn13: text('isbn13'),
   pages: integer('pages'),
   yearPublished: integer('yearPublished'),
+  // When a Goodreads export last wrote this row. The export is more complete
+  // and accurate than the widgets, so builds don't overwrite its fields.
+  importedAt: integer('importedAt', { mode: 'timestamp' }),
   createdAt: integer('createdAt', { mode: 'timestamp' }).default(timestampSQL),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
 })

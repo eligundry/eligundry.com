@@ -50,20 +50,28 @@ const now = sql`(cast(strftime('%s', 'now') as int))`
 const excluded = (column: string) => sql.raw(`excluded.\`${column}\``)
 
 /**
- * Save the books that the shelf widget shows. This only updates what the
- * widget knows, so it never blanks out the review text or reading dates that
- * came from a CSV import.
+ * The widget's value for a column, unless a Goodreads export has written the
+ * row, since the export is more accurate than the widgets.
+ */
+const unlessImported = (column: keyof GoodreadsReviewRow) =>
+  sql`case when ${goodreadsReviews.importedAt} is null then ${excluded(column)} else ${goodreadsReviews[column]} end`
+
+/**
+ * Save the books that the shelf widget shows. Books from a Goodreads export
+ * keep the export's title, author, shelf, and rating, and only gain what the
+ * widgets alone know: the cover, review ID, and rating date. Rows the export
+ * hasn't covered take everything from the widget.
  */
 export async function saveWidgetBooks(books: GoodreadsWidgetBook[]) {
   await batchUpsert(
     books.map((book) => ({ ...book, reviewId: book.reviewId ?? undefined })),
     {
       reviewId: sql`coalesce(${excluded('reviewId')}, ${goodreadsReviews.reviewId})`,
-      title: excluded('title'),
-      author: excluded('author'),
+      title: unlessImported('title'),
+      author: unlessImported('author'),
       cover: excluded('cover'),
-      shelf: excluded('shelf'),
-      rating: excluded('rating'),
+      shelf: unlessImported('shelf'),
+      rating: unlessImported('rating'),
       // The updates widget only knows the last 10 updates, so keep older dates
       ratedAt: sql`coalesce(${excluded('ratedAt')}, ${goodreadsReviews.ratedAt})`,
       updatedAt: now,
@@ -133,22 +141,27 @@ export function parseGoodreadsCSV(csv: string): GoodreadsReviewRow[] {
 
 /**
  * Save the rows of a Goodreads export. The export is the source of truth for
- * everything in it, and it keeps the cover, review ID, and rating date that
- * only the widgets know.
+ * everything in it, and later builds won't overwrite it with widget data. It
+ * keeps the cover, review ID, and rating date that only the widgets know.
  */
 export async function saveCSVRows(rows: GoodreadsReviewRow[]) {
-  await batchUpsert(rows, {
-    title: excluded('title'),
-    author: excluded('author'),
-    shelf: excluded('shelf'),
-    rating: excluded('rating'),
-    review: excluded('review'),
-    spoiler: excluded('spoiler'),
-    dateRead: excluded('dateRead'),
-    dateAdded: excluded('dateAdded'),
-    isbn13: excluded('isbn13'),
-    pages: excluded('pages'),
-    yearPublished: excluded('yearPublished'),
-    updatedAt: now,
-  })
+  const importedAt = new Date()
+  await batchUpsert(
+    rows.map((row) => ({ ...row, importedAt })),
+    {
+      title: excluded('title'),
+      author: excluded('author'),
+      shelf: excluded('shelf'),
+      rating: excluded('rating'),
+      review: excluded('review'),
+      spoiler: excluded('spoiler'),
+      dateRead: excluded('dateRead'),
+      dateAdded: excluded('dateAdded'),
+      isbn13: excluded('isbn13'),
+      pages: excluded('pages'),
+      yearPublished: excluded('yearPublished'),
+      importedAt: excluded('importedAt'),
+      updatedAt: now,
+    }
+  )
 }
