@@ -1,1 +1,0 @@
-ALTER TABLE `goodreads_reviews` ADD `importedAt` integer;

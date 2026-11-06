@@ -13,14 +13,9 @@ const { saveWidgetBooks, saveCSVRows } = await import('./goodreads')
 const { db } = await import('./database')
 
 beforeAll(async () => {
-  for (const migration of [
-    '0003_tense_dormammu.sql',
-    '0004_fancy_killer_shrike.sql',
-  ]) {
-    await client.executeMultiple(
-      readFileSync(`migrations/${migration}`, 'utf-8')
-    )
-  }
+  await client.executeMultiple(
+    readFileSync('migrations/0003_vengeful_nightmare.sql', 'utf-8')
+  )
 })
 
 const widgetBook = {

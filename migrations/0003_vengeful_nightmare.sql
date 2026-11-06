@@ -14,6 +14,7 @@ CREATE TABLE `goodreads_reviews` (
 	`isbn13` text,
 	`pages` integer,
 	`yearPublished` integer,
+	`importedAt` integer,
 	`createdAt` integer DEFAULT (cast(strftime('%s', 'now') as int)),
 	`updatedAt` integer DEFAULT (cast(strftime('%s', 'now') as int))
 );

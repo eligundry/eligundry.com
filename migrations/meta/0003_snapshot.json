@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "7466d113-4927-4e22-921e-786d097173d5",
+  "id": "052373fc-a179-4e38-be74-0082ebe0a8a9",
   "prevId": "06e1bb2f-fe06-44f6-99d9-d547d3d16dd6",
   "tables": {
     "daylio_activities": {
@@ -268,6 +268,13 @@
         },
         "yearPublished": {
           "name": "yearPublished",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "importedAt": {
+          "name": "importedAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
