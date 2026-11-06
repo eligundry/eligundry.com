@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -17,7 +18,7 @@ import webfontDownload from 'vite-plugin-webfont-dl'
 import { FontaineTransform } from 'fontaine'
 
 // https://astro.build/config
-import netlify from '@astrojs/netlify'
+import cloudflare from '@astrojs/cloudflare'
 
 /**
  * Astro renders pages in both the `ssr` and `prerender` Vite environments, and
@@ -29,6 +30,21 @@ import netlify from '@astrojs/netlify'
  */
 const serverDependencies = () => ({
   name: 'eligundry:server-dependencies',
+  enforce: 'pre',
+  // Keep Sätteri's native binding out of the Worker bundle: notes are only
+  // rendered at build time.
+  resolveId(id, importer) {
+    if (
+      !process.env.VITEST &&
+      this.environment?.name === 'ssr' &&
+      id === './daylioNotes' &&
+      importer?.endsWith('/src/lib/daylio.ts')
+    ) {
+      return fileURLToPath(
+        new URL('./src/lib/daylioNotes/worker.ts', import.meta.url)
+      )
+    }
+  },
   configEnvironment(name) {
     if (name !== 'ssr' && name !== 'prerender') {
       return
@@ -36,7 +52,9 @@ const serverDependencies = () => ({
 
     return {
       resolve: {
-        external: ['better-sqlite3'],
+        // The Cloudflare plugin rejects externals in the Worker ("ssr")
+        // environment
+        ...(name === 'prerender' ? { external: ['better-sqlite3'] } : {}),
         noExternal: [
           '@astro-community/astro-embed-youtube',
           '@react-hookz/web',
@@ -57,9 +75,17 @@ export default defineConfig({
   security: {
     checkOrigin: false,
   },
-  adapter: netlify({
-    imageCDN: false,
-  }),
+  // Vitest runs in Node, where the adapter's workerd environments can't load
+  adapter: process.env.VITEST
+    ? undefined
+    : cloudflare({
+        // The build leans on Node-only tools (jsdom, sharp, simple-git, node:fs),
+        // so prerender in Node rather than workerd.
+        prerenderEnvironment: 'node',
+        // Optimize images with sharp at build time and serve them as static
+        // files
+        imageService: 'compile',
+      }),
   image: {
     remotePatterns: [{ protocol: 'https' }],
   },

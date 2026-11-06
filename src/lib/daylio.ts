@@ -1,5 +1,5 @@
 import * as dateFns from 'date-fns'
-import { toZonedTime } from 'date-fns-tz'
+import { fromZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
 import { sql, eq, and, or, desc, gte, isNull } from 'drizzle-orm'
@@ -73,7 +73,9 @@ const csvSchema = z
     }, z.string().nullable()),
   })
   .transform((data) => {
-    const time = toZonedTime(
+    // The export's times are wall-clock times in New York. fromZonedTime reads
+    // them that way whatever the machine's time zone (a Worker runs in UTC).
+    const time = fromZonedTime(
       `${data.full_date}T${data.time}:00`,
       'America/New_York'
     )
@@ -278,6 +280,18 @@ const getUnpublished = async ({ start }: { start?: Date } = {}) => {
   }))
 }
 
+/** When the newest entry was logged, without loading any notes. */
+const getLatestTime = async (): Promise<Date | null> => {
+  const [row] = await db
+    .select({ time: daylioEntries.time })
+    .from(daylioEntries)
+    .orderBy(desc(daylioEntries.time))
+    .limit(1)
+    .all()
+
+  return row?.time ?? null
+}
+
 const getLatest = async () => getAll({ limit: 1 }).then((entries) => entries[0])
 
 const getRange = async (start: Date) => getAll({ start })
@@ -343,6 +357,7 @@ export interface DaylioChartEntry {
 const api = {
   getAll,
   getUnpublished,
+  getLatestTime,
   getLatest,
   getRange,
   getChartData,

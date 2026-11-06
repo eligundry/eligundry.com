@@ -9,7 +9,7 @@ import { getTopAlbums, type LastFMPeriod } from './lastfmClient'
  * Builds the 3x3 album collage and posts it to Bluesky. It's kept apart from
  * ./lastfm, which averages each cover's color with sharp for the homepage,
  * so that nothing here pulls in a native module: this code has to run in a
- * Cloudflare Worker's scheduled handler as well as on Netlify.
+ * Cloudflare Worker's scheduled handler.
  */
 
 export type CollagePeriod = '7day' | '1month' | '12month'

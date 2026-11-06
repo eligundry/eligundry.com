@@ -3,7 +3,7 @@ import { subHours } from 'date-fns'
 import auth from '../../../lib/auth'
 import daylio from '../../../lib/daylio'
 import blueSky from '../../../lib/bluesky'
-import netlify from '../../../lib/netlify'
+import { triggerSiteDeploy } from '../../../lib/rebuild'
 import { dedent } from '../../../lib/utils'
 import { getFeelings } from '../../../lib/collections'
 
@@ -127,16 +127,16 @@ ${post.markdown ?? ''}
     await daylio.markAllEntriesAsPublished()
 
     try {
-      const netlifyRes = await netlify.triggerSiteDeploy()
+      const triggered = await triggerSiteDeploy('Daylio upload')
 
-      if (!netlifyRes) {
-        console.log('skipped netlify deploy because build hook url is not set')
+      if (!triggered) {
+        console.log('skipped deploy because GITHUB_DEPLOY_TOKEN is not set')
       }
     } catch (e: any) {
       return endpointOutputToResponse({
         status: 500,
         body: JSON.stringify({
-          error: 'failed to trigger netlify deploy',
+          error: 'failed to trigger a deploy',
           details: e.message,
         }),
       })

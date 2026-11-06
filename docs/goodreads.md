@@ -25,7 +25,7 @@ rating. Re-import a fresh export to pick up later changes to those books. Books
 the export doesn't cover keep following the widgets.
 
 Both writes are `INSERT … ON CONFLICT DO UPDATE` sent with `db.batch`, so they
-work on Turso and on D1, which has no interactive transactions.
+work on D1, which has no interactive transactions.
 
 The merge logic is tested against an in-memory SQLite database built from the
 migration in `src/lib/goodreads.db.test.ts`.

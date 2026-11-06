@@ -1,7 +1,5 @@
 # [eligundry.com](https://eligundry.com)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/124e05a1-30a5-4e2c-bde5-1aa34cce1b4a/deploy-status)](https://app.netlify.com/sites/eligundry/deploys)
-
 My personal website.
 
 ## Built With
@@ -16,8 +14,10 @@ My personal website.
 
 ## Deployment
 
-All pushes to main will trigger build on Netlify.
+Pushes to main deploy to Cloudflare Workers through GitHub Actions. See
+[docs/cloudflare.md](./docs/cloudflare.md).
 
 ## Documentation
 
+- [Cloudflare Workers + D1](./docs/cloudflare.md)
 - [standard.site (ATProto) publishing](./docs/standard-site.md)

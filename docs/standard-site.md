@@ -34,16 +34,17 @@ table, so unchanged content is never re-published.
 
 ## Setup / configuration
 
-Credentials are read from the environment (`import.meta.env` in Astro builds,
-`process.env` for scripts):
+Credentials are read from the environment. Builds get them from GitHub Actions
+secrets in `.github/workflows/deploy.yml`; pull request builds leave the
+Bluesky credentials out, so only production publishes.
 
 - `BLUESKY_USERNAME` / `BLUESKY_PASSWORD` — Bluesky handle + app password
   (reused from the existing Bluesky integration).
 - `STANDARD_SITE_DID` / `STANDARD_SITE_PUBLICATION_RKEY` — produced by the
   one-time setup script below.
 
-One-time: publish the publication record and write the `STANDARD_SITE_*` vars
-to Netlify (requires the `netlify` CLI to be linked):
+One-time: publish the publication record and print the `STANDARD_SITE_*`
+values to save as GitHub Actions secrets:
 
 ```sh
 pnpm standard-site:create-publication

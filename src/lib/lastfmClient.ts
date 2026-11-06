@@ -24,23 +24,40 @@ export type LastFMPeriod =
 
 export type LastFMTopAlbum = TopAlbums['albums'][number]
 
-if (!import.meta.env.LAST_FM_API_KEY) {
-  throw new Error('LAST_FM_API_KEY must be defined for the site to run')
-}
+let client: LastFM | undefined
 
-try {
-  // @ts-ignore
-  var lastfm = new LastFM.default(import.meta.env.LAST_FM_API_KEY) as LastFM
-} catch (e) {
-  var lastfm = new LastFM(import.meta.env.LAST_FM_API_KEY)
+/**
+ * The key is read when first needed, from process.env, so it never gets
+ * written into the Worker bundle: Vite inlines import.meta.env values at
+ * build time. In the Worker, process.env holds its secrets.
+ */
+function getClient(): LastFM {
+  if (client) {
+    return client
+  }
+
+  const key = process.env.LAST_FM_API_KEY
+
+  if (!key) {
+    throw new Error('LAST_FM_API_KEY must be defined for the site to run')
+  }
+
+  try {
+    // @ts-ignore
+    client = new LastFM.default(key) as LastFM
+  } catch (e) {
+    client = new LastFM(key)
+  }
+
+  return client
 }
 
 export const getTopAlbums = async (
   username: string,
   period: LastFMPeriod = '7day'
 ) => {
-  const topAlbums = await lastfm.user
-    .getTopAlbums(username, {
+  const topAlbums = await getClient()
+    .user.getTopAlbums(username, {
       period,
       limit: 15,
     })

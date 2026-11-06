@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eligundry",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "eligundry",
+      "database_id": "7748dc56-3172-454c-abd1-e7eca1f7682c",
+      "migrations_dir": "migrations",
+    },
+  ],
+  // Files too big for static assets (25 MiB each), served by
+  // src/pages/video/[...path].ts and uploaded from media/ by
+  // `pnpm media:sync`
+  // Astro sessions (the adapter wants one even though the site doesn't use
+  // them)
+  "kv_namespaces": [
+    { "binding": "SESSION", "id": "8d64010133ff49ea93ce592376f1faf5" },
+  ],
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "eligundry-media" }],
+  // The Last.fm collages (weekly, monthly, yearly) and the nightly rebuild
+  // check. Off until eligundry.com points at this Worker, so they don't post
+  // twice while Netlify still runs its own.
+  "triggers": { "crons": [] },
+  "observability": { "enabled": true },
+  "workers_dev": true,
+  "preview_urls": true,
+}

@@ -45,6 +45,8 @@ const csv = [
 test('processCSV saves every entry and its activities in one batch', async () => {
   const entries = await daylio.processCSV(Buffer.from(csv))
   expect(entries).toHaveLength(40)
+  // 12:00 in New York
+  expect(entries[0].time.toISOString()).toBe('2026-01-01T17:00:00.000Z')
 
   const rows = await client.execute(
     'select (select count(*) from daylio_entries) as entries, (select count(*) from daylio_entry_activities) as links, (select count(*) from daylio_activities) as activities'
