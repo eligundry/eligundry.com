@@ -92,8 +92,7 @@ export const POST: APIRoute = async ({ request }) => {
   const entries = await daylio.processCSV(buffer)
 
   if (import.meta.env.PROD) {
-    const unpublishedPosts = await daylio.getAll({
-      unpublished: true,
+    const unpublishedPosts = await daylio.getUnpublished({
       start: subHours(new Date(), 6),
     })
 
@@ -104,7 +103,7 @@ export const POST: APIRoute = async ({ request }) => {
         let text = dedent(`
 ${daylio.tweetPrefix(post)}
 
-${post.note?.markdown ?? ''}
+${post.markdown ?? ''}
       `)
         let message = text + '\n\n' + url
 

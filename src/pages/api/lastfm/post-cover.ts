@@ -1,11 +1,10 @@
 import type { APIRoute } from 'astro'
-import { getWeek } from 'date-fns'
 import auth from '../../../lib/auth'
-import bsky from '../../../lib/bluesky'
-import lastfm from '../../../lib/lastfm'
-import config from '../../../config'
+import { postCollage, type CollagePeriod } from '../../../lib/lastfmCollage'
 
 export const prerender = false
+
+const periods: CollagePeriod[] = ['7day', '1month', '12month']
 
 export const POST: APIRoute = async ({ request }) => {
   if (!auth.check(request.headers.get('authorization'))) {
@@ -18,66 +17,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const formData = await request.formData()
-  let period = (formData.get('period') ?? '7day') as
-    | '7day'
-    | '1month'
-    | '12month'
+  const requested = formData.get('period')
+  const period = periods.find((p) => p === requested) ?? '7day'
 
-  if (
-    typeof period !== 'string' ||
-    (period !== '7day' && period !== '1month' && period !== '12month')
-  ) {
-    period = '7day'
-  }
-
-  const { albums: topAlbums, collage } = await lastfm.getCollage(
-    config.lastFmUsername,
-    period
-  )
-
-  if (topAlbums.length < 9) {
-    return new Response(
-      JSON.stringify({
-        ok: false,
-        period,
-        skipped: true,
-        reason: `Not enough albums to post (got ${topAlbums.length}, need 9)`,
-      }),
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
-  }
-
-  const alt = topAlbums
-    .slice(0, 9)
-    .map(
-      (album) => `${album.album} by ${album.artist} [${album.count} scrobbles]`
-    )
-    .join(', ')
-  const now = new Date()
-  const text = {
-    '7day': `Happy Friday! Here's what I've been listening to this week! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/week/${getWeek(now)}`,
-    '1month': `What a month! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}/month/${now.getMonth() + 1}`,
-    '12month': `What a year! Here's what I've been listening to! https://www.last.fm/user/eli_pwnd/listening-report/year/${now.getFullYear()}`,
-  }
-
-  const upload = await bsky.uploadImage(collage, 'image/jpeg')
-  await bsky.sendPost(text[period], {
-    embed: {
-      $type: 'app.bsky.embed.images',
-      images: [
-        {
-          image: upload.data.blob,
-          alt: `Last.fm collage: ${alt}`,
-        },
-      ],
-    },
-  })
-
-  return new Response(JSON.stringify({ ok: true, period, alt }), {
+  return new Response(JSON.stringify(await postCollage(period)), {
     headers: {
       'content-type': 'application/json',
     },

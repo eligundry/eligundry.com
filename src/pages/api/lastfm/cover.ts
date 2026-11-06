@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
 import auth from '../../../lib/auth'
-import lastfm from '../../../lib/lastfm'
+import { getCollage } from '../../../lib/lastfmCollage'
 import config from '../../../config'
 
 export const prerender = false
@@ -29,7 +29,7 @@ export const GET: APIRoute = async ({ request }) => {
     period = '7day'
   }
 
-  const { collage } = await lastfm.getCollage(config.lastFmUsername, period)
+  const { collage } = await getCollage(config.lastFmUsername, period)
 
   return new Response(new Uint8Array(collage), {
     headers: {
