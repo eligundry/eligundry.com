@@ -65,3 +65,31 @@ export const standardSiteDocuments = sqliteTable('standard_site_documents', {
   ),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
 })
+
+// Every book on Eli's Goodreads shelves, keyed by Goodreads' book ID. Each build
+// upserts what the public shelf widget shows, and `pnpm goodreads:import`
+// backfills from a Goodreads CSV export, which is the only source of the review
+// text and reading dates. Dates are YYYY-MM-DD text.
+export const goodreadsReviews = sqliteTable('goodreads_reviews', {
+  bookId: text('bookId').primaryKey(),
+  // The ID in the review's URL, https://www.goodreads.com/review/show/<id>
+  reviewId: text('reviewId'),
+  title: text('title').notNull(),
+  author: text('author').notNull(),
+  cover: text('cover'),
+  // Goodreads' exclusive shelf: read, currently-reading, to-read, ...
+  shelf: text('shelf').notNull(),
+  // 1-5 stars, or 0 when unrated
+  rating: integer('rating').notNull().default(0),
+  // The review as Goodreads exports it, which is HTML
+  review: text('review'),
+  spoiler: integer('spoiler', { mode: 'boolean' }).notNull().default(false),
+  dateRead: text('dateRead'),
+  dateAdded: text('dateAdded'),
+  ratedAt: text('ratedAt'),
+  isbn13: text('isbn13'),
+  pages: integer('pages'),
+  yearPublished: integer('yearPublished'),
+  createdAt: integer('createdAt', { mode: 'timestamp' }).default(timestampSQL),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
+})

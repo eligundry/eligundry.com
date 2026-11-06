@@ -3,6 +3,7 @@ import { z } from 'astro/zod'
 import { JSDOM } from 'jsdom'
 import { averageColorFromURL } from '../lib/images'
 import { withOrder } from '../lib/collections'
+import { reviewIdFromURL, saveWidgetBooks } from '../lib/goodreads'
 
 interface GoodreadsCollectionOptions {
   userID: string
@@ -179,6 +180,27 @@ export const createGoodreadsCollection = (
         fetchGoodreadsShelf(params),
         fetchRatingDates(params.userID),
       ])
+
+      // Keep a copy of every book in the database, since Goodreads keeps
+      // taking its public data away. A failed write fails the build.
+      await saveWidgetBooks(
+        books.flatMap((book) =>
+          book.coverID
+            ? [
+                {
+                  bookId: book.coverID,
+                  reviewId: reviewIdFromURL(book.url),
+                  title: book.title,
+                  author: book.author,
+                  cover: book.cover,
+                  shelf: params.shelf,
+                  rating: book.rating,
+                  ratedAt: ratingDates.get(book.coverID) ?? null,
+                },
+              ]
+            : []
+        )
+      )
 
       // Augment with coverColor
       const augmentedBooks = await Promise.all(

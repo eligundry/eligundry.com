@@ -15,6 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Generate database migration**: `pnpm drizzle:migration:generate`
 - **Create standard.site publication** (one-time setup): `pnpm standard-site:create-publication`
 - **Publish a static HTML page to standard.site**: `pnpm standard-site:publish-page <file.html>`
+- **Import a Goodreads library export**: `pnpm goodreads:import <export.csv>`
 
 ## Architecture Overview
 
@@ -70,6 +71,10 @@ This is a personal website built with **Astro** as the main framework, using **P
 ### standard.site (ATProto) Publishing
 
 - Publishes blog/link/feelings content (and hand-made static pages) to ATProto via `src/lib/standardSite.ts`, triggered in prerendered page renders and deduped through the `standard_site_documents` table — see [`docs/standard-site.md`](./docs/standard-site.md)
+
+### Goodreads
+
+- Homepage books come from Goodreads' public widgets, and every build saves them to the `goodreads_reviews` table. `pnpm goodreads:import <export.csv>` backfills reviews from a Goodreads export — see [`docs/goodreads.md`](./docs/goodreads.md)
 
 ### Deployment
 
