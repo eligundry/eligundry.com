@@ -16,9 +16,8 @@ serves the few on-demand routes and runs the cron jobs.
 
 The Worker's runtime secrets (`LAST_FM_API_KEY`, `BASIC_AUTH_*`,
 `BLUESKY_*`, and `DEPLOY_HOOK_URL`, the Workers Builds deploy hook for main
-that the Daylio upload and the nightly cron call to rebuild) are uploaded from
-`.env.secrets` on every deploy by `scripts/cloudflare/deploy.sh`. See
-[Secrets](#secrets).
+that the Daylio upload and the nightly cron call to rebuild) are set on the Worker
+with `wrangler secret put` (or the API). See [Secrets](#secrets).
 
 Server code reads secrets from `process.env`, never `import.meta.env`, because
 Vite writes `import.meta.env` values into the bundle at build time.
@@ -81,7 +80,12 @@ as its deploy command.
 - `.github/workflows/preview-cleanup.yml` deletes a branch's database copy
   when its pull request closes.
 
-Workers Builds has one build variable, `DOTENV_PRIVATE_KEY_SECRETS`.
+Workers Builds gets its secrets from build variables on both triggers, set
+through the API: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`,
+`LAST_FM_API_KEY`, `NOTION_TOKEN`, `NOTION_LINKS_DATABASE_ID`,
+`BLUESKY_USERNAME`, `BLUESKY_PASSWORD`, `STANDARD_SITE_DID`,
+`STANDARD_SITE_PUBLICATION_RKEY` and `GITHUB_DEPLOY_TOKEN` (a fine-grained
+token with Commit statuses read and write on this repo).
 
 ## Big media
 
@@ -91,15 +95,16 @@ ones with `pnpm media:sync`.
 
 ## Secrets
 
-Every secret lives in one file, `.env.secrets`, committed and encrypted with
-[dotenvx](https://dotenvx.com). One private key, `DOTENV_PRIVATE_KEY_SECRETS`,
-decrypts it. Set the key in each place that needs secrets:
+Development secrets live in one file, `.env.secrets`, committed and encrypted
+with [dotenvx](https://dotenvx.com). One private key,
+`DOTENV_PRIVATE_KEY_SECRETS`, decrypts it. Cloudflare doesn't use it: the
+Worker's secrets and the Workers Builds variables are set directly (above).
+Set the key wherever dev work happens:
 
 | Where             | How                                              |
 | ----------------- | ------------------------------------------------ |
 | Local dev         | `.env.keys` (gitignored), or export the key      |
 | Claude Code cloud | an environment variable on the cloud environment |
-| Workers Builds    | a build variable on both triggers                |
 | GitHub Actions    | a repository secret                              |
 
 The package scripts (`dev`, `build`, `astro-check`, `drizzle:*`,
@@ -110,8 +115,8 @@ In a Claude Code session, `.claude/hooks/session-start.sh` also exports them
 into the shell, so ad hoc `wrangler` commands work.
 
 To add or change a secret, run `pnpm secrets:set KEY value`, which encrypts
-it in place, and commit `.env.secrets`. Runtime secrets reach the Worker on
-the next deploy from main.
+it in place, and commit `.env.secrets`. If Cloudflare needs it too, also set
+it on the Worker or the build triggers.
 
 ## Developing in Claude Code cloud
 

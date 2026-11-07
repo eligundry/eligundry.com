@@ -24,7 +24,7 @@
     "goodreads:import": "dotenvx run -q -f .env.secrets -- vite-node scripts/goodreads/import.ts",
     "prepare": "husky",
     "media:sync": "dotenvx run -q -f .env.secrets -- scripts/cloudflare/media-sync.sh",
-    "deploy": "scripts/cloudflare/deploy.sh",
+    "deploy": "dotenvx run -q -f .env.secrets -- scripts/cloudflare/deploy.sh",
     "cf-typegen": "wrangler types",
     "secrets:set": "dotenvx set -f .env.secrets"
   },
