@@ -16,8 +16,8 @@ serves the few on-demand routes and runs the cron jobs.
 
 Worker secrets (`wrangler secret put`): `LAST_FM_API_KEY`,
 `BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD`, `BLUESKY_USERNAME`,
-`BLUESKY_PASSWORD` and `GITHUB_DEPLOY_TOKEN` (a fine-grained token with
-Actions read and write on this repo, used to dispatch `deploy.yml`).
+`BLUESKY_PASSWORD` and `DEPLOY_HOOK_URL` (the Workers Builds deploy hook for
+main, which the Daylio upload and the nightly cron call to rebuild).
 
 Server code reads secrets from `process.env`, never `import.meta.env`, because
 Vite writes `import.meta.env` values into the bundle at build time.
@@ -51,21 +51,40 @@ Workers run in UTC, so convert New York wall times with `fromZonedTime`.
 
 ## Deploys
 
-`.github/workflows/deploy.yml`:
+Workers Builds (the Worker's Settings > Builds, connected to this repo) builds
+and deploys every push:
 
-- **Pushes to main** and `workflow_dispatch` build against production D1 and
-  run `wrangler deploy`. Daylio uploads and the nightly cron dispatch the
-  workflow (`src/lib/rebuild.ts`).
-- **Pull requests** copy production D1 into `eligundry-pr-<number>` on every
-  push (`scripts/cloudflare/fork-d1.sh`), build against it, and upload a
-  preview version at `https://pr-<number>-eligundry.<subdomain>.workers.dev`
-  bound to it. The copy is deleted when the pull request closes.
-- Playwright then runs against whatever was deployed.
+| Setting         | Value                           |
+| --------------- | ------------------------------- |
+| Build command   | `scripts/cloudflare/build.sh`   |
+| Deploy command  | `scripts/cloudflare/deploy.sh`  |
+| Preview command | `scripts/cloudflare/preview.sh` |
 
-GitHub Actions secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`,
-`LAST_FM_API_KEY`, `NOTION_TOKEN`, `NOTION_LINKS_DATABASE_ID`,
-`BLUESKY_USERNAME`, `BLUESKY_PASSWORD`, `STANDARD_SITE_DID`,
-`STANDARD_SITE_PUBLICATION_RKEY`.
+- **main** builds against production D1 and runs `wrangler deploy`. Daylio
+  uploads and the nightly cron start a build through the deploy hook
+  (`src/lib/rebuild.ts`).
+- **Other branches** copy production D1 into `eligundry-br-<branch>` on every
+  push (`scripts/cloudflare/fork-d1.sh`), build against it without the
+  Bluesky credentials, and upload a version at
+  `https://<branch>-eligundry.<subdomain>.workers.dev` bound to it.
+- The build fetches full git history if the clone is shallow, since the
+  sitemap dates pages from it.
+- Each deploy is recorded as a GitHub deployment
+  (`scripts/cloudflare/github-deployment.sh`), which shows it on the pull
+  request and starts `.github/workflows/playwright.yml` against its URL.
+- `.github/workflows/preview-cleanup.yml` deletes a branch's database copy
+  when its pull request closes.
+
+Build variables and secrets (Settings > Builds): `CLOUDFLARE_API_TOKEN`,
+`CLOUDFLARE_ACCOUNT_ID`, `LAST_FM_API_KEY`, `NOTION_TOKEN`,
+`NOTION_LINKS_DATABASE_ID`, `BLUESKY_USERNAME`, `BLUESKY_PASSWORD`,
+`STANDARD_SITE_DID`, `STANDARD_SITE_PUBLICATION_RKEY`, and
+`GITHUB_DEPLOY_TOKEN` (a fine-grained token with Deployments read and write
+on this repo).
+
+GitHub Actions secrets, for `astro check` and the preview cleanup:
+`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `LAST_FM_API_KEY`,
+`NOTION_TOKEN`, `NOTION_LINKS_DATABASE_ID`.
 
 ## Big media
 

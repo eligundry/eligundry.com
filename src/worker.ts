@@ -50,7 +50,7 @@ async function nightlyRebuild() {
   console.log(
     triggered
       ? 'Nightly rebuild triggered'
-      : 'GITHUB_DEPLOY_TOKEN is not set, skipping nightly rebuild'
+      : 'DEPLOY_HOOK_URL is not set, skipping nightly rebuild'
   )
 }
 

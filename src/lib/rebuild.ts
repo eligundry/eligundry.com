@@ -1,33 +1,23 @@
 /**
- * Starts a production build and deploy by dispatching the deploy workflow on
- * GitHub. Returns false when no token is configured (local dev, previews).
+ * Starts a production build and deploy through the Workers Builds deploy
+ * hook for main (Settings > Builds > Deploy Hooks). Returns false when no
+ * hook is configured (local dev, previews).
  */
 export const triggerSiteDeploy = async (reason: string) => {
-  const token = process.env.GITHUB_DEPLOY_TOKEN
+  const hook = process.env.DEPLOY_HOOK_URL
 
-  if (!token) {
+  if (!hook) {
     return false
   }
 
-  const resp = await fetch(
-    'https://api.github.com/repos/eligundry/eligundry.com/actions/workflows/deploy.yml/dispatches',
-    {
-      method: 'POST',
-      headers: {
-        accept: 'application/vnd.github+json',
-        authorization: `Bearer ${token}`,
-        'user-agent': 'eligundry.com',
-        'x-github-api-version': '2022-11-28',
-      },
-      body: JSON.stringify({ ref: 'main', inputs: { reason } }),
-    }
-  )
+  const resp = await fetch(hook, { method: 'POST' })
 
   if (!resp.ok) {
     throw new Error(
-      `Failed to dispatch the deploy workflow: ${resp.status} ${await resp.text()}`
+      `Failed to trigger a build (${reason}): ${resp.status} ${await resp.text()}`
     )
   }
 
+  console.log(`Triggered a build: ${reason}`)
   return true
 }

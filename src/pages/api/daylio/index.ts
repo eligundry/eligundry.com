@@ -130,7 +130,7 @@ ${post.markdown ?? ''}
       const triggered = await triggerSiteDeploy('Daylio upload')
 
       if (!triggered) {
-        console.log('skipped deploy because GITHUB_DEPLOY_TOKEN is not set')
+        console.log('skipped deploy because DEPLOY_HOOK_URL is not set')
       }
     } catch (e: any) {
       return endpointOutputToResponse({
