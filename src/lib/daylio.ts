@@ -188,11 +188,13 @@ const apiSchema = z
       z.array(z.enum(ActivityNames))
     ),
     note: z.object({ markdown: z.string(), html: z.string() }).or(z.null()),
+    legacyTime: z.date().nullish(),
   })
-  .transform((data) => {
+  .transform(({ legacyTime, ...data }) => {
     return {
       ...data,
       slug: formatStubbornDateToISO601(data.time),
+      legacySlug: legacyTime ? formatStubbornDateToISO601(legacyTime) : null,
       emoji: MoodMapping[data.mood],
       activityEmojis: data.activities.map(
         (activity) => ActivityMapping[activity]
@@ -217,6 +219,7 @@ const queryEntries = async ({ start, limit, unpublished }: QueryOptions) => {
           (v) => JSON.parse(v).filter(Boolean)
         ),
       notes: daylioEntries.notes,
+      legacyTime: daylioEntries.legacyTime,
     })
     .from(daylioEntries)
     .leftJoin(

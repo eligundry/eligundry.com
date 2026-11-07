@@ -40,6 +40,10 @@ pnpm drizzle:migration:generate   # drizzle-kit writes migrations/NNNN_*.sql
 pnpm drizzle:migration:apply      # wrangler applies them to production D1
 ```
 
+Preview builds apply the branch's migrations to their copy of production
+(`scripts/cloudflare/migrate-d1.sh`). main's build doesn't, so apply a
+migration to production before merging code that needs it.
+
 ## Crons
 
 `src/worker.ts`'s `scheduled` handler maps each cron in `wrangler.jsonc` to a
@@ -68,7 +72,8 @@ as its deploy command.
   uploads and the nightly cron start a build through the deploy hook
   (`src/lib/rebuild.ts`).
 - **Other branches** copy production D1 into `eligundry-br-<branch>` on every
-  push (`scripts/cloudflare/fork-d1.sh`), build against it without the
+  push (`scripts/cloudflare/fork-d1.sh`), apply the branch's migrations to it,
+  build against it without the
   Bluesky credentials, and upload a version at
   `https://<branch>-eligundry.<subdomain>.workers.dev` bound to it.
 - The build fetches full git history if the clone is shallow, since the

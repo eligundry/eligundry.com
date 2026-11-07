@@ -20,6 +20,8 @@ if [ "$branch" != "main" ]; then
   echo "Copying the production database into $preview_db"
   D1_DATABASE_ID="$(scripts/cloudflare/fork-d1.sh "$preview_db")"
   export D1_DATABASE_ID
+  # The copy has production's schema. Bring it up to this branch's.
+  scripts/cloudflare/migrate-d1.sh "$preview_db" "$D1_DATABASE_ID"
   unset BLUESKY_USERNAME BLUESKY_PASSWORD
 fi
 
