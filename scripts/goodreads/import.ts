@@ -4,7 +4,7 @@
  * upserted by book ID. Don't commit the export.
  *
  * Run with:  pnpm goodreads:import ~/Downloads/goodreads_library_export.csv
- * Requires SECRET_TURSO_DB_URL and SECRET_TURSO_DB_AUTH_TOKEN.
+ * Reaches D1 with the Cloudflare credentials in .env.secrets.
  */
 import { readFileSync } from 'node:fs'
 import { parseGoodreadsCSV, saveCSVRows } from '../../src/lib/goodreads'

@@ -1,0 +1,8 @@
+/*.rss
+  Content-Type: application/xml; charset=utf-8
+  X-Content-Type-Options: nosniff
+
+# Generated OpenGraph images (src/pages/og). Their URLs don't change when a
+# post's title does, so cache for a day rather than forever.
+/og/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

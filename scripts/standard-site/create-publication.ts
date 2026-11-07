@@ -1,13 +1,12 @@
 /**
  * One-time (re-runnable) setup: publishes the `site.standard.publication`
- * record to ATProto and writes the resulting DID + rkey to Netlify so
- * production builds can publish documents and serve the verification endpoint.
+ * record to ATProto and prints the resulting DID + rkey, which go in
+ * .env.secrets (`pnpm secrets:set`) so production builds can publish
+ * documents and serve the verification endpoint.
  *
  * Run with:  pnpm standard-site:create-publication
- * Requires BLUESKY_USERNAME and BLUESKY_PASSWORD in the environment, and the
- * netlify CLI to be linked (`netlify link`).
+ * Requires BLUESKY_USERNAME and BLUESKY_PASSWORD in the environment.
  */
-import { execFileSync } from 'node:child_process'
 import { getPublisher } from '../../src/lib/standardSite'
 import config from '../../src/config'
 
@@ -39,26 +38,8 @@ async function main() {
   console.log('  STANDARD_SITE_DID:', did)
   console.log('  STANDARD_SITE_PUBLICATION_RKEY:', publicationRkey)
 
-  const vars: Array<[string, string]> = [
-    ['STANDARD_SITE_DID', did],
-    ['STANDARD_SITE_PUBLICATION_RKEY', publicationRkey],
-  ]
-
-  for (const [key, value] of vars) {
-    try {
-      execFileSync('netlify', ['env:set', key, value], { stdio: 'inherit' })
-      console.log(`✓ Set Netlify env ${key}`)
-    } catch (e) {
-      console.error(
-        `✗ Could not set Netlify env ${key} — set it manually. (${
-          (e as Error).message
-        })`
-      )
-    }
-  }
-
   console.log(
-    '\nDone. Redeploy so the .well-known endpoint and document publishing pick up the new env vars.'
+    '\nDone. Save both with `pnpm secrets:set KEY value` and commit .env.secrets, then redeploy so the .well-known endpoint and document publishing pick them up.'
   )
 }
 

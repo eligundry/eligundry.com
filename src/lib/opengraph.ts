@@ -6,7 +6,7 @@ import * as crypto from 'node:crypto'
 const FETCH_TIMEOUT_MS = 10000
 const HASH_LENGTH = 8
 // `.cache/og-cache` holds parsed OG metadata so we don't re-fetch + re-parse
-// HTML on every build. Netlify's plugin-cache restores the `.cache` path
+// HTML on every build. The deploy workflow caches the `.cache` path
 // between builds. The image itself is served by Astro's image pipeline,
 // driven by `getImage({ src: ogData.imageUrl })` in the LinkEmbed.
 const METADATA_CACHE_DIR = path.join(process.cwd(), '.cache', 'og-cache')

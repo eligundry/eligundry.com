@@ -1,9 +1,8 @@
-name: Playwright (Netlify Preview)
+name: Playwright (Preview)
 
-# Netlify reports deploy previews to GitHub as a commit status
-# (`netlify/<site>/deploy-preview`) whose target_url is the preview, not as a
-# GitHub deployment, so this listens for `status` rather than
-# `deployment_status`. `status` workflows always run from the default branch's
+# scripts/cloudflare/preview.sh reports each Workers Builds preview to GitHub
+# as a commit status (`cloudflare/eligundry/deploy-preview`) whose target_url
+# is the preview, so this listens for `status`. `status` workflows always run from the default branch's
 # copy of this file, and their runs aren't attached to the PR, so the result is
 # posted back to the PR's commit as its own status.
 on:
@@ -11,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       url:
-        description: Preview URL to test (e.g. https://deploy-preview-123--eligundry.netlify.app)
+        description: Preview URL to test (e.g. https://my-branch-eligundry.eligundry.workers.dev)
         required: true
       sha:
         description: Commit to check out the tests from (defaults to the branch's head)
@@ -35,8 +34,7 @@ jobs:
     if: |
       github.event_name == 'status' &&
       github.event.state == 'success' &&
-      startsWith(github.event.context, 'netlify/') &&
-      endsWith(github.event.context, '/deploy-preview')
+      github.event.context == 'cloudflare/eligundry/deploy-preview'
     runs-on: ubuntu-latest
     permissions:
       statuses: write
@@ -61,8 +59,7 @@ jobs:
     if: |
       github.event_name == 'workflow_dispatch' || (
         github.event.state == 'success' &&
-        startsWith(github.event.context, 'netlify/') &&
-        endsWith(github.event.context, '/deploy-preview')
+        github.event.context == 'cloudflare/eligundry/deploy-preview'
       )
     # Playwright does not support Ubuntu 26.04, which ubuntu-latest became in
     # November 2026, so pin the release it supports.

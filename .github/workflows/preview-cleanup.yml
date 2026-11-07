@@ -1,0 +1,29 @@
+name: Delete preview database
+
+# Workers Builds copies the production database for each branch it previews
+# (scripts/cloudflare/build.sh). Delete the copy once the pull request closes.
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version-file: '.nvmrc'
+      - run: pnpm install --frozen-lockfile
+      - name: Delete the branch's database copy
+        env:
+          DOTENV_PRIVATE_KEY_SECRETS: ${{ secrets.DOTENV_PRIVATE_KEY_SECRETS }}
+          WORKERS_CI_BRANCH: ${{ github.head_ref }}
+        run: |
+          source scripts/cloudflare/branch.sh
+          pnpm exec dotenvx run -q -f .env.secrets -- wrangler d1 delete "$preview_db" --skip-confirmation || true

@@ -1,11 +1,9 @@
 import * as dateFns from 'date-fns'
-import { toZonedTime } from 'date-fns-tz'
+import { fromZonedTime } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
-import { createSatteriMarkdownProcessor } from '@astrojs/markdown-satteri'
-import mdastStripPrivate from './satteri/mdast-strip-private'
-import hastAccessibleEmojis from './satteri/hast-accessible-emojis'
 import { sql, eq, and, or, desc, gte, isNull } from 'drizzle-orm'
+import chunk from 'lodash/chunk'
 import omit from 'lodash/omit'
 import {
   MoodMapping,
@@ -22,6 +20,7 @@ import {
   timestampSQL,
 } from './database'
 import { formatStubbornDateToISO601 } from './utils'
+import { stripPrivateLines } from './daylioNotes/stripPrivateLines'
 
 type KnownActivity =
   | (typeof ActivityNames)[number]
@@ -74,7 +73,9 @@ const csvSchema = z
     }, z.string().nullable()),
   })
   .transform((data) => {
-    const time = toZonedTime(
+    // The export's times are wall-clock times in New York. fromZonedTime reads
+    // them that way whatever the machine's time zone (a Worker runs in UTC).
+    const time = fromZonedTime(
       `${data.full_date}T${data.time}:00`,
       'America/New_York'
     )
@@ -117,53 +118,49 @@ const processCSV = async (buffer: Buffer) => {
     return entries
   }
 
-  await db.transaction(async (tx) => {
-    if (activities.size > 0) {
-      await tx
+  // One batch rather than a transaction: a batch runs atomically on both
+  // libSQL and D1, and D1 doesn't support interactive transactions. Rows go
+  // in chunks because D1 allows at most 100 bound parameters per statement.
+  const statements = [
+    ...chunk(Array.from(activities.values()), 90).map((chunk) =>
+      db
         .insert(daylioActivities)
+        .values(chunk.map((activity) => ({ activity })))
+        .onConflictDoNothing()
+    ),
+    ...chunk(entries, 30).map((chunk) =>
+      db
+        .insert(daylioEntries)
         .values(
-          Array.from(activities.values()).map((activity) => ({
-            activity,
+          chunk.map((entry) => ({
+            time: entry.time,
+            mood: entry.mood,
+            notes: entry.note,
           }))
         )
-        .onConflictDoNothing()
-        .run()
-    }
+        .onConflictDoUpdate({
+          target: daylioEntries.time,
+          set: {
+            mood: sql`excluded.mood`,
+            notes: sql`excluded.notes`,
+            updatedAt: timestampSQL,
+          },
+        })
+    ),
+    ...chunk(
+      entries.flatMap((entry) =>
+        entry.activities.map((activity) => ({ time: entry.time, activity }))
+      ),
+      45
+    ).map((chunk) =>
+      db.insert(daylioEntryActivities).values(chunk).onConflictDoNothing()
+    ),
+  ]
+  const [first, ...rest] = statements
 
-    await tx
-      .insert(daylioEntries)
-      .values(
-        entries.map((entry) => ({
-          time: entry.time,
-          mood: entry.mood,
-          notes: entry.note,
-        }))
-      )
-      .onConflictDoUpdate({
-        target: daylioEntries.time,
-        set: {
-          mood: sql`excluded.mood`,
-          notes: sql`excluded.notes`,
-          updatedAt: timestampSQL,
-        },
-      })
-      .run()
-
-    const entryActivities = entries.flatMap((entry) =>
-      entry.activities.map((activity) => ({
-        time: entry.time,
-        activity,
-      }))
-    )
-
-    if (entryActivities.length > 0) {
-      await tx
-        .insert(daylioEntryActivities)
-        .values(entryActivities)
-        .onConflictDoNothing()
-        .run()
-    }
-  })
+  if (first) {
+    await db.batch([first, ...rest])
+  }
 
   return entries
 }
@@ -176,28 +173,6 @@ const markAllEntriesAsPublished = async () =>
     })
     .where(isNull(daylioEntries.publishedAt))
     .run()
-
-const markdownProcessor = await createSatteriMarkdownProcessor({
-  mdastPlugins: [mdastStripPrivate],
-  hastPlugins: [hastAccessibleEmojis],
-})
-
-const renderNote = async (
-  raw: string
-): Promise<{ markdown: string; html: string } | null> => {
-  const markdown = raw
-    .split('\n')
-    .filter((line) => !line.includes('#private'))
-    .join('\n')
-    .trim()
-
-  if (!markdown) return null
-
-  return {
-    markdown,
-    html: (await markdownProcessor.render(markdown)).code,
-  }
-}
 
 const apiSchema = z
   .object({
@@ -226,15 +201,13 @@ const apiSchema = z
     }
   })
 
-const getAll = async ({
-  start,
-  limit,
-  unpublished,
-}: {
+interface QueryOptions {
   start?: Date
   limit?: number
   unpublished?: boolean
-} = {}) => {
+}
+
+const queryEntries = async ({ start, limit, unpublished }: QueryOptions) => {
   let query = db
     .select({
       time: daylioEntries.time,
@@ -269,7 +242,18 @@ const getAll = async ({
     query = query.limit(limit)
   }
 
-  const rows = await query.all()
+  return query.all()
+}
+
+/**
+ * Every public entry with its note rendered to HTML. Rendering loads the
+ * Sätteri markdown processor, which only runs at build time on Node, so it's
+ * imported here rather than at the top of this module: the Daylio upload
+ * route imports this module too, and has to stay free of native bindings.
+ */
+const getAll = async (options: QueryOptions = {}) => {
+  const rows = await queryEntries(options)
+  const { renderNote } = await import('./daylioNotes')
 
   const entries = await Promise.all(
     rows.map(async ({ notes, ...rest }) => ({
@@ -279,6 +263,33 @@ const getAll = async ({
   )
 
   return z.array(apiSchema).parse(entries)
+}
+
+/**
+ * Entries that haven't been posted to Bluesky yet, with their notes as raw
+ * markdown, for the upload route.
+ */
+const getUnpublished = async ({ start }: { start?: Date } = {}) => {
+  const rows = await queryEntries({ start, unpublished: true })
+
+  return rows.map((row) => ({
+    time: row.time,
+    mood: row.mood as (typeof MoodNames)[number],
+    slug: formatStubbornDateToISO601(row.time),
+    markdown: row.notes ? stripPrivateLines(row.notes) : null,
+  }))
+}
+
+/** When the newest entry was logged, without loading any notes. */
+const getLatestTime = async (): Promise<Date | null> => {
+  const [row] = await db
+    .select({ time: daylioEntries.time })
+    .from(daylioEntries)
+    .orderBy(desc(daylioEntries.time))
+    .limit(1)
+    .all()
+
+  return row?.time ?? null
 }
 
 const getLatest = async () => getAll({ limit: 1 }).then((entries) => entries[0])
@@ -319,7 +330,10 @@ export const colloquialDifferenceInDays = (
   return resetDifference
 }
 
-const tweetPrefix = (entry: DaylioEntry, now: Date = new Date()) => {
+const tweetPrefix = (
+  entry: Pick<DaylioEntry, 'time' | 'mood'>,
+  now: Date = new Date()
+) => {
   const difference = colloquialDifferenceInDays(now, entry.time)
   let title = `I felt ${entry.mood}`
 
@@ -342,6 +356,8 @@ export interface DaylioChartEntry {
 
 const api = {
   getAll,
+  getUnpublished,
+  getLatestTime,
   getLatest,
   getRange,
   getChartData,

@@ -28,9 +28,8 @@ jobs:
 
       - name: Astro check
         if: steps.dependencies.conclusion == 'success' && !cancelled()
+        # Syncing content collections reads D1; the script decrypts
+        # .env.secrets with this key
         env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: |
-          ./node_modules/.bin/netlify env:list --plain > './.env'
-          pnpm run astro-check
+          DOTENV_PRIVATE_KEY_SECRETS: ${{ secrets.DOTENV_PRIVATE_KEY_SECRETS }}
+        run: pnpm run astro-check

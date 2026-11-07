@@ -12,8 +12,10 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables. .env.secrets is committed encrypted; its key
+# (DOTENV_PRIVATE_KEY_SECRETS) lives in .env.keys or the environment
 .env
+.env.keys
 .env.production
 
 # macOS-specific files
@@ -27,8 +29,11 @@ src/assets/images/notion
 .temp*
 dist
 
-# Netlify cache
-.netlify
+# Wrangler state and local Worker secrets
+.wrangler
+.dev.vars*
+# `pnpm cf-typegen` output, which depends on the local environment
+worker-configuration.d.ts
 
 # Playwright
 /test-results/

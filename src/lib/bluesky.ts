@@ -7,8 +7,8 @@ const { BskyAgent, RichText } = bsky
 async function getAgent() {
   const agent = new BskyAgent({ service: 'https://bsky.social' })
   await agent.login({
-    identifier: import.meta.env.BLUESKY_USERNAME,
-    password: import.meta.env.BLUESKY_PASSWORD,
+    identifier: process.env.BLUESKY_USERNAME!,
+    password: process.env.BLUESKY_PASSWORD!,
   })
 
   return agent

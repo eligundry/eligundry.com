@@ -12,8 +12,8 @@ const check = (authorizationHeader: string | null): boolean => {
   }
 
   if (
-    credentials.name === import.meta.env.BASIC_AUTH_USERNAME &&
-    credentials.pass === import.meta.env.BASIC_AUTH_PASSWORD
+    credentials.name === process.env.BASIC_AUTH_USERNAME &&
+    credentials.pass === process.env.BASIC_AUTH_PASSWORD
   ) {
     return true
   }
