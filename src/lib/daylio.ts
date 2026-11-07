@@ -1,5 +1,5 @@
 import * as dateFns from 'date-fns'
-import { fromZonedTime } from 'date-fns-tz'
+import { getTimezoneOffset } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
 import { sql, eq, and, or, desc, gte, isNull } from 'drizzle-orm'
@@ -73,11 +73,15 @@ const csvSchema = z
     }, z.string().nullable()),
   })
   .transform((data) => {
-    // The export's times are wall-clock times in New York. fromZonedTime reads
-    // them that way whatever the machine's time zone (a Worker runs in UTC).
-    const time = fromZonedTime(
-      `${data.full_date}T${data.time}:00`,
-      'America/New_York'
+    // The export's times are wall-clock times in New York. Entries have
+    // always been stored the way the original importer did it on Netlify:
+    // read the wall-clock time as UTC, then shift it by New York's UTC offset
+    // at that instant, which lands 8 or 10 hours before the real time. That's
+    // wrong, but every entry's /feelings/#<slug> anchor, Bluesky post and
+    // standard.site record is built from it, so new imports have to match.
+    const asUTC = new Date(`${data.full_date}T${data.time}:00Z`)
+    const time = new Date(
+      asUTC.getTime() + getTimezoneOffset('America/New_York', asUTC)
     )
 
     return {
@@ -188,13 +192,11 @@ const apiSchema = z
       z.array(z.enum(ActivityNames))
     ),
     note: z.object({ markdown: z.string(), html: z.string() }).or(z.null()),
-    legacyTime: z.date().nullish(),
   })
-  .transform(({ legacyTime, ...data }) => {
+  .transform((data) => {
     return {
       ...data,
       slug: formatStubbornDateToISO601(data.time),
-      legacySlug: legacyTime ? formatStubbornDateToISO601(legacyTime) : null,
       emoji: MoodMapping[data.mood],
       activityEmojis: data.activities.map(
         (activity) => ActivityMapping[activity]
@@ -219,7 +221,6 @@ const queryEntries = async ({ start, limit, unpublished }: QueryOptions) => {
           (v) => JSON.parse(v).filter(Boolean)
         ),
       notes: daylioEntries.notes,
-      legacyTime: daylioEntries.legacyTime,
     })
     .from(daylioEntries)
     .leftJoin(

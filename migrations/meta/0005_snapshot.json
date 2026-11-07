@@ -1,8 +1,8 @@
 {
+  "id": "ce912ac0-d1c9-47fb-9d81-92fa59d997f0",
+  "prevId": "70b117e9-081f-4737-a016-2f003d241eff",
   "version": "6",
   "dialect": "sqlite",
-  "id": "5e577e2d-2224-4b20-a1b8-ccfba0b7d59c",
-  "prevId": "70b117e9-081f-4737-a016-2f003d241eff",
   "tables": {
     "daylio_activities": {
       "name": "daylio_activities",
@@ -91,13 +91,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "legacyTime": {
-          "name": "legacyTime",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {},
@@ -151,20 +144,20 @@
         "daylio_entry_activities_time_daylio_entries_time_fk": {
           "name": "daylio_entry_activities_time_daylio_entries_time_fk",
           "tableFrom": "daylio_entry_activities",
-          "tableTo": "daylio_entries",
           "columnsFrom": ["time"],
+          "tableTo": "daylio_entries",
           "columnsTo": ["time"],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "daylio_entry_activities_activity_daylio_activities_activity_fk": {
           "name": "daylio_entry_activities_activity_daylio_activities_activity_fk",
           "tableFrom": "daylio_entry_activities",
-          "tableTo": "daylio_activities",
           "columnsFrom": ["activity"],
+          "tableTo": "daylio_activities",
           "columnsTo": ["activity"],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -402,9 +395,9 @@
   "views": {},
   "enums": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {}
   },
   "internal": {
     "indexes": {}

@@ -20,8 +20,6 @@ const { entry, wrapInPaper = false } = Astro.props
     'scroll-mt-20',
     'target:border-2',
     'target:border-primary',
-    'has-[>[data-legacy-anchor]:target]:border-2',
-    'has-[>[data-legacy-anchor]:target]:border-primary',
     'rounded-box',
   ]}
 >
@@ -29,11 +27,6 @@ const { entry, wrapInPaper = false } = Astro.props
     itemprop="image"
     content="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ entry.emoji }}</text></svg>"
   />
-  {
-    entry.legacySlug && (
-      <span id={entry.legacySlug} data-legacy-anchor class="scroll-mt-20" />
-    )
-  }
   <link itemprop="author publisher" href="#eli-gundry" />
   <div>
     <div class="flex flex-row justify-between">

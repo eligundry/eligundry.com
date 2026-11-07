@@ -17,11 +17,6 @@ export const daylioEntries = sqliteTable('daylio_entries', {
   publishedAt: integer('publishedAt', { mode: 'timestamp' }),
   mood: text('mood', { enum: MoodNames }).notNull(),
   notes: text('notes'),
-  // The time an older import stored this entry at. Those imports ran in UTC
-  // and shifted every entry early by twice New York's UTC offset. Links to
-  // /feelings/#<slug> built from the old time are already out in the world
-  // (Bluesky posts), so the entry keeps an anchor for it.
-  legacyTime: integer('legacyTime', { mode: 'timestamp' }),
 })
 
 export const daylioActivities = sqliteTable('daylio_activities', {
