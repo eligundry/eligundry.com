@@ -73,9 +73,10 @@ as its deploy command.
   `https://<branch>-eligundry.<subdomain>.workers.dev` bound to it.
 - The build fetches full git history if the clone is shallow, since the
   sitemap dates pages from it.
-- Each deploy is recorded as a GitHub deployment
-  (`scripts/cloudflare/github-deployment.sh`), which shows it on the pull
-  request and starts `.github/workflows/playwright.yml` against its URL.
+- Each preview is reported to GitHub as a `cloudflare/eligundry/deploy-preview`
+  commit status (`scripts/cloudflare/github-status.sh`), which starts
+  `.github/workflows/playwright-preview.yml` against its URL. Like any
+  `status` workflow, it runs from main's copy of the file.
 - `.github/workflows/preview-cleanup.yml` deletes a branch's database copy
   when its pull request closes.
 
@@ -83,7 +84,7 @@ Build variables and secrets (Settings > Builds): `CLOUDFLARE_API_TOKEN`,
 `CLOUDFLARE_ACCOUNT_ID`, `LAST_FM_API_KEY`, `NOTION_TOKEN`,
 `NOTION_LINKS_DATABASE_ID`, `BLUESKY_USERNAME`, `BLUESKY_PASSWORD`,
 `STANDARD_SITE_DID`, `STANDARD_SITE_PUBLICATION_RKEY`, and
-`GITHUB_DEPLOY_TOKEN` (a fine-grained token with Deployments read and write
+`GITHUB_DEPLOY_TOKEN` (a fine-grained token with Commit statuses read and write
 on this repo).
 
 GitHub Actions secrets, for `astro check` and the preview cleanup:
@@ -99,7 +100,10 @@ ones with `pnpm media:sync`.
 ## Developing in Claude Code cloud
 
 Set `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` and the other secrets as
-environment variables on the cloud environment. `.claude/hooks/session-start.sh`
-installs dependencies and copies the Worker's secrets into `.dev.vars` for
-`astro dev`. `pnpm build`, scripts, wrangler and drizzle-kit read the
-environment directly and work against production D1.
+environment variables on the cloud environment. Builds, scripts, wrangler and
+drizzle-kit read them from the shell, and `pnpm dev` sets
+`CLOUDFLARE_INCLUDE_PROCESS_ENV=true` so the local Worker sees them as well.
+Elsewhere, a `.env` file works too.
+
+Cloudflare can't hand secrets back: Worker secrets and secret build variables
+are write-only, so there's no equivalent of `netlify env:list`.

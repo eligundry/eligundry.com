@@ -5,8 +5,8 @@
   "packageManager": "pnpm@9.15.3",
   "license": "MIT",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "CLOUDFLARE_INCLUDE_PROCESS_ENV=true astro dev",
+    "start": "CLOUDFLARE_INCLUDE_PROCESS_ENV=true astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

@@ -81,7 +81,7 @@ This is a personal website built with **Astro** as the main framework, using **P
 ### Deployment
 
 - `@astrojs/cloudflare` adapter, Worker entry `src/worker.ts` (Astro plus the cron jobs), config in `wrangler.jsonc`
-- Workers Builds runs `scripts/cloudflare/build.sh` and deploys: main to production, every other branch to a preview on its own copy of production D1. Playwright runs from GitHub Actions on each deploy
+- Workers Builds runs `scripts/cloudflare/build.sh` and deploys: main to production, every other branch to a preview on its own copy of production D1. Playwright runs from GitHub Actions on each preview
 - Server code reads secrets from `process.env`, not `import.meta.env`, which Vite writes into the bundle
 - See [`docs/cloudflare.md`](./docs/cloudflare.md)
 
