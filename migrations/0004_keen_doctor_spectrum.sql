@@ -1,0 +1,1 @@
+CREATE INDEX `daylio_entry_activities_time_idx` ON `daylio_entry_activities` (`time`,`activity`);
