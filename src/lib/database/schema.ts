@@ -1,5 +1,11 @@
 import { sql } from 'drizzle-orm'
-import { sqliteTable, integer, text, primaryKey } from 'drizzle-orm/sqlite-core'
+import {
+  sqliteTable,
+  integer,
+  text,
+  primaryKey,
+  index,
+} from 'drizzle-orm/sqlite-core'
 import { MoodNames } from '../enums'
 
 export const timestampSQL = sql`(cast(strftime('%s', 'now') as int))`
@@ -42,7 +48,14 @@ export const daylioEntryActivities = sqliteTable(
       timestampSQL
     ),
   },
-  (table) => [primaryKey({ columns: [table.time, table.activity] })]
+  (table) => [
+    primaryKey({ columns: [table.time, table.activity] }),
+    // The primary key's index leads with activity, so it can't serve the
+    // feelings queries, which join entries to their activities on time.
+    // Without this, SQLite builds a temporary index over the whole table on
+    // every query.
+    index('daylio_entry_activities_time_idx').on(table.time, table.activity),
+  ]
 )
 
 // Tracks content that has been published to ATProto via standard.site so we
