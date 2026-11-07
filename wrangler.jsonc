@@ -24,10 +24,12 @@
     { "binding": "SESSION", "id": "8d64010133ff49ea93ce592376f1faf5" },
   ],
   "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "eligundry-media" }],
-  // The Last.fm collages (weekly, monthly, yearly) and the nightly rebuild
-  // check. Off until eligundry.com points at this Worker, so they don't post
-  // twice while Netlify still runs its own.
-  "triggers": { "crons": [] },
+  // Handled by scheduled() in src/worker.ts: the Last.fm collages (weekly,
+  // monthly, yearly) and the nightly rebuild check. They start with the first
+  // deploy from main, so turn off Netlify's scheduled functions then.
+  "triggers": {
+    "crons": ["0 17 * * 5", "0 17 1 * *", "0 17 1 1 *", "0 4 * * *"],
+  },
   "observability": { "enabled": true },
   "workers_dev": true,
   "preview_urls": true,
