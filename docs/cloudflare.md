@@ -60,9 +60,11 @@ and deploys every push:
 | Deploy command  | `scripts/cloudflare/deploy.sh`  |
 | Preview command | `scripts/cloudflare/preview.sh` |
 
-`main` runs the deploy command. Every other branch is a preview build
-("Preview Builds" on, with the preview settings above), which runs the
-preview command as its deploy command.
+There are two build triggers: one for `main`, which runs the deploy
+command, and "Previews" for every other branch, which runs the preview command
+as its deploy command. Keep the dashboard's "Preview Builds" setting off: it
+starts a second, default build of every branch, and turning it off deletes
+every non-`main` trigger, so recreate "Previews" afterwards.
 
 - **main** builds against production D1 and runs `wrangler deploy`. Daylio
   uploads and the nightly cron start a build through the deploy hook
@@ -82,7 +84,7 @@ preview command as its deploy command.
 
 The build and preview commands decrypt `.env.secrets` (see
 [Secrets](#secrets)), so Workers Builds needs only one build variable,
-`DOTENV_PRIVATE_KEY_SECRETS`, on both production and preview builds.
+`DOTENV_PRIVATE_KEY_SECRETS`, on both triggers.
 Build variables set on Workers Builds win over the file. The main build
 still has the full set from before (`CLOUDFLARE_API_TOKEN`,
 `CLOUDFLARE_ACCOUNT_ID`, `LAST_FM_API_KEY`, `NOTION_*`, `BLUESKY_*`,
