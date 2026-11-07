@@ -60,9 +60,9 @@ and deploys every push:
 | Deploy command  | `scripts/cloudflare/deploy.sh`  |
 | Preview command | `scripts/cloudflare/preview.sh` |
 
-There are two build triggers: one for `main`, which runs the deploy
-command, and "Previews" for every other branch, which runs the preview command
-as its deploy command.
+`main` runs the deploy command. Every other branch is a preview build
+("Preview Builds" on, with the preview settings above), which runs the
+preview command as its deploy command.
 
 - **main** builds against production D1 and runs `wrangler deploy`. Daylio
   uploads and the nightly cron start a build through the deploy hook
@@ -80,12 +80,14 @@ as its deploy command.
 - `.github/workflows/preview-cleanup.yml` deletes a branch's database copy
   when its pull request closes.
 
-Workers Builds gets its secrets from build variables on both triggers, set
-through the API: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`,
-`LAST_FM_API_KEY`, `NOTION_TOKEN`, `NOTION_LINKS_DATABASE_ID`,
-`BLUESKY_USERNAME`, `BLUESKY_PASSWORD`, `STANDARD_SITE_DID`,
-`STANDARD_SITE_PUBLICATION_RKEY` and `GITHUB_DEPLOY_TOKEN` (a fine-grained
-token with Commit statuses read and write on this repo).
+The build and preview commands decrypt `.env.secrets` (see
+[Secrets](#secrets)), so Workers Builds needs only one build variable,
+`DOTENV_PRIVATE_KEY_SECRETS`, on both production and preview builds.
+Build variables set on Workers Builds win over the file. The main build
+still has the full set from before (`CLOUDFLARE_API_TOKEN`,
+`CLOUDFLARE_ACCOUNT_ID`, `LAST_FM_API_KEY`, `NOTION_*`, `BLUESKY_*`,
+`STANDARD_SITE_*` and `GITHUB_DEPLOY_TOKEN`, a fine-grained token with Commit
+statuses read and write on this repo).
 
 ## Big media
 
@@ -97,15 +99,16 @@ ones with `pnpm media:sync`.
 
 Development secrets live in one file, `.env.secrets`, committed and encrypted
 with [dotenvx](https://dotenvx.com). One private key,
-`DOTENV_PRIVATE_KEY_SECRETS`, decrypts it. Cloudflare doesn't use it: the
-Worker's secrets and the Workers Builds variables are set directly (above).
-Set the key wherever dev work happens:
+`DOTENV_PRIVATE_KEY_SECRETS`, decrypts it. Workers Builds uses it too
+(above). The Worker's runtime secrets are still set on the Worker directly.
+Set the key wherever the file is read:
 
-| Where             | How                                              |
-| ----------------- | ------------------------------------------------ |
-| Local dev         | `.env.keys` (gitignored), or export the key      |
-| Claude Code cloud | an environment variable on the cloud environment |
-| GitHub Actions    | a repository secret                              |
+| Where             | How                                               |
+| ----------------- | ------------------------------------------------- |
+| Local dev         | `.env.keys` (gitignored), or export the key       |
+| Claude Code cloud | an environment variable on the cloud environment  |
+| GitHub Actions    | a repository secret                               |
+| Workers Builds    | a build variable on production and preview builds |
 
 The package scripts (`dev`, `build`, `astro-check`, `drizzle:*`,
 `goodreads:import`, `standard-site:*`, `media:sync`, `deploy`) run through
@@ -115,8 +118,8 @@ In a Claude Code session, `.claude/hooks/session-start.sh` also exports them
 into the shell, so ad hoc `wrangler` commands work.
 
 To add or change a secret, run `pnpm secrets:set KEY value`, which encrypts
-it in place, and commit `.env.secrets`. If Cloudflare needs it too, also set
-it on the Worker or the build triggers.
+it in place, and commit `.env.secrets`. If the Worker needs it at runtime, also
+set it on the Worker with `wrangler secret put`.
 
 ## Developing in Claude Code cloud
 
