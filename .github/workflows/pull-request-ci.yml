@@ -28,11 +28,8 @@ jobs:
 
       - name: Astro check
         if: steps.dependencies.conclusion == 'success' && !cancelled()
-        # Syncing content collections reads D1
+        # Syncing content collections reads D1; the script decrypts
+        # .env.secrets with this key
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_LINKS_DATABASE_ID: ${{ secrets.NOTION_LINKS_DATABASE_ID }}
+          DOTENV_PRIVATE_KEY_SECRETS: ${{ secrets.DOTENV_PRIVATE_KEY_SECRETS }}
         run: pnpm run astro-check

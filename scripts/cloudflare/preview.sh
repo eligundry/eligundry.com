@@ -5,6 +5,7 @@
 # as a commit status so Playwright runs against it.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+source scripts/cloudflare/load-secrets.sh
 source scripts/cloudflare/branch.sh
 
 pnpm exec wrangler versions upload \

@@ -34,8 +34,7 @@ table, so unchanged content is never re-published.
 
 ## Setup / configuration
 
-Credentials are read from the environment. Builds get them from the Workers Builds
-build variables; branch builds (`scripts/cloudflare/build.sh`) leave the
+Credentials are read from the environment. They're in `.env.secrets`; branch builds (`scripts/cloudflare/build.sh`) leave the
 Bluesky credentials out, so only main publishes.
 
 - `BLUESKY_USERNAME` / `BLUESKY_PASSWORD` — Bluesky handle + app password
@@ -44,7 +43,7 @@ Bluesky credentials out, so only main publishes.
   one-time setup script below.
 
 One-time: publish the publication record and print the `STANDARD_SITE_*`
-values to save as Workers Builds build variables:
+values to save with `pnpm secrets:set`:
 
 ```sh
 pnpm standard-site:create-publication

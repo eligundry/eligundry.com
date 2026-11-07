@@ -1,7 +1,7 @@
 /**
  * One-time (re-runnable) setup: publishes the `site.standard.publication`
- * record to ATProto and prints the resulting DID + rkey, which go in the
- * Workers Builds build variables so production builds can publish
+ * record to ATProto and prints the resulting DID + rkey, which go in
+ * .env.secrets (`pnpm secrets:set`) so production builds can publish
  * documents and serve the verification endpoint.
  *
  * Run with:  pnpm standard-site:create-publication
@@ -39,7 +39,7 @@ async function main() {
   console.log('  STANDARD_SITE_PUBLICATION_RKEY:', publicationRkey)
 
   console.log(
-    '\nDone. Save both as Workers Builds build variables (Settings > Builds on the Worker), then redeploy so the .well-known endpoint and document publishing pick them up.'
+    '\nDone. Save both with `pnpm secrets:set KEY value` and commit .env.secrets, then redeploy so the .well-known endpoint and document publishing pick them up.'
   )
 }
 

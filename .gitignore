@@ -12,8 +12,10 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables. .env.secrets is committed encrypted; its key
+# (DOTENV_PRIVATE_KEY_SECRETS) lives in .env.keys or the environment
 .env
+.env.keys
 .env.production
 
 # macOS-specific files

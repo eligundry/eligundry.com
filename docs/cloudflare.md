@@ -14,10 +14,11 @@ serves the few on-demand routes and runs the cron jobs.
 | `SESSION` | KV namespace the Astro adapter uses for sessions                          |
 | `ASSETS`  | The built `dist/client`                                                   |
 
-Worker secrets (`wrangler secret put`): `LAST_FM_API_KEY`,
-`BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD`, `BLUESKY_USERNAME`,
-`BLUESKY_PASSWORD` and `DEPLOY_HOOK_URL` (the Workers Builds deploy hook for
-main, which the Daylio upload and the nightly cron call to rebuild).
+The Worker's runtime secrets (`LAST_FM_API_KEY`, `BASIC_AUTH_*`,
+`BLUESKY_*`, and `DEPLOY_HOOK_URL`, the Workers Builds deploy hook for main
+that the Daylio upload and the nightly cron call to rebuild) are uploaded from
+`.env.secrets` on every deploy by `scripts/cloudflare/deploy.sh`. See
+[Secrets](#secrets).
 
 Server code reads secrets from `process.env`, never `import.meta.env`, because
 Vite writes `import.meta.env` values into the bundle at build time.
@@ -80,16 +81,7 @@ as its deploy command.
 - `.github/workflows/preview-cleanup.yml` deletes a branch's database copy
   when its pull request closes.
 
-Build variables and secrets (Settings > Builds): `CLOUDFLARE_API_TOKEN`,
-`CLOUDFLARE_ACCOUNT_ID`, `LAST_FM_API_KEY`, `NOTION_TOKEN`,
-`NOTION_LINKS_DATABASE_ID`, `BLUESKY_USERNAME`, `BLUESKY_PASSWORD`,
-`STANDARD_SITE_DID`, `STANDARD_SITE_PUBLICATION_RKEY`, and
-`GITHUB_DEPLOY_TOKEN` (a fine-grained token with Commit statuses read and write
-on this repo).
-
-GitHub Actions secrets, for `astro check` and the preview cleanup:
-`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `LAST_FM_API_KEY`,
-`NOTION_TOKEN`, `NOTION_LINKS_DATABASE_ID`.
+Workers Builds has one build variable, `DOTENV_PRIVATE_KEY_SECRETS`.
 
 ## Big media
 
@@ -97,13 +89,32 @@ Files over 25 MiB live in `media/` and are served from R2 by
 `src/pages/video/[...path].ts`, which supports range requests. Upload new
 ones with `pnpm media:sync`.
 
+## Secrets
+
+Every secret lives in one file, `.env.secrets`, committed and encrypted with
+[dotenvx](https://dotenvx.com). One private key, `DOTENV_PRIVATE_KEY_SECRETS`,
+decrypts it. Set the key in each place that needs secrets:
+
+| Where             | How                                              |
+| ----------------- | ------------------------------------------------ |
+| Local dev         | `.env.keys` (gitignored), or export the key      |
+| Claude Code cloud | an environment variable on the cloud environment |
+| Workers Builds    | a build variable on both triggers                |
+| GitHub Actions    | a repository secret                              |
+
+The package scripts (`dev`, `build`, `astro-check`, `drizzle:*`,
+`goodreads:import`, `standard-site:*`, `media:sync`, `deploy`) run through
+`dotenvx run`, which decrypts the file into the environment. Variables
+already set in the shell win, so `D1_DATABASE_ID=... pnpm build` still works.
+In a Claude Code session, `.claude/hooks/session-start.sh` also exports them
+into the shell, so ad hoc `wrangler` commands work.
+
+To add or change a secret, run `pnpm secrets:set KEY value`, which encrypts
+it in place, and commit `.env.secrets`. Runtime secrets reach the Worker on
+the next deploy from main.
+
 ## Developing in Claude Code cloud
 
-Set `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` and the other secrets as
-environment variables on the cloud environment. Builds, scripts, wrangler and
-drizzle-kit read them from the shell, and `pnpm dev` sets
-`CLOUDFLARE_INCLUDE_PROCESS_ENV=true` so the local Worker sees them as well.
-Elsewhere, a `.env` file works too.
-
-Cloudflare can't hand secrets back: Worker secrets and secret build variables
-are write-only, so there's no equivalent of `netlify env:list`.
+Set `DOTENV_PRIVATE_KEY_SECRETS` on the cloud environment and that's it.
+`pnpm dev` decrypts `.env.secrets` and sets `CLOUDFLARE_INCLUDE_PROCESS_ENV=true`
+so the local Worker sees the secrets too.

@@ -7,6 +7,7 @@
 # branch's pull request closes (.github/workflows/preview-cleanup.yml).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+source scripts/cloudflare/load-secrets.sh
 source scripts/cloudflare/branch.sh
 
 # src/lib/lastModified.ts dates every page from its git history, so a shallow
@@ -22,7 +23,8 @@ if [ "$branch" != "main" ]; then
   unset BLUESKY_USERNAME BLUESKY_PASSWORD
 fi
 
-pnpm build
+# Not `pnpm build`, which would load .env.secrets again and undo the unset
+pnpm exec astro build
 
 if [ "$branch" != "main" ]; then
   node scripts/cloudflare/preview-config.mjs "$D1_DATABASE_ID"

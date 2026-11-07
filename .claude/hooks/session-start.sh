@@ -13,5 +13,11 @@ cd "$CLAUDE_PROJECT_DIR"
 
 pnpm install
 
-# The cloud environment's variables are already in the shell. `pnpm dev` sets
-# CLOUDFLARE_INCLUDE_PROCESS_ENV, so the local Worker sees them too.
+# Secrets live encrypted in .env.secrets. With DOTENV_PRIVATE_KEY_SECRETS set
+# on the cloud environment, put them in the session's shell so ad hoc
+# wrangler and drizzle-kit commands work too. The package scripts decrypt the
+# file themselves.
+if [ -n "${DOTENV_PRIVATE_KEY_SECRETS:-}" ] && [ -n "${CLAUDE_ENV_FILE:-}" ]; then
+  node scripts/secrets-to-shell.mjs >> "$CLAUDE_ENV_FILE"
+  echo "Loaded .env.secrets into the session environment."
+fi
