@@ -60,6 +60,10 @@ and deploys every push:
 | Deploy command  | `scripts/cloudflare/deploy.sh`  |
 | Preview command | `scripts/cloudflare/preview.sh` |
 
+There are two build triggers: one for `main`, which runs the deploy
+command, and "Previews" for every other branch, which runs the preview command
+as its deploy command.
+
 - **main** builds against production D1 and runs `wrangler deploy`. Daylio
   uploads and the nightly cron start a build through the deploy hook
   (`src/lib/rebuild.ts`).
