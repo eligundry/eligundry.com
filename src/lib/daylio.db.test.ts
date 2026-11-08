@@ -9,7 +9,7 @@ import * as schema from './database/schema'
 const client = createClient({ url: 'file::memory:' })
 vi.mock('./database', () => ({ ...schema, db: drizzle(client) }))
 
-const { default: daylio } = await import('./daylio')
+const { default: daylio, legacyTime } = await import('./daylio')
 
 beforeAll(async () => {
   for (const file of readdirSync('migrations').filter((f) =>
@@ -45,8 +45,8 @@ const csv = [
 test('processCSV saves every entry and its activities in one batch', async () => {
   const entries = await daylio.processCSV(Buffer.from(csv))
   expect(entries).toHaveLength(40)
-  // 12:00 in New York, stored the legacy way: 10 hours early in winter
-  expect(entries[0].time.toISOString()).toBe('2026-01-01T07:00:00.000Z')
+  // 12:00 in New York
+  expect(entries[0].time.toISOString()).toBe('2026-01-01T17:00:00.000Z')
 
   const rows = await client.execute(
     'select (select count(*) from daylio_entries) as entries, (select count(*) from daylio_entry_activities) as links, (select count(*) from daylio_activities) as activities'
@@ -79,22 +79,14 @@ test('getAll renders notes to HTML', async () => {
   expect(entry?.note?.html).toContain('<li>made soup</li>')
 })
 
-test('processCSV stores times the way older imports did', async () => {
-  const header =
-    'full_date,date,weekday,time,mood,activities,scales,note_title,note'
-  const entries = await daylio.processCSV(
-    Buffer.from(
-      [
-        header,
-        // Times of entries already in production D1
-        '2026-11-01,Nov 1,Sunday,20:17,rad,,,,',
-        '2026-07-15,Jul 15,Wednesday,09:30,good,,,,',
-      ].join('\n')
-    )
+test('legacyTime gives the time older imports stored an entry at', () => {
+  // Pairs from production D1: the real time, and where the old importer put it
+  // Eastern Standard Time: 10 hours early
+  expect(legacyTime(new Date('2026-11-02T01:17:00Z')).toISOString()).toBe(
+    '2026-11-01T15:17:00.000Z'
   )
-
-  // Eastern Standard Time: 10 hours before the real 2026-11-02T01:17Z
-  expect(entries[0].time.toISOString()).toBe('2026-11-01T15:17:00.000Z')
-  // Eastern Daylight Time: 8 hours before the real 2026-07-15T13:30Z
-  expect(entries[1].time.toISOString()).toBe('2026-07-15T05:30:00.000Z')
+  // Eastern Daylight Time: 8 hours early
+  expect(legacyTime(new Date('2026-07-15T13:30:00Z')).toISOString()).toBe(
+    '2026-07-15T05:30:00.000Z'
+  )
 })
