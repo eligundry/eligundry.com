@@ -1,5 +1,5 @@
 import * as dateFns from 'date-fns'
-import { getTimezoneOffset } from 'date-fns-tz'
+import { formatInTimeZone, fromZonedTime, getTimezoneOffset } from 'date-fns-tz'
 import { z } from 'zod'
 import { parse as csvParse } from 'csv-parse'
 import { sql, eq, and, or, desc, gte, isNull } from 'drizzle-orm'
@@ -73,15 +73,11 @@ const csvSchema = z
     }, z.string().nullable()),
   })
   .transform((data) => {
-    // The export's times are wall-clock times in New York. Entries have
-    // always been stored the way the original importer did it on Netlify:
-    // read the wall-clock time as UTC, then shift it by New York's UTC offset
-    // at that instant, which lands 8 or 10 hours before the real time. That's
-    // wrong, but every entry's /feelings/#<slug> anchor, Bluesky post and
-    // standard.site record is built from it, so new imports have to match.
-    const asUTC = new Date(`${data.full_date}T${data.time}:00Z`)
-    const time = new Date(
-      asUTC.getTime() + getTimezoneOffset('America/New_York', asUTC)
+    // The export's times are wall-clock times in New York. fromZonedTime reads
+    // them that way whatever the machine's time zone (a Worker runs in UTC).
+    const time = fromZonedTime(
+      `${data.full_date}T${data.time}:00`,
+      'America/New_York'
     )
 
     return {
@@ -90,6 +86,25 @@ const csvSchema = z
       ...omit(data, ['full_date', 'time', 'weekday', 'date', 'note', 'scales']),
     }
   })
+
+/**
+ * Where the original importer put an entry. It ran on Netlify in UTC and read
+ * the export's New York wall-clock time as UTC, then shifted it by New York's
+ * offset, landing 8 or 10 hours early. Links to /feelings/#<slug> built from
+ * that time are already out in the world (Bluesky posts, standard.site), so
+ * each entry keeps an anchor for it.
+ */
+export const legacyTime = (time: Date): Date => {
+  const wallClock = formatInTimeZone(
+    time,
+    'America/New_York',
+    "yyyy-MM-dd'T'HH:mm:ss"
+  )
+  const asUTC = new Date(`${wallClock}Z`)
+  return new Date(
+    asUTC.getTime() + getTimezoneOffset('America/New_York', asUTC)
+  )
+}
 
 const processCSV = async (buffer: Buffer) => {
   const parser = csvParse(buffer, {
@@ -197,6 +212,7 @@ const apiSchema = z
     return {
       ...data,
       slug: formatStubbornDateToISO601(data.time),
+      legacySlug: formatStubbornDateToISO601(legacyTime(data.time)),
       emoji: MoodMapping[data.mood],
       activityEmojis: data.activities.map(
         (activity) => ActivityMapping[activity]
