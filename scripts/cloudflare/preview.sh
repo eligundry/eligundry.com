@@ -5,6 +5,12 @@
 # as a commit status so Playwright runs against it.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+
+# Re-run this script with .env.secrets decrypted, as build.sh does.
+if [ -z "${SECRETS_LOADED:-}" ]; then
+  exec pnpm exec dotenvx run -q -f .env.secrets -- env SECRETS_LOADED=1 scripts/cloudflare/preview.sh "$@"
+fi
+
 source scripts/cloudflare/branch.sh
 
 pnpm exec wrangler versions upload \

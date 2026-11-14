@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# The Workers Builds build command. Its secrets come from the triggers' build
-# variables, not .env.secrets.
+# The Workers Builds build command. Its secrets come from .env.secrets, which
+# it decrypts with the DOTENV_PRIVATE_KEY_SECRETS build variable. Build
+# variables set on the Worker win over the file.
 #
 # main builds against the production database. Every other branch builds
 # against a fresh copy of it, named eligundry-br-<branch>, and without the
@@ -8,6 +9,12 @@
 # branch's pull request closes (.github/workflows/preview-cleanup.yml).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+
+# Re-run this script with .env.secrets decrypted into the environment.
+if [ -z "${SECRETS_LOADED:-}" ]; then
+  exec pnpm exec dotenvx run -q -f .env.secrets -- env SECRETS_LOADED=1 scripts/cloudflare/build.sh "$@"
+fi
+
 source scripts/cloudflare/branch.sh
 
 # src/lib/lastModified.ts dates every page from its git history, so a shallow
@@ -25,7 +32,7 @@ if [ "$branch" != "main" ]; then
   unset BLUESKY_USERNAME BLUESKY_PASSWORD
 fi
 
-# Not `pnpm build`, which loads .env.secrets and would undo the unset
+# Not `pnpm build`, which would load .env.secrets again and undo the unset
 pnpm exec astro build
 
 if [ "$branch" != "main" ]; then
