@@ -50,6 +50,7 @@ test('the calendar comes from the database, even when GitHub is down', async () 
       Response.json({
         total: { lastYear: 1 },
         contributions: [
+          { date: '2099-01-01', count: 0, level: 0 },
           { date: '2026-03-02', count: 1, level: 1 },
           { date: '2026-03-01', count: 0, level: 0 },
           { date: '2026-02-28', count: 0, level: 0 },

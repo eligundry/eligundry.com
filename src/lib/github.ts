@@ -11,6 +11,8 @@ export interface GithubContribution {
   level: number
 }
 
+const ymd = (date: Date) => dateFns.format(date, 'yyyy-MM-dd')
+
 interface GithubApiResponse {
   total: Record<string, number>
   contributions: GithubContribution[]
@@ -40,7 +42,10 @@ export async function fetchContributions(
       }
 
       const data: GithubApiResponse = await resp.json()
+      // `all` runs to the end of this year, so leave out the days to come
+      const today = ymd(new Date())
       return data.contributions
+        .filter(({ date }) => date <= today)
         .map(({ date, count, level }) => ({ date, count, level }))
         .sort((a, b) => a.date.localeCompare(b.date))
     },
@@ -108,8 +113,6 @@ async function lastSavedDate(): Promise<string | undefined> {
     .limit(1)
   return row?.date
 }
-
-const ymd = (date: Date) => dateFns.format(date, 'yyyy-MM-dd')
 
 /** Every day from `from` to `to`, with the days missing from `days` as zeros. */
 export function fillDays(
