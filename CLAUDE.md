@@ -18,6 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Create standard.site publication** (one-time setup): `pnpm standard-site:create-publication`
 - **Publish a static HTML page to standard.site**: `pnpm standard-site:publish-page <file.html>`
 - **Import a Goodreads library export**: `pnpm goodreads:import <export.csv>`
+- **Backfill every year of GitHub contributions**: `pnpm github:backfill`
 
 ## Architecture Overview
 
@@ -77,6 +78,10 @@ This is a personal website built with **Astro** as the main framework, using **P
 ### Goodreads
 
 - Homepage books come from Goodreads' public widgets, and every build saves them to the `goodreads_reviews` table. `pnpm goodreads:import <export.csv>` backfills reviews from a Goodreads export — see [`docs/goodreads.md`](./docs/goodreads.md)
+
+### GitHub Contributions
+
+- The homepage contribution calendar (`src/components/GithubCalendar.astro`) is drawn from the `github_contributions` table. Each build saves the last year from the contributions API and a day only ever keeps its highest count, so private work for a former employer survives GitHub dropping it. Logic is in `src/lib/github.ts`
 
 ### Deployment
 

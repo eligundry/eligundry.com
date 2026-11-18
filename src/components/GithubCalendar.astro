@@ -4,55 +4,20 @@
 // calendar as static HTML. Each day is a grid cell so it can use daisyUI's
 // tooltip, which SVG elements can't.
 import * as dateFns from 'date-fns'
-import retry from 'async-retry'
 import config from '../config'
+import { lastYearOfContributions } from '../lib/github'
 
 interface Props {
   className?: string
 }
 
-interface GithubApiResponse {
-  total: {
-    [year: number | string]: number
-  }
-  contributions: {
-    date: string
-    count: number
-    level: number
-  }[]
-}
-
-// This renders at build time, so a failed request leaves the calendar out of
-// the page rather than failing the whole build.
-const contributions = await retry(
-  async () => {
-    const url = new URL(
-      `https://github-contributions-api.jogruber.de/v4/${config.github}`
-    )
-    url.searchParams.set('y', 'last')
-
-    const resp = await fetch(url)
-
-    // fetch doesn't reject on HTTP errors, so throw to trigger a retry
-    if (!resp.ok) {
-      throw new Error(`${resp.status} ${resp.statusText}`)
-    }
-
-    const data: GithubApiResponse = await resp.json()
-
-    return data.contributions.map((c) => ({
-      ...c,
-      date: dateFns.parseISO(c.date),
-    }))
-  },
-  {
-    retries: 3,
-    minTimeout: 500,
-  }
-).catch((e) => {
-  console.warn('could not fetch GitHub contributions', e)
-  return []
-})
+// This renders at build time. Each build saves the last year to the database
+// and draws the calendar from there, so days GitHub stops counting (private
+// work for a former employer) stay on it. If GitHub can't be reached, the
+// calendar is the last year that was saved.
+const contributions = (await lastYearOfContributions(config.github)).map(
+  (c) => ({ ...c, date: dateFns.parseISO(c.date) })
+)
 
 const firstDay = contributions[0]?.date
 const weeks = firstDay

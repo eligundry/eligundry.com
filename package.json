@@ -22,6 +22,7 @@
     "standard-site:create-publication": "dotenvx run -q -f .env.secrets -- vite-node scripts/standard-site/create-publication.ts",
     "standard-site:publish-page": "dotenvx run -q -f .env.secrets -- vite-node scripts/standard-site/publish-page.ts",
     "goodreads:import": "dotenvx run -q -f .env.secrets -- vite-node scripts/goodreads/import.ts",
+    "github:backfill": "dotenvx run -q -f .env.secrets -- vite-node scripts/github/backfill.ts",
     "prepare": "husky",
     "media:sync": "dotenvx run -q -f .env.secrets -- scripts/cloudflare/media-sync.sh",
     "deploy": "dotenvx run -q -f .env.secrets -- scripts/cloudflare/deploy.sh",

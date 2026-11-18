@@ -109,3 +109,17 @@ export const goodreadsReviews = sqliteTable('goodreads_reviews', {
   createdAt: integer('createdAt', { mode: 'timestamp' }).default(timestampSQL),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
 })
+
+// Eli's GitHub contribution calendar, a row per day, keyed by the day as
+// YYYY-MM-DD. GitHub drops contributions to private repos once Eli leaves the
+// organization that owns them, so a day's count only ever goes up: each build
+// keeps the higher of the saved and fetched counts.
+export const githubContributions = sqliteTable('github_contributions', {
+  date: text('date').primaryKey(),
+  count: integer('count').notNull().default(0),
+  // GitHub's 0-4 shade for the day, which goes with the count it was fetched
+  // alongside
+  level: integer('level').notNull().default(0),
+  createdAt: integer('createdAt', { mode: 'timestamp' }).default(timestampSQL),
+  updatedAt: integer('updatedAt', { mode: 'timestamp' }).default(timestampSQL),
+})
