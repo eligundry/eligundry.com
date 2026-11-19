@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@bryanguffey/astro-standard-site@1.0.3':
+    hash: deqzzqumegvfzbgojcqrodgiq4
+    path: patches/@bryanguffey__astro-standard-site@1.0.3.patch
+
 importers:
   .:
     dependencies:
@@ -30,7 +35,7 @@ importers:
         version: 0.13.19
       '@bryanguffey/astro-standard-site':
         specifier: ^1.0.3
-        version: 1.0.3(astro@7.4.7(@astrojs/markdown-remark@7.3.1)(@netlify/blobs@11.1.1)(@types/node@26.6.2)(esbuild@0.19.12)(jiti@2.7.0)(yaml@2.9.1))
+        version: 1.0.3(patch_hash=deqzzqumegvfzbgojcqrodgiq4)(astro@7.4.7(@astrojs/markdown-remark@7.3.1)(@netlify/blobs@11.1.1)(@types/node@26.6.2)(esbuild@0.19.12)(jiti@2.7.0)(yaml@2.9.1))
       '@fontsource/arvo':
         specifier: ^5.3.0
         version: 5.3.0
@@ -11789,7 +11794,7 @@ snapshots:
   '@bruits/satteri-win32-x64-msvc@0.11.6':
     optional: true
 
-  '@bryanguffey/astro-standard-site@1.0.3(astro@7.4.7(@astrojs/markdown-remark@7.3.1)(@netlify/blobs@11.1.1)(@types/node@26.6.2)(esbuild@0.19.12)(jiti@2.7.0)(yaml@2.9.1))':
+  '@bryanguffey/astro-standard-site@1.0.3(patch_hash=deqzzqumegvfzbgojcqrodgiq4)(astro@7.4.7(@astrojs/markdown-remark@7.3.1)(@netlify/blobs@11.1.1)(@types/node@26.6.2)(esbuild@0.19.12)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@atproto/api': 0.15.27
       astro: 7.4.7(@astrojs/markdown-remark@7.3.1)(@netlify/blobs@11.1.1)(@types/node@26.6.2)(esbuild@0.19.12)(jiti@2.7.0)(yaml@2.9.1)

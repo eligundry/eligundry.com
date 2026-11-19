@@ -1,0 +1,15 @@
+diff --git a/dist/comments.js b/dist/comments.js
+index ba9be32a4d00deab7ff152a4f82d8bab50e2bfdf..2092d06a45b273cfd909cc120830213a094c96fe 100644
+--- a/dist/comments.js
++++ b/dist/comments.js
+@@ -98,7 +98,9 @@ export async function fetchBlueskyReplies(postUri, options = {}) {
+  */
+ export async function searchBlueskyMentions(url, options = {}) {
+     const { maxResults = 25, service = 'https://public.api.bsky.app' } = options;
+-    const agent = new AtpAgent({ service });
++    // public.api.bsky.app answers searchPosts with 403 (it is cached and
++    // blocks search), so search through api.bsky.app instead.
++    const agent = new AtpAgent({ service: service.replace('://public.api.bsky.app', '://api.bsky.app') });
+     try {
+         // Search for posts containing the URL
+         const response = await agent.api.app.bsky.feed.searchPosts({
