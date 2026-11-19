@@ -4,25 +4,15 @@ import type {
   ScheduledController,
 } from '@cloudflare/workers-types'
 import daylio from './lib/daylio'
-import { postCollage, type CollagePeriod } from './lib/lastfmCollage'
+import { jobsDueAt } from './lib/cronJobs'
+import { postCollage } from './lib/lastfmCollage'
 import { triggerSiteDeploy } from './lib/rebuild'
 
 /**
  * The Worker: Astro serves requests, and the cron triggers in wrangler.jsonc
- * post the Last.fm collages and keep the feelings page fresh.
+ * post the Last.fm collages and keep the feelings page fresh. Which job runs
+ * is decided by New York time in ./lib/cronJobs.
  */
-
-const collages: Record<string, CollagePeriod> = {
-  // Every Friday at 12pm eastern (give or take an hour for DST)
-  '0 17 * * 5': '7day',
-  // First day of the month
-  '0 17 1 * *': '1month',
-  // New Year's Day
-  '0 17 1 1 *': '12month',
-}
-
-// Every night at 11pm eastern
-const NIGHTLY_REBUILD = '0 4 * * *'
 
 /**
  * Rebuilds the site when the newest Daylio entry is more than four hours old,
@@ -61,18 +51,24 @@ export default {
     _env: unknown,
     ctx: ExecutionContext
   ) {
-    const period = collages[controller.cron]
+    const jobs = jobsDueAt(controller.scheduledTime)
 
-    if (period) {
-      ctx.waitUntil(
-        postCollage(period).then((result) =>
-          console.log(`Last.fm ${period} collage`, JSON.stringify(result))
-        )
+    if (jobs.length === 0) {
+      console.log(
+        `Cron ${controller.cron} has nothing due at ${new Date(controller.scheduledTime).toISOString()}`
       )
-    } else if (controller.cron === NIGHTLY_REBUILD) {
-      ctx.waitUntil(nightlyRebuild())
-    } else {
-      console.warn(`No job for cron ${controller.cron}`)
+    }
+
+    for (const job of jobs) {
+      if (job.kind === 'collage') {
+        ctx.waitUntil(
+          postCollage(job.period).then((result) =>
+            console.log(`Last.fm ${job.period} collage`, JSON.stringify(result))
+          )
+        )
+      } else {
+        ctx.waitUntil(nightlyRebuild())
+      }
     }
   },
 }

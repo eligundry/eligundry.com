@@ -26,9 +26,12 @@
   "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "eligundry-media" }],
   // Handled by scheduled() in src/worker.ts: the Last.fm collages (weekly,
   // monthly, yearly) and the nightly rebuild check. They start with the first
-  // deploy from main, so turn off Netlify's scheduled functions then.
+  // deploy from main. Cron triggers are UTC, so each fires at both hours that
+  // can be noon / 11pm in New York, and src/lib/cronJobs.ts runs only the jobs
+  // due at the New York time. (Cloudflare's day of week also counts Sunday as
+  // 1, which is why `0 17 * * 5` posted the weekly collage on Thursdays.)
   "triggers": {
-    "crons": ["0 17 * * 5", "0 17 1 * *", "0 17 1 1 *", "0 4 * * *"],
+    "crons": ["0 16,17 * * *", "0 3,4 * * *"],
   },
   "observability": { "enabled": true },
   "workers_dev": true,

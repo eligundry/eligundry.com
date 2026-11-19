@@ -46,9 +46,13 @@ migration to production before merging code that needs it.
 
 ## Crons
 
-`src/worker.ts`'s `scheduled` handler maps each cron in `wrangler.jsonc` to a
-job: the weekly, monthly and yearly Last.fm collages, and the nightly rebuild
-that redeploys when the newest Daylio entry is stale. Collages render with
+`src/worker.ts`'s `scheduled` handler runs the weekly (Friday), monthly and
+yearly Last.fm collages at noon New York time, and at 11pm the nightly rebuild
+that redeploys when the newest Daylio entry is stale. Cron triggers are UTC
+only, so the crons in `wrangler.jsonc` fire at both UTC hours that can be noon
+or 11pm in New York, and `jobsDueAt` in `src/lib/cronJobs.ts` picks the jobs
+due at the trigger's New York time. Don't put a day of week in a Cloudflare
+cron: it counts Sunday as 1, so `5` is Thursday. Collages render with
 sharp at build time; the cron only posts them.
 
 Workers run in UTC, so convert New York wall times with `fromZonedTime`.
